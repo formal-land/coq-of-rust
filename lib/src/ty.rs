@@ -2,7 +2,6 @@ use crate::coq;
 use crate::env::*;
 use crate::expression::*;
 use crate::path::*;
-use rustc_hir::{FnDecl, FnRetTy, Ty};
 use serde::Serialize;
 use std::rc::Rc;
 
@@ -93,7 +92,7 @@ impl CoqType {
 pub(crate) fn compile_type<'a>(
     env: &Env<'a>,
     local_def_id: &rustc_hir::def_id::LocalDefId,
-    ty: &Ty<'a>,
+    ty: &rustc_hir::Ty<'a>,
 ) -> Rc<CoqType> {
     let generics = env.tcx.generics_of(*local_def_id);
     let item_ctxt = rustc_hir_analysis::collect::ItemCtxt::new(env.tcx, *local_def_id);
@@ -106,11 +105,11 @@ pub(crate) fn compile_type<'a>(
 pub(crate) fn compile_fn_ret_ty<'a>(
     env: &Env<'a>,
     local_def_id: &rustc_hir::def_id::LocalDefId,
-    fn_ret_ty: &FnRetTy<'a>,
+    fn_ret_ty: &rustc_hir::FnRetTy<'a>,
 ) -> Rc<CoqType> {
     match fn_ret_ty {
-        FnRetTy::DefaultReturn(_) => CoqType::unit(),
-        FnRetTy::Return(ty) => compile_type(env, local_def_id, ty),
+        rustc_hir::FnRetTy::DefaultReturn(_) => CoqType::unit(),
+        rustc_hir::FnRetTy::Return(ty) => compile_type(env, local_def_id, ty),
     }
 }
 
@@ -118,7 +117,7 @@ pub(crate) fn compile_fn_ret_ty<'a>(
 pub(crate) fn compile_fn_decl<'a>(
     env: &Env<'a>,
     local_def_id: &rustc_hir::def_id::LocalDefId,
-    fn_decl: &FnDecl<'a>,
+    fn_decl: &rustc_hir::FnDecl<'a>,
 ) -> Rc<CoqType> {
     let ret = compile_fn_ret_ty(env, local_def_id, &fn_decl.output);
 

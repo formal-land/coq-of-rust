@@ -35,7 +35,7 @@ Module Impl_core_marker_StructuralPartialEq_for_try_from_and_try_into_EvenNumber
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_try_from_and_try_into_EvenNumber.
 
-Module Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
+Module Impl_core_cmp_PartialEq_try_from_and_try_into_EvenNumber_for_try_from_and_try_into_EvenNumber.
   Definition Self : Ty.t := Ty.path "try_from_and_try_into::EvenNumber".
   
   Parameter eq : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
@@ -44,10 +44,10 @@ Module Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
     M.IsTraitInstance
       "core::cmp::PartialEq"
       (* Trait polymorphic consts *) []
-      (* Trait polymorphic types *) []
+      (* Trait polymorphic types *) [ Ty.path "try_from_and_try_into::EvenNumber" ]
       Self
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
-End Impl_core_cmp_PartialEq_for_try_from_and_try_into_EvenNumber.
+End Impl_core_cmp_PartialEq_try_from_and_try_into_EvenNumber_for_try_from_and_try_into_EvenNumber.
 
 Module Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.
   Definition Self : Ty.t := Ty.path "try_from_and_try_into::EvenNumber".

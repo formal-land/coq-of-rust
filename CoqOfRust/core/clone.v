@@ -48,9 +48,9 @@ Module clone.
     Definition Self (T : Ty.t) : Ty.t := T.
     
     (*
-        unsafe fn clone_to_uninit(&self, dst: *mut Self) {
+        unsafe fn clone_to_uninit(&self, dst: *mut u8) {
             // SAFETY: we're calling a specialization with the same contract
-            unsafe { <T as self::uninit::CopySpec>::clone_one(self, dst) }
+            unsafe { <T as self::uninit::CopySpec>::clone_one(self, dst.cast::<T>()) }
         }
     *)
     Definition clone_to_uninit
@@ -76,7 +76,19 @@ Module clone.
               [],
               []
             |),
-            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |); M.read (| dst |) ]
+            [
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+              M.call_closure (|
+                Ty.apply (Ty.path "*mut") [] [ T ],
+                M.get_associated_function (|
+                  Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
+                  "cast",
+                  [],
+                  [ T ]
+                |),
+                [ M.read (| dst |) ]
+              |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -95,7 +107,8 @@ Module clone.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "slice") [] [ T ].
     
     (*
-        unsafe fn clone_to_uninit(&self, dst: *mut Self) {
+        unsafe fn clone_to_uninit(&self, dst: *mut u8) {
+            let dst: *mut [T] = dst.with_metadata_of(self);
             // SAFETY: we're calling a specialization with the same contract
             unsafe { <T as self::uninit::CopySpec>::clone_slice(self, dst) }
         }
@@ -112,18 +125,39 @@ Module clone.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let dst := M.alloc (| dst |) in
-          M.call_closure (|
-            Ty.tuple [],
-            M.get_trait_method (|
-              "core::clone::uninit::CopySpec",
-              T,
-              [],
-              [],
-              "clone_slice",
-              [],
-              []
-            |),
-            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |); M.read (| dst |) ]
+          M.read (|
+            let~ dst : Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] :=
+              M.alloc (|
+                M.call_closure (|
+                  Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
+                    "with_metadata_of",
+                    [],
+                    [ Ty.apply (Ty.path "slice") [] [ T ] ]
+                  |),
+                  [
+                    M.read (| dst |);
+                    M.borrow (| Pointer.Kind.ConstPointer, M.deref (| M.read (| self |) |) |)
+                  ]
+                |)
+              |) in
+            M.alloc (|
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_trait_method (|
+                  "core::clone::uninit::CopySpec",
+                  T,
+                  [],
+                  [],
+                  "clone_slice",
+                  [],
+                  []
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |); M.read (| dst |)
+                ]
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -142,9 +176,9 @@ Module clone.
     Definition Self : Ty.t := Ty.path "str".
     
     (*
-        unsafe fn clone_to_uninit(&self, dst: *mut Self) {
+        unsafe fn clone_to_uninit(&self, dst: *mut u8) {
             // SAFETY: str is just a [u8] with UTF-8 invariant
-            unsafe { self.as_bytes().clone_to_uninit(dst as *mut [u8]) }
+            unsafe { self.as_bytes().clone_to_uninit(dst) }
         }
     *)
     Definition clone_to_uninit (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -175,9 +209,7 @@ Module clone.
                   |)
                 |)
               |);
-              M.cast
-                (Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ])
-                (M.read (| dst |))
+              M.read (| dst |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -196,12 +228,12 @@ Module clone.
     Definition Self : Ty.t := Ty.path "core::ffi::c_str::CStr".
     
     (*
-        unsafe fn clone_to_uninit(&self, dst: *mut Self) {
+        unsafe fn clone_to_uninit(&self, dst: *mut u8) {
             // SAFETY: For now, CStr is just a #[repr(trasnsparent)] [c_char] with some invariants.
             // And we can cast [c_char] to [u8] on all supported platforms (see: to_bytes_with_nul).
-            // The pointer metadata properly preserves the length (NUL included).
+            // The pointer metadata properly preserves the length (so NUL is also copied).
             // See: `cstr_metadata_is_length_with_nul` in tests.
-            unsafe { self.to_bytes_with_nul().clone_to_uninit(dst as *mut [u8]) }
+            unsafe { self.to_bytes_with_nul().clone_to_uninit(dst) }
         }
     *)
     Definition clone_to_uninit (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -237,9 +269,7 @@ Module clone.
                   |)
                 |)
               |);
-              M.cast
-                (Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ])
-                (M.read (| dst |))
+              M.read (| dst |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"

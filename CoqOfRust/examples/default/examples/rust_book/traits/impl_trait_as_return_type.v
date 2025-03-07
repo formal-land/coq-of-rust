@@ -278,10 +278,6 @@ Global Instance Instance_IsFunction_combine_vecs :
 Admitted.
 Global Typeclasses Opaque combine_vecs.
 
-Module combine_vecs.
-  (* Error OpaqueTy *)
-End combine_vecs.
-
 (*
 fn main() {
     let v1 = vec![1, 2, 3];

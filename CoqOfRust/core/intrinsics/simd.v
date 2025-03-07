@@ -369,6 +369,12 @@ Module intrinsics.
       M.IsFunction.Trait "core::intrinsics::simd::simd_fma" simd_fma.
     Admitted.
     
+    Parameter simd_relaxed_fma : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+    
+    Global Instance Instance_IsFunction_simd_relaxed_fma :
+      M.IsFunction.Trait "core::intrinsics::simd::simd_relaxed_fma" simd_relaxed_fma.
+    Admitted.
+    
     Parameter simd_fsin : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_simd_fsin :

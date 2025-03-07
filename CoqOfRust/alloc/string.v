@@ -29,7 +29,7 @@ Module string.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_alloc_string_String.
   
-  Module Impl_core_cmp_PartialEq_for_alloc_string_String.
+  Module Impl_core_cmp_PartialEq_alloc_string_String_for_alloc_string_String.
     Definition Self : Ty.t := Ty.path "alloc::string::String".
     
     (* PartialEq *)
@@ -84,12 +84,12 @@ Module string.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "alloc::string::String" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_alloc_string_String.
+  End Impl_core_cmp_PartialEq_alloc_string_String_for_alloc_string_String.
   
-  Module Impl_core_cmp_PartialOrd_for_alloc_string_String.
+  Module Impl_core_cmp_PartialOrd_alloc_string_String_for_alloc_string_String.
     Definition Self : Ty.t := Ty.path "alloc::string::String".
     
     (* PartialOrd *)
@@ -154,10 +154,10 @@ Module string.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "alloc::string::String" ]
         Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-  End Impl_core_cmp_PartialOrd_for_alloc_string_String.
+  End Impl_core_cmp_PartialOrd_alloc_string_String_for_alloc_string_String.
   
   Module Impl_core_cmp_Eq_for_alloc_string_String.
     Definition Self : Ty.t := Ty.path "alloc::string::String".
@@ -359,7 +359,7 @@ Module string.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_alloc_string_FromUtf8Error.
   
-  Module Impl_core_cmp_PartialEq_for_alloc_string_FromUtf8Error.
+  Module Impl_core_cmp_PartialEq_alloc_string_FromUtf8Error_for_alloc_string_FromUtf8Error.
     Definition Self : Ty.t := Ty.path "alloc::string::FromUtf8Error".
     
     (* PartialEq *)
@@ -447,10 +447,10 @@ Module string.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "alloc::string::FromUtf8Error" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_alloc_string_FromUtf8Error.
+  End Impl_core_cmp_PartialEq_alloc_string_FromUtf8Error_for_alloc_string_FromUtf8Error.
   
   Module Impl_core_cmp_Eq_for_alloc_string_FromUtf8Error.
     Definition Self : Ty.t := Ty.path "alloc::string::FromUtf8Error".
@@ -4653,7 +4653,7 @@ Module string.
     Global Typeclasses Opaque from_utf8_unchecked.
     
     (*
-        pub fn into_bytes(self) -> Vec<u8> {
+        pub const fn into_bytes(self) -> Vec<u8> {
             self.vec
         }
     *)
@@ -4674,8 +4674,10 @@ Module string.
     Global Typeclasses Opaque into_bytes.
     
     (*
-        pub fn as_str(&self) -> &str {
-            self
+        pub const fn as_str(&self) -> &str {
+            // SAFETY: String contents are stipulated to be valid UTF-8, invalid contents are an error
+            // at construction.
+            unsafe { str::from_utf8_unchecked(self.vec.as_slice()) }
         }
     *)
     Definition as_str (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -4688,16 +4690,39 @@ Module string.
             M.deref (|
               M.call_closure (|
                 Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                M.get_trait_method (|
-                  "core::ops::deref::Deref",
-                  Ty.path "alloc::string::String",
-                  [],
-                  [],
-                  "deref",
-                  [],
-                  []
-                |),
-                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                M.get_function (| "core::str::converts::from_utf8_unchecked", [], [] |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                        M.get_associated_function (|
+                          Ty.apply
+                            (Ty.path "alloc::vec::Vec")
+                            []
+                            [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                          "as_slice",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "alloc::string::String",
+                              "vec"
+                            |)
+                          |)
+                        ]
+                      |)
+                    |)
+                  |)
+                ]
               |)
             |)
           |)))
@@ -4709,8 +4734,10 @@ Module string.
     Global Typeclasses Opaque as_str.
     
     (*
-        pub fn as_mut_str(&mut self) -> &mut str {
-            self
+        pub const fn as_mut_str(&mut self) -> &mut str {
+            // SAFETY: String contents are stipulated to be valid UTF-8, invalid contents are an error
+            // at construction.
+            unsafe { str::from_utf8_unchecked_mut(self.vec.as_mut_slice()) }
         }
     *)
     Definition as_mut_str (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -4724,18 +4751,46 @@ Module string.
               M.borrow (|
                 Pointer.Kind.MutRef,
                 M.deref (|
-                  M.call_closure (|
-                    Ty.apply (Ty.path "&mut") [] [ Ty.path "str" ],
-                    M.get_trait_method (|
-                      "core::ops::deref::DerefMut",
-                      Ty.path "alloc::string::String",
-                      [],
-                      [],
-                      "deref_mut",
-                      [],
-                      []
-                    |),
-                    [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
+                  M.borrow (|
+                    Pointer.Kind.MutRef,
+                    M.deref (|
+                      M.call_closure (|
+                        Ty.apply (Ty.path "&mut") [] [ Ty.path "str" ],
+                        M.get_function (| "core::str::converts::from_utf8_unchecked_mut", [], [] |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.deref (|
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "&mut")
+                                  []
+                                  [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "alloc::vec::Vec")
+                                    []
+                                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                                  "as_mut_slice",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.MutRef,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "alloc::string::String",
+                                      "vec"
+                                    |)
+                                  |)
+                                ]
+                              |)
+                            |)
+                          |)
+                        ]
+                      |)
+                    |)
                   |)
                 |)
               |)
@@ -5042,7 +5097,7 @@ Module string.
     Global Typeclasses Opaque extend_from_within.
     
     (*
-        pub fn capacity(&self) -> usize {
+        pub const fn capacity(&self) -> usize {
             self.vec.capacity()
         }
     *)
@@ -5476,8 +5531,8 @@ Module string.
     Global Typeclasses Opaque push.
     
     (*
-        pub fn as_bytes(&self) -> &[u8] {
-            &self.vec
+        pub const fn as_bytes(&self) -> &[u8] {
+            self.vec.as_slice()
         }
     *)
     Definition as_bytes (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -5490,30 +5545,22 @@ Module string.
             M.deref (|
               M.call_closure (|
                 Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                M.get_trait_method (|
-                  "core::ops::deref::Deref",
+                M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
                     []
                     [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                  [],
-                  [],
-                  "deref",
+                  "as_slice",
                   [],
                   []
                 |),
                 [
                   M.borrow (|
                     Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "alloc::string::String",
-                          "vec"
-                        |)
-                      |)
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "alloc::string::String",
+                      "vec"
                     |)
                   |)
                 ]
@@ -7926,7 +7973,7 @@ Module string.
     Global Typeclasses Opaque insert_str.
     
     (*
-        pub unsafe fn as_mut_vec(&mut self) -> &mut Vec<u8> {
+        pub const unsafe fn as_mut_vec(&mut self) -> &mut Vec<u8> {
             &mut self.vec
         }
     *)
@@ -7962,7 +8009,7 @@ Module string.
     Global Typeclasses Opaque as_mut_vec.
     
     (*
-        pub fn len(&self) -> usize {
+        pub const fn len(&self) -> usize {
             self.vec.len()
         }
     *)
@@ -8001,7 +8048,7 @@ Module string.
     Global Typeclasses Opaque len.
     
     (*
-        pub fn is_empty(&self) -> bool {
+        pub const fn is_empty(&self) -> bool {
             self.len() == 0
         }
     *)
@@ -11893,6 +11940,50 @@ Module string.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
+    (*
+        fn as_utf8_pattern(&self) -> Option<Utf8Pattern<'_>> {
+            Some(Utf8Pattern::StringPattern(self.as_bytes()))
+        }
+    *)
+    Definition as_utf8_pattern (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          Value.StructTuple
+            "core::option::Option::Some"
+            [
+              Value.StructTuple
+                "core::str::pattern::Utf8Pattern::StringPattern"
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                        M.get_associated_function (|
+                          Ty.path "alloc::string::String",
+                          "as_bytes",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                          |)
+                        ]
+                      |)
+                    |)
+                  |)
+                ]
+            ]))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
     Axiom Implements :
       M.IsTraitInstance
         "core::str::pattern::Pattern"
@@ -11907,7 +11998,8 @@ Module string.
           ("is_prefix_of", InstanceField.Method is_prefix_of);
           ("strip_prefix_of", InstanceField.Method strip_prefix_of);
           ("is_suffix_of", InstanceField.Method is_suffix_of);
-          ("strip_suffix_of", InstanceField.Method strip_suffix_of)
+          ("strip_suffix_of", InstanceField.Method strip_suffix_of);
+          ("as_utf8_pattern", InstanceField.Method as_utf8_pattern)
         ].
   End Impl_core_str_pattern_Pattern_for_ref__alloc_string_String.
   
@@ -14324,7 +14416,7 @@ Module string.
     
     (*
         fn deref(&self) -> &str {
-            unsafe { str::from_utf8_unchecked(&self.vec) }
+            self.as_str()
         }
     *)
     Definition deref (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -14337,47 +14429,8 @@ Module string.
             M.deref (|
               M.call_closure (|
                 Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                M.get_function (| "core::str::converts::from_utf8_unchecked", [], [] |),
-                [
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "&")
-                          []
-                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                        M.get_trait_method (|
-                          "core::ops::deref::Deref",
-                          Ty.apply
-                            (Ty.path "alloc::vec::Vec")
-                            []
-                            [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                          [],
-                          [],
-                          "deref",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (|
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.SubPointer.get_struct_record_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "alloc::string::String",
-                                  "vec"
-                                |)
-                              |)
-                            |)
-                          |)
-                        ]
-                      |)
-                    |)
-                  |)
-                ]
+                M.get_associated_function (| Ty.path "alloc::string::String", "as_str", [], [] |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |)
             |)
           |)))
@@ -14411,7 +14464,7 @@ Module string.
     
     (*
         fn deref_mut(&mut self) -> &mut str {
-            unsafe { str::from_utf8_unchecked_mut(&mut *self.vec) }
+            self.as_mut_str()
         }
     *)
     Definition deref_mut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -14425,54 +14478,15 @@ Module string.
               M.borrow (|
                 Pointer.Kind.MutRef,
                 M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.MutRef,
-                    M.deref (|
-                      M.call_closure (|
-                        Ty.apply (Ty.path "&mut") [] [ Ty.path "str" ],
-                        M.get_function (| "core::str::converts::from_utf8_unchecked_mut", [], [] |),
-                        [
-                          M.borrow (|
-                            Pointer.Kind.MutRef,
-                            M.deref (|
-                              M.borrow (|
-                                Pointer.Kind.MutRef,
-                                M.deref (|
-                                  M.call_closure (|
-                                    Ty.apply
-                                      (Ty.path "&mut")
-                                      []
-                                      [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                                    M.get_trait_method (|
-                                      "core::ops::deref::DerefMut",
-                                      Ty.apply
-                                        (Ty.path "alloc::vec::Vec")
-                                        []
-                                        [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                                      [],
-                                      [],
-                                      "deref_mut",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.MutRef,
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.deref (| M.read (| self |) |),
-                                          "alloc::string::String",
-                                          "vec"
-                                        |)
-                                      |)
-                                    ]
-                                  |)
-                                |)
-                              |)
-                            |)
-                          |)
-                        ]
-                      |)
-                    |)
+                  M.call_closure (|
+                    Ty.apply (Ty.path "&mut") [] [ Ty.path "str" ],
+                    M.get_associated_function (|
+                      Ty.path "alloc::string::String",
+                      "as_mut_str",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
                   |)
                 |)
               |)

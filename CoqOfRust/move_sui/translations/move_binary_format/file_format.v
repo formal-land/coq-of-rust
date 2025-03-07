@@ -230,7 +230,7 @@ Module file_format.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_file_format_ModuleHandleIndex.
   
-  Module Impl_core_cmp_PartialEq_for_move_binary_format_file_format_ModuleHandleIndex.
+  Module Impl_core_cmp_PartialEq_move_binary_format_file_format_ModuleHandleIndex_for_move_binary_format_file_format_ModuleHandleIndex.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::ModuleHandleIndex".
     
     (*         PartialEq *)
@@ -263,12 +263,13 @@ Module file_format.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *)
+        [ Ty.path "move_binary_format::file_format::ModuleHandleIndex" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_binary_format_file_format_ModuleHandleIndex.
+  End Impl_core_cmp_PartialEq_move_binary_format_file_format_ModuleHandleIndex_for_move_binary_format_file_format_ModuleHandleIndex.
   
-  Module Impl_core_cmp_PartialOrd_for_move_binary_format_file_format_ModuleHandleIndex.
+  Module Impl_core_cmp_PartialOrd_move_binary_format_file_format_ModuleHandleIndex_for_move_binary_format_file_format_ModuleHandleIndex.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::ModuleHandleIndex".
     
     (*         PartialOrd *)
@@ -325,10 +326,11 @@ Module file_format.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *)
+        [ Ty.path "move_binary_format::file_format::ModuleHandleIndex" ]
         Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-  End Impl_core_cmp_PartialOrd_for_move_binary_format_file_format_ModuleHandleIndex.
+  End Impl_core_cmp_PartialOrd_move_binary_format_file_format_ModuleHandleIndex_for_move_binary_format_file_format_ModuleHandleIndex.
   
   Module Impl_move_binary_format_file_format_ModuleHandleIndex.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::ModuleHandleIndex".
@@ -817,7 +819,7 @@ Module file_format.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_file_format_StructHandleIndex.
   
-  Module Impl_core_cmp_PartialEq_for_move_binary_format_file_format_StructHandleIndex.
+  Module Impl_core_cmp_PartialEq_move_binary_format_file_format_StructHandleIndex_for_move_binary_format_file_format_StructHandleIndex.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::StructHandleIndex".
     
     (*         PartialEq *)
@@ -850,12 +852,13 @@ Module file_format.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *)
+        [ Ty.path "move_binary_format::file_format::StructHandleIndex" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_binary_format_file_format_StructHandleIndex.
+  End Impl_core_cmp_PartialEq_move_binary_format_file_format_StructHandleIndex_for_move_binary_format_file_format_StructHandleIndex.
   
-  Module Impl_core_cmp_PartialOrd_for_move_binary_format_file_format_StructHandleIndex.
+  Module Impl_core_cmp_PartialOrd_move_binary_format_file_format_StructHandleIndex_for_move_binary_format_file_format_StructHandleIndex.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::StructHandleIndex".
     
     (*         PartialOrd *)
@@ -912,10 +915,11 @@ Module file_format.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *)
+        [ Ty.path "move_binary_format::file_format::StructHandleIndex" ]
         Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-  End Impl_core_cmp_PartialOrd_for_move_binary_format_file_format_StructHandleIndex.
+  End Impl_core_cmp_PartialOrd_move_binary_format_file_format_StructHandleIndex_for_move_binary_format_file_format_StructHandleIndex.
   
   Module Impl_move_binary_format_file_format_StructHandleIndex.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::StructHandleIndex".
@@ -1404,7 +1408,7 @@ Module file_format.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_file_format_FunctionHandleIndex.
   
-  Module Impl_core_cmp_PartialEq_for_move_binary_format_file_format_FunctionHandleIndex.
+  Module Impl_core_cmp_PartialEq_move_binary_format_file_format_FunctionHandleIndex_for_move_binary_format_file_format_FunctionHandleIndex.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::FunctionHandleIndex".
     
     (*         PartialEq *)
@@ -1437,12 +1441,13 @@ Module file_format.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *)
+        [ Ty.path "move_binary_format::file_format::FunctionHandleIndex" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_binary_format_file_format_FunctionHandleIndex.
+  End Impl_core_cmp_PartialEq_move_binary_format_file_format_FunctionHandleIndex_for_move_binary_format_file_format_FunctionHandleIndex.
   
-  Module Impl_core_cmp_PartialOrd_for_move_binary_format_file_format_FunctionHandleIndex.
+  Module Impl_core_cmp_PartialOrd_move_binary_format_file_format_FunctionHandleIndex_for_move_binary_format_file_format_FunctionHandleIndex.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::FunctionHandleIndex".
     
     (*         PartialOrd *)
@@ -1499,10 +1504,11 @@ Module file_format.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *)
+        [ Ty.path "move_binary_format::file_format::FunctionHandleIndex" ]
         Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-  End Impl_core_cmp_PartialOrd_for_move_binary_format_file_format_FunctionHandleIndex.
+  End Impl_core_cmp_PartialOrd_move_binary_format_file_format_FunctionHandleIndex_for_move_binary_format_file_format_FunctionHandleIndex.
   
   Module Impl_move_binary_format_file_format_FunctionHandleIndex.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::FunctionHandleIndex".
@@ -1991,7 +1997,7 @@ Module file_format.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_file_format_FieldHandleIndex.
   
-  Module Impl_core_cmp_PartialEq_for_move_binary_format_file_format_FieldHandleIndex.
+  Module Impl_core_cmp_PartialEq_move_binary_format_file_format_FieldHandleIndex_for_move_binary_format_file_format_FieldHandleIndex.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::FieldHandleIndex".
     
     (*         PartialEq *)
@@ -2024,12 +2030,13 @@ Module file_format.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *)
+        [ Ty.path "move_binary_format::file_format::FieldHandleIndex" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_binary_format_file_format_FieldHandleIndex.
+  End Impl_core_cmp_PartialEq_move_binary_format_file_format_FieldHandleIndex_for_move_binary_format_file_format_FieldHandleIndex.
   
-  Module Impl_core_cmp_PartialOrd_for_move_binary_format_file_format_FieldHandleIndex.
+  Module Impl_core_cmp_PartialOrd_move_binary_format_file_format_FieldHandleIndex_for_move_binary_format_file_format_FieldHandleIndex.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::FieldHandleIndex".
     
     (*         PartialOrd *)
@@ -2086,10 +2093,11 @@ Module file_format.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *)
+        [ Ty.path "move_binary_format::file_format::FieldHandleIndex" ]
         Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-  End Impl_core_cmp_PartialOrd_for_move_binary_format_file_format_FieldHandleIndex.
+  End Impl_core_cmp_PartialOrd_move_binary_format_file_format_FieldHandleIndex_for_move_binary_format_file_format_FieldHandleIndex.
   
   Module Impl_move_binary_format_file_format_FieldHandleIndex.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::FieldHandleIndex".
@@ -2585,7 +2593,7 @@ Module file_format.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_file_format_StructDefInstantiationIndex.
   
-  Module Impl_core_cmp_PartialEq_for_move_binary_format_file_format_StructDefInstantiationIndex.
+  Module Impl_core_cmp_PartialEq_move_binary_format_file_format_StructDefInstantiationIndex_for_move_binary_format_file_format_StructDefInstantiationIndex.
     Definition Self : Ty.t :=
       Ty.path "move_binary_format::file_format::StructDefInstantiationIndex".
     
@@ -2619,12 +2627,13 @@ Module file_format.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *)
+        [ Ty.path "move_binary_format::file_format::StructDefInstantiationIndex" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_binary_format_file_format_StructDefInstantiationIndex.
+  End Impl_core_cmp_PartialEq_move_binary_format_file_format_StructDefInstantiationIndex_for_move_binary_format_file_format_StructDefInstantiationIndex.
   
-  Module Impl_core_cmp_PartialOrd_for_move_binary_format_file_format_StructDefInstantiationIndex.
+  Module Impl_core_cmp_PartialOrd_move_binary_format_file_format_StructDefInstantiationIndex_for_move_binary_format_file_format_StructDefInstantiationIndex.
     Definition Self : Ty.t :=
       Ty.path "move_binary_format::file_format::StructDefInstantiationIndex".
     
@@ -2682,10 +2691,11 @@ Module file_format.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *)
+        [ Ty.path "move_binary_format::file_format::StructDefInstantiationIndex" ]
         Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-  End Impl_core_cmp_PartialOrd_for_move_binary_format_file_format_StructDefInstantiationIndex.
+  End Impl_core_cmp_PartialOrd_move_binary_format_file_format_StructDefInstantiationIndex_for_move_binary_format_file_format_StructDefInstantiationIndex.
   
   Module Impl_move_binary_format_file_format_StructDefInstantiationIndex.
     Definition Self : Ty.t :=
@@ -3180,7 +3190,7 @@ Module file_format.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_file_format_FunctionInstantiationIndex.
   
-  Module Impl_core_cmp_PartialEq_for_move_binary_format_file_format_FunctionInstantiationIndex.
+  Module Impl_core_cmp_PartialEq_move_binary_format_file_format_FunctionInstantiationIndex_for_move_binary_format_file_format_FunctionInstantiationIndex.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::FunctionInstantiationIndex".
     
     (*         PartialEq *)
@@ -3213,12 +3223,13 @@ Module file_format.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *)
+        [ Ty.path "move_binary_format::file_format::FunctionInstantiationIndex" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_binary_format_file_format_FunctionInstantiationIndex.
+  End Impl_core_cmp_PartialEq_move_binary_format_file_format_FunctionInstantiationIndex_for_move_binary_format_file_format_FunctionInstantiationIndex.
   
-  Module Impl_core_cmp_PartialOrd_for_move_binary_format_file_format_FunctionInstantiationIndex.
+  Module Impl_core_cmp_PartialOrd_move_binary_format_file_format_FunctionInstantiationIndex_for_move_binary_format_file_format_FunctionInstantiationIndex.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::FunctionInstantiationIndex".
     
     (*         PartialOrd *)
@@ -3275,10 +3286,11 @@ Module file_format.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *)
+        [ Ty.path "move_binary_format::file_format::FunctionInstantiationIndex" ]
         Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-  End Impl_core_cmp_PartialOrd_for_move_binary_format_file_format_FunctionInstantiationIndex.
+  End Impl_core_cmp_PartialOrd_move_binary_format_file_format_FunctionInstantiationIndex_for_move_binary_format_file_format_FunctionInstantiationIndex.
   
   Module Impl_move_binary_format_file_format_FunctionInstantiationIndex.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::FunctionInstantiationIndex".
@@ -3769,7 +3781,7 @@ Module file_format.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_file_format_FieldInstantiationIndex.
   
-  Module Impl_core_cmp_PartialEq_for_move_binary_format_file_format_FieldInstantiationIndex.
+  Module Impl_core_cmp_PartialEq_move_binary_format_file_format_FieldInstantiationIndex_for_move_binary_format_file_format_FieldInstantiationIndex.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::FieldInstantiationIndex".
     
     (*         PartialEq *)
@@ -3802,12 +3814,13 @@ Module file_format.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *)
+        [ Ty.path "move_binary_format::file_format::FieldInstantiationIndex" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_binary_format_file_format_FieldInstantiationIndex.
+  End Impl_core_cmp_PartialEq_move_binary_format_file_format_FieldInstantiationIndex_for_move_binary_format_file_format_FieldInstantiationIndex.
   
-  Module Impl_core_cmp_PartialOrd_for_move_binary_format_file_format_FieldInstantiationIndex.
+  Module Impl_core_cmp_PartialOrd_move_binary_format_file_format_FieldInstantiationIndex_for_move_binary_format_file_format_FieldInstantiationIndex.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::FieldInstantiationIndex".
     
     (*         PartialOrd *)
@@ -3864,10 +3877,11 @@ Module file_format.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *)
+        [ Ty.path "move_binary_format::file_format::FieldInstantiationIndex" ]
         Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-  End Impl_core_cmp_PartialOrd_for_move_binary_format_file_format_FieldInstantiationIndex.
+  End Impl_core_cmp_PartialOrd_move_binary_format_file_format_FieldInstantiationIndex_for_move_binary_format_file_format_FieldInstantiationIndex.
   
   Module Impl_move_binary_format_file_format_FieldInstantiationIndex.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::FieldInstantiationIndex".
@@ -4356,7 +4370,7 @@ Module file_format.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_file_format_IdentifierIndex.
   
-  Module Impl_core_cmp_PartialEq_for_move_binary_format_file_format_IdentifierIndex.
+  Module Impl_core_cmp_PartialEq_move_binary_format_file_format_IdentifierIndex_for_move_binary_format_file_format_IdentifierIndex.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::IdentifierIndex".
     
     (*         PartialEq *)
@@ -4389,12 +4403,12 @@ Module file_format.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_binary_format::file_format::IdentifierIndex" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_binary_format_file_format_IdentifierIndex.
+  End Impl_core_cmp_PartialEq_move_binary_format_file_format_IdentifierIndex_for_move_binary_format_file_format_IdentifierIndex.
   
-  Module Impl_core_cmp_PartialOrd_for_move_binary_format_file_format_IdentifierIndex.
+  Module Impl_core_cmp_PartialOrd_move_binary_format_file_format_IdentifierIndex_for_move_binary_format_file_format_IdentifierIndex.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::IdentifierIndex".
     
     (*         PartialOrd *)
@@ -4451,10 +4465,10 @@ Module file_format.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_binary_format::file_format::IdentifierIndex" ]
         Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-  End Impl_core_cmp_PartialOrd_for_move_binary_format_file_format_IdentifierIndex.
+  End Impl_core_cmp_PartialOrd_move_binary_format_file_format_IdentifierIndex_for_move_binary_format_file_format_IdentifierIndex.
   
   Module Impl_move_binary_format_file_format_IdentifierIndex.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::IdentifierIndex".
@@ -4943,7 +4957,7 @@ Module file_format.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_file_format_AddressIdentifierIndex.
   
-  Module Impl_core_cmp_PartialEq_for_move_binary_format_file_format_AddressIdentifierIndex.
+  Module Impl_core_cmp_PartialEq_move_binary_format_file_format_AddressIdentifierIndex_for_move_binary_format_file_format_AddressIdentifierIndex.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::AddressIdentifierIndex".
     
     (*         PartialEq *)
@@ -4976,12 +4990,13 @@ Module file_format.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *)
+        [ Ty.path "move_binary_format::file_format::AddressIdentifierIndex" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_binary_format_file_format_AddressIdentifierIndex.
+  End Impl_core_cmp_PartialEq_move_binary_format_file_format_AddressIdentifierIndex_for_move_binary_format_file_format_AddressIdentifierIndex.
   
-  Module Impl_core_cmp_PartialOrd_for_move_binary_format_file_format_AddressIdentifierIndex.
+  Module Impl_core_cmp_PartialOrd_move_binary_format_file_format_AddressIdentifierIndex_for_move_binary_format_file_format_AddressIdentifierIndex.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::AddressIdentifierIndex".
     
     (*         PartialOrd *)
@@ -5038,10 +5053,11 @@ Module file_format.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *)
+        [ Ty.path "move_binary_format::file_format::AddressIdentifierIndex" ]
         Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-  End Impl_core_cmp_PartialOrd_for_move_binary_format_file_format_AddressIdentifierIndex.
+  End Impl_core_cmp_PartialOrd_move_binary_format_file_format_AddressIdentifierIndex_for_move_binary_format_file_format_AddressIdentifierIndex.
   
   Module Impl_move_binary_format_file_format_AddressIdentifierIndex.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::AddressIdentifierIndex".
@@ -5530,7 +5546,7 @@ Module file_format.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_file_format_ConstantPoolIndex.
   
-  Module Impl_core_cmp_PartialEq_for_move_binary_format_file_format_ConstantPoolIndex.
+  Module Impl_core_cmp_PartialEq_move_binary_format_file_format_ConstantPoolIndex_for_move_binary_format_file_format_ConstantPoolIndex.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::ConstantPoolIndex".
     
     (*         PartialEq *)
@@ -5563,12 +5579,13 @@ Module file_format.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *)
+        [ Ty.path "move_binary_format::file_format::ConstantPoolIndex" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_binary_format_file_format_ConstantPoolIndex.
+  End Impl_core_cmp_PartialEq_move_binary_format_file_format_ConstantPoolIndex_for_move_binary_format_file_format_ConstantPoolIndex.
   
-  Module Impl_core_cmp_PartialOrd_for_move_binary_format_file_format_ConstantPoolIndex.
+  Module Impl_core_cmp_PartialOrd_move_binary_format_file_format_ConstantPoolIndex_for_move_binary_format_file_format_ConstantPoolIndex.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::ConstantPoolIndex".
     
     (*         PartialOrd *)
@@ -5625,10 +5642,11 @@ Module file_format.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *)
+        [ Ty.path "move_binary_format::file_format::ConstantPoolIndex" ]
         Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-  End Impl_core_cmp_PartialOrd_for_move_binary_format_file_format_ConstantPoolIndex.
+  End Impl_core_cmp_PartialOrd_move_binary_format_file_format_ConstantPoolIndex_for_move_binary_format_file_format_ConstantPoolIndex.
   
   Module Impl_move_binary_format_file_format_ConstantPoolIndex.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::ConstantPoolIndex".
@@ -6117,7 +6135,7 @@ Module file_format.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_file_format_SignatureIndex.
   
-  Module Impl_core_cmp_PartialEq_for_move_binary_format_file_format_SignatureIndex.
+  Module Impl_core_cmp_PartialEq_move_binary_format_file_format_SignatureIndex_for_move_binary_format_file_format_SignatureIndex.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::SignatureIndex".
     
     (*         PartialEq *)
@@ -6150,12 +6168,12 @@ Module file_format.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_binary_format::file_format::SignatureIndex" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_binary_format_file_format_SignatureIndex.
+  End Impl_core_cmp_PartialEq_move_binary_format_file_format_SignatureIndex_for_move_binary_format_file_format_SignatureIndex.
   
-  Module Impl_core_cmp_PartialOrd_for_move_binary_format_file_format_SignatureIndex.
+  Module Impl_core_cmp_PartialOrd_move_binary_format_file_format_SignatureIndex_for_move_binary_format_file_format_SignatureIndex.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::SignatureIndex".
     
     (*         PartialOrd *)
@@ -6212,10 +6230,10 @@ Module file_format.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_binary_format::file_format::SignatureIndex" ]
         Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-  End Impl_core_cmp_PartialOrd_for_move_binary_format_file_format_SignatureIndex.
+  End Impl_core_cmp_PartialOrd_move_binary_format_file_format_SignatureIndex_for_move_binary_format_file_format_SignatureIndex.
   
   Module Impl_move_binary_format_file_format_SignatureIndex.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::SignatureIndex".
@@ -6702,7 +6720,7 @@ Module file_format.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_file_format_StructDefinitionIndex.
   
-  Module Impl_core_cmp_PartialEq_for_move_binary_format_file_format_StructDefinitionIndex.
+  Module Impl_core_cmp_PartialEq_move_binary_format_file_format_StructDefinitionIndex_for_move_binary_format_file_format_StructDefinitionIndex.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::StructDefinitionIndex".
     
     (*         PartialEq *)
@@ -6735,12 +6753,13 @@ Module file_format.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *)
+        [ Ty.path "move_binary_format::file_format::StructDefinitionIndex" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_binary_format_file_format_StructDefinitionIndex.
+  End Impl_core_cmp_PartialEq_move_binary_format_file_format_StructDefinitionIndex_for_move_binary_format_file_format_StructDefinitionIndex.
   
-  Module Impl_core_cmp_PartialOrd_for_move_binary_format_file_format_StructDefinitionIndex.
+  Module Impl_core_cmp_PartialOrd_move_binary_format_file_format_StructDefinitionIndex_for_move_binary_format_file_format_StructDefinitionIndex.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::StructDefinitionIndex".
     
     (*         PartialOrd *)
@@ -6797,10 +6816,11 @@ Module file_format.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *)
+        [ Ty.path "move_binary_format::file_format::StructDefinitionIndex" ]
         Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-  End Impl_core_cmp_PartialOrd_for_move_binary_format_file_format_StructDefinitionIndex.
+  End Impl_core_cmp_PartialOrd_move_binary_format_file_format_StructDefinitionIndex_for_move_binary_format_file_format_StructDefinitionIndex.
   
   Module Impl_move_binary_format_file_format_StructDefinitionIndex.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::StructDefinitionIndex".
@@ -7289,7 +7309,7 @@ Module file_format.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_file_format_FunctionDefinitionIndex.
   
-  Module Impl_core_cmp_PartialEq_for_move_binary_format_file_format_FunctionDefinitionIndex.
+  Module Impl_core_cmp_PartialEq_move_binary_format_file_format_FunctionDefinitionIndex_for_move_binary_format_file_format_FunctionDefinitionIndex.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::FunctionDefinitionIndex".
     
     (*         PartialEq *)
@@ -7322,12 +7342,13 @@ Module file_format.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *)
+        [ Ty.path "move_binary_format::file_format::FunctionDefinitionIndex" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_binary_format_file_format_FunctionDefinitionIndex.
+  End Impl_core_cmp_PartialEq_move_binary_format_file_format_FunctionDefinitionIndex_for_move_binary_format_file_format_FunctionDefinitionIndex.
   
-  Module Impl_core_cmp_PartialOrd_for_move_binary_format_file_format_FunctionDefinitionIndex.
+  Module Impl_core_cmp_PartialOrd_move_binary_format_file_format_FunctionDefinitionIndex_for_move_binary_format_file_format_FunctionDefinitionIndex.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::FunctionDefinitionIndex".
     
     (*         PartialOrd *)
@@ -7384,10 +7405,11 @@ Module file_format.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *)
+        [ Ty.path "move_binary_format::file_format::FunctionDefinitionIndex" ]
         Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-  End Impl_core_cmp_PartialOrd_for_move_binary_format_file_format_FunctionDefinitionIndex.
+  End Impl_core_cmp_PartialOrd_move_binary_format_file_format_FunctionDefinitionIndex_for_move_binary_format_file_format_FunctionDefinitionIndex.
   
   Module Impl_move_binary_format_file_format_FunctionDefinitionIndex.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::FunctionDefinitionIndex".
@@ -8046,7 +8068,7 @@ Module file_format.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_file_format_ModuleHandle.
   
-  Module Impl_core_cmp_PartialEq_for_move_binary_format_file_format_ModuleHandle.
+  Module Impl_core_cmp_PartialEq_move_binary_format_file_format_ModuleHandle_for_move_binary_format_file_format_ModuleHandle.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::ModuleHandle".
     
     (* PartialEq *)
@@ -8126,12 +8148,12 @@ Module file_format.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_binary_format::file_format::ModuleHandle" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_binary_format_file_format_ModuleHandle.
+  End Impl_core_cmp_PartialEq_move_binary_format_file_format_ModuleHandle_for_move_binary_format_file_format_ModuleHandle.
   
-  Module Impl_core_cmp_PartialOrd_for_move_binary_format_file_format_ModuleHandle.
+  Module Impl_core_cmp_PartialOrd_move_binary_format_file_format_ModuleHandle_for_move_binary_format_file_format_ModuleHandle.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::ModuleHandle".
     
     (* PartialOrd *)
@@ -8255,10 +8277,10 @@ Module file_format.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_binary_format::file_format::ModuleHandle" ]
         Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-  End Impl_core_cmp_PartialOrd_for_move_binary_format_file_format_ModuleHandle.
+  End Impl_core_cmp_PartialOrd_move_binary_format_file_format_ModuleHandle_for_move_binary_format_file_format_ModuleHandle.
   
   Module Impl_core_cmp_Ord_for_move_binary_format_file_format_ModuleHandle.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::ModuleHandle".
@@ -8877,7 +8899,7 @@ Module file_format.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_file_format_StructHandle.
   
-  Module Impl_core_cmp_PartialEq_for_move_binary_format_file_format_StructHandle.
+  Module Impl_core_cmp_PartialEq_move_binary_format_file_format_StructHandle_for_move_binary_format_file_format_StructHandle.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::StructHandle".
     
     (* PartialEq *)
@@ -9037,12 +9059,12 @@ Module file_format.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_binary_format::file_format::StructHandle" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_binary_format_file_format_StructHandle.
+  End Impl_core_cmp_PartialEq_move_binary_format_file_format_StructHandle_for_move_binary_format_file_format_StructHandle.
   
-  Module Impl_core_cmp_PartialOrd_for_move_binary_format_file_format_StructHandle.
+  Module Impl_core_cmp_PartialOrd_move_binary_format_file_format_StructHandle_for_move_binary_format_file_format_StructHandle.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::StructHandle".
     
     (* PartialOrd *)
@@ -9317,10 +9339,10 @@ Module file_format.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_binary_format::file_format::StructHandle" ]
         Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-  End Impl_core_cmp_PartialOrd_for_move_binary_format_file_format_StructHandle.
+  End Impl_core_cmp_PartialOrd_move_binary_format_file_format_StructHandle_for_move_binary_format_file_format_StructHandle.
   
   Module Impl_core_cmp_Ord_for_move_binary_format_file_format_StructHandle.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::StructHandle".
@@ -10000,7 +10022,7 @@ Module file_format.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_file_format_StructTypeParameter.
   
-  Module Impl_core_cmp_PartialEq_for_move_binary_format_file_format_StructTypeParameter.
+  Module Impl_core_cmp_PartialEq_move_binary_format_file_format_StructTypeParameter_for_move_binary_format_file_format_StructTypeParameter.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::StructTypeParameter".
     
     (* PartialEq *)
@@ -10066,12 +10088,13 @@ Module file_format.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *)
+        [ Ty.path "move_binary_format::file_format::StructTypeParameter" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_binary_format_file_format_StructTypeParameter.
+  End Impl_core_cmp_PartialEq_move_binary_format_file_format_StructTypeParameter_for_move_binary_format_file_format_StructTypeParameter.
   
-  Module Impl_core_cmp_PartialOrd_for_move_binary_format_file_format_StructTypeParameter.
+  Module Impl_core_cmp_PartialOrd_move_binary_format_file_format_StructTypeParameter_for_move_binary_format_file_format_StructTypeParameter.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::StructTypeParameter".
     
     (* PartialOrd *)
@@ -10195,10 +10218,11 @@ Module file_format.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *)
+        [ Ty.path "move_binary_format::file_format::StructTypeParameter" ]
         Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-  End Impl_core_cmp_PartialOrd_for_move_binary_format_file_format_StructTypeParameter.
+  End Impl_core_cmp_PartialOrd_move_binary_format_file_format_StructTypeParameter_for_move_binary_format_file_format_StructTypeParameter.
   
   Module Impl_core_cmp_Ord_for_move_binary_format_file_format_StructTypeParameter.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::StructTypeParameter".
@@ -11526,7 +11550,7 @@ Module file_format.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_file_format_FunctionHandle.
   
-  Module Impl_core_cmp_PartialEq_for_move_binary_format_file_format_FunctionHandle.
+  Module Impl_core_cmp_PartialEq_move_binary_format_file_format_FunctionHandle_for_move_binary_format_file_format_FunctionHandle.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::FunctionHandle".
     
     (* PartialEq *)
@@ -11719,10 +11743,10 @@ Module file_format.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_binary_format::file_format::FunctionHandle" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_binary_format_file_format_FunctionHandle.
+  End Impl_core_cmp_PartialEq_move_binary_format_file_format_FunctionHandle_for_move_binary_format_file_format_FunctionHandle.
   
   (* StructRecord
     {
@@ -12029,7 +12053,7 @@ Module file_format.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_file_format_FieldHandle.
   
-  Module Impl_core_cmp_PartialEq_for_move_binary_format_file_format_FieldHandle.
+  Module Impl_core_cmp_PartialEq_move_binary_format_file_format_FieldHandle_for_move_binary_format_file_format_FieldHandle.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::FieldHandle".
     
     (* PartialEq *)
@@ -12095,10 +12119,10 @@ Module file_format.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_binary_format::file_format::FieldHandle" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_binary_format_file_format_FieldHandle.
+  End Impl_core_cmp_PartialEq_move_binary_format_file_format_FieldHandle_for_move_binary_format_file_format_FieldHandle.
   
   (*
   Enum StructFieldInformation
@@ -12360,7 +12384,7 @@ Module file_format.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_file_format_StructFieldInformation.
   
-  Module Impl_core_cmp_PartialEq_for_move_binary_format_file_format_StructFieldInformation.
+  Module Impl_core_cmp_PartialEq_move_binary_format_file_format_StructFieldInformation_for_move_binary_format_file_format_StructFieldInformation.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::StructFieldInformation".
     
     (* PartialEq *)
@@ -12482,10 +12506,11 @@ Module file_format.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *)
+        [ Ty.path "move_binary_format::file_format::StructFieldInformation" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_binary_format_file_format_StructFieldInformation.
+  End Impl_core_cmp_PartialEq_move_binary_format_file_format_StructFieldInformation_for_move_binary_format_file_format_StructFieldInformation.
   
   (* StructRecord
     {
@@ -12795,7 +12820,7 @@ Module file_format.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_file_format_StructDefInstantiation.
   
-  Module Impl_core_cmp_PartialEq_for_move_binary_format_file_format_StructDefInstantiation.
+  Module Impl_core_cmp_PartialEq_move_binary_format_file_format_StructDefInstantiation_for_move_binary_format_file_format_StructDefInstantiation.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::StructDefInstantiation".
     
     (* PartialEq *)
@@ -12875,10 +12900,11 @@ Module file_format.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *)
+        [ Ty.path "move_binary_format::file_format::StructDefInstantiation" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_binary_format_file_format_StructDefInstantiation.
+  End Impl_core_cmp_PartialEq_move_binary_format_file_format_StructDefInstantiation_for_move_binary_format_file_format_StructDefInstantiation.
   
   (* StructRecord
     {
@@ -13188,7 +13214,7 @@ Module file_format.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_file_format_FunctionInstantiation.
   
-  Module Impl_core_cmp_PartialEq_for_move_binary_format_file_format_FunctionInstantiation.
+  Module Impl_core_cmp_PartialEq_move_binary_format_file_format_FunctionInstantiation_for_move_binary_format_file_format_FunctionInstantiation.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::FunctionInstantiation".
     
     (* PartialEq *)
@@ -13268,10 +13294,11 @@ Module file_format.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *)
+        [ Ty.path "move_binary_format::file_format::FunctionInstantiation" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_binary_format_file_format_FunctionInstantiation.
+  End Impl_core_cmp_PartialEq_move_binary_format_file_format_FunctionInstantiation_for_move_binary_format_file_format_FunctionInstantiation.
   
   (* StructRecord
     {
@@ -13581,7 +13608,7 @@ Module file_format.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_file_format_FieldInstantiation.
   
-  Module Impl_core_cmp_PartialEq_for_move_binary_format_file_format_FieldInstantiation.
+  Module Impl_core_cmp_PartialEq_move_binary_format_file_format_FieldInstantiation_for_move_binary_format_file_format_FieldInstantiation.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::FieldInstantiation".
     
     (* PartialEq *)
@@ -13661,10 +13688,11 @@ Module file_format.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *)
+        [ Ty.path "move_binary_format::file_format::FieldInstantiation" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_binary_format_file_format_FieldInstantiation.
+  End Impl_core_cmp_PartialEq_move_binary_format_file_format_FieldInstantiation_for_move_binary_format_file_format_FieldInstantiation.
   
   (* StructRecord
     {
@@ -13892,7 +13920,7 @@ Module file_format.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_file_format_StructDefinition.
   
-  Module Impl_core_cmp_PartialEq_for_move_binary_format_file_format_StructDefinition.
+  Module Impl_core_cmp_PartialEq_move_binary_format_file_format_StructDefinition_for_move_binary_format_file_format_StructDefinition.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::StructDefinition".
     
     (* PartialEq *)
@@ -13972,10 +14000,11 @@ Module file_format.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *)
+        [ Ty.path "move_binary_format::file_format::StructDefinition" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_binary_format_file_format_StructDefinition.
+  End Impl_core_cmp_PartialEq_move_binary_format_file_format_StructDefinition_for_move_binary_format_file_format_StructDefinition.
   
   Module Impl_move_binary_format_file_format_StructDefinition.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::StructDefinition".
@@ -14573,7 +14602,7 @@ Module file_format.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_file_format_FieldDefinition.
   
-  Module Impl_core_cmp_PartialEq_for_move_binary_format_file_format_FieldDefinition.
+  Module Impl_core_cmp_PartialEq_move_binary_format_file_format_FieldDefinition_for_move_binary_format_file_format_FieldDefinition.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::FieldDefinition".
     
     (* PartialEq *)
@@ -14653,10 +14682,10 @@ Module file_format.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_binary_format::file_format::FieldDefinition" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_binary_format_file_format_FieldDefinition.
+  End Impl_core_cmp_PartialEq_move_binary_format_file_format_FieldDefinition_for_move_binary_format_file_format_FieldDefinition.
   
   (*
   Enum Visibility
@@ -14864,7 +14893,7 @@ Module file_format.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_file_format_Visibility.
   
-  Module Impl_core_cmp_PartialEq_for_move_binary_format_file_format_Visibility.
+  Module Impl_core_cmp_PartialEq_move_binary_format_file_format_Visibility_for_move_binary_format_file_format_Visibility.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::Visibility".
     
     (* PartialEq *)
@@ -14908,12 +14937,12 @@ Module file_format.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_binary_format::file_format::Visibility" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_binary_format_file_format_Visibility.
+  End Impl_core_cmp_PartialEq_move_binary_format_file_format_Visibility_for_move_binary_format_file_format_Visibility.
   
-  Module Impl_core_cmp_PartialOrd_for_move_binary_format_file_format_Visibility.
+  Module Impl_core_cmp_PartialOrd_move_binary_format_file_format_Visibility_for_move_binary_format_file_format_Visibility.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::Visibility".
     
     (* PartialOrd *)
@@ -14980,10 +15009,10 @@ Module file_format.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_binary_format::file_format::Visibility" ]
         Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-  End Impl_core_cmp_PartialOrd_for_move_binary_format_file_format_Visibility.
+  End Impl_core_cmp_PartialOrd_move_binary_format_file_format_Visibility_for_move_binary_format_file_format_Visibility.
   
   Module Impl_core_cmp_Ord_for_move_binary_format_file_format_Visibility.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::Visibility".
@@ -15708,7 +15737,7 @@ Module file_format.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_file_format_FunctionDefinition.
   
-  Module Impl_core_cmp_PartialEq_for_move_binary_format_file_format_FunctionDefinition.
+  Module Impl_core_cmp_PartialEq_move_binary_format_file_format_FunctionDefinition_for_move_binary_format_file_format_FunctionDefinition.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::FunctionDefinition".
     
     (* PartialEq *)
@@ -15895,10 +15924,11 @@ Module file_format.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *)
+        [ Ty.path "move_binary_format::file_format::FunctionDefinition" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_binary_format_file_format_FunctionDefinition.
+  End Impl_core_cmp_PartialEq_move_binary_format_file_format_FunctionDefinition_for_move_binary_format_file_format_FunctionDefinition.
   
   Module Impl_move_binary_format_file_format_FunctionDefinition.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::FunctionDefinition".
@@ -16188,7 +16218,7 @@ Module file_format.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_file_format_TypeSignature.
   
-  Module Impl_core_cmp_PartialEq_for_move_binary_format_file_format_TypeSignature.
+  Module Impl_core_cmp_PartialEq_move_binary_format_file_format_TypeSignature_for_move_binary_format_file_format_TypeSignature.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::TypeSignature".
     
     (* PartialEq *)
@@ -16235,10 +16265,10 @@ Module file_format.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_binary_format::file_format::TypeSignature" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_binary_format_file_format_TypeSignature.
+  End Impl_core_cmp_PartialEq_move_binary_format_file_format_TypeSignature_for_move_binary_format_file_format_TypeSignature.
   
   (* StructRecord
     {
@@ -16705,7 +16735,7 @@ Module file_format.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_file_format_FunctionSignature.
   
-  Module Impl_core_cmp_PartialEq_for_move_binary_format_file_format_FunctionSignature.
+  Module Impl_core_cmp_PartialEq_move_binary_format_file_format_FunctionSignature_for_move_binary_format_file_format_FunctionSignature.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::FunctionSignature".
     
     (* PartialEq *)
@@ -16860,10 +16890,11 @@ Module file_format.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *)
+        [ Ty.path "move_binary_format::file_format::FunctionSignature" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_binary_format_file_format_FunctionSignature.
+  End Impl_core_cmp_PartialEq_move_binary_format_file_format_FunctionSignature_for_move_binary_format_file_format_FunctionSignature.
   
   (* StructTuple
     {
@@ -17152,7 +17183,7 @@ Module file_format.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_file_format_Signature.
   
-  Module Impl_core_cmp_PartialEq_for_move_binary_format_file_format_Signature.
+  Module Impl_core_cmp_PartialEq_move_binary_format_file_format_Signature_for_move_binary_format_file_format_Signature.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::Signature".
     
     (* PartialEq *)
@@ -17213,10 +17244,10 @@ Module file_format.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_binary_format::file_format::Signature" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_binary_format_file_format_Signature.
+  End Impl_core_cmp_PartialEq_move_binary_format_file_format_Signature_for_move_binary_format_file_format_Signature.
   
   Module Impl_core_cmp_Ord_for_move_binary_format_file_format_Signature.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::Signature".
@@ -17286,7 +17317,7 @@ Module file_format.
         (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
   End Impl_core_cmp_Ord_for_move_binary_format_file_format_Signature.
   
-  Module Impl_core_cmp_PartialOrd_for_move_binary_format_file_format_Signature.
+  Module Impl_core_cmp_PartialOrd_move_binary_format_file_format_Signature_for_move_binary_format_file_format_Signature.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::Signature".
     
     (* PartialOrd *)
@@ -17357,10 +17388,10 @@ Module file_format.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_binary_format::file_format::Signature" ]
         Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-  End Impl_core_cmp_PartialOrd_for_move_binary_format_file_format_Signature.
+  End Impl_core_cmp_PartialOrd_move_binary_format_file_format_Signature_for_move_binary_format_file_format_Signature.
   
   Module Impl_move_binary_format_file_format_Signature.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::Signature".
@@ -17780,7 +17811,7 @@ Module file_format.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_file_format_Ability.
   
-  Module Impl_core_cmp_PartialEq_for_move_binary_format_file_format_Ability.
+  Module Impl_core_cmp_PartialEq_move_binary_format_file_format_Ability_for_move_binary_format_file_format_Ability.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::Ability".
     
     (* PartialEq *)
@@ -17824,12 +17855,12 @@ Module file_format.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_binary_format::file_format::Ability" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_binary_format_file_format_Ability.
+  End Impl_core_cmp_PartialEq_move_binary_format_file_format_Ability_for_move_binary_format_file_format_Ability.
   
-  Module Impl_core_cmp_PartialOrd_for_move_binary_format_file_format_Ability.
+  Module Impl_core_cmp_PartialOrd_move_binary_format_file_format_Ability_for_move_binary_format_file_format_Ability.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::Ability".
     
     (* PartialOrd *)
@@ -17896,10 +17927,10 @@ Module file_format.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_binary_format::file_format::Ability" ]
         Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-  End Impl_core_cmp_PartialOrd_for_move_binary_format_file_format_Ability.
+  End Impl_core_cmp_PartialOrd_move_binary_format_file_format_Ability_for_move_binary_format_file_format_Ability.
   
   Module Impl_move_binary_format_file_format_Ability.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::Ability".
@@ -18362,7 +18393,7 @@ Module file_format.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_file_format_AbilitySet.
   
-  Module Impl_core_cmp_PartialEq_for_move_binary_format_file_format_AbilitySet.
+  Module Impl_core_cmp_PartialEq_move_binary_format_file_format_AbilitySet_for_move_binary_format_file_format_AbilitySet.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::AbilitySet".
     
     (* PartialEq *)
@@ -18395,12 +18426,12 @@ Module file_format.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_binary_format::file_format::AbilitySet" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_binary_format_file_format_AbilitySet.
+  End Impl_core_cmp_PartialEq_move_binary_format_file_format_AbilitySet_for_move_binary_format_file_format_AbilitySet.
   
-  Module Impl_core_cmp_PartialOrd_for_move_binary_format_file_format_AbilitySet.
+  Module Impl_core_cmp_PartialOrd_move_binary_format_file_format_AbilitySet_for_move_binary_format_file_format_AbilitySet.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::AbilitySet".
     
     (* PartialOrd *)
@@ -18457,10 +18488,10 @@ Module file_format.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_binary_format::file_format::AbilitySet" ]
         Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-  End Impl_core_cmp_PartialOrd_for_move_binary_format_file_format_AbilitySet.
+  End Impl_core_cmp_PartialOrd_move_binary_format_file_format_AbilitySet_for_move_binary_format_file_format_AbilitySet.
   
   
   
@@ -22057,7 +22088,7 @@ Module file_format.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_file_format_SignatureToken.
   
-  Module Impl_core_cmp_PartialEq_for_move_binary_format_file_format_SignatureToken.
+  Module Impl_core_cmp_PartialEq_move_binary_format_file_format_SignatureToken_for_move_binary_format_file_format_SignatureToken.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::SignatureToken".
     
     (* PartialEq *)
@@ -22476,12 +22507,12 @@ Module file_format.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_binary_format::file_format::SignatureToken" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_binary_format_file_format_SignatureToken.
+  End Impl_core_cmp_PartialEq_move_binary_format_file_format_SignatureToken_for_move_binary_format_file_format_SignatureToken.
   
-  Module Impl_core_cmp_PartialOrd_for_move_binary_format_file_format_SignatureToken.
+  Module Impl_core_cmp_PartialOrd_move_binary_format_file_format_SignatureToken_for_move_binary_format_file_format_SignatureToken.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::SignatureToken".
     
     (* PartialOrd *)
@@ -22881,10 +22912,10 @@ Module file_format.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_binary_format::file_format::SignatureToken" ]
         Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-  End Impl_core_cmp_PartialOrd_for_move_binary_format_file_format_SignatureToken.
+  End Impl_core_cmp_PartialOrd_move_binary_format_file_format_SignatureToken_for_move_binary_format_file_format_SignatureToken.
   
   (* StructRecord
     {
@@ -26828,7 +26859,7 @@ Module file_format.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_file_format_Constant.
   
-  Module Impl_core_cmp_PartialEq_for_move_binary_format_file_format_Constant.
+  Module Impl_core_cmp_PartialEq_move_binary_format_file_format_Constant_for_move_binary_format_file_format_Constant.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::Constant".
     
     (* PartialEq *)
@@ -26916,10 +26947,10 @@ Module file_format.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_binary_format::file_format::Constant" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_binary_format_file_format_Constant.
+  End Impl_core_cmp_PartialEq_move_binary_format_file_format_Constant_for_move_binary_format_file_format_Constant.
   
   Module Impl_core_hash_Hash_for_move_binary_format_file_format_Constant.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::Constant".
@@ -27307,7 +27338,7 @@ Module file_format.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_file_format_CodeUnit.
   
-  Module Impl_core_cmp_PartialEq_for_move_binary_format_file_format_CodeUnit.
+  Module Impl_core_cmp_PartialEq_move_binary_format_file_format_CodeUnit_for_move_binary_format_file_format_CodeUnit.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::CodeUnit".
     
     (* PartialEq *)
@@ -27401,10 +27432,10 @@ Module file_format.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_binary_format::file_format::CodeUnit" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_binary_format_file_format_CodeUnit.
+  End Impl_core_cmp_PartialEq_move_binary_format_file_format_CodeUnit_for_move_binary_format_file_format_CodeUnit.
   
   (*
   Enum Bytecode
@@ -31852,7 +31883,7 @@ Module file_format.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_file_format_Bytecode.
   
-  Module Impl_core_cmp_PartialEq_for_move_binary_format_file_format_Bytecode.
+  Module Impl_core_cmp_PartialEq_move_binary_format_file_format_Bytecode_for_move_binary_format_file_format_Bytecode.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::Bytecode".
     
     (* PartialEq *)
@@ -33996,10 +34027,10 @@ Module file_format.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_binary_format::file_format::Bytecode" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_binary_format_file_format_Bytecode.
+  End Impl_core_cmp_PartialEq_move_binary_format_file_format_Bytecode_for_move_binary_format_file_format_Bytecode.
   
   Module Impl_core_fmt_Debug_for_move_binary_format_file_format_Bytecode.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::Bytecode".
@@ -41257,7 +41288,7 @@ Module file_format.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_file_format_CompiledModule.
   
-  Module Impl_core_cmp_PartialEq_for_move_binary_format_file_format_CompiledModule.
+  Module Impl_core_cmp_PartialEq_move_binary_format_file_format_CompiledModule_for_move_binary_format_file_format_CompiledModule.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::CompiledModule".
     
     (* PartialEq *)
@@ -42043,10 +42074,10 @@ Module file_format.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_binary_format::file_format::CompiledModule" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_binary_format_file_format_CompiledModule.
+  End Impl_core_cmp_PartialEq_move_binary_format_file_format_CompiledModule_for_move_binary_format_file_format_CompiledModule.
   
   Module Impl_move_binary_format_file_format_CompiledModule.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format::CompiledModule".

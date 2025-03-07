@@ -565,7 +565,7 @@ Module eof.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_revm_bytecode_eof_header_EofHeader.
     
-    Module Impl_core_cmp_PartialEq_for_revm_bytecode_eof_header_EofHeader.
+    Module Impl_core_cmp_PartialEq_revm_bytecode_eof_header_EofHeader_for_revm_bytecode_eof_header_EofHeader.
       Definition Self : Ty.t := Ty.path "revm_bytecode::eof::header::EofHeader".
       
       (* PartialEq *)
@@ -737,10 +737,10 @@ Module eof.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "revm_bytecode::eof::header::EofHeader" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_revm_bytecode_eof_header_EofHeader.
+    End Impl_core_cmp_PartialEq_revm_bytecode_eof_header_EofHeader_for_revm_bytecode_eof_header_EofHeader.
     
     Module Impl_core_cmp_Eq_for_revm_bytecode_eof_header_EofHeader.
       Definition Self : Ty.t := Ty.path "revm_bytecode::eof::header::EofHeader".
@@ -1359,7 +1359,7 @@ Module eof.
           (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
     End Impl_core_cmp_Ord_for_revm_bytecode_eof_header_EofHeader.
     
-    Module Impl_core_cmp_PartialOrd_for_revm_bytecode_eof_header_EofHeader.
+    Module Impl_core_cmp_PartialOrd_revm_bytecode_eof_header_EofHeader_for_revm_bytecode_eof_header_EofHeader.
       Definition Self : Ty.t := Ty.path "revm_bytecode::eof::header::EofHeader".
       
       (* PartialOrd *)
@@ -1782,10 +1782,10 @@ Module eof.
         M.IsTraitInstance
           "core::cmp::PartialOrd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "revm_bytecode::eof::header::EofHeader" ]
           Self
           (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-    End Impl_core_cmp_PartialOrd_for_revm_bytecode_eof_header_EofHeader.
+    End Impl_core_cmp_PartialOrd_revm_bytecode_eof_header_EofHeader_for_revm_bytecode_eof_header_EofHeader.
     
     Definition value_KIND_TERMINAL : Value.t :=
       M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 0 |))).

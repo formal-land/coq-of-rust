@@ -25,7 +25,7 @@ Module Impl_core_marker_StructuralPartialEq_for_hash_map_alternate_or_custom_key
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_hash_map_alternate_or_custom_key_types_Account.
 
-Module Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Account.
+Module Impl_core_cmp_PartialEq_hash_map_alternate_or_custom_key_types_Account_for_hash_map_alternate_or_custom_key_types_Account.
   Definition Self : Ty.t := Ty.path "hash_map_alternate_or_custom_key_types::Account".
   
   (* PartialEq *)
@@ -105,10 +105,10 @@ Module Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Accoun
     M.IsTraitInstance
       "core::cmp::PartialEq"
       (* Trait polymorphic consts *) []
-      (* Trait polymorphic types *) []
+      (* Trait polymorphic types *) [ Ty.path "hash_map_alternate_or_custom_key_types::Account" ]
       Self
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
-End Impl_core_cmp_PartialEq_for_hash_map_alternate_or_custom_key_types_Account.
+End Impl_core_cmp_PartialEq_hash_map_alternate_or_custom_key_types_Account_for_hash_map_alternate_or_custom_key_types_Account.
 
 Module Impl_core_cmp_Eq_for_hash_map_alternate_or_custom_key_types_Account.
   Definition Self : Ty.t := Ty.path "hash_map_alternate_or_custom_key_types::Account".

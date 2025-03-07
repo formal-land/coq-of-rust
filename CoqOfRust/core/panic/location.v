@@ -492,7 +492,7 @@ Module panic.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_panic_location_Location.
     
-    Module Impl_core_cmp_PartialEq_for_core_panic_location_Location.
+    Module Impl_core_cmp_PartialEq_core_panic_location_Location_for_core_panic_location_Location.
       Definition Self : Ty.t := Ty.path "core::panic::location::Location".
       
       (* PartialEq *)
@@ -577,12 +577,12 @@ Module panic.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::panic::location::Location" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_core_panic_location_Location.
+    End Impl_core_cmp_PartialEq_core_panic_location_Location_for_core_panic_location_Location.
     
-    Module Impl_core_cmp_PartialOrd_for_core_panic_location_Location.
+    Module Impl_core_cmp_PartialOrd_core_panic_location_Location_for_core_panic_location_Location.
       Definition Self : Ty.t := Ty.path "core::panic::location::Location".
       
       (* PartialOrd *)
@@ -774,10 +774,10 @@ Module panic.
         M.IsTraitInstance
           "core::cmp::PartialOrd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::panic::location::Location" ]
           Self
           (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-    End Impl_core_cmp_PartialOrd_for_core_panic_location_Location.
+    End Impl_core_cmp_PartialOrd_core_panic_location_Location_for_core_panic_location_Location.
     
     Module Impl_core_panic_location_Location.
       Definition Self : Ty.t := Ty.path "core::panic::location::Location".

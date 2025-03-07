@@ -188,7 +188,7 @@ Module interface.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_precompile_interface_PrecompileOutput.
   
-  Module Impl_core_cmp_PartialEq_for_revm_precompile_interface_PrecompileOutput.
+  Module Impl_core_cmp_PartialEq_revm_precompile_interface_PrecompileOutput_for_revm_precompile_interface_PrecompileOutput.
     Definition Self : Ty.t := Ty.path "revm_precompile::interface::PrecompileOutput".
     
     (* PartialEq *)
@@ -254,10 +254,10 @@ Module interface.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "revm_precompile::interface::PrecompileOutput" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_revm_precompile_interface_PrecompileOutput.
+  End Impl_core_cmp_PartialEq_revm_precompile_interface_PrecompileOutput_for_revm_precompile_interface_PrecompileOutput.
   
   Module Impl_core_cmp_Eq_for_revm_precompile_interface_PrecompileOutput.
     Definition Self : Ty.t := Ty.path "revm_precompile::interface::PrecompileOutput".
@@ -655,7 +655,7 @@ Module interface.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_precompile_interface_PrecompileErrors.
   
-  Module Impl_core_cmp_PartialEq_for_revm_precompile_interface_PrecompileErrors.
+  Module Impl_core_cmp_PartialEq_revm_precompile_interface_PrecompileErrors_for_revm_precompile_interface_PrecompileErrors.
     Definition Self : Ty.t := Ty.path "revm_precompile::interface::PrecompileErrors".
     
     (* PartialEq *)
@@ -807,10 +807,10 @@ Module interface.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "revm_precompile::interface::PrecompileErrors" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_revm_precompile_interface_PrecompileErrors.
+  End Impl_core_cmp_PartialEq_revm_precompile_interface_PrecompileErrors_for_revm_precompile_interface_PrecompileErrors.
   
   Module Impl_core_cmp_Eq_for_revm_precompile_interface_PrecompileErrors.
     Definition Self : Ty.t := Ty.path "revm_precompile::interface::PrecompileErrors".
@@ -1878,7 +1878,7 @@ Module interface.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_precompile_interface_PrecompileError.
   
-  Module Impl_core_cmp_PartialEq_for_revm_precompile_interface_PrecompileError.
+  Module Impl_core_cmp_PartialEq_revm_precompile_interface_PrecompileError_for_revm_precompile_interface_PrecompileError.
     Definition Self : Ty.t := Ty.path "revm_precompile::interface::PrecompileError".
     
     (* PartialEq *)
@@ -1974,10 +1974,10 @@ Module interface.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "revm_precompile::interface::PrecompileError" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_revm_precompile_interface_PrecompileError.
+  End Impl_core_cmp_PartialEq_revm_precompile_interface_PrecompileError_for_revm_precompile_interface_PrecompileError.
   
   Module Impl_core_cmp_Eq_for_revm_precompile_interface_PrecompileError.
     Definition Self : Ty.t := Ty.path "revm_precompile::interface::PrecompileError".

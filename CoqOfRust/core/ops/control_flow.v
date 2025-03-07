@@ -254,7 +254,7 @@ Module ops.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_ops_control_flow_ControlFlow_B_C.
     
-    Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_B_where_core_cmp_PartialEq_C_for_core_ops_control_flow_ControlFlow_B_C.
+    Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_B_where_core_cmp_PartialEq_C_core_ops_control_flow_ControlFlow_B_C_for_core_ops_control_flow_ControlFlow_B_C.
       Definition Self (B C : Ty.t) : Ty.t :=
         Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; C ].
       
@@ -401,10 +401,11 @@ Module ops.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::ops::control_flow::ControlFlow") [] [ B; C ] ]
           (Self B C)
           (* Instance *) [ ("eq", InstanceField.Method (eq B C)) ].
-    End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_B_where_core_cmp_PartialEq_C_for_core_ops_control_flow_ControlFlow_B_C.
+    End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_B_where_core_cmp_PartialEq_C_core_ops_control_flow_ControlFlow_B_C_for_core_ops_control_flow_ControlFlow_B_C.
     
     Module Impl_core_cmp_Eq_where_core_cmp_Eq_B_where_core_cmp_Eq_C_for_core_ops_control_flow_ControlFlow_B_C.
       Definition Self (B C : Ty.t) : Ty.t :=
@@ -920,10 +921,7 @@ Module ops.
       Global Typeclasses Opaque break_value.
       
       (*
-          pub fn map_break<T, F>(self, f: F) -> ControlFlow<T, C>
-          where
-              F: FnOnce(B) -> T,
-          {
+          pub fn map_break<T>(self, f: impl FnOnce(B) -> T) -> ControlFlow<T, C> {
               match self {
                   ControlFlow::Continue(x) => ControlFlow::Continue(x),
                   ControlFlow::Break(x) => ControlFlow::Break(f(x)),
@@ -933,7 +931,7 @@ Module ops.
       Definition map_break (B C : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self B C in
         match ε, τ, α with
-        | [], [ T; F ], [ self; f ] =>
+        | [], [ T; impl_FnOnce_B__arrow_T ], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -973,7 +971,7 @@ Module ops.
                               T,
                               M.get_trait_method (|
                                 "core::ops::function::FnOnce",
-                                F,
+                                impl_FnOnce_B__arrow_T,
                                 [],
                                 [ Ty.tuple [ B ] ],
                                 "call_once",
@@ -1050,10 +1048,7 @@ Module ops.
       Global Typeclasses Opaque continue_value.
       
       (*
-          pub fn map_continue<T, F>(self, f: F) -> ControlFlow<B, T>
-          where
-              F: FnOnce(C) -> T,
-          {
+          pub fn map_continue<T>(self, f: impl FnOnce(C) -> T) -> ControlFlow<B, T> {
               match self {
                   ControlFlow::Continue(x) => ControlFlow::Continue(f(x)),
                   ControlFlow::Break(x) => ControlFlow::Break(x),
@@ -1068,7 +1063,7 @@ Module ops.
           : M :=
         let Self : Ty.t := Self B C in
         match ε, τ, α with
-        | [], [ T; F ], [ self; f ] =>
+        | [], [ T; impl_FnOnce_C__arrow_T ], [ self; f ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
@@ -1094,7 +1089,7 @@ Module ops.
                               T,
                               M.get_trait_method (|
                                 "core::ops::function::FnOnce",
-                                F,
+                                impl_FnOnce_C__arrow_T,
                                 [],
                                 [ Ty.tuple [ C ] ],
                                 "call_once",

@@ -154,13 +154,13 @@ Module any.
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
   End Impl_core_fmt_Debug_for_Dyn_core_any_Any_Trait_core_marker_Send_AutoTrait.
   
-  Module Impl_core_fmt_Debug_for_Dyn_core_any_Any_Trait_core_marker_Send_AutoTrait_core_marker_Sync_AutoTrait.
+  Module Impl_core_fmt_Debug_for_Dyn_core_any_Any_Trait_core_marker_Sync_AutoTrait_core_marker_Send_AutoTrait.
     Definition Self : Ty.t :=
       Ty.dyn
         [
           ("core::any::Any::Trait", []);
-          ("core::marker::Send::AutoTrait", []);
-          ("core::marker::Sync::AutoTrait", [])
+          ("core::marker::Sync::AutoTrait", []);
+          ("core::marker::Send::AutoTrait", [])
         ].
     
     (*
@@ -216,7 +216,7 @@ Module any.
         (* Trait polymorphic types *) []
         Self
         (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
-  End Impl_core_fmt_Debug_for_Dyn_core_any_Any_Trait_core_marker_Send_AutoTrait_core_marker_Sync_AutoTrait.
+  End Impl_core_fmt_Debug_for_Dyn_core_any_Any_Trait_core_marker_Sync_AutoTrait_core_marker_Send_AutoTrait.
   
   Module Impl_Dyn_core_any_Any_Trait.
     Definition Self : Ty.t := Ty.dyn [ ("core::any::Any::Trait", []) ].
@@ -831,13 +831,13 @@ Module any.
     Global Typeclasses Opaque downcast_mut_unchecked.
   End Impl_Dyn_core_any_Any_Trait_core_marker_Send_AutoTrait.
   
-  Module Impl_Dyn_core_any_Any_Trait_core_marker_Send_AutoTrait_core_marker_Sync_AutoTrait.
+  Module Impl_Dyn_core_any_Any_Trait_core_marker_Sync_AutoTrait_core_marker_Send_AutoTrait.
     Definition Self : Ty.t :=
       Ty.dyn
         [
           ("core::any::Any::Trait", []);
-          ("core::marker::Send::AutoTrait", []);
-          ("core::marker::Sync::AutoTrait", [])
+          ("core::marker::Sync::AutoTrait", []);
+          ("core::marker::Send::AutoTrait", [])
         ].
     
     (*
@@ -1000,7 +1000,7 @@ Module any.
       M.IsAssociatedFunction.Trait Self "downcast_mut_unchecked" downcast_mut_unchecked.
     Admitted.
     Global Typeclasses Opaque downcast_mut_unchecked.
-  End Impl_Dyn_core_any_Any_Trait_core_marker_Send_AutoTrait_core_marker_Sync_AutoTrait.
+  End Impl_Dyn_core_any_Any_Trait_core_marker_Sync_AutoTrait_core_marker_Send_AutoTrait.
   
   (* StructRecord
     {
@@ -1083,7 +1083,7 @@ Module any.
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_core_any_TypeId.
   
-  Module Impl_core_cmp_PartialOrd_for_core_any_TypeId.
+  Module Impl_core_cmp_PartialOrd_core_any_TypeId_for_core_any_TypeId.
     Definition Self : Ty.t := Ty.path "core::any::TypeId".
     
     (* PartialOrd *)
@@ -1140,10 +1140,10 @@ Module any.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "core::any::TypeId" ]
         Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-  End Impl_core_cmp_PartialOrd_for_core_any_TypeId.
+  End Impl_core_cmp_PartialOrd_core_any_TypeId_for_core_any_TypeId.
   
   Module Impl_core_cmp_Ord_for_core_any_TypeId.
     Definition Self : Ty.t := Ty.path "core::any::TypeId".
@@ -1207,7 +1207,7 @@ Module any.
         (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
   End Impl_core_cmp_Ord_for_core_any_TypeId.
   
-  Module Impl_core_cmp_PartialEq_for_core_any_TypeId.
+  Module Impl_core_cmp_PartialEq_core_any_TypeId_for_core_any_TypeId.
     Definition Self : Ty.t := Ty.path "core::any::TypeId".
     
     (*
@@ -1258,10 +1258,10 @@ Module any.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "core::any::TypeId" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_core_any_TypeId.
+  End Impl_core_cmp_PartialEq_core_any_TypeId_for_core_any_TypeId.
   
   Module Impl_core_any_TypeId.
     Definition Self : Ty.t := Ty.path "core::any::TypeId".

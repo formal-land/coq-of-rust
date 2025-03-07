@@ -5038,141 +5038,133 @@ Module unicode.
         M.run_constant
           ltac:(M.monadic
             (M.alloc (|
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.alloc (|
-                      Value.Array
-                        [
-                          Value.Integer IntegerKind.U8 14;
-                          Value.Integer IntegerKind.U8 17;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 9;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 12;
-                          Value.Integer IntegerKind.U8 13;
-                          Value.Integer IntegerKind.U8 10;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 16;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 2;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 4;
-                          Value.Integer IntegerKind.U8 1;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 15;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 8;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 11;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 5;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 19;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 3;
-                          Value.Integer IntegerKind.U8 18;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 7
-                        ]
-                    |)
-                  |)
-                |)
+              M.alloc (|
+                Value.Array
+                  [
+                    Value.Integer IntegerKind.U8 14;
+                    Value.Integer IntegerKind.U8 17;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 9;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 12;
+                    Value.Integer IntegerKind.U8 13;
+                    Value.Integer IntegerKind.U8 10;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 16;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 2;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 4;
+                    Value.Integer IntegerKind.U8 1;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 15;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 8;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 11;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 5;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 19;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 3;
+                    Value.Integer IntegerKind.U8 18;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 7
+                  ]
               |)
             |))).
       
@@ -5185,398 +5177,390 @@ Module unicode.
         M.run_constant
           ltac:(M.monadic
             (M.alloc (|
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.alloc (|
-                      Value.Array
-                        [
-                          Value.Array
-                            [
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0
-                            ];
-                          Value.Array
-                            [
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 61;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0
-                            ];
-                          Value.Array
-                            [
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 16;
-                              Value.Integer IntegerKind.U8 14;
-                              Value.Integer IntegerKind.U8 56;
-                              Value.Integer IntegerKind.U8 0
-                            ];
-                          Value.Array
-                            [
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 40;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0
-                            ];
-                          Value.Array
-                            [
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0
-                            ];
-                          Value.Array
-                            [
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 9;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0
-                            ];
-                          Value.Array
-                            [
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 67;
-                              Value.Integer IntegerKind.U8 43;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 52;
-                              Value.Integer IntegerKind.U8 48;
-                              Value.Integer IntegerKind.U8 50;
-                              Value.Integer IntegerKind.U8 33
-                            ];
-                          Value.Array
-                            [
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 10;
-                              Value.Integer IntegerKind.U8 57;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0
-                            ];
-                          Value.Array
-                            [
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 3;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 16;
-                              Value.Integer IntegerKind.U8 58;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0
-                            ];
-                          Value.Array
-                            [
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 19;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 27
-                            ];
-                          Value.Array
-                            [
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 62;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0
-                            ];
-                          Value.Array
-                            [
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 71;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0
-                            ];
-                          Value.Array
-                            [
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 46;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 56;
-                              Value.Integer IntegerKind.U8 56;
-                              Value.Integer IntegerKind.U8 56;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 22;
-                              Value.Integer IntegerKind.U8 22;
-                              Value.Integer IntegerKind.U8 69;
-                              Value.Integer IntegerKind.U8 22;
-                              Value.Integer IntegerKind.U8 36;
-                              Value.Integer IntegerKind.U8 25;
-                              Value.Integer IntegerKind.U8 24;
-                              Value.Integer IntegerKind.U8 37
-                            ];
-                          Value.Array
-                            [
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 5;
-                              Value.Integer IntegerKind.U8 70;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 29;
-                              Value.Integer IntegerKind.U8 15;
-                              Value.Integer IntegerKind.U8 75;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0
-                            ];
-                          Value.Array
-                            [
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 66;
-                              Value.Integer IntegerKind.U8 34;
-                              Value.Integer IntegerKind.U8 17;
-                              Value.Integer IntegerKind.U8 23;
-                              Value.Integer IntegerKind.U8 53;
-                              Value.Integer IntegerKind.U8 54;
-                              Value.Integer IntegerKind.U8 49;
-                              Value.Integer IntegerKind.U8 47;
-                              Value.Integer IntegerKind.U8 8;
-                              Value.Integer IntegerKind.U8 35;
-                              Value.Integer IntegerKind.U8 42;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 28;
-                              Value.Integer IntegerKind.U8 13;
-                              Value.Integer IntegerKind.U8 31
-                            ];
-                          Value.Array
-                            [
-                              Value.Integer IntegerKind.U8 11;
-                              Value.Integer IntegerKind.U8 60;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 6;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 30;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 32;
-                              Value.Integer IntegerKind.U8 0
-                            ];
-                          Value.Array
-                            [
-                              Value.Integer IntegerKind.U8 16;
-                              Value.Integer IntegerKind.U8 26;
-                              Value.Integer IntegerKind.U8 22;
-                              Value.Integer IntegerKind.U8 38;
-                              Value.Integer IntegerKind.U8 39;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0
-                            ];
-                          Value.Array
-                            [
-                              Value.Integer IntegerKind.U8 16;
-                              Value.Integer IntegerKind.U8 51;
-                              Value.Integer IntegerKind.U8 2;
-                              Value.Integer IntegerKind.U8 21;
-                              Value.Integer IntegerKind.U8 68;
-                              Value.Integer IntegerKind.U8 9;
-                              Value.Integer IntegerKind.U8 59;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0
-                            ];
-                          Value.Array
-                            [
-                              Value.Integer IntegerKind.U8 16;
-                              Value.Integer IntegerKind.U8 72;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 0
-                            ];
-                          Value.Array
-                            [
-                              Value.Integer IntegerKind.U8 65;
-                              Value.Integer IntegerKind.U8 41;
-                              Value.Integer IntegerKind.U8 55;
-                              Value.Integer IntegerKind.U8 12;
-                              Value.Integer IntegerKind.U8 77;
-                              Value.Integer IntegerKind.U8 63;
-                              Value.Integer IntegerKind.U8 18;
-                              Value.Integer IntegerKind.U8 1;
-                              Value.Integer IntegerKind.U8 7;
-                              Value.Integer IntegerKind.U8 64;
-                              Value.Integer IntegerKind.U8 76;
-                              Value.Integer IntegerKind.U8 20;
-                              Value.Integer IntegerKind.U8 73;
-                              Value.Integer IntegerKind.U8 74;
-                              Value.Integer IntegerKind.U8 4;
-                              Value.Integer IntegerKind.U8 45
-                            ]
-                        ]
-                    |)
-                  |)
-                |)
+              M.alloc (|
+                Value.Array
+                  [
+                    Value.Array
+                      [
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0
+                      ];
+                    Value.Array
+                      [
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 61;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0
+                      ];
+                    Value.Array
+                      [
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 16;
+                        Value.Integer IntegerKind.U8 14;
+                        Value.Integer IntegerKind.U8 56;
+                        Value.Integer IntegerKind.U8 0
+                      ];
+                    Value.Array
+                      [
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 40;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0
+                      ];
+                    Value.Array
+                      [
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0
+                      ];
+                    Value.Array
+                      [
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 9;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0
+                      ];
+                    Value.Array
+                      [
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 67;
+                        Value.Integer IntegerKind.U8 43;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 52;
+                        Value.Integer IntegerKind.U8 48;
+                        Value.Integer IntegerKind.U8 50;
+                        Value.Integer IntegerKind.U8 33
+                      ];
+                    Value.Array
+                      [
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 10;
+                        Value.Integer IntegerKind.U8 57;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0
+                      ];
+                    Value.Array
+                      [
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 3;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 16;
+                        Value.Integer IntegerKind.U8 58;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0
+                      ];
+                    Value.Array
+                      [
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 19;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 27
+                      ];
+                    Value.Array
+                      [
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 62;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0
+                      ];
+                    Value.Array
+                      [
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 71;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0
+                      ];
+                    Value.Array
+                      [
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 46;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 56;
+                        Value.Integer IntegerKind.U8 56;
+                        Value.Integer IntegerKind.U8 56;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 22;
+                        Value.Integer IntegerKind.U8 22;
+                        Value.Integer IntegerKind.U8 69;
+                        Value.Integer IntegerKind.U8 22;
+                        Value.Integer IntegerKind.U8 36;
+                        Value.Integer IntegerKind.U8 25;
+                        Value.Integer IntegerKind.U8 24;
+                        Value.Integer IntegerKind.U8 37
+                      ];
+                    Value.Array
+                      [
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 5;
+                        Value.Integer IntegerKind.U8 70;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 29;
+                        Value.Integer IntegerKind.U8 15;
+                        Value.Integer IntegerKind.U8 75;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0
+                      ];
+                    Value.Array
+                      [
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 66;
+                        Value.Integer IntegerKind.U8 34;
+                        Value.Integer IntegerKind.U8 17;
+                        Value.Integer IntegerKind.U8 23;
+                        Value.Integer IntegerKind.U8 53;
+                        Value.Integer IntegerKind.U8 54;
+                        Value.Integer IntegerKind.U8 49;
+                        Value.Integer IntegerKind.U8 47;
+                        Value.Integer IntegerKind.U8 8;
+                        Value.Integer IntegerKind.U8 35;
+                        Value.Integer IntegerKind.U8 42;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 28;
+                        Value.Integer IntegerKind.U8 13;
+                        Value.Integer IntegerKind.U8 31
+                      ];
+                    Value.Array
+                      [
+                        Value.Integer IntegerKind.U8 11;
+                        Value.Integer IntegerKind.U8 60;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 6;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 30;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 32;
+                        Value.Integer IntegerKind.U8 0
+                      ];
+                    Value.Array
+                      [
+                        Value.Integer IntegerKind.U8 16;
+                        Value.Integer IntegerKind.U8 26;
+                        Value.Integer IntegerKind.U8 22;
+                        Value.Integer IntegerKind.U8 38;
+                        Value.Integer IntegerKind.U8 39;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0
+                      ];
+                    Value.Array
+                      [
+                        Value.Integer IntegerKind.U8 16;
+                        Value.Integer IntegerKind.U8 51;
+                        Value.Integer IntegerKind.U8 2;
+                        Value.Integer IntegerKind.U8 21;
+                        Value.Integer IntegerKind.U8 68;
+                        Value.Integer IntegerKind.U8 9;
+                        Value.Integer IntegerKind.U8 59;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0
+                      ];
+                    Value.Array
+                      [
+                        Value.Integer IntegerKind.U8 16;
+                        Value.Integer IntegerKind.U8 72;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 0
+                      ];
+                    Value.Array
+                      [
+                        Value.Integer IntegerKind.U8 65;
+                        Value.Integer IntegerKind.U8 41;
+                        Value.Integer IntegerKind.U8 55;
+                        Value.Integer IntegerKind.U8 12;
+                        Value.Integer IntegerKind.U8 77;
+                        Value.Integer IntegerKind.U8 63;
+                        Value.Integer IntegerKind.U8 18;
+                        Value.Integer IntegerKind.U8 1;
+                        Value.Integer IntegerKind.U8 7;
+                        Value.Integer IntegerKind.U8 64;
+                        Value.Integer IntegerKind.U8 76;
+                        Value.Integer IntegerKind.U8 20;
+                        Value.Integer IntegerKind.U8 73;
+                        Value.Integer IntegerKind.U8 74;
+                        Value.Integer IntegerKind.U8 4;
+                        Value.Integer IntegerKind.U8 45
+                      ]
+                  ]
               |)
             |))).
       
@@ -5589,74 +5573,66 @@ Module unicode.
         M.run_constant
           ltac:(M.monadic
             (M.alloc (|
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.alloc (|
-                      Value.Array
-                        [
-                          Value.Integer IntegerKind.U64 0;
-                          Value.Integer IntegerKind.U64 18446673704966422527;
-                          Value.Integer IntegerKind.U64 12297829382473033730;
-                          Value.Integer IntegerKind.U64 2251799813685247;
-                          Value.Integer IntegerKind.U64 18446739675663105535;
-                          Value.Integer IntegerKind.U64 9223934986808197120;
-                          Value.Integer IntegerKind.U64 1152921504590069760;
-                          Value.Integer IntegerKind.U64 1152921487426978047;
-                          Value.Integer IntegerKind.U64 18446744073709529733;
-                          Value.Integer IntegerKind.U64 18446744069414584320;
-                          Value.Integer IntegerKind.U64 18446744056529682432;
-                          Value.Integer IntegerKind.U64 18446742974197923840;
-                          Value.Integer IntegerKind.U64 18446739675663106031;
-                          Value.Integer IntegerKind.U64 18446726481523572736;
-                          Value.Integer IntegerKind.U64 18446466996645134335;
-                          Value.Integer IntegerKind.U64 18446462598732858304;
-                          Value.Integer IntegerKind.U64 18446462598732840960;
-                          Value.Integer IntegerKind.U64 18410715274543104000;
-                          Value.Integer IntegerKind.U64 18158513701852807104;
-                          Value.Integer IntegerKind.U64 17870283321406062592;
-                          Value.Integer IntegerKind.U64 17293822586148356092;
-                          Value.Integer IntegerKind.U64 12297829382473045332;
-                          Value.Integer IntegerKind.U64 12297829382473034410;
-                          Value.Integer IntegerKind.U64 6172933889249159850;
-                          Value.Integer IntegerKind.U64 4674456033467236607;
-                          Value.Integer IntegerKind.U64 4611405638684049471;
-                          Value.Integer IntegerKind.U64 4601013484258328575;
-                          Value.Integer IntegerKind.U64 4539628424389459968;
-                          Value.Integer IntegerKind.U64 4362299189061746720;
-                          Value.Integer IntegerKind.U64 3607524039012697088;
-                          Value.Integer IntegerKind.U64 2016486715966881792;
-                          Value.Integer IntegerKind.U64 1814856824841797631;
-                          Value.Integer IntegerKind.U64 575897802350002105;
-                          Value.Integer IntegerKind.U64 530298856301798666;
-                          Value.Integer IntegerKind.U64 297241973452963840;
-                          Value.Integer IntegerKind.U64 144115188074807295;
-                          Value.Integer IntegerKind.U64 71777214282006783;
-                          Value.Integer IntegerKind.U64 61925590106570972;
-                          Value.Integer IntegerKind.U64 2339875276368554;
-                          Value.Integer IntegerKind.U64 36009005809663;
-                          Value.Integer IntegerKind.U64 8660801551359;
-                          Value.Integer IntegerKind.U64 1099509514240;
-                          Value.Integer IntegerKind.U64 133143986179;
-                          Value.Integer IntegerKind.U64 984263338;
-                          Value.Integer IntegerKind.U64 16253055;
-                          Value.Integer IntegerKind.U64 3063;
-                          Value.Integer IntegerKind.U64 1535;
-                          Value.Integer IntegerKind.U64 10663022717737544362;
-                          Value.Integer IntegerKind.U64 10808545280696953514;
-                          Value.Integer IntegerKind.U64 12261519110656315968;
-                          Value.Integer IntegerKind.U64 12294970652241842346;
-                          Value.Integer IntegerKind.U64 12297829383904690175;
-                          Value.Integer IntegerKind.U64 12298110845996498944;
-                          Value.Integer IntegerKind.U64 15324248332066007893;
-                          Value.Integer IntegerKind.U64 16596095761559859497;
-                          Value.Integer IntegerKind.U64 16987577794709946364
-                        ]
-                    |)
-                  |)
-                |)
+              M.alloc (|
+                Value.Array
+                  [
+                    Value.Integer IntegerKind.U64 0;
+                    Value.Integer IntegerKind.U64 18446673704966422527;
+                    Value.Integer IntegerKind.U64 12297829382473033730;
+                    Value.Integer IntegerKind.U64 2251799813685247;
+                    Value.Integer IntegerKind.U64 18446739675663105535;
+                    Value.Integer IntegerKind.U64 9223934986808197120;
+                    Value.Integer IntegerKind.U64 1152921504590069760;
+                    Value.Integer IntegerKind.U64 1152921487426978047;
+                    Value.Integer IntegerKind.U64 18446744073709529733;
+                    Value.Integer IntegerKind.U64 18446744069414584320;
+                    Value.Integer IntegerKind.U64 18446744056529682432;
+                    Value.Integer IntegerKind.U64 18446742974197923840;
+                    Value.Integer IntegerKind.U64 18446739675663106031;
+                    Value.Integer IntegerKind.U64 18446726481523572736;
+                    Value.Integer IntegerKind.U64 18446466996645134335;
+                    Value.Integer IntegerKind.U64 18446462598732858304;
+                    Value.Integer IntegerKind.U64 18446462598732840960;
+                    Value.Integer IntegerKind.U64 18410715274543104000;
+                    Value.Integer IntegerKind.U64 18158513701852807104;
+                    Value.Integer IntegerKind.U64 17870283321406062592;
+                    Value.Integer IntegerKind.U64 17293822586148356092;
+                    Value.Integer IntegerKind.U64 12297829382473045332;
+                    Value.Integer IntegerKind.U64 12297829382473034410;
+                    Value.Integer IntegerKind.U64 6172933889249159850;
+                    Value.Integer IntegerKind.U64 4674456033467236607;
+                    Value.Integer IntegerKind.U64 4611405638684049471;
+                    Value.Integer IntegerKind.U64 4601013484258328575;
+                    Value.Integer IntegerKind.U64 4539628424389459968;
+                    Value.Integer IntegerKind.U64 4362299189061746720;
+                    Value.Integer IntegerKind.U64 3607524039012697088;
+                    Value.Integer IntegerKind.U64 2016486715966881792;
+                    Value.Integer IntegerKind.U64 1814856824841797631;
+                    Value.Integer IntegerKind.U64 575897802350002105;
+                    Value.Integer IntegerKind.U64 530298856301798666;
+                    Value.Integer IntegerKind.U64 297241973452963840;
+                    Value.Integer IntegerKind.U64 144115188074807295;
+                    Value.Integer IntegerKind.U64 71777214282006783;
+                    Value.Integer IntegerKind.U64 61925590106570972;
+                    Value.Integer IntegerKind.U64 2339875276368554;
+                    Value.Integer IntegerKind.U64 36009005809663;
+                    Value.Integer IntegerKind.U64 8660801551359;
+                    Value.Integer IntegerKind.U64 1099509514240;
+                    Value.Integer IntegerKind.U64 133143986179;
+                    Value.Integer IntegerKind.U64 984263338;
+                    Value.Integer IntegerKind.U64 16253055;
+                    Value.Integer IntegerKind.U64 3063;
+                    Value.Integer IntegerKind.U64 1535;
+                    Value.Integer IntegerKind.U64 10663022717737544362;
+                    Value.Integer IntegerKind.U64 10808545280696953514;
+                    Value.Integer IntegerKind.U64 12261519110656315968;
+                    Value.Integer IntegerKind.U64 12294970652241842346;
+                    Value.Integer IntegerKind.U64 12297829383904690175;
+                    Value.Integer IntegerKind.U64 12298110845996498944;
+                    Value.Integer IntegerKind.U64 15324248332066007893;
+                    Value.Integer IntegerKind.U64 16596095761559859497;
+                    Value.Integer IntegerKind.U64 16987577794709946364
+                  ]
               |)
             |))).
       
@@ -5669,62 +5645,44 @@ Module unicode.
         M.run_constant
           ltac:(M.monadic
             (M.alloc (|
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.alloc (|
-                      Value.Array
-                        [
-                          Value.Tuple
-                            [ Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 64 ];
-                          Value.Tuple
-                            [ Value.Integer IntegerKind.U8 1; Value.Integer IntegerKind.U8 188 ];
-                          Value.Tuple
-                            [ Value.Integer IntegerKind.U8 1; Value.Integer IntegerKind.U8 186 ];
-                          Value.Tuple
-                            [ Value.Integer IntegerKind.U8 1; Value.Integer IntegerKind.U8 183 ];
-                          Value.Tuple
-                            [ Value.Integer IntegerKind.U8 1; Value.Integer IntegerKind.U8 176 ];
-                          Value.Tuple
-                            [ Value.Integer IntegerKind.U8 1; Value.Integer IntegerKind.U8 109 ];
-                          Value.Tuple
-                            [ Value.Integer IntegerKind.U8 1; Value.Integer IntegerKind.U8 124 ];
-                          Value.Tuple
-                            [ Value.Integer IntegerKind.U8 1; Value.Integer IntegerKind.U8 126 ];
-                          Value.Tuple
-                            [ Value.Integer IntegerKind.U8 1; Value.Integer IntegerKind.U8 66 ];
-                          Value.Tuple
-                            [ Value.Integer IntegerKind.U8 1; Value.Integer IntegerKind.U8 70 ];
-                          Value.Tuple
-                            [ Value.Integer IntegerKind.U8 1; Value.Integer IntegerKind.U8 77 ];
-                          Value.Tuple
-                            [ Value.Integer IntegerKind.U8 2; Value.Integer IntegerKind.U8 146 ];
-                          Value.Tuple
-                            [ Value.Integer IntegerKind.U8 2; Value.Integer IntegerKind.U8 144 ];
-                          Value.Tuple
-                            [ Value.Integer IntegerKind.U8 2; Value.Integer IntegerKind.U8 83 ];
-                          Value.Tuple
-                            [ Value.Integer IntegerKind.U8 3; Value.Integer IntegerKind.U8 93 ];
-                          Value.Tuple
-                            [ Value.Integer IntegerKind.U8 3; Value.Integer IntegerKind.U8 147 ];
-                          Value.Tuple
-                            [ Value.Integer IntegerKind.U8 3; Value.Integer IntegerKind.U8 133 ];
-                          Value.Tuple
-                            [ Value.Integer IntegerKind.U8 4; Value.Integer IntegerKind.U8 12 ];
-                          Value.Tuple
-                            [ Value.Integer IntegerKind.U8 4; Value.Integer IntegerKind.U8 6 ];
-                          Value.Tuple
-                            [ Value.Integer IntegerKind.U8 5; Value.Integer IntegerKind.U8 187 ];
-                          Value.Tuple
-                            [ Value.Integer IntegerKind.U8 6; Value.Integer IntegerKind.U8 78 ];
-                          Value.Tuple
-                            [ Value.Integer IntegerKind.U8 7; Value.Integer IntegerKind.U8 132 ]
-                        ]
-                    |)
-                  |)
-                |)
+              M.alloc (|
+                Value.Array
+                  [
+                    Value.Tuple [ Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 64 ];
+                    Value.Tuple
+                      [ Value.Integer IntegerKind.U8 1; Value.Integer IntegerKind.U8 188 ];
+                    Value.Tuple
+                      [ Value.Integer IntegerKind.U8 1; Value.Integer IntegerKind.U8 186 ];
+                    Value.Tuple
+                      [ Value.Integer IntegerKind.U8 1; Value.Integer IntegerKind.U8 183 ];
+                    Value.Tuple
+                      [ Value.Integer IntegerKind.U8 1; Value.Integer IntegerKind.U8 176 ];
+                    Value.Tuple
+                      [ Value.Integer IntegerKind.U8 1; Value.Integer IntegerKind.U8 109 ];
+                    Value.Tuple
+                      [ Value.Integer IntegerKind.U8 1; Value.Integer IntegerKind.U8 124 ];
+                    Value.Tuple
+                      [ Value.Integer IntegerKind.U8 1; Value.Integer IntegerKind.U8 126 ];
+                    Value.Tuple [ Value.Integer IntegerKind.U8 1; Value.Integer IntegerKind.U8 66 ];
+                    Value.Tuple [ Value.Integer IntegerKind.U8 1; Value.Integer IntegerKind.U8 70 ];
+                    Value.Tuple [ Value.Integer IntegerKind.U8 1; Value.Integer IntegerKind.U8 77 ];
+                    Value.Tuple
+                      [ Value.Integer IntegerKind.U8 2; Value.Integer IntegerKind.U8 146 ];
+                    Value.Tuple
+                      [ Value.Integer IntegerKind.U8 2; Value.Integer IntegerKind.U8 144 ];
+                    Value.Tuple [ Value.Integer IntegerKind.U8 2; Value.Integer IntegerKind.U8 83 ];
+                    Value.Tuple [ Value.Integer IntegerKind.U8 3; Value.Integer IntegerKind.U8 93 ];
+                    Value.Tuple
+                      [ Value.Integer IntegerKind.U8 3; Value.Integer IntegerKind.U8 147 ];
+                    Value.Tuple
+                      [ Value.Integer IntegerKind.U8 3; Value.Integer IntegerKind.U8 133 ];
+                    Value.Tuple [ Value.Integer IntegerKind.U8 4; Value.Integer IntegerKind.U8 12 ];
+                    Value.Tuple [ Value.Integer IntegerKind.U8 4; Value.Integer IntegerKind.U8 6 ];
+                    Value.Tuple
+                      [ Value.Integer IntegerKind.U8 5; Value.Integer IntegerKind.U8 187 ];
+                    Value.Tuple [ Value.Integer IntegerKind.U8 6; Value.Integer IntegerKind.U8 78 ];
+                    Value.Tuple [ Value.Integer IntegerKind.U8 7; Value.Integer IntegerKind.U8 132 ]
+                  ]
               |)
             |))).
       
@@ -5767,10 +5725,10 @@ Module unicode.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
-                    M.read (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
                       M.deref (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
+                        M.read (|
                           M.get_constant "core::unicode::unicode_data::lowercase::BITSET_CHUNKS_MAP"
                         |)
                       |)
@@ -5780,10 +5738,10 @@ Module unicode.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
-                    M.read (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
                       M.deref (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
+                        M.read (|
                           M.get_constant
                             "core::unicode::unicode_data::lowercase::BITSET_INDEX_CHUNKS"
                         |)
@@ -5794,10 +5752,10 @@ Module unicode.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
-                    M.read (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
                       M.deref (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
+                        M.read (|
                           M.get_constant "core::unicode::unicode_data::lowercase::BITSET_CANONICAL"
                         |)
                       |)
@@ -5807,10 +5765,10 @@ Module unicode.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
-                    M.read (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
                       M.deref (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
+                        M.read (|
                           M.get_constant "core::unicode::unicode_data::lowercase::BITSET_MAPPING"
                         |)
                       |)
@@ -6254,143 +6212,135 @@ Module unicode.
         M.run_constant
           ltac:(M.monadic
             (M.alloc (|
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.alloc (|
-                      Value.Array
-                        [
-                          Value.Integer IntegerKind.U8 12;
-                          Value.Integer IntegerKind.U8 15;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 0;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 2;
-                          Value.Integer IntegerKind.U8 4;
-                          Value.Integer IntegerKind.U8 11;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 16;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 8;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 5;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 14;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 10;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 1;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 7;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 13;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 9;
-                          Value.Integer IntegerKind.U8 6;
-                          Value.Integer IntegerKind.U8 3
-                        ]
-                    |)
-                  |)
-                |)
+              M.alloc (|
+                Value.Array
+                  [
+                    Value.Integer IntegerKind.U8 12;
+                    Value.Integer IntegerKind.U8 15;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 0;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 2;
+                    Value.Integer IntegerKind.U8 4;
+                    Value.Integer IntegerKind.U8 11;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 16;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 8;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 5;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 14;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 10;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 1;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 7;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 13;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 9;
+                    Value.Integer IntegerKind.U8 6;
+                    Value.Integer IntegerKind.U8 3
+                  ]
               |)
             |))).
       
@@ -6403,341 +6353,333 @@ Module unicode.
         M.run_constant
           ltac:(M.monadic
             (M.alloc (|
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.alloc (|
-                      Value.Array
-                        [
-                          Value.Array
-                            [
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 5;
-                              Value.Integer IntegerKind.U8 35;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 5;
-                              Value.Integer IntegerKind.U8 1
-                            ];
-                          Value.Array
-                            [
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 5;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44
-                            ];
-                          Value.Array
-                            [
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 40;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 17;
-                              Value.Integer IntegerKind.U8 17;
-                              Value.Integer IntegerKind.U8 63;
-                              Value.Integer IntegerKind.U8 17;
-                              Value.Integer IntegerKind.U8 43;
-                              Value.Integer IntegerKind.U8 29;
-                              Value.Integer IntegerKind.U8 24;
-                              Value.Integer IntegerKind.U8 23
-                            ];
-                          Value.Array
-                            [
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 9;
-                              Value.Integer IntegerKind.U8 8;
-                              Value.Integer IntegerKind.U8 45;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44
-                            ];
-                          Value.Array
-                            [
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 37;
-                              Value.Integer IntegerKind.U8 28;
-                              Value.Integer IntegerKind.U8 67;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44
-                            ];
-                          Value.Array
-                            [
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 0;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44
-                            ];
-                          Value.Array
-                            [
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44
-                            ];
-                          Value.Array
-                            [
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 55;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44
-                            ];
-                          Value.Array
-                            [
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 62;
-                              Value.Integer IntegerKind.U8 61;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 20;
-                              Value.Integer IntegerKind.U8 14;
-                              Value.Integer IntegerKind.U8 16;
-                              Value.Integer IntegerKind.U8 4
-                            ];
-                          Value.Array
-                            [
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 56;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44
-                            ];
-                          Value.Array
-                            [
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 59;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 31;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44
-                            ];
-                          Value.Array
-                            [
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 60;
-                              Value.Integer IntegerKind.U8 46;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44
-                            ];
-                          Value.Array
-                            [
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 49;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 32;
-                              Value.Integer IntegerKind.U8 36;
-                              Value.Integer IntegerKind.U8 21;
-                              Value.Integer IntegerKind.U8 22;
-                              Value.Integer IntegerKind.U8 15;
-                              Value.Integer IntegerKind.U8 13;
-                              Value.Integer IntegerKind.U8 34;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 11;
-                              Value.Integer IntegerKind.U8 30;
-                              Value.Integer IntegerKind.U8 39
-                            ];
-                          Value.Array
-                            [
-                              Value.Integer IntegerKind.U8 52;
-                              Value.Integer IntegerKind.U8 54;
-                              Value.Integer IntegerKind.U8 26;
-                              Value.Integer IntegerKind.U8 50;
-                              Value.Integer IntegerKind.U8 12;
-                              Value.Integer IntegerKind.U8 7;
-                              Value.Integer IntegerKind.U8 25;
-                              Value.Integer IntegerKind.U8 51;
-                              Value.Integer IntegerKind.U8 41;
-                              Value.Integer IntegerKind.U8 53;
-                              Value.Integer IntegerKind.U8 6;
-                              Value.Integer IntegerKind.U8 3;
-                              Value.Integer IntegerKind.U8 66;
-                              Value.Integer IntegerKind.U8 65;
-                              Value.Integer IntegerKind.U8 64;
-                              Value.Integer IntegerKind.U8 68
-                            ];
-                          Value.Array
-                            [
-                              Value.Integer IntegerKind.U8 57;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 9;
-                              Value.Integer IntegerKind.U8 47;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 42;
-                              Value.Integer IntegerKind.U8 33;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44
-                            ];
-                          Value.Array
-                            [
-                              Value.Integer IntegerKind.U8 58;
-                              Value.Integer IntegerKind.U8 19;
-                              Value.Integer IntegerKind.U8 2;
-                              Value.Integer IntegerKind.U8 18;
-                              Value.Integer IntegerKind.U8 10;
-                              Value.Integer IntegerKind.U8 48;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44
-                            ];
-                          Value.Array
-                            [
-                              Value.Integer IntegerKind.U8 58;
-                              Value.Integer IntegerKind.U8 38;
-                              Value.Integer IntegerKind.U8 17;
-                              Value.Integer IntegerKind.U8 27;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44;
-                              Value.Integer IntegerKind.U8 44
-                            ]
-                        ]
-                    |)
-                  |)
-                |)
+              M.alloc (|
+                Value.Array
+                  [
+                    Value.Array
+                      [
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 5;
+                        Value.Integer IntegerKind.U8 35;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 5;
+                        Value.Integer IntegerKind.U8 1
+                      ];
+                    Value.Array
+                      [
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 5;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44
+                      ];
+                    Value.Array
+                      [
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 40;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 17;
+                        Value.Integer IntegerKind.U8 17;
+                        Value.Integer IntegerKind.U8 63;
+                        Value.Integer IntegerKind.U8 17;
+                        Value.Integer IntegerKind.U8 43;
+                        Value.Integer IntegerKind.U8 29;
+                        Value.Integer IntegerKind.U8 24;
+                        Value.Integer IntegerKind.U8 23
+                      ];
+                    Value.Array
+                      [
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 9;
+                        Value.Integer IntegerKind.U8 8;
+                        Value.Integer IntegerKind.U8 45;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44
+                      ];
+                    Value.Array
+                      [
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 37;
+                        Value.Integer IntegerKind.U8 28;
+                        Value.Integer IntegerKind.U8 67;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44
+                      ];
+                    Value.Array
+                      [
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 0;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44
+                      ];
+                    Value.Array
+                      [
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44
+                      ];
+                    Value.Array
+                      [
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 55;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44
+                      ];
+                    Value.Array
+                      [
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 62;
+                        Value.Integer IntegerKind.U8 61;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 20;
+                        Value.Integer IntegerKind.U8 14;
+                        Value.Integer IntegerKind.U8 16;
+                        Value.Integer IntegerKind.U8 4
+                      ];
+                    Value.Array
+                      [
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 56;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44
+                      ];
+                    Value.Array
+                      [
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 59;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 31;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44
+                      ];
+                    Value.Array
+                      [
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 60;
+                        Value.Integer IntegerKind.U8 46;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44
+                      ];
+                    Value.Array
+                      [
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 49;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 32;
+                        Value.Integer IntegerKind.U8 36;
+                        Value.Integer IntegerKind.U8 21;
+                        Value.Integer IntegerKind.U8 22;
+                        Value.Integer IntegerKind.U8 15;
+                        Value.Integer IntegerKind.U8 13;
+                        Value.Integer IntegerKind.U8 34;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 11;
+                        Value.Integer IntegerKind.U8 30;
+                        Value.Integer IntegerKind.U8 39
+                      ];
+                    Value.Array
+                      [
+                        Value.Integer IntegerKind.U8 52;
+                        Value.Integer IntegerKind.U8 54;
+                        Value.Integer IntegerKind.U8 26;
+                        Value.Integer IntegerKind.U8 50;
+                        Value.Integer IntegerKind.U8 12;
+                        Value.Integer IntegerKind.U8 7;
+                        Value.Integer IntegerKind.U8 25;
+                        Value.Integer IntegerKind.U8 51;
+                        Value.Integer IntegerKind.U8 41;
+                        Value.Integer IntegerKind.U8 53;
+                        Value.Integer IntegerKind.U8 6;
+                        Value.Integer IntegerKind.U8 3;
+                        Value.Integer IntegerKind.U8 66;
+                        Value.Integer IntegerKind.U8 65;
+                        Value.Integer IntegerKind.U8 64;
+                        Value.Integer IntegerKind.U8 68
+                      ];
+                    Value.Array
+                      [
+                        Value.Integer IntegerKind.U8 57;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 9;
+                        Value.Integer IntegerKind.U8 47;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 42;
+                        Value.Integer IntegerKind.U8 33;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44
+                      ];
+                    Value.Array
+                      [
+                        Value.Integer IntegerKind.U8 58;
+                        Value.Integer IntegerKind.U8 19;
+                        Value.Integer IntegerKind.U8 2;
+                        Value.Integer IntegerKind.U8 18;
+                        Value.Integer IntegerKind.U8 10;
+                        Value.Integer IntegerKind.U8 48;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44
+                      ];
+                    Value.Array
+                      [
+                        Value.Integer IntegerKind.U8 58;
+                        Value.Integer IntegerKind.U8 38;
+                        Value.Integer IntegerKind.U8 17;
+                        Value.Integer IntegerKind.U8 27;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44;
+                        Value.Integer IntegerKind.U8 44
+                      ]
+                  ]
               |)
             |))).
       
@@ -6750,62 +6692,54 @@ Module unicode.
         M.run_constant
           ltac:(M.monadic
             (M.alloc (|
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.alloc (|
-                      Value.Array
-                        [
-                          Value.Integer IntegerKind.U64 576460743713488896;
-                          Value.Integer IntegerKind.U64 18014398509481983;
-                          Value.Integer IntegerKind.U64 6148914691236516865;
-                          Value.Integer IntegerKind.U64 576460735123554305;
-                          Value.Integer IntegerKind.U64 9007199611329269;
-                          Value.Integer IntegerKind.U64 18446744069414584320;
-                          Value.Integer IntegerKind.U64 18446742974197924863;
-                          Value.Integer IntegerKind.U64 18446726481523637343;
-                          Value.Integer IntegerKind.U64 18446466996779287551;
-                          Value.Integer IntegerKind.U64 18446462598732840960;
-                          Value.Integer IntegerKind.U64 18446274948748367189;
-                          Value.Integer IntegerKind.U64 9242793810247811072;
-                          Value.Integer IntegerKind.U64 8863084067199903664;
-                          Value.Integer IntegerKind.U64 7783721355972007253;
-                          Value.Integer IntegerKind.U64 7638198793012598101;
-                          Value.Integer IntegerKind.U64 6184099063146390672;
-                          Value.Integer IntegerKind.U64 6151773421467674709;
-                          Value.Integer IntegerKind.U64 6148914691236517205;
-                          Value.Integer IntegerKind.U64 6148914691236506283;
-                          Value.Integer IntegerKind.U64 6148914689804861440;
-                          Value.Integer IntegerKind.U64 6148633210533183488;
-                          Value.Integer IntegerKind.U64 3122495741643543722;
-                          Value.Integer IntegerKind.U64 1274187559846268630;
-                          Value.Integer IntegerKind.U64 1080897995681042176;
-                          Value.Integer IntegerKind.U64 1080863910568919040;
-                          Value.Integer IntegerKind.U64 288230371856744511;
-                          Value.Integer IntegerKind.U64 17977448100528131;
-                          Value.Integer IntegerKind.U64 1169903278445909;
-                          Value.Integer IntegerKind.U64 281470681743392;
-                          Value.Integer IntegerKind.U64 280378317225728;
-                          Value.Integer IntegerKind.U64 17575006099264;
-                          Value.Integer IntegerKind.U64 274877841408;
-                          Value.Integer IntegerKind.U64 2139095039;
-                          Value.Integer IntegerKind.U64 3667967;
-                          Value.Integer IntegerKind.U64 21882;
-                          Value.Integer IntegerKind.U64 8383;
-                          Value.Integer IntegerKind.U64 12273810184460391765;
-                          Value.Integer IntegerKind.U64 13839347594782259332;
-                          Value.Integer IntegerKind.U64 13845730589451223040;
-                          Value.Integer IntegerKind.U64 16613872850358272000;
-                          Value.Integer IntegerKind.U64 16717361816799216128;
-                          Value.Integer IntegerKind.U64 17293822586282573568;
-                          Value.Integer IntegerKind.U64 17870001846429417472;
-                          Value.Integer IntegerKind.U64 18374966856193736448
-                        ]
-                    |)
-                  |)
-                |)
+              M.alloc (|
+                Value.Array
+                  [
+                    Value.Integer IntegerKind.U64 576460743713488896;
+                    Value.Integer IntegerKind.U64 18014398509481983;
+                    Value.Integer IntegerKind.U64 6148914691236516865;
+                    Value.Integer IntegerKind.U64 576460735123554305;
+                    Value.Integer IntegerKind.U64 9007199611329269;
+                    Value.Integer IntegerKind.U64 18446744069414584320;
+                    Value.Integer IntegerKind.U64 18446742974197924863;
+                    Value.Integer IntegerKind.U64 18446726481523637343;
+                    Value.Integer IntegerKind.U64 18446466996779287551;
+                    Value.Integer IntegerKind.U64 18446462598732840960;
+                    Value.Integer IntegerKind.U64 18446274948748367189;
+                    Value.Integer IntegerKind.U64 9242793810247811072;
+                    Value.Integer IntegerKind.U64 8863084067199903664;
+                    Value.Integer IntegerKind.U64 7783721355972007253;
+                    Value.Integer IntegerKind.U64 7638198793012598101;
+                    Value.Integer IntegerKind.U64 6184099063146390672;
+                    Value.Integer IntegerKind.U64 6151773421467674709;
+                    Value.Integer IntegerKind.U64 6148914691236517205;
+                    Value.Integer IntegerKind.U64 6148914691236506283;
+                    Value.Integer IntegerKind.U64 6148914689804861440;
+                    Value.Integer IntegerKind.U64 6148633210533183488;
+                    Value.Integer IntegerKind.U64 3122495741643543722;
+                    Value.Integer IntegerKind.U64 1274187559846268630;
+                    Value.Integer IntegerKind.U64 1080897995681042176;
+                    Value.Integer IntegerKind.U64 1080863910568919040;
+                    Value.Integer IntegerKind.U64 288230371856744511;
+                    Value.Integer IntegerKind.U64 17977448100528131;
+                    Value.Integer IntegerKind.U64 1169903278445909;
+                    Value.Integer IntegerKind.U64 281470681743392;
+                    Value.Integer IntegerKind.U64 280378317225728;
+                    Value.Integer IntegerKind.U64 17575006099264;
+                    Value.Integer IntegerKind.U64 274877841408;
+                    Value.Integer IntegerKind.U64 2139095039;
+                    Value.Integer IntegerKind.U64 3667967;
+                    Value.Integer IntegerKind.U64 21882;
+                    Value.Integer IntegerKind.U64 8383;
+                    Value.Integer IntegerKind.U64 12273810184460391765;
+                    Value.Integer IntegerKind.U64 13839347594782259332;
+                    Value.Integer IntegerKind.U64 13845730589451223040;
+                    Value.Integer IntegerKind.U64 16613872850358272000;
+                    Value.Integer IntegerKind.U64 16717361816799216128;
+                    Value.Integer IntegerKind.U64 17293822586282573568;
+                    Value.Integer IntegerKind.U64 17870001846429417472;
+                    Value.Integer IntegerKind.U64 18374966856193736448
+                  ]
               |)
             |))).
       
@@ -6818,68 +6752,54 @@ Module unicode.
         M.run_constant
           ltac:(M.monadic
             (M.alloc (|
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (|
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.alloc (|
-                      Value.Array
-                        [
-                          Value.Tuple
-                            [ Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 187 ];
-                          Value.Tuple
-                            [ Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 177 ];
-                          Value.Tuple
-                            [ Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 171 ];
-                          Value.Tuple
-                            [ Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 167 ];
-                          Value.Tuple
-                            [ Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 164 ];
-                          Value.Tuple
-                            [ Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 32 ];
-                          Value.Tuple
-                            [ Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 47 ];
-                          Value.Tuple
-                            [ Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 51 ];
-                          Value.Tuple
-                            [ Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 121 ];
-                          Value.Tuple
-                            [ Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 117 ];
-                          Value.Tuple
-                            [ Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 109 ];
-                          Value.Tuple
-                            [ Value.Integer IntegerKind.U8 1; Value.Integer IntegerKind.U8 150 ];
-                          Value.Tuple
-                            [ Value.Integer IntegerKind.U8 1; Value.Integer IntegerKind.U8 148 ];
-                          Value.Tuple
-                            [ Value.Integer IntegerKind.U8 1; Value.Integer IntegerKind.U8 142 ];
-                          Value.Tuple
-                            [ Value.Integer IntegerKind.U8 1; Value.Integer IntegerKind.U8 134 ];
-                          Value.Tuple
-                            [ Value.Integer IntegerKind.U8 1; Value.Integer IntegerKind.U8 131 ];
-                          Value.Tuple
-                            [ Value.Integer IntegerKind.U8 1; Value.Integer IntegerKind.U8 64 ];
-                          Value.Tuple
-                            [ Value.Integer IntegerKind.U8 2; Value.Integer IntegerKind.U8 164 ];
-                          Value.Tuple
-                            [ Value.Integer IntegerKind.U8 2; Value.Integer IntegerKind.U8 146 ];
-                          Value.Tuple
-                            [ Value.Integer IntegerKind.U8 2; Value.Integer IntegerKind.U8 20 ];
-                          Value.Tuple
-                            [ Value.Integer IntegerKind.U8 3; Value.Integer IntegerKind.U8 146 ];
-                          Value.Tuple
-                            [ Value.Integer IntegerKind.U8 3; Value.Integer IntegerKind.U8 140 ];
-                          Value.Tuple
-                            [ Value.Integer IntegerKind.U8 3; Value.Integer IntegerKind.U8 134 ];
-                          Value.Tuple
-                            [ Value.Integer IntegerKind.U8 4; Value.Integer IntegerKind.U8 178 ];
-                          Value.Tuple
-                            [ Value.Integer IntegerKind.U8 4; Value.Integer IntegerKind.U8 171 ]
-                        ]
-                    |)
-                  |)
-                |)
+              M.alloc (|
+                Value.Array
+                  [
+                    Value.Tuple
+                      [ Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 187 ];
+                    Value.Tuple
+                      [ Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 177 ];
+                    Value.Tuple
+                      [ Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 171 ];
+                    Value.Tuple
+                      [ Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 167 ];
+                    Value.Tuple
+                      [ Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 164 ];
+                    Value.Tuple [ Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 32 ];
+                    Value.Tuple [ Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 47 ];
+                    Value.Tuple [ Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 51 ];
+                    Value.Tuple
+                      [ Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 121 ];
+                    Value.Tuple
+                      [ Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 117 ];
+                    Value.Tuple
+                      [ Value.Integer IntegerKind.U8 0; Value.Integer IntegerKind.U8 109 ];
+                    Value.Tuple
+                      [ Value.Integer IntegerKind.U8 1; Value.Integer IntegerKind.U8 150 ];
+                    Value.Tuple
+                      [ Value.Integer IntegerKind.U8 1; Value.Integer IntegerKind.U8 148 ];
+                    Value.Tuple
+                      [ Value.Integer IntegerKind.U8 1; Value.Integer IntegerKind.U8 142 ];
+                    Value.Tuple
+                      [ Value.Integer IntegerKind.U8 1; Value.Integer IntegerKind.U8 134 ];
+                    Value.Tuple
+                      [ Value.Integer IntegerKind.U8 1; Value.Integer IntegerKind.U8 131 ];
+                    Value.Tuple [ Value.Integer IntegerKind.U8 1; Value.Integer IntegerKind.U8 64 ];
+                    Value.Tuple
+                      [ Value.Integer IntegerKind.U8 2; Value.Integer IntegerKind.U8 164 ];
+                    Value.Tuple
+                      [ Value.Integer IntegerKind.U8 2; Value.Integer IntegerKind.U8 146 ];
+                    Value.Tuple [ Value.Integer IntegerKind.U8 2; Value.Integer IntegerKind.U8 20 ];
+                    Value.Tuple
+                      [ Value.Integer IntegerKind.U8 3; Value.Integer IntegerKind.U8 146 ];
+                    Value.Tuple
+                      [ Value.Integer IntegerKind.U8 3; Value.Integer IntegerKind.U8 140 ];
+                    Value.Tuple
+                      [ Value.Integer IntegerKind.U8 3; Value.Integer IntegerKind.U8 134 ];
+                    Value.Tuple
+                      [ Value.Integer IntegerKind.U8 4; Value.Integer IntegerKind.U8 178 ];
+                    Value.Tuple [ Value.Integer IntegerKind.U8 4; Value.Integer IntegerKind.U8 171 ]
+                  ]
               |)
             |))).
       
@@ -6922,10 +6842,10 @@ Module unicode.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
-                    M.read (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
                       M.deref (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
+                        M.read (|
                           M.get_constant "core::unicode::unicode_data::uppercase::BITSET_CHUNKS_MAP"
                         |)
                       |)
@@ -6935,10 +6855,10 @@ Module unicode.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
-                    M.read (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
                       M.deref (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
+                        M.read (|
                           M.get_constant
                             "core::unicode::unicode_data::uppercase::BITSET_INDEX_CHUNKS"
                         |)
@@ -6949,10 +6869,10 @@ Module unicode.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
-                    M.read (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
                       M.deref (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
+                        M.read (|
                           M.get_constant "core::unicode::unicode_data::uppercase::BITSET_CANONICAL"
                         |)
                       |)
@@ -6962,10 +6882,10 @@ Module unicode.
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
-                    M.read (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
                       M.deref (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
+                        M.read (|
                           M.get_constant "core::unicode::unicode_data::uppercase::BITSET_MAPPING"
                         |)
                       |)
@@ -7257,7 +7177,7 @@ Module unicode.
       Global Hint Rewrite Constant_value_WHITESPACE_MAP : constant_rewrites.
       
       (*
-          pub fn lookup(c: char) -> bool {
+          pub const fn lookup(c: char) -> bool {
               match c as u32 >> 8 {
                   0 => WHITESPACE_MAP[c as usize & 0xff] & 1 != 0,
                   22 => c as u32 == 0x1680,

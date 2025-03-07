@@ -160,7 +160,7 @@ Module legacy.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_revm_bytecode_legacy_jump_map_JumpTable.
     
-    Module Impl_core_cmp_PartialEq_for_revm_bytecode_legacy_jump_map_JumpTable.
+    Module Impl_core_cmp_PartialEq_revm_bytecode_legacy_jump_map_JumpTable_for_revm_bytecode_legacy_jump_map_JumpTable.
       Definition Self : Ty.t := Ty.path "revm_bytecode::legacy::jump_map::JumpTable".
       
       (* PartialEq *)
@@ -227,10 +227,10 @@ Module legacy.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "revm_bytecode::legacy::jump_map::JumpTable" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_revm_bytecode_legacy_jump_map_JumpTable.
+    End Impl_core_cmp_PartialEq_revm_bytecode_legacy_jump_map_JumpTable_for_revm_bytecode_legacy_jump_map_JumpTable.
     
     Module Impl_core_cmp_Eq_for_revm_bytecode_legacy_jump_map_JumpTable.
       Definition Self : Ty.t := Ty.path "revm_bytecode::legacy::jump_map::JumpTable".
@@ -395,7 +395,7 @@ Module legacy.
           (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
     End Impl_core_cmp_Ord_for_revm_bytecode_legacy_jump_map_JumpTable.
     
-    Module Impl_core_cmp_PartialOrd_for_revm_bytecode_legacy_jump_map_JumpTable.
+    Module Impl_core_cmp_PartialOrd_revm_bytecode_legacy_jump_map_JumpTable_for_revm_bytecode_legacy_jump_map_JumpTable.
       Definition Self : Ty.t := Ty.path "revm_bytecode::legacy::jump_map::JumpTable".
       
       (* PartialOrd *)
@@ -472,10 +472,10 @@ Module legacy.
         M.IsTraitInstance
           "core::cmp::PartialOrd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "revm_bytecode::legacy::jump_map::JumpTable" ]
           Self
           (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-    End Impl_core_cmp_PartialOrd_for_revm_bytecode_legacy_jump_map_JumpTable.
+    End Impl_core_cmp_PartialOrd_revm_bytecode_legacy_jump_map_JumpTable_for_revm_bytecode_legacy_jump_map_JumpTable.
     
     Module Impl_core_fmt_Debug_for_revm_bytecode_legacy_jump_map_JumpTable.
       Definition Self : Ty.t := Ty.path "revm_bytecode::legacy::jump_map::JumpTable".

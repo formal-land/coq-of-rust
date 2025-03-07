@@ -626,7 +626,7 @@ Module convert.
         (* Instance *) [ ("description", InstanceField.Method description) ].
   End Impl_core_error_Error_for_core_convert_Infallible.
   
-  Module Impl_core_cmp_PartialEq_for_core_convert_Infallible.
+  Module Impl_core_cmp_PartialEq_core_convert_Infallible_for_core_convert_Infallible.
     Definition Self : Ty.t := Ty.path "core::convert::Infallible".
     
     (*
@@ -664,10 +664,10 @@ Module convert.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "core::convert::Infallible" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_core_convert_Infallible.
+  End Impl_core_cmp_PartialEq_core_convert_Infallible_for_core_convert_Infallible.
   
   Module Impl_core_cmp_Eq_for_core_convert_Infallible.
     Definition Self : Ty.t := Ty.path "core::convert::Infallible".
@@ -681,7 +681,7 @@ Module convert.
         (* Instance *) [].
   End Impl_core_cmp_Eq_for_core_convert_Infallible.
   
-  Module Impl_core_cmp_PartialOrd_for_core_convert_Infallible.
+  Module Impl_core_cmp_PartialOrd_core_convert_Infallible_for_core_convert_Infallible.
     Definition Self : Ty.t := Ty.path "core::convert::Infallible".
     
     (*
@@ -707,10 +707,10 @@ Module convert.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "core::convert::Infallible" ]
         Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-  End Impl_core_cmp_PartialOrd_for_core_convert_Infallible.
+  End Impl_core_cmp_PartialOrd_core_convert_Infallible_for_core_convert_Infallible.
   
   Module Impl_core_cmp_Ord_for_core_convert_Infallible.
     Definition Self : Ty.t := Ty.path "core::convert::Infallible".

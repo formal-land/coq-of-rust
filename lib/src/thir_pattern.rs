@@ -117,7 +117,7 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Rc<Pattern> {
                 // And for the rest...
                 match &ty.kind() {
                     rustc_middle::ty::TyKind::Int(int_ty) => {
-                        let uint_value = constant.try_to_scalar().unwrap().assert_scalar_int();
+                        let uint_value = constant.try_to_scalar().unwrap().0.assert_scalar_int();
                         let int_value = uint_value.to_int(uint_value.size());
 
                         return Rc::new(Pattern::Literal(Rc::new(Literal::Integer(
@@ -131,7 +131,7 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Rc<Pattern> {
                         ))));
                     }
                     rustc_middle::ty::TyKind::Uint(uint_ty) => {
-                        let uint_value = constant.try_to_scalar().unwrap().assert_scalar_int();
+                        let uint_value = constant.try_to_scalar().unwrap().0.assert_scalar_int();
 
                         return Rc::new(Pattern::Literal(Rc::new(Literal::Integer(
                             LiteralInteger {
@@ -142,12 +142,12 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Rc<Pattern> {
                         ))));
                     }
                     rustc_middle::ty::TyKind::Bool => {
-                        let bool_value = constant.try_to_scalar().unwrap().to_bool().unwrap();
+                        let bool_value = constant.try_to_scalar().unwrap().0.to_bool().unwrap();
 
                         return Rc::new(Pattern::Literal(Rc::new(Literal::Bool(bool_value))));
                     }
                     rustc_middle::ty::TyKind::Char => {
-                        let char_value = constant.try_to_scalar().unwrap().to_char().unwrap();
+                        let char_value = constant.try_to_scalar().unwrap().0.to_char().unwrap();
 
                         return Rc::new(Pattern::Literal(Rc::new(Literal::Char(char_value))));
                     }
@@ -171,6 +171,7 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Rc<Pattern> {
                 "Ranges in patterns are not yet supported.",
                 None,
             );
+
             Rc::new(Pattern::Wild)
         }
         PatKind::Slice {
@@ -199,9 +200,36 @@ pub(crate) fn compile_pattern(env: &Env, pat: &Pat) -> Rc<Pattern> {
         PatKind::Or { pats } => Rc::new(Pattern::Or(
             pats.iter().map(|pat| compile_pattern(env, pat)).collect(),
         )),
-        PatKind::InlineConstant { .. }
-        | PatKind::Never
-        | PatKind::Error(_)
-        | PatKind::DerefPattern { .. } => todo!(),
+        PatKind::Never => {
+            emit_warning_with_note(
+                env,
+                &pat.span,
+                "Never patterns are not yet supported.",
+                None,
+            );
+
+            Rc::new(Pattern::Wild)
+        }
+        PatKind::Error(_) => {
+            emit_warning_with_note(
+                env,
+                &pat.span,
+                "Error patterns are not yet supported.",
+                None,
+            );
+
+            Rc::new(Pattern::Wild)
+        }
+        PatKind::DerefPattern { .. } => {
+            emit_warning_with_note(
+                env,
+                &pat.span,
+                "Deref patterns are not yet supported.",
+                None,
+            );
+
+            Rc::new(Pattern::Wild)
+        }
+        PatKind::ExpandedConstant { subpattern, .. } => compile_pattern(env, subpattern),
     }
 }

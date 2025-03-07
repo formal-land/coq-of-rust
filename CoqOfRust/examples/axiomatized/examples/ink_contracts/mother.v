@@ -106,7 +106,7 @@ Module Impl_core_marker_StructuralPartialEq_for_mother_AccountId.
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_mother_AccountId.
 
-Module Impl_core_cmp_PartialEq_for_mother_AccountId.
+Module Impl_core_cmp_PartialEq_mother_AccountId_for_mother_AccountId.
   Definition Self : Ty.t := Ty.path "mother::AccountId".
   
   Parameter eq : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
@@ -115,10 +115,10 @@ Module Impl_core_cmp_PartialEq_for_mother_AccountId.
     M.IsTraitInstance
       "core::cmp::PartialEq"
       (* Trait polymorphic consts *) []
-      (* Trait polymorphic types *) []
+      (* Trait polymorphic types *) [ Ty.path "mother::AccountId" ]
       Self
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
-End Impl_core_cmp_PartialEq_for_mother_AccountId.
+End Impl_core_cmp_PartialEq_mother_AccountId_for_mother_AccountId.
 
 Module Impl_core_cmp_Eq_for_mother_AccountId.
   Definition Self : Ty.t := Ty.path "mother::AccountId".
@@ -203,7 +203,7 @@ Module Impl_core_marker_StructuralPartialEq_for_mother_Bids.
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_mother_Bids.
 
-Module Impl_core_cmp_PartialEq_for_mother_Bids.
+Module Impl_core_cmp_PartialEq_mother_Bids_for_mother_Bids.
   Definition Self : Ty.t := Ty.path "mother::Bids".
   
   Parameter eq : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
@@ -212,10 +212,10 @@ Module Impl_core_cmp_PartialEq_for_mother_Bids.
     M.IsTraitInstance
       "core::cmp::PartialEq"
       (* Trait polymorphic consts *) []
-      (* Trait polymorphic types *) []
+      (* Trait polymorphic types *) [ Ty.path "mother::Bids" ]
       Self
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
-End Impl_core_cmp_PartialEq_for_mother_Bids.
+End Impl_core_cmp_PartialEq_mother_Bids_for_mother_Bids.
 
 Module Impl_core_cmp_Eq_for_mother_Bids.
   Definition Self : Ty.t := Ty.path "mother::Bids".
@@ -286,7 +286,7 @@ Module Impl_core_marker_StructuralPartialEq_for_mother_Outline.
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_mother_Outline.
 
-Module Impl_core_cmp_PartialEq_for_mother_Outline.
+Module Impl_core_cmp_PartialEq_mother_Outline_for_mother_Outline.
   Definition Self : Ty.t := Ty.path "mother::Outline".
   
   Parameter eq : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
@@ -295,10 +295,10 @@ Module Impl_core_cmp_PartialEq_for_mother_Outline.
     M.IsTraitInstance
       "core::cmp::PartialEq"
       (* Trait polymorphic consts *) []
-      (* Trait polymorphic types *) []
+      (* Trait polymorphic types *) [ Ty.path "mother::Outline" ]
       Self
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
-End Impl_core_cmp_PartialEq_for_mother_Outline.
+End Impl_core_cmp_PartialEq_mother_Outline_for_mother_Outline.
 
 Module Impl_core_cmp_Eq_for_mother_Outline.
   Definition Self : Ty.t := Ty.path "mother::Outline".
@@ -378,7 +378,7 @@ Module Impl_core_marker_StructuralPartialEq_for_mother_Status.
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_mother_Status.
 
-Module Impl_core_cmp_PartialEq_for_mother_Status.
+Module Impl_core_cmp_PartialEq_mother_Status_for_mother_Status.
   Definition Self : Ty.t := Ty.path "mother::Status".
   
   Parameter eq : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
@@ -387,10 +387,10 @@ Module Impl_core_cmp_PartialEq_for_mother_Status.
     M.IsTraitInstance
       "core::cmp::PartialEq"
       (* Trait polymorphic consts *) []
-      (* Trait polymorphic types *) []
+      (* Trait polymorphic types *) [ Ty.path "mother::Status" ]
       Self
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
-End Impl_core_cmp_PartialEq_for_mother_Status.
+End Impl_core_cmp_PartialEq_mother_Status_for_mother_Status.
 
 Module Impl_core_cmp_Eq_for_mother_Status.
   Definition Self : Ty.t := Ty.path "mother::Status".
@@ -453,7 +453,7 @@ Module Impl_core_marker_StructuralPartialEq_for_mother_Auction.
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_mother_Auction.
 
-Module Impl_core_cmp_PartialEq_for_mother_Auction.
+Module Impl_core_cmp_PartialEq_mother_Auction_for_mother_Auction.
   Definition Self : Ty.t := Ty.path "mother::Auction".
   
   Parameter eq : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
@@ -462,10 +462,10 @@ Module Impl_core_cmp_PartialEq_for_mother_Auction.
     M.IsTraitInstance
       "core::cmp::PartialEq"
       (* Trait polymorphic consts *) []
-      (* Trait polymorphic types *) []
+      (* Trait polymorphic types *) [ Ty.path "mother::Auction" ]
       Self
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
-End Impl_core_cmp_PartialEq_for_mother_Auction.
+End Impl_core_cmp_PartialEq_mother_Auction_for_mother_Auction.
 
 Module Impl_core_cmp_Eq_for_mother_Auction.
   Definition Self : Ty.t := Ty.path "mother::Auction".
@@ -544,7 +544,7 @@ Module Impl_core_marker_StructuralPartialEq_for_mother_Failure.
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_mother_Failure.
 
-Module Impl_core_cmp_PartialEq_for_mother_Failure.
+Module Impl_core_cmp_PartialEq_mother_Failure_for_mother_Failure.
   Definition Self : Ty.t := Ty.path "mother::Failure".
   
   Parameter eq : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
@@ -553,10 +553,10 @@ Module Impl_core_cmp_PartialEq_for_mother_Failure.
     M.IsTraitInstance
       "core::cmp::PartialEq"
       (* Trait polymorphic consts *) []
-      (* Trait polymorphic types *) []
+      (* Trait polymorphic types *) [ Ty.path "mother::Failure" ]
       Self
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
-End Impl_core_cmp_PartialEq_for_mother_Failure.
+End Impl_core_cmp_PartialEq_mother_Failure_for_mother_Failure.
 
 Module Impl_core_cmp_Eq_for_mother_Failure.
   Definition Self : Ty.t := Ty.path "mother::Failure".

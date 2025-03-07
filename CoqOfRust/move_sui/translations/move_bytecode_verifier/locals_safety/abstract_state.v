@@ -199,7 +199,7 @@ Module locals_safety.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_move_bytecode_verifier_locals_safety_abstract_state_LocalState.
     
-    Module Impl_core_cmp_PartialEq_for_move_bytecode_verifier_locals_safety_abstract_state_LocalState.
+    Module Impl_core_cmp_PartialEq_move_bytecode_verifier_locals_safety_abstract_state_LocalState_for_move_bytecode_verifier_locals_safety_abstract_state_LocalState.
       Definition Self : Ty.t :=
         Ty.path "move_bytecode_verifier::locals_safety::abstract_state::LocalState".
       
@@ -246,10 +246,11 @@ Module locals_safety.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.path "move_bytecode_verifier::locals_safety::abstract_state::LocalState" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_move_bytecode_verifier_locals_safety_abstract_state_LocalState.
+    End Impl_core_cmp_PartialEq_move_bytecode_verifier_locals_safety_abstract_state_LocalState_for_move_bytecode_verifier_locals_safety_abstract_state_LocalState.
     
     Definition value_STEP_BASE_COST : Value.t :=
       M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 15 |))).
@@ -617,7 +618,7 @@ Module locals_safety.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_move_bytecode_verifier_locals_safety_abstract_state_AbstractState.
     
-    Module Impl_core_cmp_PartialEq_for_move_bytecode_verifier_locals_safety_abstract_state_AbstractState.
+    Module Impl_core_cmp_PartialEq_move_bytecode_verifier_locals_safety_abstract_state_AbstractState_for_move_bytecode_verifier_locals_safety_abstract_state_AbstractState.
       Definition Self : Ty.t :=
         Ty.path "move_bytecode_verifier::locals_safety::abstract_state::AbstractState".
       
@@ -768,10 +769,11 @@ Module locals_safety.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.path "move_bytecode_verifier::locals_safety::abstract_state::AbstractState" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_move_bytecode_verifier_locals_safety_abstract_state_AbstractState.
+    End Impl_core_cmp_PartialEq_move_bytecode_verifier_locals_safety_abstract_state_AbstractState_for_move_bytecode_verifier_locals_safety_abstract_state_AbstractState.
     
     Module Impl_move_bytecode_verifier_locals_safety_abstract_state_AbstractState.
       Definition Self : Ty.t :=

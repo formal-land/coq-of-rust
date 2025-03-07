@@ -1136,7 +1136,7 @@ Module raw_vec.
     Global Typeclasses Opaque from_nonnull_in.
     
     (*
-        pub fn ptr(&self) -> *mut T {
+        pub const fn ptr(&self) -> *mut T {
             self.inner.ptr()
         }
     *)
@@ -1214,7 +1214,7 @@ Module raw_vec.
     Global Typeclasses Opaque non_null.
     
     (*
-        pub fn capacity(&self) -> usize {
+        pub const fn capacity(&self) -> usize {
             self.inner.capacity(size_of::<T>())
         }
     *)
@@ -2473,7 +2473,7 @@ Module raw_vec.
     Global Typeclasses Opaque from_nonnull_in.
     
     (*
-        fn ptr<T>(&self) -> *mut T {
+        const fn ptr<T>(&self) -> *mut T {
             self.non_null::<T>().as_ptr()
         }
     *)
@@ -2514,8 +2514,8 @@ Module raw_vec.
     Global Typeclasses Opaque ptr.
     
     (*
-        fn non_null<T>(&self) -> NonNull<T> {
-            self.ptr.cast().into()
+        const fn non_null<T>(&self) -> NonNull<T> {
+            self.ptr.cast().as_non_null_ptr()
         }
     *)
     Definition non_null (A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -2526,12 +2526,9 @@ Module raw_vec.
           (let self := M.alloc (| self |) in
           M.call_closure (|
             Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-            M.get_trait_method (|
-              "core::convert::Into",
+            M.get_associated_function (|
               Ty.apply (Ty.path "core::ptr::unique::Unique") [] [ T ],
-              [],
-              [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] ],
-              "into",
+              "as_non_null_ptr",
               [],
               []
             |),
@@ -2566,7 +2563,7 @@ Module raw_vec.
     Global Typeclasses Opaque non_null.
     
     (*
-        fn capacity(&self, elem_size: usize) -> usize {
+        const fn capacity(&self, elem_size: usize) -> usize {
             if elem_size == 0 { usize::MAX } else { self.cap.0 }
         }
     *)

@@ -234,7 +234,7 @@ Module Impl_core_convert_From_subtle_Choice_for_bool.
       (* Instance *) [ ("from", InstanceField.Method from) ].
 End Impl_core_convert_From_subtle_Choice_for_bool.
 
-Module Impl_core_ops_bit_BitAnd_for_subtle_Choice.
+Module Impl_core_ops_bit_BitAnd_subtle_Choice_for_subtle_Choice.
   Definition Self : Ty.t := Ty.path "subtle::Choice".
   
   (*     type Output = Choice; *)
@@ -275,13 +275,13 @@ Module Impl_core_ops_bit_BitAnd_for_subtle_Choice.
     M.IsTraitInstance
       "core::ops::bit::BitAnd"
       (* Trait polymorphic consts *) []
-      (* Trait polymorphic types *) []
+      (* Trait polymorphic types *) [ Ty.path "subtle::Choice" ]
       Self
       (* Instance *)
       [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
-End Impl_core_ops_bit_BitAnd_for_subtle_Choice.
+End Impl_core_ops_bit_BitAnd_subtle_Choice_for_subtle_Choice.
 
-Module Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
+Module Impl_core_ops_bit_BitAndAssign_subtle_Choice_for_subtle_Choice.
   Definition Self : Ty.t := Ty.path "subtle::Choice".
   
   (*
@@ -324,12 +324,12 @@ Module Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
     M.IsTraitInstance
       "core::ops::bit::BitAndAssign"
       (* Trait polymorphic consts *) []
-      (* Trait polymorphic types *) []
+      (* Trait polymorphic types *) [ Ty.path "subtle::Choice" ]
       Self
       (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
-End Impl_core_ops_bit_BitAndAssign_for_subtle_Choice.
+End Impl_core_ops_bit_BitAndAssign_subtle_Choice_for_subtle_Choice.
 
-Module Impl_core_ops_bit_BitOr_for_subtle_Choice.
+Module Impl_core_ops_bit_BitOr_subtle_Choice_for_subtle_Choice.
   Definition Self : Ty.t := Ty.path "subtle::Choice".
   
   (*     type Output = Choice; *)
@@ -370,13 +370,13 @@ Module Impl_core_ops_bit_BitOr_for_subtle_Choice.
     M.IsTraitInstance
       "core::ops::bit::BitOr"
       (* Trait polymorphic consts *) []
-      (* Trait polymorphic types *) []
+      (* Trait polymorphic types *) [ Ty.path "subtle::Choice" ]
       Self
       (* Instance *)
       [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
-End Impl_core_ops_bit_BitOr_for_subtle_Choice.
+End Impl_core_ops_bit_BitOr_subtle_Choice_for_subtle_Choice.
 
-Module Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
+Module Impl_core_ops_bit_BitOrAssign_subtle_Choice_for_subtle_Choice.
   Definition Self : Ty.t := Ty.path "subtle::Choice".
   
   (*
@@ -419,12 +419,12 @@ Module Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
     M.IsTraitInstance
       "core::ops::bit::BitOrAssign"
       (* Trait polymorphic consts *) []
-      (* Trait polymorphic types *) []
+      (* Trait polymorphic types *) [ Ty.path "subtle::Choice" ]
       Self
       (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
-End Impl_core_ops_bit_BitOrAssign_for_subtle_Choice.
+End Impl_core_ops_bit_BitOrAssign_subtle_Choice_for_subtle_Choice.
 
-Module Impl_core_ops_bit_BitXor_for_subtle_Choice.
+Module Impl_core_ops_bit_BitXor_subtle_Choice_for_subtle_Choice.
   Definition Self : Ty.t := Ty.path "subtle::Choice".
   
   (*     type Output = Choice; *)
@@ -465,13 +465,13 @@ Module Impl_core_ops_bit_BitXor_for_subtle_Choice.
     M.IsTraitInstance
       "core::ops::bit::BitXor"
       (* Trait polymorphic consts *) []
-      (* Trait polymorphic types *) []
+      (* Trait polymorphic types *) [ Ty.path "subtle::Choice" ]
       Self
       (* Instance *)
       [ ("Output", InstanceField.Ty _Output); ("bitxor", InstanceField.Method bitxor) ].
-End Impl_core_ops_bit_BitXor_for_subtle_Choice.
+End Impl_core_ops_bit_BitXor_subtle_Choice_for_subtle_Choice.
 
-Module Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
+Module Impl_core_ops_bit_BitXorAssign_subtle_Choice_for_subtle_Choice.
   Definition Self : Ty.t := Ty.path "subtle::Choice".
   
   (*
@@ -514,10 +514,10 @@ Module Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
     M.IsTraitInstance
       "core::ops::bit::BitXorAssign"
       (* Trait polymorphic consts *) []
-      (* Trait polymorphic types *) []
+      (* Trait polymorphic types *) [ Ty.path "subtle::Choice" ]
       Self
       (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
-End Impl_core_ops_bit_BitXorAssign_for_subtle_Choice.
+End Impl_core_ops_bit_BitXorAssign_subtle_Choice_for_subtle_Choice.
 
 Module Impl_core_ops_bit_Not_for_subtle_Choice.
   Definition Self : Ty.t := Ty.path "subtle::Choice".

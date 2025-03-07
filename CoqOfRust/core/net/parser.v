@@ -7372,7 +7372,7 @@ Module net.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_net_parser_AddrKind.
     
-    Module Impl_core_cmp_PartialEq_for_core_net_parser_AddrKind.
+    Module Impl_core_cmp_PartialEq_core_net_parser_AddrKind_for_core_net_parser_AddrKind.
       Definition Self : Ty.t := Ty.path "core::net::parser::AddrKind".
       
       (* PartialEq *)
@@ -7416,10 +7416,10 @@ Module net.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::net::parser::AddrKind" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_core_net_parser_AddrKind.
+    End Impl_core_cmp_PartialEq_core_net_parser_AddrKind_for_core_net_parser_AddrKind.
     
     Module Impl_core_cmp_Eq_for_core_net_parser_AddrKind.
       Definition Self : Ty.t := Ty.path "core::net::parser::AddrKind".
@@ -7579,7 +7579,7 @@ Module net.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_net_parser_AddrParseError.
     
-    Module Impl_core_cmp_PartialEq_for_core_net_parser_AddrParseError.
+    Module Impl_core_cmp_PartialEq_core_net_parser_AddrParseError_for_core_net_parser_AddrParseError.
       Definition Self : Ty.t := Ty.path "core::net::parser::AddrParseError".
       
       (* PartialEq *)
@@ -7626,10 +7626,10 @@ Module net.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::net::parser::AddrParseError" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_core_net_parser_AddrParseError.
+    End Impl_core_cmp_PartialEq_core_net_parser_AddrParseError_for_core_net_parser_AddrParseError.
     
     Module Impl_core_cmp_Eq_for_core_net_parser_AddrParseError.
       Definition Self : Ty.t := Ty.path "core::net::parser::AddrParseError".

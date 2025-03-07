@@ -188,7 +188,7 @@ Module interpreter_action.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_revm_interpreter_interpreter_action_call_outcome_CallOutcome.
     
-    Module Impl_core_cmp_PartialEq_for_revm_interpreter_interpreter_action_call_outcome_CallOutcome.
+    Module Impl_core_cmp_PartialEq_revm_interpreter_interpreter_action_call_outcome_CallOutcome_for_revm_interpreter_interpreter_action_call_outcome_CallOutcome.
       Definition Self : Ty.t :=
         Ty.path "revm_interpreter::interpreter_action::call_outcome::CallOutcome".
       
@@ -269,10 +269,11 @@ Module interpreter_action.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.path "revm_interpreter::interpreter_action::call_outcome::CallOutcome" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_revm_interpreter_interpreter_action_call_outcome_CallOutcome.
+    End Impl_core_cmp_PartialEq_revm_interpreter_interpreter_action_call_outcome_CallOutcome_for_revm_interpreter_interpreter_action_call_outcome_CallOutcome.
     
     Module Impl_core_cmp_Eq_for_revm_interpreter_interpreter_action_call_outcome_CallOutcome.
       Definition Self : Ty.t :=

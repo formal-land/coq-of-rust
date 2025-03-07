@@ -949,13 +949,7 @@ Module array.
     
     (*
         fn try_from(slice: &'a [T]) -> Result<&'a [T; N], TryFromSliceError> {
-            if slice.len() == N {
-                let ptr = slice.as_ptr() as *const [T; N];
-                // SAFETY: ok because we just checked that the length fits
-                unsafe { Ok(&*ptr) }
-            } else {
-                Err(TryFromSliceError(()))
-            }
+            slice.as_array().ok_or(TryFromSliceError(()))
         }
     *)
     Definition try_from
@@ -970,78 +964,39 @@ Module array.
       | [], [], [ slice ] =>
         ltac:(M.monadic
           (let slice := M.alloc (| slice |) in
-          M.read (|
-            M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [
-                    Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ];
-                    Ty.path "core::array::TryFromSliceError"
-                  ]),
-              M.alloc (| Value.Tuple [] |),
+          M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
               [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ :=
-                      M.use
-                        (M.alloc (|
-                          BinOp.eq (|
-                            M.call_closure (|
-                              Ty.path "usize",
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "slice") [] [ T ],
-                                "len",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |) ]
-                            |),
-                            M.read (| M.get_constant "core::array::N" |)
-                          |)
-                        |)) in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    let~ ptr :
-                        Ty.apply (Ty.path "*const") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ] :=
-                      M.alloc (|
-                        M.cast
-                          (Ty.apply
-                            (Ty.path "*const")
-                            []
-                            [ Ty.apply (Ty.path "array") [ N ] [ T ] ])
-                          (M.call_closure (|
-                            Ty.apply (Ty.path "*const") [] [ T ],
-                            M.get_associated_function (|
-                              Ty.apply (Ty.path "slice") [] [ T ],
-                              "as_ptr",
-                              [],
-                              []
-                            |),
-                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |) ]
-                          |))
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "core::result::Result::Ok"
-                        [
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (|
-                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| ptr |) |) |)
-                            |)
-                          |)
-                        ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (M.alloc (|
-                      Value.StructTuple
-                        "core::result::Result::Err"
-                        [ Value.StructTuple "core::array::TryFromSliceError" [ Value.Tuple [] ] ]
-                    |)))
-              ]
-            |)
+                Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ];
+                Ty.path "core::array::TryFromSliceError"
+              ],
+            M.get_associated_function (|
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ] ],
+              "ok_or",
+              [],
+              [ Ty.path "core::array::TryFromSliceError" ]
+            |),
+            [
+              M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ] ],
+                M.get_associated_function (|
+                  Ty.apply (Ty.path "slice") [] [ T ],
+                  "as_array",
+                  [ N ],
+                  []
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |) ]
+              |);
+              Value.StructTuple "core::array::TryFromSliceError" [ Value.Tuple [] ]
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1070,13 +1025,7 @@ Module array.
     
     (*
         fn try_from(slice: &'a mut [T]) -> Result<&'a mut [T; N], TryFromSliceError> {
-            if slice.len() == N {
-                let ptr = slice.as_mut_ptr() as *mut [T; N];
-                // SAFETY: ok because we just checked that the length fits
-                unsafe { Ok(&mut *ptr) }
-            } else {
-                Err(TryFromSliceError(()))
-            }
+            slice.as_mut_array().ok_or(TryFromSliceError(()))
         }
     *)
     Definition try_from
@@ -1091,75 +1040,39 @@ Module array.
       | [], [], [ slice ] =>
         ltac:(M.monadic
           (let slice := M.alloc (| slice |) in
-          M.read (|
-            M.match_operator (|
-              Some
-                (Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [
-                    Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ];
-                    Ty.path "core::array::TryFromSliceError"
-                  ]),
-              M.alloc (| Value.Tuple [] |),
+          M.call_closure (|
+            Ty.apply
+              (Ty.path "core::result::Result")
+              []
               [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ :=
-                      M.use
-                        (M.alloc (|
-                          BinOp.eq (|
-                            M.call_closure (|
-                              Ty.path "usize",
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "slice") [] [ T ],
-                                "len",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |) ]
-                            |),
-                            M.read (| M.get_constant "core::array::N" |)
-                          |)
-                        |)) in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    let~ ptr :
-                        Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ] :=
-                      M.alloc (|
-                        M.cast
-                          (Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ])
-                          (M.call_closure (|
-                            Ty.apply (Ty.path "*mut") [] [ T ],
-                            M.get_associated_function (|
-                              Ty.apply (Ty.path "slice") [] [ T ],
-                              "as_mut_ptr",
-                              [],
-                              []
-                            |),
-                            [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| slice |) |) |) ]
-                          |))
-                      |) in
-                    M.alloc (|
-                      Value.StructTuple
-                        "core::result::Result::Ok"
-                        [
-                          M.borrow (|
-                            Pointer.Kind.MutRef,
-                            M.deref (|
-                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| ptr |) |) |)
-                            |)
-                          |)
-                        ]
-                    |)));
-                fun γ =>
-                  ltac:(M.monadic
-                    (M.alloc (|
-                      Value.StructTuple
-                        "core::result::Result::Err"
-                        [ Value.StructTuple "core::array::TryFromSliceError" [ Value.Tuple [] ] ]
-                    |)))
-              ]
-            |)
+                Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ];
+                Ty.path "core::array::TryFromSliceError"
+              ],
+            M.get_associated_function (|
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ] ],
+              "ok_or",
+              [],
+              [ Ty.path "core::array::TryFromSliceError" ]
+            |),
+            [
+              M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ] ],
+                M.get_associated_function (|
+                  Ty.apply (Ty.path "slice") [] [ T ],
+                  "as_mut_array",
+                  [ N ],
+                  []
+                |),
+                [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| slice |) |) |) ]
+              |);
+              Value.StructTuple "core::array::TryFromSliceError" [ Value.Tuple [] ]
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1607,7 +1520,7 @@ Module array.
         (* Instance *) [ ("index_mut", InstanceField.Method (index_mut N T I)) ].
   End Impl_core_ops_index_IndexMut_where_core_ops_index_IndexMut_slice_T_I_I_for_array_N_T.
   
-  Module Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_for_array_N_T.
+  Module Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_array_N_T_for_array_N_T.
     Definition Self (N : Value.t) (T : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ N ] [ T ].
     
     (*
@@ -2100,7 +2013,7 @@ Module array.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "array") [ N ] [ T ] ]
         (Self N T)
         (* Instance *)
         [
@@ -2110,7 +2023,7 @@ Module array.
           ("ge", InstanceField.Method (ge N T));
           ("gt", InstanceField.Method (gt N T))
         ].
-  End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_for_array_N_T.
+  End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_array_N_T_for_array_N_T.
   
   Module Impl_core_cmp_Ord_where_core_cmp_Ord_T_for_array_N_T.
     Definition Self (N : Value.t) (T : Ty.t) : Ty.t := Ty.apply (Ty.path "array") [ N ] [ T ].
@@ -6179,7 +6092,7 @@ Module array.
     Global Typeclasses Opaque as_slice.
     
     (*
-        pub fn as_mut_slice(&mut self) -> &mut [T] {
+        pub const fn as_mut_slice(&mut self) -> &mut [T] {
             self
         }
     *)
@@ -6209,8 +6122,19 @@ Module array.
     Global Typeclasses Opaque as_mut_slice.
     
     (*
-        pub fn each_ref(&self) -> [&T; N] {
-            from_trusted_iterator(self.iter())
+        pub const fn each_ref(&self) -> [&T; N] {
+            let mut buf = [null::<T>(); N];
+    
+            // FIXME(const-hack): We would like to simply use iterators for this (as in the original implementation), but this is not allowed in constant expressions.
+            let mut i = 0;
+            while i < N {
+                buf[i] = &raw const self[i];
+    
+                i += 1;
+            }
+    
+            // SAFETY: `*const T` has the same layout as `&T`, and we've also initialised each pointer as a valid reference.
+            unsafe { transmute_unchecked(buf) }
         }
     *)
     Definition each_ref
@@ -6225,23 +6149,92 @@ Module array.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            Ty.apply (Ty.path "array") [ N ] [ Ty.apply (Ty.path "&") [] [ T ] ],
-            M.get_function (|
-              "core::array::from_trusted_iterator",
-              [ N ],
-              [
-                Ty.apply (Ty.path "&") [] [ T ];
-                Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ]
-              ]
-            |),
-            [
+          M.read (|
+            let~ buf : Ty.apply (Ty.path "array") [ N ] [ Ty.apply (Ty.path "*const") [] [ T ] ] :=
+              M.alloc (|
+                repeat (|
+                  M.call_closure (|
+                    Ty.apply (Ty.path "*const") [] [ T ],
+                    M.get_function (| "core::ptr::null", [], [ T ] |),
+                    []
+                  |),
+                  N
+                |)
+              |) in
+            let~ i : Ty.path "usize" := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
+            let~ _ : Ty.tuple [] :=
+              M.loop (|
+                Ty.tuple [],
+                ltac:(M.monadic
+                  (M.match_operator (|
+                    Some (Ty.tuple []),
+                    M.alloc (| Value.Tuple [] |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ :=
+                            M.use
+                              (M.alloc (|
+                                BinOp.lt (|
+                                  M.read (| i |),
+                                  M.read (| M.get_constant "core::array::N" |)
+                                |)
+                              |)) in
+                          let _ :=
+                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          let~ _ : Ty.tuple [] :=
+                            M.alloc (|
+                              M.write (|
+                                M.SubPointer.get_array_field (| buf, M.read (| i |) |),
+                                M.borrow (|
+                                  Pointer.Kind.ConstPointer,
+                                  M.SubPointer.get_array_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    M.read (| i |)
+                                  |)
+                                |)
+                              |)
+                            |) in
+                          let~ _ : Ty.tuple [] :=
+                            M.alloc (|
+                              let β := i in
+                              M.write (|
+                                β,
+                                BinOp.Wrap.add (|
+                                  M.read (| β |),
+                                  Value.Integer IntegerKind.Usize 1
+                                |)
+                              |)
+                            |) in
+                          M.alloc (| Value.Tuple [] |)));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (M.alloc (|
+                            M.never_to_any (|
+                              M.read (|
+                                let~ _ : Ty.tuple [] :=
+                                  M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
+                                M.alloc (| Value.Tuple [] |)
+                              |)
+                            |)
+                          |)))
+                    ]
+                  |)))
+              |) in
+            M.alloc (|
               M.call_closure (|
-                Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
-                M.get_associated_function (| Ty.apply (Ty.path "slice") [] [ T ], "iter", [], [] |),
-                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                Ty.apply (Ty.path "array") [ N ] [ Ty.apply (Ty.path "&") [] [ T ] ],
+                M.get_function (|
+                  "core::intrinsics::transmute_unchecked",
+                  [],
+                  [
+                    Ty.apply (Ty.path "array") [ N ] [ Ty.apply (Ty.path "*const") [] [ T ] ];
+                    Ty.apply (Ty.path "array") [ N ] [ Ty.apply (Ty.path "&") [] [ T ] ]
+                  ]
+                |),
+                [ M.read (| buf |) ]
               |)
-            ]
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -6253,8 +6246,19 @@ Module array.
     Global Typeclasses Opaque each_ref.
     
     (*
-        pub fn each_mut(&mut self) -> [&mut T; N] {
-            from_trusted_iterator(self.iter_mut())
+        pub const fn each_mut(&mut self) -> [&mut T; N] {
+            let mut buf = [null_mut::<T>(); N];
+    
+            // FIXME(const-hack): We would like to simply use iterators for this (as in the original implementation), but this is not allowed in constant expressions.
+            let mut i = 0;
+            while i < N {
+                buf[i] = &raw mut self[i];
+    
+                i += 1;
+            }
+    
+            // SAFETY: `*mut T` has the same layout as `&mut T`, and we've also initialised each pointer as a valid reference.
+            unsafe { transmute_unchecked(buf) }
         }
     *)
     Definition each_mut
@@ -6269,28 +6273,92 @@ Module array.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.call_closure (|
-            Ty.apply (Ty.path "array") [ N ] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
-            M.get_function (|
-              "core::array::from_trusted_iterator",
-              [ N ],
-              [
-                Ty.apply (Ty.path "&mut") [] [ T ];
-                Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ]
-              ]
-            |),
-            [
+          M.read (|
+            let~ buf : Ty.apply (Ty.path "array") [ N ] [ Ty.apply (Ty.path "*mut") [] [ T ] ] :=
+              M.alloc (|
+                repeat (|
+                  M.call_closure (|
+                    Ty.apply (Ty.path "*mut") [] [ T ],
+                    M.get_function (| "core::ptr::null_mut", [], [ T ] |),
+                    []
+                  |),
+                  N
+                |)
+              |) in
+            let~ i : Ty.path "usize" := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
+            let~ _ : Ty.tuple [] :=
+              M.loop (|
+                Ty.tuple [],
+                ltac:(M.monadic
+                  (M.match_operator (|
+                    Some (Ty.tuple []),
+                    M.alloc (| Value.Tuple [] |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ :=
+                            M.use
+                              (M.alloc (|
+                                BinOp.lt (|
+                                  M.read (| i |),
+                                  M.read (| M.get_constant "core::array::N" |)
+                                |)
+                              |)) in
+                          let _ :=
+                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          let~ _ : Ty.tuple [] :=
+                            M.alloc (|
+                              M.write (|
+                                M.SubPointer.get_array_field (| buf, M.read (| i |) |),
+                                M.borrow (|
+                                  Pointer.Kind.MutPointer,
+                                  M.SubPointer.get_array_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    M.read (| i |)
+                                  |)
+                                |)
+                              |)
+                            |) in
+                          let~ _ : Ty.tuple [] :=
+                            M.alloc (|
+                              let β := i in
+                              M.write (|
+                                β,
+                                BinOp.Wrap.add (|
+                                  M.read (| β |),
+                                  Value.Integer IntegerKind.Usize 1
+                                |)
+                              |)
+                            |) in
+                          M.alloc (| Value.Tuple [] |)));
+                      fun γ =>
+                        ltac:(M.monadic
+                          (M.alloc (|
+                            M.never_to_any (|
+                              M.read (|
+                                let~ _ : Ty.tuple [] :=
+                                  M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
+                                M.alloc (| Value.Tuple [] |)
+                              |)
+                            |)
+                          |)))
+                    ]
+                  |)))
+              |) in
+            M.alloc (|
               M.call_closure (|
-                Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
-                M.get_associated_function (|
-                  Ty.apply (Ty.path "slice") [] [ T ],
-                  "iter_mut",
+                Ty.apply (Ty.path "array") [ N ] [ Ty.apply (Ty.path "&mut") [] [ T ] ],
+                M.get_function (|
+                  "core::intrinsics::transmute_unchecked",
                   [],
-                  []
+                  [
+                    Ty.apply (Ty.path "array") [ N ] [ Ty.apply (Ty.path "*mut") [] [ T ] ];
+                    Ty.apply (Ty.path "array") [ N ] [ Ty.apply (Ty.path "&mut") [] [ T ] ]
+                  ]
                 |),
-                [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) ]
+                [ M.read (| buf |) ]
               |)
-            ]
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -6928,10 +6996,6 @@ Module array.
       M.IsFunction.Trait "core::array::try_from_trusted_iterator::next" next.
     Admitted.
     Global Typeclasses Opaque next.
-    
-    Module next.
-      (* Error OpaqueTy *)
-    End next.
   End try_from_trusted_iterator.
   
   (*

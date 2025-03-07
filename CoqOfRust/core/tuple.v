@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module tuple.
-  Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_for_Tuple_T_.
+  Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_Tuple_T__for_Tuple_T_.
     Definition Self (T : Ty.t) : Ty.t := Ty.tuple [ T ].
     
     (*
@@ -68,10 +68,10 @@ Module tuple.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.tuple [ T ] ]
         (Self T)
         (* Instance *) [ ("eq", InstanceField.Method (eq T)); ("ne", InstanceField.Method (ne T)) ].
-  End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_for_Tuple_T_.
+  End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_Tuple_T__for_Tuple_T_.
   
   Module Impl_core_cmp_Eq_where_core_cmp_Eq_T_where_core_marker_Sized_T_for_Tuple_T_.
     Definition Self (T : Ty.t) : Ty.t := Ty.tuple [ T ].
@@ -125,7 +125,7 @@ Module tuple.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_Tuple_T_.
   
-  Module Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_where_core_marker_Sized_T_for_Tuple_T_.
+  Module Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_where_core_marker_Sized_T_Tuple_T__for_Tuple_T_.
     Definition Self (T : Ty.t) : Ty.t := Ty.tuple [ T ].
     
     (*
@@ -323,7 +323,7 @@ Module tuple.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.tuple [ T ] ]
         (Self T)
         (* Instance *)
         [
@@ -333,7 +333,7 @@ Module tuple.
           ("ge", InstanceField.Method (ge T));
           ("gt", InstanceField.Method (gt T))
         ].
-  End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_where_core_marker_Sized_T_for_Tuple_T_.
+  End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_where_core_marker_Sized_T_Tuple_T__for_Tuple_T_.
   
   Module Impl_core_cmp_Ord_where_core_cmp_Ord_T_where_core_marker_Sized_T_for_Tuple_T_.
     Definition Self (T : Ty.t) : Ty.t := Ty.tuple [ T ].
@@ -514,7 +514,7 @@ Module tuple.
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
   End Impl_core_convert_From_Tuple_T__for_array_Usize_1_T.
   
-  Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_U_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_for_Tuple_U_T_.
+  Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_U_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_Tuple_U_T__for_Tuple_U_T_.
     Definition Self (U T : Ty.t) : Ty.t := Ty.tuple [ U; T ].
     
     (*
@@ -614,11 +614,11 @@ Module tuple.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.tuple [ U; T ] ]
         (Self U T)
         (* Instance *)
         [ ("eq", InstanceField.Method (eq U T)); ("ne", InstanceField.Method (ne U T)) ].
-  End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_U_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_for_Tuple_U_T_.
+  End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_U_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_Tuple_U_T__for_Tuple_U_T_.
   
   Module Impl_core_cmp_Eq_where_core_cmp_Eq_U_where_core_cmp_Eq_T_where_core_marker_Sized_T_for_Tuple_U_T_.
     Definition Self (U T : Ty.t) : Ty.t := Ty.tuple [ U; T ].
@@ -672,7 +672,7 @@ Module tuple.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_Tuple_U_T_.
   
-  Module Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_U_where_core_cmp_PartialOrd_T_where_core_marker_Sized_T_for_Tuple_U_T_.
+  Module Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_U_where_core_cmp_PartialOrd_T_where_core_marker_Sized_T_Tuple_U_T__for_Tuple_U_T_.
     Definition Self (U T : Ty.t) : Ty.t := Ty.tuple [ U; T ].
     
     (*
@@ -1467,7 +1467,7 @@ Module tuple.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.tuple [ U; T ] ]
         (Self U T)
         (* Instance *)
         [
@@ -1477,7 +1477,7 @@ Module tuple.
           ("ge", InstanceField.Method (ge U T));
           ("gt", InstanceField.Method (gt U T))
         ].
-  End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_U_where_core_cmp_PartialOrd_T_where_core_marker_Sized_T_for_Tuple_U_T_.
+  End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_U_where_core_cmp_PartialOrd_T_where_core_marker_Sized_T_Tuple_U_T__for_Tuple_U_T_.
   
   Module Impl_core_cmp_Ord_where_core_cmp_Ord_U_where_core_cmp_Ord_T_where_core_marker_Sized_T_for_Tuple_U_T_.
     Definition Self (U T : Ty.t) : Ty.t := Ty.tuple [ U; T ].
@@ -1721,7 +1721,7 @@ Module tuple.
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
   End Impl_core_convert_From_Tuple_T_T__for_array_Usize_2_T.
   
-  Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_V_where_core_cmp_PartialEq_U_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_for_Tuple_V_U_T_.
+  Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_V_where_core_cmp_PartialEq_U_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_Tuple_V_U_T__for_Tuple_V_U_T_.
     Definition Self (V U T : Ty.t) : Ty.t := Ty.tuple [ V; U; T ].
     
     (*
@@ -1855,11 +1855,11 @@ Module tuple.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.tuple [ V; U; T ] ]
         (Self V U T)
         (* Instance *)
         [ ("eq", InstanceField.Method (eq V U T)); ("ne", InstanceField.Method (ne V U T)) ].
-  End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_V_where_core_cmp_PartialEq_U_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_for_Tuple_V_U_T_.
+  End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_V_where_core_cmp_PartialEq_U_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_Tuple_V_U_T__for_Tuple_V_U_T_.
   
   Module Impl_core_cmp_Eq_where_core_cmp_Eq_V_where_core_cmp_Eq_U_where_core_cmp_Eq_T_where_core_marker_Sized_T_for_Tuple_V_U_T_.
     Definition Self (V U T : Ty.t) : Ty.t := Ty.tuple [ V; U; T ].
@@ -1913,7 +1913,7 @@ Module tuple.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_Tuple_V_U_T_.
   
-  Module Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_V_where_core_cmp_PartialOrd_U_where_core_cmp_PartialOrd_T_where_core_marker_Sized_T_for_Tuple_V_U_T_.
+  Module Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_V_where_core_cmp_PartialOrd_U_where_core_cmp_PartialOrd_T_where_core_marker_Sized_T_Tuple_V_U_T__for_Tuple_V_U_T_.
     Definition Self (V U T : Ty.t) : Ty.t := Ty.tuple [ V; U; T ].
     
     (*
@@ -3285,7 +3285,7 @@ Module tuple.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.tuple [ V; U; T ] ]
         (Self V U T)
         (* Instance *)
         [
@@ -3295,7 +3295,7 @@ Module tuple.
           ("ge", InstanceField.Method (ge V U T));
           ("gt", InstanceField.Method (gt V U T))
         ].
-  End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_V_where_core_cmp_PartialOrd_U_where_core_cmp_PartialOrd_T_where_core_marker_Sized_T_for_Tuple_V_U_T_.
+  End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_V_where_core_cmp_PartialOrd_U_where_core_cmp_PartialOrd_T_where_core_marker_Sized_T_Tuple_V_U_T__for_Tuple_V_U_T_.
   
   Module Impl_core_cmp_Ord_where_core_cmp_Ord_V_where_core_cmp_Ord_U_where_core_cmp_Ord_T_where_core_marker_Sized_T_for_Tuple_V_U_T_.
     Definition Self (V U T : Ty.t) : Ty.t := Ty.tuple [ V; U; T ].
@@ -3607,7 +3607,7 @@ Module tuple.
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
   End Impl_core_convert_From_Tuple_T_T_T__for_array_Usize_3_T.
   
-  Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_W_where_core_cmp_PartialEq_V_where_core_cmp_PartialEq_U_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_for_Tuple_W_V_U_T_.
+  Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_W_where_core_cmp_PartialEq_V_where_core_cmp_PartialEq_U_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_Tuple_W_V_U_T__for_Tuple_W_V_U_T_.
     Definition Self (W V U T : Ty.t) : Ty.t := Ty.tuple [ W; V; U; T ].
     
     (*
@@ -3775,11 +3775,11 @@ Module tuple.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.tuple [ W; V; U; T ] ]
         (Self W V U T)
         (* Instance *)
         [ ("eq", InstanceField.Method (eq W V U T)); ("ne", InstanceField.Method (ne W V U T)) ].
-  End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_W_where_core_cmp_PartialEq_V_where_core_cmp_PartialEq_U_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_for_Tuple_W_V_U_T_.
+  End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_W_where_core_cmp_PartialEq_V_where_core_cmp_PartialEq_U_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_Tuple_W_V_U_T__for_Tuple_W_V_U_T_.
   
   Module Impl_core_cmp_Eq_where_core_cmp_Eq_W_where_core_cmp_Eq_V_where_core_cmp_Eq_U_where_core_cmp_Eq_T_where_core_marker_Sized_T_for_Tuple_W_V_U_T_.
     Definition Self (W V U T : Ty.t) : Ty.t := Ty.tuple [ W; V; U; T ].
@@ -3833,7 +3833,7 @@ Module tuple.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_Tuple_W_V_U_T_.
   
-  Module Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_W_where_core_cmp_PartialOrd_V_where_core_cmp_PartialOrd_U_where_core_cmp_PartialOrd_T_where_core_marker_Sized_T_for_Tuple_W_V_U_T_.
+  Module Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_W_where_core_cmp_PartialOrd_V_where_core_cmp_PartialOrd_U_where_core_cmp_PartialOrd_T_where_core_marker_Sized_T_Tuple_W_V_U_T__for_Tuple_W_V_U_T_.
     Definition Self (W V U T : Ty.t) : Ty.t := Ty.tuple [ W; V; U; T ].
     
     (*
@@ -5814,7 +5814,7 @@ Module tuple.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.tuple [ W; V; U; T ] ]
         (Self W V U T)
         (* Instance *)
         [
@@ -5824,7 +5824,7 @@ Module tuple.
           ("ge", InstanceField.Method (ge W V U T));
           ("gt", InstanceField.Method (gt W V U T))
         ].
-  End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_W_where_core_cmp_PartialOrd_V_where_core_cmp_PartialOrd_U_where_core_cmp_PartialOrd_T_where_core_marker_Sized_T_for_Tuple_W_V_U_T_.
+  End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_W_where_core_cmp_PartialOrd_V_where_core_cmp_PartialOrd_U_where_core_cmp_PartialOrd_T_where_core_marker_Sized_T_Tuple_W_V_U_T__for_Tuple_W_V_U_T_.
   
   Module Impl_core_cmp_Ord_where_core_cmp_Ord_W_where_core_cmp_Ord_V_where_core_cmp_Ord_U_where_core_cmp_Ord_T_where_core_marker_Sized_T_for_Tuple_W_V_U_T_.
     Definition Self (W V U T : Ty.t) : Ty.t := Ty.tuple [ W; V; U; T ].
@@ -6225,7 +6225,7 @@ Module tuple.
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
   End Impl_core_convert_From_Tuple_T_T_T_T__for_array_Usize_4_T.
   
-  Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_X_where_core_cmp_PartialEq_W_where_core_cmp_PartialEq_V_where_core_cmp_PartialEq_U_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_for_Tuple_X_W_V_U_T_.
+  Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_X_where_core_cmp_PartialEq_W_where_core_cmp_PartialEq_V_where_core_cmp_PartialEq_U_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_Tuple_X_W_V_U_T__for_Tuple_X_W_V_U_T_.
     Definition Self (X W V U T : Ty.t) : Ty.t := Ty.tuple [ X; W; V; U; T ].
     
     (*
@@ -6427,12 +6427,12 @@ Module tuple.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.tuple [ X; W; V; U; T ] ]
         (Self X W V U T)
         (* Instance *)
         [ ("eq", InstanceField.Method (eq X W V U T)); ("ne", InstanceField.Method (ne X W V U T))
         ].
-  End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_X_where_core_cmp_PartialEq_W_where_core_cmp_PartialEq_V_where_core_cmp_PartialEq_U_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_for_Tuple_X_W_V_U_T_.
+  End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_X_where_core_cmp_PartialEq_W_where_core_cmp_PartialEq_V_where_core_cmp_PartialEq_U_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_Tuple_X_W_V_U_T__for_Tuple_X_W_V_U_T_.
   
   Module Impl_core_cmp_Eq_where_core_cmp_Eq_X_where_core_cmp_Eq_W_where_core_cmp_Eq_V_where_core_cmp_Eq_U_where_core_cmp_Eq_T_where_core_marker_Sized_T_for_Tuple_X_W_V_U_T_.
     Definition Self (X W V U T : Ty.t) : Ty.t := Ty.tuple [ X; W; V; U; T ].
@@ -6486,7 +6486,7 @@ Module tuple.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_Tuple_X_W_V_U_T_.
   
-  Module Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_X_where_core_cmp_PartialOrd_W_where_core_cmp_PartialOrd_V_where_core_cmp_PartialOrd_U_where_core_cmp_PartialOrd_T_where_core_marker_Sized_T_for_Tuple_X_W_V_U_T_.
+  Module Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_X_where_core_cmp_PartialOrd_W_where_core_cmp_PartialOrd_V_where_core_cmp_PartialOrd_U_where_core_cmp_PartialOrd_T_where_core_marker_Sized_T_Tuple_X_W_V_U_T__for_Tuple_X_W_V_U_T_.
     Definition Self (X W V U T : Ty.t) : Ty.t := Ty.tuple [ X; W; V; U; T ].
     
     (*
@@ -9087,7 +9087,7 @@ Module tuple.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.tuple [ X; W; V; U; T ] ]
         (Self X W V U T)
         (* Instance *)
         [
@@ -9097,7 +9097,7 @@ Module tuple.
           ("ge", InstanceField.Method (ge X W V U T));
           ("gt", InstanceField.Method (gt X W V U T))
         ].
-  End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_X_where_core_cmp_PartialOrd_W_where_core_cmp_PartialOrd_V_where_core_cmp_PartialOrd_U_where_core_cmp_PartialOrd_T_where_core_marker_Sized_T_for_Tuple_X_W_V_U_T_.
+  End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_X_where_core_cmp_PartialOrd_W_where_core_cmp_PartialOrd_V_where_core_cmp_PartialOrd_U_where_core_cmp_PartialOrd_T_where_core_marker_Sized_T_Tuple_X_W_V_U_T__for_Tuple_X_W_V_U_T_.
   
   Module Impl_core_cmp_Ord_where_core_cmp_Ord_X_where_core_cmp_Ord_W_where_core_cmp_Ord_V_where_core_cmp_Ord_U_where_core_cmp_Ord_T_where_core_marker_Sized_T_for_Tuple_X_W_V_U_T_.
     Definition Self (X W V U T : Ty.t) : Ty.t := Ty.tuple [ X; W; V; U; T ].
@@ -9579,7 +9579,7 @@ Module tuple.
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
   End Impl_core_convert_From_Tuple_T_T_T_T_T__for_array_Usize_5_T.
   
-  Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_Y_where_core_cmp_PartialEq_X_where_core_cmp_PartialEq_W_where_core_cmp_PartialEq_V_where_core_cmp_PartialEq_U_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_for_Tuple_Y_X_W_V_U_T_.
+  Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_Y_where_core_cmp_PartialEq_X_where_core_cmp_PartialEq_W_where_core_cmp_PartialEq_V_where_core_cmp_PartialEq_U_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_Tuple_Y_X_W_V_U_T__for_Tuple_Y_X_W_V_U_T_.
     Definition Self (Y X W V U T : Ty.t) : Ty.t := Ty.tuple [ Y; X; W; V; U; T ].
     
     (*
@@ -9815,14 +9815,14 @@ Module tuple.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.tuple [ Y; X; W; V; U; T ] ]
         (Self Y X W V U T)
         (* Instance *)
         [
           ("eq", InstanceField.Method (eq Y X W V U T));
           ("ne", InstanceField.Method (ne Y X W V U T))
         ].
-  End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_Y_where_core_cmp_PartialEq_X_where_core_cmp_PartialEq_W_where_core_cmp_PartialEq_V_where_core_cmp_PartialEq_U_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_for_Tuple_Y_X_W_V_U_T_.
+  End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_Y_where_core_cmp_PartialEq_X_where_core_cmp_PartialEq_W_where_core_cmp_PartialEq_V_where_core_cmp_PartialEq_U_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_Tuple_Y_X_W_V_U_T__for_Tuple_Y_X_W_V_U_T_.
   
   Module Impl_core_cmp_Eq_where_core_cmp_Eq_Y_where_core_cmp_Eq_X_where_core_cmp_Eq_W_where_core_cmp_Eq_V_where_core_cmp_Eq_U_where_core_cmp_Eq_T_where_core_marker_Sized_T_for_Tuple_Y_X_W_V_U_T_.
     Definition Self (Y X W V U T : Ty.t) : Ty.t := Ty.tuple [ Y; X; W; V; U; T ].
@@ -9876,7 +9876,7 @@ Module tuple.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_Tuple_Y_X_W_V_U_T_.
   
-  Module Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_Y_where_core_cmp_PartialOrd_X_where_core_cmp_PartialOrd_W_where_core_cmp_PartialOrd_V_where_core_cmp_PartialOrd_U_where_core_cmp_PartialOrd_T_where_core_marker_Sized_T_for_Tuple_Y_X_W_V_U_T_.
+  Module Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_Y_where_core_cmp_PartialOrd_X_where_core_cmp_PartialOrd_W_where_core_cmp_PartialOrd_V_where_core_cmp_PartialOrd_U_where_core_cmp_PartialOrd_T_where_core_marker_Sized_T_Tuple_Y_X_W_V_U_T__for_Tuple_Y_X_W_V_U_T_.
     Definition Self (Y X W V U T : Ty.t) : Ty.t := Ty.tuple [ Y; X; W; V; U; T ].
     
     (*
@@ -13097,7 +13097,7 @@ Module tuple.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.tuple [ Y; X; W; V; U; T ] ]
         (Self Y X W V U T)
         (* Instance *)
         [
@@ -13107,7 +13107,7 @@ Module tuple.
           ("ge", InstanceField.Method (ge Y X W V U T));
           ("gt", InstanceField.Method (gt Y X W V U T))
         ].
-  End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_Y_where_core_cmp_PartialOrd_X_where_core_cmp_PartialOrd_W_where_core_cmp_PartialOrd_V_where_core_cmp_PartialOrd_U_where_core_cmp_PartialOrd_T_where_core_marker_Sized_T_for_Tuple_Y_X_W_V_U_T_.
+  End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_Y_where_core_cmp_PartialOrd_X_where_core_cmp_PartialOrd_W_where_core_cmp_PartialOrd_V_where_core_cmp_PartialOrd_U_where_core_cmp_PartialOrd_T_where_core_marker_Sized_T_Tuple_Y_X_W_V_U_T__for_Tuple_Y_X_W_V_U_T_.
   
   Module Impl_core_cmp_Ord_where_core_cmp_Ord_Y_where_core_cmp_Ord_X_where_core_cmp_Ord_W_where_core_cmp_Ord_V_where_core_cmp_Ord_U_where_core_cmp_Ord_T_where_core_marker_Sized_T_for_Tuple_Y_X_W_V_U_T_.
     Definition Self (Y X W V U T : Ty.t) : Ty.t := Ty.tuple [ Y; X; W; V; U; T ].
@@ -13665,7 +13665,7 @@ Module tuple.
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
   End Impl_core_convert_From_Tuple_T_T_T_T_T_T__for_array_Usize_6_T.
   
-  Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_Z_where_core_cmp_PartialEq_Y_where_core_cmp_PartialEq_X_where_core_cmp_PartialEq_W_where_core_cmp_PartialEq_V_where_core_cmp_PartialEq_U_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_for_Tuple_Z_Y_X_W_V_U_T_.
+  Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_Z_where_core_cmp_PartialEq_Y_where_core_cmp_PartialEq_X_where_core_cmp_PartialEq_W_where_core_cmp_PartialEq_V_where_core_cmp_PartialEq_U_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_Tuple_Z_Y_X_W_V_U_T__for_Tuple_Z_Y_X_W_V_U_T_.
     Definition Self (Z Y X W V U T : Ty.t) : Ty.t := Ty.tuple [ Z; Y; X; W; V; U; T ].
     
     (*
@@ -13961,14 +13961,14 @@ Module tuple.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.tuple [ Z; Y; X; W; V; U; T ] ]
         (Self Z Y X W V U T)
         (* Instance *)
         [
           ("eq", InstanceField.Method (eq Z Y X W V U T));
           ("ne", InstanceField.Method (ne Z Y X W V U T))
         ].
-  End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_Z_where_core_cmp_PartialEq_Y_where_core_cmp_PartialEq_X_where_core_cmp_PartialEq_W_where_core_cmp_PartialEq_V_where_core_cmp_PartialEq_U_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_for_Tuple_Z_Y_X_W_V_U_T_.
+  End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_Z_where_core_cmp_PartialEq_Y_where_core_cmp_PartialEq_X_where_core_cmp_PartialEq_W_where_core_cmp_PartialEq_V_where_core_cmp_PartialEq_U_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_Tuple_Z_Y_X_W_V_U_T__for_Tuple_Z_Y_X_W_V_U_T_.
   
   Module Impl_core_cmp_Eq_where_core_cmp_Eq_Z_where_core_cmp_Eq_Y_where_core_cmp_Eq_X_where_core_cmp_Eq_W_where_core_cmp_Eq_V_where_core_cmp_Eq_U_where_core_cmp_Eq_T_where_core_marker_Sized_T_for_Tuple_Z_Y_X_W_V_U_T_.
     Definition Self (Z Y X W V U T : Ty.t) : Ty.t := Ty.tuple [ Z; Y; X; W; V; U; T ].
@@ -14022,7 +14022,7 @@ Module tuple.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_Tuple_Z_Y_X_W_V_U_T_.
   
-  Module Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_Z_where_core_cmp_PartialOrd_Y_where_core_cmp_PartialOrd_X_where_core_cmp_PartialOrd_W_where_core_cmp_PartialOrd_V_where_core_cmp_PartialOrd_U_where_core_cmp_PartialOrd_T_where_core_marker_Sized_T_for_Tuple_Z_Y_X_W_V_U_T_.
+  Module Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_Z_where_core_cmp_PartialOrd_Y_where_core_cmp_PartialOrd_X_where_core_cmp_PartialOrd_W_where_core_cmp_PartialOrd_V_where_core_cmp_PartialOrd_U_where_core_cmp_PartialOrd_T_where_core_marker_Sized_T_Tuple_Z_Y_X_W_V_U_T__for_Tuple_Z_Y_X_W_V_U_T_.
     Definition Self (Z Y X W V U T : Ty.t) : Ty.t := Ty.tuple [ Z; Y; X; W; V; U; T ].
     
     (*
@@ -17989,7 +17989,7 @@ Module tuple.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.tuple [ Z; Y; X; W; V; U; T ] ]
         (Self Z Y X W V U T)
         (* Instance *)
         [
@@ -17999,7 +17999,7 @@ Module tuple.
           ("ge", InstanceField.Method (ge Z Y X W V U T));
           ("gt", InstanceField.Method (gt Z Y X W V U T))
         ].
-  End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_Z_where_core_cmp_PartialOrd_Y_where_core_cmp_PartialOrd_X_where_core_cmp_PartialOrd_W_where_core_cmp_PartialOrd_V_where_core_cmp_PartialOrd_U_where_core_cmp_PartialOrd_T_where_core_marker_Sized_T_for_Tuple_Z_Y_X_W_V_U_T_.
+  End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_Z_where_core_cmp_PartialOrd_Y_where_core_cmp_PartialOrd_X_where_core_cmp_PartialOrd_W_where_core_cmp_PartialOrd_V_where_core_cmp_PartialOrd_U_where_core_cmp_PartialOrd_T_where_core_marker_Sized_T_Tuple_Z_Y_X_W_V_U_T__for_Tuple_Z_Y_X_W_V_U_T_.
   
   Module Impl_core_cmp_Ord_where_core_cmp_Ord_Z_where_core_cmp_Ord_Y_where_core_cmp_Ord_X_where_core_cmp_Ord_W_where_core_cmp_Ord_V_where_core_cmp_Ord_U_where_core_cmp_Ord_T_where_core_marker_Sized_T_for_Tuple_Z_Y_X_W_V_U_T_.
     Definition Self (Z Y X W V U T : Ty.t) : Ty.t := Ty.tuple [ Z; Y; X; W; V; U; T ].
@@ -18644,7 +18644,7 @@ Module tuple.
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
   End Impl_core_convert_From_Tuple_T_T_T_T_T_T_T__for_array_Usize_7_T.
   
-  Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_PartialEq_Z_where_core_cmp_PartialEq_Y_where_core_cmp_PartialEq_X_where_core_cmp_PartialEq_W_where_core_cmp_PartialEq_V_where_core_cmp_PartialEq_U_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_for_Tuple_A_Z_Y_X_W_V_U_T_.
+  Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_PartialEq_Z_where_core_cmp_PartialEq_Y_where_core_cmp_PartialEq_X_where_core_cmp_PartialEq_W_where_core_cmp_PartialEq_V_where_core_cmp_PartialEq_U_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_Tuple_A_Z_Y_X_W_V_U_T__for_Tuple_A_Z_Y_X_W_V_U_T_.
     Definition Self (A Z Y X W V U T : Ty.t) : Ty.t := Ty.tuple [ A; Z; Y; X; W; V; U; T ].
     
     (*
@@ -19018,14 +19018,14 @@ Module tuple.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.tuple [ A; Z; Y; X; W; V; U; T ] ]
         (Self A Z Y X W V U T)
         (* Instance *)
         [
           ("eq", InstanceField.Method (eq A Z Y X W V U T));
           ("ne", InstanceField.Method (ne A Z Y X W V U T))
         ].
-  End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_PartialEq_Z_where_core_cmp_PartialEq_Y_where_core_cmp_PartialEq_X_where_core_cmp_PartialEq_W_where_core_cmp_PartialEq_V_where_core_cmp_PartialEq_U_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_for_Tuple_A_Z_Y_X_W_V_U_T_.
+  End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_A_where_core_cmp_PartialEq_Z_where_core_cmp_PartialEq_Y_where_core_cmp_PartialEq_X_where_core_cmp_PartialEq_W_where_core_cmp_PartialEq_V_where_core_cmp_PartialEq_U_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_Tuple_A_Z_Y_X_W_V_U_T__for_Tuple_A_Z_Y_X_W_V_U_T_.
   
   Module Impl_core_cmp_Eq_where_core_cmp_Eq_A_where_core_cmp_Eq_Z_where_core_cmp_Eq_Y_where_core_cmp_Eq_X_where_core_cmp_Eq_W_where_core_cmp_Eq_V_where_core_cmp_Eq_U_where_core_cmp_Eq_T_where_core_marker_Sized_T_for_Tuple_A_Z_Y_X_W_V_U_T_.
     Definition Self (A Z Y X W V U T : Ty.t) : Ty.t := Ty.tuple [ A; Z; Y; X; W; V; U; T ].
@@ -19079,7 +19079,7 @@ Module tuple.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_Tuple_A_Z_Y_X_W_V_U_T_.
   
-  Module Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_A_where_core_cmp_PartialOrd_Z_where_core_cmp_PartialOrd_Y_where_core_cmp_PartialOrd_X_where_core_cmp_PartialOrd_W_where_core_cmp_PartialOrd_V_where_core_cmp_PartialOrd_U_where_core_cmp_PartialOrd_T_where_core_marker_Sized_T_for_Tuple_A_Z_Y_X_W_V_U_T_.
+  Module Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_A_where_core_cmp_PartialOrd_Z_where_core_cmp_PartialOrd_Y_where_core_cmp_PartialOrd_X_where_core_cmp_PartialOrd_W_where_core_cmp_PartialOrd_V_where_core_cmp_PartialOrd_U_where_core_cmp_PartialOrd_T_where_core_marker_Sized_T_Tuple_A_Z_Y_X_W_V_U_T__for_Tuple_A_Z_Y_X_W_V_U_T_.
     Definition Self (A Z Y X W V U T : Ty.t) : Ty.t := Ty.tuple [ A; Z; Y; X; W; V; U; T ].
     
     (*
@@ -23807,7 +23807,7 @@ Module tuple.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.tuple [ A; Z; Y; X; W; V; U; T ] ]
         (Self A Z Y X W V U T)
         (* Instance *)
         [
@@ -23817,7 +23817,7 @@ Module tuple.
           ("ge", InstanceField.Method (ge A Z Y X W V U T));
           ("gt", InstanceField.Method (gt A Z Y X W V U T))
         ].
-  End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_A_where_core_cmp_PartialOrd_Z_where_core_cmp_PartialOrd_Y_where_core_cmp_PartialOrd_X_where_core_cmp_PartialOrd_W_where_core_cmp_PartialOrd_V_where_core_cmp_PartialOrd_U_where_core_cmp_PartialOrd_T_where_core_marker_Sized_T_for_Tuple_A_Z_Y_X_W_V_U_T_.
+  End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_A_where_core_cmp_PartialOrd_Z_where_core_cmp_PartialOrd_Y_where_core_cmp_PartialOrd_X_where_core_cmp_PartialOrd_W_where_core_cmp_PartialOrd_V_where_core_cmp_PartialOrd_U_where_core_cmp_PartialOrd_T_where_core_marker_Sized_T_Tuple_A_Z_Y_X_W_V_U_T__for_Tuple_A_Z_Y_X_W_V_U_T_.
   
   Module Impl_core_cmp_Ord_where_core_cmp_Ord_A_where_core_cmp_Ord_Z_where_core_cmp_Ord_Y_where_core_cmp_Ord_X_where_core_cmp_Ord_W_where_core_cmp_Ord_V_where_core_cmp_Ord_U_where_core_cmp_Ord_T_where_core_marker_Sized_T_for_Tuple_A_Z_Y_X_W_V_U_T_.
     Definition Self (A Z Y X W V U T : Ty.t) : Ty.t := Ty.tuple [ A; Z; Y; X; W; V; U; T ].
@@ -24546,7 +24546,7 @@ Module tuple.
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
   End Impl_core_convert_From_Tuple_T_T_T_T_T_T_T_T__for_array_Usize_8_T.
   
-  Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_B_where_core_cmp_PartialEq_A_where_core_cmp_PartialEq_Z_where_core_cmp_PartialEq_Y_where_core_cmp_PartialEq_X_where_core_cmp_PartialEq_W_where_core_cmp_PartialEq_V_where_core_cmp_PartialEq_U_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_for_Tuple_B_A_Z_Y_X_W_V_U_T_.
+  Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_B_where_core_cmp_PartialEq_A_where_core_cmp_PartialEq_Z_where_core_cmp_PartialEq_Y_where_core_cmp_PartialEq_X_where_core_cmp_PartialEq_W_where_core_cmp_PartialEq_V_where_core_cmp_PartialEq_U_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_Tuple_B_A_Z_Y_X_W_V_U_T__for_Tuple_B_A_Z_Y_X_W_V_U_T_.
     Definition Self (B A Z Y X W V U T : Ty.t) : Ty.t := Ty.tuple [ B; A; Z; Y; X; W; V; U; T ].
     
     (*
@@ -24994,14 +24994,14 @@ Module tuple.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.tuple [ B; A; Z; Y; X; W; V; U; T ] ]
         (Self B A Z Y X W V U T)
         (* Instance *)
         [
           ("eq", InstanceField.Method (eq B A Z Y X W V U T));
           ("ne", InstanceField.Method (ne B A Z Y X W V U T))
         ].
-  End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_B_where_core_cmp_PartialEq_A_where_core_cmp_PartialEq_Z_where_core_cmp_PartialEq_Y_where_core_cmp_PartialEq_X_where_core_cmp_PartialEq_W_where_core_cmp_PartialEq_V_where_core_cmp_PartialEq_U_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_for_Tuple_B_A_Z_Y_X_W_V_U_T_.
+  End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_B_where_core_cmp_PartialEq_A_where_core_cmp_PartialEq_Z_where_core_cmp_PartialEq_Y_where_core_cmp_PartialEq_X_where_core_cmp_PartialEq_W_where_core_cmp_PartialEq_V_where_core_cmp_PartialEq_U_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_Tuple_B_A_Z_Y_X_W_V_U_T__for_Tuple_B_A_Z_Y_X_W_V_U_T_.
   
   Module Impl_core_cmp_Eq_where_core_cmp_Eq_B_where_core_cmp_Eq_A_where_core_cmp_Eq_Z_where_core_cmp_Eq_Y_where_core_cmp_Eq_X_where_core_cmp_Eq_W_where_core_cmp_Eq_V_where_core_cmp_Eq_U_where_core_cmp_Eq_T_where_core_marker_Sized_T_for_Tuple_B_A_Z_Y_X_W_V_U_T_.
     Definition Self (B A Z Y X W V U T : Ty.t) : Ty.t := Ty.tuple [ B; A; Z; Y; X; W; V; U; T ].
@@ -25055,7 +25055,7 @@ Module tuple.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_Tuple_B_A_Z_Y_X_W_V_U_T_.
   
-  Module Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_B_where_core_cmp_PartialOrd_A_where_core_cmp_PartialOrd_Z_where_core_cmp_PartialOrd_Y_where_core_cmp_PartialOrd_X_where_core_cmp_PartialOrd_W_where_core_cmp_PartialOrd_V_where_core_cmp_PartialOrd_U_where_core_cmp_PartialOrd_T_where_core_marker_Sized_T_for_Tuple_B_A_Z_Y_X_W_V_U_T_.
+  Module Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_B_where_core_cmp_PartialOrd_A_where_core_cmp_PartialOrd_Z_where_core_cmp_PartialOrd_Y_where_core_cmp_PartialOrd_X_where_core_cmp_PartialOrd_W_where_core_cmp_PartialOrd_V_where_core_cmp_PartialOrd_U_where_core_cmp_PartialOrd_T_where_core_marker_Sized_T_Tuple_B_A_Z_Y_X_W_V_U_T__for_Tuple_B_A_Z_Y_X_W_V_U_T_.
     Definition Self (B A Z Y X W V U T : Ty.t) : Ty.t := Ty.tuple [ B; A; Z; Y; X; W; V; U; T ].
     
     (*
@@ -30572,7 +30572,7 @@ Module tuple.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.tuple [ B; A; Z; Y; X; W; V; U; T ] ]
         (Self B A Z Y X W V U T)
         (* Instance *)
         [
@@ -30582,7 +30582,7 @@ Module tuple.
           ("ge", InstanceField.Method (ge B A Z Y X W V U T));
           ("gt", InstanceField.Method (gt B A Z Y X W V U T))
         ].
-  End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_B_where_core_cmp_PartialOrd_A_where_core_cmp_PartialOrd_Z_where_core_cmp_PartialOrd_Y_where_core_cmp_PartialOrd_X_where_core_cmp_PartialOrd_W_where_core_cmp_PartialOrd_V_where_core_cmp_PartialOrd_U_where_core_cmp_PartialOrd_T_where_core_marker_Sized_T_for_Tuple_B_A_Z_Y_X_W_V_U_T_.
+  End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_B_where_core_cmp_PartialOrd_A_where_core_cmp_PartialOrd_Z_where_core_cmp_PartialOrd_Y_where_core_cmp_PartialOrd_X_where_core_cmp_PartialOrd_W_where_core_cmp_PartialOrd_V_where_core_cmp_PartialOrd_U_where_core_cmp_PartialOrd_T_where_core_marker_Sized_T_Tuple_B_A_Z_Y_X_W_V_U_T__for_Tuple_B_A_Z_Y_X_W_V_U_T_.
   
   Module Impl_core_cmp_Ord_where_core_cmp_Ord_B_where_core_cmp_Ord_A_where_core_cmp_Ord_Z_where_core_cmp_Ord_Y_where_core_cmp_Ord_X_where_core_cmp_Ord_W_where_core_cmp_Ord_V_where_core_cmp_Ord_U_where_core_cmp_Ord_T_where_core_marker_Sized_T_for_Tuple_B_A_Z_Y_X_W_V_U_T_.
     Definition Self (B A Z Y X W V U T : Ty.t) : Ty.t := Ty.tuple [ B; A; Z; Y; X; W; V; U; T ].
@@ -31399,7 +31399,7 @@ Module tuple.
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
   End Impl_core_convert_From_Tuple_T_T_T_T_T_T_T_T_T__for_array_Usize_9_T.
   
-  Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_C_where_core_cmp_PartialEq_B_where_core_cmp_PartialEq_A_where_core_cmp_PartialEq_Z_where_core_cmp_PartialEq_Y_where_core_cmp_PartialEq_X_where_core_cmp_PartialEq_W_where_core_cmp_PartialEq_V_where_core_cmp_PartialEq_U_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_for_Tuple_C_B_A_Z_Y_X_W_V_U_T_.
+  Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_C_where_core_cmp_PartialEq_B_where_core_cmp_PartialEq_A_where_core_cmp_PartialEq_Z_where_core_cmp_PartialEq_Y_where_core_cmp_PartialEq_X_where_core_cmp_PartialEq_W_where_core_cmp_PartialEq_V_where_core_cmp_PartialEq_U_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_Tuple_C_B_A_Z_Y_X_W_V_U_T__for_Tuple_C_B_A_Z_Y_X_W_V_U_T_.
     Definition Self (C B A Z Y X W V U T : Ty.t) : Ty.t :=
       Ty.tuple [ C; B; A; Z; Y; X; W; V; U; T ].
     
@@ -31910,14 +31910,14 @@ Module tuple.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.tuple [ C; B; A; Z; Y; X; W; V; U; T ] ]
         (Self C B A Z Y X W V U T)
         (* Instance *)
         [
           ("eq", InstanceField.Method (eq C B A Z Y X W V U T));
           ("ne", InstanceField.Method (ne C B A Z Y X W V U T))
         ].
-  End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_C_where_core_cmp_PartialEq_B_where_core_cmp_PartialEq_A_where_core_cmp_PartialEq_Z_where_core_cmp_PartialEq_Y_where_core_cmp_PartialEq_X_where_core_cmp_PartialEq_W_where_core_cmp_PartialEq_V_where_core_cmp_PartialEq_U_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_for_Tuple_C_B_A_Z_Y_X_W_V_U_T_.
+  End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_C_where_core_cmp_PartialEq_B_where_core_cmp_PartialEq_A_where_core_cmp_PartialEq_Z_where_core_cmp_PartialEq_Y_where_core_cmp_PartialEq_X_where_core_cmp_PartialEq_W_where_core_cmp_PartialEq_V_where_core_cmp_PartialEq_U_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_Tuple_C_B_A_Z_Y_X_W_V_U_T__for_Tuple_C_B_A_Z_Y_X_W_V_U_T_.
   
   Module Impl_core_cmp_Eq_where_core_cmp_Eq_C_where_core_cmp_Eq_B_where_core_cmp_Eq_A_where_core_cmp_Eq_Z_where_core_cmp_Eq_Y_where_core_cmp_Eq_X_where_core_cmp_Eq_W_where_core_cmp_Eq_V_where_core_cmp_Eq_U_where_core_cmp_Eq_T_where_core_marker_Sized_T_for_Tuple_C_B_A_Z_Y_X_W_V_U_T_.
     Definition Self (C B A Z Y X W V U T : Ty.t) : Ty.t :=
@@ -31975,7 +31975,7 @@ Module tuple.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_Tuple_C_B_A_Z_Y_X_W_V_U_T_.
   
-  Module Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_C_where_core_cmp_PartialOrd_B_where_core_cmp_PartialOrd_A_where_core_cmp_PartialOrd_Z_where_core_cmp_PartialOrd_Y_where_core_cmp_PartialOrd_X_where_core_cmp_PartialOrd_W_where_core_cmp_PartialOrd_V_where_core_cmp_PartialOrd_U_where_core_cmp_PartialOrd_T_where_core_marker_Sized_T_for_Tuple_C_B_A_Z_Y_X_W_V_U_T_.
+  Module Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_C_where_core_cmp_PartialOrd_B_where_core_cmp_PartialOrd_A_where_core_cmp_PartialOrd_Z_where_core_cmp_PartialOrd_Y_where_core_cmp_PartialOrd_X_where_core_cmp_PartialOrd_W_where_core_cmp_PartialOrd_V_where_core_cmp_PartialOrd_U_where_core_cmp_PartialOrd_T_where_core_marker_Sized_T_Tuple_C_B_A_Z_Y_X_W_V_U_T__for_Tuple_C_B_A_Z_Y_X_W_V_U_T_.
     Definition Self (C B A Z Y X W V U T : Ty.t) : Ty.t :=
       Ty.tuple [ C; B; A; Z; Y; X; W; V; U; T ].
     
@@ -38316,7 +38316,7 @@ Module tuple.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.tuple [ C; B; A; Z; Y; X; W; V; U; T ] ]
         (Self C B A Z Y X W V U T)
         (* Instance *)
         [
@@ -38326,7 +38326,7 @@ Module tuple.
           ("ge", InstanceField.Method (ge C B A Z Y X W V U T));
           ("gt", InstanceField.Method (gt C B A Z Y X W V U T))
         ].
-  End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_C_where_core_cmp_PartialOrd_B_where_core_cmp_PartialOrd_A_where_core_cmp_PartialOrd_Z_where_core_cmp_PartialOrd_Y_where_core_cmp_PartialOrd_X_where_core_cmp_PartialOrd_W_where_core_cmp_PartialOrd_V_where_core_cmp_PartialOrd_U_where_core_cmp_PartialOrd_T_where_core_marker_Sized_T_for_Tuple_C_B_A_Z_Y_X_W_V_U_T_.
+  End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_C_where_core_cmp_PartialOrd_B_where_core_cmp_PartialOrd_A_where_core_cmp_PartialOrd_Z_where_core_cmp_PartialOrd_Y_where_core_cmp_PartialOrd_X_where_core_cmp_PartialOrd_W_where_core_cmp_PartialOrd_V_where_core_cmp_PartialOrd_U_where_core_cmp_PartialOrd_T_where_core_marker_Sized_T_Tuple_C_B_A_Z_Y_X_W_V_U_T__for_Tuple_C_B_A_Z_Y_X_W_V_U_T_.
   
   Module Impl_core_cmp_Ord_where_core_cmp_Ord_C_where_core_cmp_Ord_B_where_core_cmp_Ord_A_where_core_cmp_Ord_Z_where_core_cmp_Ord_Y_where_core_cmp_Ord_X_where_core_cmp_Ord_W_where_core_cmp_Ord_V_where_core_cmp_Ord_U_where_core_cmp_Ord_T_where_core_marker_Sized_T_for_Tuple_C_B_A_Z_Y_X_W_V_U_T_.
     Definition Self (C B A Z Y X W V U T : Ty.t) : Ty.t :=
@@ -39235,7 +39235,7 @@ Module tuple.
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
   End Impl_core_convert_From_Tuple_T_T_T_T_T_T_T_T_T_T__for_array_Usize_10_T.
   
-  Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_D_where_core_cmp_PartialEq_C_where_core_cmp_PartialEq_B_where_core_cmp_PartialEq_A_where_core_cmp_PartialEq_Z_where_core_cmp_PartialEq_Y_where_core_cmp_PartialEq_X_where_core_cmp_PartialEq_W_where_core_cmp_PartialEq_V_where_core_cmp_PartialEq_U_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_for_Tuple_D_C_B_A_Z_Y_X_W_V_U_T_.
+  Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_D_where_core_cmp_PartialEq_C_where_core_cmp_PartialEq_B_where_core_cmp_PartialEq_A_where_core_cmp_PartialEq_Z_where_core_cmp_PartialEq_Y_where_core_cmp_PartialEq_X_where_core_cmp_PartialEq_W_where_core_cmp_PartialEq_V_where_core_cmp_PartialEq_U_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_Tuple_D_C_B_A_Z_Y_X_W_V_U_T__for_Tuple_D_C_B_A_Z_Y_X_W_V_U_T_.
     Definition Self (D C B A Z Y X W V U T : Ty.t) : Ty.t :=
       Ty.tuple [ D; C; B; A; Z; Y; X; W; V; U; T ].
     
@@ -39808,14 +39808,14 @@ Module tuple.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.tuple [ D; C; B; A; Z; Y; X; W; V; U; T ] ]
         (Self D C B A Z Y X W V U T)
         (* Instance *)
         [
           ("eq", InstanceField.Method (eq D C B A Z Y X W V U T));
           ("ne", InstanceField.Method (ne D C B A Z Y X W V U T))
         ].
-  End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_D_where_core_cmp_PartialEq_C_where_core_cmp_PartialEq_B_where_core_cmp_PartialEq_A_where_core_cmp_PartialEq_Z_where_core_cmp_PartialEq_Y_where_core_cmp_PartialEq_X_where_core_cmp_PartialEq_W_where_core_cmp_PartialEq_V_where_core_cmp_PartialEq_U_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_for_Tuple_D_C_B_A_Z_Y_X_W_V_U_T_.
+  End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_D_where_core_cmp_PartialEq_C_where_core_cmp_PartialEq_B_where_core_cmp_PartialEq_A_where_core_cmp_PartialEq_Z_where_core_cmp_PartialEq_Y_where_core_cmp_PartialEq_X_where_core_cmp_PartialEq_W_where_core_cmp_PartialEq_V_where_core_cmp_PartialEq_U_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_Tuple_D_C_B_A_Z_Y_X_W_V_U_T__for_Tuple_D_C_B_A_Z_Y_X_W_V_U_T_.
   
   Module Impl_core_cmp_Eq_where_core_cmp_Eq_D_where_core_cmp_Eq_C_where_core_cmp_Eq_B_where_core_cmp_Eq_A_where_core_cmp_Eq_Z_where_core_cmp_Eq_Y_where_core_cmp_Eq_X_where_core_cmp_Eq_W_where_core_cmp_Eq_V_where_core_cmp_Eq_U_where_core_cmp_Eq_T_where_core_marker_Sized_T_for_Tuple_D_C_B_A_Z_Y_X_W_V_U_T_.
     Definition Self (D C B A Z Y X W V U T : Ty.t) : Ty.t :=
@@ -39873,7 +39873,7 @@ Module tuple.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_Tuple_D_C_B_A_Z_Y_X_W_V_U_T_.
   
-  Module Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_D_where_core_cmp_PartialOrd_C_where_core_cmp_PartialOrd_B_where_core_cmp_PartialOrd_A_where_core_cmp_PartialOrd_Z_where_core_cmp_PartialOrd_Y_where_core_cmp_PartialOrd_X_where_core_cmp_PartialOrd_W_where_core_cmp_PartialOrd_V_where_core_cmp_PartialOrd_U_where_core_cmp_PartialOrd_T_where_core_marker_Sized_T_for_Tuple_D_C_B_A_Z_Y_X_W_V_U_T_.
+  Module Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_D_where_core_cmp_PartialOrd_C_where_core_cmp_PartialOrd_B_where_core_cmp_PartialOrd_A_where_core_cmp_PartialOrd_Z_where_core_cmp_PartialOrd_Y_where_core_cmp_PartialOrd_X_where_core_cmp_PartialOrd_W_where_core_cmp_PartialOrd_V_where_core_cmp_PartialOrd_U_where_core_cmp_PartialOrd_T_where_core_marker_Sized_T_Tuple_D_C_B_A_Z_Y_X_W_V_U_T__for_Tuple_D_C_B_A_Z_Y_X_W_V_U_T_.
     Definition Self (D C B A Z Y X W V U T : Ty.t) : Ty.t :=
       Ty.tuple [ D; C; B; A; Z; Y; X; W; V; U; T ].
     
@@ -47061,7 +47061,7 @@ Module tuple.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.tuple [ D; C; B; A; Z; Y; X; W; V; U; T ] ]
         (Self D C B A Z Y X W V U T)
         (* Instance *)
         [
@@ -47071,7 +47071,7 @@ Module tuple.
           ("ge", InstanceField.Method (ge D C B A Z Y X W V U T));
           ("gt", InstanceField.Method (gt D C B A Z Y X W V U T))
         ].
-  End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_D_where_core_cmp_PartialOrd_C_where_core_cmp_PartialOrd_B_where_core_cmp_PartialOrd_A_where_core_cmp_PartialOrd_Z_where_core_cmp_PartialOrd_Y_where_core_cmp_PartialOrd_X_where_core_cmp_PartialOrd_W_where_core_cmp_PartialOrd_V_where_core_cmp_PartialOrd_U_where_core_cmp_PartialOrd_T_where_core_marker_Sized_T_for_Tuple_D_C_B_A_Z_Y_X_W_V_U_T_.
+  End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_D_where_core_cmp_PartialOrd_C_where_core_cmp_PartialOrd_B_where_core_cmp_PartialOrd_A_where_core_cmp_PartialOrd_Z_where_core_cmp_PartialOrd_Y_where_core_cmp_PartialOrd_X_where_core_cmp_PartialOrd_W_where_core_cmp_PartialOrd_V_where_core_cmp_PartialOrd_U_where_core_cmp_PartialOrd_T_where_core_marker_Sized_T_Tuple_D_C_B_A_Z_Y_X_W_V_U_T__for_Tuple_D_C_B_A_Z_Y_X_W_V_U_T_.
   
   Module Impl_core_cmp_Ord_where_core_cmp_Ord_D_where_core_cmp_Ord_C_where_core_cmp_Ord_B_where_core_cmp_Ord_A_where_core_cmp_Ord_Z_where_core_cmp_Ord_Y_where_core_cmp_Ord_X_where_core_cmp_Ord_W_where_core_cmp_Ord_V_where_core_cmp_Ord_U_where_core_cmp_Ord_T_where_core_marker_Sized_T_for_Tuple_D_C_B_A_Z_Y_X_W_V_U_T_.
     Definition Self (D C B A Z Y X W V U T : Ty.t) : Ty.t :=
@@ -48072,7 +48072,7 @@ Module tuple.
         (* Instance *) [ ("from", InstanceField.Method (from T)) ].
   End Impl_core_convert_From_Tuple_T_T_T_T_T_T_T_T_T_T_T__for_array_Usize_11_T.
   
-  Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_E_where_core_cmp_PartialEq_D_where_core_cmp_PartialEq_C_where_core_cmp_PartialEq_B_where_core_cmp_PartialEq_A_where_core_cmp_PartialEq_Z_where_core_cmp_PartialEq_Y_where_core_cmp_PartialEq_X_where_core_cmp_PartialEq_W_where_core_cmp_PartialEq_V_where_core_cmp_PartialEq_U_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_for_Tuple_E_D_C_B_A_Z_Y_X_W_V_U_T_.
+  Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_E_where_core_cmp_PartialEq_D_where_core_cmp_PartialEq_C_where_core_cmp_PartialEq_B_where_core_cmp_PartialEq_A_where_core_cmp_PartialEq_Z_where_core_cmp_PartialEq_Y_where_core_cmp_PartialEq_X_where_core_cmp_PartialEq_W_where_core_cmp_PartialEq_V_where_core_cmp_PartialEq_U_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_Tuple_E_D_C_B_A_Z_Y_X_W_V_U_T__for_Tuple_E_D_C_B_A_Z_Y_X_W_V_U_T_.
     Definition Self (E D C B A Z Y X W V U T : Ty.t) : Ty.t :=
       Ty.tuple [ E; D; C; B; A; Z; Y; X; W; V; U; T ].
     
@@ -48707,14 +48707,14 @@ Module tuple.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.tuple [ E; D; C; B; A; Z; Y; X; W; V; U; T ] ]
         (Self E D C B A Z Y X W V U T)
         (* Instance *)
         [
           ("eq", InstanceField.Method (eq E D C B A Z Y X W V U T));
           ("ne", InstanceField.Method (ne E D C B A Z Y X W V U T))
         ].
-  End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_E_where_core_cmp_PartialEq_D_where_core_cmp_PartialEq_C_where_core_cmp_PartialEq_B_where_core_cmp_PartialEq_A_where_core_cmp_PartialEq_Z_where_core_cmp_PartialEq_Y_where_core_cmp_PartialEq_X_where_core_cmp_PartialEq_W_where_core_cmp_PartialEq_V_where_core_cmp_PartialEq_U_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_for_Tuple_E_D_C_B_A_Z_Y_X_W_V_U_T_.
+  End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_E_where_core_cmp_PartialEq_D_where_core_cmp_PartialEq_C_where_core_cmp_PartialEq_B_where_core_cmp_PartialEq_A_where_core_cmp_PartialEq_Z_where_core_cmp_PartialEq_Y_where_core_cmp_PartialEq_X_where_core_cmp_PartialEq_W_where_core_cmp_PartialEq_V_where_core_cmp_PartialEq_U_where_core_cmp_PartialEq_T_where_core_marker_Sized_T_Tuple_E_D_C_B_A_Z_Y_X_W_V_U_T__for_Tuple_E_D_C_B_A_Z_Y_X_W_V_U_T_.
   
   Module Impl_core_cmp_Eq_where_core_cmp_Eq_E_where_core_cmp_Eq_D_where_core_cmp_Eq_C_where_core_cmp_Eq_B_where_core_cmp_Eq_A_where_core_cmp_Eq_Z_where_core_cmp_Eq_Y_where_core_cmp_Eq_X_where_core_cmp_Eq_W_where_core_cmp_Eq_V_where_core_cmp_Eq_U_where_core_cmp_Eq_T_where_core_marker_Sized_T_for_Tuple_E_D_C_B_A_Z_Y_X_W_V_U_T_.
     Definition Self (E D C B A Z Y X W V U T : Ty.t) : Ty.t :=
@@ -48772,7 +48772,7 @@ Module tuple.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_Tuple_E_D_C_B_A_Z_Y_X_W_V_U_T_.
   
-  Module Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_E_where_core_cmp_PartialOrd_D_where_core_cmp_PartialOrd_C_where_core_cmp_PartialOrd_B_where_core_cmp_PartialOrd_A_where_core_cmp_PartialOrd_Z_where_core_cmp_PartialOrd_Y_where_core_cmp_PartialOrd_X_where_core_cmp_PartialOrd_W_where_core_cmp_PartialOrd_V_where_core_cmp_PartialOrd_U_where_core_cmp_PartialOrd_T_where_core_marker_Sized_T_for_Tuple_E_D_C_B_A_Z_Y_X_W_V_U_T_.
+  Module Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_E_where_core_cmp_PartialOrd_D_where_core_cmp_PartialOrd_C_where_core_cmp_PartialOrd_B_where_core_cmp_PartialOrd_A_where_core_cmp_PartialOrd_Z_where_core_cmp_PartialOrd_Y_where_core_cmp_PartialOrd_X_where_core_cmp_PartialOrd_W_where_core_cmp_PartialOrd_V_where_core_cmp_PartialOrd_U_where_core_cmp_PartialOrd_T_where_core_marker_Sized_T_Tuple_E_D_C_B_A_Z_Y_X_W_V_U_T__for_Tuple_E_D_C_B_A_Z_Y_X_W_V_U_T_.
     Definition Self (E D C B A Z Y X W V U T : Ty.t) : Ty.t :=
       Ty.tuple [ E; D; C; B; A; Z; Y; X; W; V; U; T ].
     
@@ -56826,7 +56826,7 @@ Module tuple.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.tuple [ E; D; C; B; A; Z; Y; X; W; V; U; T ] ]
         (Self E D C B A Z Y X W V U T)
         (* Instance *)
         [
@@ -56836,7 +56836,7 @@ Module tuple.
           ("ge", InstanceField.Method (ge E D C B A Z Y X W V U T));
           ("gt", InstanceField.Method (gt E D C B A Z Y X W V U T))
         ].
-  End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_E_where_core_cmp_PartialOrd_D_where_core_cmp_PartialOrd_C_where_core_cmp_PartialOrd_B_where_core_cmp_PartialOrd_A_where_core_cmp_PartialOrd_Z_where_core_cmp_PartialOrd_Y_where_core_cmp_PartialOrd_X_where_core_cmp_PartialOrd_W_where_core_cmp_PartialOrd_V_where_core_cmp_PartialOrd_U_where_core_cmp_PartialOrd_T_where_core_marker_Sized_T_for_Tuple_E_D_C_B_A_Z_Y_X_W_V_U_T_.
+  End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_E_where_core_cmp_PartialOrd_D_where_core_cmp_PartialOrd_C_where_core_cmp_PartialOrd_B_where_core_cmp_PartialOrd_A_where_core_cmp_PartialOrd_Z_where_core_cmp_PartialOrd_Y_where_core_cmp_PartialOrd_X_where_core_cmp_PartialOrd_W_where_core_cmp_PartialOrd_V_where_core_cmp_PartialOrd_U_where_core_cmp_PartialOrd_T_where_core_marker_Sized_T_Tuple_E_D_C_B_A_Z_Y_X_W_V_U_T__for_Tuple_E_D_C_B_A_Z_Y_X_W_V_U_T_.
   
   Module Impl_core_cmp_Ord_where_core_cmp_Ord_E_where_core_cmp_Ord_D_where_core_cmp_Ord_C_where_core_cmp_Ord_B_where_core_cmp_Ord_A_where_core_cmp_Ord_Z_where_core_cmp_Ord_Y_where_core_cmp_Ord_X_where_core_cmp_Ord_W_where_core_cmp_Ord_V_where_core_cmp_Ord_U_where_core_cmp_Ord_T_where_core_marker_Sized_T_for_Tuple_E_D_C_B_A_Z_Y_X_W_V_U_T_.
     Definition Self (E D C B A Z Y X W V U T : Ty.t) : Ty.t :=

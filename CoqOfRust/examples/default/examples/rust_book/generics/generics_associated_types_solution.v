@@ -252,18 +252,19 @@ Global Typeclasses Opaque get_a.
 (* Trait *)
 (* Empty module 'TraitWithParams' *)
 
-Module Impl_generics_associated_types_solution_TraitWithParams_i32_i32_for_generics_associated_types_solution_Container.
-  Definition Self : Ty.t := Ty.path "generics_associated_types_solution::Container".
+Module Impl_generics_associated_types_solution_TraitWithParams_I8_12_i32_T_bool_T_for_generics_associated_types_solution_Container.
+  Definition Self (T : Ty.t) : Ty.t := Ty.path "generics_associated_types_solution::Container".
   
   (*     type Output = (i32, i32); *)
-  Definition _Output : Ty.t := Ty.tuple [ Ty.path "i32"; Ty.path "i32" ].
+  Definition _Output (T : Ty.t) : Ty.t := Ty.tuple [ Ty.path "i32"; Ty.path "i32" ].
   
   (*
       fn get_output(&self) -> (i32, i32) {
           (self.0, self.1)
       }
   *)
-  Definition get_output (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  Definition get_output (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self T in
     match ε, τ, α with
     | [], [], [ self ] =>
       ltac:(M.monadic
@@ -289,17 +290,21 @@ Module Impl_generics_associated_types_solution_TraitWithParams_i32_i32_for_gener
     end.
   
   Axiom Implements :
+    forall (T : Ty.t),
     M.IsTraitInstance
       "generics_associated_types_solution::TraitWithParams"
-      (* Trait polymorphic consts *) []
-      (* Trait polymorphic types *) [ Ty.path "i32"; Ty.path "i32" ]
-      Self
+      (* Trait polymorphic consts *) [ Value.Integer IntegerKind.I8 12 ]
+      (* Trait polymorphic types *) [ Ty.path "i32"; T; Ty.path "bool"; T ]
+      (Self T)
       (* Instance *)
-      [ ("Output", InstanceField.Ty _Output); ("get_output", InstanceField.Method get_output) ].
-End Impl_generics_associated_types_solution_TraitWithParams_i32_i32_for_generics_associated_types_solution_Container.
+      [
+        ("Output", InstanceField.Ty (_Output T));
+        ("get_output", InstanceField.Method (get_output T))
+      ].
+End Impl_generics_associated_types_solution_TraitWithParams_I8_12_i32_T_bool_T_for_generics_associated_types_solution_Container.
 
 (*
-fn get_output<C: TraitWithParams<i32, i32>>(container: &C) -> C::Output {
+fn get_output<C: TraitWithParams<i32, i64, bool, i64>>(container: &C) -> C::Output {
     container.get_output()
 }
 *)
@@ -311,15 +316,15 @@ Definition get_output (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
       M.call_closure (|
         Ty.associated_in_trait
           "generics_associated_types_solution::TraitWithParams"
-          []
-          [ Ty.path "i32"; Ty.path "i32" ]
+          [ Value.Integer IntegerKind.I8 12 ]
+          [ Ty.path "i32"; Ty.path "i64"; Ty.path "bool"; Ty.path "i64" ]
           C
           "Output",
         M.get_trait_method (|
           "generics_associated_types_solution::TraitWithParams",
           C,
-          [],
-          [ Ty.path "i32"; Ty.path "i32" ],
+          [ Value.Integer IntegerKind.I8 12 ],
+          [ Ty.path "i32"; Ty.path "i64"; Ty.path "bool"; Ty.path "i64" ],
           "get_output",
           [],
           []

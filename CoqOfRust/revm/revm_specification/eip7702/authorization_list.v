@@ -328,7 +328,7 @@ Module eip7702.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_revm_specification_eip7702_authorization_list_AuthorizationList.
     
-    Module Impl_core_cmp_PartialEq_for_revm_specification_eip7702_authorization_list_AuthorizationList.
+    Module Impl_core_cmp_PartialEq_revm_specification_eip7702_authorization_list_AuthorizationList_for_revm_specification_eip7702_authorization_list_AuthorizationList.
       Definition Self : Ty.t :=
         Ty.path "revm_specification::eip7702::authorization_list::AuthorizationList".
       
@@ -526,10 +526,11 @@ Module eip7702.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.path "revm_specification::eip7702::authorization_list::AuthorizationList" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_revm_specification_eip7702_authorization_list_AuthorizationList.
+    End Impl_core_cmp_PartialEq_revm_specification_eip7702_authorization_list_AuthorizationList_for_revm_specification_eip7702_authorization_list_AuthorizationList.
     
     Module Impl_core_default_Default_for_revm_specification_eip7702_authorization_list_AuthorizationList.
       Definition Self : Ty.t :=
@@ -1656,7 +1657,7 @@ Module eip7702.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_revm_specification_eip7702_authorization_list_InvalidAuthorization.
     
-    Module Impl_core_cmp_PartialEq_for_revm_specification_eip7702_authorization_list_InvalidAuthorization.
+    Module Impl_core_cmp_PartialEq_revm_specification_eip7702_authorization_list_InvalidAuthorization_for_revm_specification_eip7702_authorization_list_InvalidAuthorization.
       Definition Self : Ty.t :=
         Ty.path "revm_specification::eip7702::authorization_list::InvalidAuthorization".
       
@@ -1707,10 +1708,11 @@ Module eip7702.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.path "revm_specification::eip7702::authorization_list::InvalidAuthorization" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_revm_specification_eip7702_authorization_list_InvalidAuthorization.
+    End Impl_core_cmp_PartialEq_revm_specification_eip7702_authorization_list_InvalidAuthorization_for_revm_specification_eip7702_authorization_list_InvalidAuthorization.
     
     Module Impl_core_cmp_Eq_for_revm_specification_eip7702_authorization_list_InvalidAuthorization.
       Definition Self : Ty.t :=

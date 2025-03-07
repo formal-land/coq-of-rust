@@ -856,7 +856,7 @@ Module ascii.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_ascii_ascii_char_AsciiChar.
     
-    Module Impl_core_cmp_PartialEq_for_core_ascii_ascii_char_AsciiChar.
+    Module Impl_core_cmp_PartialEq_core_ascii_ascii_char_AsciiChar_for_core_ascii_ascii_char_AsciiChar.
       Definition Self : Ty.t := Ty.path "core::ascii::ascii_char::AsciiChar".
       
       (* PartialEq *)
@@ -900,10 +900,10 @@ Module ascii.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_core_ascii_ascii_char_AsciiChar.
+    End Impl_core_cmp_PartialEq_core_ascii_ascii_char_AsciiChar_for_core_ascii_ascii_char_AsciiChar.
     
     Module Impl_core_cmp_Ord_for_core_ascii_ascii_char_AsciiChar.
       Definition Self : Ty.t := Ty.path "core::ascii::ascii_char::AsciiChar".
@@ -969,7 +969,7 @@ Module ascii.
           (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
     End Impl_core_cmp_Ord_for_core_ascii_ascii_char_AsciiChar.
     
-    Module Impl_core_cmp_PartialOrd_for_core_ascii_ascii_char_AsciiChar.
+    Module Impl_core_cmp_PartialOrd_core_ascii_ascii_char_AsciiChar_for_core_ascii_ascii_char_AsciiChar.
       Definition Self : Ty.t := Ty.path "core::ascii::ascii_char::AsciiChar".
       
       (* PartialOrd *)
@@ -1036,10 +1036,10 @@ Module ascii.
         M.IsTraitInstance
           "core::cmp::PartialOrd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
           Self
           (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-    End Impl_core_cmp_PartialOrd_for_core_ascii_ascii_char_AsciiChar.
+    End Impl_core_cmp_PartialOrd_core_ascii_ascii_char_AsciiChar_for_core_ascii_ascii_char_AsciiChar.
     
     Module Impl_core_hash_Hash_for_core_ascii_ascii_char_AsciiChar.
       Definition Self : Ty.t := Ty.path "core::ascii::ascii_char::AsciiChar".
@@ -1256,7 +1256,7 @@ Module ascii.
           pub const unsafe fn digit_unchecked(d: u8) -> Self {
               assert_unsafe_precondition!(
                   check_language_ub,
-                  "`AsciiChar::digit_unchecked` input cannot exceed 9.",
+                  "`ascii::Char::digit_unchecked` input cannot exceed 9.",
                   (d: u8 = d) => d < 10
               );
       

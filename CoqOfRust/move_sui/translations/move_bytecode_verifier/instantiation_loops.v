@@ -64,7 +64,7 @@ Module instantiation_loops.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_bytecode_verifier_instantiation_loops_Node.
   
-  Module Impl_core_cmp_PartialEq_for_move_bytecode_verifier_instantiation_loops_Node.
+  Module Impl_core_cmp_PartialEq_move_bytecode_verifier_instantiation_loops_Node_for_move_bytecode_verifier_instantiation_loops_Node.
     Definition Self : Ty.t := Ty.path "move_bytecode_verifier::instantiation_loops::Node".
     
     (* PartialEq *)
@@ -130,10 +130,11 @@ Module instantiation_loops.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *)
+        [ Ty.path "move_bytecode_verifier::instantiation_loops::Node" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_bytecode_verifier_instantiation_loops_Node.
+  End Impl_core_cmp_PartialEq_move_bytecode_verifier_instantiation_loops_Node_for_move_bytecode_verifier_instantiation_loops_Node.
   
   Module Impl_core_hash_Hash_for_move_bytecode_verifier_instantiation_loops_Node.
     Definition Self : Ty.t := Ty.path "move_bytecode_verifier::instantiation_loops::Node".

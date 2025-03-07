@@ -45,9 +45,7 @@ Module ptr.
       
       (*
           pub const fn dangling() -> Self {
-              // SAFETY: mem::align_of() returns a non-zero usize which is then casted
-              // to a *mut T. Therefore, `ptr` is not null and the conditions for
-              // calling new_unchecked() are respected.
+              // SAFETY: ptr::dangling_mut() returns a non-null well-aligned pointer.
               unsafe {
                   let ptr = crate::ptr::dangling_mut::<T>();
                   NonNull::new_unchecked(ptr)
@@ -409,8 +407,74 @@ Module ptr.
       Global Typeclasses Opaque new.
       
       (*
+          pub const fn from_ref(r: &T) -> Self {
+              // SAFETY: A reference cannot be null.
+              unsafe { NonNull { pointer: r as *const T } }
+          }
+      *)
+      Definition from_ref (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self T in
+        match ε, τ, α with
+        | [], [], [ r ] =>
+          ltac:(M.monadic
+            (let r := M.alloc (| r |) in
+            Value.StructRecord
+              "core::ptr::non_null::NonNull"
+              [
+                ("pointer",
+                  M.read (|
+                    M.use
+                      (M.alloc (|
+                        M.borrow (| Pointer.Kind.ConstPointer, M.deref (| M.read (| r |) |) |)
+                      |))
+                  |))
+              ]))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Global Instance AssociatedFunction_from_ref :
+        forall (T : Ty.t),
+        M.IsAssociatedFunction.Trait (Self T) "from_ref" (from_ref T).
+      Admitted.
+      Global Typeclasses Opaque from_ref.
+      
+      (*
+          pub const fn from_mut(r: &mut T) -> Self {
+              // SAFETY: A mutable reference cannot be null.
+              unsafe { NonNull { pointer: r as *mut T } }
+          }
+      *)
+      Definition from_mut (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self T in
+        match ε, τ, α with
+        | [], [], [ r ] =>
+          ltac:(M.monadic
+            (let r := M.alloc (| r |) in
+            Value.StructRecord
+              "core::ptr::non_null::NonNull"
+              [
+                ("pointer",
+                  (* MutToConstPointer *)
+                  M.pointer_coercion
+                    (M.read (|
+                      M.use
+                        (M.alloc (|
+                          M.borrow (| Pointer.Kind.MutPointer, M.deref (| M.read (| r |) |) |)
+                        |))
+                    |)))
+              ]))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Global Instance AssociatedFunction_from_mut :
+        forall (T : Ty.t),
+        M.IsAssociatedFunction.Trait (Self T) "from_mut" (from_mut T).
+      Admitted.
+      Global Typeclasses Opaque from_mut.
+      
+      (*
           pub const fn from_raw_parts(
-              data_pointer: NonNull<()>,
+              data_pointer: NonNull<impl super::Thin>,
               metadata: <T as super::Pointee>::Metadata,
           ) -> NonNull<T> {
               // SAFETY: The result of `ptr::from::raw_parts_mut` is non-null because `data_pointer` is.
@@ -427,7 +491,7 @@ Module ptr.
           : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [], [], [ data_pointer; metadata ] =>
+        | [], [ impl_super_Thin ], [ data_pointer; metadata ] =>
           ltac:(M.monadic
             (let data_pointer := M.alloc (| data_pointer |) in
             let metadata := M.alloc (| metadata |) in
@@ -445,13 +509,13 @@ Module ptr.
                   M.get_function (|
                     "core::ptr::metadata::from_raw_parts_mut",
                     [],
-                    [ T; Ty.tuple [] ]
+                    [ T; impl_super_Thin ]
                   |),
                   [
                     M.call_closure (|
-                      Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ],
+                      Ty.apply (Ty.path "*mut") [] [ impl_super_Thin ],
                       M.get_associated_function (|
-                        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ Ty.tuple [] ],
+                        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ impl_super_Thin ],
                         "as_ptr",
                         [],
                         []
@@ -532,7 +596,7 @@ Module ptr.
           pub fn addr(self) -> NonZero<usize> {
               // SAFETY: The pointer is guaranteed by the type to be non-null,
               // meaning that the address will be non-zero.
-              unsafe { NonZero::new_unchecked(self.pointer.addr()) }
+              unsafe { NonZero::new_unchecked(self.as_ptr().addr()) }
           }
       *)
       Definition addr (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -553,18 +617,21 @@ Module ptr.
                 M.call_closure (|
                   Ty.path "usize",
                   M.get_associated_function (|
-                    Ty.apply (Ty.path "*const") [] [ T ],
+                    Ty.apply (Ty.path "*mut") [] [ T ],
                     "addr",
                     [],
                     []
                   |),
                   [
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        self,
-                        "core::ptr::non_null::NonNull",
-                        "pointer"
-                      |)
+                    M.call_closure (|
+                      Ty.apply (Ty.path "*mut") [] [ T ],
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                        "as_ptr",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
                     |)
                   ]
                 |)
@@ -582,7 +649,7 @@ Module ptr.
       (*
           pub fn with_addr(self, addr: NonZero<usize>) -> Self {
               // SAFETY: The result of `ptr::from::with_addr` is non-null because `addr` is guaranteed to be non-zero.
-              unsafe { NonNull::new_unchecked(self.pointer.with_addr(addr.get()) as *mut _) }
+              unsafe { NonNull::new_unchecked(self.as_ptr().with_addr(addr.get()) as *mut _) }
           }
       *)
       Definition with_addr (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -604,20 +671,23 @@ Module ptr.
                 M.cast
                   (Ty.apply (Ty.path "*mut") [] [ T ])
                   (M.call_closure (|
-                    Ty.apply (Ty.path "*const") [] [ T ],
+                    Ty.apply (Ty.path "*mut") [] [ T ],
                     M.get_associated_function (|
-                      Ty.apply (Ty.path "*const") [] [ T ],
+                      Ty.apply (Ty.path "*mut") [] [ T ],
                       "with_addr",
                       [],
                       []
                     |),
                     [
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          self,
-                          "core::ptr::non_null::NonNull",
-                          "pointer"
-                        |)
+                      M.call_closure (|
+                        Ty.apply (Ty.path "*mut") [] [ T ],
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                          "as_ptr",
+                          [],
+                          []
+                        |),
+                        [ M.read (| self |) ]
                       |);
                       M.call_closure (|
                         Ty.path "usize",
@@ -708,7 +778,12 @@ Module ptr.
       
       (*
           pub const fn as_ptr(self) -> *mut T {
-              self.pointer as *mut T
+              // This is a transmute for the same reasons as `NonZero::get`.
+      
+              // SAFETY: `NonNull` is `transparent` over a `*const T`, and `*const T`
+              // and `*mut T` have the same layout, so transitively we can transmute
+              // our `NonNull` to a `*mut T` directly.
+              unsafe { mem::transmute::<Self, *mut T>(self) }
           }
       *)
       Definition as_ptr (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -717,15 +792,18 @@ Module ptr.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.cast
-              (Ty.apply (Ty.path "*mut") [] [ T ])
-              (M.read (|
-                M.SubPointer.get_struct_record_field (|
-                  self,
-                  "core::ptr::non_null::NonNull",
-                  "pointer"
-                |)
-              |))))
+            M.call_closure (|
+              Ty.apply (Ty.path "*mut") [] [ T ],
+              M.get_function (|
+                "core::intrinsics::transmute",
+                [],
+                [
+                  Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ];
+                  Ty.apply (Ty.path "*mut") [] [ T ]
+                ]
+              |),
+              [ M.read (| self |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -890,7 +968,7 @@ Module ptr.
               // Additionally safety contract of `offset` guarantees that the resulting pointer is
               // pointing to an allocation, there can't be an allocation at null, thus it's safe to
               // construct `NonNull`.
-              unsafe { NonNull { pointer: intrinsics::offset(self.pointer, count) } }
+              unsafe { NonNull { pointer: intrinsics::offset(self.as_ptr(), count) } }
           }
       *)
       Definition offset (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -912,13 +990,18 @@ Module ptr.
                       [ Ty.apply (Ty.path "*const") [] [ T ]; Ty.path "isize" ]
                     |),
                     [
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          self,
-                          "core::ptr::non_null::NonNull",
-                          "pointer"
-                        |)
-                      |);
+                      (* MutToConstPointer *)
+                      M.pointer_coercion
+                        (M.call_closure (|
+                          Ty.apply (Ty.path "*mut") [] [ T ],
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                            "as_ptr",
+                            [],
+                            []
+                          |),
+                          [ M.read (| self |) ]
+                        |));
                       M.read (| count |)
                     ]
                   |))
@@ -939,7 +1022,7 @@ Module ptr.
               // Additionally safety contract of `offset` guarantees that the resulting pointer is
               // pointing to an allocation, there can't be an allocation at null, thus it's safe to
               // construct `NonNull`.
-              unsafe { NonNull { pointer: self.pointer.byte_offset(count) } }
+              unsafe { NonNull { pointer: self.as_ptr().byte_offset(count) } }
           }
       *)
       Definition byte_offset (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -953,25 +1036,30 @@ Module ptr.
               "core::ptr::non_null::NonNull"
               [
                 ("pointer",
-                  M.call_closure (|
-                    Ty.apply (Ty.path "*const") [] [ T ],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "*const") [] [ T ],
-                      "byte_offset",
-                      [],
-                      []
-                    |),
-                    [
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          self,
-                          "core::ptr::non_null::NonNull",
-                          "pointer"
-                        |)
-                      |);
-                      M.read (| count |)
-                    ]
-                  |))
+                  (* MutToConstPointer *)
+                  M.pointer_coercion
+                    (M.call_closure (|
+                      Ty.apply (Ty.path "*mut") [] [ T ],
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "*mut") [] [ T ],
+                        "byte_offset",
+                        [],
+                        []
+                      |),
+                      [
+                        M.call_closure (|
+                          Ty.apply (Ty.path "*mut") [] [ T ],
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                            "as_ptr",
+                            [],
+                            []
+                          |),
+                          [ M.read (| self |) ]
+                        |);
+                        M.read (| count |)
+                      ]
+                    |)))
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -991,7 +1079,7 @@ Module ptr.
               // Additionally safety contract of `offset` guarantees that the resulting pointer is
               // pointing to an allocation, there can't be an allocation at null, thus it's safe to
               // construct `NonNull`.
-              unsafe { NonNull { pointer: intrinsics::offset(self.pointer, count) } }
+              unsafe { NonNull { pointer: intrinsics::offset(self.as_ptr(), count) } }
           }
       *)
       Definition add (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -1013,13 +1101,18 @@ Module ptr.
                       [ Ty.apply (Ty.path "*const") [] [ T ]; Ty.path "usize" ]
                     |),
                     [
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          self,
-                          "core::ptr::non_null::NonNull",
-                          "pointer"
-                        |)
-                      |);
+                      (* MutToConstPointer *)
+                      M.pointer_coercion
+                        (M.call_closure (|
+                          Ty.apply (Ty.path "*mut") [] [ T ],
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                            "as_ptr",
+                            [],
+                            []
+                          |),
+                          [ M.read (| self |) ]
+                        |));
                       M.read (| count |)
                     ]
                   |))
@@ -1040,7 +1133,7 @@ Module ptr.
               // Additionally safety contract of `add` guarantees that the resulting pointer is pointing
               // to an allocation, there can't be an allocation at null, thus it's safe to construct
               // `NonNull`.
-              unsafe { NonNull { pointer: self.pointer.byte_add(count) } }
+              unsafe { NonNull { pointer: self.as_ptr().byte_add(count) } }
           }
       *)
       Definition byte_add (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -1054,25 +1147,30 @@ Module ptr.
               "core::ptr::non_null::NonNull"
               [
                 ("pointer",
-                  M.call_closure (|
-                    Ty.apply (Ty.path "*const") [] [ T ],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "*const") [] [ T ],
-                      "byte_add",
-                      [],
-                      []
-                    |),
-                    [
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          self,
-                          "core::ptr::non_null::NonNull",
-                          "pointer"
-                        |)
-                      |);
-                      M.read (| count |)
-                    ]
-                  |))
+                  (* MutToConstPointer *)
+                  M.pointer_coercion
+                    (M.call_closure (|
+                      Ty.apply (Ty.path "*mut") [] [ T ],
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "*mut") [] [ T ],
+                        "byte_add",
+                        [],
+                        []
+                      |),
+                      [
+                        M.call_closure (|
+                          Ty.apply (Ty.path "*mut") [] [ T ],
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                            "as_ptr",
+                            [],
+                            []
+                          |),
+                          [ M.read (| self |) ]
+                        |);
+                        M.read (| count |)
+                      ]
+                    |)))
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1161,7 +1259,7 @@ Module ptr.
               // Additionally safety contract of `sub` guarantees that the resulting pointer is pointing
               // to an allocation, there can't be an allocation at null, thus it's safe to construct
               // `NonNull`.
-              unsafe { NonNull { pointer: self.pointer.byte_sub(count) } }
+              unsafe { NonNull { pointer: self.as_ptr().byte_sub(count) } }
           }
       *)
       Definition byte_sub (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -1175,25 +1273,30 @@ Module ptr.
               "core::ptr::non_null::NonNull"
               [
                 ("pointer",
-                  M.call_closure (|
-                    Ty.apply (Ty.path "*const") [] [ T ],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "*const") [] [ T ],
-                      "byte_sub",
-                      [],
-                      []
-                    |),
-                    [
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          self,
-                          "core::ptr::non_null::NonNull",
-                          "pointer"
-                        |)
-                      |);
-                      M.read (| count |)
-                    ]
-                  |))
+                  (* MutToConstPointer *)
+                  M.pointer_coercion
+                    (M.call_closure (|
+                      Ty.apply (Ty.path "*mut") [] [ T ],
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "*mut") [] [ T ],
+                        "byte_sub",
+                        [],
+                        []
+                      |),
+                      [
+                        M.call_closure (|
+                          Ty.apply (Ty.path "*mut") [] [ T ],
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                            "as_ptr",
+                            [],
+                            []
+                          |),
+                          [ M.read (| self |) ]
+                        |);
+                        M.read (| count |)
+                      ]
+                    |)))
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1210,7 +1313,7 @@ Module ptr.
               T: Sized,
           {
               // SAFETY: the caller must uphold the safety contract for `offset_from`.
-              unsafe { self.pointer.offset_from(origin.pointer) }
+              unsafe { self.as_ptr().offset_from(origin.as_ptr()) }
           }
       *)
       Definition offset_from (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -1223,26 +1326,34 @@ Module ptr.
             M.call_closure (|
               Ty.path "isize",
               M.get_associated_function (|
-                Ty.apply (Ty.path "*const") [] [ T ],
+                Ty.apply (Ty.path "*mut") [] [ T ],
                 "offset_from",
                 [],
                 []
               |),
               [
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    self,
-                    "core::ptr::non_null::NonNull",
-                    "pointer"
-                  |)
+                M.call_closure (|
+                  Ty.apply (Ty.path "*mut") [] [ T ],
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                    "as_ptr",
+                    [],
+                    []
+                  |),
+                  [ M.read (| self |) ]
                 |);
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    origin,
-                    "core::ptr::non_null::NonNull",
-                    "pointer"
-                  |)
-                |)
+                (* MutToConstPointer *)
+                M.pointer_coercion
+                  (M.call_closure (|
+                    Ty.apply (Ty.path "*mut") [] [ T ],
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                      "as_ptr",
+                      [],
+                      []
+                    |),
+                    [ M.read (| origin |) ]
+                  |))
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1257,7 +1368,7 @@ Module ptr.
       (*
           pub const unsafe fn byte_offset_from<U: ?Sized>(self, origin: NonNull<U>) -> isize {
               // SAFETY: the caller must uphold the safety contract for `byte_offset_from`.
-              unsafe { self.pointer.byte_offset_from(origin.pointer) }
+              unsafe { self.as_ptr().byte_offset_from(origin.as_ptr()) }
           }
       *)
       Definition byte_offset_from
@@ -1275,26 +1386,34 @@ Module ptr.
             M.call_closure (|
               Ty.path "isize",
               M.get_associated_function (|
-                Ty.apply (Ty.path "*const") [] [ T ],
+                Ty.apply (Ty.path "*mut") [] [ T ],
                 "byte_offset_from",
                 [],
                 [ U ]
               |),
               [
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    self,
-                    "core::ptr::non_null::NonNull",
-                    "pointer"
-                  |)
+                M.call_closure (|
+                  Ty.apply (Ty.path "*mut") [] [ T ],
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                    "as_ptr",
+                    [],
+                    []
+                  |),
+                  [ M.read (| self |) ]
                 |);
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    origin,
-                    "core::ptr::non_null::NonNull",
-                    "pointer"
-                  |)
-                |)
+                (* MutToConstPointer *)
+                M.pointer_coercion
+                  (M.call_closure (|
+                    Ty.apply (Ty.path "*mut") [] [ U ],
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ U ],
+                      "as_ptr",
+                      [],
+                      []
+                    |),
+                    [ M.read (| origin |) ]
+                  |))
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1312,7 +1431,7 @@ Module ptr.
               T: Sized,
           {
               // SAFETY: the caller must uphold the safety contract for `sub_ptr`.
-              unsafe { self.pointer.sub_ptr(subtracted.pointer) }
+              unsafe { self.as_ptr().sub_ptr(subtracted.as_ptr()) }
           }
       *)
       Definition sub_ptr (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -1324,27 +1443,30 @@ Module ptr.
             let subtracted := M.alloc (| subtracted |) in
             M.call_closure (|
               Ty.path "usize",
-              M.get_associated_function (|
-                Ty.apply (Ty.path "*const") [] [ T ],
-                "sub_ptr",
-                [],
-                []
-              |),
+              M.get_associated_function (| Ty.apply (Ty.path "*mut") [] [ T ], "sub_ptr", [], [] |),
               [
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    self,
-                    "core::ptr::non_null::NonNull",
-                    "pointer"
-                  |)
+                M.call_closure (|
+                  Ty.apply (Ty.path "*mut") [] [ T ],
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                    "as_ptr",
+                    [],
+                    []
+                  |),
+                  [ M.read (| self |) ]
                 |);
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    subtracted,
-                    "core::ptr::non_null::NonNull",
-                    "pointer"
-                  |)
-                |)
+                (* MutToConstPointer *)
+                M.pointer_coercion
+                  (M.call_closure (|
+                    Ty.apply (Ty.path "*mut") [] [ T ],
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                      "as_ptr",
+                      [],
+                      []
+                    |),
+                    [ M.read (| subtracted |) ]
+                  |))
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1357,12 +1479,70 @@ Module ptr.
       Global Typeclasses Opaque sub_ptr.
       
       (*
+          pub const unsafe fn byte_sub_ptr<U: ?Sized>(self, origin: NonNull<U>) -> usize {
+              // SAFETY: the caller must uphold the safety contract for `byte_sub_ptr`.
+              unsafe { self.as_ptr().byte_sub_ptr(origin.as_ptr()) }
+          }
+      *)
+      Definition byte_sub_ptr
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self T in
+        match ε, τ, α with
+        | [], [ U ], [ self; origin ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let origin := M.alloc (| origin |) in
+            M.call_closure (|
+              Ty.path "usize",
+              M.get_associated_function (|
+                Ty.apply (Ty.path "*mut") [] [ T ],
+                "byte_sub_ptr",
+                [],
+                [ U ]
+              |),
+              [
+                M.call_closure (|
+                  Ty.apply (Ty.path "*mut") [] [ T ],
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                    "as_ptr",
+                    [],
+                    []
+                  |),
+                  [ M.read (| self |) ]
+                |);
+                M.call_closure (|
+                  Ty.apply (Ty.path "*mut") [] [ U ],
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ U ],
+                    "as_ptr",
+                    [],
+                    []
+                  |),
+                  [ M.read (| origin |) ]
+                |)
+              ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Global Instance AssociatedFunction_byte_sub_ptr :
+        forall (T : Ty.t),
+        M.IsAssociatedFunction.Trait (Self T) "byte_sub_ptr" (byte_sub_ptr T).
+      Admitted.
+      Global Typeclasses Opaque byte_sub_ptr.
+      
+      (*
           pub const unsafe fn read(self) -> T
           where
               T: Sized,
           {
               // SAFETY: the caller must uphold the safety contract for `read`.
-              unsafe { ptr::read(self.pointer) }
+              unsafe { ptr::read(self.as_ptr()) }
           }
       *)
       Definition read (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -1375,13 +1555,18 @@ Module ptr.
               T,
               M.get_function (| "core::ptr::read", [], [ T ] |),
               [
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    self,
-                    "core::ptr::non_null::NonNull",
-                    "pointer"
-                  |)
-                |)
+                (* MutToConstPointer *)
+                M.pointer_coercion
+                  (M.call_closure (|
+                    Ty.apply (Ty.path "*mut") [] [ T ],
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                      "as_ptr",
+                      [],
+                      []
+                    |),
+                    [ M.read (| self |) ]
+                  |))
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1399,7 +1584,7 @@ Module ptr.
               T: Sized,
           {
               // SAFETY: the caller must uphold the safety contract for `read_volatile`.
-              unsafe { ptr::read_volatile(self.pointer) }
+              unsafe { ptr::read_volatile(self.as_ptr()) }
           }
       *)
       Definition read_volatile
@@ -1417,13 +1602,18 @@ Module ptr.
               T,
               M.get_function (| "core::ptr::read_volatile", [], [ T ] |),
               [
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    self,
-                    "core::ptr::non_null::NonNull",
-                    "pointer"
-                  |)
-                |)
+                (* MutToConstPointer *)
+                M.pointer_coercion
+                  (M.call_closure (|
+                    Ty.apply (Ty.path "*mut") [] [ T ],
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                      "as_ptr",
+                      [],
+                      []
+                    |),
+                    [ M.read (| self |) ]
+                  |))
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1441,7 +1631,7 @@ Module ptr.
               T: Sized,
           {
               // SAFETY: the caller must uphold the safety contract for `read_unaligned`.
-              unsafe { ptr::read_unaligned(self.pointer) }
+              unsafe { ptr::read_unaligned(self.as_ptr()) }
           }
       *)
       Definition read_unaligned
@@ -1459,13 +1649,18 @@ Module ptr.
               T,
               M.get_function (| "core::ptr::read_unaligned", [], [ T ] |),
               [
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    self,
-                    "core::ptr::non_null::NonNull",
-                    "pointer"
-                  |)
-                |)
+                (* MutToConstPointer *)
+                M.pointer_coercion
+                  (M.call_closure (|
+                    Ty.apply (Ty.path "*mut") [] [ T ],
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                      "as_ptr",
+                      [],
+                      []
+                    |),
+                    [ M.read (| self |) ]
+                  |))
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1483,7 +1678,7 @@ Module ptr.
               T: Sized,
           {
               // SAFETY: the caller must uphold the safety contract for `copy`.
-              unsafe { ptr::copy(self.pointer, dest.as_ptr(), count) }
+              unsafe { ptr::copy(self.as_ptr(), dest.as_ptr(), count) }
           }
       *)
       Definition copy_to (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -1498,13 +1693,18 @@ Module ptr.
               Ty.tuple [],
               M.get_function (| "core::intrinsics::copy", [], [ T ] |),
               [
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    self,
-                    "core::ptr::non_null::NonNull",
-                    "pointer"
-                  |)
-                |);
+                (* MutToConstPointer *)
+                M.pointer_coercion
+                  (M.call_closure (|
+                    Ty.apply (Ty.path "*mut") [] [ T ],
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                      "as_ptr",
+                      [],
+                      []
+                    |),
+                    [ M.read (| self |) ]
+                  |));
                 M.call_closure (|
                   Ty.apply (Ty.path "*mut") [] [ T ],
                   M.get_associated_function (|
@@ -1533,7 +1733,7 @@ Module ptr.
               T: Sized,
           {
               // SAFETY: the caller must uphold the safety contract for `copy_nonoverlapping`.
-              unsafe { ptr::copy_nonoverlapping(self.pointer, dest.as_ptr(), count) }
+              unsafe { ptr::copy_nonoverlapping(self.as_ptr(), dest.as_ptr(), count) }
           }
       *)
       Definition copy_to_nonoverlapping
@@ -1553,13 +1753,18 @@ Module ptr.
               Ty.tuple [],
               M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ T ] |),
               [
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    self,
-                    "core::ptr::non_null::NonNull",
-                    "pointer"
-                  |)
-                |);
+                (* MutToConstPointer *)
+                M.pointer_coercion
+                  (M.call_closure (|
+                    Ty.apply (Ty.path "*mut") [] [ T ],
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                      "as_ptr",
+                      [],
+                      []
+                    |),
+                    [ M.read (| self |) ]
+                  |));
                 M.call_closure (|
                   Ty.apply (Ty.path "*mut") [] [ T ],
                   M.get_associated_function (|
@@ -1588,7 +1793,7 @@ Module ptr.
               T: Sized,
           {
               // SAFETY: the caller must uphold the safety contract for `copy`.
-              unsafe { ptr::copy(src.pointer, self.as_ptr(), count) }
+              unsafe { ptr::copy(src.as_ptr(), self.as_ptr(), count) }
           }
       *)
       Definition copy_from (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -1603,13 +1808,18 @@ Module ptr.
               Ty.tuple [],
               M.get_function (| "core::intrinsics::copy", [], [ T ] |),
               [
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    src,
-                    "core::ptr::non_null::NonNull",
-                    "pointer"
-                  |)
-                |);
+                (* MutToConstPointer *)
+                M.pointer_coercion
+                  (M.call_closure (|
+                    Ty.apply (Ty.path "*mut") [] [ T ],
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                      "as_ptr",
+                      [],
+                      []
+                    |),
+                    [ M.read (| src |) ]
+                  |));
                 M.call_closure (|
                   Ty.apply (Ty.path "*mut") [] [ T ],
                   M.get_associated_function (|
@@ -1638,7 +1848,7 @@ Module ptr.
               T: Sized,
           {
               // SAFETY: the caller must uphold the safety contract for `copy_nonoverlapping`.
-              unsafe { ptr::copy_nonoverlapping(src.pointer, self.as_ptr(), count) }
+              unsafe { ptr::copy_nonoverlapping(src.as_ptr(), self.as_ptr(), count) }
           }
       *)
       Definition copy_from_nonoverlapping
@@ -1658,13 +1868,18 @@ Module ptr.
               Ty.tuple [],
               M.get_function (| "core::intrinsics::copy_nonoverlapping", [], [ T ] |),
               [
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    src,
-                    "core::ptr::non_null::NonNull",
-                    "pointer"
-                  |)
-                |);
+                (* MutToConstPointer *)
+                M.pointer_coercion
+                  (M.call_closure (|
+                    Ty.apply (Ty.path "*mut") [] [ T ],
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                      "as_ptr",
+                      [],
+                      []
+                    |),
+                    [ M.read (| src |) ]
+                  |));
                 M.call_closure (|
                   Ty.apply (Ty.path "*mut") [] [ T ],
                   M.get_associated_function (|
@@ -2006,7 +2221,7 @@ Module ptr.
       Global Typeclasses Opaque swap.
       
       (*
-          pub const fn align_offset(self, align: usize) -> usize
+          pub fn align_offset(self, align: usize) -> usize
           where
               T: Sized,
           {
@@ -2016,7 +2231,7 @@ Module ptr.
       
               {
                   // SAFETY: `align` has been checked to be a power of 2 above.
-                  unsafe { ptr::align_offset(self.pointer, align) }
+                  unsafe { ptr::align_offset(self.as_ptr(), align) }
               }
           }
       *)
@@ -2104,13 +2319,18 @@ Module ptr.
                   Ty.path "usize",
                   M.get_function (| "core::ptr::align_offset", [], [ T ] |),
                   [
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        self,
-                        "core::ptr::non_null::NonNull",
-                        "pointer"
-                      |)
-                    |);
+                    (* MutToConstPointer *)
+                    M.pointer_coercion
+                      (M.call_closure (|
+                        Ty.apply (Ty.path "*mut") [] [ T ],
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                          "as_ptr",
+                          [],
+                          []
+                        |),
+                        [ M.read (| self |) ]
+                      |));
                     M.read (| align |)
                   ]
                 |)
@@ -2126,11 +2346,11 @@ Module ptr.
       Global Typeclasses Opaque align_offset.
       
       (*
-          pub const fn is_aligned(self) -> bool
+          pub fn is_aligned(self) -> bool
           where
               T: Sized,
           {
-              self.pointer.is_aligned()
+              self.as_ptr().is_aligned()
           }
       *)
       Definition is_aligned (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -2142,18 +2362,21 @@ Module ptr.
             M.call_closure (|
               Ty.path "bool",
               M.get_associated_function (|
-                Ty.apply (Ty.path "*const") [] [ T ],
+                Ty.apply (Ty.path "*mut") [] [ T ],
                 "is_aligned",
                 [],
                 []
               |),
               [
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    self,
-                    "core::ptr::non_null::NonNull",
-                    "pointer"
-                  |)
+                M.call_closure (|
+                  Ty.apply (Ty.path "*mut") [] [ T ],
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                    "as_ptr",
+                    [],
+                    []
+                  |),
+                  [ M.read (| self |) ]
                 |)
               ]
             |)))
@@ -2167,8 +2390,8 @@ Module ptr.
       Global Typeclasses Opaque is_aligned.
       
       (*
-          pub const fn is_aligned_to(self, align: usize) -> bool {
-              self.pointer.is_aligned_to(align)
+          pub fn is_aligned_to(self, align: usize) -> bool {
+              self.as_ptr().is_aligned_to(align)
           }
       *)
       Definition is_aligned_to
@@ -2186,18 +2409,21 @@ Module ptr.
             M.call_closure (|
               Ty.path "bool",
               M.get_associated_function (|
-                Ty.apply (Ty.path "*const") [] [ T ],
+                Ty.apply (Ty.path "*mut") [] [ T ],
                 "is_aligned_to",
                 [],
                 []
               |),
               [
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    self,
-                    "core::ptr::non_null::NonNull",
-                    "pointer"
-                  |)
+                M.call_closure (|
+                  Ty.apply (Ty.path "*mut") [] [ T ],
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                    "as_ptr",
+                    [],
+                    []
+                  |),
+                  [ M.read (| self |) ]
                 |);
                 M.read (| align |)
               ]
@@ -2996,7 +3222,7 @@ Module ptr.
           (* Instance *) [].
     End Impl_core_cmp_Eq_where_core_marker_Sized_T_for_core_ptr_non_null_NonNull_T.
     
-    Module Impl_core_cmp_PartialEq_where_core_marker_Sized_T_for_core_ptr_non_null_NonNull_T.
+    Module Impl_core_cmp_PartialEq_where_core_marker_Sized_T_core_ptr_non_null_NonNull_T_for_core_ptr_non_null_NonNull_T.
       Definition Self (T : Ty.t) : Ty.t :=
         Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ].
       
@@ -3042,10 +3268,11 @@ Module ptr.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] ]
           (Self T)
           (* Instance *) [ ("eq", InstanceField.Method (eq T)) ].
-    End Impl_core_cmp_PartialEq_where_core_marker_Sized_T_for_core_ptr_non_null_NonNull_T.
+    End Impl_core_cmp_PartialEq_where_core_marker_Sized_T_core_ptr_non_null_NonNull_T_for_core_ptr_non_null_NonNull_T.
     
     Module Impl_core_cmp_Ord_where_core_marker_Sized_T_for_core_ptr_non_null_NonNull_T.
       Definition Self (T : Ty.t) : Ty.t :=
@@ -3125,7 +3352,7 @@ Module ptr.
           (* Instance *) [ ("cmp", InstanceField.Method (cmp T)) ].
     End Impl_core_cmp_Ord_where_core_marker_Sized_T_for_core_ptr_non_null_NonNull_T.
     
-    Module Impl_core_cmp_PartialOrd_where_core_marker_Sized_T_for_core_ptr_non_null_NonNull_T.
+    Module Impl_core_cmp_PartialOrd_where_core_marker_Sized_T_core_ptr_non_null_NonNull_T_for_core_ptr_non_null_NonNull_T.
       Definition Self (T : Ty.t) : Ty.t :=
         Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ].
       
@@ -3198,10 +3425,11 @@ Module ptr.
         M.IsTraitInstance
           "core::cmp::PartialOrd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ] ]
           (Self T)
           (* Instance *) [ ("partial_cmp", InstanceField.Method (partial_cmp T)) ].
-    End Impl_core_cmp_PartialOrd_where_core_marker_Sized_T_for_core_ptr_non_null_NonNull_T.
+    End Impl_core_cmp_PartialOrd_where_core_marker_Sized_T_core_ptr_non_null_NonNull_T_for_core_ptr_non_null_NonNull_T.
     
     Module Impl_core_hash_Hash_where_core_marker_Sized_T_for_core_ptr_non_null_NonNull_T.
       Definition Self (T : Ty.t) : Ty.t :=
@@ -3305,33 +3533,26 @@ Module ptr.
         Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ].
       
       (*
-          fn from(reference: &mut T) -> Self {
-              // SAFETY: A mutable reference cannot be null.
-              unsafe { NonNull { pointer: reference as *mut T } }
+          fn from(r: &mut T) -> Self {
+              NonNull::from_mut(r)
           }
       *)
       Definition from (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [], [], [ reference ] =>
+        | [], [], [ r ] =>
           ltac:(M.monadic
-            (let reference := M.alloc (| reference |) in
-            Value.StructRecord
-              "core::ptr::non_null::NonNull"
-              [
-                ("pointer",
-                  (* MutToConstPointer *)
-                  M.pointer_coercion
-                    (M.read (|
-                      M.use
-                        (M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.MutPointer,
-                            M.deref (| M.read (| reference |) |)
-                          |)
-                        |))
-                    |)))
-              ]))
+            (let r := M.alloc (| r |) in
+            M.call_closure (|
+              Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+              M.get_associated_function (|
+                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                "from_mut",
+                [],
+                []
+              |),
+              [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| r |) |) |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -3350,31 +3571,26 @@ Module ptr.
         Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ].
       
       (*
-          fn from(reference: &T) -> Self {
-              // SAFETY: A reference cannot be null.
-              unsafe { NonNull { pointer: reference as *const T } }
+          fn from(r: &T) -> Self {
+              NonNull::from_ref(r)
           }
       *)
       Definition from (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
         match ε, τ, α with
-        | [], [], [ reference ] =>
+        | [], [], [ r ] =>
           ltac:(M.monadic
-            (let reference := M.alloc (| reference |) in
-            Value.StructRecord
-              "core::ptr::non_null::NonNull"
-              [
-                ("pointer",
-                  M.read (|
-                    M.use
-                      (M.alloc (|
-                        M.borrow (|
-                          Pointer.Kind.ConstPointer,
-                          M.deref (| M.read (| reference |) |)
-                        |)
-                      |))
-                  |))
-              ]))
+            (let r := M.alloc (| r |) in
+            M.call_closure (|
+              Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+              M.get_associated_function (|
+                Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                "from_ref",
+                [],
+                []
+              |),
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| r |) |) |) ]
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       

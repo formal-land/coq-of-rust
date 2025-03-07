@@ -331,7 +331,7 @@ Module char.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_char_decode_DecodeUtf16Error.
     
-    Module Impl_core_cmp_PartialEq_for_core_char_decode_DecodeUtf16Error.
+    Module Impl_core_cmp_PartialEq_core_char_decode_DecodeUtf16Error_for_core_char_decode_DecodeUtf16Error.
       Definition Self : Ty.t := Ty.path "core::char::decode::DecodeUtf16Error".
       
       (* PartialEq *)
@@ -364,10 +364,10 @@ Module char.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::char::decode::DecodeUtf16Error" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_core_char_decode_DecodeUtf16Error.
+    End Impl_core_cmp_PartialEq_core_char_decode_DecodeUtf16Error_for_core_char_decode_DecodeUtf16Error.
     
     (*
     pub(super) fn decode_utf16<I: IntoIterator<Item = u16>>(iter: I) -> DecodeUtf16<I::IntoIter> {

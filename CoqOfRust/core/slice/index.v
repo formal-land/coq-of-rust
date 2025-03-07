@@ -139,9 +139,12 @@ Module slice.
     
     (*
     const fn slice_start_index_len_fail(index: usize, len: usize) -> ! {
-        // FIXME(const-hack): once integer formatting in panics is possible, we
-        // should use the same implementation at compiletime and runtime.
-        const_eval_select((index, len), slice_start_index_len_fail_ct, slice_start_index_len_fail_rt)
+        const_panic!(
+            "slice start index is out of range for slice",
+            "range start index {index} out of range for slice of length {len}",
+            index: usize,
+            len: usize,
+        )
     }
     *)
     Definition slice_start_index_len_fail
@@ -156,21 +159,8 @@ Module slice.
           let len := M.alloc (| len |) in
           M.call_closure (|
             Ty.path "never",
-            M.get_function (|
-              "core::intrinsics::const_eval_select",
-              [],
-              [
-                Ty.tuple [ Ty.path "usize"; Ty.path "usize" ];
-                Ty.function [ Ty.path "usize"; Ty.path "usize" ] (Ty.path "never");
-                Ty.function [ Ty.path "usize"; Ty.path "usize" ] (Ty.path "never");
-                Ty.path "never"
-              ]
-            |),
-            [
-              Value.Tuple [ M.read (| index |); M.read (| len |) ];
-              M.get_function (| "core::slice::index::slice_start_index_len_fail_ct", [], [] |);
-              M.get_function (| "core::slice::index::slice_start_index_len_fail_rt", [], [] |)
-            ]
+            M.get_function (| "core::slice::index::slice_start_index_len_fail.do_panic", [], [] |),
+            [ M.read (| index |); M.read (| len |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -183,185 +173,13 @@ Module slice.
     Global Typeclasses Opaque slice_start_index_len_fail.
     
     (*
-    fn slice_start_index_len_fail_rt(index: usize, len: usize) -> ! {
-        panic!("range start index {index} out of range for slice of length {len}");
-    }
-    *)
-    Definition slice_start_index_len_fail_rt
-        (ε : list Value.t)
-        (τ : list Ty.t)
-        (α : list Value.t)
-        : M :=
-      match ε, τ, α with
-      | [], [], [ index; len ] =>
-        ltac:(M.monadic
-          (let index := M.alloc (| index |) in
-          let len := M.alloc (| len |) in
-          M.call_closure (|
-            Ty.path "never",
-            M.get_function (| "core::panicking::panic_fmt", [], [] |),
-            [
-              M.call_closure (|
-                Ty.path "core::fmt::Arguments",
-                M.get_associated_function (|
-                  Ty.path "core::fmt::Arguments",
-                  "new_v1",
-                  [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 2 ],
-                  []
-                |),
-                [
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "range start index " |);
-                              M.read (| Value.String " out of range for slice of length " |)
-                            ]
-                        |)
-                      |)
-                    |)
-                  |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                Ty.path "core::fmt::rt::Argument",
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [],
-                                  [ Ty.path "usize" ]
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (| M.borrow (| Pointer.Kind.Ref, index |) |)
-                                  |)
-                                ]
-                              |);
-                              M.call_closure (|
-                                Ty.path "core::fmt::rt::Argument",
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [],
-                                  [ Ty.path "usize" ]
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (| M.borrow (| Pointer.Kind.Ref, len |) |)
-                                  |)
-                                ]
-                              |)
-                            ]
-                        |)
-                      |)
-                    |)
-                  |)
-                ]
-              |)
-            ]
-          |)))
-      | _, _, _ => M.impossible "wrong number of arguments"
-      end.
-    
-    Global Instance Instance_IsFunction_slice_start_index_len_fail_rt :
-      M.IsFunction.Trait
-        "core::slice::index::slice_start_index_len_fail_rt"
-        slice_start_index_len_fail_rt.
-    Admitted.
-    Global Typeclasses Opaque slice_start_index_len_fail_rt.
-    
-    (*
-    const fn slice_start_index_len_fail_ct(_: usize, _: usize) -> ! {
-        panic!("slice start index is out of range for slice");
-    }
-    *)
-    Definition slice_start_index_len_fail_ct
-        (ε : list Value.t)
-        (τ : list Ty.t)
-        (α : list Value.t)
-        : M :=
-      match ε, τ, α with
-      | [], [], [ β0; β1 ] =>
-        ltac:(M.monadic
-          (let β0 := M.alloc (| β0 |) in
-          let β1 := M.alloc (| β1 |) in
-          M.match_operator (|
-            None,
-            β0,
-            [
-              fun γ =>
-                ltac:(M.monadic
-                  (M.match_operator (|
-                    None,
-                    β1,
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (M.call_closure (|
-                            Ty.path "never",
-                            M.get_function (| "core::panicking::panic_fmt", [], [] |),
-                            [
-                              M.call_closure (|
-                                Ty.path "core::fmt::Arguments",
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::Arguments",
-                                  "new_const",
-                                  [ Value.Integer IntegerKind.Usize 1 ],
-                                  []
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (|
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.read (|
-                                                Value.String
-                                                  "slice start index is out of range for slice"
-                                              |)
-                                            ]
-                                        |)
-                                      |)
-                                    |)
-                                  |)
-                                ]
-                              |)
-                            ]
-                          |)))
-                    ]
-                  |)))
-            ]
-          |)))
-      | _, _, _ => M.impossible "wrong number of arguments"
-      end.
-    
-    Global Instance Instance_IsFunction_slice_start_index_len_fail_ct :
-      M.IsFunction.Trait
-        "core::slice::index::slice_start_index_len_fail_ct"
-        slice_start_index_len_fail_ct.
-    Admitted.
-    Global Typeclasses Opaque slice_start_index_len_fail_ct.
-    
-    (*
     const fn slice_end_index_len_fail(index: usize, len: usize) -> ! {
-        // FIXME(const-hack): once integer formatting in panics is possible, we
-        // should use the same implementation at compiletime and runtime.
-        const_eval_select((index, len), slice_end_index_len_fail_ct, slice_end_index_len_fail_rt)
+        const_panic!(
+            "slice end index is out of range for slice",
+            "range end index {index} out of range for slice of length {len}",
+            index: usize,
+            len: usize,
+        )
     }
     *)
     Definition slice_end_index_len_fail (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -372,21 +190,8 @@ Module slice.
           let len := M.alloc (| len |) in
           M.call_closure (|
             Ty.path "never",
-            M.get_function (|
-              "core::intrinsics::const_eval_select",
-              [],
-              [
-                Ty.tuple [ Ty.path "usize"; Ty.path "usize" ];
-                Ty.function [ Ty.path "usize"; Ty.path "usize" ] (Ty.path "never");
-                Ty.function [ Ty.path "usize"; Ty.path "usize" ] (Ty.path "never");
-                Ty.path "never"
-              ]
-            |),
-            [
-              Value.Tuple [ M.read (| index |); M.read (| len |) ];
-              M.get_function (| "core::slice::index::slice_end_index_len_fail_ct", [], [] |);
-              M.get_function (| "core::slice::index::slice_end_index_len_fail_rt", [], [] |)
-            ]
+            M.get_function (| "core::slice::index::slice_end_index_len_fail.do_panic", [], [] |),
+            [ M.read (| index |); M.read (| len |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -397,185 +202,13 @@ Module slice.
     Global Typeclasses Opaque slice_end_index_len_fail.
     
     (*
-    fn slice_end_index_len_fail_rt(index: usize, len: usize) -> ! {
-        panic!("range end index {index} out of range for slice of length {len}");
-    }
-    *)
-    Definition slice_end_index_len_fail_rt
-        (ε : list Value.t)
-        (τ : list Ty.t)
-        (α : list Value.t)
-        : M :=
-      match ε, τ, α with
-      | [], [], [ index; len ] =>
-        ltac:(M.monadic
-          (let index := M.alloc (| index |) in
-          let len := M.alloc (| len |) in
-          M.call_closure (|
-            Ty.path "never",
-            M.get_function (| "core::panicking::panic_fmt", [], [] |),
-            [
-              M.call_closure (|
-                Ty.path "core::fmt::Arguments",
-                M.get_associated_function (|
-                  Ty.path "core::fmt::Arguments",
-                  "new_v1",
-                  [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 2 ],
-                  []
-                |),
-                [
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "range end index " |);
-                              M.read (| Value.String " out of range for slice of length " |)
-                            ]
-                        |)
-                      |)
-                    |)
-                  |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                Ty.path "core::fmt::rt::Argument",
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [],
-                                  [ Ty.path "usize" ]
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (| M.borrow (| Pointer.Kind.Ref, index |) |)
-                                  |)
-                                ]
-                              |);
-                              M.call_closure (|
-                                Ty.path "core::fmt::rt::Argument",
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [],
-                                  [ Ty.path "usize" ]
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (| M.borrow (| Pointer.Kind.Ref, len |) |)
-                                  |)
-                                ]
-                              |)
-                            ]
-                        |)
-                      |)
-                    |)
-                  |)
-                ]
-              |)
-            ]
-          |)))
-      | _, _, _ => M.impossible "wrong number of arguments"
-      end.
-    
-    Global Instance Instance_IsFunction_slice_end_index_len_fail_rt :
-      M.IsFunction.Trait
-        "core::slice::index::slice_end_index_len_fail_rt"
-        slice_end_index_len_fail_rt.
-    Admitted.
-    Global Typeclasses Opaque slice_end_index_len_fail_rt.
-    
-    (*
-    const fn slice_end_index_len_fail_ct(_: usize, _: usize) -> ! {
-        panic!("slice end index is out of range for slice");
-    }
-    *)
-    Definition slice_end_index_len_fail_ct
-        (ε : list Value.t)
-        (τ : list Ty.t)
-        (α : list Value.t)
-        : M :=
-      match ε, τ, α with
-      | [], [], [ β0; β1 ] =>
-        ltac:(M.monadic
-          (let β0 := M.alloc (| β0 |) in
-          let β1 := M.alloc (| β1 |) in
-          M.match_operator (|
-            None,
-            β0,
-            [
-              fun γ =>
-                ltac:(M.monadic
-                  (M.match_operator (|
-                    None,
-                    β1,
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (M.call_closure (|
-                            Ty.path "never",
-                            M.get_function (| "core::panicking::panic_fmt", [], [] |),
-                            [
-                              M.call_closure (|
-                                Ty.path "core::fmt::Arguments",
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::Arguments",
-                                  "new_const",
-                                  [ Value.Integer IntegerKind.Usize 1 ],
-                                  []
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (|
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.read (|
-                                                Value.String
-                                                  "slice end index is out of range for slice"
-                                              |)
-                                            ]
-                                        |)
-                                      |)
-                                    |)
-                                  |)
-                                ]
-                              |)
-                            ]
-                          |)))
-                    ]
-                  |)))
-            ]
-          |)))
-      | _, _, _ => M.impossible "wrong number of arguments"
-      end.
-    
-    Global Instance Instance_IsFunction_slice_end_index_len_fail_ct :
-      M.IsFunction.Trait
-        "core::slice::index::slice_end_index_len_fail_ct"
-        slice_end_index_len_fail_ct.
-    Admitted.
-    Global Typeclasses Opaque slice_end_index_len_fail_ct.
-    
-    (*
     const fn slice_index_order_fail(index: usize, end: usize) -> ! {
-        // FIXME(const-hack): once integer formatting in panics is possible, we
-        // should use the same implementation at compiletime and runtime.
-        const_eval_select((index, end), slice_index_order_fail_ct, slice_index_order_fail_rt)
+        const_panic!(
+            "slice index start is larger than end",
+            "slice index starts at {index} but ends at {end}",
+            index: usize,
+            end: usize,
+        )
     }
     *)
     Definition slice_index_order_fail (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -586,21 +219,8 @@ Module slice.
           let end_ := M.alloc (| end_ |) in
           M.call_closure (|
             Ty.path "never",
-            M.get_function (|
-              "core::intrinsics::const_eval_select",
-              [],
-              [
-                Ty.tuple [ Ty.path "usize"; Ty.path "usize" ];
-                Ty.function [ Ty.path "usize"; Ty.path "usize" ] (Ty.path "never");
-                Ty.function [ Ty.path "usize"; Ty.path "usize" ] (Ty.path "never");
-                Ty.path "never"
-              ]
-            |),
-            [
-              Value.Tuple [ M.read (| index |); M.read (| end_ |) ];
-              M.get_function (| "core::slice::index::slice_index_order_fail_ct", [], [] |);
-              M.get_function (| "core::slice::index::slice_index_order_fail_rt", [], [] |)
-            ]
+            M.get_function (| "core::slice::index::slice_index_order_fail.do_panic", [], [] |),
+            [ M.read (| index |); M.read (| end_ |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -609,176 +229,6 @@ Module slice.
       M.IsFunction.Trait "core::slice::index::slice_index_order_fail" slice_index_order_fail.
     Admitted.
     Global Typeclasses Opaque slice_index_order_fail.
-    
-    (*
-    fn slice_index_order_fail_rt(index: usize, end: usize) -> ! {
-        panic!("slice index starts at {index} but ends at {end}");
-    }
-    *)
-    Definition slice_index_order_fail_rt
-        (ε : list Value.t)
-        (τ : list Ty.t)
-        (α : list Value.t)
-        : M :=
-      match ε, τ, α with
-      | [], [], [ index; end_ ] =>
-        ltac:(M.monadic
-          (let index := M.alloc (| index |) in
-          let end_ := M.alloc (| end_ |) in
-          M.call_closure (|
-            Ty.path "never",
-            M.get_function (| "core::panicking::panic_fmt", [], [] |),
-            [
-              M.call_closure (|
-                Ty.path "core::fmt::Arguments",
-                M.get_associated_function (|
-                  Ty.path "core::fmt::Arguments",
-                  "new_v1",
-                  [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 2 ],
-                  []
-                |),
-                [
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "slice index starts at " |);
-                              M.read (| Value.String " but ends at " |)
-                            ]
-                        |)
-                      |)
-                    |)
-                  |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          Value.Array
-                            [
-                              M.call_closure (|
-                                Ty.path "core::fmt::rt::Argument",
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [],
-                                  [ Ty.path "usize" ]
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (| M.borrow (| Pointer.Kind.Ref, index |) |)
-                                  |)
-                                ]
-                              |);
-                              M.call_closure (|
-                                Ty.path "core::fmt::rt::Argument",
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::rt::Argument",
-                                  "new_display",
-                                  [],
-                                  [ Ty.path "usize" ]
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (| M.borrow (| Pointer.Kind.Ref, end_ |) |)
-                                  |)
-                                ]
-                              |)
-                            ]
-                        |)
-                      |)
-                    |)
-                  |)
-                ]
-              |)
-            ]
-          |)))
-      | _, _, _ => M.impossible "wrong number of arguments"
-      end.
-    
-    Global Instance Instance_IsFunction_slice_index_order_fail_rt :
-      M.IsFunction.Trait "core::slice::index::slice_index_order_fail_rt" slice_index_order_fail_rt.
-    Admitted.
-    Global Typeclasses Opaque slice_index_order_fail_rt.
-    
-    (*
-    const fn slice_index_order_fail_ct(_: usize, _: usize) -> ! {
-        panic!("slice index start is larger than end");
-    }
-    *)
-    Definition slice_index_order_fail_ct
-        (ε : list Value.t)
-        (τ : list Ty.t)
-        (α : list Value.t)
-        : M :=
-      match ε, τ, α with
-      | [], [], [ β0; β1 ] =>
-        ltac:(M.monadic
-          (let β0 := M.alloc (| β0 |) in
-          let β1 := M.alloc (| β1 |) in
-          M.match_operator (|
-            None,
-            β0,
-            [
-              fun γ =>
-                ltac:(M.monadic
-                  (M.match_operator (|
-                    None,
-                    β1,
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (M.call_closure (|
-                            Ty.path "never",
-                            M.get_function (| "core::panicking::panic_fmt", [], [] |),
-                            [
-                              M.call_closure (|
-                                Ty.path "core::fmt::Arguments",
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::Arguments",
-                                  "new_const",
-                                  [ Value.Integer IntegerKind.Usize 1 ],
-                                  []
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (|
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.read (|
-                                                Value.String "slice index start is larger than end"
-                                              |)
-                                            ]
-                                        |)
-                                      |)
-                                    |)
-                                  |)
-                                ]
-                              |)
-                            ]
-                          |)))
-                    ]
-                  |)))
-            ]
-          |)))
-      | _, _, _ => M.impossible "wrong number of arguments"
-      end.
-    
-    Global Instance Instance_IsFunction_slice_index_order_fail_ct :
-      M.IsFunction.Trait "core::slice::index::slice_index_order_fail_ct" slice_index_order_fail_ct.
-    Admitted.
-    Global Typeclasses Opaque slice_index_order_fail_ct.
     
     (*
     const fn slice_start_index_overflow_fail() -> ! {

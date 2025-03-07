@@ -908,10 +908,6 @@ Module iter.
           M.IsFunction.Trait "core::iter::traits::collect::default_extend_tuple::extend" extend.
         Admitted.
         Global Typeclasses Opaque extend.
-        
-        Module extend.
-          (* Error OpaqueTy *)
-        End extend.
       End default_extend_tuple.
       
       (* Trait *)

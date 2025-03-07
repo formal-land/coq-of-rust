@@ -141,7 +141,7 @@ Module Impl_core_marker_StructuralPartialEq_for_dns_AccountId.
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_dns_AccountId.
 
-Module Impl_core_cmp_PartialEq_for_dns_AccountId.
+Module Impl_core_cmp_PartialEq_dns_AccountId_for_dns_AccountId.
   Definition Self : Ty.t := Ty.path "dns::AccountId".
   
   Parameter eq : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
@@ -150,10 +150,10 @@ Module Impl_core_cmp_PartialEq_for_dns_AccountId.
     M.IsTraitInstance
       "core::cmp::PartialEq"
       (* Trait polymorphic consts *) []
-      (* Trait polymorphic types *) []
+      (* Trait polymorphic types *) [ Ty.path "dns::AccountId" ]
       Self
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
-End Impl_core_cmp_PartialEq_for_dns_AccountId.
+End Impl_core_cmp_PartialEq_dns_AccountId_for_dns_AccountId.
 
 Module Impl_core_convert_From_array_Usize_32_u8_for_dns_AccountId.
   Definition Self : Ty.t := Ty.path "dns::AccountId".
@@ -350,7 +350,7 @@ Module Impl_core_marker_StructuralPartialEq_for_dns_Error.
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_dns_Error.
 
-Module Impl_core_cmp_PartialEq_for_dns_Error.
+Module Impl_core_cmp_PartialEq_dns_Error_for_dns_Error.
   Definition Self : Ty.t := Ty.path "dns::Error".
   
   Parameter eq : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
@@ -359,10 +359,10 @@ Module Impl_core_cmp_PartialEq_for_dns_Error.
     M.IsTraitInstance
       "core::cmp::PartialEq"
       (* Trait polymorphic consts *) []
-      (* Trait polymorphic types *) []
+      (* Trait polymorphic types *) [ Ty.path "dns::Error" ]
       Self
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
-End Impl_core_cmp_PartialEq_for_dns_Error.
+End Impl_core_cmp_PartialEq_dns_Error_for_dns_Error.
 
 Module Impl_core_cmp_Eq_for_dns_Error.
   Definition Self : Ty.t := Ty.path "dns::Error".

@@ -15,7 +15,7 @@ Module char.
       Admitted.
       Global Typeclasses Opaque value_MIN.
       
-      (*     pub const MAX: char = '\u{10ffff}'; *)
+      (*     pub const MAX: char = '\u{10FFFF}'; *)
       (* Ty.path "char" *)
       Definition value_MAX : Value.t :=
         M.run ltac:(M.monadic (M.alloc (| Value.UnicodeChar 1114111 |))).
@@ -150,7 +150,7 @@ Module char.
       Global Typeclasses Opaque from_digit.
       
       (*
-          pub fn is_digit(self, radix: u32) -> bool {
+          pub const fn is_digit(self, radix: u32) -> bool {
               self.to_digit(radix).is_some()
           }
       *)
@@ -191,18 +191,23 @@ Module char.
       
       (*
           pub const fn to_digit(self, radix: u32) -> Option<u32> {
-              // If not a digit, a number greater than radix will be created.
-              let mut digit = (self as u32).wrapping_sub('0' as u32);
-              if radix > 10 {
-                  assert!(radix <= 36, "to_digit: radix is too high (maximum 36)");
-                  if digit < 10 {
-                      return Some(digit);
-                  }
-                  // Force the 6th bit to be set to ensure ascii is lower case.
-                  digit = (self as u32 | 0b10_0000).wrapping_sub('a' as u32).saturating_add(10);
-              }
+              assert!(
+                  radix >= 2 && radix <= 36,
+                  "to_digit: invalid radix -- radix must be in the range 2 to 36 inclusive"
+              );
+              // check radix to remove letter handling code when radix is a known constant
+              let value = if self > '9' && radix > 10 {
+                  // convert ASCII letters to lowercase
+                  let lower = self as u32 | 0x20;
+                  // convert an ASCII letter to the corresponding value,
+                  // non-letters convert to values > 36
+                  lower.wrapping_sub('a' as u32) as u64 + 10
+              } else {
+                  // convert digit to value, non-digits wrap to values > 36
+                  (self as u32).wrapping_sub('0' as u32) as u64
+              };
               // FIXME(const-hack): once then_some is const fn, use it here
-              if digit < radix { Some(digit) } else { None }
+              if value < radix as u64 { Some(value as u32) } else { None }
           }
       *)
       Definition to_digit (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -211,177 +216,78 @@ Module char.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let radix := M.alloc (| radix |) in
-            M.catch_return (|
-              ltac:(M.monadic
-                (M.read (|
-                  let~ digit : Ty.path "u32" :=
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.path "u32",
-                        M.get_associated_function (| Ty.path "u32", "wrapping_sub", [], [] |),
-                        [
-                          M.cast (Ty.path "u32") (M.read (| self |));
-                          M.cast (Ty.path "u32") (Value.UnicodeChar 48)
-                        ]
-                      |)
-                    |) in
-                  let~ _ : Ty.tuple [] :=
-                    M.match_operator (|
-                      Some (Ty.tuple []),
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  BinOp.gt (|
+            M.read (|
+              let~ _ : Ty.tuple [] :=
+                M.match_operator (|
+                  Some (Ty.tuple []),
+                  M.alloc (| Value.Tuple [] |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ :=
+                          M.use
+                            (M.alloc (|
+                              UnOp.not (|
+                                LogicalOp.and (|
+                                  BinOp.ge (|
                                     M.read (| radix |),
-                                    Value.Integer IntegerKind.U32 10
-                                  |)
-                                |)) in
-                            let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            let~ _ : Ty.tuple [] :=
-                              M.match_operator (|
-                                Some (Ty.tuple []),
-                                M.alloc (| Value.Tuple [] |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let γ :=
-                                        M.use
-                                          (M.alloc (|
-                                            UnOp.not (|
-                                              BinOp.le (|
-                                                M.read (| radix |),
-                                                Value.Integer IntegerKind.U32 36
-                                              |)
-                                            |)
-                                          |)) in
-                                      let _ :=
-                                        M.is_constant_or_break_match (|
-                                          M.read (| γ |),
-                                          Value.Bool true
-                                        |) in
-                                      M.alloc (|
-                                        M.never_to_any (|
-                                          M.call_closure (|
-                                            Ty.path "never",
-                                            M.get_function (|
-                                              "core::panicking::panic_fmt",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              M.call_closure (|
-                                                Ty.path "core::fmt::Arguments",
-                                                M.get_associated_function (|
-                                                  Ty.path "core::fmt::Arguments",
-                                                  "new_const",
-                                                  [ Value.Integer IntegerKind.Usize 1 ],
-                                                  []
-                                                |),
-                                                [
-                                                  M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.deref (|
-                                                      M.borrow (|
-                                                        Pointer.Kind.Ref,
-                                                        M.alloc (|
-                                                          Value.Array
-                                                            [
-                                                              M.read (|
-                                                                Value.String
-                                                                  "to_digit: radix is too high (maximum 36)"
-                                                              |)
-                                                            ]
-                                                        |)
-                                                      |)
-                                                    |)
-                                                  |)
-                                                ]
-                                              |)
-                                            ]
-                                          |)
-                                        |)
-                                      |)));
-                                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                                ]
-                              |) in
-                            let~ _ : Ty.tuple [] :=
-                              M.match_operator (|
-                                Some (Ty.tuple []),
-                                M.alloc (| Value.Tuple [] |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let γ :=
-                                        M.use
-                                          (M.alloc (|
-                                            BinOp.lt (|
-                                              M.read (| digit |),
-                                              Value.Integer IntegerKind.U32 10
-                                            |)
-                                          |)) in
-                                      let _ :=
-                                        M.is_constant_or_break_match (|
-                                          M.read (| γ |),
-                                          Value.Bool true
-                                        |) in
-                                      M.alloc (|
-                                        M.never_to_any (|
-                                          M.read (|
-                                            M.return_ (|
-                                              Value.StructTuple
-                                                "core::option::Option::Some"
-                                                [ M.read (| digit |) ]
-                                            |)
-                                          |)
-                                        |)
-                                      |)));
-                                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                                ]
-                              |) in
-                            let~ _ : Ty.tuple [] :=
-                              M.alloc (|
-                                M.write (|
-                                  digit,
-                                  M.call_closure (|
-                                    Ty.path "u32",
-                                    M.get_associated_function (|
-                                      Ty.path "u32",
-                                      "saturating_add",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.call_closure (|
-                                        Ty.path "u32",
-                                        M.get_associated_function (|
-                                          Ty.path "u32",
-                                          "wrapping_sub",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          BinOp.bit_or
-                                            (M.cast (Ty.path "u32") (M.read (| self |)))
-                                            (Value.Integer IntegerKind.U32 32);
-                                          M.cast (Ty.path "u32") (Value.UnicodeChar 97)
-                                        ]
-                                      |);
-                                      Value.Integer IntegerKind.U32 10
-                                    ]
-                                  |)
+                                    Value.Integer IntegerKind.U32 2
+                                  |),
+                                  ltac:(M.monadic
+                                    (BinOp.le (|
+                                      M.read (| radix |),
+                                      Value.Integer IntegerKind.U32 36
+                                    |)))
                                 |)
-                              |) in
-                            M.alloc (| Value.Tuple [] |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                      ]
-                    |) in
+                              |)
+                            |)) in
+                        let _ :=
+                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        M.alloc (|
+                          M.never_to_any (|
+                            M.call_closure (|
+                              Ty.path "never",
+                              M.get_function (| "core::panicking::panic_fmt", [], [] |),
+                              [
+                                M.call_closure (|
+                                  Ty.path "core::fmt::Arguments",
+                                  M.get_associated_function (|
+                                    Ty.path "core::fmt::Arguments",
+                                    "new_const",
+                                    [ Value.Integer IntegerKind.Usize 1 ],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.alloc (|
+                                            Value.Array
+                                              [
+                                                M.read (|
+                                                  Value.String
+                                                    "to_digit: invalid radix -- radix must be in the range 2 to 36 inclusive"
+                                                |)
+                                              ]
+                                          |)
+                                        |)
+                                      |)
+                                    |)
+                                  ]
+                                |)
+                              ]
+                            |)
+                          |)
+                        |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                  ]
+                |) in
+              let~ value : Ty.path "u64" :=
+                M.copy (|
                   M.match_operator (|
-                    Some (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ]),
+                    Some (Ty.path "u64"),
                     M.alloc (| Value.Tuple [] |),
                     [
                       fun γ =>
@@ -389,19 +295,90 @@ Module char.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.lt (| M.read (| digit |), M.read (| radix |) |)
+                                LogicalOp.and (|
+                                  BinOp.gt (| M.read (| self |), Value.UnicodeChar 57 |),
+                                  ltac:(M.monadic
+                                    (BinOp.gt (|
+                                      M.read (| radix |),
+                                      Value.Integer IntegerKind.U32 10
+                                    |)))
+                                |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          let~ lower : Ty.path "u32" :=
+                            M.alloc (|
+                              BinOp.bit_or
+                                (M.cast (Ty.path "u32") (M.read (| self |)))
+                                (Value.Integer IntegerKind.U32 32)
+                            |) in
                           M.alloc (|
-                            Value.StructTuple "core::option::Option::Some" [ M.read (| digit |) ]
+                            BinOp.Wrap.add (|
+                              M.cast
+                                (Ty.path "u64")
+                                (M.call_closure (|
+                                  Ty.path "u32",
+                                  M.get_associated_function (|
+                                    Ty.path "u32",
+                                    "wrapping_sub",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.read (| lower |);
+                                    M.cast (Ty.path "u32") (Value.UnicodeChar 97)
+                                  ]
+                                |)),
+                              Value.Integer IntegerKind.U64 10
+                            |)
                           |)));
                       fun γ =>
                         ltac:(M.monadic
-                          (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                          (M.alloc (|
+                            M.cast
+                              (Ty.path "u64")
+                              (M.call_closure (|
+                                Ty.path "u32",
+                                M.get_associated_function (|
+                                  Ty.path "u32",
+                                  "wrapping_sub",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.cast (Ty.path "u32") (M.read (| self |));
+                                  M.cast (Ty.path "u32") (Value.UnicodeChar 48)
+                                ]
+                              |))
+                          |)))
                     ]
                   |)
-                |)))
+                |) in
+              M.match_operator (|
+                Some (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u32" ]),
+                M.alloc (| Value.Tuple [] |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ :=
+                        M.use
+                          (M.alloc (|
+                            BinOp.lt (|
+                              M.read (| value |),
+                              M.cast (Ty.path "u64") (M.read (| radix |))
+                            |)
+                          |)) in
+                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      M.alloc (|
+                        Value.StructTuple
+                          "core::option::Option::Some"
+                          [ M.cast (Ty.path "u32") (M.read (| value |)) ]
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                ]
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1230,7 +1207,7 @@ Module char.
       Global Typeclasses Opaque is_uppercase.
       
       (*
-          pub fn is_whitespace(self) -> bool {
+          pub const fn is_whitespace(self) -> bool {
               match self {
                   ' ' | '\x09'..='\x0d' => true,
                   c => c > '\x7f' && unicode::White_Space(c),
@@ -2430,15 +2407,6 @@ Module char.
     
     (*
     pub const fn encode_utf8_raw(code: u32, dst: &mut [u8]) -> &mut [u8] {
-        const fn panic_at_const(_code: u32, _len: usize, _dst_len: usize) {
-            // Note that we cannot format in constant expressions.
-            panic!("encode_utf8: buffer does not have enough bytes to encode code point");
-        }
-        fn panic_at_rt(code: u32, len: usize, dst_len: usize) {
-            panic!(
-                "encode_utf8: need {len} bytes to encode U+{code:04X} but buffer has just {dst_len}",
-            );
-        }
         let len = len_utf8(code);
         match (len, &mut *dst) {
             (1, [a, ..]) => {
@@ -2459,8 +2427,15 @@ Module char.
                 *c = (code >> 6 & 0x3F) as u8 | TAG_CONT;
                 *d = (code & 0x3F) as u8 | TAG_CONT;
             }
-            // FIXME(const-hack): We would prefer to have streamlined panics when formatters become const-friendly.
-            _ => const_eval_select((code, len, dst.len()), panic_at_const, panic_at_rt),
+            _ => {
+                const_panic!(
+                    "encode_utf8: buffer does not have enough bytes to encode code point",
+                    "encode_utf8: need {len} bytes to encode U+{code:04X} but buffer has just {dst_len}",
+                    code: u32 = code,
+                    len: usize = len,
+                    dst_len: usize = dst.len(),
+                )
+            }
         };
         // SAFETY: `<&mut [u8]>::as_mut_ptr` is guaranteed to return a valid pointer and `len` has been tested to be within bounds.
         unsafe { slice::from_raw_parts_mut(dst.as_mut_ptr(), len) }
@@ -2708,54 +2683,34 @@ Module char.
                       fun γ =>
                         ltac:(M.monadic
                           (M.alloc (|
-                            M.call_closure (|
-                              Ty.tuple [],
-                              M.get_function (|
-                                "core::intrinsics::const_eval_select",
-                                [],
+                            M.never_to_any (|
+                              M.call_closure (|
+                                Ty.path "never",
+                                M.get_function (|
+                                  "core::char::methods::encode_utf8_raw.do_panic",
+                                  [],
+                                  []
+                                |),
                                 [
-                                  Ty.tuple [ Ty.path "u32"; Ty.path "usize"; Ty.path "usize" ];
-                                  Ty.function
-                                    [ Ty.path "u32"; Ty.path "usize"; Ty.path "usize" ]
-                                    (Ty.tuple []);
-                                  Ty.function
-                                    [ Ty.path "u32"; Ty.path "usize"; Ty.path "usize" ]
-                                    (Ty.tuple []);
-                                  Ty.tuple []
+                                  M.read (| code |);
+                                  M.read (| len |);
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    M.get_associated_function (|
+                                      Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                      "len",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| dst |) |)
+                                      |)
+                                    ]
+                                  |)
                                 ]
-                              |),
-                              [
-                                Value.Tuple
-                                  [
-                                    M.read (| code |);
-                                    M.read (| len |);
-                                    M.call_closure (|
-                                      Ty.path "usize",
-                                      M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                        "len",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (| M.read (| dst |) |)
-                                        |)
-                                      ]
-                                    |)
-                                  ];
-                                M.get_function (|
-                                  "core::char::methods::encode_utf8_raw.panic_at_const",
-                                  [],
-                                  []
-                                |);
-                                M.get_function (|
-                                  "core::char::methods::encode_utf8_raw.panic_at_rt",
-                                  [],
-                                  []
-                                |)
-                              ]
+                              |)
                             |)
                           |)))
                     ]
@@ -2808,267 +2763,8 @@ Module char.
     Admitted.
     Global Typeclasses Opaque encode_utf8_raw.
     
-    Module encode_utf8_raw.
-      (*
-          const fn panic_at_const(_code: u32, _len: usize, _dst_len: usize) {
-              // Note that we cannot format in constant expressions.
-              panic!("encode_utf8: buffer does not have enough bytes to encode code point");
-          }
-      *)
-      Definition panic_at_const (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ _code; _len; _dst_len ] =>
-          ltac:(M.monadic
-            (let _code := M.alloc (| _code |) in
-            let _len := M.alloc (| _len |) in
-            let _dst_len := M.alloc (| _dst_len |) in
-            M.never_to_any (|
-              M.call_closure (|
-                Ty.path "never",
-                M.get_function (| "core::panicking::panic_fmt", [], [] |),
-                [
-                  M.call_closure (|
-                    Ty.path "core::fmt::Arguments",
-                    M.get_associated_function (|
-                      Ty.path "core::fmt::Arguments",
-                      "new_const",
-                      [ Value.Integer IntegerKind.Usize 1 ],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (|
-                                    Value.String
-                                      "encode_utf8: buffer does not have enough bytes to encode code point"
-                                  |)
-                                ]
-                            |)
-                          |)
-                        |)
-                      |)
-                    ]
-                  |)
-                ]
-              |)
-            |)))
-        | _, _, _ => M.impossible "wrong number of arguments"
-        end.
-      
-      Global Instance Instance_IsFunction_panic_at_const :
-        M.IsFunction.Trait "core::char::methods::encode_utf8_raw::panic_at_const" panic_at_const.
-      Admitted.
-      Global Typeclasses Opaque panic_at_const.
-      
-      (*
-          fn panic_at_rt(code: u32, len: usize, dst_len: usize) {
-              panic!(
-                  "encode_utf8: need {len} bytes to encode U+{code:04X} but buffer has just {dst_len}",
-              );
-          }
-      *)
-      Definition panic_at_rt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ code; len; dst_len ] =>
-          ltac:(M.monadic
-            (let code := M.alloc (| code |) in
-            let len := M.alloc (| len |) in
-            let dst_len := M.alloc (| dst_len |) in
-            M.never_to_any (|
-              M.call_closure (|
-                Ty.path "never",
-                M.get_function (| "core::panicking::panic_fmt", [], [] |),
-                [
-                  M.call_closure (|
-                    Ty.path "core::fmt::Arguments",
-                    M.get_associated_function (|
-                      Ty.path "core::fmt::Arguments",
-                      "new_v1_formatted",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "encode_utf8: need " |);
-                                  M.read (| Value.String " bytes to encode U+" |);
-                                  M.read (| Value.String " but buffer has just " |)
-                                ]
-                            |)
-                          |)
-                        |)
-                      |);
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array
-                                [
-                                  M.call_closure (|
-                                    Ty.path "core::fmt::rt::Argument",
-                                    M.get_associated_function (|
-                                      Ty.path "core::fmt::rt::Argument",
-                                      "new_display",
-                                      [],
-                                      [ Ty.path "usize" ]
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.borrow (| Pointer.Kind.Ref, len |) |)
-                                      |)
-                                    ]
-                                  |);
-                                  M.call_closure (|
-                                    Ty.path "core::fmt::rt::Argument",
-                                    M.get_associated_function (|
-                                      Ty.path "core::fmt::rt::Argument",
-                                      "new_upper_hex",
-                                      [],
-                                      [ Ty.path "u32" ]
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.borrow (| Pointer.Kind.Ref, code |) |)
-                                      |)
-                                    ]
-                                  |);
-                                  M.call_closure (|
-                                    Ty.path "core::fmt::rt::Argument",
-                                    M.get_associated_function (|
-                                      Ty.path "core::fmt::rt::Argument",
-                                      "new_display",
-                                      [],
-                                      [ Ty.path "usize" ]
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.borrow (| Pointer.Kind.Ref, dst_len |) |)
-                                      |)
-                                    ]
-                                  |)
-                                ]
-                            |)
-                          |)
-                        |)
-                      |);
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array
-                                [
-                                  M.call_closure (|
-                                    Ty.path "core::fmt::rt::Placeholder",
-                                    M.get_associated_function (|
-                                      Ty.path "core::fmt::rt::Placeholder",
-                                      "new",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      Value.Integer IntegerKind.Usize 0;
-                                      Value.UnicodeChar 32;
-                                      Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                      Value.Integer IntegerKind.U32 0;
-                                      Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                      Value.StructTuple "core::fmt::rt::Count::Implied" []
-                                    ]
-                                  |);
-                                  M.call_closure (|
-                                    Ty.path "core::fmt::rt::Placeholder",
-                                    M.get_associated_function (|
-                                      Ty.path "core::fmt::rt::Placeholder",
-                                      "new",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      Value.Integer IntegerKind.Usize 1;
-                                      Value.UnicodeChar 32;
-                                      Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                      Value.Integer IntegerKind.U32 8;
-                                      Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                      Value.StructTuple
-                                        "core::fmt::rt::Count::Is"
-                                        [ Value.Integer IntegerKind.Usize 4 ]
-                                    ]
-                                  |);
-                                  M.call_closure (|
-                                    Ty.path "core::fmt::rt::Placeholder",
-                                    M.get_associated_function (|
-                                      Ty.path "core::fmt::rt::Placeholder",
-                                      "new",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      Value.Integer IntegerKind.Usize 2;
-                                      Value.UnicodeChar 32;
-                                      Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                      Value.Integer IntegerKind.U32 0;
-                                      Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                      Value.StructTuple "core::fmt::rt::Count::Implied" []
-                                    ]
-                                  |)
-                                ]
-                            |)
-                          |)
-                        |)
-                      |);
-                      M.call_closure (|
-                        Ty.path "core::fmt::rt::UnsafeArg",
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::rt::UnsafeArg",
-                          "new",
-                          [],
-                          []
-                        |),
-                        []
-                      |)
-                    ]
-                  |)
-                ]
-              |)
-            |)))
-        | _, _, _ => M.impossible "wrong number of arguments"
-        end.
-      
-      Global Instance Instance_IsFunction_panic_at_rt :
-        M.IsFunction.Trait "core::char::methods::encode_utf8_raw::panic_at_rt" panic_at_rt.
-      Admitted.
-      Global Typeclasses Opaque panic_at_rt.
-    End encode_utf8_raw.
-    
     (*
     pub const fn encode_utf16_raw(mut code: u32, dst: &mut [u16]) -> &mut [u16] {
-        const fn panic_at_const(_code: u32, _len: usize, _dst_len: usize) {
-            // Note that we cannot format in constant expressions.
-            panic!("encode_utf16: buffer does not have enough bytes to encode code point");
-        }
-        fn panic_at_rt(code: u32, len: usize, dst_len: usize) {
-            panic!(
-                "encode_utf16: need {len} bytes to encode U+{code:04X} but buffer has just {dst_len}",
-            );
-        }
         let len = len_utf16(code);
         match (len, &mut *dst) {
             (1, [a, ..]) => {
@@ -3076,12 +2772,18 @@ Module char.
             }
             (2, [a, b, ..]) => {
                 code -= 0x1_0000;
-    
                 *a = (code >> 10) as u16 | 0xD800;
                 *b = (code & 0x3FF) as u16 | 0xDC00;
             }
-            // FIXME(const-hack): We would prefer to have streamlined panics when formatters become const-friendly.
-            _ => const_eval_select((code, len, dst.len()), panic_at_const, panic_at_rt),
+            _ => {
+                const_panic!(
+                    "encode_utf16: buffer does not have enough bytes to encode code point",
+                    "encode_utf16: need {len} bytes to encode U+{code:04X} but buffer has just {dst_len}",
+                    code: u32 = code,
+                    len: usize = len,
+                    dst_len: usize = dst.len(),
+                )
+            }
         };
         // SAFETY: `<&mut [u16]>::as_mut_ptr` is guaranteed to return a valid pointer and `len` has been tested to be within bounds.
         unsafe { slice::from_raw_parts_mut(dst.as_mut_ptr(), len) }
@@ -3194,54 +2896,34 @@ Module char.
                       fun γ =>
                         ltac:(M.monadic
                           (M.alloc (|
-                            M.call_closure (|
-                              Ty.tuple [],
-                              M.get_function (|
-                                "core::intrinsics::const_eval_select",
-                                [],
+                            M.never_to_any (|
+                              M.call_closure (|
+                                Ty.path "never",
+                                M.get_function (|
+                                  "core::char::methods::encode_utf16_raw.do_panic",
+                                  [],
+                                  []
+                                |),
                                 [
-                                  Ty.tuple [ Ty.path "u32"; Ty.path "usize"; Ty.path "usize" ];
-                                  Ty.function
-                                    [ Ty.path "u32"; Ty.path "usize"; Ty.path "usize" ]
-                                    (Ty.tuple []);
-                                  Ty.function
-                                    [ Ty.path "u32"; Ty.path "usize"; Ty.path "usize" ]
-                                    (Ty.tuple []);
-                                  Ty.tuple []
+                                  M.read (| code |);
+                                  M.read (| len |);
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    M.get_associated_function (|
+                                      Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ],
+                                      "len",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| dst |) |)
+                                      |)
+                                    ]
+                                  |)
                                 ]
-                              |),
-                              [
-                                Value.Tuple
-                                  [
-                                    M.read (| code |);
-                                    M.read (| len |);
-                                    M.call_closure (|
-                                      Ty.path "usize",
-                                      M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ],
-                                        "len",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (| M.read (| dst |) |)
-                                        |)
-                                      ]
-                                    |)
-                                  ];
-                                M.get_function (|
-                                  "core::char::methods::encode_utf16_raw.panic_at_const",
-                                  [],
-                                  []
-                                |);
-                                M.get_function (|
-                                  "core::char::methods::encode_utf16_raw.panic_at_rt",
-                                  [],
-                                  []
-                                |)
-                              ]
+                              |)
                             |)
                           |)))
                     ]
@@ -3293,255 +2975,5 @@ Module char.
       M.IsFunction.Trait "core::char::methods::encode_utf16_raw" encode_utf16_raw.
     Admitted.
     Global Typeclasses Opaque encode_utf16_raw.
-    
-    Module encode_utf16_raw.
-      (*
-          const fn panic_at_const(_code: u32, _len: usize, _dst_len: usize) {
-              // Note that we cannot format in constant expressions.
-              panic!("encode_utf16: buffer does not have enough bytes to encode code point");
-          }
-      *)
-      Definition panic_at_const (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ _code; _len; _dst_len ] =>
-          ltac:(M.monadic
-            (let _code := M.alloc (| _code |) in
-            let _len := M.alloc (| _len |) in
-            let _dst_len := M.alloc (| _dst_len |) in
-            M.never_to_any (|
-              M.call_closure (|
-                Ty.path "never",
-                M.get_function (| "core::panicking::panic_fmt", [], [] |),
-                [
-                  M.call_closure (|
-                    Ty.path "core::fmt::Arguments",
-                    M.get_associated_function (|
-                      Ty.path "core::fmt::Arguments",
-                      "new_const",
-                      [ Value.Integer IntegerKind.Usize 1 ],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (|
-                                    Value.String
-                                      "encode_utf16: buffer does not have enough bytes to encode code point"
-                                  |)
-                                ]
-                            |)
-                          |)
-                        |)
-                      |)
-                    ]
-                  |)
-                ]
-              |)
-            |)))
-        | _, _, _ => M.impossible "wrong number of arguments"
-        end.
-      
-      Global Instance Instance_IsFunction_panic_at_const :
-        M.IsFunction.Trait "core::char::methods::encode_utf16_raw::panic_at_const" panic_at_const.
-      Admitted.
-      Global Typeclasses Opaque panic_at_const.
-      
-      (*
-          fn panic_at_rt(code: u32, len: usize, dst_len: usize) {
-              panic!(
-                  "encode_utf16: need {len} bytes to encode U+{code:04X} but buffer has just {dst_len}",
-              );
-          }
-      *)
-      Definition panic_at_rt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ code; len; dst_len ] =>
-          ltac:(M.monadic
-            (let code := M.alloc (| code |) in
-            let len := M.alloc (| len |) in
-            let dst_len := M.alloc (| dst_len |) in
-            M.never_to_any (|
-              M.call_closure (|
-                Ty.path "never",
-                M.get_function (| "core::panicking::panic_fmt", [], [] |),
-                [
-                  M.call_closure (|
-                    Ty.path "core::fmt::Arguments",
-                    M.get_associated_function (|
-                      Ty.path "core::fmt::Arguments",
-                      "new_v1_formatted",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "encode_utf16: need " |);
-                                  M.read (| Value.String " bytes to encode U+" |);
-                                  M.read (| Value.String " but buffer has just " |)
-                                ]
-                            |)
-                          |)
-                        |)
-                      |);
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array
-                                [
-                                  M.call_closure (|
-                                    Ty.path "core::fmt::rt::Argument",
-                                    M.get_associated_function (|
-                                      Ty.path "core::fmt::rt::Argument",
-                                      "new_display",
-                                      [],
-                                      [ Ty.path "usize" ]
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.borrow (| Pointer.Kind.Ref, len |) |)
-                                      |)
-                                    ]
-                                  |);
-                                  M.call_closure (|
-                                    Ty.path "core::fmt::rt::Argument",
-                                    M.get_associated_function (|
-                                      Ty.path "core::fmt::rt::Argument",
-                                      "new_upper_hex",
-                                      [],
-                                      [ Ty.path "u32" ]
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.borrow (| Pointer.Kind.Ref, code |) |)
-                                      |)
-                                    ]
-                                  |);
-                                  M.call_closure (|
-                                    Ty.path "core::fmt::rt::Argument",
-                                    M.get_associated_function (|
-                                      Ty.path "core::fmt::rt::Argument",
-                                      "new_display",
-                                      [],
-                                      [ Ty.path "usize" ]
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.borrow (| Pointer.Kind.Ref, dst_len |) |)
-                                      |)
-                                    ]
-                                  |)
-                                ]
-                            |)
-                          |)
-                        |)
-                      |);
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array
-                                [
-                                  M.call_closure (|
-                                    Ty.path "core::fmt::rt::Placeholder",
-                                    M.get_associated_function (|
-                                      Ty.path "core::fmt::rt::Placeholder",
-                                      "new",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      Value.Integer IntegerKind.Usize 0;
-                                      Value.UnicodeChar 32;
-                                      Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                      Value.Integer IntegerKind.U32 0;
-                                      Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                      Value.StructTuple "core::fmt::rt::Count::Implied" []
-                                    ]
-                                  |);
-                                  M.call_closure (|
-                                    Ty.path "core::fmt::rt::Placeholder",
-                                    M.get_associated_function (|
-                                      Ty.path "core::fmt::rt::Placeholder",
-                                      "new",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      Value.Integer IntegerKind.Usize 1;
-                                      Value.UnicodeChar 32;
-                                      Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                      Value.Integer IntegerKind.U32 8;
-                                      Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                      Value.StructTuple
-                                        "core::fmt::rt::Count::Is"
-                                        [ Value.Integer IntegerKind.Usize 4 ]
-                                    ]
-                                  |);
-                                  M.call_closure (|
-                                    Ty.path "core::fmt::rt::Placeholder",
-                                    M.get_associated_function (|
-                                      Ty.path "core::fmt::rt::Placeholder",
-                                      "new",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      Value.Integer IntegerKind.Usize 2;
-                                      Value.UnicodeChar 32;
-                                      Value.StructTuple "core::fmt::rt::Alignment::Unknown" [];
-                                      Value.Integer IntegerKind.U32 0;
-                                      Value.StructTuple "core::fmt::rt::Count::Implied" [];
-                                      Value.StructTuple "core::fmt::rt::Count::Implied" []
-                                    ]
-                                  |)
-                                ]
-                            |)
-                          |)
-                        |)
-                      |);
-                      M.call_closure (|
-                        Ty.path "core::fmt::rt::UnsafeArg",
-                        M.get_associated_function (|
-                          Ty.path "core::fmt::rt::UnsafeArg",
-                          "new",
-                          [],
-                          []
-                        |),
-                        []
-                      |)
-                    ]
-                  |)
-                ]
-              |)
-            |)))
-        | _, _, _ => M.impossible "wrong number of arguments"
-        end.
-      
-      Global Instance Instance_IsFunction_panic_at_rt :
-        M.IsFunction.Trait "core::char::methods::encode_utf16_raw::panic_at_rt" panic_at_rt.
-      Admitted.
-      Global Typeclasses Opaque panic_at_rt.
-    End encode_utf16_raw.
   End methods.
 End char.

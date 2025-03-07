@@ -76,7 +76,7 @@ Module ops.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_ops_range_RangeFull.
     
-    Module Impl_core_cmp_PartialEq_for_core_ops_range_RangeFull.
+    Module Impl_core_cmp_PartialEq_core_ops_range_RangeFull_for_core_ops_range_RangeFull.
       Definition Self : Ty.t := Ty.path "core::ops::range::RangeFull".
       
       (* PartialEq *)
@@ -94,10 +94,10 @@ Module ops.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::ops::range::RangeFull" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_core_ops_range_RangeFull.
+    End Impl_core_cmp_PartialEq_core_ops_range_RangeFull_for_core_ops_range_RangeFull.
     
     Module Impl_core_cmp_Eq_for_core_ops_range_RangeFull.
       Definition Self : Ty.t := Ty.path "core::ops::range::RangeFull".
@@ -350,7 +350,7 @@ Module ops.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_ops_range_Range_Idx.
     
-    Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_Idx_for_core_ops_range_Range_Idx.
+    Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_Idx_core_ops_range_Range_Idx_for_core_ops_range_Range_Idx.
       Definition Self (Idx : Ty.t) : Ty.t :=
         Ty.apply (Ty.path "core::ops::range::Range") [] [ Idx ].
       
@@ -417,10 +417,10 @@ Module ops.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "core::ops::range::Range") [] [ Idx ] ]
           (Self Idx)
           (* Instance *) [ ("eq", InstanceField.Method (eq Idx)) ].
-    End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_Idx_for_core_ops_range_Range_Idx.
+    End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_Idx_core_ops_range_Range_Idx_for_core_ops_range_Range_Idx.
     
     Module Impl_core_cmp_Eq_where_core_cmp_Eq_Idx_for_core_ops_range_Range_Idx.
       Definition Self (Idx : Ty.t) : Ty.t :=
@@ -1083,7 +1083,7 @@ Module ops.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_ops_range_RangeFrom_Idx.
     
-    Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_Idx_for_core_ops_range_RangeFrom_Idx.
+    Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_Idx_core_ops_range_RangeFrom_Idx_for_core_ops_range_RangeFrom_Idx.
       Definition Self (Idx : Ty.t) : Ty.t :=
         Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Idx ].
       
@@ -1125,10 +1125,11 @@ Module ops.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::ops::range::RangeFrom") [] [ Idx ] ]
           (Self Idx)
           (* Instance *) [ ("eq", InstanceField.Method (eq Idx)) ].
-    End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_Idx_for_core_ops_range_RangeFrom_Idx.
+    End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_Idx_core_ops_range_RangeFrom_Idx_for_core_ops_range_RangeFrom_Idx.
     
     Module Impl_core_cmp_Eq_where_core_cmp_Eq_Idx_for_core_ops_range_RangeFrom_Idx.
       Definition Self (Idx : Ty.t) : Ty.t :=
@@ -1619,7 +1620,7 @@ Module ops.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_ops_range_RangeTo_Idx.
     
-    Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_Idx_for_core_ops_range_RangeTo_Idx.
+    Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_Idx_core_ops_range_RangeTo_Idx_for_core_ops_range_RangeTo_Idx.
       Definition Self (Idx : Ty.t) : Ty.t :=
         Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Idx ].
       
@@ -1661,10 +1662,11 @@ Module ops.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::ops::range::RangeTo") [] [ Idx ] ]
           (Self Idx)
           (* Instance *) [ ("eq", InstanceField.Method (eq Idx)) ].
-    End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_Idx_for_core_ops_range_RangeTo_Idx.
+    End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_Idx_core_ops_range_RangeTo_Idx_for_core_ops_range_RangeTo_Idx.
     
     Module Impl_core_cmp_Eq_where_core_cmp_Eq_Idx_for_core_ops_range_RangeTo_Idx.
       Definition Self (Idx : Ty.t) : Ty.t :=
@@ -2189,7 +2191,7 @@ Module ops.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_ops_range_RangeInclusive_Idx.
     
-    Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_Idx_for_core_ops_range_RangeInclusive_Idx.
+    Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_Idx_core_ops_range_RangeInclusive_Idx_for_core_ops_range_RangeInclusive_Idx.
       Definition Self (Idx : Ty.t) : Ty.t :=
         Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Idx ].
       
@@ -2275,10 +2277,11 @@ Module ops.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::ops::range::RangeInclusive") [] [ Idx ] ]
           (Self Idx)
           (* Instance *) [ ("eq", InstanceField.Method (eq Idx)) ].
-    End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_Idx_for_core_ops_range_RangeInclusive_Idx.
+    End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_Idx_core_ops_range_RangeInclusive_Idx_for_core_ops_range_RangeInclusive_Idx.
     
     Module Impl_core_cmp_Eq_where_core_cmp_Eq_Idx_for_core_ops_range_RangeInclusive_Idx.
       Definition Self (Idx : Ty.t) : Ty.t :=
@@ -3379,7 +3382,7 @@ Module ops.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_ops_range_RangeToInclusive_Idx.
     
-    Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_Idx_for_core_ops_range_RangeToInclusive_Idx.
+    Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_Idx_core_ops_range_RangeToInclusive_Idx_for_core_ops_range_RangeToInclusive_Idx.
       Definition Self (Idx : Ty.t) : Ty.t :=
         Ty.apply (Ty.path "core::ops::range::RangeToInclusive") [] [ Idx ].
       
@@ -3421,10 +3424,11 @@ Module ops.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::ops::range::RangeToInclusive") [] [ Idx ] ]
           (Self Idx)
           (* Instance *) [ ("eq", InstanceField.Method (eq Idx)) ].
-    End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_Idx_for_core_ops_range_RangeToInclusive_Idx.
+    End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_Idx_core_ops_range_RangeToInclusive_Idx_for_core_ops_range_RangeToInclusive_Idx.
     
     Module Impl_core_cmp_Eq_where_core_cmp_Eq_Idx_for_core_ops_range_RangeToInclusive_Idx.
       Definition Self (Idx : Ty.t) : Ty.t :=
@@ -4234,7 +4238,7 @@ Module ops.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_ops_range_Bound_T.
     
-    Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_for_core_ops_range_Bound_T.
+    Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_core_ops_range_Bound_T_for_core_ops_range_Bound_T.
       Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::Bound") [] [ T ].
       
       (* PartialEq *)
@@ -4370,10 +4374,10 @@ Module ops.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "core::ops::range::Bound") [] [ T ] ]
           (Self T)
           (* Instance *) [ ("eq", InstanceField.Method (eq T)) ].
-    End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_for_core_ops_range_Bound_T.
+    End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_core_ops_range_Bound_T_for_core_ops_range_Bound_T.
     
     Module Impl_core_cmp_Eq_where_core_cmp_Eq_T_for_core_ops_range_Bound_T.
       Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::ops::range::Bound") [] [ T ].

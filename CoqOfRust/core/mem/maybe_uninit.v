@@ -55,7 +55,11 @@ Module mem.
       
       (*
           fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-              f.pad(type_name::<Self>())
+              // NB: there is no `.pad_fmt` so we can't use a simpler `format_args!("MaybeUninit<{..}>").
+              // This needs to be adjusted if `MaybeUninit` moves modules.
+              let full_name = type_name::<Self>();
+              let short_name = full_name.split_once("mem::maybe_uninit::").unwrap().1;
+              f.pad(short_name)
           }
       *)
       Definition fmt (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -65,29 +69,86 @@ Module mem.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let f := M.alloc (| f |) in
-            M.call_closure (|
-              Ty.apply
-                (Ty.path "core::result::Result")
-                []
-                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-              M.get_associated_function (| Ty.path "core::fmt::Formatter", "pad", [], [] |),
-              [
-                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (|
-                    M.call_closure (|
-                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                      M.get_function (|
-                        "core::any::type_name",
-                        [],
-                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
-                      |),
-                      []
-                    |)
+            M.read (|
+              let~ full_name : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
+                M.alloc (|
+                  M.call_closure (|
+                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                    M.get_function (|
+                      "core::any::type_name",
+                      [],
+                      [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ]
+                    |),
+                    []
                   |)
+                |) in
+              let~ short_name : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
+                M.copy (|
+                  M.SubPointer.get_tuple_field (|
+                    M.alloc (|
+                      M.call_closure (|
+                        Ty.tuple
+                          [
+                            Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
+                            Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                          ],
+                        M.get_associated_function (|
+                          Ty.apply
+                            (Ty.path "core::option::Option")
+                            []
+                            [
+                              Ty.tuple
+                                [
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                                ]
+                            ],
+                          "unwrap",
+                          [],
+                          []
+                        |),
+                        [
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::option::Option")
+                              []
+                              [
+                                Ty.tuple
+                                  [
+                                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
+                                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                                  ]
+                              ],
+                            M.get_associated_function (|
+                              Ty.path "str",
+                              "split_once",
+                              [],
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| full_name |) |) |);
+                              M.read (| Value.String "mem::maybe_uninit::" |)
+                            ]
+                          |)
+                        ]
+                      |)
+                    |),
+                    1
+                  |)
+                |) in
+              M.alloc (|
+                M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                  M.get_associated_function (| Ty.path "core::fmt::Formatter", "pad", [], [] |),
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| short_name |) |) |)
+                  ]
                 |)
-              ]
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

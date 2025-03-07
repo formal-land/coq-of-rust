@@ -452,9 +452,6 @@ fn compile_top_level_item_without_local_items<'a>(
             const_params: get_const_params(env, generics),
             ty_params: get_ty_params(env, generics),
         })],
-        ItemKind::OpaqueTy(_) => vec![Rc::new(TopLevelItem::Error {
-            message: "OpaqueTy".to_string(),
-        })],
         ItemKind::Enum(enum_def, generics) => {
             let const_params = get_const_params(env, generics);
             let ty_params = get_ty_params(env, generics);
@@ -668,10 +665,28 @@ fn compile_top_level_item_without_local_items<'a>(
                                 }),
                         )
                         .collect();
-                    // We do not handle them yet. This might require going to the THIR level.
-                    let trait_const_params = vec![];
-                    let trait_ty_params =
-                        compile_path_ty_params(env, &item.owner_id.def_id, trait_ref.path);
+                    let impl_generics = env.tcx.generics_of(item.owner_id.def_id);
+                    let impl_trait_header =
+                        env.tcx.impl_trait_header(item.owner_id.def_id).unwrap();
+                    let trait_params = impl_trait_header.trait_ref.instantiate_identity().args;
+                    let trait_const_params = trait_params
+                        .iter()
+                        .skip(1)
+                        .filter_map(|generic_arg| {
+                            generic_arg.as_const().as_ref().map(|ct| {
+                                crate::thir_expression::compile_const(env, &item.span, ct)
+                            })
+                        })
+                        .collect();
+                    let trait_ty_params = trait_params
+                        .iter()
+                        .skip(1)
+                        .filter_map(|generic_arg| {
+                            generic_arg.as_type().as_ref().map(|ty| {
+                                crate::thir_ty::compile_type(env, &item.span, impl_generics, ty)
+                            })
+                        })
+                        .collect();
 
                     vec![Rc::new(TopLevelItem::TraitImpl {
                         generic_consts,
@@ -1008,8 +1023,8 @@ fn get_where_predicates<'a>(
     generics
         .predicates
         .iter()
-        .flat_map(|predicate| match predicate {
-            rustc_hir::WherePredicate::BoundPredicate(predicate) => {
+        .flat_map(|predicate| match predicate.kind {
+            rustc_hir::WherePredicateKind::BoundPredicate(predicate) => {
                 let names_and_ty_params =
                     compile_generic_bounds(env, local_def_id, predicate.bounds);
 
@@ -1042,7 +1057,7 @@ fn compile_generic_bounds<'a>(
     generic_bounds
         .iter()
         .filter_map(|generic_bound| match generic_bound {
-            GenericBound::Trait(ptraitref, _) => {
+            GenericBound::Trait(ptraitref) => {
                 Some(TraitBound::compile(env, local_def_id, ptraitref))
             }
             // we ignore lifetimes

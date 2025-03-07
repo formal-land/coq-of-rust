@@ -372,16 +372,17 @@ Module error.
     Global Typeclasses Opaque downcast_mut.
     (*
         pub fn sources(&self) -> Source<'_> {
-            // You may think this method would be better in the Error trait, and you'd be right.
-            // Unfortunately that doesn't work, not because of the object safety rules but because we
-            // save a reference to self in Sources below as a trait object. If this method was
-            // declared in Error, then self would have the type &T where T is some concrete type which
-            // implements Error. We would need to coerce self to have type &dyn Error, but that requires
-            // that Self has a known size (i.e., Self: Sized). We can't put that bound on Error
-            // since that would forbid Error trait objects, and we can't put that bound on the method
-            // because that means the method can't be called on trait objects (we'd also need the
-            // 'static bound, but that isn't allowed because methods with bounds on Self other than
-            // Sized are not object-safe). Requiring an Unsize bound is not backwards compatible.
+            // You may think this method would be better in the `Error` trait, and you'd be right.
+            // Unfortunately that doesn't work, not because of the dyn-incompatibility rules but
+            // because we save a reference to `self` in `Source`s below as a trait object.
+            // If this method was declared in `Error`, then `self` would have the type `&T` where
+            // `T` is some concrete type which implements `Error`. We would need to coerce `self`
+            // to have type `&dyn Error`, but that requires that `Self` has a known size
+            // (i.e., `Self: Sized`). We can't put that bound on `Error` since that would forbid
+            // `Error` trait objects, and we can't put that bound on the method because that means
+            // the method can't be called on trait objects (we'd also need the `'static` bound,
+            // but that isn't allowed because methods with bounds on `Self` other than `Sized` are
+            // dyn-incompatible). Requiring an `Unsize` bound is not backwards compatible.
     
             Source { current: Some(self) }
         }
@@ -496,13 +497,13 @@ Module error.
     Global Typeclasses Opaque downcast_mut.
   End Impl_Dyn_core_error_Error_Trait_core_marker_Send_AutoTrait.
   
-  Module Impl_Dyn_core_error_Error_Trait_core_marker_Send_AutoTrait_core_marker_Sync_AutoTrait.
+  Module Impl_Dyn_core_error_Error_Trait_core_marker_Sync_AutoTrait_core_marker_Send_AutoTrait.
     Definition Self : Ty.t :=
       Ty.dyn
         [
           ("core::error::Error::Trait", []);
-          ("core::marker::Send::AutoTrait", []);
-          ("core::marker::Sync::AutoTrait", [])
+          ("core::marker::Sync::AutoTrait", []);
+          ("core::marker::Send::AutoTrait", [])
         ].
     
     (*
@@ -587,7 +588,7 @@ Module error.
       M.IsAssociatedFunction.Trait Self "downcast_mut" downcast_mut.
     Admitted.
     Global Typeclasses Opaque downcast_mut.
-  End Impl_Dyn_core_error_Error_Trait_core_marker_Send_AutoTrait_core_marker_Sync_AutoTrait.
+  End Impl_Dyn_core_error_Error_Trait_core_marker_Sync_AutoTrait_core_marker_Send_AutoTrait.
   
   
   (*

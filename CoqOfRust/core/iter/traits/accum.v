@@ -10,7 +10,7 @@ Module iter.
       (* Trait *)
       (* Empty module 'Product' *)
       
-      Module Impl_core_iter_traits_accum_Sum_for_i8.
+      Module Impl_core_iter_traits_accum_Sum_i8_for_i8.
         Definition Self : Ty.t := Ty.path "i8".
         
         (*
@@ -86,12 +86,12 @@ Module iter.
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
             (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
+            (* Trait polymorphic types *) [ Ty.path "i8" ]
             Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
-      End Impl_core_iter_traits_accum_Sum_for_i8.
+      End Impl_core_iter_traits_accum_Sum_i8_for_i8.
       
-      Module Impl_core_iter_traits_accum_Product_for_i8.
+      Module Impl_core_iter_traits_accum_Product_i8_for_i8.
         Definition Self : Ty.t := Ty.path "i8".
         
         (*
@@ -167,10 +167,10 @@ Module iter.
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
             (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
+            (* Trait polymorphic types *) [ Ty.path "i8" ]
             Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
-      End Impl_core_iter_traits_accum_Product_for_i8.
+      End Impl_core_iter_traits_accum_Product_i8_for_i8.
       
       Module Impl_core_iter_traits_accum_Sum_ref__i8_for_i8.
         Definition Self : Ty.t := Ty.path "i8".
@@ -380,7 +380,7 @@ Module iter.
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__i8_for_i8.
       
-      Module Impl_core_iter_traits_accum_Sum_for_i16.
+      Module Impl_core_iter_traits_accum_Sum_i16_for_i16.
         Definition Self : Ty.t := Ty.path "i16".
         
         (*
@@ -456,12 +456,12 @@ Module iter.
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
             (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
+            (* Trait polymorphic types *) [ Ty.path "i16" ]
             Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
-      End Impl_core_iter_traits_accum_Sum_for_i16.
+      End Impl_core_iter_traits_accum_Sum_i16_for_i16.
       
-      Module Impl_core_iter_traits_accum_Product_for_i16.
+      Module Impl_core_iter_traits_accum_Product_i16_for_i16.
         Definition Self : Ty.t := Ty.path "i16".
         
         (*
@@ -537,10 +537,10 @@ Module iter.
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
             (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
+            (* Trait polymorphic types *) [ Ty.path "i16" ]
             Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
-      End Impl_core_iter_traits_accum_Product_for_i16.
+      End Impl_core_iter_traits_accum_Product_i16_for_i16.
       
       Module Impl_core_iter_traits_accum_Sum_ref__i16_for_i16.
         Definition Self : Ty.t := Ty.path "i16".
@@ -750,7 +750,7 @@ Module iter.
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__i16_for_i16.
       
-      Module Impl_core_iter_traits_accum_Sum_for_i32.
+      Module Impl_core_iter_traits_accum_Sum_i32_for_i32.
         Definition Self : Ty.t := Ty.path "i32".
         
         (*
@@ -826,12 +826,12 @@ Module iter.
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
             (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
+            (* Trait polymorphic types *) [ Ty.path "i32" ]
             Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
-      End Impl_core_iter_traits_accum_Sum_for_i32.
+      End Impl_core_iter_traits_accum_Sum_i32_for_i32.
       
-      Module Impl_core_iter_traits_accum_Product_for_i32.
+      Module Impl_core_iter_traits_accum_Product_i32_for_i32.
         Definition Self : Ty.t := Ty.path "i32".
         
         (*
@@ -907,10 +907,10 @@ Module iter.
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
             (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
+            (* Trait polymorphic types *) [ Ty.path "i32" ]
             Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
-      End Impl_core_iter_traits_accum_Product_for_i32.
+      End Impl_core_iter_traits_accum_Product_i32_for_i32.
       
       Module Impl_core_iter_traits_accum_Sum_ref__i32_for_i32.
         Definition Self : Ty.t := Ty.path "i32".
@@ -1120,7 +1120,7 @@ Module iter.
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__i32_for_i32.
       
-      Module Impl_core_iter_traits_accum_Sum_for_i64.
+      Module Impl_core_iter_traits_accum_Sum_i64_for_i64.
         Definition Self : Ty.t := Ty.path "i64".
         
         (*
@@ -1196,12 +1196,12 @@ Module iter.
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
             (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
+            (* Trait polymorphic types *) [ Ty.path "i64" ]
             Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
-      End Impl_core_iter_traits_accum_Sum_for_i64.
+      End Impl_core_iter_traits_accum_Sum_i64_for_i64.
       
-      Module Impl_core_iter_traits_accum_Product_for_i64.
+      Module Impl_core_iter_traits_accum_Product_i64_for_i64.
         Definition Self : Ty.t := Ty.path "i64".
         
         (*
@@ -1277,10 +1277,10 @@ Module iter.
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
             (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
+            (* Trait polymorphic types *) [ Ty.path "i64" ]
             Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
-      End Impl_core_iter_traits_accum_Product_for_i64.
+      End Impl_core_iter_traits_accum_Product_i64_for_i64.
       
       Module Impl_core_iter_traits_accum_Sum_ref__i64_for_i64.
         Definition Self : Ty.t := Ty.path "i64".
@@ -1490,7 +1490,7 @@ Module iter.
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__i64_for_i64.
       
-      Module Impl_core_iter_traits_accum_Sum_for_i128.
+      Module Impl_core_iter_traits_accum_Sum_i128_for_i128.
         Definition Self : Ty.t := Ty.path "i128".
         
         (*
@@ -1566,12 +1566,12 @@ Module iter.
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
             (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
+            (* Trait polymorphic types *) [ Ty.path "i128" ]
             Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
-      End Impl_core_iter_traits_accum_Sum_for_i128.
+      End Impl_core_iter_traits_accum_Sum_i128_for_i128.
       
-      Module Impl_core_iter_traits_accum_Product_for_i128.
+      Module Impl_core_iter_traits_accum_Product_i128_for_i128.
         Definition Self : Ty.t := Ty.path "i128".
         
         (*
@@ -1647,10 +1647,10 @@ Module iter.
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
             (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
+            (* Trait polymorphic types *) [ Ty.path "i128" ]
             Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
-      End Impl_core_iter_traits_accum_Product_for_i128.
+      End Impl_core_iter_traits_accum_Product_i128_for_i128.
       
       Module Impl_core_iter_traits_accum_Sum_ref__i128_for_i128.
         Definition Self : Ty.t := Ty.path "i128".
@@ -1862,7 +1862,7 @@ Module iter.
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__i128_for_i128.
       
-      Module Impl_core_iter_traits_accum_Sum_for_isize.
+      Module Impl_core_iter_traits_accum_Sum_isize_for_isize.
         Definition Self : Ty.t := Ty.path "isize".
         
         (*
@@ -1938,12 +1938,12 @@ Module iter.
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
             (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
+            (* Trait polymorphic types *) [ Ty.path "isize" ]
             Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
-      End Impl_core_iter_traits_accum_Sum_for_isize.
+      End Impl_core_iter_traits_accum_Sum_isize_for_isize.
       
-      Module Impl_core_iter_traits_accum_Product_for_isize.
+      Module Impl_core_iter_traits_accum_Product_isize_for_isize.
         Definition Self : Ty.t := Ty.path "isize".
         
         (*
@@ -2019,10 +2019,10 @@ Module iter.
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
             (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
+            (* Trait polymorphic types *) [ Ty.path "isize" ]
             Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
-      End Impl_core_iter_traits_accum_Product_for_isize.
+      End Impl_core_iter_traits_accum_Product_isize_for_isize.
       
       Module Impl_core_iter_traits_accum_Sum_ref__isize_for_isize.
         Definition Self : Ty.t := Ty.path "isize".
@@ -2240,7 +2240,7 @@ Module iter.
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__isize_for_isize.
       
-      Module Impl_core_iter_traits_accum_Sum_for_u8.
+      Module Impl_core_iter_traits_accum_Sum_u8_for_u8.
         Definition Self : Ty.t := Ty.path "u8".
         
         (*
@@ -2316,12 +2316,12 @@ Module iter.
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
             (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
+            (* Trait polymorphic types *) [ Ty.path "u8" ]
             Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
-      End Impl_core_iter_traits_accum_Sum_for_u8.
+      End Impl_core_iter_traits_accum_Sum_u8_for_u8.
       
-      Module Impl_core_iter_traits_accum_Product_for_u8.
+      Module Impl_core_iter_traits_accum_Product_u8_for_u8.
         Definition Self : Ty.t := Ty.path "u8".
         
         (*
@@ -2397,10 +2397,10 @@ Module iter.
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
             (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
+            (* Trait polymorphic types *) [ Ty.path "u8" ]
             Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
-      End Impl_core_iter_traits_accum_Product_for_u8.
+      End Impl_core_iter_traits_accum_Product_u8_for_u8.
       
       Module Impl_core_iter_traits_accum_Sum_ref__u8_for_u8.
         Definition Self : Ty.t := Ty.path "u8".
@@ -2610,7 +2610,7 @@ Module iter.
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__u8_for_u8.
       
-      Module Impl_core_iter_traits_accum_Sum_for_u16.
+      Module Impl_core_iter_traits_accum_Sum_u16_for_u16.
         Definition Self : Ty.t := Ty.path "u16".
         
         (*
@@ -2686,12 +2686,12 @@ Module iter.
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
             (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
+            (* Trait polymorphic types *) [ Ty.path "u16" ]
             Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
-      End Impl_core_iter_traits_accum_Sum_for_u16.
+      End Impl_core_iter_traits_accum_Sum_u16_for_u16.
       
-      Module Impl_core_iter_traits_accum_Product_for_u16.
+      Module Impl_core_iter_traits_accum_Product_u16_for_u16.
         Definition Self : Ty.t := Ty.path "u16".
         
         (*
@@ -2767,10 +2767,10 @@ Module iter.
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
             (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
+            (* Trait polymorphic types *) [ Ty.path "u16" ]
             Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
-      End Impl_core_iter_traits_accum_Product_for_u16.
+      End Impl_core_iter_traits_accum_Product_u16_for_u16.
       
       Module Impl_core_iter_traits_accum_Sum_ref__u16_for_u16.
         Definition Self : Ty.t := Ty.path "u16".
@@ -2980,7 +2980,7 @@ Module iter.
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__u16_for_u16.
       
-      Module Impl_core_iter_traits_accum_Sum_for_u32.
+      Module Impl_core_iter_traits_accum_Sum_u32_for_u32.
         Definition Self : Ty.t := Ty.path "u32".
         
         (*
@@ -3056,12 +3056,12 @@ Module iter.
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
             (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
+            (* Trait polymorphic types *) [ Ty.path "u32" ]
             Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
-      End Impl_core_iter_traits_accum_Sum_for_u32.
+      End Impl_core_iter_traits_accum_Sum_u32_for_u32.
       
-      Module Impl_core_iter_traits_accum_Product_for_u32.
+      Module Impl_core_iter_traits_accum_Product_u32_for_u32.
         Definition Self : Ty.t := Ty.path "u32".
         
         (*
@@ -3137,10 +3137,10 @@ Module iter.
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
             (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
+            (* Trait polymorphic types *) [ Ty.path "u32" ]
             Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
-      End Impl_core_iter_traits_accum_Product_for_u32.
+      End Impl_core_iter_traits_accum_Product_u32_for_u32.
       
       Module Impl_core_iter_traits_accum_Sum_ref__u32_for_u32.
         Definition Self : Ty.t := Ty.path "u32".
@@ -3350,7 +3350,7 @@ Module iter.
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__u32_for_u32.
       
-      Module Impl_core_iter_traits_accum_Sum_for_u64.
+      Module Impl_core_iter_traits_accum_Sum_u64_for_u64.
         Definition Self : Ty.t := Ty.path "u64".
         
         (*
@@ -3426,12 +3426,12 @@ Module iter.
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
             (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
+            (* Trait polymorphic types *) [ Ty.path "u64" ]
             Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
-      End Impl_core_iter_traits_accum_Sum_for_u64.
+      End Impl_core_iter_traits_accum_Sum_u64_for_u64.
       
-      Module Impl_core_iter_traits_accum_Product_for_u64.
+      Module Impl_core_iter_traits_accum_Product_u64_for_u64.
         Definition Self : Ty.t := Ty.path "u64".
         
         (*
@@ -3507,10 +3507,10 @@ Module iter.
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
             (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
+            (* Trait polymorphic types *) [ Ty.path "u64" ]
             Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
-      End Impl_core_iter_traits_accum_Product_for_u64.
+      End Impl_core_iter_traits_accum_Product_u64_for_u64.
       
       Module Impl_core_iter_traits_accum_Sum_ref__u64_for_u64.
         Definition Self : Ty.t := Ty.path "u64".
@@ -3720,7 +3720,7 @@ Module iter.
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__u64_for_u64.
       
-      Module Impl_core_iter_traits_accum_Sum_for_u128.
+      Module Impl_core_iter_traits_accum_Sum_u128_for_u128.
         Definition Self : Ty.t := Ty.path "u128".
         
         (*
@@ -3796,12 +3796,12 @@ Module iter.
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
             (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
+            (* Trait polymorphic types *) [ Ty.path "u128" ]
             Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
-      End Impl_core_iter_traits_accum_Sum_for_u128.
+      End Impl_core_iter_traits_accum_Sum_u128_for_u128.
       
-      Module Impl_core_iter_traits_accum_Product_for_u128.
+      Module Impl_core_iter_traits_accum_Product_u128_for_u128.
         Definition Self : Ty.t := Ty.path "u128".
         
         (*
@@ -3877,10 +3877,10 @@ Module iter.
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
             (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
+            (* Trait polymorphic types *) [ Ty.path "u128" ]
             Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
-      End Impl_core_iter_traits_accum_Product_for_u128.
+      End Impl_core_iter_traits_accum_Product_u128_for_u128.
       
       Module Impl_core_iter_traits_accum_Sum_ref__u128_for_u128.
         Definition Self : Ty.t := Ty.path "u128".
@@ -4092,7 +4092,7 @@ Module iter.
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__u128_for_u128.
       
-      Module Impl_core_iter_traits_accum_Sum_for_usize.
+      Module Impl_core_iter_traits_accum_Sum_usize_for_usize.
         Definition Self : Ty.t := Ty.path "usize".
         
         (*
@@ -4168,12 +4168,12 @@ Module iter.
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
             (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
+            (* Trait polymorphic types *) [ Ty.path "usize" ]
             Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
-      End Impl_core_iter_traits_accum_Sum_for_usize.
+      End Impl_core_iter_traits_accum_Sum_usize_for_usize.
       
-      Module Impl_core_iter_traits_accum_Product_for_usize.
+      Module Impl_core_iter_traits_accum_Product_usize_for_usize.
         Definition Self : Ty.t := Ty.path "usize".
         
         (*
@@ -4249,10 +4249,10 @@ Module iter.
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
             (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
+            (* Trait polymorphic types *) [ Ty.path "usize" ]
             Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
-      End Impl_core_iter_traits_accum_Product_for_usize.
+      End Impl_core_iter_traits_accum_Product_usize_for_usize.
       
       Module Impl_core_iter_traits_accum_Sum_ref__usize_for_usize.
         Definition Self : Ty.t := Ty.path "usize".
@@ -4470,7 +4470,7 @@ Module iter.
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__usize_for_usize.
       
-      Module Impl_core_iter_traits_accum_Sum_for_core_num_wrapping_Wrapping_i8.
+      Module Impl_core_iter_traits_accum_Sum_core_num_wrapping_Wrapping_i8_for_core_num_wrapping_Wrapping_i8.
         Definition Self : Ty.t :=
           Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ].
         
@@ -4610,12 +4610,13 @@ Module iter.
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
             (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
+            (* Trait polymorphic types *)
+            [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ] ]
             Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
-      End Impl_core_iter_traits_accum_Sum_for_core_num_wrapping_Wrapping_i8.
+      End Impl_core_iter_traits_accum_Sum_core_num_wrapping_Wrapping_i8_for_core_num_wrapping_Wrapping_i8.
       
-      Module Impl_core_iter_traits_accum_Product_for_core_num_wrapping_Wrapping_i8.
+      Module Impl_core_iter_traits_accum_Product_core_num_wrapping_Wrapping_i8_for_core_num_wrapping_Wrapping_i8.
         Definition Self : Ty.t :=
           Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ].
         
@@ -4755,10 +4756,11 @@ Module iter.
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
             (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
+            (* Trait polymorphic types *)
+            [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ] ]
             Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
-      End Impl_core_iter_traits_accum_Product_for_core_num_wrapping_Wrapping_i8.
+      End Impl_core_iter_traits_accum_Product_core_num_wrapping_Wrapping_i8_for_core_num_wrapping_Wrapping_i8.
       
       Module Impl_core_iter_traits_accum_Sum_ref__core_num_wrapping_Wrapping_i8_for_core_num_wrapping_Wrapping_i8.
         Definition Self : Ty.t :=
@@ -5108,7 +5110,7 @@ Module iter.
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__core_num_wrapping_Wrapping_i8_for_core_num_wrapping_Wrapping_i8.
       
-      Module Impl_core_iter_traits_accum_Sum_for_core_num_wrapping_Wrapping_i16.
+      Module Impl_core_iter_traits_accum_Sum_core_num_wrapping_Wrapping_i16_for_core_num_wrapping_Wrapping_i16.
         Definition Self : Ty.t :=
           Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ].
         
@@ -5248,12 +5250,13 @@ Module iter.
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
             (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
+            (* Trait polymorphic types *)
+            [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ] ]
             Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
-      End Impl_core_iter_traits_accum_Sum_for_core_num_wrapping_Wrapping_i16.
+      End Impl_core_iter_traits_accum_Sum_core_num_wrapping_Wrapping_i16_for_core_num_wrapping_Wrapping_i16.
       
-      Module Impl_core_iter_traits_accum_Product_for_core_num_wrapping_Wrapping_i16.
+      Module Impl_core_iter_traits_accum_Product_core_num_wrapping_Wrapping_i16_for_core_num_wrapping_Wrapping_i16.
         Definition Self : Ty.t :=
           Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ].
         
@@ -5393,10 +5396,11 @@ Module iter.
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
             (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
+            (* Trait polymorphic types *)
+            [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ] ]
             Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
-      End Impl_core_iter_traits_accum_Product_for_core_num_wrapping_Wrapping_i16.
+      End Impl_core_iter_traits_accum_Product_core_num_wrapping_Wrapping_i16_for_core_num_wrapping_Wrapping_i16.
       
       Module Impl_core_iter_traits_accum_Sum_ref__core_num_wrapping_Wrapping_i16_for_core_num_wrapping_Wrapping_i16.
         Definition Self : Ty.t :=
@@ -5746,7 +5750,7 @@ Module iter.
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__core_num_wrapping_Wrapping_i16_for_core_num_wrapping_Wrapping_i16.
       
-      Module Impl_core_iter_traits_accum_Sum_for_core_num_wrapping_Wrapping_i32.
+      Module Impl_core_iter_traits_accum_Sum_core_num_wrapping_Wrapping_i32_for_core_num_wrapping_Wrapping_i32.
         Definition Self : Ty.t :=
           Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ].
         
@@ -5886,12 +5890,13 @@ Module iter.
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
             (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
+            (* Trait polymorphic types *)
+            [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ] ]
             Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
-      End Impl_core_iter_traits_accum_Sum_for_core_num_wrapping_Wrapping_i32.
+      End Impl_core_iter_traits_accum_Sum_core_num_wrapping_Wrapping_i32_for_core_num_wrapping_Wrapping_i32.
       
-      Module Impl_core_iter_traits_accum_Product_for_core_num_wrapping_Wrapping_i32.
+      Module Impl_core_iter_traits_accum_Product_core_num_wrapping_Wrapping_i32_for_core_num_wrapping_Wrapping_i32.
         Definition Self : Ty.t :=
           Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ].
         
@@ -6031,10 +6036,11 @@ Module iter.
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
             (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
+            (* Trait polymorphic types *)
+            [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ] ]
             Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
-      End Impl_core_iter_traits_accum_Product_for_core_num_wrapping_Wrapping_i32.
+      End Impl_core_iter_traits_accum_Product_core_num_wrapping_Wrapping_i32_for_core_num_wrapping_Wrapping_i32.
       
       Module Impl_core_iter_traits_accum_Sum_ref__core_num_wrapping_Wrapping_i32_for_core_num_wrapping_Wrapping_i32.
         Definition Self : Ty.t :=
@@ -6384,7 +6390,7 @@ Module iter.
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__core_num_wrapping_Wrapping_i32_for_core_num_wrapping_Wrapping_i32.
       
-      Module Impl_core_iter_traits_accum_Sum_for_core_num_wrapping_Wrapping_i64.
+      Module Impl_core_iter_traits_accum_Sum_core_num_wrapping_Wrapping_i64_for_core_num_wrapping_Wrapping_i64.
         Definition Self : Ty.t :=
           Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ].
         
@@ -6524,12 +6530,13 @@ Module iter.
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
             (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
+            (* Trait polymorphic types *)
+            [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ] ]
             Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
-      End Impl_core_iter_traits_accum_Sum_for_core_num_wrapping_Wrapping_i64.
+      End Impl_core_iter_traits_accum_Sum_core_num_wrapping_Wrapping_i64_for_core_num_wrapping_Wrapping_i64.
       
-      Module Impl_core_iter_traits_accum_Product_for_core_num_wrapping_Wrapping_i64.
+      Module Impl_core_iter_traits_accum_Product_core_num_wrapping_Wrapping_i64_for_core_num_wrapping_Wrapping_i64.
         Definition Self : Ty.t :=
           Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ].
         
@@ -6669,10 +6676,11 @@ Module iter.
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
             (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
+            (* Trait polymorphic types *)
+            [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ] ]
             Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
-      End Impl_core_iter_traits_accum_Product_for_core_num_wrapping_Wrapping_i64.
+      End Impl_core_iter_traits_accum_Product_core_num_wrapping_Wrapping_i64_for_core_num_wrapping_Wrapping_i64.
       
       Module Impl_core_iter_traits_accum_Sum_ref__core_num_wrapping_Wrapping_i64_for_core_num_wrapping_Wrapping_i64.
         Definition Self : Ty.t :=
@@ -7022,7 +7030,7 @@ Module iter.
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__core_num_wrapping_Wrapping_i64_for_core_num_wrapping_Wrapping_i64.
       
-      Module Impl_core_iter_traits_accum_Sum_for_core_num_wrapping_Wrapping_i128.
+      Module Impl_core_iter_traits_accum_Sum_core_num_wrapping_Wrapping_i128_for_core_num_wrapping_Wrapping_i128.
         Definition Self : Ty.t :=
           Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ].
         
@@ -7165,12 +7173,13 @@ Module iter.
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
             (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
+            (* Trait polymorphic types *)
+            [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ] ]
             Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
-      End Impl_core_iter_traits_accum_Sum_for_core_num_wrapping_Wrapping_i128.
+      End Impl_core_iter_traits_accum_Sum_core_num_wrapping_Wrapping_i128_for_core_num_wrapping_Wrapping_i128.
       
-      Module Impl_core_iter_traits_accum_Product_for_core_num_wrapping_Wrapping_i128.
+      Module Impl_core_iter_traits_accum_Product_core_num_wrapping_Wrapping_i128_for_core_num_wrapping_Wrapping_i128.
         Definition Self : Ty.t :=
           Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ].
         
@@ -7313,10 +7322,11 @@ Module iter.
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
             (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
+            (* Trait polymorphic types *)
+            [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ] ]
             Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
-      End Impl_core_iter_traits_accum_Product_for_core_num_wrapping_Wrapping_i128.
+      End Impl_core_iter_traits_accum_Product_core_num_wrapping_Wrapping_i128_for_core_num_wrapping_Wrapping_i128.
       
       Module Impl_core_iter_traits_accum_Sum_ref__core_num_wrapping_Wrapping_i128_for_core_num_wrapping_Wrapping_i128.
         Definition Self : Ty.t :=
@@ -7672,7 +7682,7 @@ Module iter.
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__core_num_wrapping_Wrapping_i128_for_core_num_wrapping_Wrapping_i128.
       
-      Module Impl_core_iter_traits_accum_Sum_for_core_num_wrapping_Wrapping_isize.
+      Module Impl_core_iter_traits_accum_Sum_core_num_wrapping_Wrapping_isize_for_core_num_wrapping_Wrapping_isize.
         Definition Self : Ty.t :=
           Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ].
         
@@ -7818,12 +7828,13 @@ Module iter.
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
             (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
+            (* Trait polymorphic types *)
+            [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ] ]
             Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
-      End Impl_core_iter_traits_accum_Sum_for_core_num_wrapping_Wrapping_isize.
+      End Impl_core_iter_traits_accum_Sum_core_num_wrapping_Wrapping_isize_for_core_num_wrapping_Wrapping_isize.
       
-      Module Impl_core_iter_traits_accum_Product_for_core_num_wrapping_Wrapping_isize.
+      Module Impl_core_iter_traits_accum_Product_core_num_wrapping_Wrapping_isize_for_core_num_wrapping_Wrapping_isize.
         Definition Self : Ty.t :=
           Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ].
         
@@ -7969,10 +7980,11 @@ Module iter.
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
             (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
+            (* Trait polymorphic types *)
+            [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ] ]
             Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
-      End Impl_core_iter_traits_accum_Product_for_core_num_wrapping_Wrapping_isize.
+      End Impl_core_iter_traits_accum_Product_core_num_wrapping_Wrapping_isize_for_core_num_wrapping_Wrapping_isize.
       
       Module Impl_core_iter_traits_accum_Sum_ref__core_num_wrapping_Wrapping_isize_for_core_num_wrapping_Wrapping_isize.
         Definition Self : Ty.t :=
@@ -8328,7 +8340,7 @@ Module iter.
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__core_num_wrapping_Wrapping_isize_for_core_num_wrapping_Wrapping_isize.
       
-      Module Impl_core_iter_traits_accum_Sum_for_core_num_wrapping_Wrapping_u8.
+      Module Impl_core_iter_traits_accum_Sum_core_num_wrapping_Wrapping_u8_for_core_num_wrapping_Wrapping_u8.
         Definition Self : Ty.t :=
           Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ].
         
@@ -8468,12 +8480,13 @@ Module iter.
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
             (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
+            (* Trait polymorphic types *)
+            [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ] ]
             Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
-      End Impl_core_iter_traits_accum_Sum_for_core_num_wrapping_Wrapping_u8.
+      End Impl_core_iter_traits_accum_Sum_core_num_wrapping_Wrapping_u8_for_core_num_wrapping_Wrapping_u8.
       
-      Module Impl_core_iter_traits_accum_Product_for_core_num_wrapping_Wrapping_u8.
+      Module Impl_core_iter_traits_accum_Product_core_num_wrapping_Wrapping_u8_for_core_num_wrapping_Wrapping_u8.
         Definition Self : Ty.t :=
           Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ].
         
@@ -8613,10 +8626,11 @@ Module iter.
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
             (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
+            (* Trait polymorphic types *)
+            [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ] ]
             Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
-      End Impl_core_iter_traits_accum_Product_for_core_num_wrapping_Wrapping_u8.
+      End Impl_core_iter_traits_accum_Product_core_num_wrapping_Wrapping_u8_for_core_num_wrapping_Wrapping_u8.
       
       Module Impl_core_iter_traits_accum_Sum_ref__core_num_wrapping_Wrapping_u8_for_core_num_wrapping_Wrapping_u8.
         Definition Self : Ty.t :=
@@ -8966,7 +8980,7 @@ Module iter.
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__core_num_wrapping_Wrapping_u8_for_core_num_wrapping_Wrapping_u8.
       
-      Module Impl_core_iter_traits_accum_Sum_for_core_num_wrapping_Wrapping_u16.
+      Module Impl_core_iter_traits_accum_Sum_core_num_wrapping_Wrapping_u16_for_core_num_wrapping_Wrapping_u16.
         Definition Self : Ty.t :=
           Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ].
         
@@ -9106,12 +9120,13 @@ Module iter.
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
             (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
+            (* Trait polymorphic types *)
+            [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ] ]
             Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
-      End Impl_core_iter_traits_accum_Sum_for_core_num_wrapping_Wrapping_u16.
+      End Impl_core_iter_traits_accum_Sum_core_num_wrapping_Wrapping_u16_for_core_num_wrapping_Wrapping_u16.
       
-      Module Impl_core_iter_traits_accum_Product_for_core_num_wrapping_Wrapping_u16.
+      Module Impl_core_iter_traits_accum_Product_core_num_wrapping_Wrapping_u16_for_core_num_wrapping_Wrapping_u16.
         Definition Self : Ty.t :=
           Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ].
         
@@ -9251,10 +9266,11 @@ Module iter.
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
             (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
+            (* Trait polymorphic types *)
+            [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ] ]
             Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
-      End Impl_core_iter_traits_accum_Product_for_core_num_wrapping_Wrapping_u16.
+      End Impl_core_iter_traits_accum_Product_core_num_wrapping_Wrapping_u16_for_core_num_wrapping_Wrapping_u16.
       
       Module Impl_core_iter_traits_accum_Sum_ref__core_num_wrapping_Wrapping_u16_for_core_num_wrapping_Wrapping_u16.
         Definition Self : Ty.t :=
@@ -9604,7 +9620,7 @@ Module iter.
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__core_num_wrapping_Wrapping_u16_for_core_num_wrapping_Wrapping_u16.
       
-      Module Impl_core_iter_traits_accum_Sum_for_core_num_wrapping_Wrapping_u32.
+      Module Impl_core_iter_traits_accum_Sum_core_num_wrapping_Wrapping_u32_for_core_num_wrapping_Wrapping_u32.
         Definition Self : Ty.t :=
           Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ].
         
@@ -9744,12 +9760,13 @@ Module iter.
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
             (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
+            (* Trait polymorphic types *)
+            [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ] ]
             Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
-      End Impl_core_iter_traits_accum_Sum_for_core_num_wrapping_Wrapping_u32.
+      End Impl_core_iter_traits_accum_Sum_core_num_wrapping_Wrapping_u32_for_core_num_wrapping_Wrapping_u32.
       
-      Module Impl_core_iter_traits_accum_Product_for_core_num_wrapping_Wrapping_u32.
+      Module Impl_core_iter_traits_accum_Product_core_num_wrapping_Wrapping_u32_for_core_num_wrapping_Wrapping_u32.
         Definition Self : Ty.t :=
           Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ].
         
@@ -9889,10 +9906,11 @@ Module iter.
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
             (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
+            (* Trait polymorphic types *)
+            [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ] ]
             Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
-      End Impl_core_iter_traits_accum_Product_for_core_num_wrapping_Wrapping_u32.
+      End Impl_core_iter_traits_accum_Product_core_num_wrapping_Wrapping_u32_for_core_num_wrapping_Wrapping_u32.
       
       Module Impl_core_iter_traits_accum_Sum_ref__core_num_wrapping_Wrapping_u32_for_core_num_wrapping_Wrapping_u32.
         Definition Self : Ty.t :=
@@ -10242,7 +10260,7 @@ Module iter.
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__core_num_wrapping_Wrapping_u32_for_core_num_wrapping_Wrapping_u32.
       
-      Module Impl_core_iter_traits_accum_Sum_for_core_num_wrapping_Wrapping_u64.
+      Module Impl_core_iter_traits_accum_Sum_core_num_wrapping_Wrapping_u64_for_core_num_wrapping_Wrapping_u64.
         Definition Self : Ty.t :=
           Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ].
         
@@ -10382,12 +10400,13 @@ Module iter.
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
             (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
+            (* Trait polymorphic types *)
+            [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ] ]
             Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
-      End Impl_core_iter_traits_accum_Sum_for_core_num_wrapping_Wrapping_u64.
+      End Impl_core_iter_traits_accum_Sum_core_num_wrapping_Wrapping_u64_for_core_num_wrapping_Wrapping_u64.
       
-      Module Impl_core_iter_traits_accum_Product_for_core_num_wrapping_Wrapping_u64.
+      Module Impl_core_iter_traits_accum_Product_core_num_wrapping_Wrapping_u64_for_core_num_wrapping_Wrapping_u64.
         Definition Self : Ty.t :=
           Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ].
         
@@ -10527,10 +10546,11 @@ Module iter.
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
             (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
+            (* Trait polymorphic types *)
+            [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ] ]
             Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
-      End Impl_core_iter_traits_accum_Product_for_core_num_wrapping_Wrapping_u64.
+      End Impl_core_iter_traits_accum_Product_core_num_wrapping_Wrapping_u64_for_core_num_wrapping_Wrapping_u64.
       
       Module Impl_core_iter_traits_accum_Sum_ref__core_num_wrapping_Wrapping_u64_for_core_num_wrapping_Wrapping_u64.
         Definition Self : Ty.t :=
@@ -10880,7 +10900,7 @@ Module iter.
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__core_num_wrapping_Wrapping_u64_for_core_num_wrapping_Wrapping_u64.
       
-      Module Impl_core_iter_traits_accum_Sum_for_core_num_wrapping_Wrapping_u128.
+      Module Impl_core_iter_traits_accum_Sum_core_num_wrapping_Wrapping_u128_for_core_num_wrapping_Wrapping_u128.
         Definition Self : Ty.t :=
           Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ].
         
@@ -11023,12 +11043,13 @@ Module iter.
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
             (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
+            (* Trait polymorphic types *)
+            [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ] ]
             Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
-      End Impl_core_iter_traits_accum_Sum_for_core_num_wrapping_Wrapping_u128.
+      End Impl_core_iter_traits_accum_Sum_core_num_wrapping_Wrapping_u128_for_core_num_wrapping_Wrapping_u128.
       
-      Module Impl_core_iter_traits_accum_Product_for_core_num_wrapping_Wrapping_u128.
+      Module Impl_core_iter_traits_accum_Product_core_num_wrapping_Wrapping_u128_for_core_num_wrapping_Wrapping_u128.
         Definition Self : Ty.t :=
           Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ].
         
@@ -11171,10 +11192,11 @@ Module iter.
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
             (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
+            (* Trait polymorphic types *)
+            [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ] ]
             Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
-      End Impl_core_iter_traits_accum_Product_for_core_num_wrapping_Wrapping_u128.
+      End Impl_core_iter_traits_accum_Product_core_num_wrapping_Wrapping_u128_for_core_num_wrapping_Wrapping_u128.
       
       Module Impl_core_iter_traits_accum_Sum_ref__core_num_wrapping_Wrapping_u128_for_core_num_wrapping_Wrapping_u128.
         Definition Self : Ty.t :=
@@ -11530,7 +11552,7 @@ Module iter.
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__core_num_wrapping_Wrapping_u128_for_core_num_wrapping_Wrapping_u128.
       
-      Module Impl_core_iter_traits_accum_Sum_for_core_num_wrapping_Wrapping_usize.
+      Module Impl_core_iter_traits_accum_Sum_core_num_wrapping_Wrapping_usize_for_core_num_wrapping_Wrapping_usize.
         Definition Self : Ty.t :=
           Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ].
         
@@ -11676,12 +11698,13 @@ Module iter.
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
             (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
+            (* Trait polymorphic types *)
+            [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ] ]
             Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
-      End Impl_core_iter_traits_accum_Sum_for_core_num_wrapping_Wrapping_usize.
+      End Impl_core_iter_traits_accum_Sum_core_num_wrapping_Wrapping_usize_for_core_num_wrapping_Wrapping_usize.
       
-      Module Impl_core_iter_traits_accum_Product_for_core_num_wrapping_Wrapping_usize.
+      Module Impl_core_iter_traits_accum_Product_core_num_wrapping_Wrapping_usize_for_core_num_wrapping_Wrapping_usize.
         Definition Self : Ty.t :=
           Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ].
         
@@ -11827,10 +11850,11 @@ Module iter.
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
             (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
+            (* Trait polymorphic types *)
+            [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ] ]
             Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
-      End Impl_core_iter_traits_accum_Product_for_core_num_wrapping_Wrapping_usize.
+      End Impl_core_iter_traits_accum_Product_core_num_wrapping_Wrapping_usize_for_core_num_wrapping_Wrapping_usize.
       
       Module Impl_core_iter_traits_accum_Sum_ref__core_num_wrapping_Wrapping_usize_for_core_num_wrapping_Wrapping_usize.
         Definition Self : Ty.t :=
@@ -12186,7 +12210,7 @@ Module iter.
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__core_num_wrapping_Wrapping_usize_for_core_num_wrapping_Wrapping_usize.
       
-      Module Impl_core_iter_traits_accum_Sum_for_f32.
+      Module Impl_core_iter_traits_accum_Sum_f32_for_f32.
         Definition Self : Ty.t := Ty.path "f32".
         
         (*
@@ -12262,12 +12286,12 @@ Module iter.
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
             (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
+            (* Trait polymorphic types *) [ Ty.path "f32" ]
             Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
-      End Impl_core_iter_traits_accum_Sum_for_f32.
+      End Impl_core_iter_traits_accum_Sum_f32_for_f32.
       
-      Module Impl_core_iter_traits_accum_Product_for_f32.
+      Module Impl_core_iter_traits_accum_Product_f32_for_f32.
         Definition Self : Ty.t := Ty.path "f32".
         
         (*
@@ -12343,10 +12367,10 @@ Module iter.
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
             (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
+            (* Trait polymorphic types *) [ Ty.path "f32" ]
             Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
-      End Impl_core_iter_traits_accum_Product_for_f32.
+      End Impl_core_iter_traits_accum_Product_f32_for_f32.
       
       Module Impl_core_iter_traits_accum_Sum_ref__f32_for_f32.
         Definition Self : Ty.t := Ty.path "f32".
@@ -12556,7 +12580,7 @@ Module iter.
             (* Instance *) [ ("product", InstanceField.Method product) ].
       End Impl_core_iter_traits_accum_Product_ref__f32_for_f32.
       
-      Module Impl_core_iter_traits_accum_Sum_for_f64.
+      Module Impl_core_iter_traits_accum_Sum_f64_for_f64.
         Definition Self : Ty.t := Ty.path "f64".
         
         (*
@@ -12632,12 +12656,12 @@ Module iter.
           M.IsTraitInstance
             "core::iter::traits::accum::Sum"
             (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
+            (* Trait polymorphic types *) [ Ty.path "f64" ]
             Self
             (* Instance *) [ ("sum", InstanceField.Method sum) ].
-      End Impl_core_iter_traits_accum_Sum_for_f64.
+      End Impl_core_iter_traits_accum_Sum_f64_for_f64.
       
-      Module Impl_core_iter_traits_accum_Product_for_f64.
+      Module Impl_core_iter_traits_accum_Product_f64_for_f64.
         Definition Self : Ty.t := Ty.path "f64".
         
         (*
@@ -12713,10 +12737,10 @@ Module iter.
           M.IsTraitInstance
             "core::iter::traits::accum::Product"
             (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
+            (* Trait polymorphic types *) [ Ty.path "f64" ]
             Self
             (* Instance *) [ ("product", InstanceField.Method product) ].
-      End Impl_core_iter_traits_accum_Product_for_f64.
+      End Impl_core_iter_traits_accum_Product_f64_for_f64.
       
       Module Impl_core_iter_traits_accum_Sum_ref__f64_for_f64.
         Definition Self : Ty.t := Ty.path "f64".

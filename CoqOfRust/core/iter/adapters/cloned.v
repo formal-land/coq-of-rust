@@ -232,10 +232,6 @@ Module iter.
       Admitted.
       Global Typeclasses Opaque clone_try_fold.
       
-      Module clone_try_fold.
-        (* Error OpaqueTy *)
-      End clone_try_fold.
-      
       Module Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_iterator_Iterator_I_where_core_clone_Clone_T_for_core_iter_adapters_cloned_Cloned_I.
         Definition Self (I T : Ty.t) : Ty.t :=
           Ty.apply (Ty.path "core::iter::adapters::cloned::Cloned") [] [ I ].

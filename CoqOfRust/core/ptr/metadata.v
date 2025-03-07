@@ -506,7 +506,7 @@ Module ptr.
           (* Instance *) [].
     End Impl_core_cmp_Eq_where_core_marker_Sized_Dyn_for_core_ptr_metadata_DynMetadata_Dyn.
     
-    Module Impl_core_cmp_PartialEq_where_core_marker_Sized_Dyn_for_core_ptr_metadata_DynMetadata_Dyn.
+    Module Impl_core_cmp_PartialEq_where_core_marker_Sized_Dyn_core_ptr_metadata_DynMetadata_Dyn_for_core_ptr_metadata_DynMetadata_Dyn.
       Definition Self (Dyn : Ty.t) : Ty.t :=
         Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ].
       
@@ -556,10 +556,11 @@ Module ptr.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ] ]
           (Self Dyn)
           (* Instance *) [ ("eq", InstanceField.Method (eq Dyn)) ].
-    End Impl_core_cmp_PartialEq_where_core_marker_Sized_Dyn_for_core_ptr_metadata_DynMetadata_Dyn.
+    End Impl_core_cmp_PartialEq_where_core_marker_Sized_Dyn_core_ptr_metadata_DynMetadata_Dyn_for_core_ptr_metadata_DynMetadata_Dyn.
     
     Module Impl_core_cmp_Ord_where_core_marker_Sized_Dyn_for_core_ptr_metadata_DynMetadata_Dyn.
       Definition Self (Dyn : Ty.t) : Ty.t :=
@@ -644,7 +645,7 @@ Module ptr.
           (* Instance *) [ ("cmp", InstanceField.Method (cmp Dyn)) ].
     End Impl_core_cmp_Ord_where_core_marker_Sized_Dyn_for_core_ptr_metadata_DynMetadata_Dyn.
     
-    Module Impl_core_cmp_PartialOrd_where_core_marker_Sized_Dyn_for_core_ptr_metadata_DynMetadata_Dyn.
+    Module Impl_core_cmp_PartialOrd_where_core_marker_Sized_Dyn_core_ptr_metadata_DynMetadata_Dyn_for_core_ptr_metadata_DynMetadata_Dyn.
       Definition Self (Dyn : Ty.t) : Ty.t :=
         Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ].
       
@@ -693,10 +694,11 @@ Module ptr.
         M.IsTraitInstance
           "core::cmp::PartialOrd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::ptr::metadata::DynMetadata") [] [ Dyn ] ]
           (Self Dyn)
           (* Instance *) [ ("partial_cmp", InstanceField.Method (partial_cmp Dyn)) ].
-    End Impl_core_cmp_PartialOrd_where_core_marker_Sized_Dyn_for_core_ptr_metadata_DynMetadata_Dyn.
+    End Impl_core_cmp_PartialOrd_where_core_marker_Sized_Dyn_core_ptr_metadata_DynMetadata_Dyn_for_core_ptr_metadata_DynMetadata_Dyn.
     
     Module Impl_core_hash_Hash_where_core_marker_Sized_Dyn_for_core_ptr_metadata_DynMetadata_Dyn.
       Definition Self (Dyn : Ty.t) : Ty.t :=

@@ -986,7 +986,7 @@ Module borrow.
         (* Instance *) [ ("eq", InstanceField.Method (eq B C)) ].
   End Impl_core_cmp_PartialEq_where_core_marker_Sized_B_where_core_marker_Sized_C_where_core_cmp_PartialEq_B_C_where_alloc_borrow_ToOwned_B_where_alloc_borrow_ToOwned_C_alloc_borrow_Cow_C_for_alloc_borrow_Cow_B.
   
-  Module Impl_core_cmp_PartialOrd_where_core_marker_Sized_B_where_core_cmp_PartialOrd_B_where_alloc_borrow_ToOwned_B_for_alloc_borrow_Cow_B.
+  Module Impl_core_cmp_PartialOrd_where_core_marker_Sized_B_where_core_cmp_PartialOrd_B_where_alloc_borrow_ToOwned_B_alloc_borrow_Cow_B_for_alloc_borrow_Cow_B.
     Definition Self (B : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ].
     
     (*
@@ -1061,10 +1061,10 @@ Module borrow.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ] ]
         (Self B)
         (* Instance *) [ ("partial_cmp", InstanceField.Method (partial_cmp B)) ].
-  End Impl_core_cmp_PartialOrd_where_core_marker_Sized_B_where_core_cmp_PartialOrd_B_where_alloc_borrow_ToOwned_B_for_alloc_borrow_Cow_B.
+  End Impl_core_cmp_PartialOrd_where_core_marker_Sized_B_where_core_cmp_PartialOrd_B_where_alloc_borrow_ToOwned_B_alloc_borrow_Cow_B_for_alloc_borrow_Cow_B.
   
   Module Impl_core_fmt_Debug_where_core_marker_Sized_B_where_core_fmt_Debug_B_where_alloc_borrow_ToOwned_B_for_alloc_borrow_Cow_B.
     Definition Self (B : Ty.t) : Ty.t := Ty.apply (Ty.path "alloc::borrow::Cow") [] [ B ].

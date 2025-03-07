@@ -81,7 +81,7 @@ Module account_address.
         (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
   End Impl_core_cmp_Ord_for_move_core_types_account_address_AccountAddress.
   
-  Module Impl_core_cmp_PartialOrd_for_move_core_types_account_address_AccountAddress.
+  Module Impl_core_cmp_PartialOrd_move_core_types_account_address_AccountAddress_for_move_core_types_account_address_AccountAddress.
     Definition Self : Ty.t := Ty.path "move_core_types::account_address::AccountAddress".
     
     (* PartialOrd *)
@@ -139,10 +139,10 @@ Module account_address.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::account_address::AccountAddress" ]
         Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-  End Impl_core_cmp_PartialOrd_for_move_core_types_account_address_AccountAddress.
+  End Impl_core_cmp_PartialOrd_move_core_types_account_address_AccountAddress_for_move_core_types_account_address_AccountAddress.
   
   Module Impl_core_cmp_Eq_for_move_core_types_account_address_AccountAddress.
     Definition Self : Ty.t := Ty.path "move_core_types::account_address::AccountAddress".
@@ -189,7 +189,7 @@ Module account_address.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_core_types_account_address_AccountAddress.
   
-  Module Impl_core_cmp_PartialEq_for_move_core_types_account_address_AccountAddress.
+  Module Impl_core_cmp_PartialEq_move_core_types_account_address_AccountAddress_for_move_core_types_account_address_AccountAddress.
     Definition Self : Ty.t := Ty.path "move_core_types::account_address::AccountAddress".
     
     (* PartialEq *)
@@ -237,10 +237,10 @@ Module account_address.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::account_address::AccountAddress" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_core_types_account_address_AccountAddress.
+  End Impl_core_cmp_PartialEq_move_core_types_account_address_AccountAddress_for_move_core_types_account_address_AccountAddress.
   
   Module Impl_core_hash_Hash_for_move_core_types_account_address_AccountAddress.
     Definition Self : Ty.t := Ty.path "move_core_types::account_address::AccountAddress".

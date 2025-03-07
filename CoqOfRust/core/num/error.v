@@ -122,7 +122,7 @@ Module num.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_num_error_TryFromIntError.
     
-    Module Impl_core_cmp_PartialEq_for_core_num_error_TryFromIntError.
+    Module Impl_core_cmp_PartialEq_core_num_error_TryFromIntError_for_core_num_error_TryFromIntError.
       Definition Self : Ty.t := Ty.path "core::num::error::TryFromIntError".
       
       (* PartialEq *)
@@ -169,10 +169,10 @@ Module num.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::num::error::TryFromIntError" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_core_num_error_TryFromIntError.
+    End Impl_core_cmp_PartialEq_core_num_error_TryFromIntError_for_core_num_error_TryFromIntError.
     
     Module Impl_core_cmp_Eq_for_core_num_error_TryFromIntError.
       Definition Self : Ty.t := Ty.path "core::num::error::TryFromIntError".
@@ -483,7 +483,7 @@ Module num.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_num_error_ParseIntError.
     
-    Module Impl_core_cmp_PartialEq_for_core_num_error_ParseIntError.
+    Module Impl_core_cmp_PartialEq_core_num_error_ParseIntError_for_core_num_error_ParseIntError.
       Definition Self : Ty.t := Ty.path "core::num::error::ParseIntError".
       
       (* PartialEq *)
@@ -530,10 +530,10 @@ Module num.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::num::error::ParseIntError" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_core_num_error_ParseIntError.
+    End Impl_core_cmp_PartialEq_core_num_error_ParseIntError_for_core_num_error_ParseIntError.
     
     Module Impl_core_cmp_Eq_for_core_num_error_ParseIntError.
       Definition Self : Ty.t := Ty.path "core::num::error::ParseIntError".
@@ -789,7 +789,7 @@ Module num.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_num_error_IntErrorKind.
     
-    Module Impl_core_cmp_PartialEq_for_core_num_error_IntErrorKind.
+    Module Impl_core_cmp_PartialEq_core_num_error_IntErrorKind_for_core_num_error_IntErrorKind.
       Definition Self : Ty.t := Ty.path "core::num::error::IntErrorKind".
       
       (* PartialEq *)
@@ -833,10 +833,10 @@ Module num.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::num::error::IntErrorKind" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_core_num_error_IntErrorKind.
+    End Impl_core_cmp_PartialEq_core_num_error_IntErrorKind_for_core_num_error_IntErrorKind.
     
     Module Impl_core_cmp_Eq_for_core_num_error_IntErrorKind.
       Definition Self : Ty.t := Ty.path "core::num::error::IntErrorKind".

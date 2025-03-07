@@ -98,7 +98,7 @@ Module Impl_core_marker_StructuralPartialEq_for_payment_channel_AccountId.
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_payment_channel_AccountId.
 
-Module Impl_core_cmp_PartialEq_for_payment_channel_AccountId.
+Module Impl_core_cmp_PartialEq_payment_channel_AccountId_for_payment_channel_AccountId.
   Definition Self : Ty.t := Ty.path "payment_channel::AccountId".
   
   (* PartialEq *)
@@ -131,10 +131,10 @@ Module Impl_core_cmp_PartialEq_for_payment_channel_AccountId.
     M.IsTraitInstance
       "core::cmp::PartialEq"
       (* Trait polymorphic consts *) []
-      (* Trait polymorphic types *) []
+      (* Trait polymorphic types *) [ Ty.path "payment_channel::AccountId" ]
       Self
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
-End Impl_core_cmp_PartialEq_for_payment_channel_AccountId.
+End Impl_core_cmp_PartialEq_payment_channel_AccountId_for_payment_channel_AccountId.
 
 Module Impl_core_cmp_Eq_for_payment_channel_AccountId.
   Definition Self : Ty.t := Ty.path "payment_channel::AccountId".
@@ -276,7 +276,7 @@ Module Impl_core_marker_StructuralPartialEq_for_payment_channel_Error.
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_payment_channel_Error.
 
-Module Impl_core_cmp_PartialEq_for_payment_channel_Error.
+Module Impl_core_cmp_PartialEq_payment_channel_Error_for_payment_channel_Error.
   Definition Self : Ty.t := Ty.path "payment_channel::Error".
   
   (* PartialEq *)
@@ -320,10 +320,10 @@ Module Impl_core_cmp_PartialEq_for_payment_channel_Error.
     M.IsTraitInstance
       "core::cmp::PartialEq"
       (* Trait polymorphic consts *) []
-      (* Trait polymorphic types *) []
+      (* Trait polymorphic types *) [ Ty.path "payment_channel::Error" ]
       Self
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
-End Impl_core_cmp_PartialEq_for_payment_channel_Error.
+End Impl_core_cmp_PartialEq_payment_channel_Error_for_payment_channel_Error.
 
 Module Impl_core_cmp_Eq_for_payment_channel_Error.
   Definition Self : Ty.t := Ty.path "payment_channel::Error".

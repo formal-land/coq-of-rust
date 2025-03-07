@@ -210,7 +210,7 @@ Module num.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_num_dec2flt_ParseFloatError.
     
-    Module Impl_core_cmp_PartialEq_for_core_num_dec2flt_ParseFloatError.
+    Module Impl_core_cmp_PartialEq_core_num_dec2flt_ParseFloatError_for_core_num_dec2flt_ParseFloatError.
       Definition Self : Ty.t := Ty.path "core::num::dec2flt::ParseFloatError".
       
       (* PartialEq *)
@@ -257,10 +257,10 @@ Module num.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::num::dec2flt::ParseFloatError" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_core_num_dec2flt_ParseFloatError.
+    End Impl_core_cmp_PartialEq_core_num_dec2flt_ParseFloatError_for_core_num_dec2flt_ParseFloatError.
     
     Module Impl_core_cmp_Eq_for_core_num_dec2flt_ParseFloatError.
       Definition Self : Ty.t := Ty.path "core::num::dec2flt::ParseFloatError".
@@ -444,7 +444,7 @@ Module num.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_num_dec2flt_FloatErrorKind.
     
-    Module Impl_core_cmp_PartialEq_for_core_num_dec2flt_FloatErrorKind.
+    Module Impl_core_cmp_PartialEq_core_num_dec2flt_FloatErrorKind_for_core_num_dec2flt_FloatErrorKind.
       Definition Self : Ty.t := Ty.path "core::num::dec2flt::FloatErrorKind".
       
       (* PartialEq *)
@@ -488,10 +488,10 @@ Module num.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::num::dec2flt::FloatErrorKind" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_core_num_dec2flt_FloatErrorKind.
+    End Impl_core_cmp_PartialEq_core_num_dec2flt_FloatErrorKind_for_core_num_dec2flt_FloatErrorKind.
     
     Module Impl_core_cmp_Eq_for_core_num_dec2flt_FloatErrorKind.
       Definition Self : Ty.t := Ty.path "core::num::dec2flt::FloatErrorKind".

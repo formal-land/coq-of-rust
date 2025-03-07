@@ -5164,7 +5164,7 @@ Module num.
       Global Typeclasses Opaque div_rem.
     End Impl_core_num_bignum_Big32x40.
     
-    Module Impl_core_cmp_PartialEq_for_core_num_bignum_Big32x40.
+    Module Impl_core_cmp_PartialEq_core_num_bignum_Big32x40_for_core_num_bignum_Big32x40.
       Definition Self : Ty.t := Ty.path "core::num::bignum::Big32x40".
       
       (*
@@ -5261,10 +5261,10 @@ Module num.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::num::bignum::Big32x40" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_core_num_bignum_Big32x40.
+    End Impl_core_cmp_PartialEq_core_num_bignum_Big32x40_for_core_num_bignum_Big32x40.
     
     Module Impl_core_cmp_Eq_for_core_num_bignum_Big32x40.
       Definition Self : Ty.t := Ty.path "core::num::bignum::Big32x40".
@@ -5278,7 +5278,7 @@ Module num.
           (* Instance *) [].
     End Impl_core_cmp_Eq_for_core_num_bignum_Big32x40.
     
-    Module Impl_core_cmp_PartialOrd_for_core_num_bignum_Big32x40.
+    Module Impl_core_cmp_PartialOrd_core_num_bignum_Big32x40_for_core_num_bignum_Big32x40.
       Definition Self : Ty.t := Ty.path "core::num::bignum::Big32x40".
       
       (*
@@ -5319,10 +5319,10 @@ Module num.
         M.IsTraitInstance
           "core::cmp::PartialOrd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::num::bignum::Big32x40" ]
           Self
           (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-    End Impl_core_cmp_PartialOrd_for_core_num_bignum_Big32x40.
+    End Impl_core_cmp_PartialOrd_core_num_bignum_Big32x40_for_core_num_bignum_Big32x40.
     
     Module Impl_core_cmp_Ord_for_core_num_bignum_Big32x40.
       Definition Self : Ty.t := Ty.path "core::num::bignum::Big32x40".
@@ -11200,7 +11200,7 @@ Module num.
         Global Typeclasses Opaque div_rem.
       End Impl_core_num_bignum_tests_Big8x3.
       
-      Module Impl_core_cmp_PartialEq_for_core_num_bignum_tests_Big8x3.
+      Module Impl_core_cmp_PartialEq_core_num_bignum_tests_Big8x3_for_core_num_bignum_tests_Big8x3.
         Definition Self : Ty.t := Ty.path "core::num::bignum::tests::Big8x3".
         
         (*
@@ -11303,10 +11303,10 @@ Module num.
           M.IsTraitInstance
             "core::cmp::PartialEq"
             (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
+            (* Trait polymorphic types *) [ Ty.path "core::num::bignum::tests::Big8x3" ]
             Self
             (* Instance *) [ ("eq", InstanceField.Method eq) ].
-      End Impl_core_cmp_PartialEq_for_core_num_bignum_tests_Big8x3.
+      End Impl_core_cmp_PartialEq_core_num_bignum_tests_Big8x3_for_core_num_bignum_tests_Big8x3.
       
       Module Impl_core_cmp_Eq_for_core_num_bignum_tests_Big8x3.
         Definition Self : Ty.t := Ty.path "core::num::bignum::tests::Big8x3".
@@ -11320,7 +11320,7 @@ Module num.
             (* Instance *) [].
       End Impl_core_cmp_Eq_for_core_num_bignum_tests_Big8x3.
       
-      Module Impl_core_cmp_PartialOrd_for_core_num_bignum_tests_Big8x3.
+      Module Impl_core_cmp_PartialOrd_core_num_bignum_tests_Big8x3_for_core_num_bignum_tests_Big8x3.
         Definition Self : Ty.t := Ty.path "core::num::bignum::tests::Big8x3".
         
         (*
@@ -11361,10 +11361,10 @@ Module num.
           M.IsTraitInstance
             "core::cmp::PartialOrd"
             (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
+            (* Trait polymorphic types *) [ Ty.path "core::num::bignum::tests::Big8x3" ]
             Self
             (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-      End Impl_core_cmp_PartialOrd_for_core_num_bignum_tests_Big8x3.
+      End Impl_core_cmp_PartialOrd_core_num_bignum_tests_Big8x3_for_core_num_bignum_tests_Big8x3.
       
       Module Impl_core_cmp_Ord_for_core_num_bignum_tests_Big8x3.
         Definition Self : Ty.t := Ty.path "core::num::bignum::tests::Big8x3".

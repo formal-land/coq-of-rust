@@ -977,7 +977,7 @@ Module instruction_result.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_interpreter_instruction_result_InstructionResult.
   
-  Module Impl_core_cmp_PartialEq_for_revm_interpreter_instruction_result_InstructionResult.
+  Module Impl_core_cmp_PartialEq_revm_interpreter_instruction_result_InstructionResult_for_revm_interpreter_instruction_result_InstructionResult.
     Definition Self : Ty.t := Ty.path "revm_interpreter::instruction_result::InstructionResult".
     
     (* PartialEq *)
@@ -1021,10 +1021,11 @@ Module instruction_result.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *)
+        [ Ty.path "revm_interpreter::instruction_result::InstructionResult" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_revm_interpreter_instruction_result_InstructionResult.
+  End Impl_core_cmp_PartialEq_revm_interpreter_instruction_result_InstructionResult_for_revm_interpreter_instruction_result_InstructionResult.
   
   Module Impl_core_cmp_Eq_for_revm_interpreter_instruction_result_InstructionResult.
     Definition Self : Ty.t := Ty.path "revm_interpreter::instruction_result::InstructionResult".
@@ -2499,7 +2500,7 @@ Module instruction_result.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_interpreter_instruction_result_InternalResult.
   
-  Module Impl_core_cmp_PartialEq_for_revm_interpreter_instruction_result_InternalResult.
+  Module Impl_core_cmp_PartialEq_revm_interpreter_instruction_result_InternalResult_for_revm_interpreter_instruction_result_InternalResult.
     Definition Self : Ty.t := Ty.path "revm_interpreter::instruction_result::InternalResult".
     
     (* PartialEq *)
@@ -2543,10 +2544,11 @@ Module instruction_result.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *)
+        [ Ty.path "revm_interpreter::instruction_result::InternalResult" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_revm_interpreter_instruction_result_InternalResult.
+  End Impl_core_cmp_PartialEq_revm_interpreter_instruction_result_InternalResult_for_revm_interpreter_instruction_result_InternalResult.
   
   Module Impl_core_cmp_Eq_for_revm_interpreter_instruction_result_InternalResult.
     Definition Self : Ty.t := Ty.path "revm_interpreter::instruction_result::InternalResult".
@@ -3056,7 +3058,7 @@ Module instruction_result.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_for_revm_interpreter_instruction_result_SuccessOrHalt_HaltReasonT.
   
-  Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_HaltReasonT_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_for_revm_interpreter_instruction_result_SuccessOrHalt_HaltReasonT.
+  Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_HaltReasonT_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_revm_interpreter_instruction_result_SuccessOrHalt_HaltReasonT_for_revm_interpreter_instruction_result_SuccessOrHalt_HaltReasonT.
     Definition Self (HaltReasonT : Ty.t) : Ty.t :=
       Ty.apply (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt") [] [ HaltReasonT ].
     
@@ -3261,10 +3263,16 @@ Module instruction_result.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *)
+        [
+          Ty.apply
+            (Ty.path "revm_interpreter::instruction_result::SuccessOrHalt")
+            []
+            [ HaltReasonT ]
+        ]
         (Self HaltReasonT)
         (* Instance *) [ ("eq", InstanceField.Method (eq HaltReasonT)) ].
-  End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_HaltReasonT_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_for_revm_interpreter_instruction_result_SuccessOrHalt_HaltReasonT.
+  End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_HaltReasonT_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_revm_interpreter_instruction_result_SuccessOrHalt_HaltReasonT_for_revm_interpreter_instruction_result_SuccessOrHalt_HaltReasonT.
   
   Module Impl_core_cmp_Eq_where_core_cmp_Eq_HaltReasonT_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_for_revm_interpreter_instruction_result_SuccessOrHalt_HaltReasonT.
     Definition Self (HaltReasonT : Ty.t) : Ty.t :=

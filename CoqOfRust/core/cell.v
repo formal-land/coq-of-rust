@@ -126,7 +126,7 @@ Module cell.
         (* Instance *) [ ("default", InstanceField.Method (default T)) ].
   End Impl_core_default_Default_where_core_default_Default_T_for_core_cell_Cell_T.
   
-  Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_where_core_marker_Copy_T_for_core_cell_Cell_T.
+  Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_where_core_marker_Copy_T_core_cell_Cell_T_for_core_cell_Cell_T.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cell::Cell") [] [ T ].
     
     (*
@@ -185,10 +185,10 @@ Module cell.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "core::cell::Cell") [] [ T ] ]
         (Self T)
         (* Instance *) [ ("eq", InstanceField.Method (eq T)) ].
-  End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_where_core_marker_Copy_T_for_core_cell_Cell_T.
+  End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_where_core_marker_Copy_T_core_cell_Cell_T_for_core_cell_Cell_T.
   
   Module Impl_core_cmp_Eq_where_core_cmp_Eq_T_where_core_marker_Copy_T_for_core_cell_Cell_T.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cell::Cell") [] [ T ].
@@ -203,7 +203,7 @@ Module cell.
         (* Instance *) [].
   End Impl_core_cmp_Eq_where_core_cmp_Eq_T_where_core_marker_Copy_T_for_core_cell_Cell_T.
   
-  Module Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_where_core_marker_Copy_T_for_core_cell_Cell_T.
+  Module Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_where_core_marker_Copy_T_core_cell_Cell_T_for_core_cell_Cell_T.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cell::Cell") [] [ T ].
     
     (*
@@ -471,7 +471,7 @@ Module cell.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "core::cell::Cell") [] [ T ] ]
         (Self T)
         (* Instance *)
         [
@@ -481,7 +481,7 @@ Module cell.
           ("gt", InstanceField.Method (gt T));
           ("ge", InstanceField.Method (ge T))
         ].
-  End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_where_core_marker_Copy_T_for_core_cell_Cell_T.
+  End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_where_core_marker_Copy_T_core_cell_Cell_T_for_core_cell_Cell_T.
   
   Module Impl_core_cmp_Ord_where_core_cmp_Ord_T_where_core_marker_Copy_T_for_core_cell_Cell_T.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cell::Cell") [] [ T ].
@@ -898,7 +898,7 @@ Module cell.
     Global Typeclasses Opaque swap.
     
     (*
-        pub fn replace(&self, val: T) -> T {
+        pub const fn replace(&self, val: T) -> T {
             // SAFETY: This can cause data races if called from a separate thread,
             // but `Cell` is `!Sync` so this won't happen.
             mem::replace(unsafe { &mut *self.value.get() }, val)
@@ -995,7 +995,7 @@ Module cell.
     Admitted.
     Global Typeclasses Opaque into_inner.
     (*
-        pub fn get(&self) -> T {
+        pub const fn get(&self) -> T {
             // SAFETY: This can cause data races if called from a separate thread,
             // but `Cell` is `!Sync` so this won't happen.
             unsafe { *self.value.get() }
@@ -1153,7 +1153,7 @@ Module cell.
     Global Typeclasses Opaque as_ptr.
     
     (*
-        pub fn get_mut(&mut self) -> &mut T {
+        pub const fn get_mut(&mut self) -> &mut T {
             self.value.get_mut()
         }
     *)
@@ -1202,7 +1202,7 @@ Module cell.
     Global Typeclasses Opaque get_mut.
     
     (*
-        pub fn from_mut(t: &mut T) -> &Cell<T> {
+        pub const fn from_mut(t: &mut T) -> &Cell<T> {
             // SAFETY: `&mut` ensures unique access.
             unsafe { &*(t as *mut T as *const Cell<T>) }
         }
@@ -1314,7 +1314,7 @@ Module cell.
       Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.apply (Ty.path "slice") [] [ T ] ].
     
     (*
-        pub fn as_slice_of_cells(&self) -> &[Cell<T>] {
+        pub const fn as_slice_of_cells(&self) -> &[Cell<T>] {
             // SAFETY: `Cell<T>` has the same memory layout as `T`.
             unsafe { &*(self as *const Cell<[T]> as *const [Cell<T>]) }
         }
@@ -1371,7 +1371,7 @@ Module cell.
       Ty.apply (Ty.path "core::cell::Cell") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ].
     
     (*
-        pub fn as_array_of_cells(&self) -> &[Cell<T>; N] {
+        pub const fn as_array_of_cells(&self) -> &[Cell<T>; N] {
             // SAFETY: `Cell<T>` has the same memory layout as `T`.
             unsafe { &*(self as *const Cell<[T; N]> as *const [Cell<T>; N]) }
         }
@@ -3180,7 +3180,7 @@ Module cell.
         (* Instance *) [ ("default", InstanceField.Method (default T)) ].
   End Impl_core_default_Default_where_core_default_Default_T_for_core_cell_RefCell_T.
   
-  Module Impl_core_cmp_PartialEq_where_core_marker_Sized_T_where_core_cmp_PartialEq_T_for_core_cell_RefCell_T.
+  Module Impl_core_cmp_PartialEq_where_core_marker_Sized_T_where_core_cmp_PartialEq_T_core_cell_RefCell_T_for_core_cell_RefCell_T.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cell::RefCell") [] [ T ].
     
     (*
@@ -3277,10 +3277,10 @@ Module cell.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "core::cell::RefCell") [] [ T ] ]
         (Self T)
         (* Instance *) [ ("eq", InstanceField.Method (eq T)) ].
-  End Impl_core_cmp_PartialEq_where_core_marker_Sized_T_where_core_cmp_PartialEq_T_for_core_cell_RefCell_T.
+  End Impl_core_cmp_PartialEq_where_core_marker_Sized_T_where_core_cmp_PartialEq_T_core_cell_RefCell_T_for_core_cell_RefCell_T.
   
   Module Impl_core_cmp_Eq_where_core_marker_Sized_T_where_core_cmp_Eq_T_for_core_cell_RefCell_T.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cell::RefCell") [] [ T ].
@@ -3295,7 +3295,7 @@ Module cell.
         (* Instance *) [].
   End Impl_core_cmp_Eq_where_core_marker_Sized_T_where_core_cmp_Eq_T_for_core_cell_RefCell_T.
   
-  Module Impl_core_cmp_PartialOrd_where_core_marker_Sized_T_where_core_cmp_PartialOrd_T_for_core_cell_RefCell_T.
+  Module Impl_core_cmp_PartialOrd_where_core_marker_Sized_T_where_core_cmp_PartialOrd_T_core_cell_RefCell_T_for_core_cell_RefCell_T.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cell::RefCell") [] [ T ].
     
     (*
@@ -3754,7 +3754,7 @@ Module cell.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "core::cell::RefCell") [] [ T ] ]
         (Self T)
         (* Instance *)
         [
@@ -3764,7 +3764,7 @@ Module cell.
           ("gt", InstanceField.Method (gt T));
           ("ge", InstanceField.Method (ge T))
         ].
-  End Impl_core_cmp_PartialOrd_where_core_marker_Sized_T_where_core_cmp_PartialOrd_T_for_core_cell_RefCell_T.
+  End Impl_core_cmp_PartialOrd_where_core_marker_Sized_T_where_core_cmp_PartialOrd_T_core_cell_RefCell_T_for_core_cell_RefCell_T.
   
   Module Impl_core_cmp_Ord_where_core_marker_Sized_T_where_core_cmp_Ord_T_for_core_cell_RefCell_T.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::cell::RefCell") [] [ T ].

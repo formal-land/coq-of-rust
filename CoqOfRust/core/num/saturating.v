@@ -25,7 +25,7 @@ Module num.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_num_saturating_Saturating_T.
     
-    Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_for_core_num_saturating_Saturating_T.
+    Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_core_num_saturating_Saturating_T_for_core_num_saturating_Saturating_T.
       Definition Self (T : Ty.t) : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ T ].
       
@@ -67,10 +67,11 @@ Module num.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ T ] ]
           (Self T)
           (* Instance *) [ ("eq", InstanceField.Method (eq T)) ].
-    End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_for_core_num_saturating_Saturating_T.
+    End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_T_core_num_saturating_Saturating_T_for_core_num_saturating_Saturating_T.
     
     Module Impl_core_cmp_Eq_where_core_cmp_Eq_T_for_core_num_saturating_Saturating_T.
       Definition Self (T : Ty.t) : Ty.t :=
@@ -109,7 +110,7 @@ Module num.
           [ ("assert_receiver_is_total_eq", InstanceField.Method (assert_receiver_is_total_eq T)) ].
     End Impl_core_cmp_Eq_where_core_cmp_Eq_T_for_core_num_saturating_Saturating_T.
     
-    Module Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_for_core_num_saturating_Saturating_T.
+    Module Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_core_num_saturating_Saturating_T_for_core_num_saturating_Saturating_T.
       Definition Self (T : Ty.t) : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ T ].
       
@@ -161,10 +162,11 @@ Module num.
         M.IsTraitInstance
           "core::cmp::PartialOrd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ T ] ]
           (Self T)
           (* Instance *) [ ("partial_cmp", InstanceField.Method (partial_cmp T)) ].
-    End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_for_core_num_saturating_Saturating_T.
+    End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_T_core_num_saturating_Saturating_T_for_core_num_saturating_Saturating_T.
     
     Module Impl_core_cmp_Ord_where_core_cmp_Ord_T_for_core_num_saturating_Saturating_T.
       Definition Self (T : Ty.t) : Ty.t :=
@@ -643,7 +645,7 @@ Module num.
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
     End Impl_core_fmt_UpperHex_where_core_fmt_UpperHex_T_for_core_num_saturating_Saturating_T.
     
-    Module Impl_core_ops_arith_Add_for_core_num_saturating_Saturating_usize.
+    Module Impl_core_ops_arith_Add_core_num_saturating_Saturating_usize_for_core_num_saturating_Saturating_usize.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ].
       
@@ -693,13 +695,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::Add"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
-    End Impl_core_ops_arith_Add_for_core_num_saturating_Saturating_usize.
+    End Impl_core_ops_arith_Add_core_num_saturating_Saturating_usize_for_core_num_saturating_Saturating_usize.
     
-    Module Impl_core_ops_arith_AddAssign_for_core_num_saturating_Saturating_usize.
+    Module Impl_core_ops_arith_AddAssign_core_num_saturating_Saturating_usize_for_core_num_saturating_Saturating_usize.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ].
       
@@ -751,10 +754,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ] ]
           Self
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
-    End Impl_core_ops_arith_AddAssign_for_core_num_saturating_Saturating_usize.
+    End Impl_core_ops_arith_AddAssign_core_num_saturating_Saturating_usize_for_core_num_saturating_Saturating_usize.
     
     Module Impl_core_ops_arith_AddAssign_usize_for_core_num_saturating_Saturating_usize.
       Definition Self : Ty.t :=
@@ -816,7 +820,7 @@ Module num.
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
     End Impl_core_ops_arith_AddAssign_usize_for_core_num_saturating_Saturating_usize.
     
-    Module Impl_core_ops_arith_Sub_for_core_num_saturating_Saturating_usize.
+    Module Impl_core_ops_arith_Sub_core_num_saturating_Saturating_usize_for_core_num_saturating_Saturating_usize.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ].
       
@@ -866,13 +870,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::Sub"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
-    End Impl_core_ops_arith_Sub_for_core_num_saturating_Saturating_usize.
+    End Impl_core_ops_arith_Sub_core_num_saturating_Saturating_usize_for_core_num_saturating_Saturating_usize.
     
-    Module Impl_core_ops_arith_SubAssign_for_core_num_saturating_Saturating_usize.
+    Module Impl_core_ops_arith_SubAssign_core_num_saturating_Saturating_usize_for_core_num_saturating_Saturating_usize.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ].
       
@@ -924,10 +929,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ] ]
           Self
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
-    End Impl_core_ops_arith_SubAssign_for_core_num_saturating_Saturating_usize.
+    End Impl_core_ops_arith_SubAssign_core_num_saturating_Saturating_usize_for_core_num_saturating_Saturating_usize.
     
     Module Impl_core_ops_arith_SubAssign_usize_for_core_num_saturating_Saturating_usize.
       Definition Self : Ty.t :=
@@ -989,7 +995,7 @@ Module num.
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
     End Impl_core_ops_arith_SubAssign_usize_for_core_num_saturating_Saturating_usize.
     
-    Module Impl_core_ops_arith_Mul_for_core_num_saturating_Saturating_usize.
+    Module Impl_core_ops_arith_Mul_core_num_saturating_Saturating_usize_for_core_num_saturating_Saturating_usize.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ].
       
@@ -1039,13 +1045,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::Mul"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("mul", InstanceField.Method mul) ].
-    End Impl_core_ops_arith_Mul_for_core_num_saturating_Saturating_usize.
+    End Impl_core_ops_arith_Mul_core_num_saturating_Saturating_usize_for_core_num_saturating_Saturating_usize.
     
-    Module Impl_core_ops_arith_MulAssign_for_core_num_saturating_Saturating_usize.
+    Module Impl_core_ops_arith_MulAssign_core_num_saturating_Saturating_usize_for_core_num_saturating_Saturating_usize.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ].
       
@@ -1097,10 +1104,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ] ]
           Self
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
-    End Impl_core_ops_arith_MulAssign_for_core_num_saturating_Saturating_usize.
+    End Impl_core_ops_arith_MulAssign_core_num_saturating_Saturating_usize_for_core_num_saturating_Saturating_usize.
     
     Module Impl_core_ops_arith_MulAssign_usize_for_core_num_saturating_Saturating_usize.
       Definition Self : Ty.t :=
@@ -1162,7 +1170,7 @@ Module num.
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
     End Impl_core_ops_arith_MulAssign_usize_for_core_num_saturating_Saturating_usize.
     
-    Module Impl_core_ops_arith_Div_for_core_num_saturating_Saturating_usize.
+    Module Impl_core_ops_arith_Div_core_num_saturating_Saturating_usize_for_core_num_saturating_Saturating_usize.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ].
       
@@ -1212,13 +1220,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::Div"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
-    End Impl_core_ops_arith_Div_for_core_num_saturating_Saturating_usize.
+    End Impl_core_ops_arith_Div_core_num_saturating_Saturating_usize_for_core_num_saturating_Saturating_usize.
     
-    Module Impl_core_ops_arith_DivAssign_for_core_num_saturating_Saturating_usize.
+    Module Impl_core_ops_arith_DivAssign_core_num_saturating_Saturating_usize_for_core_num_saturating_Saturating_usize.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ].
       
@@ -1270,10 +1279,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ] ]
           Self
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
-    End Impl_core_ops_arith_DivAssign_for_core_num_saturating_Saturating_usize.
+    End Impl_core_ops_arith_DivAssign_core_num_saturating_Saturating_usize_for_core_num_saturating_Saturating_usize.
     
     Module Impl_core_ops_arith_DivAssign_usize_for_core_num_saturating_Saturating_usize.
       Definition Self : Ty.t :=
@@ -1335,7 +1345,7 @@ Module num.
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
     End Impl_core_ops_arith_DivAssign_usize_for_core_num_saturating_Saturating_usize.
     
-    Module Impl_core_ops_arith_Rem_for_core_num_saturating_Saturating_usize.
+    Module Impl_core_ops_arith_Rem_core_num_saturating_Saturating_usize_for_core_num_saturating_Saturating_usize.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ].
       
@@ -1393,13 +1403,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::Rem"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
-    End Impl_core_ops_arith_Rem_for_core_num_saturating_Saturating_usize.
+    End Impl_core_ops_arith_Rem_core_num_saturating_Saturating_usize_for_core_num_saturating_Saturating_usize.
     
-    Module Impl_core_ops_arith_RemAssign_for_core_num_saturating_Saturating_usize.
+    Module Impl_core_ops_arith_RemAssign_core_num_saturating_Saturating_usize_for_core_num_saturating_Saturating_usize.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ].
       
@@ -1451,10 +1462,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ] ]
           Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
-    End Impl_core_ops_arith_RemAssign_for_core_num_saturating_Saturating_usize.
+    End Impl_core_ops_arith_RemAssign_core_num_saturating_Saturating_usize_for_core_num_saturating_Saturating_usize.
     
     Module Impl_core_ops_arith_RemAssign_usize_for_core_num_saturating_Saturating_usize.
       Definition Self : Ty.t :=
@@ -1560,7 +1572,7 @@ Module num.
           [ ("Output", InstanceField.Ty _Output); ("not", InstanceField.Method not) ].
     End Impl_core_ops_bit_Not_for_core_num_saturating_Saturating_usize.
     
-    Module Impl_core_ops_bit_BitXor_for_core_num_saturating_Saturating_usize.
+    Module Impl_core_ops_bit_BitXor_core_num_saturating_Saturating_usize_for_core_num_saturating_Saturating_usize.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ].
       
@@ -1605,13 +1617,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitXor"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitxor", InstanceField.Method bitxor) ].
-    End Impl_core_ops_bit_BitXor_for_core_num_saturating_Saturating_usize.
+    End Impl_core_ops_bit_BitXor_core_num_saturating_Saturating_usize_for_core_num_saturating_Saturating_usize.
     
-    Module Impl_core_ops_bit_BitXorAssign_for_core_num_saturating_Saturating_usize.
+    Module Impl_core_ops_bit_BitXorAssign_core_num_saturating_Saturating_usize_for_core_num_saturating_Saturating_usize.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ].
       
@@ -1663,10 +1676,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitXorAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ] ]
           Self
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
-    End Impl_core_ops_bit_BitXorAssign_for_core_num_saturating_Saturating_usize.
+    End Impl_core_ops_bit_BitXorAssign_core_num_saturating_Saturating_usize_for_core_num_saturating_Saturating_usize.
     
     Module Impl_core_ops_bit_BitXorAssign_usize_for_core_num_saturating_Saturating_usize.
       Definition Self : Ty.t :=
@@ -1728,7 +1742,7 @@ Module num.
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
     End Impl_core_ops_bit_BitXorAssign_usize_for_core_num_saturating_Saturating_usize.
     
-    Module Impl_core_ops_bit_BitOr_for_core_num_saturating_Saturating_usize.
+    Module Impl_core_ops_bit_BitOr_core_num_saturating_Saturating_usize_for_core_num_saturating_Saturating_usize.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ].
       
@@ -1773,13 +1787,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitOr"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
-    End Impl_core_ops_bit_BitOr_for_core_num_saturating_Saturating_usize.
+    End Impl_core_ops_bit_BitOr_core_num_saturating_Saturating_usize_for_core_num_saturating_Saturating_usize.
     
-    Module Impl_core_ops_bit_BitOrAssign_for_core_num_saturating_Saturating_usize.
+    Module Impl_core_ops_bit_BitOrAssign_core_num_saturating_Saturating_usize_for_core_num_saturating_Saturating_usize.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ].
       
@@ -1831,10 +1846,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ] ]
           Self
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
-    End Impl_core_ops_bit_BitOrAssign_for_core_num_saturating_Saturating_usize.
+    End Impl_core_ops_bit_BitOrAssign_core_num_saturating_Saturating_usize_for_core_num_saturating_Saturating_usize.
     
     Module Impl_core_ops_bit_BitOrAssign_usize_for_core_num_saturating_Saturating_usize.
       Definition Self : Ty.t :=
@@ -1896,7 +1912,7 @@ Module num.
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
     End Impl_core_ops_bit_BitOrAssign_usize_for_core_num_saturating_Saturating_usize.
     
-    Module Impl_core_ops_bit_BitAnd_for_core_num_saturating_Saturating_usize.
+    Module Impl_core_ops_bit_BitAnd_core_num_saturating_Saturating_usize_for_core_num_saturating_Saturating_usize.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ].
       
@@ -1941,13 +1957,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitAnd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
-    End Impl_core_ops_bit_BitAnd_for_core_num_saturating_Saturating_usize.
+    End Impl_core_ops_bit_BitAnd_core_num_saturating_Saturating_usize_for_core_num_saturating_Saturating_usize.
     
-    Module Impl_core_ops_bit_BitAndAssign_for_core_num_saturating_Saturating_usize.
+    Module Impl_core_ops_bit_BitAndAssign_core_num_saturating_Saturating_usize_for_core_num_saturating_Saturating_usize.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ].
       
@@ -1999,10 +2016,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "usize" ] ]
           Self
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
-    End Impl_core_ops_bit_BitAndAssign_for_core_num_saturating_Saturating_usize.
+    End Impl_core_ops_bit_BitAndAssign_core_num_saturating_Saturating_usize_for_core_num_saturating_Saturating_usize.
     
     Module Impl_core_ops_bit_BitAndAssign_usize_for_core_num_saturating_Saturating_usize.
       Definition Self : Ty.t :=
@@ -2064,7 +2082,7 @@ Module num.
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
     End Impl_core_ops_bit_BitAndAssign_usize_for_core_num_saturating_Saturating_usize.
     
-    Module Impl_core_ops_arith_Add_for_core_num_saturating_Saturating_u8.
+    Module Impl_core_ops_arith_Add_core_num_saturating_Saturating_u8_for_core_num_saturating_Saturating_u8.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ].
       
@@ -2114,13 +2132,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::Add"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
-    End Impl_core_ops_arith_Add_for_core_num_saturating_Saturating_u8.
+    End Impl_core_ops_arith_Add_core_num_saturating_Saturating_u8_for_core_num_saturating_Saturating_u8.
     
-    Module Impl_core_ops_arith_AddAssign_for_core_num_saturating_Saturating_u8.
+    Module Impl_core_ops_arith_AddAssign_core_num_saturating_Saturating_u8_for_core_num_saturating_Saturating_u8.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ].
       
@@ -2165,10 +2184,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ] ]
           Self
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
-    End Impl_core_ops_arith_AddAssign_for_core_num_saturating_Saturating_u8.
+    End Impl_core_ops_arith_AddAssign_core_num_saturating_Saturating_u8_for_core_num_saturating_Saturating_u8.
     
     Module Impl_core_ops_arith_AddAssign_u8_for_core_num_saturating_Saturating_u8.
       Definition Self : Ty.t :=
@@ -2223,7 +2243,7 @@ Module num.
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
     End Impl_core_ops_arith_AddAssign_u8_for_core_num_saturating_Saturating_u8.
     
-    Module Impl_core_ops_arith_Sub_for_core_num_saturating_Saturating_u8.
+    Module Impl_core_ops_arith_Sub_core_num_saturating_Saturating_u8_for_core_num_saturating_Saturating_u8.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ].
       
@@ -2273,13 +2293,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::Sub"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
-    End Impl_core_ops_arith_Sub_for_core_num_saturating_Saturating_u8.
+    End Impl_core_ops_arith_Sub_core_num_saturating_Saturating_u8_for_core_num_saturating_Saturating_u8.
     
-    Module Impl_core_ops_arith_SubAssign_for_core_num_saturating_Saturating_u8.
+    Module Impl_core_ops_arith_SubAssign_core_num_saturating_Saturating_u8_for_core_num_saturating_Saturating_u8.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ].
       
@@ -2324,10 +2345,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ] ]
           Self
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
-    End Impl_core_ops_arith_SubAssign_for_core_num_saturating_Saturating_u8.
+    End Impl_core_ops_arith_SubAssign_core_num_saturating_Saturating_u8_for_core_num_saturating_Saturating_u8.
     
     Module Impl_core_ops_arith_SubAssign_u8_for_core_num_saturating_Saturating_u8.
       Definition Self : Ty.t :=
@@ -2382,7 +2404,7 @@ Module num.
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
     End Impl_core_ops_arith_SubAssign_u8_for_core_num_saturating_Saturating_u8.
     
-    Module Impl_core_ops_arith_Mul_for_core_num_saturating_Saturating_u8.
+    Module Impl_core_ops_arith_Mul_core_num_saturating_Saturating_u8_for_core_num_saturating_Saturating_u8.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ].
       
@@ -2432,13 +2454,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::Mul"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("mul", InstanceField.Method mul) ].
-    End Impl_core_ops_arith_Mul_for_core_num_saturating_Saturating_u8.
+    End Impl_core_ops_arith_Mul_core_num_saturating_Saturating_u8_for_core_num_saturating_Saturating_u8.
     
-    Module Impl_core_ops_arith_MulAssign_for_core_num_saturating_Saturating_u8.
+    Module Impl_core_ops_arith_MulAssign_core_num_saturating_Saturating_u8_for_core_num_saturating_Saturating_u8.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ].
       
@@ -2483,10 +2506,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ] ]
           Self
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
-    End Impl_core_ops_arith_MulAssign_for_core_num_saturating_Saturating_u8.
+    End Impl_core_ops_arith_MulAssign_core_num_saturating_Saturating_u8_for_core_num_saturating_Saturating_u8.
     
     Module Impl_core_ops_arith_MulAssign_u8_for_core_num_saturating_Saturating_u8.
       Definition Self : Ty.t :=
@@ -2541,7 +2565,7 @@ Module num.
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
     End Impl_core_ops_arith_MulAssign_u8_for_core_num_saturating_Saturating_u8.
     
-    Module Impl_core_ops_arith_Div_for_core_num_saturating_Saturating_u8.
+    Module Impl_core_ops_arith_Div_core_num_saturating_Saturating_u8_for_core_num_saturating_Saturating_u8.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ].
       
@@ -2591,13 +2615,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::Div"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
-    End Impl_core_ops_arith_Div_for_core_num_saturating_Saturating_u8.
+    End Impl_core_ops_arith_Div_core_num_saturating_Saturating_u8_for_core_num_saturating_Saturating_u8.
     
-    Module Impl_core_ops_arith_DivAssign_for_core_num_saturating_Saturating_u8.
+    Module Impl_core_ops_arith_DivAssign_core_num_saturating_Saturating_u8_for_core_num_saturating_Saturating_u8.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ].
       
@@ -2642,10 +2667,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ] ]
           Self
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
-    End Impl_core_ops_arith_DivAssign_for_core_num_saturating_Saturating_u8.
+    End Impl_core_ops_arith_DivAssign_core_num_saturating_Saturating_u8_for_core_num_saturating_Saturating_u8.
     
     Module Impl_core_ops_arith_DivAssign_u8_for_core_num_saturating_Saturating_u8.
       Definition Self : Ty.t :=
@@ -2700,7 +2726,7 @@ Module num.
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
     End Impl_core_ops_arith_DivAssign_u8_for_core_num_saturating_Saturating_u8.
     
-    Module Impl_core_ops_arith_Rem_for_core_num_saturating_Saturating_u8.
+    Module Impl_core_ops_arith_Rem_core_num_saturating_Saturating_u8_for_core_num_saturating_Saturating_u8.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ].
       
@@ -2758,13 +2784,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::Rem"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
-    End Impl_core_ops_arith_Rem_for_core_num_saturating_Saturating_u8.
+    End Impl_core_ops_arith_Rem_core_num_saturating_Saturating_u8_for_core_num_saturating_Saturating_u8.
     
-    Module Impl_core_ops_arith_RemAssign_for_core_num_saturating_Saturating_u8.
+    Module Impl_core_ops_arith_RemAssign_core_num_saturating_Saturating_u8_for_core_num_saturating_Saturating_u8.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ].
       
@@ -2809,10 +2836,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ] ]
           Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
-    End Impl_core_ops_arith_RemAssign_for_core_num_saturating_Saturating_u8.
+    End Impl_core_ops_arith_RemAssign_core_num_saturating_Saturating_u8_for_core_num_saturating_Saturating_u8.
     
     Module Impl_core_ops_arith_RemAssign_u8_for_core_num_saturating_Saturating_u8.
       Definition Self : Ty.t :=
@@ -2911,7 +2939,7 @@ Module num.
           [ ("Output", InstanceField.Ty _Output); ("not", InstanceField.Method not) ].
     End Impl_core_ops_bit_Not_for_core_num_saturating_Saturating_u8.
     
-    Module Impl_core_ops_bit_BitXor_for_core_num_saturating_Saturating_u8.
+    Module Impl_core_ops_bit_BitXor_core_num_saturating_Saturating_u8_for_core_num_saturating_Saturating_u8.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ].
       
@@ -2956,13 +2984,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitXor"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitxor", InstanceField.Method bitxor) ].
-    End Impl_core_ops_bit_BitXor_for_core_num_saturating_Saturating_u8.
+    End Impl_core_ops_bit_BitXor_core_num_saturating_Saturating_u8_for_core_num_saturating_Saturating_u8.
     
-    Module Impl_core_ops_bit_BitXorAssign_for_core_num_saturating_Saturating_u8.
+    Module Impl_core_ops_bit_BitXorAssign_core_num_saturating_Saturating_u8_for_core_num_saturating_Saturating_u8.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ].
       
@@ -3007,10 +3036,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitXorAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ] ]
           Self
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
-    End Impl_core_ops_bit_BitXorAssign_for_core_num_saturating_Saturating_u8.
+    End Impl_core_ops_bit_BitXorAssign_core_num_saturating_Saturating_u8_for_core_num_saturating_Saturating_u8.
     
     Module Impl_core_ops_bit_BitXorAssign_u8_for_core_num_saturating_Saturating_u8.
       Definition Self : Ty.t :=
@@ -3065,7 +3095,7 @@ Module num.
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
     End Impl_core_ops_bit_BitXorAssign_u8_for_core_num_saturating_Saturating_u8.
     
-    Module Impl_core_ops_bit_BitOr_for_core_num_saturating_Saturating_u8.
+    Module Impl_core_ops_bit_BitOr_core_num_saturating_Saturating_u8_for_core_num_saturating_Saturating_u8.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ].
       
@@ -3110,13 +3140,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitOr"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
-    End Impl_core_ops_bit_BitOr_for_core_num_saturating_Saturating_u8.
+    End Impl_core_ops_bit_BitOr_core_num_saturating_Saturating_u8_for_core_num_saturating_Saturating_u8.
     
-    Module Impl_core_ops_bit_BitOrAssign_for_core_num_saturating_Saturating_u8.
+    Module Impl_core_ops_bit_BitOrAssign_core_num_saturating_Saturating_u8_for_core_num_saturating_Saturating_u8.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ].
       
@@ -3161,10 +3192,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ] ]
           Self
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
-    End Impl_core_ops_bit_BitOrAssign_for_core_num_saturating_Saturating_u8.
+    End Impl_core_ops_bit_BitOrAssign_core_num_saturating_Saturating_u8_for_core_num_saturating_Saturating_u8.
     
     Module Impl_core_ops_bit_BitOrAssign_u8_for_core_num_saturating_Saturating_u8.
       Definition Self : Ty.t :=
@@ -3219,7 +3251,7 @@ Module num.
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
     End Impl_core_ops_bit_BitOrAssign_u8_for_core_num_saturating_Saturating_u8.
     
-    Module Impl_core_ops_bit_BitAnd_for_core_num_saturating_Saturating_u8.
+    Module Impl_core_ops_bit_BitAnd_core_num_saturating_Saturating_u8_for_core_num_saturating_Saturating_u8.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ].
       
@@ -3264,13 +3296,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitAnd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
-    End Impl_core_ops_bit_BitAnd_for_core_num_saturating_Saturating_u8.
+    End Impl_core_ops_bit_BitAnd_core_num_saturating_Saturating_u8_for_core_num_saturating_Saturating_u8.
     
-    Module Impl_core_ops_bit_BitAndAssign_for_core_num_saturating_Saturating_u8.
+    Module Impl_core_ops_bit_BitAndAssign_core_num_saturating_Saturating_u8_for_core_num_saturating_Saturating_u8.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ].
       
@@ -3315,10 +3348,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u8" ] ]
           Self
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
-    End Impl_core_ops_bit_BitAndAssign_for_core_num_saturating_Saturating_u8.
+    End Impl_core_ops_bit_BitAndAssign_core_num_saturating_Saturating_u8_for_core_num_saturating_Saturating_u8.
     
     Module Impl_core_ops_bit_BitAndAssign_u8_for_core_num_saturating_Saturating_u8.
       Definition Self : Ty.t :=
@@ -3373,7 +3407,7 @@ Module num.
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
     End Impl_core_ops_bit_BitAndAssign_u8_for_core_num_saturating_Saturating_u8.
     
-    Module Impl_core_ops_arith_Add_for_core_num_saturating_Saturating_u16.
+    Module Impl_core_ops_arith_Add_core_num_saturating_Saturating_u16_for_core_num_saturating_Saturating_u16.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ].
       
@@ -3423,13 +3457,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::Add"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
-    End Impl_core_ops_arith_Add_for_core_num_saturating_Saturating_u16.
+    End Impl_core_ops_arith_Add_core_num_saturating_Saturating_u16_for_core_num_saturating_Saturating_u16.
     
-    Module Impl_core_ops_arith_AddAssign_for_core_num_saturating_Saturating_u16.
+    Module Impl_core_ops_arith_AddAssign_core_num_saturating_Saturating_u16_for_core_num_saturating_Saturating_u16.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ].
       
@@ -3478,10 +3513,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ] ]
           Self
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
-    End Impl_core_ops_arith_AddAssign_for_core_num_saturating_Saturating_u16.
+    End Impl_core_ops_arith_AddAssign_core_num_saturating_Saturating_u16_for_core_num_saturating_Saturating_u16.
     
     Module Impl_core_ops_arith_AddAssign_u16_for_core_num_saturating_Saturating_u16.
       Definition Self : Ty.t :=
@@ -3540,7 +3576,7 @@ Module num.
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
     End Impl_core_ops_arith_AddAssign_u16_for_core_num_saturating_Saturating_u16.
     
-    Module Impl_core_ops_arith_Sub_for_core_num_saturating_Saturating_u16.
+    Module Impl_core_ops_arith_Sub_core_num_saturating_Saturating_u16_for_core_num_saturating_Saturating_u16.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ].
       
@@ -3590,13 +3626,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::Sub"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
-    End Impl_core_ops_arith_Sub_for_core_num_saturating_Saturating_u16.
+    End Impl_core_ops_arith_Sub_core_num_saturating_Saturating_u16_for_core_num_saturating_Saturating_u16.
     
-    Module Impl_core_ops_arith_SubAssign_for_core_num_saturating_Saturating_u16.
+    Module Impl_core_ops_arith_SubAssign_core_num_saturating_Saturating_u16_for_core_num_saturating_Saturating_u16.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ].
       
@@ -3645,10 +3682,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ] ]
           Self
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
-    End Impl_core_ops_arith_SubAssign_for_core_num_saturating_Saturating_u16.
+    End Impl_core_ops_arith_SubAssign_core_num_saturating_Saturating_u16_for_core_num_saturating_Saturating_u16.
     
     Module Impl_core_ops_arith_SubAssign_u16_for_core_num_saturating_Saturating_u16.
       Definition Self : Ty.t :=
@@ -3707,7 +3745,7 @@ Module num.
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
     End Impl_core_ops_arith_SubAssign_u16_for_core_num_saturating_Saturating_u16.
     
-    Module Impl_core_ops_arith_Mul_for_core_num_saturating_Saturating_u16.
+    Module Impl_core_ops_arith_Mul_core_num_saturating_Saturating_u16_for_core_num_saturating_Saturating_u16.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ].
       
@@ -3757,13 +3795,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::Mul"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("mul", InstanceField.Method mul) ].
-    End Impl_core_ops_arith_Mul_for_core_num_saturating_Saturating_u16.
+    End Impl_core_ops_arith_Mul_core_num_saturating_Saturating_u16_for_core_num_saturating_Saturating_u16.
     
-    Module Impl_core_ops_arith_MulAssign_for_core_num_saturating_Saturating_u16.
+    Module Impl_core_ops_arith_MulAssign_core_num_saturating_Saturating_u16_for_core_num_saturating_Saturating_u16.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ].
       
@@ -3812,10 +3851,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ] ]
           Self
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
-    End Impl_core_ops_arith_MulAssign_for_core_num_saturating_Saturating_u16.
+    End Impl_core_ops_arith_MulAssign_core_num_saturating_Saturating_u16_for_core_num_saturating_Saturating_u16.
     
     Module Impl_core_ops_arith_MulAssign_u16_for_core_num_saturating_Saturating_u16.
       Definition Self : Ty.t :=
@@ -3874,7 +3914,7 @@ Module num.
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
     End Impl_core_ops_arith_MulAssign_u16_for_core_num_saturating_Saturating_u16.
     
-    Module Impl_core_ops_arith_Div_for_core_num_saturating_Saturating_u16.
+    Module Impl_core_ops_arith_Div_core_num_saturating_Saturating_u16_for_core_num_saturating_Saturating_u16.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ].
       
@@ -3924,13 +3964,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::Div"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
-    End Impl_core_ops_arith_Div_for_core_num_saturating_Saturating_u16.
+    End Impl_core_ops_arith_Div_core_num_saturating_Saturating_u16_for_core_num_saturating_Saturating_u16.
     
-    Module Impl_core_ops_arith_DivAssign_for_core_num_saturating_Saturating_u16.
+    Module Impl_core_ops_arith_DivAssign_core_num_saturating_Saturating_u16_for_core_num_saturating_Saturating_u16.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ].
       
@@ -3979,10 +4020,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ] ]
           Self
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
-    End Impl_core_ops_arith_DivAssign_for_core_num_saturating_Saturating_u16.
+    End Impl_core_ops_arith_DivAssign_core_num_saturating_Saturating_u16_for_core_num_saturating_Saturating_u16.
     
     Module Impl_core_ops_arith_DivAssign_u16_for_core_num_saturating_Saturating_u16.
       Definition Self : Ty.t :=
@@ -4041,7 +4083,7 @@ Module num.
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
     End Impl_core_ops_arith_DivAssign_u16_for_core_num_saturating_Saturating_u16.
     
-    Module Impl_core_ops_arith_Rem_for_core_num_saturating_Saturating_u16.
+    Module Impl_core_ops_arith_Rem_core_num_saturating_Saturating_u16_for_core_num_saturating_Saturating_u16.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ].
       
@@ -4099,13 +4141,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::Rem"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
-    End Impl_core_ops_arith_Rem_for_core_num_saturating_Saturating_u16.
+    End Impl_core_ops_arith_Rem_core_num_saturating_Saturating_u16_for_core_num_saturating_Saturating_u16.
     
-    Module Impl_core_ops_arith_RemAssign_for_core_num_saturating_Saturating_u16.
+    Module Impl_core_ops_arith_RemAssign_core_num_saturating_Saturating_u16_for_core_num_saturating_Saturating_u16.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ].
       
@@ -4154,10 +4197,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ] ]
           Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
-    End Impl_core_ops_arith_RemAssign_for_core_num_saturating_Saturating_u16.
+    End Impl_core_ops_arith_RemAssign_core_num_saturating_Saturating_u16_for_core_num_saturating_Saturating_u16.
     
     Module Impl_core_ops_arith_RemAssign_u16_for_core_num_saturating_Saturating_u16.
       Definition Self : Ty.t :=
@@ -4260,7 +4304,7 @@ Module num.
           [ ("Output", InstanceField.Ty _Output); ("not", InstanceField.Method not) ].
     End Impl_core_ops_bit_Not_for_core_num_saturating_Saturating_u16.
     
-    Module Impl_core_ops_bit_BitXor_for_core_num_saturating_Saturating_u16.
+    Module Impl_core_ops_bit_BitXor_core_num_saturating_Saturating_u16_for_core_num_saturating_Saturating_u16.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ].
       
@@ -4305,13 +4349,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitXor"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitxor", InstanceField.Method bitxor) ].
-    End Impl_core_ops_bit_BitXor_for_core_num_saturating_Saturating_u16.
+    End Impl_core_ops_bit_BitXor_core_num_saturating_Saturating_u16_for_core_num_saturating_Saturating_u16.
     
-    Module Impl_core_ops_bit_BitXorAssign_for_core_num_saturating_Saturating_u16.
+    Module Impl_core_ops_bit_BitXorAssign_core_num_saturating_Saturating_u16_for_core_num_saturating_Saturating_u16.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ].
       
@@ -4360,10 +4405,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitXorAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ] ]
           Self
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
-    End Impl_core_ops_bit_BitXorAssign_for_core_num_saturating_Saturating_u16.
+    End Impl_core_ops_bit_BitXorAssign_core_num_saturating_Saturating_u16_for_core_num_saturating_Saturating_u16.
     
     Module Impl_core_ops_bit_BitXorAssign_u16_for_core_num_saturating_Saturating_u16.
       Definition Self : Ty.t :=
@@ -4422,7 +4468,7 @@ Module num.
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
     End Impl_core_ops_bit_BitXorAssign_u16_for_core_num_saturating_Saturating_u16.
     
-    Module Impl_core_ops_bit_BitOr_for_core_num_saturating_Saturating_u16.
+    Module Impl_core_ops_bit_BitOr_core_num_saturating_Saturating_u16_for_core_num_saturating_Saturating_u16.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ].
       
@@ -4467,13 +4513,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitOr"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
-    End Impl_core_ops_bit_BitOr_for_core_num_saturating_Saturating_u16.
+    End Impl_core_ops_bit_BitOr_core_num_saturating_Saturating_u16_for_core_num_saturating_Saturating_u16.
     
-    Module Impl_core_ops_bit_BitOrAssign_for_core_num_saturating_Saturating_u16.
+    Module Impl_core_ops_bit_BitOrAssign_core_num_saturating_Saturating_u16_for_core_num_saturating_Saturating_u16.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ].
       
@@ -4522,10 +4569,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ] ]
           Self
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
-    End Impl_core_ops_bit_BitOrAssign_for_core_num_saturating_Saturating_u16.
+    End Impl_core_ops_bit_BitOrAssign_core_num_saturating_Saturating_u16_for_core_num_saturating_Saturating_u16.
     
     Module Impl_core_ops_bit_BitOrAssign_u16_for_core_num_saturating_Saturating_u16.
       Definition Self : Ty.t :=
@@ -4584,7 +4632,7 @@ Module num.
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
     End Impl_core_ops_bit_BitOrAssign_u16_for_core_num_saturating_Saturating_u16.
     
-    Module Impl_core_ops_bit_BitAnd_for_core_num_saturating_Saturating_u16.
+    Module Impl_core_ops_bit_BitAnd_core_num_saturating_Saturating_u16_for_core_num_saturating_Saturating_u16.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ].
       
@@ -4629,13 +4677,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitAnd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
-    End Impl_core_ops_bit_BitAnd_for_core_num_saturating_Saturating_u16.
+    End Impl_core_ops_bit_BitAnd_core_num_saturating_Saturating_u16_for_core_num_saturating_Saturating_u16.
     
-    Module Impl_core_ops_bit_BitAndAssign_for_core_num_saturating_Saturating_u16.
+    Module Impl_core_ops_bit_BitAndAssign_core_num_saturating_Saturating_u16_for_core_num_saturating_Saturating_u16.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ].
       
@@ -4684,10 +4733,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u16" ] ]
           Self
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
-    End Impl_core_ops_bit_BitAndAssign_for_core_num_saturating_Saturating_u16.
+    End Impl_core_ops_bit_BitAndAssign_core_num_saturating_Saturating_u16_for_core_num_saturating_Saturating_u16.
     
     Module Impl_core_ops_bit_BitAndAssign_u16_for_core_num_saturating_Saturating_u16.
       Definition Self : Ty.t :=
@@ -4746,7 +4796,7 @@ Module num.
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
     End Impl_core_ops_bit_BitAndAssign_u16_for_core_num_saturating_Saturating_u16.
     
-    Module Impl_core_ops_arith_Add_for_core_num_saturating_Saturating_u32.
+    Module Impl_core_ops_arith_Add_core_num_saturating_Saturating_u32_for_core_num_saturating_Saturating_u32.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ].
       
@@ -4796,13 +4846,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::Add"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
-    End Impl_core_ops_arith_Add_for_core_num_saturating_Saturating_u32.
+    End Impl_core_ops_arith_Add_core_num_saturating_Saturating_u32_for_core_num_saturating_Saturating_u32.
     
-    Module Impl_core_ops_arith_AddAssign_for_core_num_saturating_Saturating_u32.
+    Module Impl_core_ops_arith_AddAssign_core_num_saturating_Saturating_u32_for_core_num_saturating_Saturating_u32.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ].
       
@@ -4851,10 +4902,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ] ]
           Self
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
-    End Impl_core_ops_arith_AddAssign_for_core_num_saturating_Saturating_u32.
+    End Impl_core_ops_arith_AddAssign_core_num_saturating_Saturating_u32_for_core_num_saturating_Saturating_u32.
     
     Module Impl_core_ops_arith_AddAssign_u32_for_core_num_saturating_Saturating_u32.
       Definition Self : Ty.t :=
@@ -4913,7 +4965,7 @@ Module num.
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
     End Impl_core_ops_arith_AddAssign_u32_for_core_num_saturating_Saturating_u32.
     
-    Module Impl_core_ops_arith_Sub_for_core_num_saturating_Saturating_u32.
+    Module Impl_core_ops_arith_Sub_core_num_saturating_Saturating_u32_for_core_num_saturating_Saturating_u32.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ].
       
@@ -4963,13 +5015,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::Sub"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
-    End Impl_core_ops_arith_Sub_for_core_num_saturating_Saturating_u32.
+    End Impl_core_ops_arith_Sub_core_num_saturating_Saturating_u32_for_core_num_saturating_Saturating_u32.
     
-    Module Impl_core_ops_arith_SubAssign_for_core_num_saturating_Saturating_u32.
+    Module Impl_core_ops_arith_SubAssign_core_num_saturating_Saturating_u32_for_core_num_saturating_Saturating_u32.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ].
       
@@ -5018,10 +5071,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ] ]
           Self
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
-    End Impl_core_ops_arith_SubAssign_for_core_num_saturating_Saturating_u32.
+    End Impl_core_ops_arith_SubAssign_core_num_saturating_Saturating_u32_for_core_num_saturating_Saturating_u32.
     
     Module Impl_core_ops_arith_SubAssign_u32_for_core_num_saturating_Saturating_u32.
       Definition Self : Ty.t :=
@@ -5080,7 +5134,7 @@ Module num.
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
     End Impl_core_ops_arith_SubAssign_u32_for_core_num_saturating_Saturating_u32.
     
-    Module Impl_core_ops_arith_Mul_for_core_num_saturating_Saturating_u32.
+    Module Impl_core_ops_arith_Mul_core_num_saturating_Saturating_u32_for_core_num_saturating_Saturating_u32.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ].
       
@@ -5130,13 +5184,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::Mul"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("mul", InstanceField.Method mul) ].
-    End Impl_core_ops_arith_Mul_for_core_num_saturating_Saturating_u32.
+    End Impl_core_ops_arith_Mul_core_num_saturating_Saturating_u32_for_core_num_saturating_Saturating_u32.
     
-    Module Impl_core_ops_arith_MulAssign_for_core_num_saturating_Saturating_u32.
+    Module Impl_core_ops_arith_MulAssign_core_num_saturating_Saturating_u32_for_core_num_saturating_Saturating_u32.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ].
       
@@ -5185,10 +5240,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ] ]
           Self
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
-    End Impl_core_ops_arith_MulAssign_for_core_num_saturating_Saturating_u32.
+    End Impl_core_ops_arith_MulAssign_core_num_saturating_Saturating_u32_for_core_num_saturating_Saturating_u32.
     
     Module Impl_core_ops_arith_MulAssign_u32_for_core_num_saturating_Saturating_u32.
       Definition Self : Ty.t :=
@@ -5247,7 +5303,7 @@ Module num.
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
     End Impl_core_ops_arith_MulAssign_u32_for_core_num_saturating_Saturating_u32.
     
-    Module Impl_core_ops_arith_Div_for_core_num_saturating_Saturating_u32.
+    Module Impl_core_ops_arith_Div_core_num_saturating_Saturating_u32_for_core_num_saturating_Saturating_u32.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ].
       
@@ -5297,13 +5353,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::Div"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
-    End Impl_core_ops_arith_Div_for_core_num_saturating_Saturating_u32.
+    End Impl_core_ops_arith_Div_core_num_saturating_Saturating_u32_for_core_num_saturating_Saturating_u32.
     
-    Module Impl_core_ops_arith_DivAssign_for_core_num_saturating_Saturating_u32.
+    Module Impl_core_ops_arith_DivAssign_core_num_saturating_Saturating_u32_for_core_num_saturating_Saturating_u32.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ].
       
@@ -5352,10 +5409,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ] ]
           Self
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
-    End Impl_core_ops_arith_DivAssign_for_core_num_saturating_Saturating_u32.
+    End Impl_core_ops_arith_DivAssign_core_num_saturating_Saturating_u32_for_core_num_saturating_Saturating_u32.
     
     Module Impl_core_ops_arith_DivAssign_u32_for_core_num_saturating_Saturating_u32.
       Definition Self : Ty.t :=
@@ -5414,7 +5472,7 @@ Module num.
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
     End Impl_core_ops_arith_DivAssign_u32_for_core_num_saturating_Saturating_u32.
     
-    Module Impl_core_ops_arith_Rem_for_core_num_saturating_Saturating_u32.
+    Module Impl_core_ops_arith_Rem_core_num_saturating_Saturating_u32_for_core_num_saturating_Saturating_u32.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ].
       
@@ -5472,13 +5530,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::Rem"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
-    End Impl_core_ops_arith_Rem_for_core_num_saturating_Saturating_u32.
+    End Impl_core_ops_arith_Rem_core_num_saturating_Saturating_u32_for_core_num_saturating_Saturating_u32.
     
-    Module Impl_core_ops_arith_RemAssign_for_core_num_saturating_Saturating_u32.
+    Module Impl_core_ops_arith_RemAssign_core_num_saturating_Saturating_u32_for_core_num_saturating_Saturating_u32.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ].
       
@@ -5527,10 +5586,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ] ]
           Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
-    End Impl_core_ops_arith_RemAssign_for_core_num_saturating_Saturating_u32.
+    End Impl_core_ops_arith_RemAssign_core_num_saturating_Saturating_u32_for_core_num_saturating_Saturating_u32.
     
     Module Impl_core_ops_arith_RemAssign_u32_for_core_num_saturating_Saturating_u32.
       Definition Self : Ty.t :=
@@ -5633,7 +5693,7 @@ Module num.
           [ ("Output", InstanceField.Ty _Output); ("not", InstanceField.Method not) ].
     End Impl_core_ops_bit_Not_for_core_num_saturating_Saturating_u32.
     
-    Module Impl_core_ops_bit_BitXor_for_core_num_saturating_Saturating_u32.
+    Module Impl_core_ops_bit_BitXor_core_num_saturating_Saturating_u32_for_core_num_saturating_Saturating_u32.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ].
       
@@ -5678,13 +5738,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitXor"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitxor", InstanceField.Method bitxor) ].
-    End Impl_core_ops_bit_BitXor_for_core_num_saturating_Saturating_u32.
+    End Impl_core_ops_bit_BitXor_core_num_saturating_Saturating_u32_for_core_num_saturating_Saturating_u32.
     
-    Module Impl_core_ops_bit_BitXorAssign_for_core_num_saturating_Saturating_u32.
+    Module Impl_core_ops_bit_BitXorAssign_core_num_saturating_Saturating_u32_for_core_num_saturating_Saturating_u32.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ].
       
@@ -5733,10 +5794,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitXorAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ] ]
           Self
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
-    End Impl_core_ops_bit_BitXorAssign_for_core_num_saturating_Saturating_u32.
+    End Impl_core_ops_bit_BitXorAssign_core_num_saturating_Saturating_u32_for_core_num_saturating_Saturating_u32.
     
     Module Impl_core_ops_bit_BitXorAssign_u32_for_core_num_saturating_Saturating_u32.
       Definition Self : Ty.t :=
@@ -5795,7 +5857,7 @@ Module num.
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
     End Impl_core_ops_bit_BitXorAssign_u32_for_core_num_saturating_Saturating_u32.
     
-    Module Impl_core_ops_bit_BitOr_for_core_num_saturating_Saturating_u32.
+    Module Impl_core_ops_bit_BitOr_core_num_saturating_Saturating_u32_for_core_num_saturating_Saturating_u32.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ].
       
@@ -5840,13 +5902,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitOr"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
-    End Impl_core_ops_bit_BitOr_for_core_num_saturating_Saturating_u32.
+    End Impl_core_ops_bit_BitOr_core_num_saturating_Saturating_u32_for_core_num_saturating_Saturating_u32.
     
-    Module Impl_core_ops_bit_BitOrAssign_for_core_num_saturating_Saturating_u32.
+    Module Impl_core_ops_bit_BitOrAssign_core_num_saturating_Saturating_u32_for_core_num_saturating_Saturating_u32.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ].
       
@@ -5895,10 +5958,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ] ]
           Self
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
-    End Impl_core_ops_bit_BitOrAssign_for_core_num_saturating_Saturating_u32.
+    End Impl_core_ops_bit_BitOrAssign_core_num_saturating_Saturating_u32_for_core_num_saturating_Saturating_u32.
     
     Module Impl_core_ops_bit_BitOrAssign_u32_for_core_num_saturating_Saturating_u32.
       Definition Self : Ty.t :=
@@ -5957,7 +6021,7 @@ Module num.
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
     End Impl_core_ops_bit_BitOrAssign_u32_for_core_num_saturating_Saturating_u32.
     
-    Module Impl_core_ops_bit_BitAnd_for_core_num_saturating_Saturating_u32.
+    Module Impl_core_ops_bit_BitAnd_core_num_saturating_Saturating_u32_for_core_num_saturating_Saturating_u32.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ].
       
@@ -6002,13 +6066,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitAnd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
-    End Impl_core_ops_bit_BitAnd_for_core_num_saturating_Saturating_u32.
+    End Impl_core_ops_bit_BitAnd_core_num_saturating_Saturating_u32_for_core_num_saturating_Saturating_u32.
     
-    Module Impl_core_ops_bit_BitAndAssign_for_core_num_saturating_Saturating_u32.
+    Module Impl_core_ops_bit_BitAndAssign_core_num_saturating_Saturating_u32_for_core_num_saturating_Saturating_u32.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ].
       
@@ -6057,10 +6122,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u32" ] ]
           Self
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
-    End Impl_core_ops_bit_BitAndAssign_for_core_num_saturating_Saturating_u32.
+    End Impl_core_ops_bit_BitAndAssign_core_num_saturating_Saturating_u32_for_core_num_saturating_Saturating_u32.
     
     Module Impl_core_ops_bit_BitAndAssign_u32_for_core_num_saturating_Saturating_u32.
       Definition Self : Ty.t :=
@@ -6119,7 +6185,7 @@ Module num.
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
     End Impl_core_ops_bit_BitAndAssign_u32_for_core_num_saturating_Saturating_u32.
     
-    Module Impl_core_ops_arith_Add_for_core_num_saturating_Saturating_u64.
+    Module Impl_core_ops_arith_Add_core_num_saturating_Saturating_u64_for_core_num_saturating_Saturating_u64.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ].
       
@@ -6169,13 +6235,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::Add"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
-    End Impl_core_ops_arith_Add_for_core_num_saturating_Saturating_u64.
+    End Impl_core_ops_arith_Add_core_num_saturating_Saturating_u64_for_core_num_saturating_Saturating_u64.
     
-    Module Impl_core_ops_arith_AddAssign_for_core_num_saturating_Saturating_u64.
+    Module Impl_core_ops_arith_AddAssign_core_num_saturating_Saturating_u64_for_core_num_saturating_Saturating_u64.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ].
       
@@ -6224,10 +6291,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ] ]
           Self
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
-    End Impl_core_ops_arith_AddAssign_for_core_num_saturating_Saturating_u64.
+    End Impl_core_ops_arith_AddAssign_core_num_saturating_Saturating_u64_for_core_num_saturating_Saturating_u64.
     
     Module Impl_core_ops_arith_AddAssign_u64_for_core_num_saturating_Saturating_u64.
       Definition Self : Ty.t :=
@@ -6286,7 +6354,7 @@ Module num.
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
     End Impl_core_ops_arith_AddAssign_u64_for_core_num_saturating_Saturating_u64.
     
-    Module Impl_core_ops_arith_Sub_for_core_num_saturating_Saturating_u64.
+    Module Impl_core_ops_arith_Sub_core_num_saturating_Saturating_u64_for_core_num_saturating_Saturating_u64.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ].
       
@@ -6336,13 +6404,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::Sub"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
-    End Impl_core_ops_arith_Sub_for_core_num_saturating_Saturating_u64.
+    End Impl_core_ops_arith_Sub_core_num_saturating_Saturating_u64_for_core_num_saturating_Saturating_u64.
     
-    Module Impl_core_ops_arith_SubAssign_for_core_num_saturating_Saturating_u64.
+    Module Impl_core_ops_arith_SubAssign_core_num_saturating_Saturating_u64_for_core_num_saturating_Saturating_u64.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ].
       
@@ -6391,10 +6460,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ] ]
           Self
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
-    End Impl_core_ops_arith_SubAssign_for_core_num_saturating_Saturating_u64.
+    End Impl_core_ops_arith_SubAssign_core_num_saturating_Saturating_u64_for_core_num_saturating_Saturating_u64.
     
     Module Impl_core_ops_arith_SubAssign_u64_for_core_num_saturating_Saturating_u64.
       Definition Self : Ty.t :=
@@ -6453,7 +6523,7 @@ Module num.
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
     End Impl_core_ops_arith_SubAssign_u64_for_core_num_saturating_Saturating_u64.
     
-    Module Impl_core_ops_arith_Mul_for_core_num_saturating_Saturating_u64.
+    Module Impl_core_ops_arith_Mul_core_num_saturating_Saturating_u64_for_core_num_saturating_Saturating_u64.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ].
       
@@ -6503,13 +6573,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::Mul"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("mul", InstanceField.Method mul) ].
-    End Impl_core_ops_arith_Mul_for_core_num_saturating_Saturating_u64.
+    End Impl_core_ops_arith_Mul_core_num_saturating_Saturating_u64_for_core_num_saturating_Saturating_u64.
     
-    Module Impl_core_ops_arith_MulAssign_for_core_num_saturating_Saturating_u64.
+    Module Impl_core_ops_arith_MulAssign_core_num_saturating_Saturating_u64_for_core_num_saturating_Saturating_u64.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ].
       
@@ -6558,10 +6629,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ] ]
           Self
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
-    End Impl_core_ops_arith_MulAssign_for_core_num_saturating_Saturating_u64.
+    End Impl_core_ops_arith_MulAssign_core_num_saturating_Saturating_u64_for_core_num_saturating_Saturating_u64.
     
     Module Impl_core_ops_arith_MulAssign_u64_for_core_num_saturating_Saturating_u64.
       Definition Self : Ty.t :=
@@ -6620,7 +6692,7 @@ Module num.
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
     End Impl_core_ops_arith_MulAssign_u64_for_core_num_saturating_Saturating_u64.
     
-    Module Impl_core_ops_arith_Div_for_core_num_saturating_Saturating_u64.
+    Module Impl_core_ops_arith_Div_core_num_saturating_Saturating_u64_for_core_num_saturating_Saturating_u64.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ].
       
@@ -6670,13 +6742,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::Div"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
-    End Impl_core_ops_arith_Div_for_core_num_saturating_Saturating_u64.
+    End Impl_core_ops_arith_Div_core_num_saturating_Saturating_u64_for_core_num_saturating_Saturating_u64.
     
-    Module Impl_core_ops_arith_DivAssign_for_core_num_saturating_Saturating_u64.
+    Module Impl_core_ops_arith_DivAssign_core_num_saturating_Saturating_u64_for_core_num_saturating_Saturating_u64.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ].
       
@@ -6725,10 +6798,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ] ]
           Self
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
-    End Impl_core_ops_arith_DivAssign_for_core_num_saturating_Saturating_u64.
+    End Impl_core_ops_arith_DivAssign_core_num_saturating_Saturating_u64_for_core_num_saturating_Saturating_u64.
     
     Module Impl_core_ops_arith_DivAssign_u64_for_core_num_saturating_Saturating_u64.
       Definition Self : Ty.t :=
@@ -6787,7 +6861,7 @@ Module num.
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
     End Impl_core_ops_arith_DivAssign_u64_for_core_num_saturating_Saturating_u64.
     
-    Module Impl_core_ops_arith_Rem_for_core_num_saturating_Saturating_u64.
+    Module Impl_core_ops_arith_Rem_core_num_saturating_Saturating_u64_for_core_num_saturating_Saturating_u64.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ].
       
@@ -6845,13 +6919,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::Rem"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
-    End Impl_core_ops_arith_Rem_for_core_num_saturating_Saturating_u64.
+    End Impl_core_ops_arith_Rem_core_num_saturating_Saturating_u64_for_core_num_saturating_Saturating_u64.
     
-    Module Impl_core_ops_arith_RemAssign_for_core_num_saturating_Saturating_u64.
+    Module Impl_core_ops_arith_RemAssign_core_num_saturating_Saturating_u64_for_core_num_saturating_Saturating_u64.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ].
       
@@ -6900,10 +6975,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ] ]
           Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
-    End Impl_core_ops_arith_RemAssign_for_core_num_saturating_Saturating_u64.
+    End Impl_core_ops_arith_RemAssign_core_num_saturating_Saturating_u64_for_core_num_saturating_Saturating_u64.
     
     Module Impl_core_ops_arith_RemAssign_u64_for_core_num_saturating_Saturating_u64.
       Definition Self : Ty.t :=
@@ -7006,7 +7082,7 @@ Module num.
           [ ("Output", InstanceField.Ty _Output); ("not", InstanceField.Method not) ].
     End Impl_core_ops_bit_Not_for_core_num_saturating_Saturating_u64.
     
-    Module Impl_core_ops_bit_BitXor_for_core_num_saturating_Saturating_u64.
+    Module Impl_core_ops_bit_BitXor_core_num_saturating_Saturating_u64_for_core_num_saturating_Saturating_u64.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ].
       
@@ -7051,13 +7127,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitXor"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitxor", InstanceField.Method bitxor) ].
-    End Impl_core_ops_bit_BitXor_for_core_num_saturating_Saturating_u64.
+    End Impl_core_ops_bit_BitXor_core_num_saturating_Saturating_u64_for_core_num_saturating_Saturating_u64.
     
-    Module Impl_core_ops_bit_BitXorAssign_for_core_num_saturating_Saturating_u64.
+    Module Impl_core_ops_bit_BitXorAssign_core_num_saturating_Saturating_u64_for_core_num_saturating_Saturating_u64.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ].
       
@@ -7106,10 +7183,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitXorAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ] ]
           Self
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
-    End Impl_core_ops_bit_BitXorAssign_for_core_num_saturating_Saturating_u64.
+    End Impl_core_ops_bit_BitXorAssign_core_num_saturating_Saturating_u64_for_core_num_saturating_Saturating_u64.
     
     Module Impl_core_ops_bit_BitXorAssign_u64_for_core_num_saturating_Saturating_u64.
       Definition Self : Ty.t :=
@@ -7168,7 +7246,7 @@ Module num.
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
     End Impl_core_ops_bit_BitXorAssign_u64_for_core_num_saturating_Saturating_u64.
     
-    Module Impl_core_ops_bit_BitOr_for_core_num_saturating_Saturating_u64.
+    Module Impl_core_ops_bit_BitOr_core_num_saturating_Saturating_u64_for_core_num_saturating_Saturating_u64.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ].
       
@@ -7213,13 +7291,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitOr"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
-    End Impl_core_ops_bit_BitOr_for_core_num_saturating_Saturating_u64.
+    End Impl_core_ops_bit_BitOr_core_num_saturating_Saturating_u64_for_core_num_saturating_Saturating_u64.
     
-    Module Impl_core_ops_bit_BitOrAssign_for_core_num_saturating_Saturating_u64.
+    Module Impl_core_ops_bit_BitOrAssign_core_num_saturating_Saturating_u64_for_core_num_saturating_Saturating_u64.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ].
       
@@ -7268,10 +7347,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ] ]
           Self
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
-    End Impl_core_ops_bit_BitOrAssign_for_core_num_saturating_Saturating_u64.
+    End Impl_core_ops_bit_BitOrAssign_core_num_saturating_Saturating_u64_for_core_num_saturating_Saturating_u64.
     
     Module Impl_core_ops_bit_BitOrAssign_u64_for_core_num_saturating_Saturating_u64.
       Definition Self : Ty.t :=
@@ -7330,7 +7410,7 @@ Module num.
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
     End Impl_core_ops_bit_BitOrAssign_u64_for_core_num_saturating_Saturating_u64.
     
-    Module Impl_core_ops_bit_BitAnd_for_core_num_saturating_Saturating_u64.
+    Module Impl_core_ops_bit_BitAnd_core_num_saturating_Saturating_u64_for_core_num_saturating_Saturating_u64.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ].
       
@@ -7375,13 +7455,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitAnd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
-    End Impl_core_ops_bit_BitAnd_for_core_num_saturating_Saturating_u64.
+    End Impl_core_ops_bit_BitAnd_core_num_saturating_Saturating_u64_for_core_num_saturating_Saturating_u64.
     
-    Module Impl_core_ops_bit_BitAndAssign_for_core_num_saturating_Saturating_u64.
+    Module Impl_core_ops_bit_BitAndAssign_core_num_saturating_Saturating_u64_for_core_num_saturating_Saturating_u64.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ].
       
@@ -7430,10 +7511,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u64" ] ]
           Self
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
-    End Impl_core_ops_bit_BitAndAssign_for_core_num_saturating_Saturating_u64.
+    End Impl_core_ops_bit_BitAndAssign_core_num_saturating_Saturating_u64_for_core_num_saturating_Saturating_u64.
     
     Module Impl_core_ops_bit_BitAndAssign_u64_for_core_num_saturating_Saturating_u64.
       Definition Self : Ty.t :=
@@ -7492,7 +7574,7 @@ Module num.
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
     End Impl_core_ops_bit_BitAndAssign_u64_for_core_num_saturating_Saturating_u64.
     
-    Module Impl_core_ops_arith_Add_for_core_num_saturating_Saturating_u128.
+    Module Impl_core_ops_arith_Add_core_num_saturating_Saturating_u128_for_core_num_saturating_Saturating_u128.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ].
       
@@ -7542,13 +7624,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::Add"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
-    End Impl_core_ops_arith_Add_for_core_num_saturating_Saturating_u128.
+    End Impl_core_ops_arith_Add_core_num_saturating_Saturating_u128_for_core_num_saturating_Saturating_u128.
     
-    Module Impl_core_ops_arith_AddAssign_for_core_num_saturating_Saturating_u128.
+    Module Impl_core_ops_arith_AddAssign_core_num_saturating_Saturating_u128_for_core_num_saturating_Saturating_u128.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ].
       
@@ -7600,10 +7683,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ] ]
           Self
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
-    End Impl_core_ops_arith_AddAssign_for_core_num_saturating_Saturating_u128.
+    End Impl_core_ops_arith_AddAssign_core_num_saturating_Saturating_u128_for_core_num_saturating_Saturating_u128.
     
     Module Impl_core_ops_arith_AddAssign_u128_for_core_num_saturating_Saturating_u128.
       Definition Self : Ty.t :=
@@ -7665,7 +7749,7 @@ Module num.
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
     End Impl_core_ops_arith_AddAssign_u128_for_core_num_saturating_Saturating_u128.
     
-    Module Impl_core_ops_arith_Sub_for_core_num_saturating_Saturating_u128.
+    Module Impl_core_ops_arith_Sub_core_num_saturating_Saturating_u128_for_core_num_saturating_Saturating_u128.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ].
       
@@ -7715,13 +7799,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::Sub"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
-    End Impl_core_ops_arith_Sub_for_core_num_saturating_Saturating_u128.
+    End Impl_core_ops_arith_Sub_core_num_saturating_Saturating_u128_for_core_num_saturating_Saturating_u128.
     
-    Module Impl_core_ops_arith_SubAssign_for_core_num_saturating_Saturating_u128.
+    Module Impl_core_ops_arith_SubAssign_core_num_saturating_Saturating_u128_for_core_num_saturating_Saturating_u128.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ].
       
@@ -7773,10 +7858,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ] ]
           Self
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
-    End Impl_core_ops_arith_SubAssign_for_core_num_saturating_Saturating_u128.
+    End Impl_core_ops_arith_SubAssign_core_num_saturating_Saturating_u128_for_core_num_saturating_Saturating_u128.
     
     Module Impl_core_ops_arith_SubAssign_u128_for_core_num_saturating_Saturating_u128.
       Definition Self : Ty.t :=
@@ -7838,7 +7924,7 @@ Module num.
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
     End Impl_core_ops_arith_SubAssign_u128_for_core_num_saturating_Saturating_u128.
     
-    Module Impl_core_ops_arith_Mul_for_core_num_saturating_Saturating_u128.
+    Module Impl_core_ops_arith_Mul_core_num_saturating_Saturating_u128_for_core_num_saturating_Saturating_u128.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ].
       
@@ -7888,13 +7974,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::Mul"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("mul", InstanceField.Method mul) ].
-    End Impl_core_ops_arith_Mul_for_core_num_saturating_Saturating_u128.
+    End Impl_core_ops_arith_Mul_core_num_saturating_Saturating_u128_for_core_num_saturating_Saturating_u128.
     
-    Module Impl_core_ops_arith_MulAssign_for_core_num_saturating_Saturating_u128.
+    Module Impl_core_ops_arith_MulAssign_core_num_saturating_Saturating_u128_for_core_num_saturating_Saturating_u128.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ].
       
@@ -7946,10 +8033,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ] ]
           Self
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
-    End Impl_core_ops_arith_MulAssign_for_core_num_saturating_Saturating_u128.
+    End Impl_core_ops_arith_MulAssign_core_num_saturating_Saturating_u128_for_core_num_saturating_Saturating_u128.
     
     Module Impl_core_ops_arith_MulAssign_u128_for_core_num_saturating_Saturating_u128.
       Definition Self : Ty.t :=
@@ -8011,7 +8099,7 @@ Module num.
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
     End Impl_core_ops_arith_MulAssign_u128_for_core_num_saturating_Saturating_u128.
     
-    Module Impl_core_ops_arith_Div_for_core_num_saturating_Saturating_u128.
+    Module Impl_core_ops_arith_Div_core_num_saturating_Saturating_u128_for_core_num_saturating_Saturating_u128.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ].
       
@@ -8061,13 +8149,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::Div"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
-    End Impl_core_ops_arith_Div_for_core_num_saturating_Saturating_u128.
+    End Impl_core_ops_arith_Div_core_num_saturating_Saturating_u128_for_core_num_saturating_Saturating_u128.
     
-    Module Impl_core_ops_arith_DivAssign_for_core_num_saturating_Saturating_u128.
+    Module Impl_core_ops_arith_DivAssign_core_num_saturating_Saturating_u128_for_core_num_saturating_Saturating_u128.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ].
       
@@ -8119,10 +8208,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ] ]
           Self
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
-    End Impl_core_ops_arith_DivAssign_for_core_num_saturating_Saturating_u128.
+    End Impl_core_ops_arith_DivAssign_core_num_saturating_Saturating_u128_for_core_num_saturating_Saturating_u128.
     
     Module Impl_core_ops_arith_DivAssign_u128_for_core_num_saturating_Saturating_u128.
       Definition Self : Ty.t :=
@@ -8184,7 +8274,7 @@ Module num.
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
     End Impl_core_ops_arith_DivAssign_u128_for_core_num_saturating_Saturating_u128.
     
-    Module Impl_core_ops_arith_Rem_for_core_num_saturating_Saturating_u128.
+    Module Impl_core_ops_arith_Rem_core_num_saturating_Saturating_u128_for_core_num_saturating_Saturating_u128.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ].
       
@@ -8242,13 +8332,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::Rem"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
-    End Impl_core_ops_arith_Rem_for_core_num_saturating_Saturating_u128.
+    End Impl_core_ops_arith_Rem_core_num_saturating_Saturating_u128_for_core_num_saturating_Saturating_u128.
     
-    Module Impl_core_ops_arith_RemAssign_for_core_num_saturating_Saturating_u128.
+    Module Impl_core_ops_arith_RemAssign_core_num_saturating_Saturating_u128_for_core_num_saturating_Saturating_u128.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ].
       
@@ -8300,10 +8391,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ] ]
           Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
-    End Impl_core_ops_arith_RemAssign_for_core_num_saturating_Saturating_u128.
+    End Impl_core_ops_arith_RemAssign_core_num_saturating_Saturating_u128_for_core_num_saturating_Saturating_u128.
     
     Module Impl_core_ops_arith_RemAssign_u128_for_core_num_saturating_Saturating_u128.
       Definition Self : Ty.t :=
@@ -8409,7 +8501,7 @@ Module num.
           [ ("Output", InstanceField.Ty _Output); ("not", InstanceField.Method not) ].
     End Impl_core_ops_bit_Not_for_core_num_saturating_Saturating_u128.
     
-    Module Impl_core_ops_bit_BitXor_for_core_num_saturating_Saturating_u128.
+    Module Impl_core_ops_bit_BitXor_core_num_saturating_Saturating_u128_for_core_num_saturating_Saturating_u128.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ].
       
@@ -8454,13 +8546,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitXor"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitxor", InstanceField.Method bitxor) ].
-    End Impl_core_ops_bit_BitXor_for_core_num_saturating_Saturating_u128.
+    End Impl_core_ops_bit_BitXor_core_num_saturating_Saturating_u128_for_core_num_saturating_Saturating_u128.
     
-    Module Impl_core_ops_bit_BitXorAssign_for_core_num_saturating_Saturating_u128.
+    Module Impl_core_ops_bit_BitXorAssign_core_num_saturating_Saturating_u128_for_core_num_saturating_Saturating_u128.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ].
       
@@ -8512,10 +8605,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitXorAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ] ]
           Self
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
-    End Impl_core_ops_bit_BitXorAssign_for_core_num_saturating_Saturating_u128.
+    End Impl_core_ops_bit_BitXorAssign_core_num_saturating_Saturating_u128_for_core_num_saturating_Saturating_u128.
     
     Module Impl_core_ops_bit_BitXorAssign_u128_for_core_num_saturating_Saturating_u128.
       Definition Self : Ty.t :=
@@ -8577,7 +8671,7 @@ Module num.
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
     End Impl_core_ops_bit_BitXorAssign_u128_for_core_num_saturating_Saturating_u128.
     
-    Module Impl_core_ops_bit_BitOr_for_core_num_saturating_Saturating_u128.
+    Module Impl_core_ops_bit_BitOr_core_num_saturating_Saturating_u128_for_core_num_saturating_Saturating_u128.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ].
       
@@ -8622,13 +8716,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitOr"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
-    End Impl_core_ops_bit_BitOr_for_core_num_saturating_Saturating_u128.
+    End Impl_core_ops_bit_BitOr_core_num_saturating_Saturating_u128_for_core_num_saturating_Saturating_u128.
     
-    Module Impl_core_ops_bit_BitOrAssign_for_core_num_saturating_Saturating_u128.
+    Module Impl_core_ops_bit_BitOrAssign_core_num_saturating_Saturating_u128_for_core_num_saturating_Saturating_u128.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ].
       
@@ -8680,10 +8775,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ] ]
           Self
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
-    End Impl_core_ops_bit_BitOrAssign_for_core_num_saturating_Saturating_u128.
+    End Impl_core_ops_bit_BitOrAssign_core_num_saturating_Saturating_u128_for_core_num_saturating_Saturating_u128.
     
     Module Impl_core_ops_bit_BitOrAssign_u128_for_core_num_saturating_Saturating_u128.
       Definition Self : Ty.t :=
@@ -8745,7 +8841,7 @@ Module num.
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
     End Impl_core_ops_bit_BitOrAssign_u128_for_core_num_saturating_Saturating_u128.
     
-    Module Impl_core_ops_bit_BitAnd_for_core_num_saturating_Saturating_u128.
+    Module Impl_core_ops_bit_BitAnd_core_num_saturating_Saturating_u128_for_core_num_saturating_Saturating_u128.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ].
       
@@ -8790,13 +8886,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitAnd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
-    End Impl_core_ops_bit_BitAnd_for_core_num_saturating_Saturating_u128.
+    End Impl_core_ops_bit_BitAnd_core_num_saturating_Saturating_u128_for_core_num_saturating_Saturating_u128.
     
-    Module Impl_core_ops_bit_BitAndAssign_for_core_num_saturating_Saturating_u128.
+    Module Impl_core_ops_bit_BitAndAssign_core_num_saturating_Saturating_u128_for_core_num_saturating_Saturating_u128.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ].
       
@@ -8848,10 +8945,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "u128" ] ]
           Self
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
-    End Impl_core_ops_bit_BitAndAssign_for_core_num_saturating_Saturating_u128.
+    End Impl_core_ops_bit_BitAndAssign_core_num_saturating_Saturating_u128_for_core_num_saturating_Saturating_u128.
     
     Module Impl_core_ops_bit_BitAndAssign_u128_for_core_num_saturating_Saturating_u128.
       Definition Self : Ty.t :=
@@ -8913,7 +9011,7 @@ Module num.
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
     End Impl_core_ops_bit_BitAndAssign_u128_for_core_num_saturating_Saturating_u128.
     
-    Module Impl_core_ops_arith_Add_for_core_num_saturating_Saturating_isize.
+    Module Impl_core_ops_arith_Add_core_num_saturating_Saturating_isize_for_core_num_saturating_Saturating_isize.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ].
       
@@ -8963,13 +9061,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::Add"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
-    End Impl_core_ops_arith_Add_for_core_num_saturating_Saturating_isize.
+    End Impl_core_ops_arith_Add_core_num_saturating_Saturating_isize_for_core_num_saturating_Saturating_isize.
     
-    Module Impl_core_ops_arith_AddAssign_for_core_num_saturating_Saturating_isize.
+    Module Impl_core_ops_arith_AddAssign_core_num_saturating_Saturating_isize_for_core_num_saturating_Saturating_isize.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ].
       
@@ -9021,10 +9120,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ] ]
           Self
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
-    End Impl_core_ops_arith_AddAssign_for_core_num_saturating_Saturating_isize.
+    End Impl_core_ops_arith_AddAssign_core_num_saturating_Saturating_isize_for_core_num_saturating_Saturating_isize.
     
     Module Impl_core_ops_arith_AddAssign_isize_for_core_num_saturating_Saturating_isize.
       Definition Self : Ty.t :=
@@ -9086,7 +9186,7 @@ Module num.
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
     End Impl_core_ops_arith_AddAssign_isize_for_core_num_saturating_Saturating_isize.
     
-    Module Impl_core_ops_arith_Sub_for_core_num_saturating_Saturating_isize.
+    Module Impl_core_ops_arith_Sub_core_num_saturating_Saturating_isize_for_core_num_saturating_Saturating_isize.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ].
       
@@ -9136,13 +9236,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::Sub"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
-    End Impl_core_ops_arith_Sub_for_core_num_saturating_Saturating_isize.
+    End Impl_core_ops_arith_Sub_core_num_saturating_Saturating_isize_for_core_num_saturating_Saturating_isize.
     
-    Module Impl_core_ops_arith_SubAssign_for_core_num_saturating_Saturating_isize.
+    Module Impl_core_ops_arith_SubAssign_core_num_saturating_Saturating_isize_for_core_num_saturating_Saturating_isize.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ].
       
@@ -9194,10 +9295,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ] ]
           Self
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
-    End Impl_core_ops_arith_SubAssign_for_core_num_saturating_Saturating_isize.
+    End Impl_core_ops_arith_SubAssign_core_num_saturating_Saturating_isize_for_core_num_saturating_Saturating_isize.
     
     Module Impl_core_ops_arith_SubAssign_isize_for_core_num_saturating_Saturating_isize.
       Definition Self : Ty.t :=
@@ -9259,7 +9361,7 @@ Module num.
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
     End Impl_core_ops_arith_SubAssign_isize_for_core_num_saturating_Saturating_isize.
     
-    Module Impl_core_ops_arith_Mul_for_core_num_saturating_Saturating_isize.
+    Module Impl_core_ops_arith_Mul_core_num_saturating_Saturating_isize_for_core_num_saturating_Saturating_isize.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ].
       
@@ -9309,13 +9411,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::Mul"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("mul", InstanceField.Method mul) ].
-    End Impl_core_ops_arith_Mul_for_core_num_saturating_Saturating_isize.
+    End Impl_core_ops_arith_Mul_core_num_saturating_Saturating_isize_for_core_num_saturating_Saturating_isize.
     
-    Module Impl_core_ops_arith_MulAssign_for_core_num_saturating_Saturating_isize.
+    Module Impl_core_ops_arith_MulAssign_core_num_saturating_Saturating_isize_for_core_num_saturating_Saturating_isize.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ].
       
@@ -9367,10 +9470,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ] ]
           Self
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
-    End Impl_core_ops_arith_MulAssign_for_core_num_saturating_Saturating_isize.
+    End Impl_core_ops_arith_MulAssign_core_num_saturating_Saturating_isize_for_core_num_saturating_Saturating_isize.
     
     Module Impl_core_ops_arith_MulAssign_isize_for_core_num_saturating_Saturating_isize.
       Definition Self : Ty.t :=
@@ -9432,7 +9536,7 @@ Module num.
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
     End Impl_core_ops_arith_MulAssign_isize_for_core_num_saturating_Saturating_isize.
     
-    Module Impl_core_ops_arith_Div_for_core_num_saturating_Saturating_isize.
+    Module Impl_core_ops_arith_Div_core_num_saturating_Saturating_isize_for_core_num_saturating_Saturating_isize.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ].
       
@@ -9482,13 +9586,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::Div"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
-    End Impl_core_ops_arith_Div_for_core_num_saturating_Saturating_isize.
+    End Impl_core_ops_arith_Div_core_num_saturating_Saturating_isize_for_core_num_saturating_Saturating_isize.
     
-    Module Impl_core_ops_arith_DivAssign_for_core_num_saturating_Saturating_isize.
+    Module Impl_core_ops_arith_DivAssign_core_num_saturating_Saturating_isize_for_core_num_saturating_Saturating_isize.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ].
       
@@ -9540,10 +9645,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ] ]
           Self
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
-    End Impl_core_ops_arith_DivAssign_for_core_num_saturating_Saturating_isize.
+    End Impl_core_ops_arith_DivAssign_core_num_saturating_Saturating_isize_for_core_num_saturating_Saturating_isize.
     
     Module Impl_core_ops_arith_DivAssign_isize_for_core_num_saturating_Saturating_isize.
       Definition Self : Ty.t :=
@@ -9605,7 +9711,7 @@ Module num.
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
     End Impl_core_ops_arith_DivAssign_isize_for_core_num_saturating_Saturating_isize.
     
-    Module Impl_core_ops_arith_Rem_for_core_num_saturating_Saturating_isize.
+    Module Impl_core_ops_arith_Rem_core_num_saturating_Saturating_isize_for_core_num_saturating_Saturating_isize.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ].
       
@@ -9663,13 +9769,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::Rem"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
-    End Impl_core_ops_arith_Rem_for_core_num_saturating_Saturating_isize.
+    End Impl_core_ops_arith_Rem_core_num_saturating_Saturating_isize_for_core_num_saturating_Saturating_isize.
     
-    Module Impl_core_ops_arith_RemAssign_for_core_num_saturating_Saturating_isize.
+    Module Impl_core_ops_arith_RemAssign_core_num_saturating_Saturating_isize_for_core_num_saturating_Saturating_isize.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ].
       
@@ -9721,10 +9828,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ] ]
           Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
-    End Impl_core_ops_arith_RemAssign_for_core_num_saturating_Saturating_isize.
+    End Impl_core_ops_arith_RemAssign_core_num_saturating_Saturating_isize_for_core_num_saturating_Saturating_isize.
     
     Module Impl_core_ops_arith_RemAssign_isize_for_core_num_saturating_Saturating_isize.
       Definition Self : Ty.t :=
@@ -9830,7 +9938,7 @@ Module num.
           [ ("Output", InstanceField.Ty _Output); ("not", InstanceField.Method not) ].
     End Impl_core_ops_bit_Not_for_core_num_saturating_Saturating_isize.
     
-    Module Impl_core_ops_bit_BitXor_for_core_num_saturating_Saturating_isize.
+    Module Impl_core_ops_bit_BitXor_core_num_saturating_Saturating_isize_for_core_num_saturating_Saturating_isize.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ].
       
@@ -9875,13 +9983,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitXor"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitxor", InstanceField.Method bitxor) ].
-    End Impl_core_ops_bit_BitXor_for_core_num_saturating_Saturating_isize.
+    End Impl_core_ops_bit_BitXor_core_num_saturating_Saturating_isize_for_core_num_saturating_Saturating_isize.
     
-    Module Impl_core_ops_bit_BitXorAssign_for_core_num_saturating_Saturating_isize.
+    Module Impl_core_ops_bit_BitXorAssign_core_num_saturating_Saturating_isize_for_core_num_saturating_Saturating_isize.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ].
       
@@ -9933,10 +10042,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitXorAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ] ]
           Self
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
-    End Impl_core_ops_bit_BitXorAssign_for_core_num_saturating_Saturating_isize.
+    End Impl_core_ops_bit_BitXorAssign_core_num_saturating_Saturating_isize_for_core_num_saturating_Saturating_isize.
     
     Module Impl_core_ops_bit_BitXorAssign_isize_for_core_num_saturating_Saturating_isize.
       Definition Self : Ty.t :=
@@ -9998,7 +10108,7 @@ Module num.
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
     End Impl_core_ops_bit_BitXorAssign_isize_for_core_num_saturating_Saturating_isize.
     
-    Module Impl_core_ops_bit_BitOr_for_core_num_saturating_Saturating_isize.
+    Module Impl_core_ops_bit_BitOr_core_num_saturating_Saturating_isize_for_core_num_saturating_Saturating_isize.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ].
       
@@ -10043,13 +10153,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitOr"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
-    End Impl_core_ops_bit_BitOr_for_core_num_saturating_Saturating_isize.
+    End Impl_core_ops_bit_BitOr_core_num_saturating_Saturating_isize_for_core_num_saturating_Saturating_isize.
     
-    Module Impl_core_ops_bit_BitOrAssign_for_core_num_saturating_Saturating_isize.
+    Module Impl_core_ops_bit_BitOrAssign_core_num_saturating_Saturating_isize_for_core_num_saturating_Saturating_isize.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ].
       
@@ -10101,10 +10212,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ] ]
           Self
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
-    End Impl_core_ops_bit_BitOrAssign_for_core_num_saturating_Saturating_isize.
+    End Impl_core_ops_bit_BitOrAssign_core_num_saturating_Saturating_isize_for_core_num_saturating_Saturating_isize.
     
     Module Impl_core_ops_bit_BitOrAssign_isize_for_core_num_saturating_Saturating_isize.
       Definition Self : Ty.t :=
@@ -10166,7 +10278,7 @@ Module num.
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
     End Impl_core_ops_bit_BitOrAssign_isize_for_core_num_saturating_Saturating_isize.
     
-    Module Impl_core_ops_bit_BitAnd_for_core_num_saturating_Saturating_isize.
+    Module Impl_core_ops_bit_BitAnd_core_num_saturating_Saturating_isize_for_core_num_saturating_Saturating_isize.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ].
       
@@ -10211,13 +10323,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitAnd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
-    End Impl_core_ops_bit_BitAnd_for_core_num_saturating_Saturating_isize.
+    End Impl_core_ops_bit_BitAnd_core_num_saturating_Saturating_isize_for_core_num_saturating_Saturating_isize.
     
-    Module Impl_core_ops_bit_BitAndAssign_for_core_num_saturating_Saturating_isize.
+    Module Impl_core_ops_bit_BitAndAssign_core_num_saturating_Saturating_isize_for_core_num_saturating_Saturating_isize.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ].
       
@@ -10269,10 +10382,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "isize" ] ]
           Self
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
-    End Impl_core_ops_bit_BitAndAssign_for_core_num_saturating_Saturating_isize.
+    End Impl_core_ops_bit_BitAndAssign_core_num_saturating_Saturating_isize_for_core_num_saturating_Saturating_isize.
     
     Module Impl_core_ops_bit_BitAndAssign_isize_for_core_num_saturating_Saturating_isize.
       Definition Self : Ty.t :=
@@ -10334,7 +10448,7 @@ Module num.
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
     End Impl_core_ops_bit_BitAndAssign_isize_for_core_num_saturating_Saturating_isize.
     
-    Module Impl_core_ops_arith_Add_for_core_num_saturating_Saturating_i8.
+    Module Impl_core_ops_arith_Add_core_num_saturating_Saturating_i8_for_core_num_saturating_Saturating_i8.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ].
       
@@ -10384,13 +10498,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::Add"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
-    End Impl_core_ops_arith_Add_for_core_num_saturating_Saturating_i8.
+    End Impl_core_ops_arith_Add_core_num_saturating_Saturating_i8_for_core_num_saturating_Saturating_i8.
     
-    Module Impl_core_ops_arith_AddAssign_for_core_num_saturating_Saturating_i8.
+    Module Impl_core_ops_arith_AddAssign_core_num_saturating_Saturating_i8_for_core_num_saturating_Saturating_i8.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ].
       
@@ -10435,10 +10550,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ] ]
           Self
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
-    End Impl_core_ops_arith_AddAssign_for_core_num_saturating_Saturating_i8.
+    End Impl_core_ops_arith_AddAssign_core_num_saturating_Saturating_i8_for_core_num_saturating_Saturating_i8.
     
     Module Impl_core_ops_arith_AddAssign_i8_for_core_num_saturating_Saturating_i8.
       Definition Self : Ty.t :=
@@ -10493,7 +10609,7 @@ Module num.
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
     End Impl_core_ops_arith_AddAssign_i8_for_core_num_saturating_Saturating_i8.
     
-    Module Impl_core_ops_arith_Sub_for_core_num_saturating_Saturating_i8.
+    Module Impl_core_ops_arith_Sub_core_num_saturating_Saturating_i8_for_core_num_saturating_Saturating_i8.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ].
       
@@ -10543,13 +10659,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::Sub"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
-    End Impl_core_ops_arith_Sub_for_core_num_saturating_Saturating_i8.
+    End Impl_core_ops_arith_Sub_core_num_saturating_Saturating_i8_for_core_num_saturating_Saturating_i8.
     
-    Module Impl_core_ops_arith_SubAssign_for_core_num_saturating_Saturating_i8.
+    Module Impl_core_ops_arith_SubAssign_core_num_saturating_Saturating_i8_for_core_num_saturating_Saturating_i8.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ].
       
@@ -10594,10 +10711,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ] ]
           Self
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
-    End Impl_core_ops_arith_SubAssign_for_core_num_saturating_Saturating_i8.
+    End Impl_core_ops_arith_SubAssign_core_num_saturating_Saturating_i8_for_core_num_saturating_Saturating_i8.
     
     Module Impl_core_ops_arith_SubAssign_i8_for_core_num_saturating_Saturating_i8.
       Definition Self : Ty.t :=
@@ -10652,7 +10770,7 @@ Module num.
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
     End Impl_core_ops_arith_SubAssign_i8_for_core_num_saturating_Saturating_i8.
     
-    Module Impl_core_ops_arith_Mul_for_core_num_saturating_Saturating_i8.
+    Module Impl_core_ops_arith_Mul_core_num_saturating_Saturating_i8_for_core_num_saturating_Saturating_i8.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ].
       
@@ -10702,13 +10820,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::Mul"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("mul", InstanceField.Method mul) ].
-    End Impl_core_ops_arith_Mul_for_core_num_saturating_Saturating_i8.
+    End Impl_core_ops_arith_Mul_core_num_saturating_Saturating_i8_for_core_num_saturating_Saturating_i8.
     
-    Module Impl_core_ops_arith_MulAssign_for_core_num_saturating_Saturating_i8.
+    Module Impl_core_ops_arith_MulAssign_core_num_saturating_Saturating_i8_for_core_num_saturating_Saturating_i8.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ].
       
@@ -10753,10 +10872,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ] ]
           Self
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
-    End Impl_core_ops_arith_MulAssign_for_core_num_saturating_Saturating_i8.
+    End Impl_core_ops_arith_MulAssign_core_num_saturating_Saturating_i8_for_core_num_saturating_Saturating_i8.
     
     Module Impl_core_ops_arith_MulAssign_i8_for_core_num_saturating_Saturating_i8.
       Definition Self : Ty.t :=
@@ -10811,7 +10931,7 @@ Module num.
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
     End Impl_core_ops_arith_MulAssign_i8_for_core_num_saturating_Saturating_i8.
     
-    Module Impl_core_ops_arith_Div_for_core_num_saturating_Saturating_i8.
+    Module Impl_core_ops_arith_Div_core_num_saturating_Saturating_i8_for_core_num_saturating_Saturating_i8.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ].
       
@@ -10861,13 +10981,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::Div"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
-    End Impl_core_ops_arith_Div_for_core_num_saturating_Saturating_i8.
+    End Impl_core_ops_arith_Div_core_num_saturating_Saturating_i8_for_core_num_saturating_Saturating_i8.
     
-    Module Impl_core_ops_arith_DivAssign_for_core_num_saturating_Saturating_i8.
+    Module Impl_core_ops_arith_DivAssign_core_num_saturating_Saturating_i8_for_core_num_saturating_Saturating_i8.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ].
       
@@ -10912,10 +11033,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ] ]
           Self
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
-    End Impl_core_ops_arith_DivAssign_for_core_num_saturating_Saturating_i8.
+    End Impl_core_ops_arith_DivAssign_core_num_saturating_Saturating_i8_for_core_num_saturating_Saturating_i8.
     
     Module Impl_core_ops_arith_DivAssign_i8_for_core_num_saturating_Saturating_i8.
       Definition Self : Ty.t :=
@@ -10970,7 +11092,7 @@ Module num.
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
     End Impl_core_ops_arith_DivAssign_i8_for_core_num_saturating_Saturating_i8.
     
-    Module Impl_core_ops_arith_Rem_for_core_num_saturating_Saturating_i8.
+    Module Impl_core_ops_arith_Rem_core_num_saturating_Saturating_i8_for_core_num_saturating_Saturating_i8.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ].
       
@@ -11028,13 +11150,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::Rem"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
-    End Impl_core_ops_arith_Rem_for_core_num_saturating_Saturating_i8.
+    End Impl_core_ops_arith_Rem_core_num_saturating_Saturating_i8_for_core_num_saturating_Saturating_i8.
     
-    Module Impl_core_ops_arith_RemAssign_for_core_num_saturating_Saturating_i8.
+    Module Impl_core_ops_arith_RemAssign_core_num_saturating_Saturating_i8_for_core_num_saturating_Saturating_i8.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ].
       
@@ -11079,10 +11202,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ] ]
           Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
-    End Impl_core_ops_arith_RemAssign_for_core_num_saturating_Saturating_i8.
+    End Impl_core_ops_arith_RemAssign_core_num_saturating_Saturating_i8_for_core_num_saturating_Saturating_i8.
     
     Module Impl_core_ops_arith_RemAssign_i8_for_core_num_saturating_Saturating_i8.
       Definition Self : Ty.t :=
@@ -11181,7 +11305,7 @@ Module num.
           [ ("Output", InstanceField.Ty _Output); ("not", InstanceField.Method not) ].
     End Impl_core_ops_bit_Not_for_core_num_saturating_Saturating_i8.
     
-    Module Impl_core_ops_bit_BitXor_for_core_num_saturating_Saturating_i8.
+    Module Impl_core_ops_bit_BitXor_core_num_saturating_Saturating_i8_for_core_num_saturating_Saturating_i8.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ].
       
@@ -11226,13 +11350,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitXor"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitxor", InstanceField.Method bitxor) ].
-    End Impl_core_ops_bit_BitXor_for_core_num_saturating_Saturating_i8.
+    End Impl_core_ops_bit_BitXor_core_num_saturating_Saturating_i8_for_core_num_saturating_Saturating_i8.
     
-    Module Impl_core_ops_bit_BitXorAssign_for_core_num_saturating_Saturating_i8.
+    Module Impl_core_ops_bit_BitXorAssign_core_num_saturating_Saturating_i8_for_core_num_saturating_Saturating_i8.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ].
       
@@ -11277,10 +11402,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitXorAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ] ]
           Self
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
-    End Impl_core_ops_bit_BitXorAssign_for_core_num_saturating_Saturating_i8.
+    End Impl_core_ops_bit_BitXorAssign_core_num_saturating_Saturating_i8_for_core_num_saturating_Saturating_i8.
     
     Module Impl_core_ops_bit_BitXorAssign_i8_for_core_num_saturating_Saturating_i8.
       Definition Self : Ty.t :=
@@ -11335,7 +11461,7 @@ Module num.
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
     End Impl_core_ops_bit_BitXorAssign_i8_for_core_num_saturating_Saturating_i8.
     
-    Module Impl_core_ops_bit_BitOr_for_core_num_saturating_Saturating_i8.
+    Module Impl_core_ops_bit_BitOr_core_num_saturating_Saturating_i8_for_core_num_saturating_Saturating_i8.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ].
       
@@ -11380,13 +11506,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitOr"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
-    End Impl_core_ops_bit_BitOr_for_core_num_saturating_Saturating_i8.
+    End Impl_core_ops_bit_BitOr_core_num_saturating_Saturating_i8_for_core_num_saturating_Saturating_i8.
     
-    Module Impl_core_ops_bit_BitOrAssign_for_core_num_saturating_Saturating_i8.
+    Module Impl_core_ops_bit_BitOrAssign_core_num_saturating_Saturating_i8_for_core_num_saturating_Saturating_i8.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ].
       
@@ -11431,10 +11558,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ] ]
           Self
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
-    End Impl_core_ops_bit_BitOrAssign_for_core_num_saturating_Saturating_i8.
+    End Impl_core_ops_bit_BitOrAssign_core_num_saturating_Saturating_i8_for_core_num_saturating_Saturating_i8.
     
     Module Impl_core_ops_bit_BitOrAssign_i8_for_core_num_saturating_Saturating_i8.
       Definition Self : Ty.t :=
@@ -11489,7 +11617,7 @@ Module num.
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
     End Impl_core_ops_bit_BitOrAssign_i8_for_core_num_saturating_Saturating_i8.
     
-    Module Impl_core_ops_bit_BitAnd_for_core_num_saturating_Saturating_i8.
+    Module Impl_core_ops_bit_BitAnd_core_num_saturating_Saturating_i8_for_core_num_saturating_Saturating_i8.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ].
       
@@ -11534,13 +11662,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitAnd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
-    End Impl_core_ops_bit_BitAnd_for_core_num_saturating_Saturating_i8.
+    End Impl_core_ops_bit_BitAnd_core_num_saturating_Saturating_i8_for_core_num_saturating_Saturating_i8.
     
-    Module Impl_core_ops_bit_BitAndAssign_for_core_num_saturating_Saturating_i8.
+    Module Impl_core_ops_bit_BitAndAssign_core_num_saturating_Saturating_i8_for_core_num_saturating_Saturating_i8.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ].
       
@@ -11585,10 +11714,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i8" ] ]
           Self
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
-    End Impl_core_ops_bit_BitAndAssign_for_core_num_saturating_Saturating_i8.
+    End Impl_core_ops_bit_BitAndAssign_core_num_saturating_Saturating_i8_for_core_num_saturating_Saturating_i8.
     
     Module Impl_core_ops_bit_BitAndAssign_i8_for_core_num_saturating_Saturating_i8.
       Definition Self : Ty.t :=
@@ -11643,7 +11773,7 @@ Module num.
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
     End Impl_core_ops_bit_BitAndAssign_i8_for_core_num_saturating_Saturating_i8.
     
-    Module Impl_core_ops_arith_Add_for_core_num_saturating_Saturating_i16.
+    Module Impl_core_ops_arith_Add_core_num_saturating_Saturating_i16_for_core_num_saturating_Saturating_i16.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ].
       
@@ -11693,13 +11823,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::Add"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
-    End Impl_core_ops_arith_Add_for_core_num_saturating_Saturating_i16.
+    End Impl_core_ops_arith_Add_core_num_saturating_Saturating_i16_for_core_num_saturating_Saturating_i16.
     
-    Module Impl_core_ops_arith_AddAssign_for_core_num_saturating_Saturating_i16.
+    Module Impl_core_ops_arith_AddAssign_core_num_saturating_Saturating_i16_for_core_num_saturating_Saturating_i16.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ].
       
@@ -11748,10 +11879,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ] ]
           Self
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
-    End Impl_core_ops_arith_AddAssign_for_core_num_saturating_Saturating_i16.
+    End Impl_core_ops_arith_AddAssign_core_num_saturating_Saturating_i16_for_core_num_saturating_Saturating_i16.
     
     Module Impl_core_ops_arith_AddAssign_i16_for_core_num_saturating_Saturating_i16.
       Definition Self : Ty.t :=
@@ -11810,7 +11942,7 @@ Module num.
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
     End Impl_core_ops_arith_AddAssign_i16_for_core_num_saturating_Saturating_i16.
     
-    Module Impl_core_ops_arith_Sub_for_core_num_saturating_Saturating_i16.
+    Module Impl_core_ops_arith_Sub_core_num_saturating_Saturating_i16_for_core_num_saturating_Saturating_i16.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ].
       
@@ -11860,13 +11992,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::Sub"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
-    End Impl_core_ops_arith_Sub_for_core_num_saturating_Saturating_i16.
+    End Impl_core_ops_arith_Sub_core_num_saturating_Saturating_i16_for_core_num_saturating_Saturating_i16.
     
-    Module Impl_core_ops_arith_SubAssign_for_core_num_saturating_Saturating_i16.
+    Module Impl_core_ops_arith_SubAssign_core_num_saturating_Saturating_i16_for_core_num_saturating_Saturating_i16.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ].
       
@@ -11915,10 +12048,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ] ]
           Self
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
-    End Impl_core_ops_arith_SubAssign_for_core_num_saturating_Saturating_i16.
+    End Impl_core_ops_arith_SubAssign_core_num_saturating_Saturating_i16_for_core_num_saturating_Saturating_i16.
     
     Module Impl_core_ops_arith_SubAssign_i16_for_core_num_saturating_Saturating_i16.
       Definition Self : Ty.t :=
@@ -11977,7 +12111,7 @@ Module num.
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
     End Impl_core_ops_arith_SubAssign_i16_for_core_num_saturating_Saturating_i16.
     
-    Module Impl_core_ops_arith_Mul_for_core_num_saturating_Saturating_i16.
+    Module Impl_core_ops_arith_Mul_core_num_saturating_Saturating_i16_for_core_num_saturating_Saturating_i16.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ].
       
@@ -12027,13 +12161,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::Mul"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("mul", InstanceField.Method mul) ].
-    End Impl_core_ops_arith_Mul_for_core_num_saturating_Saturating_i16.
+    End Impl_core_ops_arith_Mul_core_num_saturating_Saturating_i16_for_core_num_saturating_Saturating_i16.
     
-    Module Impl_core_ops_arith_MulAssign_for_core_num_saturating_Saturating_i16.
+    Module Impl_core_ops_arith_MulAssign_core_num_saturating_Saturating_i16_for_core_num_saturating_Saturating_i16.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ].
       
@@ -12082,10 +12217,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ] ]
           Self
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
-    End Impl_core_ops_arith_MulAssign_for_core_num_saturating_Saturating_i16.
+    End Impl_core_ops_arith_MulAssign_core_num_saturating_Saturating_i16_for_core_num_saturating_Saturating_i16.
     
     Module Impl_core_ops_arith_MulAssign_i16_for_core_num_saturating_Saturating_i16.
       Definition Self : Ty.t :=
@@ -12144,7 +12280,7 @@ Module num.
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
     End Impl_core_ops_arith_MulAssign_i16_for_core_num_saturating_Saturating_i16.
     
-    Module Impl_core_ops_arith_Div_for_core_num_saturating_Saturating_i16.
+    Module Impl_core_ops_arith_Div_core_num_saturating_Saturating_i16_for_core_num_saturating_Saturating_i16.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ].
       
@@ -12194,13 +12330,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::Div"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
-    End Impl_core_ops_arith_Div_for_core_num_saturating_Saturating_i16.
+    End Impl_core_ops_arith_Div_core_num_saturating_Saturating_i16_for_core_num_saturating_Saturating_i16.
     
-    Module Impl_core_ops_arith_DivAssign_for_core_num_saturating_Saturating_i16.
+    Module Impl_core_ops_arith_DivAssign_core_num_saturating_Saturating_i16_for_core_num_saturating_Saturating_i16.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ].
       
@@ -12249,10 +12386,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ] ]
           Self
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
-    End Impl_core_ops_arith_DivAssign_for_core_num_saturating_Saturating_i16.
+    End Impl_core_ops_arith_DivAssign_core_num_saturating_Saturating_i16_for_core_num_saturating_Saturating_i16.
     
     Module Impl_core_ops_arith_DivAssign_i16_for_core_num_saturating_Saturating_i16.
       Definition Self : Ty.t :=
@@ -12311,7 +12449,7 @@ Module num.
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
     End Impl_core_ops_arith_DivAssign_i16_for_core_num_saturating_Saturating_i16.
     
-    Module Impl_core_ops_arith_Rem_for_core_num_saturating_Saturating_i16.
+    Module Impl_core_ops_arith_Rem_core_num_saturating_Saturating_i16_for_core_num_saturating_Saturating_i16.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ].
       
@@ -12369,13 +12507,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::Rem"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
-    End Impl_core_ops_arith_Rem_for_core_num_saturating_Saturating_i16.
+    End Impl_core_ops_arith_Rem_core_num_saturating_Saturating_i16_for_core_num_saturating_Saturating_i16.
     
-    Module Impl_core_ops_arith_RemAssign_for_core_num_saturating_Saturating_i16.
+    Module Impl_core_ops_arith_RemAssign_core_num_saturating_Saturating_i16_for_core_num_saturating_Saturating_i16.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ].
       
@@ -12424,10 +12563,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ] ]
           Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
-    End Impl_core_ops_arith_RemAssign_for_core_num_saturating_Saturating_i16.
+    End Impl_core_ops_arith_RemAssign_core_num_saturating_Saturating_i16_for_core_num_saturating_Saturating_i16.
     
     Module Impl_core_ops_arith_RemAssign_i16_for_core_num_saturating_Saturating_i16.
       Definition Self : Ty.t :=
@@ -12530,7 +12670,7 @@ Module num.
           [ ("Output", InstanceField.Ty _Output); ("not", InstanceField.Method not) ].
     End Impl_core_ops_bit_Not_for_core_num_saturating_Saturating_i16.
     
-    Module Impl_core_ops_bit_BitXor_for_core_num_saturating_Saturating_i16.
+    Module Impl_core_ops_bit_BitXor_core_num_saturating_Saturating_i16_for_core_num_saturating_Saturating_i16.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ].
       
@@ -12575,13 +12715,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitXor"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitxor", InstanceField.Method bitxor) ].
-    End Impl_core_ops_bit_BitXor_for_core_num_saturating_Saturating_i16.
+    End Impl_core_ops_bit_BitXor_core_num_saturating_Saturating_i16_for_core_num_saturating_Saturating_i16.
     
-    Module Impl_core_ops_bit_BitXorAssign_for_core_num_saturating_Saturating_i16.
+    Module Impl_core_ops_bit_BitXorAssign_core_num_saturating_Saturating_i16_for_core_num_saturating_Saturating_i16.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ].
       
@@ -12630,10 +12771,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitXorAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ] ]
           Self
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
-    End Impl_core_ops_bit_BitXorAssign_for_core_num_saturating_Saturating_i16.
+    End Impl_core_ops_bit_BitXorAssign_core_num_saturating_Saturating_i16_for_core_num_saturating_Saturating_i16.
     
     Module Impl_core_ops_bit_BitXorAssign_i16_for_core_num_saturating_Saturating_i16.
       Definition Self : Ty.t :=
@@ -12692,7 +12834,7 @@ Module num.
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
     End Impl_core_ops_bit_BitXorAssign_i16_for_core_num_saturating_Saturating_i16.
     
-    Module Impl_core_ops_bit_BitOr_for_core_num_saturating_Saturating_i16.
+    Module Impl_core_ops_bit_BitOr_core_num_saturating_Saturating_i16_for_core_num_saturating_Saturating_i16.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ].
       
@@ -12737,13 +12879,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitOr"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
-    End Impl_core_ops_bit_BitOr_for_core_num_saturating_Saturating_i16.
+    End Impl_core_ops_bit_BitOr_core_num_saturating_Saturating_i16_for_core_num_saturating_Saturating_i16.
     
-    Module Impl_core_ops_bit_BitOrAssign_for_core_num_saturating_Saturating_i16.
+    Module Impl_core_ops_bit_BitOrAssign_core_num_saturating_Saturating_i16_for_core_num_saturating_Saturating_i16.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ].
       
@@ -12792,10 +12935,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ] ]
           Self
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
-    End Impl_core_ops_bit_BitOrAssign_for_core_num_saturating_Saturating_i16.
+    End Impl_core_ops_bit_BitOrAssign_core_num_saturating_Saturating_i16_for_core_num_saturating_Saturating_i16.
     
     Module Impl_core_ops_bit_BitOrAssign_i16_for_core_num_saturating_Saturating_i16.
       Definition Self : Ty.t :=
@@ -12854,7 +12998,7 @@ Module num.
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
     End Impl_core_ops_bit_BitOrAssign_i16_for_core_num_saturating_Saturating_i16.
     
-    Module Impl_core_ops_bit_BitAnd_for_core_num_saturating_Saturating_i16.
+    Module Impl_core_ops_bit_BitAnd_core_num_saturating_Saturating_i16_for_core_num_saturating_Saturating_i16.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ].
       
@@ -12899,13 +13043,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitAnd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
-    End Impl_core_ops_bit_BitAnd_for_core_num_saturating_Saturating_i16.
+    End Impl_core_ops_bit_BitAnd_core_num_saturating_Saturating_i16_for_core_num_saturating_Saturating_i16.
     
-    Module Impl_core_ops_bit_BitAndAssign_for_core_num_saturating_Saturating_i16.
+    Module Impl_core_ops_bit_BitAndAssign_core_num_saturating_Saturating_i16_for_core_num_saturating_Saturating_i16.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ].
       
@@ -12954,10 +13099,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i16" ] ]
           Self
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
-    End Impl_core_ops_bit_BitAndAssign_for_core_num_saturating_Saturating_i16.
+    End Impl_core_ops_bit_BitAndAssign_core_num_saturating_Saturating_i16_for_core_num_saturating_Saturating_i16.
     
     Module Impl_core_ops_bit_BitAndAssign_i16_for_core_num_saturating_Saturating_i16.
       Definition Self : Ty.t :=
@@ -13016,7 +13162,7 @@ Module num.
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
     End Impl_core_ops_bit_BitAndAssign_i16_for_core_num_saturating_Saturating_i16.
     
-    Module Impl_core_ops_arith_Add_for_core_num_saturating_Saturating_i32.
+    Module Impl_core_ops_arith_Add_core_num_saturating_Saturating_i32_for_core_num_saturating_Saturating_i32.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ].
       
@@ -13066,13 +13212,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::Add"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
-    End Impl_core_ops_arith_Add_for_core_num_saturating_Saturating_i32.
+    End Impl_core_ops_arith_Add_core_num_saturating_Saturating_i32_for_core_num_saturating_Saturating_i32.
     
-    Module Impl_core_ops_arith_AddAssign_for_core_num_saturating_Saturating_i32.
+    Module Impl_core_ops_arith_AddAssign_core_num_saturating_Saturating_i32_for_core_num_saturating_Saturating_i32.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ].
       
@@ -13121,10 +13268,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ] ]
           Self
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
-    End Impl_core_ops_arith_AddAssign_for_core_num_saturating_Saturating_i32.
+    End Impl_core_ops_arith_AddAssign_core_num_saturating_Saturating_i32_for_core_num_saturating_Saturating_i32.
     
     Module Impl_core_ops_arith_AddAssign_i32_for_core_num_saturating_Saturating_i32.
       Definition Self : Ty.t :=
@@ -13183,7 +13331,7 @@ Module num.
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
     End Impl_core_ops_arith_AddAssign_i32_for_core_num_saturating_Saturating_i32.
     
-    Module Impl_core_ops_arith_Sub_for_core_num_saturating_Saturating_i32.
+    Module Impl_core_ops_arith_Sub_core_num_saturating_Saturating_i32_for_core_num_saturating_Saturating_i32.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ].
       
@@ -13233,13 +13381,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::Sub"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
-    End Impl_core_ops_arith_Sub_for_core_num_saturating_Saturating_i32.
+    End Impl_core_ops_arith_Sub_core_num_saturating_Saturating_i32_for_core_num_saturating_Saturating_i32.
     
-    Module Impl_core_ops_arith_SubAssign_for_core_num_saturating_Saturating_i32.
+    Module Impl_core_ops_arith_SubAssign_core_num_saturating_Saturating_i32_for_core_num_saturating_Saturating_i32.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ].
       
@@ -13288,10 +13437,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ] ]
           Self
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
-    End Impl_core_ops_arith_SubAssign_for_core_num_saturating_Saturating_i32.
+    End Impl_core_ops_arith_SubAssign_core_num_saturating_Saturating_i32_for_core_num_saturating_Saturating_i32.
     
     Module Impl_core_ops_arith_SubAssign_i32_for_core_num_saturating_Saturating_i32.
       Definition Self : Ty.t :=
@@ -13350,7 +13500,7 @@ Module num.
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
     End Impl_core_ops_arith_SubAssign_i32_for_core_num_saturating_Saturating_i32.
     
-    Module Impl_core_ops_arith_Mul_for_core_num_saturating_Saturating_i32.
+    Module Impl_core_ops_arith_Mul_core_num_saturating_Saturating_i32_for_core_num_saturating_Saturating_i32.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ].
       
@@ -13400,13 +13550,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::Mul"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("mul", InstanceField.Method mul) ].
-    End Impl_core_ops_arith_Mul_for_core_num_saturating_Saturating_i32.
+    End Impl_core_ops_arith_Mul_core_num_saturating_Saturating_i32_for_core_num_saturating_Saturating_i32.
     
-    Module Impl_core_ops_arith_MulAssign_for_core_num_saturating_Saturating_i32.
+    Module Impl_core_ops_arith_MulAssign_core_num_saturating_Saturating_i32_for_core_num_saturating_Saturating_i32.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ].
       
@@ -13455,10 +13606,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ] ]
           Self
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
-    End Impl_core_ops_arith_MulAssign_for_core_num_saturating_Saturating_i32.
+    End Impl_core_ops_arith_MulAssign_core_num_saturating_Saturating_i32_for_core_num_saturating_Saturating_i32.
     
     Module Impl_core_ops_arith_MulAssign_i32_for_core_num_saturating_Saturating_i32.
       Definition Self : Ty.t :=
@@ -13517,7 +13669,7 @@ Module num.
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
     End Impl_core_ops_arith_MulAssign_i32_for_core_num_saturating_Saturating_i32.
     
-    Module Impl_core_ops_arith_Div_for_core_num_saturating_Saturating_i32.
+    Module Impl_core_ops_arith_Div_core_num_saturating_Saturating_i32_for_core_num_saturating_Saturating_i32.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ].
       
@@ -13567,13 +13719,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::Div"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
-    End Impl_core_ops_arith_Div_for_core_num_saturating_Saturating_i32.
+    End Impl_core_ops_arith_Div_core_num_saturating_Saturating_i32_for_core_num_saturating_Saturating_i32.
     
-    Module Impl_core_ops_arith_DivAssign_for_core_num_saturating_Saturating_i32.
+    Module Impl_core_ops_arith_DivAssign_core_num_saturating_Saturating_i32_for_core_num_saturating_Saturating_i32.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ].
       
@@ -13622,10 +13775,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ] ]
           Self
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
-    End Impl_core_ops_arith_DivAssign_for_core_num_saturating_Saturating_i32.
+    End Impl_core_ops_arith_DivAssign_core_num_saturating_Saturating_i32_for_core_num_saturating_Saturating_i32.
     
     Module Impl_core_ops_arith_DivAssign_i32_for_core_num_saturating_Saturating_i32.
       Definition Self : Ty.t :=
@@ -13684,7 +13838,7 @@ Module num.
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
     End Impl_core_ops_arith_DivAssign_i32_for_core_num_saturating_Saturating_i32.
     
-    Module Impl_core_ops_arith_Rem_for_core_num_saturating_Saturating_i32.
+    Module Impl_core_ops_arith_Rem_core_num_saturating_Saturating_i32_for_core_num_saturating_Saturating_i32.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ].
       
@@ -13742,13 +13896,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::Rem"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
-    End Impl_core_ops_arith_Rem_for_core_num_saturating_Saturating_i32.
+    End Impl_core_ops_arith_Rem_core_num_saturating_Saturating_i32_for_core_num_saturating_Saturating_i32.
     
-    Module Impl_core_ops_arith_RemAssign_for_core_num_saturating_Saturating_i32.
+    Module Impl_core_ops_arith_RemAssign_core_num_saturating_Saturating_i32_for_core_num_saturating_Saturating_i32.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ].
       
@@ -13797,10 +13952,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ] ]
           Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
-    End Impl_core_ops_arith_RemAssign_for_core_num_saturating_Saturating_i32.
+    End Impl_core_ops_arith_RemAssign_core_num_saturating_Saturating_i32_for_core_num_saturating_Saturating_i32.
     
     Module Impl_core_ops_arith_RemAssign_i32_for_core_num_saturating_Saturating_i32.
       Definition Self : Ty.t :=
@@ -13903,7 +14059,7 @@ Module num.
           [ ("Output", InstanceField.Ty _Output); ("not", InstanceField.Method not) ].
     End Impl_core_ops_bit_Not_for_core_num_saturating_Saturating_i32.
     
-    Module Impl_core_ops_bit_BitXor_for_core_num_saturating_Saturating_i32.
+    Module Impl_core_ops_bit_BitXor_core_num_saturating_Saturating_i32_for_core_num_saturating_Saturating_i32.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ].
       
@@ -13948,13 +14104,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitXor"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitxor", InstanceField.Method bitxor) ].
-    End Impl_core_ops_bit_BitXor_for_core_num_saturating_Saturating_i32.
+    End Impl_core_ops_bit_BitXor_core_num_saturating_Saturating_i32_for_core_num_saturating_Saturating_i32.
     
-    Module Impl_core_ops_bit_BitXorAssign_for_core_num_saturating_Saturating_i32.
+    Module Impl_core_ops_bit_BitXorAssign_core_num_saturating_Saturating_i32_for_core_num_saturating_Saturating_i32.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ].
       
@@ -14003,10 +14160,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitXorAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ] ]
           Self
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
-    End Impl_core_ops_bit_BitXorAssign_for_core_num_saturating_Saturating_i32.
+    End Impl_core_ops_bit_BitXorAssign_core_num_saturating_Saturating_i32_for_core_num_saturating_Saturating_i32.
     
     Module Impl_core_ops_bit_BitXorAssign_i32_for_core_num_saturating_Saturating_i32.
       Definition Self : Ty.t :=
@@ -14065,7 +14223,7 @@ Module num.
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
     End Impl_core_ops_bit_BitXorAssign_i32_for_core_num_saturating_Saturating_i32.
     
-    Module Impl_core_ops_bit_BitOr_for_core_num_saturating_Saturating_i32.
+    Module Impl_core_ops_bit_BitOr_core_num_saturating_Saturating_i32_for_core_num_saturating_Saturating_i32.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ].
       
@@ -14110,13 +14268,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitOr"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
-    End Impl_core_ops_bit_BitOr_for_core_num_saturating_Saturating_i32.
+    End Impl_core_ops_bit_BitOr_core_num_saturating_Saturating_i32_for_core_num_saturating_Saturating_i32.
     
-    Module Impl_core_ops_bit_BitOrAssign_for_core_num_saturating_Saturating_i32.
+    Module Impl_core_ops_bit_BitOrAssign_core_num_saturating_Saturating_i32_for_core_num_saturating_Saturating_i32.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ].
       
@@ -14165,10 +14324,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ] ]
           Self
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
-    End Impl_core_ops_bit_BitOrAssign_for_core_num_saturating_Saturating_i32.
+    End Impl_core_ops_bit_BitOrAssign_core_num_saturating_Saturating_i32_for_core_num_saturating_Saturating_i32.
     
     Module Impl_core_ops_bit_BitOrAssign_i32_for_core_num_saturating_Saturating_i32.
       Definition Self : Ty.t :=
@@ -14227,7 +14387,7 @@ Module num.
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
     End Impl_core_ops_bit_BitOrAssign_i32_for_core_num_saturating_Saturating_i32.
     
-    Module Impl_core_ops_bit_BitAnd_for_core_num_saturating_Saturating_i32.
+    Module Impl_core_ops_bit_BitAnd_core_num_saturating_Saturating_i32_for_core_num_saturating_Saturating_i32.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ].
       
@@ -14272,13 +14432,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitAnd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
-    End Impl_core_ops_bit_BitAnd_for_core_num_saturating_Saturating_i32.
+    End Impl_core_ops_bit_BitAnd_core_num_saturating_Saturating_i32_for_core_num_saturating_Saturating_i32.
     
-    Module Impl_core_ops_bit_BitAndAssign_for_core_num_saturating_Saturating_i32.
+    Module Impl_core_ops_bit_BitAndAssign_core_num_saturating_Saturating_i32_for_core_num_saturating_Saturating_i32.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ].
       
@@ -14327,10 +14488,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i32" ] ]
           Self
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
-    End Impl_core_ops_bit_BitAndAssign_for_core_num_saturating_Saturating_i32.
+    End Impl_core_ops_bit_BitAndAssign_core_num_saturating_Saturating_i32_for_core_num_saturating_Saturating_i32.
     
     Module Impl_core_ops_bit_BitAndAssign_i32_for_core_num_saturating_Saturating_i32.
       Definition Self : Ty.t :=
@@ -14389,7 +14551,7 @@ Module num.
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
     End Impl_core_ops_bit_BitAndAssign_i32_for_core_num_saturating_Saturating_i32.
     
-    Module Impl_core_ops_arith_Add_for_core_num_saturating_Saturating_i64.
+    Module Impl_core_ops_arith_Add_core_num_saturating_Saturating_i64_for_core_num_saturating_Saturating_i64.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ].
       
@@ -14439,13 +14601,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::Add"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
-    End Impl_core_ops_arith_Add_for_core_num_saturating_Saturating_i64.
+    End Impl_core_ops_arith_Add_core_num_saturating_Saturating_i64_for_core_num_saturating_Saturating_i64.
     
-    Module Impl_core_ops_arith_AddAssign_for_core_num_saturating_Saturating_i64.
+    Module Impl_core_ops_arith_AddAssign_core_num_saturating_Saturating_i64_for_core_num_saturating_Saturating_i64.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ].
       
@@ -14494,10 +14657,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ] ]
           Self
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
-    End Impl_core_ops_arith_AddAssign_for_core_num_saturating_Saturating_i64.
+    End Impl_core_ops_arith_AddAssign_core_num_saturating_Saturating_i64_for_core_num_saturating_Saturating_i64.
     
     Module Impl_core_ops_arith_AddAssign_i64_for_core_num_saturating_Saturating_i64.
       Definition Self : Ty.t :=
@@ -14556,7 +14720,7 @@ Module num.
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
     End Impl_core_ops_arith_AddAssign_i64_for_core_num_saturating_Saturating_i64.
     
-    Module Impl_core_ops_arith_Sub_for_core_num_saturating_Saturating_i64.
+    Module Impl_core_ops_arith_Sub_core_num_saturating_Saturating_i64_for_core_num_saturating_Saturating_i64.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ].
       
@@ -14606,13 +14770,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::Sub"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
-    End Impl_core_ops_arith_Sub_for_core_num_saturating_Saturating_i64.
+    End Impl_core_ops_arith_Sub_core_num_saturating_Saturating_i64_for_core_num_saturating_Saturating_i64.
     
-    Module Impl_core_ops_arith_SubAssign_for_core_num_saturating_Saturating_i64.
+    Module Impl_core_ops_arith_SubAssign_core_num_saturating_Saturating_i64_for_core_num_saturating_Saturating_i64.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ].
       
@@ -14661,10 +14826,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ] ]
           Self
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
-    End Impl_core_ops_arith_SubAssign_for_core_num_saturating_Saturating_i64.
+    End Impl_core_ops_arith_SubAssign_core_num_saturating_Saturating_i64_for_core_num_saturating_Saturating_i64.
     
     Module Impl_core_ops_arith_SubAssign_i64_for_core_num_saturating_Saturating_i64.
       Definition Self : Ty.t :=
@@ -14723,7 +14889,7 @@ Module num.
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
     End Impl_core_ops_arith_SubAssign_i64_for_core_num_saturating_Saturating_i64.
     
-    Module Impl_core_ops_arith_Mul_for_core_num_saturating_Saturating_i64.
+    Module Impl_core_ops_arith_Mul_core_num_saturating_Saturating_i64_for_core_num_saturating_Saturating_i64.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ].
       
@@ -14773,13 +14939,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::Mul"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("mul", InstanceField.Method mul) ].
-    End Impl_core_ops_arith_Mul_for_core_num_saturating_Saturating_i64.
+    End Impl_core_ops_arith_Mul_core_num_saturating_Saturating_i64_for_core_num_saturating_Saturating_i64.
     
-    Module Impl_core_ops_arith_MulAssign_for_core_num_saturating_Saturating_i64.
+    Module Impl_core_ops_arith_MulAssign_core_num_saturating_Saturating_i64_for_core_num_saturating_Saturating_i64.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ].
       
@@ -14828,10 +14995,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ] ]
           Self
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
-    End Impl_core_ops_arith_MulAssign_for_core_num_saturating_Saturating_i64.
+    End Impl_core_ops_arith_MulAssign_core_num_saturating_Saturating_i64_for_core_num_saturating_Saturating_i64.
     
     Module Impl_core_ops_arith_MulAssign_i64_for_core_num_saturating_Saturating_i64.
       Definition Self : Ty.t :=
@@ -14890,7 +15058,7 @@ Module num.
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
     End Impl_core_ops_arith_MulAssign_i64_for_core_num_saturating_Saturating_i64.
     
-    Module Impl_core_ops_arith_Div_for_core_num_saturating_Saturating_i64.
+    Module Impl_core_ops_arith_Div_core_num_saturating_Saturating_i64_for_core_num_saturating_Saturating_i64.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ].
       
@@ -14940,13 +15108,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::Div"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
-    End Impl_core_ops_arith_Div_for_core_num_saturating_Saturating_i64.
+    End Impl_core_ops_arith_Div_core_num_saturating_Saturating_i64_for_core_num_saturating_Saturating_i64.
     
-    Module Impl_core_ops_arith_DivAssign_for_core_num_saturating_Saturating_i64.
+    Module Impl_core_ops_arith_DivAssign_core_num_saturating_Saturating_i64_for_core_num_saturating_Saturating_i64.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ].
       
@@ -14995,10 +15164,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ] ]
           Self
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
-    End Impl_core_ops_arith_DivAssign_for_core_num_saturating_Saturating_i64.
+    End Impl_core_ops_arith_DivAssign_core_num_saturating_Saturating_i64_for_core_num_saturating_Saturating_i64.
     
     Module Impl_core_ops_arith_DivAssign_i64_for_core_num_saturating_Saturating_i64.
       Definition Self : Ty.t :=
@@ -15057,7 +15227,7 @@ Module num.
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
     End Impl_core_ops_arith_DivAssign_i64_for_core_num_saturating_Saturating_i64.
     
-    Module Impl_core_ops_arith_Rem_for_core_num_saturating_Saturating_i64.
+    Module Impl_core_ops_arith_Rem_core_num_saturating_Saturating_i64_for_core_num_saturating_Saturating_i64.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ].
       
@@ -15115,13 +15285,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::Rem"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
-    End Impl_core_ops_arith_Rem_for_core_num_saturating_Saturating_i64.
+    End Impl_core_ops_arith_Rem_core_num_saturating_Saturating_i64_for_core_num_saturating_Saturating_i64.
     
-    Module Impl_core_ops_arith_RemAssign_for_core_num_saturating_Saturating_i64.
+    Module Impl_core_ops_arith_RemAssign_core_num_saturating_Saturating_i64_for_core_num_saturating_Saturating_i64.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ].
       
@@ -15170,10 +15341,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ] ]
           Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
-    End Impl_core_ops_arith_RemAssign_for_core_num_saturating_Saturating_i64.
+    End Impl_core_ops_arith_RemAssign_core_num_saturating_Saturating_i64_for_core_num_saturating_Saturating_i64.
     
     Module Impl_core_ops_arith_RemAssign_i64_for_core_num_saturating_Saturating_i64.
       Definition Self : Ty.t :=
@@ -15276,7 +15448,7 @@ Module num.
           [ ("Output", InstanceField.Ty _Output); ("not", InstanceField.Method not) ].
     End Impl_core_ops_bit_Not_for_core_num_saturating_Saturating_i64.
     
-    Module Impl_core_ops_bit_BitXor_for_core_num_saturating_Saturating_i64.
+    Module Impl_core_ops_bit_BitXor_core_num_saturating_Saturating_i64_for_core_num_saturating_Saturating_i64.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ].
       
@@ -15321,13 +15493,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitXor"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitxor", InstanceField.Method bitxor) ].
-    End Impl_core_ops_bit_BitXor_for_core_num_saturating_Saturating_i64.
+    End Impl_core_ops_bit_BitXor_core_num_saturating_Saturating_i64_for_core_num_saturating_Saturating_i64.
     
-    Module Impl_core_ops_bit_BitXorAssign_for_core_num_saturating_Saturating_i64.
+    Module Impl_core_ops_bit_BitXorAssign_core_num_saturating_Saturating_i64_for_core_num_saturating_Saturating_i64.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ].
       
@@ -15376,10 +15549,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitXorAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ] ]
           Self
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
-    End Impl_core_ops_bit_BitXorAssign_for_core_num_saturating_Saturating_i64.
+    End Impl_core_ops_bit_BitXorAssign_core_num_saturating_Saturating_i64_for_core_num_saturating_Saturating_i64.
     
     Module Impl_core_ops_bit_BitXorAssign_i64_for_core_num_saturating_Saturating_i64.
       Definition Self : Ty.t :=
@@ -15438,7 +15612,7 @@ Module num.
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
     End Impl_core_ops_bit_BitXorAssign_i64_for_core_num_saturating_Saturating_i64.
     
-    Module Impl_core_ops_bit_BitOr_for_core_num_saturating_Saturating_i64.
+    Module Impl_core_ops_bit_BitOr_core_num_saturating_Saturating_i64_for_core_num_saturating_Saturating_i64.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ].
       
@@ -15483,13 +15657,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitOr"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
-    End Impl_core_ops_bit_BitOr_for_core_num_saturating_Saturating_i64.
+    End Impl_core_ops_bit_BitOr_core_num_saturating_Saturating_i64_for_core_num_saturating_Saturating_i64.
     
-    Module Impl_core_ops_bit_BitOrAssign_for_core_num_saturating_Saturating_i64.
+    Module Impl_core_ops_bit_BitOrAssign_core_num_saturating_Saturating_i64_for_core_num_saturating_Saturating_i64.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ].
       
@@ -15538,10 +15713,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ] ]
           Self
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
-    End Impl_core_ops_bit_BitOrAssign_for_core_num_saturating_Saturating_i64.
+    End Impl_core_ops_bit_BitOrAssign_core_num_saturating_Saturating_i64_for_core_num_saturating_Saturating_i64.
     
     Module Impl_core_ops_bit_BitOrAssign_i64_for_core_num_saturating_Saturating_i64.
       Definition Self : Ty.t :=
@@ -15600,7 +15776,7 @@ Module num.
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
     End Impl_core_ops_bit_BitOrAssign_i64_for_core_num_saturating_Saturating_i64.
     
-    Module Impl_core_ops_bit_BitAnd_for_core_num_saturating_Saturating_i64.
+    Module Impl_core_ops_bit_BitAnd_core_num_saturating_Saturating_i64_for_core_num_saturating_Saturating_i64.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ].
       
@@ -15645,13 +15821,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitAnd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
-    End Impl_core_ops_bit_BitAnd_for_core_num_saturating_Saturating_i64.
+    End Impl_core_ops_bit_BitAnd_core_num_saturating_Saturating_i64_for_core_num_saturating_Saturating_i64.
     
-    Module Impl_core_ops_bit_BitAndAssign_for_core_num_saturating_Saturating_i64.
+    Module Impl_core_ops_bit_BitAndAssign_core_num_saturating_Saturating_i64_for_core_num_saturating_Saturating_i64.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ].
       
@@ -15700,10 +15877,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i64" ] ]
           Self
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
-    End Impl_core_ops_bit_BitAndAssign_for_core_num_saturating_Saturating_i64.
+    End Impl_core_ops_bit_BitAndAssign_core_num_saturating_Saturating_i64_for_core_num_saturating_Saturating_i64.
     
     Module Impl_core_ops_bit_BitAndAssign_i64_for_core_num_saturating_Saturating_i64.
       Definition Self : Ty.t :=
@@ -15762,7 +15940,7 @@ Module num.
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
     End Impl_core_ops_bit_BitAndAssign_i64_for_core_num_saturating_Saturating_i64.
     
-    Module Impl_core_ops_arith_Add_for_core_num_saturating_Saturating_i128.
+    Module Impl_core_ops_arith_Add_core_num_saturating_Saturating_i128_for_core_num_saturating_Saturating_i128.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ].
       
@@ -15812,13 +15990,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::Add"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
-    End Impl_core_ops_arith_Add_for_core_num_saturating_Saturating_i128.
+    End Impl_core_ops_arith_Add_core_num_saturating_Saturating_i128_for_core_num_saturating_Saturating_i128.
     
-    Module Impl_core_ops_arith_AddAssign_for_core_num_saturating_Saturating_i128.
+    Module Impl_core_ops_arith_AddAssign_core_num_saturating_Saturating_i128_for_core_num_saturating_Saturating_i128.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ].
       
@@ -15870,10 +16049,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ] ]
           Self
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
-    End Impl_core_ops_arith_AddAssign_for_core_num_saturating_Saturating_i128.
+    End Impl_core_ops_arith_AddAssign_core_num_saturating_Saturating_i128_for_core_num_saturating_Saturating_i128.
     
     Module Impl_core_ops_arith_AddAssign_i128_for_core_num_saturating_Saturating_i128.
       Definition Self : Ty.t :=
@@ -15935,7 +16115,7 @@ Module num.
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
     End Impl_core_ops_arith_AddAssign_i128_for_core_num_saturating_Saturating_i128.
     
-    Module Impl_core_ops_arith_Sub_for_core_num_saturating_Saturating_i128.
+    Module Impl_core_ops_arith_Sub_core_num_saturating_Saturating_i128_for_core_num_saturating_Saturating_i128.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ].
       
@@ -15985,13 +16165,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::Sub"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
-    End Impl_core_ops_arith_Sub_for_core_num_saturating_Saturating_i128.
+    End Impl_core_ops_arith_Sub_core_num_saturating_Saturating_i128_for_core_num_saturating_Saturating_i128.
     
-    Module Impl_core_ops_arith_SubAssign_for_core_num_saturating_Saturating_i128.
+    Module Impl_core_ops_arith_SubAssign_core_num_saturating_Saturating_i128_for_core_num_saturating_Saturating_i128.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ].
       
@@ -16043,10 +16224,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ] ]
           Self
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
-    End Impl_core_ops_arith_SubAssign_for_core_num_saturating_Saturating_i128.
+    End Impl_core_ops_arith_SubAssign_core_num_saturating_Saturating_i128_for_core_num_saturating_Saturating_i128.
     
     Module Impl_core_ops_arith_SubAssign_i128_for_core_num_saturating_Saturating_i128.
       Definition Self : Ty.t :=
@@ -16108,7 +16290,7 @@ Module num.
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
     End Impl_core_ops_arith_SubAssign_i128_for_core_num_saturating_Saturating_i128.
     
-    Module Impl_core_ops_arith_Mul_for_core_num_saturating_Saturating_i128.
+    Module Impl_core_ops_arith_Mul_core_num_saturating_Saturating_i128_for_core_num_saturating_Saturating_i128.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ].
       
@@ -16158,13 +16340,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::Mul"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("mul", InstanceField.Method mul) ].
-    End Impl_core_ops_arith_Mul_for_core_num_saturating_Saturating_i128.
+    End Impl_core_ops_arith_Mul_core_num_saturating_Saturating_i128_for_core_num_saturating_Saturating_i128.
     
-    Module Impl_core_ops_arith_MulAssign_for_core_num_saturating_Saturating_i128.
+    Module Impl_core_ops_arith_MulAssign_core_num_saturating_Saturating_i128_for_core_num_saturating_Saturating_i128.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ].
       
@@ -16216,10 +16399,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ] ]
           Self
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
-    End Impl_core_ops_arith_MulAssign_for_core_num_saturating_Saturating_i128.
+    End Impl_core_ops_arith_MulAssign_core_num_saturating_Saturating_i128_for_core_num_saturating_Saturating_i128.
     
     Module Impl_core_ops_arith_MulAssign_i128_for_core_num_saturating_Saturating_i128.
       Definition Self : Ty.t :=
@@ -16281,7 +16465,7 @@ Module num.
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
     End Impl_core_ops_arith_MulAssign_i128_for_core_num_saturating_Saturating_i128.
     
-    Module Impl_core_ops_arith_Div_for_core_num_saturating_Saturating_i128.
+    Module Impl_core_ops_arith_Div_core_num_saturating_Saturating_i128_for_core_num_saturating_Saturating_i128.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ].
       
@@ -16331,13 +16515,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::Div"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
-    End Impl_core_ops_arith_Div_for_core_num_saturating_Saturating_i128.
+    End Impl_core_ops_arith_Div_core_num_saturating_Saturating_i128_for_core_num_saturating_Saturating_i128.
     
-    Module Impl_core_ops_arith_DivAssign_for_core_num_saturating_Saturating_i128.
+    Module Impl_core_ops_arith_DivAssign_core_num_saturating_Saturating_i128_for_core_num_saturating_Saturating_i128.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ].
       
@@ -16389,10 +16574,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ] ]
           Self
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
-    End Impl_core_ops_arith_DivAssign_for_core_num_saturating_Saturating_i128.
+    End Impl_core_ops_arith_DivAssign_core_num_saturating_Saturating_i128_for_core_num_saturating_Saturating_i128.
     
     Module Impl_core_ops_arith_DivAssign_i128_for_core_num_saturating_Saturating_i128.
       Definition Self : Ty.t :=
@@ -16454,7 +16640,7 @@ Module num.
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
     End Impl_core_ops_arith_DivAssign_i128_for_core_num_saturating_Saturating_i128.
     
-    Module Impl_core_ops_arith_Rem_for_core_num_saturating_Saturating_i128.
+    Module Impl_core_ops_arith_Rem_core_num_saturating_Saturating_i128_for_core_num_saturating_Saturating_i128.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ].
       
@@ -16512,13 +16698,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::Rem"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
-    End Impl_core_ops_arith_Rem_for_core_num_saturating_Saturating_i128.
+    End Impl_core_ops_arith_Rem_core_num_saturating_Saturating_i128_for_core_num_saturating_Saturating_i128.
     
-    Module Impl_core_ops_arith_RemAssign_for_core_num_saturating_Saturating_i128.
+    Module Impl_core_ops_arith_RemAssign_core_num_saturating_Saturating_i128_for_core_num_saturating_Saturating_i128.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ].
       
@@ -16570,10 +16757,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ] ]
           Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
-    End Impl_core_ops_arith_RemAssign_for_core_num_saturating_Saturating_i128.
+    End Impl_core_ops_arith_RemAssign_core_num_saturating_Saturating_i128_for_core_num_saturating_Saturating_i128.
     
     Module Impl_core_ops_arith_RemAssign_i128_for_core_num_saturating_Saturating_i128.
       Definition Self : Ty.t :=
@@ -16679,7 +16867,7 @@ Module num.
           [ ("Output", InstanceField.Ty _Output); ("not", InstanceField.Method not) ].
     End Impl_core_ops_bit_Not_for_core_num_saturating_Saturating_i128.
     
-    Module Impl_core_ops_bit_BitXor_for_core_num_saturating_Saturating_i128.
+    Module Impl_core_ops_bit_BitXor_core_num_saturating_Saturating_i128_for_core_num_saturating_Saturating_i128.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ].
       
@@ -16724,13 +16912,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitXor"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitxor", InstanceField.Method bitxor) ].
-    End Impl_core_ops_bit_BitXor_for_core_num_saturating_Saturating_i128.
+    End Impl_core_ops_bit_BitXor_core_num_saturating_Saturating_i128_for_core_num_saturating_Saturating_i128.
     
-    Module Impl_core_ops_bit_BitXorAssign_for_core_num_saturating_Saturating_i128.
+    Module Impl_core_ops_bit_BitXorAssign_core_num_saturating_Saturating_i128_for_core_num_saturating_Saturating_i128.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ].
       
@@ -16782,10 +16971,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitXorAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ] ]
           Self
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
-    End Impl_core_ops_bit_BitXorAssign_for_core_num_saturating_Saturating_i128.
+    End Impl_core_ops_bit_BitXorAssign_core_num_saturating_Saturating_i128_for_core_num_saturating_Saturating_i128.
     
     Module Impl_core_ops_bit_BitXorAssign_i128_for_core_num_saturating_Saturating_i128.
       Definition Self : Ty.t :=
@@ -16847,7 +17037,7 @@ Module num.
           (* Instance *) [ ("bitxor_assign", InstanceField.Method bitxor_assign) ].
     End Impl_core_ops_bit_BitXorAssign_i128_for_core_num_saturating_Saturating_i128.
     
-    Module Impl_core_ops_bit_BitOr_for_core_num_saturating_Saturating_i128.
+    Module Impl_core_ops_bit_BitOr_core_num_saturating_Saturating_i128_for_core_num_saturating_Saturating_i128.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ].
       
@@ -16892,13 +17082,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitOr"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
-    End Impl_core_ops_bit_BitOr_for_core_num_saturating_Saturating_i128.
+    End Impl_core_ops_bit_BitOr_core_num_saturating_Saturating_i128_for_core_num_saturating_Saturating_i128.
     
-    Module Impl_core_ops_bit_BitOrAssign_for_core_num_saturating_Saturating_i128.
+    Module Impl_core_ops_bit_BitOrAssign_core_num_saturating_Saturating_i128_for_core_num_saturating_Saturating_i128.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ].
       
@@ -16950,10 +17141,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ] ]
           Self
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
-    End Impl_core_ops_bit_BitOrAssign_for_core_num_saturating_Saturating_i128.
+    End Impl_core_ops_bit_BitOrAssign_core_num_saturating_Saturating_i128_for_core_num_saturating_Saturating_i128.
     
     Module Impl_core_ops_bit_BitOrAssign_i128_for_core_num_saturating_Saturating_i128.
       Definition Self : Ty.t :=
@@ -17015,7 +17207,7 @@ Module num.
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
     End Impl_core_ops_bit_BitOrAssign_i128_for_core_num_saturating_Saturating_i128.
     
-    Module Impl_core_ops_bit_BitAnd_for_core_num_saturating_Saturating_i128.
+    Module Impl_core_ops_bit_BitAnd_core_num_saturating_Saturating_i128_for_core_num_saturating_Saturating_i128.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ].
       
@@ -17060,13 +17252,14 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitAnd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ] ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
-    End Impl_core_ops_bit_BitAnd_for_core_num_saturating_Saturating_i128.
+    End Impl_core_ops_bit_BitAnd_core_num_saturating_Saturating_i128_for_core_num_saturating_Saturating_i128.
     
-    Module Impl_core_ops_bit_BitAndAssign_for_core_num_saturating_Saturating_i128.
+    Module Impl_core_ops_bit_BitAndAssign_core_num_saturating_Saturating_i128_for_core_num_saturating_Saturating_i128.
       Definition Self : Ty.t :=
         Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ].
       
@@ -17118,10 +17311,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::saturating::Saturating") [] [ Ty.path "i128" ] ]
           Self
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
-    End Impl_core_ops_bit_BitAndAssign_for_core_num_saturating_Saturating_i128.
+    End Impl_core_ops_bit_BitAndAssign_core_num_saturating_Saturating_i128_for_core_num_saturating_Saturating_i128.
     
     Module Impl_core_ops_bit_BitAndAssign_i128_for_core_num_saturating_Saturating_i128.
       Definition Self : Ty.t :=

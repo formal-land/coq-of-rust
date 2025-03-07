@@ -7517,10 +7517,6 @@ Module iter.
       Admitted.
       Global Typeclasses Opaque flatten_one.
       
-      Module flatten_one.
-        (* Error OpaqueTy *)
-      End flatten_one.
-      
       (*
       fn try_flatten_one<I: IntoIterator<IntoIter: OneShot>, Acc, R: Try<Output = Acc>>(
           mut fold: impl FnMut(Acc, I::Item) -> R,
@@ -7691,10 +7687,6 @@ Module iter.
         M.IsFunction.Trait "core::iter::adapters::flatten::try_flatten_one" try_flatten_one.
       Admitted.
       Global Typeclasses Opaque try_flatten_one.
-      
-      Module try_flatten_one.
-        (* Error OpaqueTy *)
-      End try_flatten_one.
       
       (*
       fn advance_by_one<I>(n: NonZero<usize>, inner: I) -> Option<NonZero<usize>>
