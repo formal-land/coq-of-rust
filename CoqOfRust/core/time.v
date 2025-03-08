@@ -125,7 +125,7 @@ Module time.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_core_time_Nanoseconds.
   
-  Module Impl_core_cmp_PartialEq_for_core_time_Nanoseconds.
+  Module Impl_core_cmp_PartialEq_core_time_Nanoseconds_for_core_time_Nanoseconds.
     Definition Self : Ty.t := Ty.path "core::time::Nanoseconds".
     
     (* PartialEq *)
@@ -158,10 +158,10 @@ Module time.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "core::time::Nanoseconds" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_core_time_Nanoseconds.
+  End Impl_core_cmp_PartialEq_core_time_Nanoseconds_for_core_time_Nanoseconds.
   
   Module Impl_core_cmp_Eq_for_core_time_Nanoseconds.
     Definition Self : Ty.t := Ty.path "core::time::Nanoseconds".
@@ -196,7 +196,7 @@ Module time.
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_core_time_Nanoseconds.
   
-  Module Impl_core_cmp_PartialOrd_for_core_time_Nanoseconds.
+  Module Impl_core_cmp_PartialOrd_core_time_Nanoseconds_for_core_time_Nanoseconds.
     Definition Self : Ty.t := Ty.path "core::time::Nanoseconds".
     
     (* PartialOrd *)
@@ -253,10 +253,10 @@ Module time.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "core::time::Nanoseconds" ]
         Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-  End Impl_core_cmp_PartialOrd_for_core_time_Nanoseconds.
+  End Impl_core_cmp_PartialOrd_core_time_Nanoseconds_for_core_time_Nanoseconds.
   
   Module Impl_core_cmp_Ord_for_core_time_Nanoseconds.
     Definition Self : Ty.t := Ty.path "core::time::Nanoseconds".
@@ -463,7 +463,7 @@ Module time.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_core_time_Duration.
   
-  Module Impl_core_cmp_PartialEq_for_core_time_Duration.
+  Module Impl_core_cmp_PartialEq_core_time_Duration_for_core_time_Duration.
     Definition Self : Ty.t := Ty.path "core::time::Duration".
     
     (* PartialEq *)
@@ -529,10 +529,10 @@ Module time.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "core::time::Duration" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_core_time_Duration.
+  End Impl_core_cmp_PartialEq_core_time_Duration_for_core_time_Duration.
   
   Module Impl_core_cmp_Eq_for_core_time_Duration.
     Definition Self : Ty.t := Ty.path "core::time::Duration".
@@ -575,7 +575,7 @@ Module time.
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_core_time_Duration.
   
-  Module Impl_core_cmp_PartialOrd_for_core_time_Duration.
+  Module Impl_core_cmp_PartialOrd_core_time_Duration_for_core_time_Duration.
     Definition Self : Ty.t := Ty.path "core::time::Duration".
     
     (* PartialOrd *)
@@ -699,10 +699,10 @@ Module time.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "core::time::Duration" ]
         Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-  End Impl_core_cmp_PartialOrd_for_core_time_Duration.
+  End Impl_core_cmp_PartialOrd_core_time_Duration_for_core_time_Duration.
   
   Module Impl_core_cmp_Ord_for_core_time_Duration.
     Definition Self : Ty.t := Ty.path "core::time::Duration".
@@ -1076,11 +1076,9 @@ Module time.
                 // SAFETY: nanos < NANOS_PER_SEC, therefore nanos is within the valid range
                 Duration { secs, nanos: unsafe { Nanoseconds(nanos) } }
             } else {
-                // FIXME(const-hack): use `.expect` once that is possible.
-                let secs = match secs.checked_add((nanos / NANOS_PER_SEC) as u64) {
-                    Some(secs) => secs,
-                    None => panic!("overflow in Duration::new"),
-                };
+                let secs = secs
+                    .checked_add((nanos / NANOS_PER_SEC) as u64)
+                    .expect("overflow in Duration::new");
                 let nanos = nanos % NANOS_PER_SEC;
                 // SAFETY: nanos % NANOS_PER_SEC < NANOS_PER_SEC, therefore nanos is within the valid range
                 Duration { secs, nanos: unsafe { Nanoseconds(nanos) } }
@@ -1121,10 +1119,16 @@ Module time.
                 fun γ =>
                   ltac:(M.monadic
                     (let~ secs : Ty.path "u64" :=
-                      M.copy (|
-                        M.match_operator (|
-                          Some (Ty.path "u64"),
-                          M.alloc (|
+                      M.alloc (|
+                        M.call_closure (|
+                          Ty.path "u64",
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
+                            "expect",
+                            [],
+                            []
+                          |),
+                          [
                             M.call_closure (|
                               Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ],
                               M.get_associated_function (| Ty.path "u64", "checked_add", [], [] |),
@@ -1137,59 +1141,11 @@ Module time.
                                     M.read (| M.get_constant "core::time::NANOS_PER_SEC" |)
                                   |))
                               ]
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "overflow in Duration::new" |) |)
                             |)
-                          |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ0_0 :=
-                                  M.SubPointer.get_struct_tuple_field (|
-                                    γ,
-                                    "core::option::Option::Some",
-                                    0
-                                  |) in
-                                let secs := M.copy (| γ0_0 |) in
-                                secs));
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                                M.alloc (|
-                                  M.never_to_any (|
-                                    M.call_closure (|
-                                      Ty.path "never",
-                                      M.get_function (| "core::panicking::panic_fmt", [], [] |),
-                                      [
-                                        M.call_closure (|
-                                          Ty.path "core::fmt::Arguments",
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::Arguments",
-                                            "new_const",
-                                            [ Value.Integer IntegerKind.Usize 1 ],
-                                            []
-                                          |),
-                                          [
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (|
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.alloc (|
-                                                    Value.Array
-                                                      [
-                                                        M.read (|
-                                                          Value.String "overflow in Duration::new"
-                                                        |)
-                                                      ]
-                                                  |)
-                                                |)
-                                              |)
-                                            |)
-                                          ]
-                                        |)
-                                      ]
-                                    |)
-                                  |)
-                                |)))
                           ]
                         |)
                       |) in
@@ -5405,7 +5361,7 @@ Module time.
     Global Typeclasses Opaque try_from_secs_f64.
   End Impl_core_time_Duration.
   
-  Module Impl_core_ops_arith_Add_for_core_time_Duration.
+  Module Impl_core_ops_arith_Add_core_time_Duration_for_core_time_Duration.
     Definition Self : Ty.t := Ty.path "core::time::Duration".
     
     (*     type Output = Duration; *)
@@ -5454,12 +5410,12 @@ Module time.
       M.IsTraitInstance
         "core::ops::arith::Add"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "core::time::Duration" ]
         Self
         (* Instance *) [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
-  End Impl_core_ops_arith_Add_for_core_time_Duration.
+  End Impl_core_ops_arith_Add_core_time_Duration_for_core_time_Duration.
   
-  Module Impl_core_ops_arith_AddAssign_for_core_time_Duration.
+  Module Impl_core_ops_arith_AddAssign_core_time_Duration_for_core_time_Duration.
     Definition Self : Ty.t := Ty.path "core::time::Duration".
     
     (*
@@ -5502,12 +5458,12 @@ Module time.
       M.IsTraitInstance
         "core::ops::arith::AddAssign"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "core::time::Duration" ]
         Self
         (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
-  End Impl_core_ops_arith_AddAssign_for_core_time_Duration.
+  End Impl_core_ops_arith_AddAssign_core_time_Duration_for_core_time_Duration.
   
-  Module Impl_core_ops_arith_Sub_for_core_time_Duration.
+  Module Impl_core_ops_arith_Sub_core_time_Duration_for_core_time_Duration.
     Definition Self : Ty.t := Ty.path "core::time::Duration".
     
     (*     type Output = Duration; *)
@@ -5556,12 +5512,12 @@ Module time.
       M.IsTraitInstance
         "core::ops::arith::Sub"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "core::time::Duration" ]
         Self
         (* Instance *) [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
-  End Impl_core_ops_arith_Sub_for_core_time_Duration.
+  End Impl_core_ops_arith_Sub_core_time_Duration_for_core_time_Duration.
   
-  Module Impl_core_ops_arith_SubAssign_for_core_time_Duration.
+  Module Impl_core_ops_arith_SubAssign_core_time_Duration_for_core_time_Duration.
     Definition Self : Ty.t := Ty.path "core::time::Duration".
     
     (*
@@ -5604,10 +5560,10 @@ Module time.
       M.IsTraitInstance
         "core::ops::arith::SubAssign"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "core::time::Duration" ]
         Self
         (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
-  End Impl_core_ops_arith_SubAssign_for_core_time_Duration.
+  End Impl_core_ops_arith_SubAssign_core_time_Duration_for_core_time_Duration.
   
   Module Impl_core_ops_arith_Mul_u32_for_core_time_Duration.
     Definition Self : Ty.t := Ty.path "core::time::Duration".
@@ -5859,7 +5815,7 @@ Module time.
         (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
   End Impl_core_ops_arith_DivAssign_u32_for_core_time_Duration.
   
-  Module Impl_core_iter_traits_accum_Sum_for_core_time_Duration.
+  Module Impl_core_iter_traits_accum_Sum_core_time_Duration_for_core_time_Duration.
     Definition Self : Ty.t := Ty.path "core::time::Duration".
     
     (*
@@ -6202,10 +6158,10 @@ Module time.
       M.IsTraitInstance
         "core::iter::traits::accum::Sum"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "core::time::Duration" ]
         Self
         (* Instance *) [ ("sum", InstanceField.Method sum) ].
-  End Impl_core_iter_traits_accum_Sum_for_core_time_Duration.
+  End Impl_core_iter_traits_accum_Sum_core_time_Duration_for_core_time_Duration.
   
   Module Impl_core_iter_traits_accum_Sum_ref__core_time_Duration_for_core_time_Duration.
     Definition Self : Ty.t := Ty.path "core::time::Duration".
@@ -7246,7 +7202,7 @@ Module time.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_core_time_TryFromFloatSecsError.
   
-  Module Impl_core_cmp_PartialEq_for_core_time_TryFromFloatSecsError.
+  Module Impl_core_cmp_PartialEq_core_time_TryFromFloatSecsError_for_core_time_TryFromFloatSecsError.
     Definition Self : Ty.t := Ty.path "core::time::TryFromFloatSecsError".
     
     (* PartialEq *)
@@ -7293,10 +7249,10 @@ Module time.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "core::time::TryFromFloatSecsError" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_core_time_TryFromFloatSecsError.
+  End Impl_core_cmp_PartialEq_core_time_TryFromFloatSecsError_for_core_time_TryFromFloatSecsError.
   
   Module Impl_core_cmp_Eq_for_core_time_TryFromFloatSecsError.
     Definition Self : Ty.t := Ty.path "core::time::TryFromFloatSecsError".
@@ -7595,7 +7551,7 @@ Module time.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_core_time_TryFromFloatSecsErrorKind.
   
-  Module Impl_core_cmp_PartialEq_for_core_time_TryFromFloatSecsErrorKind.
+  Module Impl_core_cmp_PartialEq_core_time_TryFromFloatSecsErrorKind_for_core_time_TryFromFloatSecsErrorKind.
     Definition Self : Ty.t := Ty.path "core::time::TryFromFloatSecsErrorKind".
     
     (* PartialEq *)
@@ -7639,10 +7595,10 @@ Module time.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "core::time::TryFromFloatSecsErrorKind" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_core_time_TryFromFloatSecsErrorKind.
+  End Impl_core_cmp_PartialEq_core_time_TryFromFloatSecsErrorKind_for_core_time_TryFromFloatSecsErrorKind.
   
   Module Impl_core_cmp_Eq_for_core_time_TryFromFloatSecsErrorKind.
     Definition Self : Ty.t := Ty.path "core::time::TryFromFloatSecsErrorKind".

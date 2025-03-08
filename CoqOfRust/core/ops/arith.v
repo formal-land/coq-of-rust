@@ -6,7 +6,7 @@ Module ops.
     (* Trait *)
     (* Empty module 'Add' *)
     
-    Module Impl_core_ops_arith_Add_for_usize.
+    Module Impl_core_ops_arith_Add_usize_for_usize.
       Definition Self : Ty.t := Ty.path "usize".
       
       (*             type Output = $t; *)
@@ -27,13 +27,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Add"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
-    End Impl_core_ops_arith_Add_for_usize.
+    End Impl_core_ops_arith_Add_usize_for_usize.
     
-    Module Impl_core_ops_arith_Add_for_u8.
+    Module Impl_core_ops_arith_Add_u8_for_u8.
       Definition Self : Ty.t := Ty.path "u8".
       
       (*             type Output = $t; *)
@@ -54,13 +54,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Add"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
-    End Impl_core_ops_arith_Add_for_u8.
+    End Impl_core_ops_arith_Add_u8_for_u8.
     
-    Module Impl_core_ops_arith_Add_for_u16.
+    Module Impl_core_ops_arith_Add_u16_for_u16.
       Definition Self : Ty.t := Ty.path "u16".
       
       (*             type Output = $t; *)
@@ -81,13 +81,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Add"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
-    End Impl_core_ops_arith_Add_for_u16.
+    End Impl_core_ops_arith_Add_u16_for_u16.
     
-    Module Impl_core_ops_arith_Add_for_u32.
+    Module Impl_core_ops_arith_Add_u32_for_u32.
       Definition Self : Ty.t := Ty.path "u32".
       
       (*             type Output = $t; *)
@@ -108,13 +108,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Add"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
-    End Impl_core_ops_arith_Add_for_u32.
+    End Impl_core_ops_arith_Add_u32_for_u32.
     
-    Module Impl_core_ops_arith_Add_for_u64.
+    Module Impl_core_ops_arith_Add_u64_for_u64.
       Definition Self : Ty.t := Ty.path "u64".
       
       (*             type Output = $t; *)
@@ -135,13 +135,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Add"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
-    End Impl_core_ops_arith_Add_for_u64.
+    End Impl_core_ops_arith_Add_u64_for_u64.
     
-    Module Impl_core_ops_arith_Add_for_u128.
+    Module Impl_core_ops_arith_Add_u128_for_u128.
       Definition Self : Ty.t := Ty.path "u128".
       
       (*             type Output = $t; *)
@@ -162,13 +162,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Add"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
-    End Impl_core_ops_arith_Add_for_u128.
+    End Impl_core_ops_arith_Add_u128_for_u128.
     
-    Module Impl_core_ops_arith_Add_for_isize.
+    Module Impl_core_ops_arith_Add_isize_for_isize.
       Definition Self : Ty.t := Ty.path "isize".
       
       (*             type Output = $t; *)
@@ -189,13 +189,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Add"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
-    End Impl_core_ops_arith_Add_for_isize.
+    End Impl_core_ops_arith_Add_isize_for_isize.
     
-    Module Impl_core_ops_arith_Add_for_i8.
+    Module Impl_core_ops_arith_Add_i8_for_i8.
       Definition Self : Ty.t := Ty.path "i8".
       
       (*             type Output = $t; *)
@@ -216,13 +216,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Add"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
-    End Impl_core_ops_arith_Add_for_i8.
+    End Impl_core_ops_arith_Add_i8_for_i8.
     
-    Module Impl_core_ops_arith_Add_for_i16.
+    Module Impl_core_ops_arith_Add_i16_for_i16.
       Definition Self : Ty.t := Ty.path "i16".
       
       (*             type Output = $t; *)
@@ -243,13 +243,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Add"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
-    End Impl_core_ops_arith_Add_for_i16.
+    End Impl_core_ops_arith_Add_i16_for_i16.
     
-    Module Impl_core_ops_arith_Add_for_i32.
+    Module Impl_core_ops_arith_Add_i32_for_i32.
       Definition Self : Ty.t := Ty.path "i32".
       
       (*             type Output = $t; *)
@@ -270,13 +270,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Add"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
-    End Impl_core_ops_arith_Add_for_i32.
+    End Impl_core_ops_arith_Add_i32_for_i32.
     
-    Module Impl_core_ops_arith_Add_for_i64.
+    Module Impl_core_ops_arith_Add_i64_for_i64.
       Definition Self : Ty.t := Ty.path "i64".
       
       (*             type Output = $t; *)
@@ -297,13 +297,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Add"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
-    End Impl_core_ops_arith_Add_for_i64.
+    End Impl_core_ops_arith_Add_i64_for_i64.
     
-    Module Impl_core_ops_arith_Add_for_i128.
+    Module Impl_core_ops_arith_Add_i128_for_i128.
       Definition Self : Ty.t := Ty.path "i128".
       
       (*             type Output = $t; *)
@@ -324,13 +324,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Add"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
-    End Impl_core_ops_arith_Add_for_i128.
+    End Impl_core_ops_arith_Add_i128_for_i128.
     
-    Module Impl_core_ops_arith_Add_for_f16.
+    Module Impl_core_ops_arith_Add_f16_for_f16.
       Definition Self : Ty.t := Ty.path "f16".
       
       (*             type Output = $t; *)
@@ -351,13 +351,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Add"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "f16" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
-    End Impl_core_ops_arith_Add_for_f16.
+    End Impl_core_ops_arith_Add_f16_for_f16.
     
-    Module Impl_core_ops_arith_Add_for_f32.
+    Module Impl_core_ops_arith_Add_f32_for_f32.
       Definition Self : Ty.t := Ty.path "f32".
       
       (*             type Output = $t; *)
@@ -378,13 +378,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Add"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "f32" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
-    End Impl_core_ops_arith_Add_for_f32.
+    End Impl_core_ops_arith_Add_f32_for_f32.
     
-    Module Impl_core_ops_arith_Add_for_f64.
+    Module Impl_core_ops_arith_Add_f64_for_f64.
       Definition Self : Ty.t := Ty.path "f64".
       
       (*             type Output = $t; *)
@@ -405,13 +405,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Add"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "f64" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
-    End Impl_core_ops_arith_Add_for_f64.
+    End Impl_core_ops_arith_Add_f64_for_f64.
     
-    Module Impl_core_ops_arith_Add_for_f128.
+    Module Impl_core_ops_arith_Add_f128_for_f128.
       Definition Self : Ty.t := Ty.path "f128".
       
       (*             type Output = $t; *)
@@ -432,16 +432,16 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Add"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "f128" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
-    End Impl_core_ops_arith_Add_for_f128.
+    End Impl_core_ops_arith_Add_f128_for_f128.
     
     (* Trait *)
     (* Empty module 'Sub' *)
     
-    Module Impl_core_ops_arith_Sub_for_usize.
+    Module Impl_core_ops_arith_Sub_usize_for_usize.
       Definition Self : Ty.t := Ty.path "usize".
       
       (*             type Output = $t; *)
@@ -462,13 +462,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Sub"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
-    End Impl_core_ops_arith_Sub_for_usize.
+    End Impl_core_ops_arith_Sub_usize_for_usize.
     
-    Module Impl_core_ops_arith_Sub_for_u8.
+    Module Impl_core_ops_arith_Sub_u8_for_u8.
       Definition Self : Ty.t := Ty.path "u8".
       
       (*             type Output = $t; *)
@@ -489,13 +489,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Sub"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
-    End Impl_core_ops_arith_Sub_for_u8.
+    End Impl_core_ops_arith_Sub_u8_for_u8.
     
-    Module Impl_core_ops_arith_Sub_for_u16.
+    Module Impl_core_ops_arith_Sub_u16_for_u16.
       Definition Self : Ty.t := Ty.path "u16".
       
       (*             type Output = $t; *)
@@ -516,13 +516,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Sub"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
-    End Impl_core_ops_arith_Sub_for_u16.
+    End Impl_core_ops_arith_Sub_u16_for_u16.
     
-    Module Impl_core_ops_arith_Sub_for_u32.
+    Module Impl_core_ops_arith_Sub_u32_for_u32.
       Definition Self : Ty.t := Ty.path "u32".
       
       (*             type Output = $t; *)
@@ -543,13 +543,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Sub"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
-    End Impl_core_ops_arith_Sub_for_u32.
+    End Impl_core_ops_arith_Sub_u32_for_u32.
     
-    Module Impl_core_ops_arith_Sub_for_u64.
+    Module Impl_core_ops_arith_Sub_u64_for_u64.
       Definition Self : Ty.t := Ty.path "u64".
       
       (*             type Output = $t; *)
@@ -570,13 +570,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Sub"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
-    End Impl_core_ops_arith_Sub_for_u64.
+    End Impl_core_ops_arith_Sub_u64_for_u64.
     
-    Module Impl_core_ops_arith_Sub_for_u128.
+    Module Impl_core_ops_arith_Sub_u128_for_u128.
       Definition Self : Ty.t := Ty.path "u128".
       
       (*             type Output = $t; *)
@@ -597,13 +597,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Sub"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
-    End Impl_core_ops_arith_Sub_for_u128.
+    End Impl_core_ops_arith_Sub_u128_for_u128.
     
-    Module Impl_core_ops_arith_Sub_for_isize.
+    Module Impl_core_ops_arith_Sub_isize_for_isize.
       Definition Self : Ty.t := Ty.path "isize".
       
       (*             type Output = $t; *)
@@ -624,13 +624,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Sub"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
-    End Impl_core_ops_arith_Sub_for_isize.
+    End Impl_core_ops_arith_Sub_isize_for_isize.
     
-    Module Impl_core_ops_arith_Sub_for_i8.
+    Module Impl_core_ops_arith_Sub_i8_for_i8.
       Definition Self : Ty.t := Ty.path "i8".
       
       (*             type Output = $t; *)
@@ -651,13 +651,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Sub"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
-    End Impl_core_ops_arith_Sub_for_i8.
+    End Impl_core_ops_arith_Sub_i8_for_i8.
     
-    Module Impl_core_ops_arith_Sub_for_i16.
+    Module Impl_core_ops_arith_Sub_i16_for_i16.
       Definition Self : Ty.t := Ty.path "i16".
       
       (*             type Output = $t; *)
@@ -678,13 +678,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Sub"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
-    End Impl_core_ops_arith_Sub_for_i16.
+    End Impl_core_ops_arith_Sub_i16_for_i16.
     
-    Module Impl_core_ops_arith_Sub_for_i32.
+    Module Impl_core_ops_arith_Sub_i32_for_i32.
       Definition Self : Ty.t := Ty.path "i32".
       
       (*             type Output = $t; *)
@@ -705,13 +705,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Sub"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
-    End Impl_core_ops_arith_Sub_for_i32.
+    End Impl_core_ops_arith_Sub_i32_for_i32.
     
-    Module Impl_core_ops_arith_Sub_for_i64.
+    Module Impl_core_ops_arith_Sub_i64_for_i64.
       Definition Self : Ty.t := Ty.path "i64".
       
       (*             type Output = $t; *)
@@ -732,13 +732,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Sub"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
-    End Impl_core_ops_arith_Sub_for_i64.
+    End Impl_core_ops_arith_Sub_i64_for_i64.
     
-    Module Impl_core_ops_arith_Sub_for_i128.
+    Module Impl_core_ops_arith_Sub_i128_for_i128.
       Definition Self : Ty.t := Ty.path "i128".
       
       (*             type Output = $t; *)
@@ -759,13 +759,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Sub"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
-    End Impl_core_ops_arith_Sub_for_i128.
+    End Impl_core_ops_arith_Sub_i128_for_i128.
     
-    Module Impl_core_ops_arith_Sub_for_f16.
+    Module Impl_core_ops_arith_Sub_f16_for_f16.
       Definition Self : Ty.t := Ty.path "f16".
       
       (*             type Output = $t; *)
@@ -786,13 +786,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Sub"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "f16" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
-    End Impl_core_ops_arith_Sub_for_f16.
+    End Impl_core_ops_arith_Sub_f16_for_f16.
     
-    Module Impl_core_ops_arith_Sub_for_f32.
+    Module Impl_core_ops_arith_Sub_f32_for_f32.
       Definition Self : Ty.t := Ty.path "f32".
       
       (*             type Output = $t; *)
@@ -813,13 +813,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Sub"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "f32" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
-    End Impl_core_ops_arith_Sub_for_f32.
+    End Impl_core_ops_arith_Sub_f32_for_f32.
     
-    Module Impl_core_ops_arith_Sub_for_f64.
+    Module Impl_core_ops_arith_Sub_f64_for_f64.
       Definition Self : Ty.t := Ty.path "f64".
       
       (*             type Output = $t; *)
@@ -840,13 +840,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Sub"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "f64" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
-    End Impl_core_ops_arith_Sub_for_f64.
+    End Impl_core_ops_arith_Sub_f64_for_f64.
     
-    Module Impl_core_ops_arith_Sub_for_f128.
+    Module Impl_core_ops_arith_Sub_f128_for_f128.
       Definition Self : Ty.t := Ty.path "f128".
       
       (*             type Output = $t; *)
@@ -867,16 +867,16 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Sub"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "f128" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
-    End Impl_core_ops_arith_Sub_for_f128.
+    End Impl_core_ops_arith_Sub_f128_for_f128.
     
     (* Trait *)
     (* Empty module 'Mul' *)
     
-    Module Impl_core_ops_arith_Mul_for_usize.
+    Module Impl_core_ops_arith_Mul_usize_for_usize.
       Definition Self : Ty.t := Ty.path "usize".
       
       (*             type Output = $t; *)
@@ -897,13 +897,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Mul"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("mul", InstanceField.Method mul) ].
-    End Impl_core_ops_arith_Mul_for_usize.
+    End Impl_core_ops_arith_Mul_usize_for_usize.
     
-    Module Impl_core_ops_arith_Mul_for_u8.
+    Module Impl_core_ops_arith_Mul_u8_for_u8.
       Definition Self : Ty.t := Ty.path "u8".
       
       (*             type Output = $t; *)
@@ -924,13 +924,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Mul"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("mul", InstanceField.Method mul) ].
-    End Impl_core_ops_arith_Mul_for_u8.
+    End Impl_core_ops_arith_Mul_u8_for_u8.
     
-    Module Impl_core_ops_arith_Mul_for_u16.
+    Module Impl_core_ops_arith_Mul_u16_for_u16.
       Definition Self : Ty.t := Ty.path "u16".
       
       (*             type Output = $t; *)
@@ -951,13 +951,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Mul"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("mul", InstanceField.Method mul) ].
-    End Impl_core_ops_arith_Mul_for_u16.
+    End Impl_core_ops_arith_Mul_u16_for_u16.
     
-    Module Impl_core_ops_arith_Mul_for_u32.
+    Module Impl_core_ops_arith_Mul_u32_for_u32.
       Definition Self : Ty.t := Ty.path "u32".
       
       (*             type Output = $t; *)
@@ -978,13 +978,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Mul"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("mul", InstanceField.Method mul) ].
-    End Impl_core_ops_arith_Mul_for_u32.
+    End Impl_core_ops_arith_Mul_u32_for_u32.
     
-    Module Impl_core_ops_arith_Mul_for_u64.
+    Module Impl_core_ops_arith_Mul_u64_for_u64.
       Definition Self : Ty.t := Ty.path "u64".
       
       (*             type Output = $t; *)
@@ -1005,13 +1005,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Mul"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("mul", InstanceField.Method mul) ].
-    End Impl_core_ops_arith_Mul_for_u64.
+    End Impl_core_ops_arith_Mul_u64_for_u64.
     
-    Module Impl_core_ops_arith_Mul_for_u128.
+    Module Impl_core_ops_arith_Mul_u128_for_u128.
       Definition Self : Ty.t := Ty.path "u128".
       
       (*             type Output = $t; *)
@@ -1032,13 +1032,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Mul"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("mul", InstanceField.Method mul) ].
-    End Impl_core_ops_arith_Mul_for_u128.
+    End Impl_core_ops_arith_Mul_u128_for_u128.
     
-    Module Impl_core_ops_arith_Mul_for_isize.
+    Module Impl_core_ops_arith_Mul_isize_for_isize.
       Definition Self : Ty.t := Ty.path "isize".
       
       (*             type Output = $t; *)
@@ -1059,13 +1059,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Mul"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("mul", InstanceField.Method mul) ].
-    End Impl_core_ops_arith_Mul_for_isize.
+    End Impl_core_ops_arith_Mul_isize_for_isize.
     
-    Module Impl_core_ops_arith_Mul_for_i8.
+    Module Impl_core_ops_arith_Mul_i8_for_i8.
       Definition Self : Ty.t := Ty.path "i8".
       
       (*             type Output = $t; *)
@@ -1086,13 +1086,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Mul"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("mul", InstanceField.Method mul) ].
-    End Impl_core_ops_arith_Mul_for_i8.
+    End Impl_core_ops_arith_Mul_i8_for_i8.
     
-    Module Impl_core_ops_arith_Mul_for_i16.
+    Module Impl_core_ops_arith_Mul_i16_for_i16.
       Definition Self : Ty.t := Ty.path "i16".
       
       (*             type Output = $t; *)
@@ -1113,13 +1113,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Mul"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("mul", InstanceField.Method mul) ].
-    End Impl_core_ops_arith_Mul_for_i16.
+    End Impl_core_ops_arith_Mul_i16_for_i16.
     
-    Module Impl_core_ops_arith_Mul_for_i32.
+    Module Impl_core_ops_arith_Mul_i32_for_i32.
       Definition Self : Ty.t := Ty.path "i32".
       
       (*             type Output = $t; *)
@@ -1140,13 +1140,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Mul"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("mul", InstanceField.Method mul) ].
-    End Impl_core_ops_arith_Mul_for_i32.
+    End Impl_core_ops_arith_Mul_i32_for_i32.
     
-    Module Impl_core_ops_arith_Mul_for_i64.
+    Module Impl_core_ops_arith_Mul_i64_for_i64.
       Definition Self : Ty.t := Ty.path "i64".
       
       (*             type Output = $t; *)
@@ -1167,13 +1167,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Mul"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("mul", InstanceField.Method mul) ].
-    End Impl_core_ops_arith_Mul_for_i64.
+    End Impl_core_ops_arith_Mul_i64_for_i64.
     
-    Module Impl_core_ops_arith_Mul_for_i128.
+    Module Impl_core_ops_arith_Mul_i128_for_i128.
       Definition Self : Ty.t := Ty.path "i128".
       
       (*             type Output = $t; *)
@@ -1194,13 +1194,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Mul"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("mul", InstanceField.Method mul) ].
-    End Impl_core_ops_arith_Mul_for_i128.
+    End Impl_core_ops_arith_Mul_i128_for_i128.
     
-    Module Impl_core_ops_arith_Mul_for_f16.
+    Module Impl_core_ops_arith_Mul_f16_for_f16.
       Definition Self : Ty.t := Ty.path "f16".
       
       (*             type Output = $t; *)
@@ -1221,13 +1221,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Mul"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "f16" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("mul", InstanceField.Method mul) ].
-    End Impl_core_ops_arith_Mul_for_f16.
+    End Impl_core_ops_arith_Mul_f16_for_f16.
     
-    Module Impl_core_ops_arith_Mul_for_f32.
+    Module Impl_core_ops_arith_Mul_f32_for_f32.
       Definition Self : Ty.t := Ty.path "f32".
       
       (*             type Output = $t; *)
@@ -1248,13 +1248,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Mul"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "f32" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("mul", InstanceField.Method mul) ].
-    End Impl_core_ops_arith_Mul_for_f32.
+    End Impl_core_ops_arith_Mul_f32_for_f32.
     
-    Module Impl_core_ops_arith_Mul_for_f64.
+    Module Impl_core_ops_arith_Mul_f64_for_f64.
       Definition Self : Ty.t := Ty.path "f64".
       
       (*             type Output = $t; *)
@@ -1275,13 +1275,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Mul"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "f64" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("mul", InstanceField.Method mul) ].
-    End Impl_core_ops_arith_Mul_for_f64.
+    End Impl_core_ops_arith_Mul_f64_for_f64.
     
-    Module Impl_core_ops_arith_Mul_for_f128.
+    Module Impl_core_ops_arith_Mul_f128_for_f128.
       Definition Self : Ty.t := Ty.path "f128".
       
       (*             type Output = $t; *)
@@ -1302,16 +1302,16 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Mul"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "f128" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("mul", InstanceField.Method mul) ].
-    End Impl_core_ops_arith_Mul_for_f128.
+    End Impl_core_ops_arith_Mul_f128_for_f128.
     
     (* Trait *)
     (* Empty module 'Div' *)
     
-    Module Impl_core_ops_arith_Div_for_usize.
+    Module Impl_core_ops_arith_Div_usize_for_usize.
       Definition Self : Ty.t := Ty.path "usize".
       
       (*             type Output = $t; *)
@@ -1332,13 +1332,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Div"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
-    End Impl_core_ops_arith_Div_for_usize.
+    End Impl_core_ops_arith_Div_usize_for_usize.
     
-    Module Impl_core_ops_arith_Div_for_u8.
+    Module Impl_core_ops_arith_Div_u8_for_u8.
       Definition Self : Ty.t := Ty.path "u8".
       
       (*             type Output = $t; *)
@@ -1359,13 +1359,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Div"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
-    End Impl_core_ops_arith_Div_for_u8.
+    End Impl_core_ops_arith_Div_u8_for_u8.
     
-    Module Impl_core_ops_arith_Div_for_u16.
+    Module Impl_core_ops_arith_Div_u16_for_u16.
       Definition Self : Ty.t := Ty.path "u16".
       
       (*             type Output = $t; *)
@@ -1386,13 +1386,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Div"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
-    End Impl_core_ops_arith_Div_for_u16.
+    End Impl_core_ops_arith_Div_u16_for_u16.
     
-    Module Impl_core_ops_arith_Div_for_u32.
+    Module Impl_core_ops_arith_Div_u32_for_u32.
       Definition Self : Ty.t := Ty.path "u32".
       
       (*             type Output = $t; *)
@@ -1413,13 +1413,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Div"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
-    End Impl_core_ops_arith_Div_for_u32.
+    End Impl_core_ops_arith_Div_u32_for_u32.
     
-    Module Impl_core_ops_arith_Div_for_u64.
+    Module Impl_core_ops_arith_Div_u64_for_u64.
       Definition Self : Ty.t := Ty.path "u64".
       
       (*             type Output = $t; *)
@@ -1440,13 +1440,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Div"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
-    End Impl_core_ops_arith_Div_for_u64.
+    End Impl_core_ops_arith_Div_u64_for_u64.
     
-    Module Impl_core_ops_arith_Div_for_u128.
+    Module Impl_core_ops_arith_Div_u128_for_u128.
       Definition Self : Ty.t := Ty.path "u128".
       
       (*             type Output = $t; *)
@@ -1467,13 +1467,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Div"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
-    End Impl_core_ops_arith_Div_for_u128.
+    End Impl_core_ops_arith_Div_u128_for_u128.
     
-    Module Impl_core_ops_arith_Div_for_isize.
+    Module Impl_core_ops_arith_Div_isize_for_isize.
       Definition Self : Ty.t := Ty.path "isize".
       
       (*             type Output = $t; *)
@@ -1494,13 +1494,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Div"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
-    End Impl_core_ops_arith_Div_for_isize.
+    End Impl_core_ops_arith_Div_isize_for_isize.
     
-    Module Impl_core_ops_arith_Div_for_i8.
+    Module Impl_core_ops_arith_Div_i8_for_i8.
       Definition Self : Ty.t := Ty.path "i8".
       
       (*             type Output = $t; *)
@@ -1521,13 +1521,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Div"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
-    End Impl_core_ops_arith_Div_for_i8.
+    End Impl_core_ops_arith_Div_i8_for_i8.
     
-    Module Impl_core_ops_arith_Div_for_i16.
+    Module Impl_core_ops_arith_Div_i16_for_i16.
       Definition Self : Ty.t := Ty.path "i16".
       
       (*             type Output = $t; *)
@@ -1548,13 +1548,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Div"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
-    End Impl_core_ops_arith_Div_for_i16.
+    End Impl_core_ops_arith_Div_i16_for_i16.
     
-    Module Impl_core_ops_arith_Div_for_i32.
+    Module Impl_core_ops_arith_Div_i32_for_i32.
       Definition Self : Ty.t := Ty.path "i32".
       
       (*             type Output = $t; *)
@@ -1575,13 +1575,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Div"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
-    End Impl_core_ops_arith_Div_for_i32.
+    End Impl_core_ops_arith_Div_i32_for_i32.
     
-    Module Impl_core_ops_arith_Div_for_i64.
+    Module Impl_core_ops_arith_Div_i64_for_i64.
       Definition Self : Ty.t := Ty.path "i64".
       
       (*             type Output = $t; *)
@@ -1602,13 +1602,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Div"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
-    End Impl_core_ops_arith_Div_for_i64.
+    End Impl_core_ops_arith_Div_i64_for_i64.
     
-    Module Impl_core_ops_arith_Div_for_i128.
+    Module Impl_core_ops_arith_Div_i128_for_i128.
       Definition Self : Ty.t := Ty.path "i128".
       
       (*             type Output = $t; *)
@@ -1629,13 +1629,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Div"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
-    End Impl_core_ops_arith_Div_for_i128.
+    End Impl_core_ops_arith_Div_i128_for_i128.
     
-    Module Impl_core_ops_arith_Div_for_f16.
+    Module Impl_core_ops_arith_Div_f16_for_f16.
       Definition Self : Ty.t := Ty.path "f16".
       
       (*             type Output = $t; *)
@@ -1656,13 +1656,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Div"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "f16" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
-    End Impl_core_ops_arith_Div_for_f16.
+    End Impl_core_ops_arith_Div_f16_for_f16.
     
-    Module Impl_core_ops_arith_Div_for_f32.
+    Module Impl_core_ops_arith_Div_f32_for_f32.
       Definition Self : Ty.t := Ty.path "f32".
       
       (*             type Output = $t; *)
@@ -1683,13 +1683,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Div"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "f32" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
-    End Impl_core_ops_arith_Div_for_f32.
+    End Impl_core_ops_arith_Div_f32_for_f32.
     
-    Module Impl_core_ops_arith_Div_for_f64.
+    Module Impl_core_ops_arith_Div_f64_for_f64.
       Definition Self : Ty.t := Ty.path "f64".
       
       (*             type Output = $t; *)
@@ -1710,13 +1710,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Div"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "f64" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
-    End Impl_core_ops_arith_Div_for_f64.
+    End Impl_core_ops_arith_Div_f64_for_f64.
     
-    Module Impl_core_ops_arith_Div_for_f128.
+    Module Impl_core_ops_arith_Div_f128_for_f128.
       Definition Self : Ty.t := Ty.path "f128".
       
       (*             type Output = $t; *)
@@ -1737,16 +1737,16 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Div"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "f128" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("div", InstanceField.Method div) ].
-    End Impl_core_ops_arith_Div_for_f128.
+    End Impl_core_ops_arith_Div_f128_for_f128.
     
     (* Trait *)
     (* Empty module 'Rem' *)
     
-    Module Impl_core_ops_arith_Rem_for_usize.
+    Module Impl_core_ops_arith_Rem_usize_for_usize.
       Definition Self : Ty.t := Ty.path "usize".
       
       (*             type Output = $t; *)
@@ -1767,13 +1767,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Rem"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
-    End Impl_core_ops_arith_Rem_for_usize.
+    End Impl_core_ops_arith_Rem_usize_for_usize.
     
-    Module Impl_core_ops_arith_Rem_for_u8.
+    Module Impl_core_ops_arith_Rem_u8_for_u8.
       Definition Self : Ty.t := Ty.path "u8".
       
       (*             type Output = $t; *)
@@ -1794,13 +1794,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Rem"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
-    End Impl_core_ops_arith_Rem_for_u8.
+    End Impl_core_ops_arith_Rem_u8_for_u8.
     
-    Module Impl_core_ops_arith_Rem_for_u16.
+    Module Impl_core_ops_arith_Rem_u16_for_u16.
       Definition Self : Ty.t := Ty.path "u16".
       
       (*             type Output = $t; *)
@@ -1821,13 +1821,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Rem"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
-    End Impl_core_ops_arith_Rem_for_u16.
+    End Impl_core_ops_arith_Rem_u16_for_u16.
     
-    Module Impl_core_ops_arith_Rem_for_u32.
+    Module Impl_core_ops_arith_Rem_u32_for_u32.
       Definition Self : Ty.t := Ty.path "u32".
       
       (*             type Output = $t; *)
@@ -1848,13 +1848,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Rem"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
-    End Impl_core_ops_arith_Rem_for_u32.
+    End Impl_core_ops_arith_Rem_u32_for_u32.
     
-    Module Impl_core_ops_arith_Rem_for_u64.
+    Module Impl_core_ops_arith_Rem_u64_for_u64.
       Definition Self : Ty.t := Ty.path "u64".
       
       (*             type Output = $t; *)
@@ -1875,13 +1875,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Rem"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
-    End Impl_core_ops_arith_Rem_for_u64.
+    End Impl_core_ops_arith_Rem_u64_for_u64.
     
-    Module Impl_core_ops_arith_Rem_for_u128.
+    Module Impl_core_ops_arith_Rem_u128_for_u128.
       Definition Self : Ty.t := Ty.path "u128".
       
       (*             type Output = $t; *)
@@ -1902,13 +1902,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Rem"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
-    End Impl_core_ops_arith_Rem_for_u128.
+    End Impl_core_ops_arith_Rem_u128_for_u128.
     
-    Module Impl_core_ops_arith_Rem_for_isize.
+    Module Impl_core_ops_arith_Rem_isize_for_isize.
       Definition Self : Ty.t := Ty.path "isize".
       
       (*             type Output = $t; *)
@@ -1929,13 +1929,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Rem"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
-    End Impl_core_ops_arith_Rem_for_isize.
+    End Impl_core_ops_arith_Rem_isize_for_isize.
     
-    Module Impl_core_ops_arith_Rem_for_i8.
+    Module Impl_core_ops_arith_Rem_i8_for_i8.
       Definition Self : Ty.t := Ty.path "i8".
       
       (*             type Output = $t; *)
@@ -1956,13 +1956,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Rem"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
-    End Impl_core_ops_arith_Rem_for_i8.
+    End Impl_core_ops_arith_Rem_i8_for_i8.
     
-    Module Impl_core_ops_arith_Rem_for_i16.
+    Module Impl_core_ops_arith_Rem_i16_for_i16.
       Definition Self : Ty.t := Ty.path "i16".
       
       (*             type Output = $t; *)
@@ -1983,13 +1983,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Rem"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
-    End Impl_core_ops_arith_Rem_for_i16.
+    End Impl_core_ops_arith_Rem_i16_for_i16.
     
-    Module Impl_core_ops_arith_Rem_for_i32.
+    Module Impl_core_ops_arith_Rem_i32_for_i32.
       Definition Self : Ty.t := Ty.path "i32".
       
       (*             type Output = $t; *)
@@ -2010,13 +2010,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Rem"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
-    End Impl_core_ops_arith_Rem_for_i32.
+    End Impl_core_ops_arith_Rem_i32_for_i32.
     
-    Module Impl_core_ops_arith_Rem_for_i64.
+    Module Impl_core_ops_arith_Rem_i64_for_i64.
       Definition Self : Ty.t := Ty.path "i64".
       
       (*             type Output = $t; *)
@@ -2037,13 +2037,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Rem"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
-    End Impl_core_ops_arith_Rem_for_i64.
+    End Impl_core_ops_arith_Rem_i64_for_i64.
     
-    Module Impl_core_ops_arith_Rem_for_i128.
+    Module Impl_core_ops_arith_Rem_i128_for_i128.
       Definition Self : Ty.t := Ty.path "i128".
       
       (*             type Output = $t; *)
@@ -2064,13 +2064,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Rem"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
-    End Impl_core_ops_arith_Rem_for_i128.
+    End Impl_core_ops_arith_Rem_i128_for_i128.
     
-    Module Impl_core_ops_arith_Rem_for_f16.
+    Module Impl_core_ops_arith_Rem_f16_for_f16.
       Definition Self : Ty.t := Ty.path "f16".
       
       (*             type Output = $t; *)
@@ -2091,13 +2091,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Rem"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "f16" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
-    End Impl_core_ops_arith_Rem_for_f16.
+    End Impl_core_ops_arith_Rem_f16_for_f16.
     
-    Module Impl_core_ops_arith_Rem_for_f32.
+    Module Impl_core_ops_arith_Rem_f32_for_f32.
       Definition Self : Ty.t := Ty.path "f32".
       
       (*             type Output = $t; *)
@@ -2118,13 +2118,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Rem"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "f32" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
-    End Impl_core_ops_arith_Rem_for_f32.
+    End Impl_core_ops_arith_Rem_f32_for_f32.
     
-    Module Impl_core_ops_arith_Rem_for_f64.
+    Module Impl_core_ops_arith_Rem_f64_for_f64.
       Definition Self : Ty.t := Ty.path "f64".
       
       (*             type Output = $t; *)
@@ -2145,13 +2145,13 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Rem"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "f64" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
-    End Impl_core_ops_arith_Rem_for_f64.
+    End Impl_core_ops_arith_Rem_f64_for_f64.
     
-    Module Impl_core_ops_arith_Rem_for_f128.
+    Module Impl_core_ops_arith_Rem_f128_for_f128.
       Definition Self : Ty.t := Ty.path "f128".
       
       (*             type Output = $t; *)
@@ -2172,11 +2172,11 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::Rem"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "f128" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("rem", InstanceField.Method rem) ].
-    End Impl_core_ops_arith_Rem_for_f128.
+    End Impl_core_ops_arith_Rem_f128_for_f128.
     
     (* Trait *)
     (* Empty module 'Neg' *)
@@ -2444,7 +2444,7 @@ Module ops.
     (* Trait *)
     (* Empty module 'AddAssign' *)
     
-    Module Impl_core_ops_arith_AddAssign_for_usize.
+    Module Impl_core_ops_arith_AddAssign_usize_for_usize.
       Definition Self : Ty.t := Ty.path "usize".
       
       (*             fn add_assign(&mut self, other: $t) { *self += other } *)
@@ -2463,12 +2463,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
-    End Impl_core_ops_arith_AddAssign_for_usize.
+    End Impl_core_ops_arith_AddAssign_usize_for_usize.
     
-    Module Impl_core_ops_arith_AddAssign_for_u8.
+    Module Impl_core_ops_arith_AddAssign_u8_for_u8.
       Definition Self : Ty.t := Ty.path "u8".
       
       (*             fn add_assign(&mut self, other: $t) { *self += other } *)
@@ -2487,12 +2487,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
-    End Impl_core_ops_arith_AddAssign_for_u8.
+    End Impl_core_ops_arith_AddAssign_u8_for_u8.
     
-    Module Impl_core_ops_arith_AddAssign_for_u16.
+    Module Impl_core_ops_arith_AddAssign_u16_for_u16.
       Definition Self : Ty.t := Ty.path "u16".
       
       (*             fn add_assign(&mut self, other: $t) { *self += other } *)
@@ -2511,12 +2511,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
-    End Impl_core_ops_arith_AddAssign_for_u16.
+    End Impl_core_ops_arith_AddAssign_u16_for_u16.
     
-    Module Impl_core_ops_arith_AddAssign_for_u32.
+    Module Impl_core_ops_arith_AddAssign_u32_for_u32.
       Definition Self : Ty.t := Ty.path "u32".
       
       (*             fn add_assign(&mut self, other: $t) { *self += other } *)
@@ -2535,12 +2535,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
-    End Impl_core_ops_arith_AddAssign_for_u32.
+    End Impl_core_ops_arith_AddAssign_u32_for_u32.
     
-    Module Impl_core_ops_arith_AddAssign_for_u64.
+    Module Impl_core_ops_arith_AddAssign_u64_for_u64.
       Definition Self : Ty.t := Ty.path "u64".
       
       (*             fn add_assign(&mut self, other: $t) { *self += other } *)
@@ -2559,12 +2559,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
-    End Impl_core_ops_arith_AddAssign_for_u64.
+    End Impl_core_ops_arith_AddAssign_u64_for_u64.
     
-    Module Impl_core_ops_arith_AddAssign_for_u128.
+    Module Impl_core_ops_arith_AddAssign_u128_for_u128.
       Definition Self : Ty.t := Ty.path "u128".
       
       (*             fn add_assign(&mut self, other: $t) { *self += other } *)
@@ -2583,12 +2583,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
-    End Impl_core_ops_arith_AddAssign_for_u128.
+    End Impl_core_ops_arith_AddAssign_u128_for_u128.
     
-    Module Impl_core_ops_arith_AddAssign_for_isize.
+    Module Impl_core_ops_arith_AddAssign_isize_for_isize.
       Definition Self : Ty.t := Ty.path "isize".
       
       (*             fn add_assign(&mut self, other: $t) { *self += other } *)
@@ -2607,12 +2607,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
-    End Impl_core_ops_arith_AddAssign_for_isize.
+    End Impl_core_ops_arith_AddAssign_isize_for_isize.
     
-    Module Impl_core_ops_arith_AddAssign_for_i8.
+    Module Impl_core_ops_arith_AddAssign_i8_for_i8.
       Definition Self : Ty.t := Ty.path "i8".
       
       (*             fn add_assign(&mut self, other: $t) { *self += other } *)
@@ -2631,12 +2631,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
-    End Impl_core_ops_arith_AddAssign_for_i8.
+    End Impl_core_ops_arith_AddAssign_i8_for_i8.
     
-    Module Impl_core_ops_arith_AddAssign_for_i16.
+    Module Impl_core_ops_arith_AddAssign_i16_for_i16.
       Definition Self : Ty.t := Ty.path "i16".
       
       (*             fn add_assign(&mut self, other: $t) { *self += other } *)
@@ -2655,12 +2655,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
-    End Impl_core_ops_arith_AddAssign_for_i16.
+    End Impl_core_ops_arith_AddAssign_i16_for_i16.
     
-    Module Impl_core_ops_arith_AddAssign_for_i32.
+    Module Impl_core_ops_arith_AddAssign_i32_for_i32.
       Definition Self : Ty.t := Ty.path "i32".
       
       (*             fn add_assign(&mut self, other: $t) { *self += other } *)
@@ -2679,12 +2679,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
-    End Impl_core_ops_arith_AddAssign_for_i32.
+    End Impl_core_ops_arith_AddAssign_i32_for_i32.
     
-    Module Impl_core_ops_arith_AddAssign_for_i64.
+    Module Impl_core_ops_arith_AddAssign_i64_for_i64.
       Definition Self : Ty.t := Ty.path "i64".
       
       (*             fn add_assign(&mut self, other: $t) { *self += other } *)
@@ -2703,12 +2703,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
-    End Impl_core_ops_arith_AddAssign_for_i64.
+    End Impl_core_ops_arith_AddAssign_i64_for_i64.
     
-    Module Impl_core_ops_arith_AddAssign_for_i128.
+    Module Impl_core_ops_arith_AddAssign_i128_for_i128.
       Definition Self : Ty.t := Ty.path "i128".
       
       (*             fn add_assign(&mut self, other: $t) { *self += other } *)
@@ -2727,12 +2727,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
-    End Impl_core_ops_arith_AddAssign_for_i128.
+    End Impl_core_ops_arith_AddAssign_i128_for_i128.
     
-    Module Impl_core_ops_arith_AddAssign_for_f16.
+    Module Impl_core_ops_arith_AddAssign_f16_for_f16.
       Definition Self : Ty.t := Ty.path "f16".
       
       (*             fn add_assign(&mut self, other: $t) { *self += other } *)
@@ -2751,12 +2751,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "f16" ]
           Self
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
-    End Impl_core_ops_arith_AddAssign_for_f16.
+    End Impl_core_ops_arith_AddAssign_f16_for_f16.
     
-    Module Impl_core_ops_arith_AddAssign_for_f32.
+    Module Impl_core_ops_arith_AddAssign_f32_for_f32.
       Definition Self : Ty.t := Ty.path "f32".
       
       (*             fn add_assign(&mut self, other: $t) { *self += other } *)
@@ -2775,12 +2775,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "f32" ]
           Self
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
-    End Impl_core_ops_arith_AddAssign_for_f32.
+    End Impl_core_ops_arith_AddAssign_f32_for_f32.
     
-    Module Impl_core_ops_arith_AddAssign_for_f64.
+    Module Impl_core_ops_arith_AddAssign_f64_for_f64.
       Definition Self : Ty.t := Ty.path "f64".
       
       (*             fn add_assign(&mut self, other: $t) { *self += other } *)
@@ -2799,12 +2799,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "f64" ]
           Self
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
-    End Impl_core_ops_arith_AddAssign_for_f64.
+    End Impl_core_ops_arith_AddAssign_f64_for_f64.
     
-    Module Impl_core_ops_arith_AddAssign_for_f128.
+    Module Impl_core_ops_arith_AddAssign_f128_for_f128.
       Definition Self : Ty.t := Ty.path "f128".
       
       (*             fn add_assign(&mut self, other: $t) { *self += other } *)
@@ -2823,15 +2823,15 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::AddAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "f128" ]
           Self
           (* Instance *) [ ("add_assign", InstanceField.Method add_assign) ].
-    End Impl_core_ops_arith_AddAssign_for_f128.
+    End Impl_core_ops_arith_AddAssign_f128_for_f128.
     
     (* Trait *)
     (* Empty module 'SubAssign' *)
     
-    Module Impl_core_ops_arith_SubAssign_for_usize.
+    Module Impl_core_ops_arith_SubAssign_usize_for_usize.
       Definition Self : Ty.t := Ty.path "usize".
       
       (*             fn sub_assign(&mut self, other: $t) { *self -= other } *)
@@ -2850,12 +2850,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
-    End Impl_core_ops_arith_SubAssign_for_usize.
+    End Impl_core_ops_arith_SubAssign_usize_for_usize.
     
-    Module Impl_core_ops_arith_SubAssign_for_u8.
+    Module Impl_core_ops_arith_SubAssign_u8_for_u8.
       Definition Self : Ty.t := Ty.path "u8".
       
       (*             fn sub_assign(&mut self, other: $t) { *self -= other } *)
@@ -2874,12 +2874,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
-    End Impl_core_ops_arith_SubAssign_for_u8.
+    End Impl_core_ops_arith_SubAssign_u8_for_u8.
     
-    Module Impl_core_ops_arith_SubAssign_for_u16.
+    Module Impl_core_ops_arith_SubAssign_u16_for_u16.
       Definition Self : Ty.t := Ty.path "u16".
       
       (*             fn sub_assign(&mut self, other: $t) { *self -= other } *)
@@ -2898,12 +2898,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
-    End Impl_core_ops_arith_SubAssign_for_u16.
+    End Impl_core_ops_arith_SubAssign_u16_for_u16.
     
-    Module Impl_core_ops_arith_SubAssign_for_u32.
+    Module Impl_core_ops_arith_SubAssign_u32_for_u32.
       Definition Self : Ty.t := Ty.path "u32".
       
       (*             fn sub_assign(&mut self, other: $t) { *self -= other } *)
@@ -2922,12 +2922,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
-    End Impl_core_ops_arith_SubAssign_for_u32.
+    End Impl_core_ops_arith_SubAssign_u32_for_u32.
     
-    Module Impl_core_ops_arith_SubAssign_for_u64.
+    Module Impl_core_ops_arith_SubAssign_u64_for_u64.
       Definition Self : Ty.t := Ty.path "u64".
       
       (*             fn sub_assign(&mut self, other: $t) { *self -= other } *)
@@ -2946,12 +2946,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
-    End Impl_core_ops_arith_SubAssign_for_u64.
+    End Impl_core_ops_arith_SubAssign_u64_for_u64.
     
-    Module Impl_core_ops_arith_SubAssign_for_u128.
+    Module Impl_core_ops_arith_SubAssign_u128_for_u128.
       Definition Self : Ty.t := Ty.path "u128".
       
       (*             fn sub_assign(&mut self, other: $t) { *self -= other } *)
@@ -2970,12 +2970,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
-    End Impl_core_ops_arith_SubAssign_for_u128.
+    End Impl_core_ops_arith_SubAssign_u128_for_u128.
     
-    Module Impl_core_ops_arith_SubAssign_for_isize.
+    Module Impl_core_ops_arith_SubAssign_isize_for_isize.
       Definition Self : Ty.t := Ty.path "isize".
       
       (*             fn sub_assign(&mut self, other: $t) { *self -= other } *)
@@ -2994,12 +2994,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
-    End Impl_core_ops_arith_SubAssign_for_isize.
+    End Impl_core_ops_arith_SubAssign_isize_for_isize.
     
-    Module Impl_core_ops_arith_SubAssign_for_i8.
+    Module Impl_core_ops_arith_SubAssign_i8_for_i8.
       Definition Self : Ty.t := Ty.path "i8".
       
       (*             fn sub_assign(&mut self, other: $t) { *self -= other } *)
@@ -3018,12 +3018,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
-    End Impl_core_ops_arith_SubAssign_for_i8.
+    End Impl_core_ops_arith_SubAssign_i8_for_i8.
     
-    Module Impl_core_ops_arith_SubAssign_for_i16.
+    Module Impl_core_ops_arith_SubAssign_i16_for_i16.
       Definition Self : Ty.t := Ty.path "i16".
       
       (*             fn sub_assign(&mut self, other: $t) { *self -= other } *)
@@ -3042,12 +3042,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
-    End Impl_core_ops_arith_SubAssign_for_i16.
+    End Impl_core_ops_arith_SubAssign_i16_for_i16.
     
-    Module Impl_core_ops_arith_SubAssign_for_i32.
+    Module Impl_core_ops_arith_SubAssign_i32_for_i32.
       Definition Self : Ty.t := Ty.path "i32".
       
       (*             fn sub_assign(&mut self, other: $t) { *self -= other } *)
@@ -3066,12 +3066,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
-    End Impl_core_ops_arith_SubAssign_for_i32.
+    End Impl_core_ops_arith_SubAssign_i32_for_i32.
     
-    Module Impl_core_ops_arith_SubAssign_for_i64.
+    Module Impl_core_ops_arith_SubAssign_i64_for_i64.
       Definition Self : Ty.t := Ty.path "i64".
       
       (*             fn sub_assign(&mut self, other: $t) { *self -= other } *)
@@ -3090,12 +3090,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
-    End Impl_core_ops_arith_SubAssign_for_i64.
+    End Impl_core_ops_arith_SubAssign_i64_for_i64.
     
-    Module Impl_core_ops_arith_SubAssign_for_i128.
+    Module Impl_core_ops_arith_SubAssign_i128_for_i128.
       Definition Self : Ty.t := Ty.path "i128".
       
       (*             fn sub_assign(&mut self, other: $t) { *self -= other } *)
@@ -3114,12 +3114,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
-    End Impl_core_ops_arith_SubAssign_for_i128.
+    End Impl_core_ops_arith_SubAssign_i128_for_i128.
     
-    Module Impl_core_ops_arith_SubAssign_for_f16.
+    Module Impl_core_ops_arith_SubAssign_f16_for_f16.
       Definition Self : Ty.t := Ty.path "f16".
       
       (*             fn sub_assign(&mut self, other: $t) { *self -= other } *)
@@ -3138,12 +3138,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "f16" ]
           Self
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
-    End Impl_core_ops_arith_SubAssign_for_f16.
+    End Impl_core_ops_arith_SubAssign_f16_for_f16.
     
-    Module Impl_core_ops_arith_SubAssign_for_f32.
+    Module Impl_core_ops_arith_SubAssign_f32_for_f32.
       Definition Self : Ty.t := Ty.path "f32".
       
       (*             fn sub_assign(&mut self, other: $t) { *self -= other } *)
@@ -3162,12 +3162,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "f32" ]
           Self
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
-    End Impl_core_ops_arith_SubAssign_for_f32.
+    End Impl_core_ops_arith_SubAssign_f32_for_f32.
     
-    Module Impl_core_ops_arith_SubAssign_for_f64.
+    Module Impl_core_ops_arith_SubAssign_f64_for_f64.
       Definition Self : Ty.t := Ty.path "f64".
       
       (*             fn sub_assign(&mut self, other: $t) { *self -= other } *)
@@ -3186,12 +3186,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "f64" ]
           Self
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
-    End Impl_core_ops_arith_SubAssign_for_f64.
+    End Impl_core_ops_arith_SubAssign_f64_for_f64.
     
-    Module Impl_core_ops_arith_SubAssign_for_f128.
+    Module Impl_core_ops_arith_SubAssign_f128_for_f128.
       Definition Self : Ty.t := Ty.path "f128".
       
       (*             fn sub_assign(&mut self, other: $t) { *self -= other } *)
@@ -3210,15 +3210,15 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::SubAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "f128" ]
           Self
           (* Instance *) [ ("sub_assign", InstanceField.Method sub_assign) ].
-    End Impl_core_ops_arith_SubAssign_for_f128.
+    End Impl_core_ops_arith_SubAssign_f128_for_f128.
     
     (* Trait *)
     (* Empty module 'MulAssign' *)
     
-    Module Impl_core_ops_arith_MulAssign_for_usize.
+    Module Impl_core_ops_arith_MulAssign_usize_for_usize.
       Definition Self : Ty.t := Ty.path "usize".
       
       (*             fn mul_assign(&mut self, other: $t) { *self *= other } *)
@@ -3237,12 +3237,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
-    End Impl_core_ops_arith_MulAssign_for_usize.
+    End Impl_core_ops_arith_MulAssign_usize_for_usize.
     
-    Module Impl_core_ops_arith_MulAssign_for_u8.
+    Module Impl_core_ops_arith_MulAssign_u8_for_u8.
       Definition Self : Ty.t := Ty.path "u8".
       
       (*             fn mul_assign(&mut self, other: $t) { *self *= other } *)
@@ -3261,12 +3261,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
-    End Impl_core_ops_arith_MulAssign_for_u8.
+    End Impl_core_ops_arith_MulAssign_u8_for_u8.
     
-    Module Impl_core_ops_arith_MulAssign_for_u16.
+    Module Impl_core_ops_arith_MulAssign_u16_for_u16.
       Definition Self : Ty.t := Ty.path "u16".
       
       (*             fn mul_assign(&mut self, other: $t) { *self *= other } *)
@@ -3285,12 +3285,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
-    End Impl_core_ops_arith_MulAssign_for_u16.
+    End Impl_core_ops_arith_MulAssign_u16_for_u16.
     
-    Module Impl_core_ops_arith_MulAssign_for_u32.
+    Module Impl_core_ops_arith_MulAssign_u32_for_u32.
       Definition Self : Ty.t := Ty.path "u32".
       
       (*             fn mul_assign(&mut self, other: $t) { *self *= other } *)
@@ -3309,12 +3309,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
-    End Impl_core_ops_arith_MulAssign_for_u32.
+    End Impl_core_ops_arith_MulAssign_u32_for_u32.
     
-    Module Impl_core_ops_arith_MulAssign_for_u64.
+    Module Impl_core_ops_arith_MulAssign_u64_for_u64.
       Definition Self : Ty.t := Ty.path "u64".
       
       (*             fn mul_assign(&mut self, other: $t) { *self *= other } *)
@@ -3333,12 +3333,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
-    End Impl_core_ops_arith_MulAssign_for_u64.
+    End Impl_core_ops_arith_MulAssign_u64_for_u64.
     
-    Module Impl_core_ops_arith_MulAssign_for_u128.
+    Module Impl_core_ops_arith_MulAssign_u128_for_u128.
       Definition Self : Ty.t := Ty.path "u128".
       
       (*             fn mul_assign(&mut self, other: $t) { *self *= other } *)
@@ -3357,12 +3357,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
-    End Impl_core_ops_arith_MulAssign_for_u128.
+    End Impl_core_ops_arith_MulAssign_u128_for_u128.
     
-    Module Impl_core_ops_arith_MulAssign_for_isize.
+    Module Impl_core_ops_arith_MulAssign_isize_for_isize.
       Definition Self : Ty.t := Ty.path "isize".
       
       (*             fn mul_assign(&mut self, other: $t) { *self *= other } *)
@@ -3381,12 +3381,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
-    End Impl_core_ops_arith_MulAssign_for_isize.
+    End Impl_core_ops_arith_MulAssign_isize_for_isize.
     
-    Module Impl_core_ops_arith_MulAssign_for_i8.
+    Module Impl_core_ops_arith_MulAssign_i8_for_i8.
       Definition Self : Ty.t := Ty.path "i8".
       
       (*             fn mul_assign(&mut self, other: $t) { *self *= other } *)
@@ -3405,12 +3405,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
-    End Impl_core_ops_arith_MulAssign_for_i8.
+    End Impl_core_ops_arith_MulAssign_i8_for_i8.
     
-    Module Impl_core_ops_arith_MulAssign_for_i16.
+    Module Impl_core_ops_arith_MulAssign_i16_for_i16.
       Definition Self : Ty.t := Ty.path "i16".
       
       (*             fn mul_assign(&mut self, other: $t) { *self *= other } *)
@@ -3429,12 +3429,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
-    End Impl_core_ops_arith_MulAssign_for_i16.
+    End Impl_core_ops_arith_MulAssign_i16_for_i16.
     
-    Module Impl_core_ops_arith_MulAssign_for_i32.
+    Module Impl_core_ops_arith_MulAssign_i32_for_i32.
       Definition Self : Ty.t := Ty.path "i32".
       
       (*             fn mul_assign(&mut self, other: $t) { *self *= other } *)
@@ -3453,12 +3453,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
-    End Impl_core_ops_arith_MulAssign_for_i32.
+    End Impl_core_ops_arith_MulAssign_i32_for_i32.
     
-    Module Impl_core_ops_arith_MulAssign_for_i64.
+    Module Impl_core_ops_arith_MulAssign_i64_for_i64.
       Definition Self : Ty.t := Ty.path "i64".
       
       (*             fn mul_assign(&mut self, other: $t) { *self *= other } *)
@@ -3477,12 +3477,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
-    End Impl_core_ops_arith_MulAssign_for_i64.
+    End Impl_core_ops_arith_MulAssign_i64_for_i64.
     
-    Module Impl_core_ops_arith_MulAssign_for_i128.
+    Module Impl_core_ops_arith_MulAssign_i128_for_i128.
       Definition Self : Ty.t := Ty.path "i128".
       
       (*             fn mul_assign(&mut self, other: $t) { *self *= other } *)
@@ -3501,12 +3501,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
-    End Impl_core_ops_arith_MulAssign_for_i128.
+    End Impl_core_ops_arith_MulAssign_i128_for_i128.
     
-    Module Impl_core_ops_arith_MulAssign_for_f16.
+    Module Impl_core_ops_arith_MulAssign_f16_for_f16.
       Definition Self : Ty.t := Ty.path "f16".
       
       (*             fn mul_assign(&mut self, other: $t) { *self *= other } *)
@@ -3525,12 +3525,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "f16" ]
           Self
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
-    End Impl_core_ops_arith_MulAssign_for_f16.
+    End Impl_core_ops_arith_MulAssign_f16_for_f16.
     
-    Module Impl_core_ops_arith_MulAssign_for_f32.
+    Module Impl_core_ops_arith_MulAssign_f32_for_f32.
       Definition Self : Ty.t := Ty.path "f32".
       
       (*             fn mul_assign(&mut self, other: $t) { *self *= other } *)
@@ -3549,12 +3549,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "f32" ]
           Self
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
-    End Impl_core_ops_arith_MulAssign_for_f32.
+    End Impl_core_ops_arith_MulAssign_f32_for_f32.
     
-    Module Impl_core_ops_arith_MulAssign_for_f64.
+    Module Impl_core_ops_arith_MulAssign_f64_for_f64.
       Definition Self : Ty.t := Ty.path "f64".
       
       (*             fn mul_assign(&mut self, other: $t) { *self *= other } *)
@@ -3573,12 +3573,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "f64" ]
           Self
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
-    End Impl_core_ops_arith_MulAssign_for_f64.
+    End Impl_core_ops_arith_MulAssign_f64_for_f64.
     
-    Module Impl_core_ops_arith_MulAssign_for_f128.
+    Module Impl_core_ops_arith_MulAssign_f128_for_f128.
       Definition Self : Ty.t := Ty.path "f128".
       
       (*             fn mul_assign(&mut self, other: $t) { *self *= other } *)
@@ -3597,15 +3597,15 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::MulAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "f128" ]
           Self
           (* Instance *) [ ("mul_assign", InstanceField.Method mul_assign) ].
-    End Impl_core_ops_arith_MulAssign_for_f128.
+    End Impl_core_ops_arith_MulAssign_f128_for_f128.
     
     (* Trait *)
     (* Empty module 'DivAssign' *)
     
-    Module Impl_core_ops_arith_DivAssign_for_usize.
+    Module Impl_core_ops_arith_DivAssign_usize_for_usize.
       Definition Self : Ty.t := Ty.path "usize".
       
       (*             fn div_assign(&mut self, other: $t) { *self /= other } *)
@@ -3624,12 +3624,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
-    End Impl_core_ops_arith_DivAssign_for_usize.
+    End Impl_core_ops_arith_DivAssign_usize_for_usize.
     
-    Module Impl_core_ops_arith_DivAssign_for_u8.
+    Module Impl_core_ops_arith_DivAssign_u8_for_u8.
       Definition Self : Ty.t := Ty.path "u8".
       
       (*             fn div_assign(&mut self, other: $t) { *self /= other } *)
@@ -3648,12 +3648,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
-    End Impl_core_ops_arith_DivAssign_for_u8.
+    End Impl_core_ops_arith_DivAssign_u8_for_u8.
     
-    Module Impl_core_ops_arith_DivAssign_for_u16.
+    Module Impl_core_ops_arith_DivAssign_u16_for_u16.
       Definition Self : Ty.t := Ty.path "u16".
       
       (*             fn div_assign(&mut self, other: $t) { *self /= other } *)
@@ -3672,12 +3672,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
-    End Impl_core_ops_arith_DivAssign_for_u16.
+    End Impl_core_ops_arith_DivAssign_u16_for_u16.
     
-    Module Impl_core_ops_arith_DivAssign_for_u32.
+    Module Impl_core_ops_arith_DivAssign_u32_for_u32.
       Definition Self : Ty.t := Ty.path "u32".
       
       (*             fn div_assign(&mut self, other: $t) { *self /= other } *)
@@ -3696,12 +3696,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
-    End Impl_core_ops_arith_DivAssign_for_u32.
+    End Impl_core_ops_arith_DivAssign_u32_for_u32.
     
-    Module Impl_core_ops_arith_DivAssign_for_u64.
+    Module Impl_core_ops_arith_DivAssign_u64_for_u64.
       Definition Self : Ty.t := Ty.path "u64".
       
       (*             fn div_assign(&mut self, other: $t) { *self /= other } *)
@@ -3720,12 +3720,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
-    End Impl_core_ops_arith_DivAssign_for_u64.
+    End Impl_core_ops_arith_DivAssign_u64_for_u64.
     
-    Module Impl_core_ops_arith_DivAssign_for_u128.
+    Module Impl_core_ops_arith_DivAssign_u128_for_u128.
       Definition Self : Ty.t := Ty.path "u128".
       
       (*             fn div_assign(&mut self, other: $t) { *self /= other } *)
@@ -3744,12 +3744,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
-    End Impl_core_ops_arith_DivAssign_for_u128.
+    End Impl_core_ops_arith_DivAssign_u128_for_u128.
     
-    Module Impl_core_ops_arith_DivAssign_for_isize.
+    Module Impl_core_ops_arith_DivAssign_isize_for_isize.
       Definition Self : Ty.t := Ty.path "isize".
       
       (*             fn div_assign(&mut self, other: $t) { *self /= other } *)
@@ -3768,12 +3768,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
-    End Impl_core_ops_arith_DivAssign_for_isize.
+    End Impl_core_ops_arith_DivAssign_isize_for_isize.
     
-    Module Impl_core_ops_arith_DivAssign_for_i8.
+    Module Impl_core_ops_arith_DivAssign_i8_for_i8.
       Definition Self : Ty.t := Ty.path "i8".
       
       (*             fn div_assign(&mut self, other: $t) { *self /= other } *)
@@ -3792,12 +3792,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
-    End Impl_core_ops_arith_DivAssign_for_i8.
+    End Impl_core_ops_arith_DivAssign_i8_for_i8.
     
-    Module Impl_core_ops_arith_DivAssign_for_i16.
+    Module Impl_core_ops_arith_DivAssign_i16_for_i16.
       Definition Self : Ty.t := Ty.path "i16".
       
       (*             fn div_assign(&mut self, other: $t) { *self /= other } *)
@@ -3816,12 +3816,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
-    End Impl_core_ops_arith_DivAssign_for_i16.
+    End Impl_core_ops_arith_DivAssign_i16_for_i16.
     
-    Module Impl_core_ops_arith_DivAssign_for_i32.
+    Module Impl_core_ops_arith_DivAssign_i32_for_i32.
       Definition Self : Ty.t := Ty.path "i32".
       
       (*             fn div_assign(&mut self, other: $t) { *self /= other } *)
@@ -3840,12 +3840,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
-    End Impl_core_ops_arith_DivAssign_for_i32.
+    End Impl_core_ops_arith_DivAssign_i32_for_i32.
     
-    Module Impl_core_ops_arith_DivAssign_for_i64.
+    Module Impl_core_ops_arith_DivAssign_i64_for_i64.
       Definition Self : Ty.t := Ty.path "i64".
       
       (*             fn div_assign(&mut self, other: $t) { *self /= other } *)
@@ -3864,12 +3864,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
-    End Impl_core_ops_arith_DivAssign_for_i64.
+    End Impl_core_ops_arith_DivAssign_i64_for_i64.
     
-    Module Impl_core_ops_arith_DivAssign_for_i128.
+    Module Impl_core_ops_arith_DivAssign_i128_for_i128.
       Definition Self : Ty.t := Ty.path "i128".
       
       (*             fn div_assign(&mut self, other: $t) { *self /= other } *)
@@ -3888,12 +3888,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
-    End Impl_core_ops_arith_DivAssign_for_i128.
+    End Impl_core_ops_arith_DivAssign_i128_for_i128.
     
-    Module Impl_core_ops_arith_DivAssign_for_f16.
+    Module Impl_core_ops_arith_DivAssign_f16_for_f16.
       Definition Self : Ty.t := Ty.path "f16".
       
       (*             fn div_assign(&mut self, other: $t) { *self /= other } *)
@@ -3912,12 +3912,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "f16" ]
           Self
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
-    End Impl_core_ops_arith_DivAssign_for_f16.
+    End Impl_core_ops_arith_DivAssign_f16_for_f16.
     
-    Module Impl_core_ops_arith_DivAssign_for_f32.
+    Module Impl_core_ops_arith_DivAssign_f32_for_f32.
       Definition Self : Ty.t := Ty.path "f32".
       
       (*             fn div_assign(&mut self, other: $t) { *self /= other } *)
@@ -3936,12 +3936,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "f32" ]
           Self
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
-    End Impl_core_ops_arith_DivAssign_for_f32.
+    End Impl_core_ops_arith_DivAssign_f32_for_f32.
     
-    Module Impl_core_ops_arith_DivAssign_for_f64.
+    Module Impl_core_ops_arith_DivAssign_f64_for_f64.
       Definition Self : Ty.t := Ty.path "f64".
       
       (*             fn div_assign(&mut self, other: $t) { *self /= other } *)
@@ -3960,12 +3960,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "f64" ]
           Self
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
-    End Impl_core_ops_arith_DivAssign_for_f64.
+    End Impl_core_ops_arith_DivAssign_f64_for_f64.
     
-    Module Impl_core_ops_arith_DivAssign_for_f128.
+    Module Impl_core_ops_arith_DivAssign_f128_for_f128.
       Definition Self : Ty.t := Ty.path "f128".
       
       (*             fn div_assign(&mut self, other: $t) { *self /= other } *)
@@ -3984,15 +3984,15 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::DivAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "f128" ]
           Self
           (* Instance *) [ ("div_assign", InstanceField.Method div_assign) ].
-    End Impl_core_ops_arith_DivAssign_for_f128.
+    End Impl_core_ops_arith_DivAssign_f128_for_f128.
     
     (* Trait *)
     (* Empty module 'RemAssign' *)
     
-    Module Impl_core_ops_arith_RemAssign_for_usize.
+    Module Impl_core_ops_arith_RemAssign_usize_for_usize.
       Definition Self : Ty.t := Ty.path "usize".
       
       (*             fn rem_assign(&mut self, other: $t) { *self %= other } *)
@@ -4011,12 +4011,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "usize" ]
           Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
-    End Impl_core_ops_arith_RemAssign_for_usize.
+    End Impl_core_ops_arith_RemAssign_usize_for_usize.
     
-    Module Impl_core_ops_arith_RemAssign_for_u8.
+    Module Impl_core_ops_arith_RemAssign_u8_for_u8.
       Definition Self : Ty.t := Ty.path "u8".
       
       (*             fn rem_assign(&mut self, other: $t) { *self %= other } *)
@@ -4035,12 +4035,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u8" ]
           Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
-    End Impl_core_ops_arith_RemAssign_for_u8.
+    End Impl_core_ops_arith_RemAssign_u8_for_u8.
     
-    Module Impl_core_ops_arith_RemAssign_for_u16.
+    Module Impl_core_ops_arith_RemAssign_u16_for_u16.
       Definition Self : Ty.t := Ty.path "u16".
       
       (*             fn rem_assign(&mut self, other: $t) { *self %= other } *)
@@ -4059,12 +4059,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u16" ]
           Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
-    End Impl_core_ops_arith_RemAssign_for_u16.
+    End Impl_core_ops_arith_RemAssign_u16_for_u16.
     
-    Module Impl_core_ops_arith_RemAssign_for_u32.
+    Module Impl_core_ops_arith_RemAssign_u32_for_u32.
       Definition Self : Ty.t := Ty.path "u32".
       
       (*             fn rem_assign(&mut self, other: $t) { *self %= other } *)
@@ -4083,12 +4083,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u32" ]
           Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
-    End Impl_core_ops_arith_RemAssign_for_u32.
+    End Impl_core_ops_arith_RemAssign_u32_for_u32.
     
-    Module Impl_core_ops_arith_RemAssign_for_u64.
+    Module Impl_core_ops_arith_RemAssign_u64_for_u64.
       Definition Self : Ty.t := Ty.path "u64".
       
       (*             fn rem_assign(&mut self, other: $t) { *self %= other } *)
@@ -4107,12 +4107,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u64" ]
           Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
-    End Impl_core_ops_arith_RemAssign_for_u64.
+    End Impl_core_ops_arith_RemAssign_u64_for_u64.
     
-    Module Impl_core_ops_arith_RemAssign_for_u128.
+    Module Impl_core_ops_arith_RemAssign_u128_for_u128.
       Definition Self : Ty.t := Ty.path "u128".
       
       (*             fn rem_assign(&mut self, other: $t) { *self %= other } *)
@@ -4131,12 +4131,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "u128" ]
           Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
-    End Impl_core_ops_arith_RemAssign_for_u128.
+    End Impl_core_ops_arith_RemAssign_u128_for_u128.
     
-    Module Impl_core_ops_arith_RemAssign_for_isize.
+    Module Impl_core_ops_arith_RemAssign_isize_for_isize.
       Definition Self : Ty.t := Ty.path "isize".
       
       (*             fn rem_assign(&mut self, other: $t) { *self %= other } *)
@@ -4155,12 +4155,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "isize" ]
           Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
-    End Impl_core_ops_arith_RemAssign_for_isize.
+    End Impl_core_ops_arith_RemAssign_isize_for_isize.
     
-    Module Impl_core_ops_arith_RemAssign_for_i8.
+    Module Impl_core_ops_arith_RemAssign_i8_for_i8.
       Definition Self : Ty.t := Ty.path "i8".
       
       (*             fn rem_assign(&mut self, other: $t) { *self %= other } *)
@@ -4179,12 +4179,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i8" ]
           Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
-    End Impl_core_ops_arith_RemAssign_for_i8.
+    End Impl_core_ops_arith_RemAssign_i8_for_i8.
     
-    Module Impl_core_ops_arith_RemAssign_for_i16.
+    Module Impl_core_ops_arith_RemAssign_i16_for_i16.
       Definition Self : Ty.t := Ty.path "i16".
       
       (*             fn rem_assign(&mut self, other: $t) { *self %= other } *)
@@ -4203,12 +4203,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i16" ]
           Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
-    End Impl_core_ops_arith_RemAssign_for_i16.
+    End Impl_core_ops_arith_RemAssign_i16_for_i16.
     
-    Module Impl_core_ops_arith_RemAssign_for_i32.
+    Module Impl_core_ops_arith_RemAssign_i32_for_i32.
       Definition Self : Ty.t := Ty.path "i32".
       
       (*             fn rem_assign(&mut self, other: $t) { *self %= other } *)
@@ -4227,12 +4227,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i32" ]
           Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
-    End Impl_core_ops_arith_RemAssign_for_i32.
+    End Impl_core_ops_arith_RemAssign_i32_for_i32.
     
-    Module Impl_core_ops_arith_RemAssign_for_i64.
+    Module Impl_core_ops_arith_RemAssign_i64_for_i64.
       Definition Self : Ty.t := Ty.path "i64".
       
       (*             fn rem_assign(&mut self, other: $t) { *self %= other } *)
@@ -4251,12 +4251,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i64" ]
           Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
-    End Impl_core_ops_arith_RemAssign_for_i64.
+    End Impl_core_ops_arith_RemAssign_i64_for_i64.
     
-    Module Impl_core_ops_arith_RemAssign_for_i128.
+    Module Impl_core_ops_arith_RemAssign_i128_for_i128.
       Definition Self : Ty.t := Ty.path "i128".
       
       (*             fn rem_assign(&mut self, other: $t) { *self %= other } *)
@@ -4275,12 +4275,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "i128" ]
           Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
-    End Impl_core_ops_arith_RemAssign_for_i128.
+    End Impl_core_ops_arith_RemAssign_i128_for_i128.
     
-    Module Impl_core_ops_arith_RemAssign_for_f16.
+    Module Impl_core_ops_arith_RemAssign_f16_for_f16.
       Definition Self : Ty.t := Ty.path "f16".
       
       (*             fn rem_assign(&mut self, other: $t) { *self %= other } *)
@@ -4299,12 +4299,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "f16" ]
           Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
-    End Impl_core_ops_arith_RemAssign_for_f16.
+    End Impl_core_ops_arith_RemAssign_f16_for_f16.
     
-    Module Impl_core_ops_arith_RemAssign_for_f32.
+    Module Impl_core_ops_arith_RemAssign_f32_for_f32.
       Definition Self : Ty.t := Ty.path "f32".
       
       (*             fn rem_assign(&mut self, other: $t) { *self %= other } *)
@@ -4323,12 +4323,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "f32" ]
           Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
-    End Impl_core_ops_arith_RemAssign_for_f32.
+    End Impl_core_ops_arith_RemAssign_f32_for_f32.
     
-    Module Impl_core_ops_arith_RemAssign_for_f64.
+    Module Impl_core_ops_arith_RemAssign_f64_for_f64.
       Definition Self : Ty.t := Ty.path "f64".
       
       (*             fn rem_assign(&mut self, other: $t) { *self %= other } *)
@@ -4347,12 +4347,12 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "f64" ]
           Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
-    End Impl_core_ops_arith_RemAssign_for_f64.
+    End Impl_core_ops_arith_RemAssign_f64_for_f64.
     
-    Module Impl_core_ops_arith_RemAssign_for_f128.
+    Module Impl_core_ops_arith_RemAssign_f128_for_f128.
       Definition Self : Ty.t := Ty.path "f128".
       
       (*             fn rem_assign(&mut self, other: $t) { *self %= other } *)
@@ -4371,9 +4371,9 @@ Module ops.
         M.IsTraitInstance
           "core::ops::arith::RemAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "f128" ]
           Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
-    End Impl_core_ops_arith_RemAssign_for_f128.
+    End Impl_core_ops_arith_RemAssign_f128_for_f128.
   End arith.
 End ops.

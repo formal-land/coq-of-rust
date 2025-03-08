@@ -170,7 +170,7 @@ Module state.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_core_types_state_VMState.
   
-  Module Impl_core_cmp_PartialEq_for_move_core_types_state_VMState.
+  Module Impl_core_cmp_PartialEq_move_core_types_state_VMState_for_move_core_types_state_VMState.
     Definition Self : Ty.t := Ty.path "move_core_types::state::VMState".
     
     (* PartialEq *)
@@ -214,10 +214,10 @@ Module state.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::state::VMState" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_core_types_state_VMState.
+  End Impl_core_cmp_PartialEq_move_core_types_state_VMState_for_move_core_types_state_VMState.
   
   Module Impl_core_cmp_Eq_for_move_core_types_state_VMState.
     Definition Self : Ty.t := Ty.path "move_core_types::state::VMState".

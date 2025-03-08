@@ -276,7 +276,7 @@ Module eof.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_bytecode_eof_Eof.
   
-  Module Impl_core_cmp_PartialEq_for_revm_bytecode_eof_Eof.
+  Module Impl_core_cmp_PartialEq_revm_bytecode_eof_Eof_for_revm_bytecode_eof_Eof.
     Definition Self : Ty.t := Ty.path "revm_bytecode::eof::Eof".
     
     (* PartialEq *)
@@ -389,10 +389,10 @@ Module eof.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "revm_bytecode::eof::Eof" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_revm_bytecode_eof_Eof.
+  End Impl_core_cmp_PartialEq_revm_bytecode_eof_Eof_for_revm_bytecode_eof_Eof.
   
   Module Impl_core_cmp_Eq_for_revm_bytecode_eof_Eof.
     Definition Self : Ty.t := Ty.path "revm_bytecode::eof::Eof".
@@ -733,7 +733,7 @@ Module eof.
         (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
   End Impl_core_cmp_Ord_for_revm_bytecode_eof_Eof.
   
-  Module Impl_core_cmp_PartialOrd_for_revm_bytecode_eof_Eof.
+  Module Impl_core_cmp_PartialOrd_revm_bytecode_eof_Eof_for_revm_bytecode_eof_Eof.
     Definition Self : Ty.t := Ty.path "revm_bytecode::eof::Eof".
     
     (* PartialOrd *)
@@ -924,10 +924,10 @@ Module eof.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "revm_bytecode::eof::Eof" ]
         Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-  End Impl_core_cmp_PartialOrd_for_revm_bytecode_eof_Eof.
+  End Impl_core_cmp_PartialOrd_revm_bytecode_eof_Eof_for_revm_bytecode_eof_Eof.
   
   Module Impl_core_default_Default_for_revm_bytecode_eof_Eof.
     Definition Self : Ty.t := Ty.path "revm_bytecode::eof::Eof".
@@ -3248,7 +3248,7 @@ Module eof.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_bytecode_eof_EofDecodeError.
   
-  Module Impl_core_cmp_PartialEq_for_revm_bytecode_eof_EofDecodeError.
+  Module Impl_core_cmp_PartialEq_revm_bytecode_eof_EofDecodeError_for_revm_bytecode_eof_EofDecodeError.
     Definition Self : Ty.t := Ty.path "revm_bytecode::eof::EofDecodeError".
     
     (* PartialEq *)
@@ -3292,10 +3292,10 @@ Module eof.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "revm_bytecode::eof::EofDecodeError" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_revm_bytecode_eof_EofDecodeError.
+  End Impl_core_cmp_PartialEq_revm_bytecode_eof_EofDecodeError_for_revm_bytecode_eof_EofDecodeError.
   
   Module Impl_core_cmp_Eq_for_revm_bytecode_eof_EofDecodeError.
     Definition Self : Ty.t := Ty.path "revm_bytecode::eof::EofDecodeError".
@@ -3324,7 +3324,7 @@ Module eof.
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_revm_bytecode_eof_EofDecodeError.
   
-  Module Impl_core_cmp_PartialOrd_for_revm_bytecode_eof_EofDecodeError.
+  Module Impl_core_cmp_PartialOrd_revm_bytecode_eof_EofDecodeError_for_revm_bytecode_eof_EofDecodeError.
     Definition Self : Ty.t := Ty.path "revm_bytecode::eof::EofDecodeError".
     
     (* PartialOrd *)
@@ -3391,10 +3391,10 @@ Module eof.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "revm_bytecode::eof::EofDecodeError" ]
         Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-  End Impl_core_cmp_PartialOrd_for_revm_bytecode_eof_EofDecodeError.
+  End Impl_core_cmp_PartialOrd_revm_bytecode_eof_EofDecodeError_for_revm_bytecode_eof_EofDecodeError.
   
   Module Impl_core_cmp_Ord_for_revm_bytecode_eof_EofDecodeError.
     Definition Self : Ty.t := Ty.path "revm_bytecode::eof::EofDecodeError".

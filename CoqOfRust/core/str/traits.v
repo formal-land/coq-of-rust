@@ -63,7 +63,7 @@ Module str.
           (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
     End Impl_core_cmp_Ord_for_str.
     
-    Module Impl_core_cmp_PartialEq_for_str.
+    Module Impl_core_cmp_PartialEq_str_for_str.
       Definition Self : Ty.t := Ty.path "str".
       
       (*
@@ -118,10 +118,10 @@ Module str.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "str" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_str.
+    End Impl_core_cmp_PartialEq_str_for_str.
     
     Module Impl_core_cmp_Eq_for_str.
       Definition Self : Ty.t := Ty.path "str".
@@ -135,7 +135,7 @@ Module str.
           (* Instance *) [].
     End Impl_core_cmp_Eq_for_str.
     
-    Module Impl_core_cmp_PartialOrd_for_str.
+    Module Impl_core_cmp_PartialOrd_str_for_str.
       Definition Self : Ty.t := Ty.path "str".
       
       (*
@@ -168,10 +168,10 @@ Module str.
         M.IsTraitInstance
           "core::cmp::PartialOrd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "str" ]
           Self
           (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-    End Impl_core_cmp_PartialOrd_for_str.
+    End Impl_core_cmp_PartialOrd_str_for_str.
     
     Module Impl_core_ops_index_Index_where_core_slice_index_SliceIndex_I_str_I_for_str.
       Definition Self (I : Ty.t) : Ty.t := Ty.path "str".

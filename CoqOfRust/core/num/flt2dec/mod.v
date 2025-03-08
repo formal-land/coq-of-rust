@@ -2772,7 +2772,7 @@ Module num.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_num_flt2dec_Sign.
     
-    Module Impl_core_cmp_PartialEq_for_core_num_flt2dec_Sign.
+    Module Impl_core_cmp_PartialEq_core_num_flt2dec_Sign_for_core_num_flt2dec_Sign.
       Definition Self : Ty.t := Ty.path "core::num::flt2dec::Sign".
       
       (* PartialEq *)
@@ -2816,10 +2816,10 @@ Module num.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::num::flt2dec::Sign" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_core_num_flt2dec_Sign.
+    End Impl_core_cmp_PartialEq_core_num_flt2dec_Sign_for_core_num_flt2dec_Sign.
     
     Module Impl_core_cmp_Eq_for_core_num_flt2dec_Sign.
       Definition Self : Ty.t := Ty.path "core::num::flt2dec::Sign".

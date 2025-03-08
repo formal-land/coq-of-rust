@@ -390,7 +390,7 @@ Module abi.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_core_types_abi_ScriptABI.
   
-  Module Impl_core_cmp_PartialEq_for_move_core_types_abi_ScriptABI.
+  Module Impl_core_cmp_PartialEq_move_core_types_abi_ScriptABI_for_move_core_types_abi_ScriptABI.
     Definition Self : Ty.t := Ty.path "move_core_types::abi::ScriptABI".
     
     (* PartialEq *)
@@ -550,10 +550,10 @@ Module abi.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::abi::ScriptABI" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_core_types_abi_ScriptABI.
+  End Impl_core_cmp_PartialEq_move_core_types_abi_ScriptABI_for_move_core_types_abi_ScriptABI.
   
   Module underscore.
     Module Impl_serde_ser_Serialize_for_move_core_types_abi_ScriptABI.
@@ -3126,7 +3126,7 @@ Module abi.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_core_types_abi_ScriptFunctionABI.
   
-  Module Impl_core_cmp_PartialEq_for_move_core_types_abi_ScriptFunctionABI.
+  Module Impl_core_cmp_PartialEq_move_core_types_abi_ScriptFunctionABI_for_move_core_types_abi_ScriptFunctionABI.
     Definition Self : Ty.t := Ty.path "move_core_types::abi::ScriptFunctionABI".
     
     (* PartialEq *)
@@ -3328,10 +3328,10 @@ Module abi.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::abi::ScriptFunctionABI" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_core_types_abi_ScriptFunctionABI.
+  End Impl_core_cmp_PartialEq_move_core_types_abi_ScriptFunctionABI_for_move_core_types_abi_ScriptFunctionABI.
   
   
   
@@ -3927,7 +3927,7 @@ Module abi.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_core_types_abi_TransactionScriptABI.
   
-  Module Impl_core_cmp_PartialEq_for_move_core_types_abi_TransactionScriptABI.
+  Module Impl_core_cmp_PartialEq_move_core_types_abi_TransactionScriptABI_for_move_core_types_abi_TransactionScriptABI.
     Definition Self : Ty.t := Ty.path "move_core_types::abi::TransactionScriptABI".
     
     (* PartialEq *)
@@ -4137,10 +4137,10 @@ Module abi.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::abi::TransactionScriptABI" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_core_types_abi_TransactionScriptABI.
+  End Impl_core_cmp_PartialEq_move_core_types_abi_TransactionScriptABI_for_move_core_types_abi_TransactionScriptABI.
   
   
   
@@ -4449,7 +4449,7 @@ Module abi.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_core_types_abi_ArgumentABI.
   
-  Module Impl_core_cmp_PartialEq_for_move_core_types_abi_ArgumentABI.
+  Module Impl_core_cmp_PartialEq_move_core_types_abi_ArgumentABI_for_move_core_types_abi_ArgumentABI.
     Definition Self : Ty.t := Ty.path "move_core_types::abi::ArgumentABI".
     
     (* PartialEq *)
@@ -4529,10 +4529,10 @@ Module abi.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::abi::ArgumentABI" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_core_types_abi_ArgumentABI.
+  End Impl_core_cmp_PartialEq_move_core_types_abi_ArgumentABI_for_move_core_types_abi_ArgumentABI.
   
   
   
@@ -4752,7 +4752,7 @@ Module abi.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_core_types_abi_TypeArgumentABI.
   
-  Module Impl_core_cmp_PartialEq_for_move_core_types_abi_TypeArgumentABI.
+  Module Impl_core_cmp_PartialEq_move_core_types_abi_TypeArgumentABI_for_move_core_types_abi_TypeArgumentABI.
     Definition Self : Ty.t := Ty.path "move_core_types::abi::TypeArgumentABI".
     
     (* PartialEq *)
@@ -4799,10 +4799,10 @@ Module abi.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::abi::TypeArgumentABI" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_core_types_abi_TypeArgumentABI.
+  End Impl_core_cmp_PartialEq_move_core_types_abi_TypeArgumentABI_for_move_core_types_abi_TypeArgumentABI.
   
   
   

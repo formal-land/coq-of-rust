@@ -18,65 +18,6 @@ Module num.
           fields := [ Ty.path "u8" ];
         } *)
       
-      Module Impl_core_fmt_Debug_for_core_num_nonzero_private_NonZeroU8Inner.
-        Definition Self : Ty.t := Ty.path "core::num::nonzero::private::NonZeroU8Inner".
-        
-        (*                 Debug *)
-        Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match ε, τ, α with
-          | [], [], [ self; f ] =>
-            ltac:(M.monadic
-              (let self := M.alloc (| self |) in
-              let f := M.alloc (| f |) in
-              M.call_closure (|
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                M.get_associated_function (|
-                  Ty.path "core::fmt::Formatter",
-                  "debug_tuple_field1_finish",
-                  [],
-                  []
-                |),
-                [
-                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (| M.read (| Value.String "NonZeroU8Inner" |) |)
-                  |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_tuple_field (|
-                              M.deref (| M.read (| self |) |),
-                              "core::num::nonzero::private::NonZeroU8Inner",
-                              0
-                            |)
-                          |)
-                        |)
-                      |)
-                    |)
-                  |)
-                ]
-              |)))
-          | _, _, _ => M.impossible "wrong number of arguments"
-          end.
-        
-        Axiom Implements :
-          M.IsTraitInstance
-            "core::fmt::Debug"
-            (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
-            Self
-            (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
-      End Impl_core_fmt_Debug_for_core_num_nonzero_private_NonZeroU8Inner.
-      
       Module Impl_core_clone_Clone_for_core_num_nonzero_private_NonZeroU8Inner.
         Definition Self : Ty.t := Ty.path "core::num::nonzero::private::NonZeroU8Inner".
         
@@ -129,44 +70,6 @@ Module num.
             (* Instance *) [].
       End Impl_core_marker_StructuralPartialEq_for_core_num_nonzero_private_NonZeroU8Inner.
       
-      Module Impl_core_cmp_PartialEq_for_core_num_nonzero_private_NonZeroU8Inner.
-        Definition Self : Ty.t := Ty.path "core::num::nonzero::private::NonZeroU8Inner".
-        
-        (*                 PartialEq *)
-        Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match ε, τ, α with
-          | [], [], [ self; other ] =>
-            ltac:(M.monadic
-              (let self := M.alloc (| self |) in
-              let other := M.alloc (| other |) in
-              BinOp.eq (|
-                M.read (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.deref (| M.read (| self |) |),
-                    "core::num::nonzero::private::NonZeroU8Inner",
-                    0
-                  |)
-                |),
-                M.read (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.deref (| M.read (| other |) |),
-                    "core::num::nonzero::private::NonZeroU8Inner",
-                    0
-                  |)
-                |)
-              |)))
-          | _, _, _ => M.impossible "wrong number of arguments"
-          end.
-        
-        Axiom Implements :
-          M.IsTraitInstance
-            "core::cmp::PartialEq"
-            (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
-            Self
-            (* Instance *) [ ("eq", InstanceField.Method eq) ].
-      End Impl_core_cmp_PartialEq_for_core_num_nonzero_private_NonZeroU8Inner.
-      
       (* StructTuple
         {
           name := "NonZeroU16Inner";
@@ -174,65 +77,6 @@ Module num.
           ty_params := [];
           fields := [ Ty.path "u16" ];
         } *)
-      
-      Module Impl_core_fmt_Debug_for_core_num_nonzero_private_NonZeroU16Inner.
-        Definition Self : Ty.t := Ty.path "core::num::nonzero::private::NonZeroU16Inner".
-        
-        (*                 Debug *)
-        Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match ε, τ, α with
-          | [], [], [ self; f ] =>
-            ltac:(M.monadic
-              (let self := M.alloc (| self |) in
-              let f := M.alloc (| f |) in
-              M.call_closure (|
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                M.get_associated_function (|
-                  Ty.path "core::fmt::Formatter",
-                  "debug_tuple_field1_finish",
-                  [],
-                  []
-                |),
-                [
-                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (| M.read (| Value.String "NonZeroU16Inner" |) |)
-                  |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_tuple_field (|
-                              M.deref (| M.read (| self |) |),
-                              "core::num::nonzero::private::NonZeroU16Inner",
-                              0
-                            |)
-                          |)
-                        |)
-                      |)
-                    |)
-                  |)
-                ]
-              |)))
-          | _, _, _ => M.impossible "wrong number of arguments"
-          end.
-        
-        Axiom Implements :
-          M.IsTraitInstance
-            "core::fmt::Debug"
-            (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
-            Self
-            (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
-      End Impl_core_fmt_Debug_for_core_num_nonzero_private_NonZeroU16Inner.
       
       Module Impl_core_clone_Clone_for_core_num_nonzero_private_NonZeroU16Inner.
         Definition Self : Ty.t := Ty.path "core::num::nonzero::private::NonZeroU16Inner".
@@ -286,44 +130,6 @@ Module num.
             (* Instance *) [].
       End Impl_core_marker_StructuralPartialEq_for_core_num_nonzero_private_NonZeroU16Inner.
       
-      Module Impl_core_cmp_PartialEq_for_core_num_nonzero_private_NonZeroU16Inner.
-        Definition Self : Ty.t := Ty.path "core::num::nonzero::private::NonZeroU16Inner".
-        
-        (*                 PartialEq *)
-        Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match ε, τ, α with
-          | [], [], [ self; other ] =>
-            ltac:(M.monadic
-              (let self := M.alloc (| self |) in
-              let other := M.alloc (| other |) in
-              BinOp.eq (|
-                M.read (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.deref (| M.read (| self |) |),
-                    "core::num::nonzero::private::NonZeroU16Inner",
-                    0
-                  |)
-                |),
-                M.read (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.deref (| M.read (| other |) |),
-                    "core::num::nonzero::private::NonZeroU16Inner",
-                    0
-                  |)
-                |)
-              |)))
-          | _, _, _ => M.impossible "wrong number of arguments"
-          end.
-        
-        Axiom Implements :
-          M.IsTraitInstance
-            "core::cmp::PartialEq"
-            (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
-            Self
-            (* Instance *) [ ("eq", InstanceField.Method eq) ].
-      End Impl_core_cmp_PartialEq_for_core_num_nonzero_private_NonZeroU16Inner.
-      
       (* StructTuple
         {
           name := "NonZeroU32Inner";
@@ -331,65 +137,6 @@ Module num.
           ty_params := [];
           fields := [ Ty.path "u32" ];
         } *)
-      
-      Module Impl_core_fmt_Debug_for_core_num_nonzero_private_NonZeroU32Inner.
-        Definition Self : Ty.t := Ty.path "core::num::nonzero::private::NonZeroU32Inner".
-        
-        (*                 Debug *)
-        Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match ε, τ, α with
-          | [], [], [ self; f ] =>
-            ltac:(M.monadic
-              (let self := M.alloc (| self |) in
-              let f := M.alloc (| f |) in
-              M.call_closure (|
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                M.get_associated_function (|
-                  Ty.path "core::fmt::Formatter",
-                  "debug_tuple_field1_finish",
-                  [],
-                  []
-                |),
-                [
-                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (| M.read (| Value.String "NonZeroU32Inner" |) |)
-                  |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_tuple_field (|
-                              M.deref (| M.read (| self |) |),
-                              "core::num::nonzero::private::NonZeroU32Inner",
-                              0
-                            |)
-                          |)
-                        |)
-                      |)
-                    |)
-                  |)
-                ]
-              |)))
-          | _, _, _ => M.impossible "wrong number of arguments"
-          end.
-        
-        Axiom Implements :
-          M.IsTraitInstance
-            "core::fmt::Debug"
-            (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
-            Self
-            (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
-      End Impl_core_fmt_Debug_for_core_num_nonzero_private_NonZeroU32Inner.
       
       Module Impl_core_clone_Clone_for_core_num_nonzero_private_NonZeroU32Inner.
         Definition Self : Ty.t := Ty.path "core::num::nonzero::private::NonZeroU32Inner".
@@ -443,44 +190,6 @@ Module num.
             (* Instance *) [].
       End Impl_core_marker_StructuralPartialEq_for_core_num_nonzero_private_NonZeroU32Inner.
       
-      Module Impl_core_cmp_PartialEq_for_core_num_nonzero_private_NonZeroU32Inner.
-        Definition Self : Ty.t := Ty.path "core::num::nonzero::private::NonZeroU32Inner".
-        
-        (*                 PartialEq *)
-        Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match ε, τ, α with
-          | [], [], [ self; other ] =>
-            ltac:(M.monadic
-              (let self := M.alloc (| self |) in
-              let other := M.alloc (| other |) in
-              BinOp.eq (|
-                M.read (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.deref (| M.read (| self |) |),
-                    "core::num::nonzero::private::NonZeroU32Inner",
-                    0
-                  |)
-                |),
-                M.read (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.deref (| M.read (| other |) |),
-                    "core::num::nonzero::private::NonZeroU32Inner",
-                    0
-                  |)
-                |)
-              |)))
-          | _, _, _ => M.impossible "wrong number of arguments"
-          end.
-        
-        Axiom Implements :
-          M.IsTraitInstance
-            "core::cmp::PartialEq"
-            (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
-            Self
-            (* Instance *) [ ("eq", InstanceField.Method eq) ].
-      End Impl_core_cmp_PartialEq_for_core_num_nonzero_private_NonZeroU32Inner.
-      
       (* StructTuple
         {
           name := "NonZeroU64Inner";
@@ -488,65 +197,6 @@ Module num.
           ty_params := [];
           fields := [ Ty.path "u64" ];
         } *)
-      
-      Module Impl_core_fmt_Debug_for_core_num_nonzero_private_NonZeroU64Inner.
-        Definition Self : Ty.t := Ty.path "core::num::nonzero::private::NonZeroU64Inner".
-        
-        (*                 Debug *)
-        Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match ε, τ, α with
-          | [], [], [ self; f ] =>
-            ltac:(M.monadic
-              (let self := M.alloc (| self |) in
-              let f := M.alloc (| f |) in
-              M.call_closure (|
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                M.get_associated_function (|
-                  Ty.path "core::fmt::Formatter",
-                  "debug_tuple_field1_finish",
-                  [],
-                  []
-                |),
-                [
-                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (| M.read (| Value.String "NonZeroU64Inner" |) |)
-                  |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_tuple_field (|
-                              M.deref (| M.read (| self |) |),
-                              "core::num::nonzero::private::NonZeroU64Inner",
-                              0
-                            |)
-                          |)
-                        |)
-                      |)
-                    |)
-                  |)
-                ]
-              |)))
-          | _, _, _ => M.impossible "wrong number of arguments"
-          end.
-        
-        Axiom Implements :
-          M.IsTraitInstance
-            "core::fmt::Debug"
-            (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
-            Self
-            (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
-      End Impl_core_fmt_Debug_for_core_num_nonzero_private_NonZeroU64Inner.
       
       Module Impl_core_clone_Clone_for_core_num_nonzero_private_NonZeroU64Inner.
         Definition Self : Ty.t := Ty.path "core::num::nonzero::private::NonZeroU64Inner".
@@ -600,44 +250,6 @@ Module num.
             (* Instance *) [].
       End Impl_core_marker_StructuralPartialEq_for_core_num_nonzero_private_NonZeroU64Inner.
       
-      Module Impl_core_cmp_PartialEq_for_core_num_nonzero_private_NonZeroU64Inner.
-        Definition Self : Ty.t := Ty.path "core::num::nonzero::private::NonZeroU64Inner".
-        
-        (*                 PartialEq *)
-        Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match ε, τ, α with
-          | [], [], [ self; other ] =>
-            ltac:(M.monadic
-              (let self := M.alloc (| self |) in
-              let other := M.alloc (| other |) in
-              BinOp.eq (|
-                M.read (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.deref (| M.read (| self |) |),
-                    "core::num::nonzero::private::NonZeroU64Inner",
-                    0
-                  |)
-                |),
-                M.read (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.deref (| M.read (| other |) |),
-                    "core::num::nonzero::private::NonZeroU64Inner",
-                    0
-                  |)
-                |)
-              |)))
-          | _, _, _ => M.impossible "wrong number of arguments"
-          end.
-        
-        Axiom Implements :
-          M.IsTraitInstance
-            "core::cmp::PartialEq"
-            (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
-            Self
-            (* Instance *) [ ("eq", InstanceField.Method eq) ].
-      End Impl_core_cmp_PartialEq_for_core_num_nonzero_private_NonZeroU64Inner.
-      
       (* StructTuple
         {
           name := "NonZeroU128Inner";
@@ -645,65 +257,6 @@ Module num.
           ty_params := [];
           fields := [ Ty.path "u128" ];
         } *)
-      
-      Module Impl_core_fmt_Debug_for_core_num_nonzero_private_NonZeroU128Inner.
-        Definition Self : Ty.t := Ty.path "core::num::nonzero::private::NonZeroU128Inner".
-        
-        (*                 Debug *)
-        Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match ε, τ, α with
-          | [], [], [ self; f ] =>
-            ltac:(M.monadic
-              (let self := M.alloc (| self |) in
-              let f := M.alloc (| f |) in
-              M.call_closure (|
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                M.get_associated_function (|
-                  Ty.path "core::fmt::Formatter",
-                  "debug_tuple_field1_finish",
-                  [],
-                  []
-                |),
-                [
-                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (| M.read (| Value.String "NonZeroU128Inner" |) |)
-                  |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_tuple_field (|
-                              M.deref (| M.read (| self |) |),
-                              "core::num::nonzero::private::NonZeroU128Inner",
-                              0
-                            |)
-                          |)
-                        |)
-                      |)
-                    |)
-                  |)
-                ]
-              |)))
-          | _, _, _ => M.impossible "wrong number of arguments"
-          end.
-        
-        Axiom Implements :
-          M.IsTraitInstance
-            "core::fmt::Debug"
-            (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
-            Self
-            (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
-      End Impl_core_fmt_Debug_for_core_num_nonzero_private_NonZeroU128Inner.
       
       Module Impl_core_clone_Clone_for_core_num_nonzero_private_NonZeroU128Inner.
         Definition Self : Ty.t := Ty.path "core::num::nonzero::private::NonZeroU128Inner".
@@ -757,44 +310,6 @@ Module num.
             (* Instance *) [].
       End Impl_core_marker_StructuralPartialEq_for_core_num_nonzero_private_NonZeroU128Inner.
       
-      Module Impl_core_cmp_PartialEq_for_core_num_nonzero_private_NonZeroU128Inner.
-        Definition Self : Ty.t := Ty.path "core::num::nonzero::private::NonZeroU128Inner".
-        
-        (*                 PartialEq *)
-        Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match ε, τ, α with
-          | [], [], [ self; other ] =>
-            ltac:(M.monadic
-              (let self := M.alloc (| self |) in
-              let other := M.alloc (| other |) in
-              BinOp.eq (|
-                M.read (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.deref (| M.read (| self |) |),
-                    "core::num::nonzero::private::NonZeroU128Inner",
-                    0
-                  |)
-                |),
-                M.read (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.deref (| M.read (| other |) |),
-                    "core::num::nonzero::private::NonZeroU128Inner",
-                    0
-                  |)
-                |)
-              |)))
-          | _, _, _ => M.impossible "wrong number of arguments"
-          end.
-        
-        Axiom Implements :
-          M.IsTraitInstance
-            "core::cmp::PartialEq"
-            (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
-            Self
-            (* Instance *) [ ("eq", InstanceField.Method eq) ].
-      End Impl_core_cmp_PartialEq_for_core_num_nonzero_private_NonZeroU128Inner.
-      
       (* StructTuple
         {
           name := "NonZeroUsizeInner";
@@ -802,65 +317,6 @@ Module num.
           ty_params := [];
           fields := [ Ty.path "usize" ];
         } *)
-      
-      Module Impl_core_fmt_Debug_for_core_num_nonzero_private_NonZeroUsizeInner.
-        Definition Self : Ty.t := Ty.path "core::num::nonzero::private::NonZeroUsizeInner".
-        
-        (*                 Debug *)
-        Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match ε, τ, α with
-          | [], [], [ self; f ] =>
-            ltac:(M.monadic
-              (let self := M.alloc (| self |) in
-              let f := M.alloc (| f |) in
-              M.call_closure (|
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                M.get_associated_function (|
-                  Ty.path "core::fmt::Formatter",
-                  "debug_tuple_field1_finish",
-                  [],
-                  []
-                |),
-                [
-                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (| M.read (| Value.String "NonZeroUsizeInner" |) |)
-                  |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_tuple_field (|
-                              M.deref (| M.read (| self |) |),
-                              "core::num::nonzero::private::NonZeroUsizeInner",
-                              0
-                            |)
-                          |)
-                        |)
-                      |)
-                    |)
-                  |)
-                ]
-              |)))
-          | _, _, _ => M.impossible "wrong number of arguments"
-          end.
-        
-        Axiom Implements :
-          M.IsTraitInstance
-            "core::fmt::Debug"
-            (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
-            Self
-            (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
-      End Impl_core_fmt_Debug_for_core_num_nonzero_private_NonZeroUsizeInner.
       
       Module Impl_core_clone_Clone_for_core_num_nonzero_private_NonZeroUsizeInner.
         Definition Self : Ty.t := Ty.path "core::num::nonzero::private::NonZeroUsizeInner".
@@ -914,44 +370,6 @@ Module num.
             (* Instance *) [].
       End Impl_core_marker_StructuralPartialEq_for_core_num_nonzero_private_NonZeroUsizeInner.
       
-      Module Impl_core_cmp_PartialEq_for_core_num_nonzero_private_NonZeroUsizeInner.
-        Definition Self : Ty.t := Ty.path "core::num::nonzero::private::NonZeroUsizeInner".
-        
-        (*                 PartialEq *)
-        Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match ε, τ, α with
-          | [], [], [ self; other ] =>
-            ltac:(M.monadic
-              (let self := M.alloc (| self |) in
-              let other := M.alloc (| other |) in
-              BinOp.eq (|
-                M.read (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.deref (| M.read (| self |) |),
-                    "core::num::nonzero::private::NonZeroUsizeInner",
-                    0
-                  |)
-                |),
-                M.read (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.deref (| M.read (| other |) |),
-                    "core::num::nonzero::private::NonZeroUsizeInner",
-                    0
-                  |)
-                |)
-              |)))
-          | _, _, _ => M.impossible "wrong number of arguments"
-          end.
-        
-        Axiom Implements :
-          M.IsTraitInstance
-            "core::cmp::PartialEq"
-            (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
-            Self
-            (* Instance *) [ ("eq", InstanceField.Method eq) ].
-      End Impl_core_cmp_PartialEq_for_core_num_nonzero_private_NonZeroUsizeInner.
-      
       (* StructTuple
         {
           name := "NonZeroI8Inner";
@@ -959,65 +377,6 @@ Module num.
           ty_params := [];
           fields := [ Ty.path "i8" ];
         } *)
-      
-      Module Impl_core_fmt_Debug_for_core_num_nonzero_private_NonZeroI8Inner.
-        Definition Self : Ty.t := Ty.path "core::num::nonzero::private::NonZeroI8Inner".
-        
-        (*                 Debug *)
-        Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match ε, τ, α with
-          | [], [], [ self; f ] =>
-            ltac:(M.monadic
-              (let self := M.alloc (| self |) in
-              let f := M.alloc (| f |) in
-              M.call_closure (|
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                M.get_associated_function (|
-                  Ty.path "core::fmt::Formatter",
-                  "debug_tuple_field1_finish",
-                  [],
-                  []
-                |),
-                [
-                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (| M.read (| Value.String "NonZeroI8Inner" |) |)
-                  |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_tuple_field (|
-                              M.deref (| M.read (| self |) |),
-                              "core::num::nonzero::private::NonZeroI8Inner",
-                              0
-                            |)
-                          |)
-                        |)
-                      |)
-                    |)
-                  |)
-                ]
-              |)))
-          | _, _, _ => M.impossible "wrong number of arguments"
-          end.
-        
-        Axiom Implements :
-          M.IsTraitInstance
-            "core::fmt::Debug"
-            (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
-            Self
-            (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
-      End Impl_core_fmt_Debug_for_core_num_nonzero_private_NonZeroI8Inner.
       
       Module Impl_core_clone_Clone_for_core_num_nonzero_private_NonZeroI8Inner.
         Definition Self : Ty.t := Ty.path "core::num::nonzero::private::NonZeroI8Inner".
@@ -1071,44 +430,6 @@ Module num.
             (* Instance *) [].
       End Impl_core_marker_StructuralPartialEq_for_core_num_nonzero_private_NonZeroI8Inner.
       
-      Module Impl_core_cmp_PartialEq_for_core_num_nonzero_private_NonZeroI8Inner.
-        Definition Self : Ty.t := Ty.path "core::num::nonzero::private::NonZeroI8Inner".
-        
-        (*                 PartialEq *)
-        Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match ε, τ, α with
-          | [], [], [ self; other ] =>
-            ltac:(M.monadic
-              (let self := M.alloc (| self |) in
-              let other := M.alloc (| other |) in
-              BinOp.eq (|
-                M.read (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.deref (| M.read (| self |) |),
-                    "core::num::nonzero::private::NonZeroI8Inner",
-                    0
-                  |)
-                |),
-                M.read (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.deref (| M.read (| other |) |),
-                    "core::num::nonzero::private::NonZeroI8Inner",
-                    0
-                  |)
-                |)
-              |)))
-          | _, _, _ => M.impossible "wrong number of arguments"
-          end.
-        
-        Axiom Implements :
-          M.IsTraitInstance
-            "core::cmp::PartialEq"
-            (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
-            Self
-            (* Instance *) [ ("eq", InstanceField.Method eq) ].
-      End Impl_core_cmp_PartialEq_for_core_num_nonzero_private_NonZeroI8Inner.
-      
       (* StructTuple
         {
           name := "NonZeroI16Inner";
@@ -1116,65 +437,6 @@ Module num.
           ty_params := [];
           fields := [ Ty.path "i16" ];
         } *)
-      
-      Module Impl_core_fmt_Debug_for_core_num_nonzero_private_NonZeroI16Inner.
-        Definition Self : Ty.t := Ty.path "core::num::nonzero::private::NonZeroI16Inner".
-        
-        (*                 Debug *)
-        Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match ε, τ, α with
-          | [], [], [ self; f ] =>
-            ltac:(M.monadic
-              (let self := M.alloc (| self |) in
-              let f := M.alloc (| f |) in
-              M.call_closure (|
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                M.get_associated_function (|
-                  Ty.path "core::fmt::Formatter",
-                  "debug_tuple_field1_finish",
-                  [],
-                  []
-                |),
-                [
-                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (| M.read (| Value.String "NonZeroI16Inner" |) |)
-                  |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_tuple_field (|
-                              M.deref (| M.read (| self |) |),
-                              "core::num::nonzero::private::NonZeroI16Inner",
-                              0
-                            |)
-                          |)
-                        |)
-                      |)
-                    |)
-                  |)
-                ]
-              |)))
-          | _, _, _ => M.impossible "wrong number of arguments"
-          end.
-        
-        Axiom Implements :
-          M.IsTraitInstance
-            "core::fmt::Debug"
-            (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
-            Self
-            (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
-      End Impl_core_fmt_Debug_for_core_num_nonzero_private_NonZeroI16Inner.
       
       Module Impl_core_clone_Clone_for_core_num_nonzero_private_NonZeroI16Inner.
         Definition Self : Ty.t := Ty.path "core::num::nonzero::private::NonZeroI16Inner".
@@ -1228,44 +490,6 @@ Module num.
             (* Instance *) [].
       End Impl_core_marker_StructuralPartialEq_for_core_num_nonzero_private_NonZeroI16Inner.
       
-      Module Impl_core_cmp_PartialEq_for_core_num_nonzero_private_NonZeroI16Inner.
-        Definition Self : Ty.t := Ty.path "core::num::nonzero::private::NonZeroI16Inner".
-        
-        (*                 PartialEq *)
-        Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match ε, τ, α with
-          | [], [], [ self; other ] =>
-            ltac:(M.monadic
-              (let self := M.alloc (| self |) in
-              let other := M.alloc (| other |) in
-              BinOp.eq (|
-                M.read (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.deref (| M.read (| self |) |),
-                    "core::num::nonzero::private::NonZeroI16Inner",
-                    0
-                  |)
-                |),
-                M.read (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.deref (| M.read (| other |) |),
-                    "core::num::nonzero::private::NonZeroI16Inner",
-                    0
-                  |)
-                |)
-              |)))
-          | _, _, _ => M.impossible "wrong number of arguments"
-          end.
-        
-        Axiom Implements :
-          M.IsTraitInstance
-            "core::cmp::PartialEq"
-            (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
-            Self
-            (* Instance *) [ ("eq", InstanceField.Method eq) ].
-      End Impl_core_cmp_PartialEq_for_core_num_nonzero_private_NonZeroI16Inner.
-      
       (* StructTuple
         {
           name := "NonZeroI32Inner";
@@ -1273,65 +497,6 @@ Module num.
           ty_params := [];
           fields := [ Ty.path "i32" ];
         } *)
-      
-      Module Impl_core_fmt_Debug_for_core_num_nonzero_private_NonZeroI32Inner.
-        Definition Self : Ty.t := Ty.path "core::num::nonzero::private::NonZeroI32Inner".
-        
-        (*                 Debug *)
-        Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match ε, τ, α with
-          | [], [], [ self; f ] =>
-            ltac:(M.monadic
-              (let self := M.alloc (| self |) in
-              let f := M.alloc (| f |) in
-              M.call_closure (|
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                M.get_associated_function (|
-                  Ty.path "core::fmt::Formatter",
-                  "debug_tuple_field1_finish",
-                  [],
-                  []
-                |),
-                [
-                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (| M.read (| Value.String "NonZeroI32Inner" |) |)
-                  |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_tuple_field (|
-                              M.deref (| M.read (| self |) |),
-                              "core::num::nonzero::private::NonZeroI32Inner",
-                              0
-                            |)
-                          |)
-                        |)
-                      |)
-                    |)
-                  |)
-                ]
-              |)))
-          | _, _, _ => M.impossible "wrong number of arguments"
-          end.
-        
-        Axiom Implements :
-          M.IsTraitInstance
-            "core::fmt::Debug"
-            (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
-            Self
-            (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
-      End Impl_core_fmt_Debug_for_core_num_nonzero_private_NonZeroI32Inner.
       
       Module Impl_core_clone_Clone_for_core_num_nonzero_private_NonZeroI32Inner.
         Definition Self : Ty.t := Ty.path "core::num::nonzero::private::NonZeroI32Inner".
@@ -1385,44 +550,6 @@ Module num.
             (* Instance *) [].
       End Impl_core_marker_StructuralPartialEq_for_core_num_nonzero_private_NonZeroI32Inner.
       
-      Module Impl_core_cmp_PartialEq_for_core_num_nonzero_private_NonZeroI32Inner.
-        Definition Self : Ty.t := Ty.path "core::num::nonzero::private::NonZeroI32Inner".
-        
-        (*                 PartialEq *)
-        Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match ε, τ, α with
-          | [], [], [ self; other ] =>
-            ltac:(M.monadic
-              (let self := M.alloc (| self |) in
-              let other := M.alloc (| other |) in
-              BinOp.eq (|
-                M.read (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.deref (| M.read (| self |) |),
-                    "core::num::nonzero::private::NonZeroI32Inner",
-                    0
-                  |)
-                |),
-                M.read (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.deref (| M.read (| other |) |),
-                    "core::num::nonzero::private::NonZeroI32Inner",
-                    0
-                  |)
-                |)
-              |)))
-          | _, _, _ => M.impossible "wrong number of arguments"
-          end.
-        
-        Axiom Implements :
-          M.IsTraitInstance
-            "core::cmp::PartialEq"
-            (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
-            Self
-            (* Instance *) [ ("eq", InstanceField.Method eq) ].
-      End Impl_core_cmp_PartialEq_for_core_num_nonzero_private_NonZeroI32Inner.
-      
       (* StructTuple
         {
           name := "NonZeroI64Inner";
@@ -1430,65 +557,6 @@ Module num.
           ty_params := [];
           fields := [ Ty.path "i64" ];
         } *)
-      
-      Module Impl_core_fmt_Debug_for_core_num_nonzero_private_NonZeroI64Inner.
-        Definition Self : Ty.t := Ty.path "core::num::nonzero::private::NonZeroI64Inner".
-        
-        (*                 Debug *)
-        Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match ε, τ, α with
-          | [], [], [ self; f ] =>
-            ltac:(M.monadic
-              (let self := M.alloc (| self |) in
-              let f := M.alloc (| f |) in
-              M.call_closure (|
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                M.get_associated_function (|
-                  Ty.path "core::fmt::Formatter",
-                  "debug_tuple_field1_finish",
-                  [],
-                  []
-                |),
-                [
-                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (| M.read (| Value.String "NonZeroI64Inner" |) |)
-                  |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_tuple_field (|
-                              M.deref (| M.read (| self |) |),
-                              "core::num::nonzero::private::NonZeroI64Inner",
-                              0
-                            |)
-                          |)
-                        |)
-                      |)
-                    |)
-                  |)
-                ]
-              |)))
-          | _, _, _ => M.impossible "wrong number of arguments"
-          end.
-        
-        Axiom Implements :
-          M.IsTraitInstance
-            "core::fmt::Debug"
-            (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
-            Self
-            (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
-      End Impl_core_fmt_Debug_for_core_num_nonzero_private_NonZeroI64Inner.
       
       Module Impl_core_clone_Clone_for_core_num_nonzero_private_NonZeroI64Inner.
         Definition Self : Ty.t := Ty.path "core::num::nonzero::private::NonZeroI64Inner".
@@ -1542,44 +610,6 @@ Module num.
             (* Instance *) [].
       End Impl_core_marker_StructuralPartialEq_for_core_num_nonzero_private_NonZeroI64Inner.
       
-      Module Impl_core_cmp_PartialEq_for_core_num_nonzero_private_NonZeroI64Inner.
-        Definition Self : Ty.t := Ty.path "core::num::nonzero::private::NonZeroI64Inner".
-        
-        (*                 PartialEq *)
-        Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match ε, τ, α with
-          | [], [], [ self; other ] =>
-            ltac:(M.monadic
-              (let self := M.alloc (| self |) in
-              let other := M.alloc (| other |) in
-              BinOp.eq (|
-                M.read (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.deref (| M.read (| self |) |),
-                    "core::num::nonzero::private::NonZeroI64Inner",
-                    0
-                  |)
-                |),
-                M.read (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.deref (| M.read (| other |) |),
-                    "core::num::nonzero::private::NonZeroI64Inner",
-                    0
-                  |)
-                |)
-              |)))
-          | _, _, _ => M.impossible "wrong number of arguments"
-          end.
-        
-        Axiom Implements :
-          M.IsTraitInstance
-            "core::cmp::PartialEq"
-            (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
-            Self
-            (* Instance *) [ ("eq", InstanceField.Method eq) ].
-      End Impl_core_cmp_PartialEq_for_core_num_nonzero_private_NonZeroI64Inner.
-      
       (* StructTuple
         {
           name := "NonZeroI128Inner";
@@ -1587,65 +617,6 @@ Module num.
           ty_params := [];
           fields := [ Ty.path "i128" ];
         } *)
-      
-      Module Impl_core_fmt_Debug_for_core_num_nonzero_private_NonZeroI128Inner.
-        Definition Self : Ty.t := Ty.path "core::num::nonzero::private::NonZeroI128Inner".
-        
-        (*                 Debug *)
-        Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match ε, τ, α with
-          | [], [], [ self; f ] =>
-            ltac:(M.monadic
-              (let self := M.alloc (| self |) in
-              let f := M.alloc (| f |) in
-              M.call_closure (|
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                M.get_associated_function (|
-                  Ty.path "core::fmt::Formatter",
-                  "debug_tuple_field1_finish",
-                  [],
-                  []
-                |),
-                [
-                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (| M.read (| Value.String "NonZeroI128Inner" |) |)
-                  |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_tuple_field (|
-                              M.deref (| M.read (| self |) |),
-                              "core::num::nonzero::private::NonZeroI128Inner",
-                              0
-                            |)
-                          |)
-                        |)
-                      |)
-                    |)
-                  |)
-                ]
-              |)))
-          | _, _, _ => M.impossible "wrong number of arguments"
-          end.
-        
-        Axiom Implements :
-          M.IsTraitInstance
-            "core::fmt::Debug"
-            (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
-            Self
-            (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
-      End Impl_core_fmt_Debug_for_core_num_nonzero_private_NonZeroI128Inner.
       
       Module Impl_core_clone_Clone_for_core_num_nonzero_private_NonZeroI128Inner.
         Definition Self : Ty.t := Ty.path "core::num::nonzero::private::NonZeroI128Inner".
@@ -1699,44 +670,6 @@ Module num.
             (* Instance *) [].
       End Impl_core_marker_StructuralPartialEq_for_core_num_nonzero_private_NonZeroI128Inner.
       
-      Module Impl_core_cmp_PartialEq_for_core_num_nonzero_private_NonZeroI128Inner.
-        Definition Self : Ty.t := Ty.path "core::num::nonzero::private::NonZeroI128Inner".
-        
-        (*                 PartialEq *)
-        Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match ε, τ, α with
-          | [], [], [ self; other ] =>
-            ltac:(M.monadic
-              (let self := M.alloc (| self |) in
-              let other := M.alloc (| other |) in
-              BinOp.eq (|
-                M.read (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.deref (| M.read (| self |) |),
-                    "core::num::nonzero::private::NonZeroI128Inner",
-                    0
-                  |)
-                |),
-                M.read (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.deref (| M.read (| other |) |),
-                    "core::num::nonzero::private::NonZeroI128Inner",
-                    0
-                  |)
-                |)
-              |)))
-          | _, _, _ => M.impossible "wrong number of arguments"
-          end.
-        
-        Axiom Implements :
-          M.IsTraitInstance
-            "core::cmp::PartialEq"
-            (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
-            Self
-            (* Instance *) [ ("eq", InstanceField.Method eq) ].
-      End Impl_core_cmp_PartialEq_for_core_num_nonzero_private_NonZeroI128Inner.
-      
       (* StructTuple
         {
           name := "NonZeroIsizeInner";
@@ -1744,65 +677,6 @@ Module num.
           ty_params := [];
           fields := [ Ty.path "isize" ];
         } *)
-      
-      Module Impl_core_fmt_Debug_for_core_num_nonzero_private_NonZeroIsizeInner.
-        Definition Self : Ty.t := Ty.path "core::num::nonzero::private::NonZeroIsizeInner".
-        
-        (*                 Debug *)
-        Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match ε, τ, α with
-          | [], [], [ self; f ] =>
-            ltac:(M.monadic
-              (let self := M.alloc (| self |) in
-              let f := M.alloc (| f |) in
-              M.call_closure (|
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [ Ty.tuple []; Ty.path "core::fmt::Error" ],
-                M.get_associated_function (|
-                  Ty.path "core::fmt::Formatter",
-                  "debug_tuple_field1_finish",
-                  [],
-                  []
-                |),
-                [
-                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (| M.read (| Value.String "NonZeroIsizeInner" |) |)
-                  |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.SubPointer.get_struct_tuple_field (|
-                              M.deref (| M.read (| self |) |),
-                              "core::num::nonzero::private::NonZeroIsizeInner",
-                              0
-                            |)
-                          |)
-                        |)
-                      |)
-                    |)
-                  |)
-                ]
-              |)))
-          | _, _, _ => M.impossible "wrong number of arguments"
-          end.
-        
-        Axiom Implements :
-          M.IsTraitInstance
-            "core::fmt::Debug"
-            (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
-            Self
-            (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
-      End Impl_core_fmt_Debug_for_core_num_nonzero_private_NonZeroIsizeInner.
       
       Module Impl_core_clone_Clone_for_core_num_nonzero_private_NonZeroIsizeInner.
         Definition Self : Ty.t := Ty.path "core::num::nonzero::private::NonZeroIsizeInner".
@@ -1855,44 +729,6 @@ Module num.
             Self
             (* Instance *) [].
       End Impl_core_marker_StructuralPartialEq_for_core_num_nonzero_private_NonZeroIsizeInner.
-      
-      Module Impl_core_cmp_PartialEq_for_core_num_nonzero_private_NonZeroIsizeInner.
-        Definition Self : Ty.t := Ty.path "core::num::nonzero::private::NonZeroIsizeInner".
-        
-        (*                 PartialEq *)
-        Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-          match ε, τ, α with
-          | [], [], [ self; other ] =>
-            ltac:(M.monadic
-              (let self := M.alloc (| self |) in
-              let other := M.alloc (| other |) in
-              BinOp.eq (|
-                M.read (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.deref (| M.read (| self |) |),
-                    "core::num::nonzero::private::NonZeroIsizeInner",
-                    0
-                  |)
-                |),
-                M.read (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.deref (| M.read (| other |) |),
-                    "core::num::nonzero::private::NonZeroIsizeInner",
-                    0
-                  |)
-                |)
-              |)))
-          | _, _, _ => M.impossible "wrong number of arguments"
-          end.
-        
-        Axiom Implements :
-          M.IsTraitInstance
-            "core::cmp::PartialEq"
-            (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
-            Self
-            (* Instance *) [ ("eq", InstanceField.Method eq) ].
-      End Impl_core_cmp_PartialEq_for_core_num_nonzero_private_NonZeroIsizeInner.
     End private.
     
     Module Impl_core_num_nonzero_private_Sealed_for_u8.
@@ -2233,9 +1069,9 @@ Module num.
         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ].
       
       (*
-                  fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-                      self.get().fmt(f)
-                  }
+                      fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+                          self.get().fmt(f)
+                      }
       *)
       Definition fmt (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
@@ -2287,9 +1123,9 @@ Module num.
         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ].
       
       (*
-                  fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-                      self.get().fmt(f)
-                  }
+                      fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+                          self.get().fmt(f)
+                      }
       *)
       Definition fmt (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
@@ -2341,9 +1177,9 @@ Module num.
         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ].
       
       (*
-                  fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-                      self.get().fmt(f)
-                  }
+                      fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+                          self.get().fmt(f)
+                      }
       *)
       Definition fmt (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
@@ -2395,9 +1231,9 @@ Module num.
         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ].
       
       (*
-                  fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-                      self.get().fmt(f)
-                  }
+                      fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+                          self.get().fmt(f)
+                      }
       *)
       Definition fmt (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
@@ -2449,9 +1285,9 @@ Module num.
         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ].
       
       (*
-                  fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-                      self.get().fmt(f)
-                  }
+                      fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+                          self.get().fmt(f)
+                      }
       *)
       Definition fmt (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
@@ -2503,9 +1339,9 @@ Module num.
         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ].
       
       (*
-                  fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-                      self.get().fmt(f)
-                  }
+                      fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+                          self.get().fmt(f)
+                      }
       *)
       Definition fmt (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         let Self : Ty.t := Self T in
@@ -2551,6 +1387,114 @@ Module num.
           (Self T)
           (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
     End Impl_core_fmt_UpperHex_where_core_num_nonzero_ZeroablePrimitive_T_where_core_fmt_UpperHex_T_for_core_num_nonzero_NonZero_T.
+    
+    Module Impl_core_fmt_LowerExp_where_core_num_nonzero_ZeroablePrimitive_T_where_core_fmt_LowerExp_T_for_core_num_nonzero_NonZero_T.
+      Definition Self (T : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ].
+      
+      (*
+                      fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+                          self.get().fmt(f)
+                      }
+      *)
+      Definition fmt (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self T in
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let f := M.alloc (| f |) in
+            M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+              M.get_trait_method (| "core::fmt::LowerExp", T, [], [], "fmt", [], [] |),
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
+                      T,
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| M.deref (| M.read (| self |) |) |) ]
+                    |)
+                  |)
+                |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+              ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom Implements :
+        forall (T : Ty.t),
+        M.IsTraitInstance
+          "core::fmt::LowerExp"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) []
+          (Self T)
+          (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
+    End Impl_core_fmt_LowerExp_where_core_num_nonzero_ZeroablePrimitive_T_where_core_fmt_LowerExp_T_for_core_num_nonzero_NonZero_T.
+    
+    Module Impl_core_fmt_UpperExp_where_core_num_nonzero_ZeroablePrimitive_T_where_core_fmt_UpperExp_T_for_core_num_nonzero_NonZero_T.
+      Definition Self (T : Ty.t) : Ty.t :=
+        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ].
+      
+      (*
+                      fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+                          self.get().fmt(f)
+                      }
+      *)
+      Definition fmt (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        let Self : Ty.t := Self T in
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let f := M.alloc (| f |) in
+            M.call_closure (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+              M.get_trait_method (| "core::fmt::UpperExp", T, [], [], "fmt", [], [] |),
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
+                      T,
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| M.deref (| M.read (| self |) |) |) ]
+                    |)
+                  |)
+                |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
+              ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom Implements :
+        forall (T : Ty.t),
+        M.IsTraitInstance
+          "core::fmt::UpperExp"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) []
+          (Self T)
+          (* Instance *) [ ("fmt", InstanceField.Method (fmt T)) ].
+    End Impl_core_fmt_UpperExp_where_core_num_nonzero_ZeroablePrimitive_T_where_core_fmt_UpperExp_T_for_core_num_nonzero_NonZero_T.
     
     Module Impl_core_marker_Freeze_where_core_num_nonzero_ZeroablePrimitive_T_where_core_marker_Freeze_T_for_core_num_nonzero_NonZero_T.
       Definition Self (T : Ty.t) : Ty.t :=
@@ -2642,7 +1586,7 @@ Module num.
       
       (*
           fn clone(&self) -> Self {
-              Self(self.0)
+              *self
           }
       *)
       Definition clone (T : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -2651,17 +1595,7 @@ Module num.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            Value.StructTuple
-              "core::num::nonzero::NonZero"
-              [
-                M.read (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.deref (| M.read (| self |) |),
-                    "core::num::nonzero::NonZero",
-                    0
-                  |)
-                |)
-              ]))
+            M.read (| M.deref (| M.read (| self |) |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2689,7 +1623,7 @@ Module num.
           (* Instance *) [].
     End Impl_core_marker_Copy_where_core_num_nonzero_ZeroablePrimitive_T_for_core_num_nonzero_NonZero_T.
     
-    Module Impl_core_cmp_PartialEq_where_core_num_nonzero_ZeroablePrimitive_T_where_core_cmp_PartialEq_T_for_core_num_nonzero_NonZero_T.
+    Module Impl_core_cmp_PartialEq_where_core_num_nonzero_ZeroablePrimitive_T_where_core_cmp_PartialEq_T_core_num_nonzero_NonZero_T_for_core_num_nonzero_NonZero_T.
       Definition Self (T : Ty.t) : Ty.t :=
         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ].
       
@@ -2800,11 +1734,12 @@ Module num.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ] ]
           (Self T)
           (* Instance *)
           [ ("eq", InstanceField.Method (eq T)); ("ne", InstanceField.Method (ne T)) ].
-    End Impl_core_cmp_PartialEq_where_core_num_nonzero_ZeroablePrimitive_T_where_core_cmp_PartialEq_T_for_core_num_nonzero_NonZero_T.
+    End Impl_core_cmp_PartialEq_where_core_num_nonzero_ZeroablePrimitive_T_where_core_cmp_PartialEq_T_core_num_nonzero_NonZero_T_for_core_num_nonzero_NonZero_T.
     
     Module Impl_core_marker_StructuralPartialEq_where_core_num_nonzero_ZeroablePrimitive_T_where_core_marker_StructuralPartialEq_T_for_core_num_nonzero_NonZero_T.
       Definition Self (T : Ty.t) : Ty.t :=
@@ -2834,7 +1769,7 @@ Module num.
           (* Instance *) [].
     End Impl_core_cmp_Eq_where_core_num_nonzero_ZeroablePrimitive_T_where_core_cmp_Eq_T_for_core_num_nonzero_NonZero_T.
     
-    Module Impl_core_cmp_PartialOrd_where_core_num_nonzero_ZeroablePrimitive_T_where_core_cmp_PartialOrd_T_for_core_num_nonzero_NonZero_T.
+    Module Impl_core_cmp_PartialOrd_where_core_num_nonzero_ZeroablePrimitive_T_where_core_cmp_PartialOrd_T_core_num_nonzero_NonZero_T_for_core_num_nonzero_NonZero_T.
       Definition Self (T : Ty.t) : Ty.t :=
         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ].
       
@@ -3103,7 +2038,8 @@ Module num.
         M.IsTraitInstance
           "core::cmp::PartialOrd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ] ]
           (Self T)
           (* Instance *)
           [
@@ -3113,7 +2049,7 @@ Module num.
             ("gt", InstanceField.Method (gt T));
             ("ge", InstanceField.Method (ge T))
           ].
-    End Impl_core_cmp_PartialOrd_where_core_num_nonzero_ZeroablePrimitive_T_where_core_cmp_PartialOrd_T_for_core_num_nonzero_NonZero_T.
+    End Impl_core_cmp_PartialOrd_where_core_num_nonzero_ZeroablePrimitive_T_where_core_cmp_PartialOrd_T_core_num_nonzero_NonZero_T_for_core_num_nonzero_NonZero_T.
     
     Module Impl_core_cmp_Ord_where_core_num_nonzero_ZeroablePrimitive_T_where_core_cmp_Ord_T_for_core_num_nonzero_NonZero_T.
       Definition Self (T : Ty.t) : Ty.t :=
@@ -3454,7 +2390,7 @@ Module num.
           (* Instance *) [ ("from", InstanceField.Method (from T)) ].
     End Impl_core_convert_From_where_core_num_nonzero_ZeroablePrimitive_T_core_num_nonzero_NonZero_T_for_T.
     
-    Module Impl_core_ops_bit_BitOr_where_core_num_nonzero_ZeroablePrimitive_T_where_core_ops_bit_BitOr_T_for_core_num_nonzero_NonZero_T.
+    Module Impl_core_ops_bit_BitOr_where_core_num_nonzero_ZeroablePrimitive_T_where_core_ops_bit_BitOr_T_core_num_nonzero_NonZero_T_for_core_num_nonzero_NonZero_T.
       Definition Self (T : Ty.t) : Ty.t :=
         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ].
       
@@ -3520,11 +2456,12 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitOr"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ] ]
           (Self T)
           (* Instance *)
           [ ("Output", InstanceField.Ty (_Output T)); ("bitor", InstanceField.Method (bitor T)) ].
-    End Impl_core_ops_bit_BitOr_where_core_num_nonzero_ZeroablePrimitive_T_where_core_ops_bit_BitOr_T_for_core_num_nonzero_NonZero_T.
+    End Impl_core_ops_bit_BitOr_where_core_num_nonzero_ZeroablePrimitive_T_where_core_ops_bit_BitOr_T_core_num_nonzero_NonZero_T_for_core_num_nonzero_NonZero_T.
     
     Module Impl_core_ops_bit_BitOr_where_core_num_nonzero_ZeroablePrimitive_T_where_core_ops_bit_BitOr_T_T_for_core_num_nonzero_NonZero_T.
       Definition Self (T : Ty.t) : Ty.t :=
@@ -3652,7 +2589,7 @@ Module num.
           [ ("Output", InstanceField.Ty (_Output T)); ("bitor", InstanceField.Method (bitor T)) ].
     End Impl_core_ops_bit_BitOr_where_core_num_nonzero_ZeroablePrimitive_T_where_core_ops_bit_BitOr_T_core_num_nonzero_NonZero_T_for_T.
     
-    Module Impl_core_ops_bit_BitOrAssign_where_core_num_nonzero_ZeroablePrimitive_T_where_core_ops_bit_BitOr_core_num_nonzero_NonZero_T_for_core_num_nonzero_NonZero_T.
+    Module Impl_core_ops_bit_BitOrAssign_where_core_num_nonzero_ZeroablePrimitive_T_where_core_ops_bit_BitOr_core_num_nonzero_NonZero_T_core_num_nonzero_NonZero_T_for_core_num_nonzero_NonZero_T.
       Definition Self (T : Ty.t) : Ty.t :=
         Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ].
       
@@ -3703,10 +2640,11 @@ Module num.
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ T ] ]
           (Self T)
           (* Instance *) [ ("bitor_assign", InstanceField.Method (bitor_assign T)) ].
-    End Impl_core_ops_bit_BitOrAssign_where_core_num_nonzero_ZeroablePrimitive_T_where_core_ops_bit_BitOr_core_num_nonzero_NonZero_T_for_core_num_nonzero_NonZero_T.
+    End Impl_core_ops_bit_BitOrAssign_where_core_num_nonzero_ZeroablePrimitive_T_where_core_ops_bit_BitOr_core_num_nonzero_NonZero_T_core_num_nonzero_NonZero_T_for_core_num_nonzero_NonZero_T.
     
     Module Impl_core_ops_bit_BitOrAssign_where_core_num_nonzero_ZeroablePrimitive_T_where_core_ops_bit_BitOr_core_num_nonzero_NonZero_T_T_T_for_core_num_nonzero_NonZero_T.
       Definition Self (T : Ty.t) : Ty.t :=
@@ -4192,15 +3130,21 @@ Module num.
       
       (*
           pub const fn get(self) -> T {
-              // FIXME: This can be changed to simply `self.0` once LLVM supports `!range` metadata
-              // for function arguments: https://github.com/llvm/llvm-project/issues/76628
-              //
               // Rustc can set range metadata only if it loads `self` from
               // memory somewhere. If the value of `self` was from by-value argument
               // of some not-inlined function, LLVM don't have range metadata
               // to understand that the value cannot be zero.
               //
-              // For now, using the transmute `assume`s the range at runtime.
+              // Using the transmute `assume`s the range at runtime.
+              //
+              // Even once LLVM supports `!range` metadata for function arguments
+              // (see <https://github.com/llvm/llvm-project/issues/76628>), this can't
+              // be `.0` because MCP#807 bans field-projecting into `scalar_valid_range`
+              // types, and it arguably wouldn't want to be anyway because if this is
+              // MIR-inlined, there's no opportunity to put that argument metadata anywhere.
+              //
+              // The good answer here will eventually be pattern types, which will hopefully
+              // allow it to go back to `.0`, maybe with a cast of some sort.
               //
               // SAFETY: `ZeroablePrimitive` guarantees that the size and bit validity
               // of `.0` is such that this transmute is sound.
@@ -5787,6 +4731,69 @@ Module num.
         M.IsAssociatedFunction.Trait Self "saturating_pow" saturating_pow.
       Admitted.
       Global Typeclasses Opaque saturating_pow.
+      (*
+                  pub const fn div_ceil(self, rhs: Self) -> Self {
+                      let v = self.get().div_ceil(rhs.get());
+                      // SAFETY: ceiled division of two positive integers can never be zero.
+                      unsafe { Self::new_unchecked(v) }
+                  }
+      *)
+      Definition div_ceil (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let rhs := M.alloc (| rhs |) in
+            M.read (|
+              let~ v : Ty.path "u8" :=
+                M.alloc (|
+                  M.call_closure (|
+                    Ty.path "u8",
+                    M.get_associated_function (| Ty.path "u8", "div_ceil", [], [] |),
+                    [
+                      M.call_closure (|
+                        Ty.path "u8",
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
+                          "get",
+                          [],
+                          []
+                        |),
+                        [ M.read (| self |) ]
+                      |);
+                      M.call_closure (|
+                        Ty.path "u8",
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
+                          "get",
+                          [],
+                          []
+                        |),
+                        [ M.read (| rhs |) ]
+                      |)
+                    ]
+                  |)
+                |) in
+              M.alloc (|
+                M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
+                    "new_unchecked",
+                    [],
+                    []
+                  |),
+                  [ M.read (| v |) ]
+                |)
+              |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Global Instance AssociatedFunction_div_ceil :
+        M.IsAssociatedFunction.Trait Self "div_ceil" div_ceil.
+      Admitted.
+      Global Typeclasses Opaque div_ceil.
     End Impl_core_num_nonzero_NonZero_u8.
     
     Module Impl_core_str_traits_FromStr_for_core_num_nonzero_NonZero_u8.
@@ -6182,6 +5189,7 @@ Module num.
           Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
     End Impl_core_ops_arith_RemAssign_core_num_nonzero_NonZero_u8_for_u8.
+    
     
     Axiom NonZeroU16 :
       (Ty.path "core::num::nonzero::NonZeroU16") =
@@ -7738,6 +6746,69 @@ Module num.
         M.IsAssociatedFunction.Trait Self "saturating_pow" saturating_pow.
       Admitted.
       Global Typeclasses Opaque saturating_pow.
+      (*
+                  pub const fn div_ceil(self, rhs: Self) -> Self {
+                      let v = self.get().div_ceil(rhs.get());
+                      // SAFETY: ceiled division of two positive integers can never be zero.
+                      unsafe { Self::new_unchecked(v) }
+                  }
+      *)
+      Definition div_ceil (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let rhs := M.alloc (| rhs |) in
+            M.read (|
+              let~ v : Ty.path "u16" :=
+                M.alloc (|
+                  M.call_closure (|
+                    Ty.path "u16",
+                    M.get_associated_function (| Ty.path "u16", "div_ceil", [], [] |),
+                    [
+                      M.call_closure (|
+                        Ty.path "u16",
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
+                          "get",
+                          [],
+                          []
+                        |),
+                        [ M.read (| self |) ]
+                      |);
+                      M.call_closure (|
+                        Ty.path "u16",
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
+                          "get",
+                          [],
+                          []
+                        |),
+                        [ M.read (| rhs |) ]
+                      |)
+                    ]
+                  |)
+                |) in
+              M.alloc (|
+                M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
+                    "new_unchecked",
+                    [],
+                    []
+                  |),
+                  [ M.read (| v |) ]
+                |)
+              |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Global Instance AssociatedFunction_div_ceil :
+        M.IsAssociatedFunction.Trait Self "div_ceil" div_ceil.
+      Admitted.
+      Global Typeclasses Opaque div_ceil.
     End Impl_core_num_nonzero_NonZero_u16.
     
     Module Impl_core_str_traits_FromStr_for_core_num_nonzero_NonZero_u16.
@@ -8133,6 +7204,7 @@ Module num.
           Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
     End Impl_core_ops_arith_RemAssign_core_num_nonzero_NonZero_u16_for_u16.
+    
     
     Axiom NonZeroU32 :
       (Ty.path "core::num::nonzero::NonZeroU32") =
@@ -9689,6 +8761,69 @@ Module num.
         M.IsAssociatedFunction.Trait Self "saturating_pow" saturating_pow.
       Admitted.
       Global Typeclasses Opaque saturating_pow.
+      (*
+                  pub const fn div_ceil(self, rhs: Self) -> Self {
+                      let v = self.get().div_ceil(rhs.get());
+                      // SAFETY: ceiled division of two positive integers can never be zero.
+                      unsafe { Self::new_unchecked(v) }
+                  }
+      *)
+      Definition div_ceil (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let rhs := M.alloc (| rhs |) in
+            M.read (|
+              let~ v : Ty.path "u32" :=
+                M.alloc (|
+                  M.call_closure (|
+                    Ty.path "u32",
+                    M.get_associated_function (| Ty.path "u32", "div_ceil", [], [] |),
+                    [
+                      M.call_closure (|
+                        Ty.path "u32",
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
+                          "get",
+                          [],
+                          []
+                        |),
+                        [ M.read (| self |) ]
+                      |);
+                      M.call_closure (|
+                        Ty.path "u32",
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
+                          "get",
+                          [],
+                          []
+                        |),
+                        [ M.read (| rhs |) ]
+                      |)
+                    ]
+                  |)
+                |) in
+              M.alloc (|
+                M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
+                    "new_unchecked",
+                    [],
+                    []
+                  |),
+                  [ M.read (| v |) ]
+                |)
+              |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Global Instance AssociatedFunction_div_ceil :
+        M.IsAssociatedFunction.Trait Self "div_ceil" div_ceil.
+      Admitted.
+      Global Typeclasses Opaque div_ceil.
     End Impl_core_num_nonzero_NonZero_u32.
     
     Module Impl_core_str_traits_FromStr_for_core_num_nonzero_NonZero_u32.
@@ -10084,6 +9219,7 @@ Module num.
           Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
     End Impl_core_ops_arith_RemAssign_core_num_nonzero_NonZero_u32_for_u32.
+    
     
     Axiom NonZeroU64 :
       (Ty.path "core::num::nonzero::NonZeroU64") =
@@ -11640,6 +10776,69 @@ Module num.
         M.IsAssociatedFunction.Trait Self "saturating_pow" saturating_pow.
       Admitted.
       Global Typeclasses Opaque saturating_pow.
+      (*
+                  pub const fn div_ceil(self, rhs: Self) -> Self {
+                      let v = self.get().div_ceil(rhs.get());
+                      // SAFETY: ceiled division of two positive integers can never be zero.
+                      unsafe { Self::new_unchecked(v) }
+                  }
+      *)
+      Definition div_ceil (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let rhs := M.alloc (| rhs |) in
+            M.read (|
+              let~ v : Ty.path "u64" :=
+                M.alloc (|
+                  M.call_closure (|
+                    Ty.path "u64",
+                    M.get_associated_function (| Ty.path "u64", "div_ceil", [], [] |),
+                    [
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
+                          "get",
+                          [],
+                          []
+                        |),
+                        [ M.read (| self |) ]
+                      |);
+                      M.call_closure (|
+                        Ty.path "u64",
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
+                          "get",
+                          [],
+                          []
+                        |),
+                        [ M.read (| rhs |) ]
+                      |)
+                    ]
+                  |)
+                |) in
+              M.alloc (|
+                M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
+                    "new_unchecked",
+                    [],
+                    []
+                  |),
+                  [ M.read (| v |) ]
+                |)
+              |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Global Instance AssociatedFunction_div_ceil :
+        M.IsAssociatedFunction.Trait Self "div_ceil" div_ceil.
+      Admitted.
+      Global Typeclasses Opaque div_ceil.
     End Impl_core_num_nonzero_NonZero_u64.
     
     Module Impl_core_str_traits_FromStr_for_core_num_nonzero_NonZero_u64.
@@ -12035,6 +11234,7 @@ Module num.
           Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
     End Impl_core_ops_arith_RemAssign_core_num_nonzero_NonZero_u64_for_u64.
+    
     
     Axiom NonZeroU128 :
       (Ty.path "core::num::nonzero::NonZeroU128") =
@@ -13603,6 +12803,69 @@ Module num.
         M.IsAssociatedFunction.Trait Self "saturating_pow" saturating_pow.
       Admitted.
       Global Typeclasses Opaque saturating_pow.
+      (*
+                  pub const fn div_ceil(self, rhs: Self) -> Self {
+                      let v = self.get().div_ceil(rhs.get());
+                      // SAFETY: ceiled division of two positive integers can never be zero.
+                      unsafe { Self::new_unchecked(v) }
+                  }
+      *)
+      Definition div_ceil (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let rhs := M.alloc (| rhs |) in
+            M.read (|
+              let~ v : Ty.path "u128" :=
+                M.alloc (|
+                  M.call_closure (|
+                    Ty.path "u128",
+                    M.get_associated_function (| Ty.path "u128", "div_ceil", [], [] |),
+                    [
+                      M.call_closure (|
+                        Ty.path "u128",
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
+                          "get",
+                          [],
+                          []
+                        |),
+                        [ M.read (| self |) ]
+                      |);
+                      M.call_closure (|
+                        Ty.path "u128",
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
+                          "get",
+                          [],
+                          []
+                        |),
+                        [ M.read (| rhs |) ]
+                      |)
+                    ]
+                  |)
+                |) in
+              M.alloc (|
+                M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
+                    "new_unchecked",
+                    [],
+                    []
+                  |),
+                  [ M.read (| v |) ]
+                |)
+              |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Global Instance AssociatedFunction_div_ceil :
+        M.IsAssociatedFunction.Trait Self "div_ceil" div_ceil.
+      Admitted.
+      Global Typeclasses Opaque div_ceil.
     End Impl_core_num_nonzero_NonZero_u128.
     
     Module Impl_core_str_traits_FromStr_for_core_num_nonzero_NonZero_u128.
@@ -13998,6 +13261,7 @@ Module num.
           Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
     End Impl_core_ops_arith_RemAssign_core_num_nonzero_NonZero_u128_for_u128.
+    
     
     Axiom NonZeroUsize :
       (Ty.path "core::num::nonzero::NonZeroUsize") =
@@ -15566,6 +14830,69 @@ Module num.
         M.IsAssociatedFunction.Trait Self "saturating_pow" saturating_pow.
       Admitted.
       Global Typeclasses Opaque saturating_pow.
+      (*
+                  pub const fn div_ceil(self, rhs: Self) -> Self {
+                      let v = self.get().div_ceil(rhs.get());
+                      // SAFETY: ceiled division of two positive integers can never be zero.
+                      unsafe { Self::new_unchecked(v) }
+                  }
+      *)
+      Definition div_ceil (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; rhs ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let rhs := M.alloc (| rhs |) in
+            M.read (|
+              let~ v : Ty.path "usize" :=
+                M.alloc (|
+                  M.call_closure (|
+                    Ty.path "usize",
+                    M.get_associated_function (| Ty.path "usize", "div_ceil", [], [] |),
+                    [
+                      M.call_closure (|
+                        Ty.path "usize",
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
+                          "get",
+                          [],
+                          []
+                        |),
+                        [ M.read (| self |) ]
+                      |);
+                      M.call_closure (|
+                        Ty.path "usize",
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
+                          "get",
+                          [],
+                          []
+                        |),
+                        [ M.read (| rhs |) ]
+                      |)
+                    ]
+                  |)
+                |) in
+              M.alloc (|
+                M.call_closure (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
+                    "new_unchecked",
+                    [],
+                    []
+                  |),
+                  [ M.read (| v |) ]
+                |)
+              |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Global Instance AssociatedFunction_div_ceil :
+        M.IsAssociatedFunction.Trait Self "div_ceil" div_ceil.
+      Admitted.
+      Global Typeclasses Opaque div_ceil.
     End Impl_core_num_nonzero_NonZero_usize.
     
     Module Impl_core_str_traits_FromStr_for_core_num_nonzero_NonZero_usize.
@@ -15962,6 +15289,7 @@ Module num.
           Self
           (* Instance *) [ ("rem_assign", InstanceField.Method rem_assign) ].
     End Impl_core_ops_arith_RemAssign_core_num_nonzero_NonZero_usize_for_usize.
+    
     
     Axiom NonZeroI8 :
       (Ty.path "core::num::nonzero::NonZeroI8") =

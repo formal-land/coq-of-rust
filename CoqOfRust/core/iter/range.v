@@ -536,12 +536,13 @@ Module iter.
         end.
       
       (*
-                      fn steps_between(start: &Self, end: &Self) -> Option<usize> {
+                      fn steps_between(start: &Self, end: &Self) -> (usize, Option<usize>) {
                           if *start <= *end {
                               // This relies on $u_narrower <= usize
-                              Some(( *end - *start) as usize)
+                              let steps = ( *end - *start) as usize;
+                              (steps, Some(steps))
                           } else {
-                              None
+                              (0, None)
                           }
                       }
       *)
@@ -553,7 +554,12 @@ Module iter.
             let end_ := M.alloc (| end_ |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]),
+                Some
+                  (Ty.tuple
+                    [
+                      Ty.path "usize";
+                      Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                    ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -567,21 +573,31 @@ Module iter.
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let~ steps : Ty.path "usize" :=
+                        M.alloc (|
+                          M.cast
+                            (Ty.path "usize")
+                            (BinOp.Wrap.sub (|
+                              M.read (| M.deref (| M.read (| end_ |) |) |),
+                              M.read (| M.deref (| M.read (| start |) |) |)
+                            |))
+                        |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::option::Option::Some"
+                        Value.Tuple
                           [
-                            M.cast
-                              (Ty.path "usize")
-                              (BinOp.Wrap.sub (|
-                                M.read (| M.deref (| M.read (| end_ |) |) |),
-                                M.read (| M.deref (| M.read (| start |) |) |)
-                              |))
+                            M.read (| steps |);
+                            Value.StructTuple "core::option::Option::Some" [ M.read (| steps |) ]
                           ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.Tuple
+                          [
+                            Value.Integer IntegerKind.Usize 0;
+                            Value.StructTuple "core::option::Option::None" []
+                          ]
+                      |)))
                 ]
               |)
             |)))
@@ -980,16 +996,17 @@ Module iter.
         end.
       
       (*
-                      fn steps_between(start: &Self, end: &Self) -> Option<usize> {
+                      fn steps_between(start: &Self, end: &Self) -> (usize, Option<usize>) {
                           if *start <= *end {
                               // This relies on $i_narrower <= usize
                               //
                               // Casting to isize extends the width but preserves the sign.
                               // Use wrapping_sub in isize space and cast to usize to compute
                               // the difference that might not fit inside the range of isize.
-                              Some(( *end as isize).wrapping_sub( *start as isize) as usize)
+                              let steps = ( *end as isize).wrapping_sub( *start as isize) as usize;
+                              (steps, Some(steps))
                           } else {
-                              None
+                              (0, None)
                           }
                       }
       *)
@@ -1001,7 +1018,12 @@ Module iter.
             let end_ := M.alloc (| end_ |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]),
+                Some
+                  (Ty.tuple
+                    [
+                      Ty.path "usize";
+                      Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                    ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -1015,34 +1037,44 @@ Module iter.
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (|
-                        Value.StructTuple
-                          "core::option::Option::Some"
-                          [
-                            M.cast
-                              (Ty.path "usize")
-                              (M.call_closure (|
+                      let~ steps : Ty.path "usize" :=
+                        M.alloc (|
+                          M.cast
+                            (Ty.path "usize")
+                            (M.call_closure (|
+                              Ty.path "isize",
+                              M.get_associated_function (|
                                 Ty.path "isize",
-                                M.get_associated_function (|
-                                  Ty.path "isize",
-                                  "wrapping_sub",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.cast
-                                    (Ty.path "isize")
-                                    (M.read (| M.deref (| M.read (| end_ |) |) |));
-                                  M.cast
-                                    (Ty.path "isize")
-                                    (M.read (| M.deref (| M.read (| start |) |) |))
-                                ]
-                              |))
+                                "wrapping_sub",
+                                [],
+                                []
+                              |),
+                              [
+                                M.cast
+                                  (Ty.path "isize")
+                                  (M.read (| M.deref (| M.read (| end_ |) |) |));
+                                M.cast
+                                  (Ty.path "isize")
+                                  (M.read (| M.deref (| M.read (| start |) |) |))
+                              ]
+                            |))
+                        |) in
+                      M.alloc (|
+                        Value.Tuple
+                          [
+                            M.read (| steps |);
+                            Value.StructTuple "core::option::Option::Some" [ M.read (| steps |) ]
                           ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.Tuple
+                          [
+                            Value.Integer IntegerKind.Usize 0;
+                            Value.StructTuple "core::option::Option::None" []
+                          ]
+                      |)))
                 ]
               |)
             |)))
@@ -1499,12 +1531,13 @@ Module iter.
         end.
       
       (*
-                      fn steps_between(start: &Self, end: &Self) -> Option<usize> {
+                      fn steps_between(start: &Self, end: &Self) -> (usize, Option<usize>) {
                           if *start <= *end {
                               // This relies on $u_narrower <= usize
-                              Some(( *end - *start) as usize)
+                              let steps = ( *end - *start) as usize;
+                              (steps, Some(steps))
                           } else {
-                              None
+                              (0, None)
                           }
                       }
       *)
@@ -1516,7 +1549,12 @@ Module iter.
             let end_ := M.alloc (| end_ |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]),
+                Some
+                  (Ty.tuple
+                    [
+                      Ty.path "usize";
+                      Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                    ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -1530,21 +1568,31 @@ Module iter.
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let~ steps : Ty.path "usize" :=
+                        M.alloc (|
+                          M.cast
+                            (Ty.path "usize")
+                            (BinOp.Wrap.sub (|
+                              M.read (| M.deref (| M.read (| end_ |) |) |),
+                              M.read (| M.deref (| M.read (| start |) |) |)
+                            |))
+                        |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::option::Option::Some"
+                        Value.Tuple
                           [
-                            M.cast
-                              (Ty.path "usize")
-                              (BinOp.Wrap.sub (|
-                                M.read (| M.deref (| M.read (| end_ |) |) |),
-                                M.read (| M.deref (| M.read (| start |) |) |)
-                              |))
+                            M.read (| steps |);
+                            Value.StructTuple "core::option::Option::Some" [ M.read (| steps |) ]
                           ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.Tuple
+                          [
+                            Value.Integer IntegerKind.Usize 0;
+                            Value.StructTuple "core::option::Option::None" []
+                          ]
+                      |)))
                 ]
               |)
             |)))
@@ -1943,16 +1991,17 @@ Module iter.
         end.
       
       (*
-                      fn steps_between(start: &Self, end: &Self) -> Option<usize> {
+                      fn steps_between(start: &Self, end: &Self) -> (usize, Option<usize>) {
                           if *start <= *end {
                               // This relies on $i_narrower <= usize
                               //
                               // Casting to isize extends the width but preserves the sign.
                               // Use wrapping_sub in isize space and cast to usize to compute
                               // the difference that might not fit inside the range of isize.
-                              Some(( *end as isize).wrapping_sub( *start as isize) as usize)
+                              let steps = ( *end as isize).wrapping_sub( *start as isize) as usize;
+                              (steps, Some(steps))
                           } else {
-                              None
+                              (0, None)
                           }
                       }
       *)
@@ -1964,7 +2013,12 @@ Module iter.
             let end_ := M.alloc (| end_ |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]),
+                Some
+                  (Ty.tuple
+                    [
+                      Ty.path "usize";
+                      Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                    ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -1978,34 +2032,44 @@ Module iter.
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (|
-                        Value.StructTuple
-                          "core::option::Option::Some"
-                          [
-                            M.cast
-                              (Ty.path "usize")
-                              (M.call_closure (|
+                      let~ steps : Ty.path "usize" :=
+                        M.alloc (|
+                          M.cast
+                            (Ty.path "usize")
+                            (M.call_closure (|
+                              Ty.path "isize",
+                              M.get_associated_function (|
                                 Ty.path "isize",
-                                M.get_associated_function (|
-                                  Ty.path "isize",
-                                  "wrapping_sub",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.cast
-                                    (Ty.path "isize")
-                                    (M.read (| M.deref (| M.read (| end_ |) |) |));
-                                  M.cast
-                                    (Ty.path "isize")
-                                    (M.read (| M.deref (| M.read (| start |) |) |))
-                                ]
-                              |))
+                                "wrapping_sub",
+                                [],
+                                []
+                              |),
+                              [
+                                M.cast
+                                  (Ty.path "isize")
+                                  (M.read (| M.deref (| M.read (| end_ |) |) |));
+                                M.cast
+                                  (Ty.path "isize")
+                                  (M.read (| M.deref (| M.read (| start |) |) |))
+                              ]
+                            |))
+                        |) in
+                      M.alloc (|
+                        Value.Tuple
+                          [
+                            M.read (| steps |);
+                            Value.StructTuple "core::option::Option::Some" [ M.read (| steps |) ]
                           ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.Tuple
+                          [
+                            Value.Integer IntegerKind.Usize 0;
+                            Value.StructTuple "core::option::Option::None" []
+                          ]
+                      |)))
                 ]
               |)
             |)))
@@ -2462,12 +2526,13 @@ Module iter.
         end.
       
       (*
-                      fn steps_between(start: &Self, end: &Self) -> Option<usize> {
+                      fn steps_between(start: &Self, end: &Self) -> (usize, Option<usize>) {
                           if *start <= *end {
                               // This relies on $u_narrower <= usize
-                              Some(( *end - *start) as usize)
+                              let steps = ( *end - *start) as usize;
+                              (steps, Some(steps))
                           } else {
-                              None
+                              (0, None)
                           }
                       }
       *)
@@ -2479,7 +2544,12 @@ Module iter.
             let end_ := M.alloc (| end_ |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]),
+                Some
+                  (Ty.tuple
+                    [
+                      Ty.path "usize";
+                      Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                    ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -2493,21 +2563,31 @@ Module iter.
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let~ steps : Ty.path "usize" :=
+                        M.alloc (|
+                          M.cast
+                            (Ty.path "usize")
+                            (BinOp.Wrap.sub (|
+                              M.read (| M.deref (| M.read (| end_ |) |) |),
+                              M.read (| M.deref (| M.read (| start |) |) |)
+                            |))
+                        |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::option::Option::Some"
+                        Value.Tuple
                           [
-                            M.cast
-                              (Ty.path "usize")
-                              (BinOp.Wrap.sub (|
-                                M.read (| M.deref (| M.read (| end_ |) |) |),
-                                M.read (| M.deref (| M.read (| start |) |) |)
-                              |))
+                            M.read (| steps |);
+                            Value.StructTuple "core::option::Option::Some" [ M.read (| steps |) ]
                           ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.Tuple
+                          [
+                            Value.Integer IntegerKind.Usize 0;
+                            Value.StructTuple "core::option::Option::None" []
+                          ]
+                      |)))
                 ]
               |)
             |)))
@@ -2906,16 +2986,17 @@ Module iter.
         end.
       
       (*
-                      fn steps_between(start: &Self, end: &Self) -> Option<usize> {
+                      fn steps_between(start: &Self, end: &Self) -> (usize, Option<usize>) {
                           if *start <= *end {
                               // This relies on $i_narrower <= usize
                               //
                               // Casting to isize extends the width but preserves the sign.
                               // Use wrapping_sub in isize space and cast to usize to compute
                               // the difference that might not fit inside the range of isize.
-                              Some(( *end as isize).wrapping_sub( *start as isize) as usize)
+                              let steps = ( *end as isize).wrapping_sub( *start as isize) as usize;
+                              (steps, Some(steps))
                           } else {
-                              None
+                              (0, None)
                           }
                       }
       *)
@@ -2927,7 +3008,12 @@ Module iter.
             let end_ := M.alloc (| end_ |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]),
+                Some
+                  (Ty.tuple
+                    [
+                      Ty.path "usize";
+                      Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                    ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -2941,34 +3027,44 @@ Module iter.
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (|
-                        Value.StructTuple
-                          "core::option::Option::Some"
-                          [
-                            M.cast
-                              (Ty.path "usize")
-                              (M.call_closure (|
+                      let~ steps : Ty.path "usize" :=
+                        M.alloc (|
+                          M.cast
+                            (Ty.path "usize")
+                            (M.call_closure (|
+                              Ty.path "isize",
+                              M.get_associated_function (|
                                 Ty.path "isize",
-                                M.get_associated_function (|
-                                  Ty.path "isize",
-                                  "wrapping_sub",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.cast
-                                    (Ty.path "isize")
-                                    (M.read (| M.deref (| M.read (| end_ |) |) |));
-                                  M.cast
-                                    (Ty.path "isize")
-                                    (M.read (| M.deref (| M.read (| start |) |) |))
-                                ]
-                              |))
+                                "wrapping_sub",
+                                [],
+                                []
+                              |),
+                              [
+                                M.cast
+                                  (Ty.path "isize")
+                                  (M.read (| M.deref (| M.read (| end_ |) |) |));
+                                M.cast
+                                  (Ty.path "isize")
+                                  (M.read (| M.deref (| M.read (| start |) |) |))
+                              ]
+                            |))
+                        |) in
+                      M.alloc (|
+                        Value.Tuple
+                          [
+                            M.read (| steps |);
+                            Value.StructTuple "core::option::Option::Some" [ M.read (| steps |) ]
                           ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.Tuple
+                          [
+                            Value.Integer IntegerKind.Usize 0;
+                            Value.StructTuple "core::option::Option::None" []
+                          ]
+                      |)))
                 ]
               |)
             |)))
@@ -3425,12 +3521,13 @@ Module iter.
         end.
       
       (*
-                      fn steps_between(start: &Self, end: &Self) -> Option<usize> {
+                      fn steps_between(start: &Self, end: &Self) -> (usize, Option<usize>) {
                           if *start <= *end {
                               // This relies on $u_narrower <= usize
-                              Some(( *end - *start) as usize)
+                              let steps = ( *end - *start) as usize;
+                              (steps, Some(steps))
                           } else {
-                              None
+                              (0, None)
                           }
                       }
       *)
@@ -3442,7 +3539,12 @@ Module iter.
             let end_ := M.alloc (| end_ |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]),
+                Some
+                  (Ty.tuple
+                    [
+                      Ty.path "usize";
+                      Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                    ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -3456,21 +3558,31 @@ Module iter.
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let~ steps : Ty.path "usize" :=
+                        M.alloc (|
+                          M.cast
+                            (Ty.path "usize")
+                            (BinOp.Wrap.sub (|
+                              M.read (| M.deref (| M.read (| end_ |) |) |),
+                              M.read (| M.deref (| M.read (| start |) |) |)
+                            |))
+                        |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::option::Option::Some"
+                        Value.Tuple
                           [
-                            M.cast
-                              (Ty.path "usize")
-                              (BinOp.Wrap.sub (|
-                                M.read (| M.deref (| M.read (| end_ |) |) |),
-                                M.read (| M.deref (| M.read (| start |) |) |)
-                              |))
+                            M.read (| steps |);
+                            Value.StructTuple "core::option::Option::Some" [ M.read (| steps |) ]
                           ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.Tuple
+                          [
+                            Value.Integer IntegerKind.Usize 0;
+                            Value.StructTuple "core::option::Option::None" []
+                          ]
+                      |)))
                 ]
               |)
             |)))
@@ -3869,16 +3981,17 @@ Module iter.
         end.
       
       (*
-                      fn steps_between(start: &Self, end: &Self) -> Option<usize> {
+                      fn steps_between(start: &Self, end: &Self) -> (usize, Option<usize>) {
                           if *start <= *end {
                               // This relies on $i_narrower <= usize
                               //
                               // Casting to isize extends the width but preserves the sign.
                               // Use wrapping_sub in isize space and cast to usize to compute
                               // the difference that might not fit inside the range of isize.
-                              Some(( *end as isize).wrapping_sub( *start as isize) as usize)
+                              let steps = ( *end as isize).wrapping_sub( *start as isize) as usize;
+                              (steps, Some(steps))
                           } else {
-                              None
+                              (0, None)
                           }
                       }
       *)
@@ -3890,7 +4003,12 @@ Module iter.
             let end_ := M.alloc (| end_ |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]),
+                Some
+                  (Ty.tuple
+                    [
+                      Ty.path "usize";
+                      Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                    ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -3904,34 +4022,44 @@ Module iter.
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (|
-                        Value.StructTuple
-                          "core::option::Option::Some"
-                          [
-                            M.cast
-                              (Ty.path "usize")
-                              (M.call_closure (|
+                      let~ steps : Ty.path "usize" :=
+                        M.alloc (|
+                          M.cast
+                            (Ty.path "usize")
+                            (M.call_closure (|
+                              Ty.path "isize",
+                              M.get_associated_function (|
                                 Ty.path "isize",
-                                M.get_associated_function (|
-                                  Ty.path "isize",
-                                  "wrapping_sub",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.cast
-                                    (Ty.path "isize")
-                                    (M.read (| M.deref (| M.read (| end_ |) |) |));
-                                  M.cast
-                                    (Ty.path "isize")
-                                    (M.read (| M.deref (| M.read (| start |) |) |))
-                                ]
-                              |))
+                                "wrapping_sub",
+                                [],
+                                []
+                              |),
+                              [
+                                M.cast
+                                  (Ty.path "isize")
+                                  (M.read (| M.deref (| M.read (| end_ |) |) |));
+                                M.cast
+                                  (Ty.path "isize")
+                                  (M.read (| M.deref (| M.read (| start |) |) |))
+                              ]
+                            |))
+                        |) in
+                      M.alloc (|
+                        Value.Tuple
+                          [
+                            M.read (| steps |);
+                            Value.StructTuple "core::option::Option::Some" [ M.read (| steps |) ]
                           ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.Tuple
+                          [
+                            Value.Integer IntegerKind.Usize 0;
+                            Value.StructTuple "core::option::Option::None" []
+                          ]
+                      |)))
                 ]
               |)
             |)))
@@ -4388,12 +4516,13 @@ Module iter.
         end.
       
       (*
-                      fn steps_between(start: &Self, end: &Self) -> Option<usize> {
+                      fn steps_between(start: &Self, end: &Self) -> (usize, Option<usize>) {
                           if *start <= *end {
                               // This relies on $u_narrower <= usize
-                              Some(( *end - *start) as usize)
+                              let steps = ( *end - *start) as usize;
+                              (steps, Some(steps))
                           } else {
-                              None
+                              (0, None)
                           }
                       }
       *)
@@ -4405,7 +4534,12 @@ Module iter.
             let end_ := M.alloc (| end_ |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]),
+                Some
+                  (Ty.tuple
+                    [
+                      Ty.path "usize";
+                      Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                    ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -4419,24 +4553,32 @@ Module iter.
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let~ steps : Ty.path "usize" :=
+                        M.copy (|
+                          M.use
+                            (M.alloc (|
+                              BinOp.Wrap.sub (|
+                                M.read (| M.deref (| M.read (| end_ |) |) |),
+                                M.read (| M.deref (| M.read (| start |) |) |)
+                              |)
+                            |))
+                        |) in
                       M.alloc (|
-                        Value.StructTuple
-                          "core::option::Option::Some"
+                        Value.Tuple
                           [
-                            M.read (|
-                              M.use
-                                (M.alloc (|
-                                  BinOp.Wrap.sub (|
-                                    M.read (| M.deref (| M.read (| end_ |) |) |),
-                                    M.read (| M.deref (| M.read (| start |) |) |)
-                                  |)
-                                |))
-                            |)
+                            M.read (| steps |);
+                            Value.StructTuple "core::option::Option::Some" [ M.read (| steps |) ]
                           ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.Tuple
+                          [
+                            Value.Integer IntegerKind.Usize 0;
+                            Value.StructTuple "core::option::Option::None" []
+                          ]
+                      |)))
                 ]
               |)
             |)))
@@ -4835,16 +4977,17 @@ Module iter.
         end.
       
       (*
-                      fn steps_between(start: &Self, end: &Self) -> Option<usize> {
+                      fn steps_between(start: &Self, end: &Self) -> (usize, Option<usize>) {
                           if *start <= *end {
                               // This relies on $i_narrower <= usize
                               //
                               // Casting to isize extends the width but preserves the sign.
                               // Use wrapping_sub in isize space and cast to usize to compute
                               // the difference that might not fit inside the range of isize.
-                              Some(( *end as isize).wrapping_sub( *start as isize) as usize)
+                              let steps = ( *end as isize).wrapping_sub( *start as isize) as usize;
+                              (steps, Some(steps))
                           } else {
-                              None
+                              (0, None)
                           }
                       }
       *)
@@ -4856,7 +4999,12 @@ Module iter.
             let end_ := M.alloc (| end_ |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]),
+                Some
+                  (Ty.tuple
+                    [
+                      Ty.path "usize";
+                      Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                    ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -4870,30 +5018,40 @@ Module iter.
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (|
-                        Value.StructTuple
-                          "core::option::Option::Some"
-                          [
-                            M.cast
-                              (Ty.path "usize")
-                              (M.call_closure (|
+                      let~ steps : Ty.path "usize" :=
+                        M.alloc (|
+                          M.cast
+                            (Ty.path "usize")
+                            (M.call_closure (|
+                              Ty.path "isize",
+                              M.get_associated_function (|
                                 Ty.path "isize",
-                                M.get_associated_function (|
-                                  Ty.path "isize",
-                                  "wrapping_sub",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.read (| M.use (M.deref (| M.read (| end_ |) |)) |);
-                                  M.read (| M.use (M.deref (| M.read (| start |) |)) |)
-                                ]
-                              |))
+                                "wrapping_sub",
+                                [],
+                                []
+                              |),
+                              [
+                                M.read (| M.use (M.deref (| M.read (| end_ |) |)) |);
+                                M.read (| M.use (M.deref (| M.read (| start |) |)) |)
+                              ]
+                            |))
+                        |) in
+                      M.alloc (|
+                        Value.Tuple
+                          [
+                            M.read (| steps |);
+                            Value.StructTuple "core::option::Option::Some" [ M.read (| steps |) ]
                           ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.Tuple
+                          [
+                            Value.Integer IntegerKind.Usize 0;
+                            Value.StructTuple "core::option::Option::None" []
+                          ]
+                      |)))
                 ]
               |)
             |)))
@@ -5350,11 +5508,15 @@ Module iter.
         end.
       
       (*
-                      fn steps_between(start: &Self, end: &Self) -> Option<usize> {
+                      fn steps_between(start: &Self, end: &Self) -> (usize, Option<usize>) {
                           if *start <= *end {
-                              usize::try_from( *end - *start).ok()
+                              if let Ok(steps) = usize::try_from( *end - *start) {
+                                  (steps, Some(steps))
+                              } else {
+                                  (usize::MAX, None)
+                              }
                           } else {
-                              None
+                              (0, None)
                           }
                       }
       *)
@@ -5366,7 +5528,12 @@ Module iter.
             let end_ := M.alloc (| end_ |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]),
+                Some
+                  (Ty.tuple
+                    [
+                      Ty.path "usize";
+                      Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                    ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -5380,46 +5547,78 @@ Module iter.
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (|
-                        M.call_closure (|
-                          Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "core::result::Result")
-                              []
-                              [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ],
-                            "ok",
-                            [],
-                            []
-                          |),
-                          [
-                            M.call_closure (|
-                              Ty.apply
-                                (Ty.path "core::result::Result")
-                                []
-                                [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError" ],
-                              M.get_trait_method (|
-                                "core::convert::TryFrom",
-                                Ty.path "usize",
-                                [],
-                                [ Ty.path "u128" ],
-                                "try_from",
-                                [],
-                                []
-                              |),
-                              [
-                                BinOp.Wrap.sub (|
-                                  M.read (| M.deref (| M.read (| end_ |) |) |),
-                                  M.read (| M.deref (| M.read (| start |) |) |)
-                                |)
-                              ]
-                            |)
-                          ]
-                        |)
+                      M.match_operator (|
+                        Some
+                          (Ty.tuple
+                            [
+                              Ty.path "usize";
+                              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                            ]),
+                        M.alloc (| Value.Tuple [] |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ :=
+                                M.alloc (|
+                                  M.call_closure (|
+                                    Ty.apply
+                                      (Ty.path "core::result::Result")
+                                      []
+                                      [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError"
+                                      ],
+                                    M.get_trait_method (|
+                                      "core::convert::TryFrom",
+                                      Ty.path "usize",
+                                      [],
+                                      [ Ty.path "u128" ],
+                                      "try_from",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      BinOp.Wrap.sub (|
+                                        M.read (| M.deref (| M.read (| end_ |) |) |),
+                                        M.read (| M.deref (| M.read (| start |) |) |)
+                                      |)
+                                    ]
+                                  |)
+                                |) in
+                              let γ0_0 :=
+                                M.SubPointer.get_struct_tuple_field (|
+                                  γ,
+                                  "core::result::Result::Ok",
+                                  0
+                                |) in
+                              let steps := M.copy (| γ0_0 |) in
+                              M.alloc (|
+                                Value.Tuple
+                                  [
+                                    M.read (| steps |);
+                                    Value.StructTuple
+                                      "core::option::Option::Some"
+                                      [ M.read (| steps |) ]
+                                  ]
+                              |)));
+                          fun γ =>
+                            ltac:(M.monadic
+                              (M.alloc (|
+                                Value.Tuple
+                                  [
+                                    M.read (| M.get_constant "core::num::MAX" |);
+                                    Value.StructTuple "core::option::Option::None" []
+                                  ]
+                              |)))
+                        ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.Tuple
+                          [
+                            Value.Integer IntegerKind.Usize 0;
+                            Value.StructTuple "core::option::Option::None" []
+                          ]
+                      |)))
                 ]
               |)
             |)))
@@ -5722,16 +5921,22 @@ Module iter.
         end.
       
       (*
-                      fn steps_between(start: &Self, end: &Self) -> Option<usize> {
+                      fn steps_between(start: &Self, end: &Self) -> (usize, Option<usize>) {
                           if *start <= *end {
                               match end.checked_sub( *start) {
-                                  Some(result) => usize::try_from(result).ok(),
+                                  Some(result) => {
+                                      if let Ok(steps) = usize::try_from(result) {
+                                          (steps, Some(steps))
+                                      } else {
+                                          (usize::MAX, None)
+                                      }
+                                  }
                                   // If the difference is too big for e.g. i128,
                                   // it's also gonna be too big for usize with fewer bits.
-                                  None => None,
+                                  None => (usize::MAX, None),
                               }
                           } else {
-                              None
+                              (0, None)
                           }
                       }
       *)
@@ -5743,7 +5948,12 @@ Module iter.
             let end_ := M.alloc (| end_ |) in
             M.read (|
               M.match_operator (|
-                Some (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]),
+                Some
+                  (Ty.tuple
+                    [
+                      Ty.path "usize";
+                      Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                    ]),
                 M.alloc (| Value.Tuple [] |),
                 [
                   fun γ =>
@@ -5758,7 +5968,12 @@ Module iter.
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.match_operator (|
-                        Some (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]),
+                        Some
+                          (Ty.tuple
+                            [
+                              Ty.path "usize";
+                              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                            ]),
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "i128" ],
@@ -5779,51 +5994,90 @@ Module iter.
                                   0
                                 |) in
                               let result := M.copy (| γ0_0 |) in
-                              M.alloc (|
-                                M.call_closure (|
-                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "core::result::Result")
-                                      []
-                                      [ Ty.path "usize"; Ty.path "core::num::error::TryFromIntError"
-                                      ],
-                                    "ok",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.call_closure (|
+                              M.match_operator (|
+                                Some
+                                  (Ty.tuple
+                                    [
+                                      Ty.path "usize";
                                       Ty.apply
-                                        (Ty.path "core::result::Result")
+                                        (Ty.path "core::option::Option")
                                         []
-                                        [
-                                          Ty.path "usize";
-                                          Ty.path "core::num::error::TryFromIntError"
-                                        ],
-                                      M.get_trait_method (|
-                                        "core::convert::TryFrom",
-                                        Ty.path "usize",
-                                        [],
-                                        [ Ty.path "i128" ],
-                                        "try_from",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| result |) ]
-                                    |)
-                                  ]
-                                |)
+                                        [ Ty.path "usize" ]
+                                    ]),
+                                M.alloc (| Value.Tuple [] |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ :=
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "core::result::Result")
+                                              []
+                                              [
+                                                Ty.path "usize";
+                                                Ty.path "core::num::error::TryFromIntError"
+                                              ],
+                                            M.get_trait_method (|
+                                              "core::convert::TryFrom",
+                                              Ty.path "usize",
+                                              [],
+                                              [ Ty.path "i128" ],
+                                              "try_from",
+                                              [],
+                                              []
+                                            |),
+                                            [ M.read (| result |) ]
+                                          |)
+                                        |) in
+                                      let γ0_0 :=
+                                        M.SubPointer.get_struct_tuple_field (|
+                                          γ,
+                                          "core::result::Result::Ok",
+                                          0
+                                        |) in
+                                      let steps := M.copy (| γ0_0 |) in
+                                      M.alloc (|
+                                        Value.Tuple
+                                          [
+                                            M.read (| steps |);
+                                            Value.StructTuple
+                                              "core::option::Option::Some"
+                                              [ M.read (| steps |) ]
+                                          ]
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (M.alloc (|
+                                        Value.Tuple
+                                          [
+                                            M.read (| M.get_constant "core::num::MAX" |);
+                                            Value.StructTuple "core::option::Option::None" []
+                                          ]
+                                      |)))
+                                ]
                               |)));
                           fun γ =>
                             ltac:(M.monadic
                               (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                              M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                              M.alloc (|
+                                Value.Tuple
+                                  [
+                                    M.read (| M.get_constant "core::num::MAX" |);
+                                    Value.StructTuple "core::option::Option::None" []
+                                  ]
+                              |)))
                         ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
-                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                      (M.alloc (|
+                        Value.Tuple
+                          [
+                            Value.Integer IntegerKind.Usize 0;
+                            Value.StructTuple "core::option::Option::None" []
+                          ]
+                      |)))
                 ]
               |)
             |)))
@@ -5890,18 +6144,26 @@ Module iter.
       Definition Self : Ty.t := Ty.path "char".
       
       (*
-          fn steps_between(&start: &char, &end: &char) -> Option<usize> {
+          fn steps_between(&start: &char, &end: &char) -> (usize, Option<usize>) {
               let start = start as u32;
               let end = end as u32;
               if start <= end {
                   let count = end - start;
                   if start < 0xD800 && 0xE000 <= end {
-                      usize::try_from(count - 0x800).ok()
+                      if let Ok(steps) = usize::try_from(count - 0x800) {
+                          (steps, Some(steps))
+                      } else {
+                          (usize::MAX, None)
+                      }
                   } else {
-                      usize::try_from(count).ok()
+                      if let Ok(steps) = usize::try_from(count) {
+                          (steps, Some(steps))
+                      } else {
+                          (usize::MAX, None)
+                      }
                   }
               } else {
-                  None
+                  (0, None)
               }
           }
       *)
@@ -5934,10 +6196,14 @@ Module iter.
                                 M.alloc (| M.cast (Ty.path "u32") (M.read (| end_ |)) |) in
                               M.match_operator (|
                                 Some
-                                  (Ty.apply
-                                    (Ty.path "core::option::Option")
-                                    []
-                                    [ Ty.path "usize" ]),
+                                  (Ty.tuple
+                                    [
+                                      Ty.path "usize";
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [ Ty.path "usize" ]
+                                    ]),
                                 M.alloc (| Value.Tuple [] |),
                                 [
                                   fun γ =>
@@ -5958,10 +6224,14 @@ Module iter.
                                         |) in
                                       M.match_operator (|
                                         Some
-                                          (Ty.apply
-                                            (Ty.path "core::option::Option")
-                                            []
-                                            [ Ty.path "usize" ]),
+                                          (Ty.tuple
+                                            [
+                                              Ty.path "usize";
+                                              Ty.apply
+                                                (Ty.path "core::option::Option")
+                                                []
+                                                [ Ty.path "usize" ]
+                                            ]),
                                         M.alloc (| Value.Tuple [] |),
                                         [
                                           fun γ =>
@@ -5986,103 +6256,159 @@ Module iter.
                                                   M.read (| γ |),
                                                   Value.Bool true
                                                 |) in
-                                              M.alloc (|
-                                                M.call_closure (|
-                                                  Ty.apply
-                                                    (Ty.path "core::option::Option")
-                                                    []
-                                                    [ Ty.path "usize" ],
-                                                  M.get_associated_function (|
-                                                    Ty.apply
-                                                      (Ty.path "core::result::Result")
-                                                      []
-                                                      [
-                                                        Ty.path "usize";
-                                                        Ty.path "core::num::error::TryFromIntError"
-                                                      ],
-                                                    "ok",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.call_closure (|
+                                              M.match_operator (|
+                                                Some
+                                                  (Ty.tuple
+                                                    [
+                                                      Ty.path "usize";
                                                       Ty.apply
-                                                        (Ty.path "core::result::Result")
+                                                        (Ty.path "core::option::Option")
                                                         []
-                                                        [
-                                                          Ty.path "usize";
-                                                          Ty.path
-                                                            "core::num::error::TryFromIntError"
-                                                        ],
-                                                      M.get_trait_method (|
-                                                        "core::convert::TryFrom",
-                                                        Ty.path "usize",
-                                                        [],
-                                                        [ Ty.path "u32" ],
-                                                        "try_from",
-                                                        [],
-                                                        []
-                                                      |),
-                                                      [
-                                                        BinOp.Wrap.sub (|
-                                                          M.read (| count |),
-                                                          Value.Integer IntegerKind.U32 2048
-                                                        |)
-                                                      ]
-                                                    |)
-                                                  ]
-                                                |)
+                                                        [ Ty.path "usize" ]
+                                                    ]),
+                                                M.alloc (| Value.Tuple [] |),
+                                                [
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let γ :=
+                                                        M.alloc (|
+                                                          M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.path "usize";
+                                                                Ty.path
+                                                                  "core::num::error::TryFromIntError"
+                                                              ],
+                                                            M.get_trait_method (|
+                                                              "core::convert::TryFrom",
+                                                              Ty.path "usize",
+                                                              [],
+                                                              [ Ty.path "u32" ],
+                                                              "try_from",
+                                                              [],
+                                                              []
+                                                            |),
+                                                            [
+                                                              BinOp.Wrap.sub (|
+                                                                M.read (| count |),
+                                                                Value.Integer IntegerKind.U32 2048
+                                                              |)
+                                                            ]
+                                                          |)
+                                                        |) in
+                                                      let γ0_0 :=
+                                                        M.SubPointer.get_struct_tuple_field (|
+                                                          γ,
+                                                          "core::result::Result::Ok",
+                                                          0
+                                                        |) in
+                                                      let steps := M.copy (| γ0_0 |) in
+                                                      M.alloc (|
+                                                        Value.Tuple
+                                                          [
+                                                            M.read (| steps |);
+                                                            Value.StructTuple
+                                                              "core::option::Option::Some"
+                                                              [ M.read (| steps |) ]
+                                                          ]
+                                                      |)));
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (M.alloc (|
+                                                        Value.Tuple
+                                                          [
+                                                            M.read (|
+                                                              M.get_constant "core::num::MAX"
+                                                            |);
+                                                            Value.StructTuple
+                                                              "core::option::Option::None"
+                                                              []
+                                                          ]
+                                                      |)))
+                                                ]
                                               |)));
                                           fun γ =>
                                             ltac:(M.monadic
-                                              (M.alloc (|
-                                                M.call_closure (|
-                                                  Ty.apply
-                                                    (Ty.path "core::option::Option")
-                                                    []
-                                                    [ Ty.path "usize" ],
-                                                  M.get_associated_function (|
-                                                    Ty.apply
-                                                      (Ty.path "core::result::Result")
-                                                      []
-                                                      [
-                                                        Ty.path "usize";
-                                                        Ty.path "core::num::error::TryFromIntError"
-                                                      ],
-                                                    "ok",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.call_closure (|
+                                              (M.match_operator (|
+                                                Some
+                                                  (Ty.tuple
+                                                    [
+                                                      Ty.path "usize";
                                                       Ty.apply
-                                                        (Ty.path "core::result::Result")
+                                                        (Ty.path "core::option::Option")
                                                         []
-                                                        [
-                                                          Ty.path "usize";
-                                                          Ty.path
-                                                            "core::num::error::TryFromIntError"
-                                                        ],
-                                                      M.get_trait_method (|
-                                                        "core::convert::TryFrom",
-                                                        Ty.path "usize",
-                                                        [],
-                                                        [ Ty.path "u32" ],
-                                                        "try_from",
-                                                        [],
-                                                        []
-                                                      |),
-                                                      [ M.read (| count |) ]
-                                                    |)
-                                                  ]
-                                                |)
+                                                        [ Ty.path "usize" ]
+                                                    ]),
+                                                M.alloc (| Value.Tuple [] |),
+                                                [
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let γ :=
+                                                        M.alloc (|
+                                                          M.call_closure (|
+                                                            Ty.apply
+                                                              (Ty.path "core::result::Result")
+                                                              []
+                                                              [
+                                                                Ty.path "usize";
+                                                                Ty.path
+                                                                  "core::num::error::TryFromIntError"
+                                                              ],
+                                                            M.get_trait_method (|
+                                                              "core::convert::TryFrom",
+                                                              Ty.path "usize",
+                                                              [],
+                                                              [ Ty.path "u32" ],
+                                                              "try_from",
+                                                              [],
+                                                              []
+                                                            |),
+                                                            [ M.read (| count |) ]
+                                                          |)
+                                                        |) in
+                                                      let γ0_0 :=
+                                                        M.SubPointer.get_struct_tuple_field (|
+                                                          γ,
+                                                          "core::result::Result::Ok",
+                                                          0
+                                                        |) in
+                                                      let steps := M.copy (| γ0_0 |) in
+                                                      M.alloc (|
+                                                        Value.Tuple
+                                                          [
+                                                            M.read (| steps |);
+                                                            Value.StructTuple
+                                                              "core::option::Option::Some"
+                                                              [ M.read (| steps |) ]
+                                                          ]
+                                                      |)));
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (M.alloc (|
+                                                        Value.Tuple
+                                                          [
+                                                            M.read (|
+                                                              M.get_constant "core::num::MAX"
+                                                            |);
+                                                            Value.StructTuple
+                                                              "core::option::Option::None"
+                                                              []
+                                                          ]
+                                                      |)))
+                                                ]
                                               |)))
                                         ]
                                       |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (M.alloc (|
-                                        Value.StructTuple "core::option::Option::None" []
+                                        Value.Tuple
+                                          [
+                                            Value.Integer IntegerKind.Usize 0;
+                                            Value.StructTuple "core::option::Option::None" []
+                                          ]
                                       |)))
                                 ]
                               |)
@@ -6899,7 +7225,7 @@ Module iter.
       Definition Self : Ty.t := Ty.path "core::ascii::ascii_char::AsciiChar".
       
       (*
-          fn steps_between(&start: &AsciiChar, &end: &AsciiChar) -> Option<usize> {
+          fn steps_between(&start: &AsciiChar, &end: &AsciiChar) -> (usize, Option<usize>) {
               Step::steps_between(&start.to_u8(), &end.to_u8())
           }
       *)
@@ -6926,7 +7252,11 @@ Module iter.
                             (let γ := M.read (| γ |) in
                             let end_ := M.copy (| γ |) in
                             M.call_closure (|
-                              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
+                              Ty.tuple
+                                [
+                                  Ty.path "usize";
+                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                                ],
                               M.get_trait_method (|
                                 "core::iter::range::Step",
                                 Ty.path "u8",
@@ -7419,7 +7749,7 @@ Module iter.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::Ipv4Addr".
       
       (*
-          fn steps_between(&start: &Ipv4Addr, &end: &Ipv4Addr) -> Option<usize> {
+          fn steps_between(&start: &Ipv4Addr, &end: &Ipv4Addr) -> (usize, Option<usize>) {
               u32::steps_between(&start.to_bits(), &end.to_bits())
           }
       *)
@@ -7446,7 +7776,11 @@ Module iter.
                             (let γ := M.read (| γ |) in
                             let end_ := M.copy (| γ |) in
                             M.call_closure (|
-                              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
+                              Ty.tuple
+                                [
+                                  Ty.path "usize";
+                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                                ],
                               M.get_trait_method (|
                                 "core::iter::range::Step",
                                 Ty.path "u32",
@@ -7754,7 +8088,7 @@ Module iter.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::Ipv6Addr".
       
       (*
-          fn steps_between(&start: &Ipv6Addr, &end: &Ipv6Addr) -> Option<usize> {
+          fn steps_between(&start: &Ipv6Addr, &end: &Ipv6Addr) -> (usize, Option<usize>) {
               u128::steps_between(&start.to_bits(), &end.to_bits())
           }
       *)
@@ -7781,7 +8115,11 @@ Module iter.
                             (let γ := M.read (| γ |) in
                             let end_ := M.copy (| γ |) in
                             M.call_closure (|
-                              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
+                              Ty.tuple
+                                [
+                                  Ty.path "usize";
+                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                                ],
                               M.get_trait_method (|
                                 "core::iter::range::Step",
                                 Ty.path "u128",
@@ -8475,11 +8813,8 @@ Module iter.
       
       (*
           default fn spec_advance_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
-              let available = if self.start <= self.end {
-                  Step::steps_between(&self.start, &self.end).unwrap_or(usize::MAX)
-              } else {
-                  0
-              };
+              let steps = Step::steps_between(&self.start, &self.end);
+              let available = steps.1.unwrap_or(steps.0);
       
               let taken = available.min(n);
       
@@ -8502,105 +8837,71 @@ Module iter.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let~ available : Ty.path "usize" :=
-                M.copy (|
-                  M.match_operator (|
-                    Some (Ty.path "usize"),
-                    M.alloc (| Value.Tuple [] |),
+              let~ steps :
+                  Ty.tuple
                     [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ :=
-                            M.use
-                              (M.alloc (|
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  M.get_trait_method (|
-                                    "core::cmp::PartialOrd",
-                                    A,
-                                    [],
-                                    [ A ],
-                                    "le",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "core::ops::range::Range",
-                                        "start"
-                                      |)
-                                    |);
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "core::ops::range::Range",
-                                        "end"
-                                      |)
-                                    |)
-                                  ]
-                                |)
-                              |)) in
-                          let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          M.alloc (|
-                            M.call_closure (|
-                              Ty.path "usize",
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
-                                "unwrap_or",
-                                [],
-                                []
-                              |),
-                              [
-                                M.call_closure (|
-                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
-                                  M.get_trait_method (|
-                                    "core::iter::range::Step",
-                                    A,
-                                    [],
-                                    [],
-                                    "steps_between",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.deref (|
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.deref (| M.read (| self |) |),
-                                            "core::ops::range::Range",
-                                            "start"
-                                          |)
-                                        |)
-                                      |)
-                                    |);
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.deref (|
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.deref (| M.read (| self |) |),
-                                            "core::ops::range::Range",
-                                            "end"
-                                          |)
-                                        |)
-                                      |)
-                                    |)
-                                  ]
-                                |);
-                                M.read (| M.get_constant "core::num::MAX" |)
-                              ]
+                      Ty.path "usize";
+                      Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                    ] :=
+                M.alloc (|
+                  M.call_closure (|
+                    Ty.tuple
+                      [
+                        Ty.path "usize";
+                        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                      ],
+                    M.get_trait_method (|
+                      "core::iter::range::Step",
+                      A,
+                      [],
+                      [],
+                      "steps_between",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::ops::range::Range",
+                              "start"
                             |)
-                          |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 0 |)))
+                          |)
+                        |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::ops::range::Range",
+                              "end"
+                            |)
+                          |)
+                        |)
+                      |)
+                    ]
+                  |)
+                |) in
+              let~ available : Ty.path "usize" :=
+                M.alloc (|
+                  M.call_closure (|
+                    Ty.path "usize",
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
+                      "unwrap_or",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.SubPointer.get_tuple_field (| steps, 1 |) |);
+                      M.read (| M.SubPointer.get_tuple_field (| steps, 0 |) |)
                     ]
                   |)
                 |) in
@@ -9150,11 +9451,8 @@ Module iter.
       
       (*
           default fn spec_advance_back_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
-              let available = if self.start <= self.end {
-                  Step::steps_between(&self.start, &self.end).unwrap_or(usize::MAX)
-              } else {
-                  0
-              };
+              let steps = Step::steps_between(&self.start, &self.end);
+              let available = steps.1.unwrap_or(steps.0);
       
               let taken = available.min(n);
       
@@ -9177,105 +9475,71 @@ Module iter.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let~ available : Ty.path "usize" :=
-                M.copy (|
-                  M.match_operator (|
-                    Some (Ty.path "usize"),
-                    M.alloc (| Value.Tuple [] |),
+              let~ steps :
+                  Ty.tuple
                     [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ :=
-                            M.use
-                              (M.alloc (|
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  M.get_trait_method (|
-                                    "core::cmp::PartialOrd",
-                                    A,
-                                    [],
-                                    [ A ],
-                                    "le",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "core::ops::range::Range",
-                                        "start"
-                                      |)
-                                    |);
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "core::ops::range::Range",
-                                        "end"
-                                      |)
-                                    |)
-                                  ]
-                                |)
-                              |)) in
-                          let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          M.alloc (|
-                            M.call_closure (|
-                              Ty.path "usize",
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
-                                "unwrap_or",
-                                [],
-                                []
-                              |),
-                              [
-                                M.call_closure (|
-                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
-                                  M.get_trait_method (|
-                                    "core::iter::range::Step",
-                                    A,
-                                    [],
-                                    [],
-                                    "steps_between",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.deref (|
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.deref (| M.read (| self |) |),
-                                            "core::ops::range::Range",
-                                            "start"
-                                          |)
-                                        |)
-                                      |)
-                                    |);
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.deref (|
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.deref (| M.read (| self |) |),
-                                            "core::ops::range::Range",
-                                            "end"
-                                          |)
-                                        |)
-                                      |)
-                                    |)
-                                  ]
-                                |);
-                                M.read (| M.get_constant "core::num::MAX" |)
-                              ]
+                      Ty.path "usize";
+                      Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                    ] :=
+                M.alloc (|
+                  M.call_closure (|
+                    Ty.tuple
+                      [
+                        Ty.path "usize";
+                        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                      ],
+                    M.get_trait_method (|
+                      "core::iter::range::Step",
+                      A,
+                      [],
+                      [],
+                      "steps_between",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::ops::range::Range",
+                              "start"
                             |)
-                          |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 0 |)))
+                          |)
+                        |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::ops::range::Range",
+                              "end"
+                            |)
+                          |)
+                        |)
+                      |)
+                    ]
+                  |)
+                |) in
+              let~ available : Ty.path "usize" :=
+                M.alloc (|
+                  M.call_closure (|
+                    Ty.path "usize",
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
+                      "unwrap_or",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.SubPointer.get_tuple_field (| steps, 1 |) |);
+                      M.read (| M.SubPointer.get_tuple_field (| steps, 0 |) |)
                     ]
                   |)
                 |) in
@@ -9709,11 +9973,8 @@ Module iter.
       
       (*
           fn spec_advance_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
-              let available = if self.start <= self.end {
-                  Step::steps_between(&self.start, &self.end).unwrap_or(usize::MAX)
-              } else {
-                  0
-              };
+              let steps = Step::steps_between(&self.start, &self.end);
+              let available = steps.1.unwrap_or(steps.0);
       
               let taken = available.min(n);
       
@@ -9739,105 +10000,71 @@ Module iter.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let~ available : Ty.path "usize" :=
-                M.copy (|
-                  M.match_operator (|
-                    Some (Ty.path "usize"),
-                    M.alloc (| Value.Tuple [] |),
+              let~ steps :
+                  Ty.tuple
                     [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ :=
-                            M.use
-                              (M.alloc (|
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  M.get_trait_method (|
-                                    "core::cmp::PartialOrd",
-                                    T,
-                                    [],
-                                    [ T ],
-                                    "le",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "core::ops::range::Range",
-                                        "start"
-                                      |)
-                                    |);
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "core::ops::range::Range",
-                                        "end"
-                                      |)
-                                    |)
-                                  ]
-                                |)
-                              |)) in
-                          let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          M.alloc (|
-                            M.call_closure (|
-                              Ty.path "usize",
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
-                                "unwrap_or",
-                                [],
-                                []
-                              |),
-                              [
-                                M.call_closure (|
-                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
-                                  M.get_trait_method (|
-                                    "core::iter::range::Step",
-                                    T,
-                                    [],
-                                    [],
-                                    "steps_between",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.deref (|
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.deref (| M.read (| self |) |),
-                                            "core::ops::range::Range",
-                                            "start"
-                                          |)
-                                        |)
-                                      |)
-                                    |);
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.deref (|
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.deref (| M.read (| self |) |),
-                                            "core::ops::range::Range",
-                                            "end"
-                                          |)
-                                        |)
-                                      |)
-                                    |)
-                                  ]
-                                |);
-                                M.read (| M.get_constant "core::num::MAX" |)
-                              ]
+                      Ty.path "usize";
+                      Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                    ] :=
+                M.alloc (|
+                  M.call_closure (|
+                    Ty.tuple
+                      [
+                        Ty.path "usize";
+                        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                      ],
+                    M.get_trait_method (|
+                      "core::iter::range::Step",
+                      T,
+                      [],
+                      [],
+                      "steps_between",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::ops::range::Range",
+                              "start"
                             |)
-                          |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 0 |)))
+                          |)
+                        |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::ops::range::Range",
+                              "end"
+                            |)
+                          |)
+                        |)
+                      |)
+                    ]
+                  |)
+                |) in
+              let~ available : Ty.path "usize" :=
+                M.alloc (|
+                  M.call_closure (|
+                    Ty.path "usize",
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
+                      "unwrap_or",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.SubPointer.get_tuple_field (| steps, 1 |) |);
+                      M.read (| M.SubPointer.get_tuple_field (| steps, 0 |) |)
                     ]
                   |)
                 |) in
@@ -10247,11 +10474,8 @@ Module iter.
       
       (*
           fn spec_advance_back_by(&mut self, n: usize) -> Result<(), NonZero<usize>> {
-              let available = if self.start <= self.end {
-                  Step::steps_between(&self.start, &self.end).unwrap_or(usize::MAX)
-              } else {
-                  0
-              };
+              let steps = Step::steps_between(&self.start, &self.end);
+              let available = steps.1.unwrap_or(steps.0);
       
               let taken = available.min(n);
       
@@ -10274,105 +10498,71 @@ Module iter.
             (let self := M.alloc (| self |) in
             let n := M.alloc (| n |) in
             M.read (|
-              let~ available : Ty.path "usize" :=
-                M.copy (|
-                  M.match_operator (|
-                    Some (Ty.path "usize"),
-                    M.alloc (| Value.Tuple [] |),
+              let~ steps :
+                  Ty.tuple
                     [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ :=
-                            M.use
-                              (M.alloc (|
-                                M.call_closure (|
-                                  Ty.path "bool",
-                                  M.get_trait_method (|
-                                    "core::cmp::PartialOrd",
-                                    T,
-                                    [],
-                                    [ T ],
-                                    "le",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "core::ops::range::Range",
-                                        "start"
-                                      |)
-                                    |);
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "core::ops::range::Range",
-                                        "end"
-                                      |)
-                                    |)
-                                  ]
-                                |)
-                              |)) in
-                          let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          M.alloc (|
-                            M.call_closure (|
-                              Ty.path "usize",
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
-                                "unwrap_or",
-                                [],
-                                []
-                              |),
-                              [
-                                M.call_closure (|
-                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
-                                  M.get_trait_method (|
-                                    "core::iter::range::Step",
-                                    T,
-                                    [],
-                                    [],
-                                    "steps_between",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.deref (|
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.deref (| M.read (| self |) |),
-                                            "core::ops::range::Range",
-                                            "start"
-                                          |)
-                                        |)
-                                      |)
-                                    |);
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.deref (|
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.deref (| M.read (| self |) |),
-                                            "core::ops::range::Range",
-                                            "end"
-                                          |)
-                                        |)
-                                      |)
-                                    |)
-                                  ]
-                                |);
-                                M.read (| M.get_constant "core::num::MAX" |)
-                              ]
+                      Ty.path "usize";
+                      Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                    ] :=
+                M.alloc (|
+                  M.call_closure (|
+                    Ty.tuple
+                      [
+                        Ty.path "usize";
+                        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                      ],
+                    M.get_trait_method (|
+                      "core::iter::range::Step",
+                      T,
+                      [],
+                      [],
+                      "steps_between",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::ops::range::Range",
+                              "start"
                             |)
-                          |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 0 |)))
+                          |)
+                        |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::ops::range::Range",
+                              "end"
+                            |)
+                          |)
+                        |)
+                      |)
+                    ]
+                  |)
+                |) in
+              let~ available : Ty.path "usize" :=
+                M.alloc (|
+                  M.call_closure (|
+                    Ty.path "usize",
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
+                      "unwrap_or",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.SubPointer.get_tuple_field (| steps, 1 |) |);
+                      M.read (| M.SubPointer.get_tuple_field (| steps, 0 |) |)
                     ]
                   |)
                 |) in
@@ -10536,8 +10726,7 @@ Module iter.
       (*
           fn size_hint(&self) -> (usize, Option<usize>) {
               if self.start < self.end {
-                  let hint = Step::steps_between(&self.start, &self.end);
-                  (hint.unwrap_or(usize::MAX), hint)
+                  Step::steps_between(&self.start, &self.end)
               } else {
                   (0, Some(0))
               }
@@ -10596,65 +10785,51 @@ Module iter.
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      let~ hint :
-                          Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ] :=
-                        M.alloc (|
-                          M.call_closure (|
-                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
-                            M.get_trait_method (|
-                              "core::iter::range::Step",
-                              A,
-                              [],
-                              [],
-                              "steps_between",
-                              [],
-                              []
-                            |),
+                      M.alloc (|
+                        M.call_closure (|
+                          Ty.tuple
                             [
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "core::ops::range::Range",
-                                      "start"
-                                    |)
-                                  |)
-                                |)
-                              |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "core::ops::range::Range",
-                                      "end"
-                                    |)
+                              Ty.path "usize";
+                              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                            ],
+                          M.get_trait_method (|
+                            "core::iter::range::Step",
+                            A,
+                            [],
+                            [],
+                            "steps_between",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::ops::range::Range",
+                                    "start"
                                   |)
                                 |)
                               |)
-                            ]
-                          |)
-                        |) in
-                      M.alloc (|
-                        Value.Tuple
-                          [
-                            M.call_closure (|
-                              Ty.path "usize",
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
-                                "unwrap_or",
-                                [],
-                                []
-                              |),
-                              [ M.read (| hint |); M.read (| M.get_constant "core::num::MAX" |) ]
                             |);
-                            M.read (| hint |)
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::ops::range::Range",
+                                    "end"
+                                  |)
+                                |)
+                              |)
+                            |)
                           ]
+                        |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -10676,7 +10851,7 @@ Module iter.
       (*
           fn count(self) -> usize {
               if self.start < self.end {
-                  Step::steps_between(&self.start, &self.end).expect("count overflowed usize")
+                  Step::steps_between(&self.start, &self.end).1.expect("count overflowed usize")
               } else {
                   0
               }
@@ -10740,45 +10915,59 @@ Module iter.
                             []
                           |),
                           [
-                            M.call_closure (|
-                              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
-                              M.get_trait_method (|
-                                "core::iter::range::Step",
-                                A,
-                                [],
-                                [],
-                                "steps_between",
-                                [],
-                                []
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.SubPointer.get_struct_record_field (|
-                                        self,
-                                        "core::ops::range::Range",
-                                        "start"
+                            M.read (|
+                              M.SubPointer.get_tuple_field (|
+                                M.alloc (|
+                                  M.call_closure (|
+                                    Ty.tuple
+                                      [
+                                        Ty.path "usize";
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "usize" ]
+                                      ],
+                                    M.get_trait_method (|
+                                      "core::iter::range::Step",
+                                      A,
+                                      [],
+                                      [],
+                                      "steps_between",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_record_field (|
+                                              self,
+                                              "core::ops::range::Range",
+                                              "start"
+                                            |)
+                                          |)
+                                        |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_record_field (|
+                                              self,
+                                              "core::ops::range::Range",
+                                              "end"
+                                            |)
+                                          |)
+                                        |)
                                       |)
-                                    |)
+                                    ]
                                   |)
-                                |);
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.SubPointer.get_struct_record_field (|
-                                        self,
-                                        "core::ops::range::Range",
-                                        "end"
-                                      |)
-                                    |)
-                                  |)
-                                |)
-                              ]
+                                |),
+                                1
+                              |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
@@ -14955,10 +15144,8 @@ Module iter.
                   return (0, Some(0));
               }
       
-              match Step::steps_between(&self.start, &self.end) {
-                  Some(hint) => (hint.saturating_add(1), hint.checked_add(1)),
-                  None => (usize::MAX, None),
-              }
+              let hint = Step::steps_between(&self.start, &self.end);
+              (hint.0.saturating_add(1), hint.1.and_then(|steps| steps.checked_add(1)))
           }
       *)
       Definition size_hint (A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -15019,16 +15206,19 @@ Module iter.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  M.match_operator (|
-                    Some
-                      (Ty.tuple
+                  let~ hint :
+                      Ty.tuple
                         [
                           Ty.path "usize";
                           Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
-                        ]),
+                        ] :=
                     M.alloc (|
                       M.call_closure (|
-                        Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
+                        Ty.tuple
+                          [
+                            Ty.path "usize";
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ]
+                          ],
                         M.get_trait_method (|
                           "core::iter::range::Step",
                           A,
@@ -15067,53 +15257,75 @@ Module iter.
                           |)
                         ]
                       |)
-                    |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ0_0 :=
-                            M.SubPointer.get_struct_tuple_field (|
-                              γ,
-                              "core::option::Option::Some",
-                              0
-                            |) in
-                          let hint := M.copy (| γ0_0 |) in
-                          M.alloc (|
-                            Value.Tuple
-                              [
-                                M.call_closure (|
-                                  Ty.path "usize",
-                                  M.get_associated_function (|
-                                    Ty.path "usize",
-                                    "saturating_add",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.read (| hint |); Value.Integer IntegerKind.Usize 1 ]
-                                |);
-                                M.call_closure (|
-                                  Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
-                                  M.get_associated_function (|
-                                    Ty.path "usize",
-                                    "checked_add",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.read (| hint |); Value.Integer IntegerKind.Usize 1 ]
-                                |)
-                              ]
-                          |)));
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                          M.alloc (|
-                            Value.Tuple
-                              [
-                                M.read (| M.get_constant "core::num::MAX" |);
-                                Value.StructTuple "core::option::Option::None" []
-                              ]
-                          |)))
-                    ]
+                    |) in
+                  M.alloc (|
+                    Value.Tuple
+                      [
+                        M.call_closure (|
+                          Ty.path "usize",
+                          M.get_associated_function (| Ty.path "usize", "saturating_add", [], [] |),
+                          [
+                            M.read (| M.SubPointer.get_tuple_field (| hint, 0 |) |);
+                            Value.Integer IntegerKind.Usize 1
+                          ]
+                        |);
+                        M.call_closure (|
+                          Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
+                          M.get_associated_function (|
+                            Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
+                            "and_then",
+                            [],
+                            [
+                              Ty.path "usize";
+                              Ty.function
+                                [ Ty.tuple [ Ty.path "usize" ] ]
+                                (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ])
+                            ]
+                          |),
+                          [
+                            M.read (| M.SubPointer.get_tuple_field (| hint, 1 |) |);
+                            M.closure
+                              (fun γ =>
+                                ltac:(M.monadic
+                                  match γ with
+                                  | [ α0 ] =>
+                                    ltac:(M.monadic
+                                      (M.match_operator (|
+                                        Some
+                                          (Ty.function
+                                            [ Ty.tuple [ Ty.path "usize" ] ]
+                                            (Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              []
+                                              [ Ty.path "usize" ])),
+                                        M.alloc (| α0 |),
+                                        [
+                                          fun γ =>
+                                            ltac:(M.monadic
+                                              (let steps := M.copy (| γ |) in
+                                              M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "core::option::Option")
+                                                  []
+                                                  [ Ty.path "usize" ],
+                                                M.get_associated_function (|
+                                                  Ty.path "usize",
+                                                  "checked_add",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.read (| steps |);
+                                                  Value.Integer IntegerKind.Usize 1
+                                                ]
+                                              |)))
+                                        ]
+                                      |)))
+                                  | _ => M.impossible "wrong number of arguments"
+                                  end))
+                          ]
+                        |)
+                      ]
                   |)
                 |)))
             |)))
@@ -15127,6 +15339,7 @@ Module iter.
               }
       
               Step::steps_between(&self.start, &self.end)
+                  .1
                   .and_then(|steps| steps.checked_add(1))
                   .expect("count overflowed usize")
           }
@@ -15198,45 +15411,59 @@ Module iter.
                             ]
                           |),
                           [
-                            M.call_closure (|
-                              Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
-                              M.get_trait_method (|
-                                "core::iter::range::Step",
-                                A,
-                                [],
-                                [],
-                                "steps_between",
-                                [],
-                                []
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.SubPointer.get_struct_record_field (|
-                                        self,
-                                        "core::ops::range::RangeInclusive",
-                                        "start"
+                            M.read (|
+                              M.SubPointer.get_tuple_field (|
+                                M.alloc (|
+                                  M.call_closure (|
+                                    Ty.tuple
+                                      [
+                                        Ty.path "usize";
+                                        Ty.apply
+                                          (Ty.path "core::option::Option")
+                                          []
+                                          [ Ty.path "usize" ]
+                                      ],
+                                    M.get_trait_method (|
+                                      "core::iter::range::Step",
+                                      A,
+                                      [],
+                                      [],
+                                      "steps_between",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_record_field (|
+                                              self,
+                                              "core::ops::range::RangeInclusive",
+                                              "start"
+                                            |)
+                                          |)
+                                        |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.SubPointer.get_struct_record_field (|
+                                              self,
+                                              "core::ops::range::RangeInclusive",
+                                              "end"
+                                            |)
+                                          |)
+                                        |)
                                       |)
-                                    |)
+                                    ]
                                   |)
-                                |);
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.SubPointer.get_struct_record_field (|
-                                        self,
-                                        "core::ops::range::RangeInclusive",
-                                        "end"
-                                      |)
-                                    |)
-                                  |)
-                                |)
-                              ]
+                                |),
+                                1
+                              |)
                             |);
                             M.closure
                               (fun γ =>

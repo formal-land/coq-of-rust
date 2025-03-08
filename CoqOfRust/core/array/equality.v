@@ -907,7 +907,7 @@ Module array.
     (* Trait *)
     (* Empty module 'SpecArrayEq' *)
     
-    Module Impl_core_array_equality_SpecArrayEq_where_core_cmp_PartialEq_T_Other_Other_for_T.
+    Module Impl_core_array_equality_SpecArrayEq_where_core_cmp_PartialEq_T_Other_N_Other_for_T.
       Definition Self (N : Value.t) (T Other : Ty.t) : Ty.t := T.
       
       (*
@@ -1068,7 +1068,7 @@ Module array.
         forall (N : Value.t) (T Other : Ty.t),
         M.IsTraitInstance
           "core::array::equality::SpecArrayEq"
-          (* Trait polymorphic consts *) []
+          (* Trait polymorphic consts *) [ N ]
           (* Trait polymorphic types *) [ Other ]
           (Self N T Other)
           (* Instance *)
@@ -1076,9 +1076,9 @@ Module array.
             ("spec_eq", InstanceField.Method (spec_eq N T Other));
             ("spec_ne", InstanceField.Method (spec_ne N T Other))
           ].
-    End Impl_core_array_equality_SpecArrayEq_where_core_cmp_PartialEq_T_Other_Other_for_T.
+    End Impl_core_array_equality_SpecArrayEq_where_core_cmp_PartialEq_T_Other_N_Other_for_T.
     
-    Module Impl_core_array_equality_SpecArrayEq_where_core_cmp_bytewise_BytewiseEq_T_U_U_for_T.
+    Module Impl_core_array_equality_SpecArrayEq_where_core_cmp_bytewise_BytewiseEq_T_U_N_U_for_T.
       Definition Self (N : Value.t) (T U : Ty.t) : Ty.t := T.
       
       (*
@@ -1171,7 +1171,7 @@ Module array.
         forall (N : Value.t) (T U : Ty.t),
         M.IsTraitInstance
           "core::array::equality::SpecArrayEq"
-          (* Trait polymorphic consts *) []
+          (* Trait polymorphic consts *) [ N ]
           (* Trait polymorphic types *) [ U ]
           (Self N T U)
           (* Instance *)
@@ -1179,6 +1179,6 @@ Module array.
             ("spec_eq", InstanceField.Method (spec_eq N T U));
             ("spec_ne", InstanceField.Method (spec_ne N T U))
           ].
-    End Impl_core_array_equality_SpecArrayEq_where_core_cmp_bytewise_BytewiseEq_T_U_U_for_T.
+    End Impl_core_array_equality_SpecArrayEq_where_core_cmp_bytewise_BytewiseEq_T_U_N_U_for_T.
   End equality.
 End array.

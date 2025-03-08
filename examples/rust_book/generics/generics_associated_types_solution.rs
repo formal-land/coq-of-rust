@@ -47,13 +47,13 @@ fn get_a<C: Contains>(container: &C) -> C::A {
     container.a()
 }
 
-trait TraitWithParams<A, B> {
+trait TraitWithParams<A, B, Z1 = f32, Z2 = f64, const N: i8 = 12> {
     type Output;
 
     fn get_output(&self) -> Self::Output;
 }
 
-impl TraitWithParams<i32, i32> for Container {
+impl<T> TraitWithParams<i32, T, bool, T> for Container {
     type Output = (i32, i32);
 
     fn get_output(&self) -> (i32, i32) {
@@ -61,7 +61,7 @@ impl TraitWithParams<i32, i32> for Container {
     }
 }
 
-fn get_output<C: TraitWithParams<i32, i32>>(container: &C) -> C::Output {
+fn get_output<C: TraitWithParams<i32, i64, bool, i64>>(container: &C) -> C::Output {
     container.get_output()
 }
 

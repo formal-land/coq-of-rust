@@ -27,7 +27,7 @@ Module task.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_task_wake_RawWaker.
     
-    Module Impl_core_cmp_PartialEq_for_core_task_wake_RawWaker.
+    Module Impl_core_cmp_PartialEq_core_task_wake_RawWaker_for_core_task_wake_RawWaker.
       Definition Self : Ty.t := Ty.path "core::task::wake::RawWaker".
       
       (* PartialEq *)
@@ -93,10 +93,10 @@ Module task.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::task::wake::RawWaker" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_core_task_wake_RawWaker.
+    End Impl_core_cmp_PartialEq_core_task_wake_RawWaker_for_core_task_wake_RawWaker.
     
     Module Impl_core_fmt_Debug_for_core_task_wake_RawWaker.
       Definition Self : Ty.t := Ty.path "core::task::wake::RawWaker".
@@ -271,7 +271,7 @@ Module task.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_task_wake_RawWakerVTable.
     
-    Module Impl_core_cmp_PartialEq_for_core_task_wake_RawWakerVTable.
+    Module Impl_core_cmp_PartialEq_core_task_wake_RawWakerVTable_for_core_task_wake_RawWakerVTable.
       Definition Self : Ty.t := Ty.path "core::task::wake::RawWakerVTable".
       
       (* PartialEq *)
@@ -361,10 +361,10 @@ Module task.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::task::wake::RawWakerVTable" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_core_task_wake_RawWakerVTable.
+    End Impl_core_cmp_PartialEq_core_task_wake_RawWakerVTable_for_core_task_wake_RawWakerVTable.
     
     Module Impl_core_marker_Copy_for_core_task_wake_RawWakerVTable.
       Definition Self : Ty.t := Ty.path "core::task::wake::RawWakerVTable".

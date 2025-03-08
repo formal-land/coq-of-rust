@@ -61,8 +61,4 @@ Module bls12_381.
     M.IsFunction.Trait "revm_precompile::bls12_381::precompiles" precompiles.
   Admitted.
   Global Typeclasses Opaque precompiles.
-  
-  Module precompiles.
-    (* Error OpaqueTy *)
-  End precompiles.
 End bls12_381.

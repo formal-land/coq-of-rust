@@ -805,7 +805,7 @@ Module transaction_argument.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_core_types_transaction_argument_TransactionArgument.
   
-  Module Impl_core_cmp_PartialEq_for_move_core_types_transaction_argument_TransactionArgument.
+  Module Impl_core_cmp_PartialEq_move_core_types_transaction_argument_TransactionArgument_for_move_core_types_transaction_argument_TransactionArgument.
     Definition Self : Ty.t := Ty.path "move_core_types::transaction_argument::TransactionArgument".
     
     (* PartialEq *)
@@ -1249,10 +1249,11 @@ Module transaction_argument.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *)
+        [ Ty.path "move_core_types::transaction_argument::TransactionArgument" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_core_types_transaction_argument_TransactionArgument.
+  End Impl_core_cmp_PartialEq_move_core_types_transaction_argument_TransactionArgument_for_move_core_types_transaction_argument_TransactionArgument.
   
   Module underscore.
     Module Impl_serde_ser_Serialize_for_move_core_types_transaction_argument_TransactionArgument.
@@ -4028,7 +4029,7 @@ Module transaction_argument.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_core_types_transaction_argument_VecBytes.
   
-  Module Impl_core_cmp_PartialEq_for_move_core_types_transaction_argument_VecBytes.
+  Module Impl_core_cmp_PartialEq_move_core_types_transaction_argument_VecBytes_for_move_core_types_transaction_argument_VecBytes.
     Definition Self : Ty.t := Ty.path "move_core_types::transaction_argument::VecBytes".
     
     (* PartialEq *)
@@ -4083,10 +4084,10 @@ Module transaction_argument.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::transaction_argument::VecBytes" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_core_types_transaction_argument_VecBytes.
+  End Impl_core_cmp_PartialEq_move_core_types_transaction_argument_VecBytes_for_move_core_types_transaction_argument_VecBytes.
   
   
   Module Impl_move_core_types_transaction_argument_VecBytes.

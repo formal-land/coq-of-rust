@@ -1250,7 +1250,7 @@ Module hash.
         (* Instance *) [ ("default", InstanceField.Method (default H)) ].
   End Impl_core_default_Default_for_core_hash_BuildHasherDefault_H.
   
-  Module Impl_core_cmp_PartialEq_for_core_hash_BuildHasherDefault_H.
+  Module Impl_core_cmp_PartialEq_core_hash_BuildHasherDefault_H_for_core_hash_BuildHasherDefault_H.
     Definition Self (H : Ty.t) : Ty.t :=
       Ty.apply (Ty.path "core::hash::BuildHasherDefault") [] [ H ].
     
@@ -1275,10 +1275,11 @@ Module hash.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *)
+        [ Ty.apply (Ty.path "core::hash::BuildHasherDefault") [] [ H ] ]
         (Self H)
         (* Instance *) [ ("eq", InstanceField.Method (eq H)) ].
-  End Impl_core_cmp_PartialEq_for_core_hash_BuildHasherDefault_H.
+  End Impl_core_cmp_PartialEq_core_hash_BuildHasherDefault_H_for_core_hash_BuildHasherDefault_H.
   
   Module Impl_core_cmp_Eq_for_core_hash_BuildHasherDefault_H.
     Definition Self (H : Ty.t) : Ty.t :=

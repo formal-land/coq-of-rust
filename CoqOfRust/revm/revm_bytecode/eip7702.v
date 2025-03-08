@@ -267,7 +267,7 @@ Module eip7702.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_bytecode_eip7702_Eip7702Bytecode.
   
-  Module Impl_core_cmp_PartialEq_for_revm_bytecode_eip7702_Eip7702Bytecode.
+  Module Impl_core_cmp_PartialEq_revm_bytecode_eip7702_Eip7702Bytecode_for_revm_bytecode_eip7702_Eip7702Bytecode.
     Definition Self : Ty.t := Ty.path "revm_bytecode::eip7702::Eip7702Bytecode".
     
     (* PartialEq *)
@@ -366,10 +366,10 @@ Module eip7702.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "revm_bytecode::eip7702::Eip7702Bytecode" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_revm_bytecode_eip7702_Eip7702Bytecode.
+  End Impl_core_cmp_PartialEq_revm_bytecode_eip7702_Eip7702Bytecode_for_revm_bytecode_eip7702_Eip7702Bytecode.
   
   Module Impl_core_cmp_Eq_for_revm_bytecode_eip7702_Eip7702Bytecode.
     Definition Self : Ty.t := Ty.path "revm_bytecode::eip7702::Eip7702Bytecode".
@@ -710,7 +710,7 @@ Module eip7702.
         (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
   End Impl_core_cmp_Ord_for_revm_bytecode_eip7702_Eip7702Bytecode.
   
-  Module Impl_core_cmp_PartialOrd_for_revm_bytecode_eip7702_Eip7702Bytecode.
+  Module Impl_core_cmp_PartialOrd_revm_bytecode_eip7702_Eip7702Bytecode_for_revm_bytecode_eip7702_Eip7702Bytecode.
     Definition Self : Ty.t := Ty.path "revm_bytecode::eip7702::Eip7702Bytecode".
     
     (* PartialOrd *)
@@ -901,10 +901,10 @@ Module eip7702.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "revm_bytecode::eip7702::Eip7702Bytecode" ]
         Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-  End Impl_core_cmp_PartialOrd_for_revm_bytecode_eip7702_Eip7702Bytecode.
+  End Impl_core_cmp_PartialOrd_revm_bytecode_eip7702_Eip7702Bytecode_for_revm_bytecode_eip7702_Eip7702Bytecode.
   
   Module Impl_revm_bytecode_eip7702_Eip7702Bytecode.
     Definition Self : Ty.t := Ty.path "revm_bytecode::eip7702::Eip7702Bytecode".
@@ -1782,7 +1782,7 @@ Module eip7702.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_bytecode_eip7702_Eip7702DecodeError.
   
-  Module Impl_core_cmp_PartialEq_for_revm_bytecode_eip7702_Eip7702DecodeError.
+  Module Impl_core_cmp_PartialEq_revm_bytecode_eip7702_Eip7702DecodeError_for_revm_bytecode_eip7702_Eip7702DecodeError.
     Definition Self : Ty.t := Ty.path "revm_bytecode::eip7702::Eip7702DecodeError".
     
     (* PartialEq *)
@@ -1826,10 +1826,10 @@ Module eip7702.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "revm_bytecode::eip7702::Eip7702DecodeError" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_revm_bytecode_eip7702_Eip7702DecodeError.
+  End Impl_core_cmp_PartialEq_revm_bytecode_eip7702_Eip7702DecodeError_for_revm_bytecode_eip7702_Eip7702DecodeError.
   
   Module Impl_core_cmp_Eq_for_revm_bytecode_eip7702_Eip7702DecodeError.
     Definition Self : Ty.t := Ty.path "revm_bytecode::eip7702::Eip7702DecodeError".
@@ -1858,7 +1858,7 @@ Module eip7702.
         [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
   End Impl_core_cmp_Eq_for_revm_bytecode_eip7702_Eip7702DecodeError.
   
-  Module Impl_core_cmp_PartialOrd_for_revm_bytecode_eip7702_Eip7702DecodeError.
+  Module Impl_core_cmp_PartialOrd_revm_bytecode_eip7702_Eip7702DecodeError_for_revm_bytecode_eip7702_Eip7702DecodeError.
     Definition Self : Ty.t := Ty.path "revm_bytecode::eip7702::Eip7702DecodeError".
     
     (* PartialOrd *)
@@ -1925,10 +1925,10 @@ Module eip7702.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "revm_bytecode::eip7702::Eip7702DecodeError" ]
         Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-  End Impl_core_cmp_PartialOrd_for_revm_bytecode_eip7702_Eip7702DecodeError.
+  End Impl_core_cmp_PartialOrd_revm_bytecode_eip7702_Eip7702DecodeError_for_revm_bytecode_eip7702_Eip7702DecodeError.
   
   Module Impl_core_cmp_Ord_for_revm_bytecode_eip7702_Eip7702DecodeError.
     Definition Self : Ty.t := Ty.path "revm_bytecode::eip7702::Eip7702DecodeError".

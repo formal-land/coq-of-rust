@@ -2288,7 +2288,7 @@ Module language_storage.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_core_types_language_storage_TypeTag.
   
-  Module Impl_core_cmp_PartialEq_for_move_core_types_language_storage_TypeTag.
+  Module Impl_core_cmp_PartialEq_move_core_types_language_storage_TypeTag_for_move_core_types_language_storage_TypeTag.
     Definition Self : Ty.t := Ty.path "move_core_types::language_storage::TypeTag".
     
     (* PartialEq *)
@@ -2470,10 +2470,10 @@ Module language_storage.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::language_storage::TypeTag" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_core_types_language_storage_TypeTag.
+  End Impl_core_cmp_PartialEq_move_core_types_language_storage_TypeTag_for_move_core_types_language_storage_TypeTag.
   
   Module Impl_core_hash_Hash_for_move_core_types_language_storage_TypeTag.
     Definition Self : Ty.t := Ty.path "move_core_types::language_storage::TypeTag".
@@ -2856,7 +2856,7 @@ Module language_storage.
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_move_core_types_language_storage_TypeTag.
   
-  Module Impl_core_cmp_PartialOrd_for_move_core_types_language_storage_TypeTag.
+  Module Impl_core_cmp_PartialOrd_move_core_types_language_storage_TypeTag_for_move_core_types_language_storage_TypeTag.
     Definition Self : Ty.t := Ty.path "move_core_types::language_storage::TypeTag".
     
     (* PartialOrd *)
@@ -3044,10 +3044,10 @@ Module language_storage.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::language_storage::TypeTag" ]
         Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-  End Impl_core_cmp_PartialOrd_for_move_core_types_language_storage_TypeTag.
+  End Impl_core_cmp_PartialOrd_move_core_types_language_storage_TypeTag_for_move_core_types_language_storage_TypeTag.
   
   Module Impl_core_cmp_Ord_for_move_core_types_language_storage_TypeTag.
     Definition Self : Ty.t := Ty.path "move_core_types::language_storage::TypeTag".
@@ -3815,7 +3815,7 @@ Module language_storage.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_core_types_language_storage_StructTag.
   
-  Module Impl_core_cmp_PartialEq_for_move_core_types_language_storage_StructTag.
+  Module Impl_core_cmp_PartialEq_move_core_types_language_storage_StructTag_for_move_core_types_language_storage_StructTag.
     Definition Self : Ty.t := Ty.path "move_core_types::language_storage::StructTag".
     
     (* PartialEq *)
@@ -3975,10 +3975,10 @@ Module language_storage.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::language_storage::StructTag" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_core_types_language_storage_StructTag.
+  End Impl_core_cmp_PartialEq_move_core_types_language_storage_StructTag_for_move_core_types_language_storage_StructTag.
   
   Module Impl_core_hash_Hash_for_move_core_types_language_storage_StructTag.
     Definition Self : Ty.t := Ty.path "move_core_types::language_storage::StructTag".
@@ -4331,7 +4331,7 @@ Module language_storage.
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_move_core_types_language_storage_StructTag.
   
-  Module Impl_core_cmp_PartialOrd_for_move_core_types_language_storage_StructTag.
+  Module Impl_core_cmp_PartialOrd_move_core_types_language_storage_StructTag_for_move_core_types_language_storage_StructTag.
     Definition Self : Ty.t := Ty.path "move_core_types::language_storage::StructTag".
     
     (* PartialOrd *)
@@ -4605,10 +4605,10 @@ Module language_storage.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::language_storage::StructTag" ]
         Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-  End Impl_core_cmp_PartialOrd_for_move_core_types_language_storage_StructTag.
+  End Impl_core_cmp_PartialOrd_move_core_types_language_storage_StructTag_for_move_core_types_language_storage_StructTag.
   
   Module Impl_core_cmp_Ord_for_move_core_types_language_storage_StructTag.
     Definition Self : Ty.t := Ty.path "move_core_types::language_storage::StructTag".
@@ -6125,7 +6125,7 @@ Module language_storage.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_core_types_language_storage_ResourceKey.
   
-  Module Impl_core_cmp_PartialEq_for_move_core_types_language_storage_ResourceKey.
+  Module Impl_core_cmp_PartialEq_move_core_types_language_storage_ResourceKey_for_move_core_types_language_storage_ResourceKey.
     Definition Self : Ty.t := Ty.path "move_core_types::language_storage::ResourceKey".
     
     (* PartialEq *)
@@ -6205,10 +6205,10 @@ Module language_storage.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::language_storage::ResourceKey" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_core_types_language_storage_ResourceKey.
+  End Impl_core_cmp_PartialEq_move_core_types_language_storage_ResourceKey_for_move_core_types_language_storage_ResourceKey.
   
   Module Impl_core_hash_Hash_for_move_core_types_language_storage_ResourceKey.
     Definition Self : Ty.t := Ty.path "move_core_types::language_storage::ResourceKey".
@@ -6417,7 +6417,7 @@ Module language_storage.
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_move_core_types_language_storage_ResourceKey.
   
-  Module Impl_core_cmp_PartialOrd_for_move_core_types_language_storage_ResourceKey.
+  Module Impl_core_cmp_PartialOrd_move_core_types_language_storage_ResourceKey_for_move_core_types_language_storage_ResourceKey.
     Definition Self : Ty.t := Ty.path "move_core_types::language_storage::ResourceKey".
     
     (* PartialOrd *)
@@ -6541,10 +6541,10 @@ Module language_storage.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::language_storage::ResourceKey" ]
         Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-  End Impl_core_cmp_PartialOrd_for_move_core_types_language_storage_ResourceKey.
+  End Impl_core_cmp_PartialOrd_move_core_types_language_storage_ResourceKey_for_move_core_types_language_storage_ResourceKey.
   
   Module Impl_core_cmp_Ord_for_move_core_types_language_storage_ResourceKey.
     Definition Self : Ty.t := Ty.path "move_core_types::language_storage::ResourceKey".
@@ -6843,7 +6843,7 @@ Module language_storage.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_core_types_language_storage_ModuleId.
   
-  Module Impl_core_cmp_PartialEq_for_move_core_types_language_storage_ModuleId.
+  Module Impl_core_cmp_PartialEq_move_core_types_language_storage_ModuleId_for_move_core_types_language_storage_ModuleId.
     Definition Self : Ty.t := Ty.path "move_core_types::language_storage::ModuleId".
     
     (* PartialEq *)
@@ -6923,10 +6923,10 @@ Module language_storage.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::language_storage::ModuleId" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_core_types_language_storage_ModuleId.
+  End Impl_core_cmp_PartialEq_move_core_types_language_storage_ModuleId_for_move_core_types_language_storage_ModuleId.
   
   Module Impl_core_hash_Hash_for_move_core_types_language_storage_ModuleId.
     Definition Self : Ty.t := Ty.path "move_core_types::language_storage::ModuleId".
@@ -7135,7 +7135,7 @@ Module language_storage.
         (* Instance *) [ ("clone", InstanceField.Method clone) ].
   End Impl_core_clone_Clone_for_move_core_types_language_storage_ModuleId.
   
-  Module Impl_core_cmp_PartialOrd_for_move_core_types_language_storage_ModuleId.
+  Module Impl_core_cmp_PartialOrd_move_core_types_language_storage_ModuleId_for_move_core_types_language_storage_ModuleId.
     Definition Self : Ty.t := Ty.path "move_core_types::language_storage::ModuleId".
     
     (* PartialOrd *)
@@ -7259,10 +7259,10 @@ Module language_storage.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::language_storage::ModuleId" ]
         Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-  End Impl_core_cmp_PartialOrd_for_move_core_types_language_storage_ModuleId.
+  End Impl_core_cmp_PartialOrd_move_core_types_language_storage_ModuleId_for_move_core_types_language_storage_ModuleId.
   
   Module Impl_core_cmp_Ord_for_move_core_types_language_storage_ModuleId.
     Definition Self : Ty.t := Ty.path "move_core_types::language_storage::ModuleId".

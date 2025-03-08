@@ -240,7 +240,7 @@ Module Impl_core_marker_StructuralPartialEq_for_erc1155_AccountId.
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_erc1155_AccountId.
 
-Module Impl_core_cmp_PartialEq_for_erc1155_AccountId.
+Module Impl_core_cmp_PartialEq_erc1155_AccountId_for_erc1155_AccountId.
   Definition Self : Ty.t := Ty.path "erc1155::AccountId".
   
   (* PartialEq *)
@@ -273,10 +273,10 @@ Module Impl_core_cmp_PartialEq_for_erc1155_AccountId.
     M.IsTraitInstance
       "core::cmp::PartialEq"
       (* Trait polymorphic consts *) []
-      (* Trait polymorphic types *) []
+      (* Trait polymorphic types *) [ Ty.path "erc1155::AccountId" ]
       Self
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
-End Impl_core_cmp_PartialEq_for_erc1155_AccountId.
+End Impl_core_cmp_PartialEq_erc1155_AccountId_for_erc1155_AccountId.
 
 Module Impl_core_convert_From_array_Usize_32_u8_for_erc1155_AccountId.
   Definition Self : Ty.t := Ty.path "erc1155::AccountId".
@@ -432,7 +432,7 @@ Module Impl_core_marker_StructuralPartialEq_for_erc1155_Error.
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_erc1155_Error.
 
-Module Impl_core_cmp_PartialEq_for_erc1155_Error.
+Module Impl_core_cmp_PartialEq_erc1155_Error_for_erc1155_Error.
   Definition Self : Ty.t := Ty.path "erc1155::Error".
   
   (* PartialEq *)
@@ -476,10 +476,10 @@ Module Impl_core_cmp_PartialEq_for_erc1155_Error.
     M.IsTraitInstance
       "core::cmp::PartialEq"
       (* Trait polymorphic consts *) []
-      (* Trait polymorphic types *) []
+      (* Trait polymorphic types *) [ Ty.path "erc1155::Error" ]
       Self
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
-End Impl_core_cmp_PartialEq_for_erc1155_Error.
+End Impl_core_cmp_PartialEq_erc1155_Error_for_erc1155_Error.
 
 Module Impl_core_cmp_Eq_for_erc1155_Error.
   Definition Self : Ty.t := Ty.path "erc1155::Error".

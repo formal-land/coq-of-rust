@@ -81,7 +81,7 @@ pub fn run(opts: CliOptions) {
                 // filter out files not ending with .rs
                 if src_path
                     .extension()
-                    .map_or(true, |extension| extension != "rs")
+                    .is_none_or(|extension| extension != "rs")
                 {
                     continue;
                 }

@@ -3323,7 +3323,7 @@ Module eof.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_revm_bytecode_eof_verification_EofError.
     
-    Module Impl_core_cmp_PartialEq_for_revm_bytecode_eof_verification_EofError.
+    Module Impl_core_cmp_PartialEq_revm_bytecode_eof_verification_EofError_for_revm_bytecode_eof_verification_EofError.
       Definition Self : Ty.t := Ty.path "revm_bytecode::eof::verification::EofError".
       
       (* PartialEq *)
@@ -3489,10 +3489,10 @@ Module eof.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "revm_bytecode::eof::verification::EofError" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_revm_bytecode_eof_verification_EofError.
+    End Impl_core_cmp_PartialEq_revm_bytecode_eof_verification_EofError_for_revm_bytecode_eof_verification_EofError.
     
     Module Impl_core_cmp_Eq_for_revm_bytecode_eof_verification_EofError.
       Definition Self : Ty.t := Ty.path "revm_bytecode::eof::verification::EofError".
@@ -3535,7 +3535,7 @@ Module eof.
           [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
     End Impl_core_cmp_Eq_for_revm_bytecode_eof_verification_EofError.
     
-    Module Impl_core_cmp_PartialOrd_for_revm_bytecode_eof_verification_EofError.
+    Module Impl_core_cmp_PartialOrd_revm_bytecode_eof_verification_EofError_for_revm_bytecode_eof_verification_EofError.
       Definition Self : Ty.t := Ty.path "revm_bytecode::eof::verification::EofError".
       
       (* PartialOrd *)
@@ -3696,10 +3696,10 @@ Module eof.
         M.IsTraitInstance
           "core::cmp::PartialOrd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "revm_bytecode::eof::verification::EofError" ]
           Self
           (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-    End Impl_core_cmp_PartialOrd_for_revm_bytecode_eof_verification_EofError.
+    End Impl_core_cmp_PartialOrd_revm_bytecode_eof_verification_EofError_for_revm_bytecode_eof_verification_EofError.
     
     Module Impl_core_cmp_Ord_for_revm_bytecode_eof_verification_EofError.
       Definition Self : Ty.t := Ty.path "revm_bytecode::eof::verification::EofError".
@@ -5081,7 +5081,7 @@ Module eof.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_revm_bytecode_eof_verification_EofValidationError.
     
-    Module Impl_core_cmp_PartialEq_for_revm_bytecode_eof_verification_EofValidationError.
+    Module Impl_core_cmp_PartialEq_revm_bytecode_eof_verification_EofValidationError_for_revm_bytecode_eof_verification_EofValidationError.
       Definition Self : Ty.t := Ty.path "revm_bytecode::eof::verification::EofValidationError".
       
       (* PartialEq *)
@@ -5125,10 +5125,11 @@ Module eof.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.path "revm_bytecode::eof::verification::EofValidationError" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_revm_bytecode_eof_verification_EofValidationError.
+    End Impl_core_cmp_PartialEq_revm_bytecode_eof_verification_EofValidationError_for_revm_bytecode_eof_verification_EofValidationError.
     
     Module Impl_core_cmp_Eq_for_revm_bytecode_eof_verification_EofValidationError.
       Definition Self : Ty.t := Ty.path "revm_bytecode::eof::verification::EofValidationError".
@@ -5157,7 +5158,7 @@ Module eof.
           [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
     End Impl_core_cmp_Eq_for_revm_bytecode_eof_verification_EofValidationError.
     
-    Module Impl_core_cmp_PartialOrd_for_revm_bytecode_eof_verification_EofValidationError.
+    Module Impl_core_cmp_PartialOrd_revm_bytecode_eof_verification_EofValidationError_for_revm_bytecode_eof_verification_EofValidationError.
       Definition Self : Ty.t := Ty.path "revm_bytecode::eof::verification::EofValidationError".
       
       (* PartialOrd *)
@@ -5224,10 +5225,11 @@ Module eof.
         M.IsTraitInstance
           "core::cmp::PartialOrd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.path "revm_bytecode::eof::verification::EofValidationError" ]
           Self
           (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-    End Impl_core_cmp_PartialOrd_for_revm_bytecode_eof_verification_EofValidationError.
+    End Impl_core_cmp_PartialOrd_revm_bytecode_eof_verification_EofValidationError_for_revm_bytecode_eof_verification_EofValidationError.
     
     Module Impl_core_cmp_Ord_for_revm_bytecode_eof_verification_EofValidationError.
       Definition Self : Ty.t := Ty.path "revm_bytecode::eof::verification::EofValidationError".
@@ -5659,7 +5661,7 @@ Module eof.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_revm_bytecode_eof_verification_AccessTracker.
     
-    Module Impl_core_cmp_PartialEq_for_revm_bytecode_eof_verification_AccessTracker.
+    Module Impl_core_cmp_PartialEq_revm_bytecode_eof_verification_AccessTracker_for_revm_bytecode_eof_verification_AccessTracker.
       Definition Self : Ty.t := Ty.path "revm_bytecode::eof::verification::AccessTracker".
       
       (* PartialEq *)
@@ -5849,10 +5851,11 @@ Module eof.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.path "revm_bytecode::eof::verification::AccessTracker" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_revm_bytecode_eof_verification_AccessTracker.
+    End Impl_core_cmp_PartialEq_revm_bytecode_eof_verification_AccessTracker_for_revm_bytecode_eof_verification_AccessTracker.
     
     Module Impl_core_cmp_Eq_for_revm_bytecode_eof_verification_AccessTracker.
       Definition Self : Ty.t := Ty.path "revm_bytecode::eof::verification::AccessTracker".
@@ -6592,7 +6595,7 @@ Module eof.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_revm_bytecode_eof_verification_CodeType.
     
-    Module Impl_core_cmp_PartialEq_for_revm_bytecode_eof_verification_CodeType.
+    Module Impl_core_cmp_PartialEq_revm_bytecode_eof_verification_CodeType_for_revm_bytecode_eof_verification_CodeType.
       Definition Self : Ty.t := Ty.path "revm_bytecode::eof::verification::CodeType".
       
       (* PartialEq *)
@@ -6636,10 +6639,10 @@ Module eof.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "revm_bytecode::eof::verification::CodeType" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_revm_bytecode_eof_verification_CodeType.
+    End Impl_core_cmp_PartialEq_revm_bytecode_eof_verification_CodeType_for_revm_bytecode_eof_verification_CodeType.
     
     Module Impl_core_cmp_Eq_for_revm_bytecode_eof_verification_CodeType.
       Definition Self : Ty.t := Ty.path "revm_bytecode::eof::verification::CodeType".

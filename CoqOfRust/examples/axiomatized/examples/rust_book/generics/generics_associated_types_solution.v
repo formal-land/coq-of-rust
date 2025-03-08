@@ -59,22 +59,26 @@ Admitted.
 (* Trait *)
 (* Empty module 'TraitWithParams' *)
 
-Module Impl_generics_associated_types_solution_TraitWithParams_i32_i32_for_generics_associated_types_solution_Container.
-  Definition Self : Ty.t := Ty.path "generics_associated_types_solution::Container".
+Module Impl_generics_associated_types_solution_TraitWithParams_I8_12_i32_T_bool_T_for_generics_associated_types_solution_Container.
+  Definition Self (T : Ty.t) : Ty.t := Ty.path "generics_associated_types_solution::Container".
   
-  Definition _Output : Ty.t := Ty.tuple [ Ty.path "i32"; Ty.path "i32" ].
+  Definition _Output (T : Ty.t) : Ty.t := Ty.tuple [ Ty.path "i32"; Ty.path "i32" ].
   
-  Parameter get_output : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Parameter get_output : forall (T : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Axiom Implements :
+    forall (T : Ty.t),
     M.IsTraitInstance
       "generics_associated_types_solution::TraitWithParams"
-      (* Trait polymorphic consts *) []
-      (* Trait polymorphic types *) [ Ty.path "i32"; Ty.path "i32" ]
-      Self
+      (* Trait polymorphic consts *) [ Value.Integer IntegerKind.I8 12 ]
+      (* Trait polymorphic types *) [ Ty.path "i32"; T; Ty.path "bool"; T ]
+      (Self T)
       (* Instance *)
-      [ ("Output", InstanceField.Ty _Output); ("get_output", InstanceField.Method get_output) ].
-End Impl_generics_associated_types_solution_TraitWithParams_i32_i32_for_generics_associated_types_solution_Container.
+      [
+        ("Output", InstanceField.Ty (_Output T));
+        ("get_output", InstanceField.Method (get_output T))
+      ].
+End Impl_generics_associated_types_solution_TraitWithParams_I8_12_i32_T_bool_T_for_generics_associated_types_solution_Container.
 
 Parameter get_output : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 

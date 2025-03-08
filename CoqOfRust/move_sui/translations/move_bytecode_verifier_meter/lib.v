@@ -170,7 +170,7 @@ Module Impl_core_marker_StructuralPartialEq_for_move_bytecode_verifier_meter_Sco
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_move_bytecode_verifier_meter_Scope.
 
-Module Impl_core_cmp_PartialEq_for_move_bytecode_verifier_meter_Scope.
+Module Impl_core_cmp_PartialEq_move_bytecode_verifier_meter_Scope_for_move_bytecode_verifier_meter_Scope.
   Definition Self : Ty.t := Ty.path "move_bytecode_verifier_meter::Scope".
   
   (* PartialEq *)
@@ -214,10 +214,10 @@ Module Impl_core_cmp_PartialEq_for_move_bytecode_verifier_meter_Scope.
     M.IsTraitInstance
       "core::cmp::PartialEq"
       (* Trait polymorphic consts *) []
-      (* Trait polymorphic types *) []
+      (* Trait polymorphic types *) [ Ty.path "move_bytecode_verifier_meter::Scope" ]
       Self
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
-End Impl_core_cmp_PartialEq_for_move_bytecode_verifier_meter_Scope.
+End Impl_core_cmp_PartialEq_move_bytecode_verifier_meter_Scope_for_move_bytecode_verifier_meter_Scope.
 
 Module Impl_core_cmp_Eq_for_move_bytecode_verifier_meter_Scope.
   Definition Self : Ty.t := Ty.path "move_bytecode_verifier_meter::Scope".
@@ -246,7 +246,7 @@ Module Impl_core_cmp_Eq_for_move_bytecode_verifier_meter_Scope.
       [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
 End Impl_core_cmp_Eq_for_move_bytecode_verifier_meter_Scope.
 
-Module Impl_core_cmp_PartialOrd_for_move_bytecode_verifier_meter_Scope.
+Module Impl_core_cmp_PartialOrd_move_bytecode_verifier_meter_Scope_for_move_bytecode_verifier_meter_Scope.
   Definition Self : Ty.t := Ty.path "move_bytecode_verifier_meter::Scope".
   
   (* PartialOrd *)
@@ -313,10 +313,10 @@ Module Impl_core_cmp_PartialOrd_for_move_bytecode_verifier_meter_Scope.
     M.IsTraitInstance
       "core::cmp::PartialOrd"
       (* Trait polymorphic consts *) []
-      (* Trait polymorphic types *) []
+      (* Trait polymorphic types *) [ Ty.path "move_bytecode_verifier_meter::Scope" ]
       Self
       (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-End Impl_core_cmp_PartialOrd_for_move_bytecode_verifier_meter_Scope.
+End Impl_core_cmp_PartialOrd_move_bytecode_verifier_meter_Scope_for_move_bytecode_verifier_meter_Scope.
 
 Module Impl_core_cmp_Ord_for_move_bytecode_verifier_meter_Scope.
   Definition Self : Ty.t := Ty.path "move_bytecode_verifier_meter::Scope".

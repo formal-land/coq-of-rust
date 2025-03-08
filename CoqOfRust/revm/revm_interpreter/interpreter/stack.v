@@ -100,7 +100,7 @@ Module interpreter.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_revm_interpreter_interpreter_stack_Stack.
     
-    Module Impl_core_cmp_PartialEq_for_revm_interpreter_interpreter_stack_Stack.
+    Module Impl_core_cmp_PartialEq_revm_interpreter_interpreter_stack_Stack_for_revm_interpreter_interpreter_stack_Stack.
       Definition Self : Ty.t := Ty.path "revm_interpreter::interpreter::stack::Stack".
       
       (* PartialEq *)
@@ -167,10 +167,10 @@ Module interpreter.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "revm_interpreter::interpreter::stack::Stack" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_revm_interpreter_interpreter_stack_Stack.
+    End Impl_core_cmp_PartialEq_revm_interpreter_interpreter_stack_Stack_for_revm_interpreter_interpreter_stack_Stack.
     
     Module Impl_core_cmp_Eq_for_revm_interpreter_interpreter_stack_Stack.
       Definition Self : Ty.t := Ty.path "revm_interpreter::interpreter::stack::Stack".

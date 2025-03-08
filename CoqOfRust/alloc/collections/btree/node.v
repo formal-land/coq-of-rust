@@ -109,7 +109,8 @@ Module collections.
                   (Ty.path "array")
                   [
                     M.unevaluated_const
-                      (M.get_constant "alloc::collections::btree::node::LeafNode_discriminant")
+                      (M.get_constant
+                        "alloc::collections::btree::node::LeafNode::keys_discriminant")
                   ]
                   [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ] ]);
               ("vals",
@@ -117,7 +118,8 @@ Module collections.
                   (Ty.path "array")
                   [
                     M.unevaluated_const
-                      (M.get_constant "alloc::collections::btree::node::LeafNode_discriminant")
+                      (M.get_constant
+                        "alloc::collections::btree::node::LeafNode::vals_discriminant")
                   ]
                   [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ] ])
             ];
@@ -5760,7 +5762,7 @@ Module collections.
         Admitted.
         Global Typeclasses Opaque set_parent_link.
         (*
-            unsafe fn cast_to_leaf_unchecked(self) -> NodeRef<marker::Mut<'a>, K, V, marker::Leaf> {
+            pub unsafe fn cast_to_leaf_unchecked(self) -> NodeRef<marker::Mut<'a>, K, V, marker::Leaf> {
                 debug_assert!(self.height == 0);
                 NodeRef { height: self.height, node: self.node, _marker: PhantomData }
             }
@@ -8679,7 +8681,7 @@ Module collections.
         Global Typeclasses Opaque right_edge.
       End Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_BorrowType_K_V_NodeType_alloc_collections_btree_node_marker_KV.
       
-      Module Impl_core_cmp_PartialEq_for_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_BorrowType_K_V_NodeType_HandleType.
+      Module Impl_core_cmp_PartialEq_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_BorrowType_K_V_NodeType_HandleType_for_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_BorrowType_K_V_NodeType_HandleType.
         Definition Self (BorrowType K V NodeType HandleType : Ty.t) : Ty.t :=
           Ty.apply
             (Ty.path "alloc::collections::btree::node::Handle")
@@ -8793,10 +8795,22 @@ Module collections.
           M.IsTraitInstance
             "core::cmp::PartialEq"
             (* Trait polymorphic consts *) []
-            (* Trait polymorphic types *) []
+            (* Trait polymorphic types *)
+            [
+              Ty.apply
+                (Ty.path "alloc::collections::btree::node::Handle")
+                []
+                [
+                  Ty.apply
+                    (Ty.path "alloc::collections::btree::node::NodeRef")
+                    []
+                    [ BorrowType; K; V; NodeType ];
+                  HandleType
+                ]
+            ]
             (Self BorrowType K V NodeType HandleType)
             (* Instance *) [ ("eq", InstanceField.Method (eq BorrowType K V NodeType HandleType)) ].
-      End Impl_core_cmp_PartialEq_for_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_BorrowType_K_V_NodeType_HandleType.
+      End Impl_core_cmp_PartialEq_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_BorrowType_K_V_NodeType_HandleType_for_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_BorrowType_K_V_NodeType_HandleType.
       
       Module Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_BorrowType_K_V_NodeType_HandleType.
         Definition Self (BorrowType K V NodeType HandleType : Ty.t) : Ty.t :=
@@ -15757,11 +15771,25 @@ Module collections.
         
         (*
             pub unsafe fn drop_key_val(mut self) {
+                // Run the destructor of the value even if the destructor of the key panics.
+                struct Dropper<'a, T>(&'a mut MaybeUninit<T>);
+                impl<T> Drop for Dropper<'_, T> {
+                    #[inline]
+                    fn drop(&mut self) {
+                        unsafe {
+                            self.0.assume_init_drop();
+                        }
+                    }
+                }
+        
                 debug_assert!(self.idx < self.node.len());
                 let leaf = self.node.as_leaf_dying();
                 unsafe {
-                    leaf.keys.get_unchecked_mut(self.idx).assume_init_drop();
-                    leaf.vals.get_unchecked_mut(self.idx).assume_init_drop();
+                    let key = leaf.keys.get_unchecked_mut(self.idx);
+                    let val = leaf.vals.get_unchecked_mut(self.idx);
+                    let _guard = Dropper(val);
+                    key.assume_init_drop();
+                    // dropping the guard will drop the value
                 }
             }
         *)
@@ -15899,6 +15927,94 @@ Module collections.
                       ]
                     |)
                   |) in
+                let~ key :
+                    Ty.apply
+                      (Ty.path "&mut")
+                      []
+                      [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ] ] :=
+                  M.alloc (|
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "&mut")
+                        []
+                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ] ],
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ] ],
+                        "get_unchecked_mut",
+                        [],
+                        [ Ty.path "usize" ]
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| leaf |) |),
+                            "alloc::collections::btree::node::LeafNode",
+                            "keys"
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "alloc::collections::btree::node::Handle",
+                            "idx"
+                          |)
+                        |)
+                      ]
+                    |)
+                  |) in
+                let~ val :
+                    Ty.apply
+                      (Ty.path "&mut")
+                      []
+                      [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ] ] :=
+                  M.alloc (|
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "&mut")
+                        []
+                        [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ] ],
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ] ],
+                        "get_unchecked_mut",
+                        [],
+                        [ Ty.path "usize" ]
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| leaf |) |),
+                            "alloc::collections::btree::node::LeafNode",
+                            "vals"
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            self,
+                            "alloc::collections::btree::node::Handle",
+                            "idx"
+                          |)
+                        |)
+                      ]
+                    |)
+                  |) in
+                let~ _guard :
+                    Ty.apply
+                      (Ty.path "alloc::collections::btree::node::drop_key_val::Dropper")
+                      []
+                      [ V ] :=
+                  M.alloc (|
+                    Value.StructTuple
+                      "alloc::collections::btree::node::drop_key_val::Dropper"
+                      [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| val |) |) |) ]
+                  |) in
                 let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     M.call_closure (|
@@ -15909,108 +16025,7 @@ Module collections.
                         [],
                         []
                       |),
-                      [
-                        M.borrow (|
-                          Pointer.Kind.MutRef,
-                          M.deref (|
-                            M.call_closure (|
-                              Ty.apply
-                                (Ty.path "&mut")
-                                []
-                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ K ]
-                                ],
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "slice")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                      []
-                                      [ K ]
-                                  ],
-                                "get_unchecked_mut",
-                                [],
-                                [ Ty.path "usize" ]
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.MutRef,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| leaf |) |),
-                                    "alloc::collections::btree::node::LeafNode",
-                                    "keys"
-                                  |)
-                                |);
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    self,
-                                    "alloc::collections::btree::node::Handle",
-                                    "idx"
-                                  |)
-                                |)
-                              ]
-                            |)
-                          |)
-                        |)
-                      ]
-                    |)
-                  |) in
-                let~ _ : Ty.tuple [] :=
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.tuple [],
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ],
-                        "assume_init_drop",
-                        [],
-                        []
-                      |),
-                      [
-                        M.borrow (|
-                          Pointer.Kind.MutRef,
-                          M.deref (|
-                            M.call_closure (|
-                              Ty.apply
-                                (Ty.path "&mut")
-                                []
-                                [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ V ]
-                                ],
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "slice")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                      []
-                                      [ V ]
-                                  ],
-                                "get_unchecked_mut",
-                                [],
-                                [ Ty.path "usize" ]
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.MutRef,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| leaf |) |),
-                                    "alloc::collections::btree::node::LeafNode",
-                                    "vals"
-                                  |)
-                                |);
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    self,
-                                    "alloc::collections::btree::node::Handle",
-                                    "idx"
-                                  |)
-                                |)
-                              ]
-                            |)
-                          |)
-                        |)
-                      ]
+                      [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| key |) |) |) ]
                     |)
                   |) in
                 M.alloc (| Value.Tuple [] |)
@@ -20126,7 +20141,7 @@ Module collections.
                             right_node.val_area_mut(..count - 1),
                         );
         
-                        // Move the left-most stolen pair to the parent.
+                        // Move the leftmost stolen pair to the parent.
                         let k = left_node.key_area_mut(new_left_len).assume_init_read();
                         let v = left_node.val_area_mut(new_left_len).assume_init_read();
                         let (k, v) = self.parent.replace_kv(k, v);
@@ -21732,7 +21747,7 @@ Module collections.
         
                     // Move leaf data.
                     {
-                        // Move the right-most stolen pair to the parent.
+                        // Move the rightmost stolen pair to the parent.
                         let k = right_node.key_area_mut(count - 1).assume_init_read();
                         let v = right_node.val_area_mut(count - 1).assume_init_read();
                         let (k, v) = self.parent.replace_kv(k, v);

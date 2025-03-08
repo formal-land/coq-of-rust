@@ -837,7 +837,7 @@ Module file_format_common.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_file_format_common_TableType.
   
-  Module Impl_core_cmp_PartialEq_for_move_binary_format_file_format_common_TableType.
+  Module Impl_core_cmp_PartialEq_move_binary_format_file_format_common_TableType_for_move_binary_format_file_format_common_TableType.
     Definition Self : Ty.t := Ty.path "move_binary_format::file_format_common::TableType".
     
     (* PartialEq *)
@@ -881,10 +881,11 @@ Module file_format_common.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *)
+        [ Ty.path "move_binary_format::file_format_common::TableType" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_binary_format_file_format_common_TableType.
+  End Impl_core_cmp_PartialEq_move_binary_format_file_format_common_TableType_for_move_binary_format_file_format_common_TableType.
   
   (*
   Enum SerializedType

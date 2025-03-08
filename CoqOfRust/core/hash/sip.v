@@ -1533,7 +1533,7 @@ Module hash.
       Definition Self : Ty.t := Ty.path "core::hash::sip::SipHasher".
       
       (*
-          pub const fn new() -> SipHasher {
+          pub fn new() -> SipHasher {
               SipHasher::new_with_keys(0, 0)
           }
       *)
@@ -1559,7 +1559,7 @@ Module hash.
       Global Typeclasses Opaque new.
       
       (*
-          pub const fn new_with_keys(key0: u64, key1: u64) -> SipHasher {
+          pub fn new_with_keys(key0: u64, key1: u64) -> SipHasher {
               SipHasher(SipHasher24 { hasher: Hasher::new_with_keys(key0, key1) })
           }
       *)
@@ -1607,7 +1607,7 @@ Module hash.
       Definition Self : Ty.t := Ty.path "core::hash::sip::SipHasher13".
       
       (*
-          pub const fn new() -> SipHasher13 {
+          pub fn new() -> SipHasher13 {
               SipHasher13::new_with_keys(0, 0)
           }
       *)
@@ -1633,7 +1633,7 @@ Module hash.
       Global Typeclasses Opaque new.
       
       (*
-          pub const fn new_with_keys(key0: u64, key1: u64) -> SipHasher13 {
+          pub fn new_with_keys(key0: u64, key1: u64) -> SipHasher13 {
               SipHasher13 { hasher: Hasher::new_with_keys(key0, key1) }
           }
       *)

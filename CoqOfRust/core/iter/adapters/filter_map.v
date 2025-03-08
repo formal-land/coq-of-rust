@@ -320,10 +320,6 @@ Module iter.
       Admitted.
       Global Typeclasses Opaque filter_map_fold.
       
-      Module filter_map_fold.
-        (* Error OpaqueTy *)
-      End filter_map_fold.
-      
       (*
       fn filter_map_try_fold<'a, T, B, Acc, R: Try<Output = Acc>>(
           f: &'a mut impl FnMut(T) -> Option<B>,
@@ -456,10 +452,6 @@ Module iter.
           filter_map_try_fold.
       Admitted.
       Global Typeclasses Opaque filter_map_try_fold.
-      
-      Module filter_map_try_fold.
-        (* Error OpaqueTy *)
-      End filter_map_try_fold.
       
       Module Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_iterator_Iterator_I_where_core_ops_function_FnMut_F_Tuple_associated_in_trait_core_iter_traits_iterator_Iterator___I_Item__for_core_iter_adapters_filter_map_FilterMap_I_F.
         Definition Self (B I F : Ty.t) : Ty.t :=

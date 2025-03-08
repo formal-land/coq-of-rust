@@ -4918,7 +4918,7 @@ Module char.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_core_char_TryFromCharError.
   
-  Module Impl_core_cmp_PartialEq_for_core_char_TryFromCharError.
+  Module Impl_core_cmp_PartialEq_core_char_TryFromCharError_for_core_char_TryFromCharError.
     Definition Self : Ty.t := Ty.path "core::char::TryFromCharError".
     
     (* PartialEq *)
@@ -4965,10 +4965,10 @@ Module char.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "core::char::TryFromCharError" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_core_char_TryFromCharError.
+  End Impl_core_cmp_PartialEq_core_char_TryFromCharError_for_core_char_TryFromCharError.
   
   Module Impl_core_cmp_Eq_for_core_char_TryFromCharError.
     Definition Self : Ty.t := Ty.path "core::char::TryFromCharError".

@@ -198,7 +198,7 @@ Module Impl_core_marker_StructuralPartialEq_for_call_runtime_RuntimeError.
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_call_runtime_RuntimeError.
 
-Module Impl_core_cmp_PartialEq_for_call_runtime_RuntimeError.
+Module Impl_core_cmp_PartialEq_call_runtime_RuntimeError_for_call_runtime_RuntimeError.
   Definition Self : Ty.t := Ty.path "call_runtime::RuntimeError".
   
   Parameter eq : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
@@ -207,10 +207,10 @@ Module Impl_core_cmp_PartialEq_for_call_runtime_RuntimeError.
     M.IsTraitInstance
       "core::cmp::PartialEq"
       (* Trait polymorphic consts *) []
-      (* Trait polymorphic types *) []
+      (* Trait polymorphic types *) [ Ty.path "call_runtime::RuntimeError" ]
       Self
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
-End Impl_core_cmp_PartialEq_for_call_runtime_RuntimeError.
+End Impl_core_cmp_PartialEq_call_runtime_RuntimeError_for_call_runtime_RuntimeError.
 
 Module Impl_core_cmp_Eq_for_call_runtime_RuntimeError.
   Definition Self : Ty.t := Ty.path "call_runtime::RuntimeError".

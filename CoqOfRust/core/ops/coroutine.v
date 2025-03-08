@@ -147,7 +147,7 @@ Module ops.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_ops_coroutine_CoroutineState_Y_R.
     
-    Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_Y_where_core_cmp_PartialEq_R_for_core_ops_coroutine_CoroutineState_Y_R.
+    Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_Y_where_core_cmp_PartialEq_R_core_ops_coroutine_CoroutineState_Y_R_for_core_ops_coroutine_CoroutineState_Y_R.
       Definition Self (Y R : Ty.t) : Ty.t :=
         Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [] [ Y; R ].
       
@@ -294,12 +294,13 @@ Module ops.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [] [ Y; R ] ]
           (Self Y R)
           (* Instance *) [ ("eq", InstanceField.Method (eq Y R)) ].
-    End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_Y_where_core_cmp_PartialEq_R_for_core_ops_coroutine_CoroutineState_Y_R.
+    End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_Y_where_core_cmp_PartialEq_R_core_ops_coroutine_CoroutineState_Y_R_for_core_ops_coroutine_CoroutineState_Y_R.
     
-    Module Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_Y_where_core_cmp_PartialOrd_R_for_core_ops_coroutine_CoroutineState_Y_R.
+    Module Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_Y_where_core_cmp_PartialOrd_R_core_ops_coroutine_CoroutineState_Y_R_for_core_ops_coroutine_CoroutineState_Y_R.
       Definition Self (Y R : Ty.t) : Ty.t :=
         Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [] [ Y; R ].
       
@@ -468,10 +469,11 @@ Module ops.
         M.IsTraitInstance
           "core::cmp::PartialOrd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.apply (Ty.path "core::ops::coroutine::CoroutineState") [] [ Y; R ] ]
           (Self Y R)
           (* Instance *) [ ("partial_cmp", InstanceField.Method (partial_cmp Y R)) ].
-    End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_Y_where_core_cmp_PartialOrd_R_for_core_ops_coroutine_CoroutineState_Y_R.
+    End Impl_core_cmp_PartialOrd_where_core_cmp_PartialOrd_Y_where_core_cmp_PartialOrd_R_core_ops_coroutine_CoroutineState_Y_R_for_core_ops_coroutine_CoroutineState_Y_R.
     
     Module Impl_core_cmp_Eq_where_core_cmp_Eq_Y_where_core_cmp_Eq_R_for_core_ops_coroutine_CoroutineState_Y_R.
       Definition Self (Y R : Ty.t) : Ty.t :=

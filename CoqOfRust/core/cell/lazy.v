@@ -91,7 +91,7 @@ Module cell.
       Global Typeclasses Opaque new.
       
       (*
-          pub fn into_inner(this: Self) -> Result<T, F> {
+          pub const fn into_inner(this: Self) -> Result<T, F> {
               match this.state.into_inner() {
                   State::Init(data) => Ok(data),
                   State::Uninit(f) => Err(f),
@@ -1185,7 +1185,7 @@ Module cell.
     End Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_core_cell_lazy_LazyCell_T_F.
     
     (*
-    fn panic_poisoned() -> ! {
+    const fn panic_poisoned() -> ! {
         panic!("LazyCell instance has previously been poisoned")
     }
     *)

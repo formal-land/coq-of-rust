@@ -616,7 +616,7 @@ Module marker.
         (* Instance *) [ ("hash", InstanceField.Method (hash T)) ].
   End Impl_core_hash_Hash_where_core_marker_Sized_T_for_core_marker_PhantomData_T.
   
-  Module Impl_core_cmp_PartialEq_where_core_marker_Sized_T_for_core_marker_PhantomData_T.
+  Module Impl_core_cmp_PartialEq_where_core_marker_Sized_T_core_marker_PhantomData_T_for_core_marker_PhantomData_T.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::marker::PhantomData") [] [ T ].
     
     (*
@@ -640,10 +640,10 @@ Module marker.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "core::marker::PhantomData") [] [ T ] ]
         (Self T)
         (* Instance *) [ ("eq", InstanceField.Method (eq T)) ].
-  End Impl_core_cmp_PartialEq_where_core_marker_Sized_T_for_core_marker_PhantomData_T.
+  End Impl_core_cmp_PartialEq_where_core_marker_Sized_T_core_marker_PhantomData_T_for_core_marker_PhantomData_T.
   
   Module Impl_core_cmp_Eq_where_core_marker_Sized_T_for_core_marker_PhantomData_T.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::marker::PhantomData") [] [ T ].
@@ -658,7 +658,7 @@ Module marker.
         (* Instance *) [].
   End Impl_core_cmp_Eq_where_core_marker_Sized_T_for_core_marker_PhantomData_T.
   
-  Module Impl_core_cmp_PartialOrd_where_core_marker_Sized_T_for_core_marker_PhantomData_T.
+  Module Impl_core_cmp_PartialOrd_where_core_marker_Sized_T_core_marker_PhantomData_T_for_core_marker_PhantomData_T.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::marker::PhantomData") [] [ T ].
     
     (*
@@ -684,10 +684,10 @@ Module marker.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.apply (Ty.path "core::marker::PhantomData") [] [ T ] ]
         (Self T)
         (* Instance *) [ ("partial_cmp", InstanceField.Method (partial_cmp T)) ].
-  End Impl_core_cmp_PartialOrd_where_core_marker_Sized_T_for_core_marker_PhantomData_T.
+  End Impl_core_cmp_PartialOrd_where_core_marker_Sized_T_core_marker_PhantomData_T_for_core_marker_PhantomData_T.
   
   Module Impl_core_cmp_Ord_where_core_marker_Sized_T_for_core_marker_PhantomData_T.
     Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::marker::PhantomData") [] [ T ].
@@ -1021,7 +1021,7 @@ Module marker.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_core_marker_PhantomPinned.
   
-  Module Impl_core_cmp_PartialEq_for_core_marker_PhantomPinned.
+  Module Impl_core_cmp_PartialEq_core_marker_PhantomPinned_for_core_marker_PhantomPinned.
     Definition Self : Ty.t := Ty.path "core::marker::PhantomPinned".
     
     (* PartialEq *)
@@ -1039,10 +1039,10 @@ Module marker.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "core::marker::PhantomPinned" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_core_marker_PhantomPinned.
+  End Impl_core_cmp_PartialEq_core_marker_PhantomPinned_for_core_marker_PhantomPinned.
   
   Module Impl_core_cmp_Ord_for_core_marker_PhantomPinned.
     Definition Self : Ty.t := Ty.path "core::marker::PhantomPinned".
@@ -1067,7 +1067,7 @@ Module marker.
         (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
   End Impl_core_cmp_Ord_for_core_marker_PhantomPinned.
   
-  Module Impl_core_cmp_PartialOrd_for_core_marker_PhantomPinned.
+  Module Impl_core_cmp_PartialOrd_core_marker_PhantomPinned_for_core_marker_PhantomPinned.
     Definition Self : Ty.t := Ty.path "core::marker::PhantomPinned".
     
     (* PartialOrd *)
@@ -1087,10 +1087,10 @@ Module marker.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "core::marker::PhantomPinned" ]
         Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-  End Impl_core_cmp_PartialOrd_for_core_marker_PhantomPinned.
+  End Impl_core_cmp_PartialOrd_core_marker_PhantomPinned_for_core_marker_PhantomPinned.
   
   Module Impl_core_hash_Hash_for_core_marker_PhantomPinned.
     Definition Self : Ty.t := Ty.path "core::marker::PhantomPinned".
@@ -1187,6 +1187,83 @@ Module marker.
   
   (* Trait *)
   (* Empty module 'PointerLike' *)
+  
+  Module Impl_core_marker_PointerLike_for_usize.
+    Definition Self : Ty.t := Ty.path "usize".
+    
+    Axiom Implements :
+      M.IsTraitInstance
+        "core::marker::PointerLike"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) []
+        Self
+        (* Instance *) [].
+  End Impl_core_marker_PointerLike_for_usize.
+  
+  Module Impl_core_marker_PointerLike_for_ref__T.
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&") [] [ T ].
+    
+    Axiom Implements :
+      forall (T : Ty.t),
+      M.IsTraitInstance
+        "core::marker::PointerLike"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) []
+        (Self T)
+        (* Instance *) [].
+  End Impl_core_marker_PointerLike_for_ref__T.
+  
+  Module Impl_core_marker_PointerLike_for_ref_mut_T.
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "&mut") [] [ T ].
+    
+    Axiom Implements :
+      forall (T : Ty.t),
+      M.IsTraitInstance
+        "core::marker::PointerLike"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) []
+        (Self T)
+        (* Instance *) [].
+  End Impl_core_marker_PointerLike_for_ref_mut_T.
+  
+  Module Impl_core_marker_PointerLike_for_pointer_const_T.
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "*const") [] [ T ].
+    
+    Axiom Implements :
+      forall (T : Ty.t),
+      M.IsTraitInstance
+        "core::marker::PointerLike"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) []
+        (Self T)
+        (* Instance *) [].
+  End Impl_core_marker_PointerLike_for_pointer_const_T.
+  
+  Module Impl_core_marker_PointerLike_for_pointer_mut_T.
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "*mut") [] [ T ].
+    
+    Axiom Implements :
+      forall (T : Ty.t),
+      M.IsTraitInstance
+        "core::marker::PointerLike"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) []
+        (Self T)
+        (* Instance *) [].
+  End Impl_core_marker_PointerLike_for_pointer_mut_T.
+  
+  Module Impl_core_marker_PointerLike_where_core_marker_PointerLike_T_for_core_pin_Pin_T.
+    Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "core::pin::Pin") [] [ T ].
+    
+    Axiom Implements :
+      forall (T : Ty.t),
+      M.IsTraitInstance
+        "core::marker::PointerLike"
+        (* Trait polymorphic consts *) []
+        (* Trait polymorphic types *) []
+        (Self T)
+        (* Instance *) [].
+  End Impl_core_marker_PointerLike_where_core_marker_PointerLike_T_for_core_pin_Pin_T.
   
   (* Trait *)
   (* Empty module 'ConstParamTy_' *)
@@ -1620,117 +1697,4 @@ Module marker.
   
   (* Trait *)
   (* Empty module 'FnPtr' *)
-  
-  Module effects.
-    (* StructTuple
-      {
-        name := "NoRuntime";
-        const_params := [];
-        ty_params := [];
-        fields := [];
-      } *)
-    
-    (* StructTuple
-      {
-        name := "Maybe";
-        const_params := [];
-        ty_params := [];
-        fields := [];
-      } *)
-    
-    (* StructTuple
-      {
-        name := "Runtime";
-        const_params := [];
-        ty_params := [];
-        fields := [];
-      } *)
-    
-    (* Trait *)
-    (* Empty module 'Compat' *)
-    
-    Module Impl_core_marker_effects_Compat_for_core_marker_effects_NoRuntime.
-      Definition Self : Ty.t := Ty.path "core::marker::effects::NoRuntime".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::effects::Compat"
-          (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
-          Self
-          (* Instance *) [].
-    End Impl_core_marker_effects_Compat_for_core_marker_effects_NoRuntime.
-    
-    Module Impl_core_marker_effects_Compat_for_core_marker_effects_Runtime.
-      Definition Self : Ty.t := Ty.path "core::marker::effects::Runtime".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::effects::Compat"
-          (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
-          Self
-          (* Instance *) [].
-    End Impl_core_marker_effects_Compat_for_core_marker_effects_Runtime.
-    
-    Module Impl_core_marker_effects_Compat_for_core_marker_effects_Maybe.
-      Definition Self (RUNTIME : Value.t) : Ty.t := Ty.path "core::marker::effects::Maybe".
-      
-      Axiom Implements :
-        forall (RUNTIME : Value.t),
-        M.IsTraitInstance
-          "core::marker::effects::Compat"
-          (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
-          (Self RUNTIME)
-          (* Instance *) [].
-    End Impl_core_marker_effects_Compat_for_core_marker_effects_Maybe.
-    
-    (* Trait *)
-    (* Empty module 'TyCompat' *)
-    
-    Module Impl_core_marker_effects_TyCompat_where_core_marker_Sized_T_T_for_T.
-      Definition Self (T : Ty.t) : Ty.t := T.
-      
-      Axiom Implements :
-        forall (T : Ty.t),
-        M.IsTraitInstance
-          "core::marker::effects::TyCompat"
-          (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) [ T ]
-          (Self T)
-          (* Instance *) [].
-    End Impl_core_marker_effects_TyCompat_where_core_marker_Sized_T_T_for_T.
-    
-    Module Impl_core_marker_effects_TyCompat_where_core_marker_Sized_T_core_marker_effects_Maybe_for_T.
-      Definition Self (T : Ty.t) : Ty.t := T.
-      
-      Axiom Implements :
-        forall (T : Ty.t),
-        M.IsTraitInstance
-          "core::marker::effects::TyCompat"
-          (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) [ Ty.path "core::marker::effects::Maybe" ]
-          (Self T)
-          (* Instance *) [].
-    End Impl_core_marker_effects_TyCompat_where_core_marker_Sized_T_core_marker_effects_Maybe_for_T.
-    
-    (* Trait *)
-    (* Empty module 'Intersection' *)
-    
-    Module Impl_core_marker_effects_Intersection_for_Tuple_.
-      Definition Self : Ty.t := Ty.tuple [].
-      
-      (*         type Output = Maybe; *)
-      Definition _Output : Ty.t := Ty.path "core::marker::effects::Maybe".
-      
-      Axiom Implements :
-        M.IsTraitInstance
-          "core::marker::effects::Intersection"
-          (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
-          Self
-          (* Instance *) [ ("Output", InstanceField.Ty _Output) ].
-    End Impl_core_marker_effects_Intersection_for_Tuple_.
-  End effects.
 End marker.

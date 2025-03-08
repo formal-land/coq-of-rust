@@ -203,7 +203,7 @@ Module parser.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_core_types_parser_Token.
   
-  Module Impl_core_cmp_PartialEq_for_move_core_types_parser_Token.
+  Module Impl_core_cmp_PartialEq_move_core_types_parser_Token_for_move_core_types_parser_Token.
     Definition Self : Ty.t := Ty.path "move_core_types::parser::Token".
     
     (* PartialEq *)
@@ -641,10 +641,10 @@ Module parser.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::parser::Token" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_core_types_parser_Token.
+  End Impl_core_cmp_PartialEq_move_core_types_parser_Token_for_move_core_types_parser_Token.
   
   Module Impl_core_fmt_Debug_for_move_core_types_parser_Token.
     Definition Self : Ty.t := Ty.path "move_core_types::parser::Token".

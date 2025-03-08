@@ -574,7 +574,7 @@ Module char.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_char_convert_ParseCharError.
     
-    Module Impl_core_cmp_PartialEq_for_core_char_convert_ParseCharError.
+    Module Impl_core_cmp_PartialEq_core_char_convert_ParseCharError_for_core_char_convert_ParseCharError.
       Definition Self : Ty.t := Ty.path "core::char::convert::ParseCharError".
       
       (* PartialEq *)
@@ -621,10 +621,10 @@ Module char.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::char::convert::ParseCharError" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_core_char_convert_ParseCharError.
+    End Impl_core_cmp_PartialEq_core_char_convert_ParseCharError_for_core_char_convert_ParseCharError.
     
     Module Impl_core_cmp_Eq_for_core_char_convert_ParseCharError.
       Definition Self : Ty.t := Ty.path "core::char::convert::ParseCharError".
@@ -797,7 +797,7 @@ Module char.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_char_convert_CharErrorKind.
     
-    Module Impl_core_cmp_PartialEq_for_core_char_convert_CharErrorKind.
+    Module Impl_core_cmp_PartialEq_core_char_convert_CharErrorKind_for_core_char_convert_CharErrorKind.
       Definition Self : Ty.t := Ty.path "core::char::convert::CharErrorKind".
       
       (* PartialEq *)
@@ -841,10 +841,10 @@ Module char.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::char::convert::CharErrorKind" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_core_char_convert_CharErrorKind.
+    End Impl_core_cmp_PartialEq_core_char_convert_CharErrorKind_for_core_char_convert_CharErrorKind.
     
     Module Impl_core_cmp_Eq_for_core_char_convert_CharErrorKind.
       Definition Self : Ty.t := Ty.path "core::char::convert::CharErrorKind".
@@ -1383,7 +1383,7 @@ Module char.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_char_convert_CharTryFromError.
     
-    Module Impl_core_cmp_PartialEq_for_core_char_convert_CharTryFromError.
+    Module Impl_core_cmp_PartialEq_core_char_convert_CharTryFromError_for_core_char_convert_CharTryFromError.
       Definition Self : Ty.t := Ty.path "core::char::convert::CharTryFromError".
       
       (* PartialEq *)
@@ -1430,10 +1430,10 @@ Module char.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::char::convert::CharTryFromError" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_core_char_convert_CharTryFromError.
+    End Impl_core_cmp_PartialEq_core_char_convert_CharTryFromError_for_core_char_convert_CharTryFromError.
     
     Module Impl_core_cmp_Eq_for_core_char_convert_CharTryFromError.
       Definition Self : Ty.t := Ty.path "core::char::convert::CharTryFromError".

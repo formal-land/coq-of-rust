@@ -80,7 +80,7 @@ Module str.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_str_error_Utf8Error.
     
-    Module Impl_core_cmp_PartialEq_for_core_str_error_Utf8Error.
+    Module Impl_core_cmp_PartialEq_core_str_error_Utf8Error_for_core_str_error_Utf8Error.
       Definition Self : Ty.t := Ty.path "core::str::error::Utf8Error".
       
       (* PartialEq *)
@@ -146,10 +146,10 @@ Module str.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::str::error::Utf8Error" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_core_str_error_Utf8Error.
+    End Impl_core_cmp_PartialEq_core_str_error_Utf8Error_for_core_str_error_Utf8Error.
     
     Module Impl_core_clone_Clone_for_core_str_error_Utf8Error.
       Definition Self : Ty.t := Ty.path "core::str::error::Utf8Error".
@@ -703,7 +703,7 @@ Module str.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_str_error_ParseBoolError.
     
-    Module Impl_core_cmp_PartialEq_for_core_str_error_ParseBoolError.
+    Module Impl_core_cmp_PartialEq_core_str_error_ParseBoolError_for_core_str_error_ParseBoolError.
       Definition Self : Ty.t := Ty.path "core::str::error::ParseBoolError".
       
       (* PartialEq *)
@@ -721,10 +721,10 @@ Module str.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::str::error::ParseBoolError" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_core_str_error_ParseBoolError.
+    End Impl_core_cmp_PartialEq_core_str_error_ParseBoolError_for_core_str_error_ParseBoolError.
     
     Module Impl_core_cmp_Eq_for_core_str_error_ParseBoolError.
       Definition Self : Ty.t := Ty.path "core::str::error::ParseBoolError".

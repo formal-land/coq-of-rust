@@ -850,7 +850,421 @@ Module str.
       
       Axiom ProvidedMethod_strip_suffix_of :
         M.IsProvidedMethod "core::str::pattern::Pattern" "strip_suffix_of" strip_suffix_of.
+      Definition as_utf8_pattern
+          (Self : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            Value.StructTuple "core::option::Option::None" []))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom ProvidedMethod_as_utf8_pattern :
+        M.IsProvidedMethod "core::str::pattern::Pattern" "as_utf8_pattern" as_utf8_pattern.
     End Pattern.
+    
+    (*
+    Enum Utf8Pattern
+    {
+      const_params := [];
+      ty_params := [];
+      variants :=
+        [
+          {
+            name := "StringPattern";
+            item :=
+              StructTuple
+                [ Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] ];
+          };
+          {
+            name := "CharPattern";
+            item := StructTuple [ Ty.path "char" ];
+          }
+        ];
+    }
+    *)
+    
+    Axiom IsDiscriminant_Utf8Pattern_StringPattern :
+      M.IsDiscriminant "core::str::pattern::Utf8Pattern::StringPattern" 0.
+    Axiom IsDiscriminant_Utf8Pattern_CharPattern :
+      M.IsDiscriminant "core::str::pattern::Utf8Pattern::CharPattern" 1.
+    
+    Module Impl_core_marker_Copy_for_core_str_pattern_Utf8Pattern.
+      Definition Self : Ty.t := Ty.path "core::str::pattern::Utf8Pattern".
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::marker::Copy"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) []
+          Self
+          (* Instance *) [].
+    End Impl_core_marker_Copy_for_core_str_pattern_Utf8Pattern.
+    
+    Module Impl_core_clone_Clone_for_core_str_pattern_Utf8Pattern.
+      Definition Self : Ty.t := Ty.path "core::str::pattern::Utf8Pattern".
+      
+      (* Clone *)
+      Definition clone (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.read (|
+              M.match_operator (|
+                None,
+                Value.DeclaredButUndefined,
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (M.match_operator (|
+                        None,
+                        Value.DeclaredButUndefined,
+                        [ fun γ => ltac:(M.monadic (M.deref (| M.read (| self |) |))) ]
+                      |)))
+                ]
+              |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::clone::Clone"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) []
+          Self
+          (* Instance *) [ ("clone", InstanceField.Method clone) ].
+    End Impl_core_clone_Clone_for_core_str_pattern_Utf8Pattern.
+    
+    Module Impl_core_cmp_Eq_for_core_str_pattern_Utf8Pattern.
+      Definition Self : Ty.t := Ty.path "core::str::pattern::Utf8Pattern".
+      
+      (* Eq *)
+      Definition assert_receiver_is_total_eq
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.read (|
+              M.match_operator (|
+                None,
+                Value.DeclaredButUndefined,
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (M.match_operator (|
+                        None,
+                        Value.DeclaredButUndefined,
+                        [ fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |))) ]
+                      |)))
+                ]
+              |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::cmp::Eq"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) []
+          Self
+          (* Instance *)
+          [ ("assert_receiver_is_total_eq", InstanceField.Method assert_receiver_is_total_eq) ].
+    End Impl_core_cmp_Eq_for_core_str_pattern_Utf8Pattern.
+    
+    Module Impl_core_marker_StructuralPartialEq_for_core_str_pattern_Utf8Pattern.
+      Definition Self : Ty.t := Ty.path "core::str::pattern::Utf8Pattern".
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::marker::StructuralPartialEq"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) []
+          Self
+          (* Instance *) [].
+    End Impl_core_marker_StructuralPartialEq_for_core_str_pattern_Utf8Pattern.
+    
+    Module Impl_core_cmp_PartialEq_core_str_pattern_Utf8Pattern_for_core_str_pattern_Utf8Pattern.
+      Definition Self : Ty.t := Ty.path "core::str::pattern::Utf8Pattern".
+      
+      (* PartialEq *)
+      Definition eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; other ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let other := M.alloc (| other |) in
+            M.read (|
+              let~ __self_discr : Ty.path "isize" :=
+                M.alloc (|
+                  M.call_closure (|
+                    Ty.path "isize",
+                    M.get_function (|
+                      "core::intrinsics::discriminant_value",
+                      [],
+                      [ Ty.path "core::str::pattern::Utf8Pattern" ]
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                  |)
+                |) in
+              let~ __arg1_discr : Ty.path "isize" :=
+                M.alloc (|
+                  M.call_closure (|
+                    Ty.path "isize",
+                    M.get_function (|
+                      "core::intrinsics::discriminant_value",
+                      [],
+                      [ Ty.path "core::str::pattern::Utf8Pattern" ]
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
+                  |)
+                |) in
+              M.alloc (|
+                LogicalOp.and (|
+                  BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |),
+                  ltac:(M.monadic
+                    (M.read (|
+                      M.match_operator (|
+                        Some (Ty.path "bool"),
+                        M.alloc (| Value.Tuple [ M.read (| self |); M.read (| other |) ] |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                              let γ0_0 := M.read (| γ0_0 |) in
+                              let γ2_0 :=
+                                M.SubPointer.get_struct_tuple_field (|
+                                  γ0_0,
+                                  "core::str::pattern::Utf8Pattern::StringPattern",
+                                  0
+                                |) in
+                              let __self_0 := M.alloc (| γ2_0 |) in
+                              let γ0_1 := M.read (| γ0_1 |) in
+                              let γ2_0 :=
+                                M.SubPointer.get_struct_tuple_field (|
+                                  γ0_1,
+                                  "core::str::pattern::Utf8Pattern::StringPattern",
+                                  0
+                                |) in
+                              let __arg1_0 := M.alloc (| γ2_0 |) in
+                              M.alloc (|
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  M.get_trait_method (|
+                                    "core::cmp::PartialEq",
+                                    Ty.apply
+                                      (Ty.path "&")
+                                      []
+                                      [
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                                      ],
+                                    [],
+                                    [
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "&")
+                                            []
+                                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
+                                        ]
+                                    ],
+                                    "eq",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                    M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                  ]
+                                |)
+                              |)));
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                              let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                              let γ0_0 := M.read (| γ0_0 |) in
+                              let γ2_0 :=
+                                M.SubPointer.get_struct_tuple_field (|
+                                  γ0_0,
+                                  "core::str::pattern::Utf8Pattern::CharPattern",
+                                  0
+                                |) in
+                              let __self_0 := M.alloc (| γ2_0 |) in
+                              let γ0_1 := M.read (| γ0_1 |) in
+                              let γ2_0 :=
+                                M.SubPointer.get_struct_tuple_field (|
+                                  γ0_1,
+                                  "core::str::pattern::Utf8Pattern::CharPattern",
+                                  0
+                                |) in
+                              let __arg1_0 := M.alloc (| γ2_0 |) in
+                              M.alloc (|
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  M.get_trait_method (|
+                                    "core::cmp::PartialEq",
+                                    Ty.apply (Ty.path "&") [] [ Ty.path "char" ],
+                                    [],
+                                    [ Ty.apply (Ty.path "&") [] [ Ty.path "char" ] ],
+                                    "eq",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (| Pointer.Kind.Ref, __self_0 |);
+                                    M.borrow (| Pointer.Kind.Ref, __arg1_0 |)
+                                  ]
+                                |)
+                              |)));
+                          fun γ =>
+                            ltac:(M.monadic
+                              (M.alloc (|
+                                M.never_to_any (|
+                                  M.call_closure (|
+                                    Ty.path "never",
+                                    M.get_function (| "core::intrinsics::unreachable", [], [] |),
+                                    []
+                                  |)
+                                |)
+                              |)))
+                        ]
+                      |)
+                    |)))
+                |)
+              |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::cmp::PartialEq"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) [ Ty.path "core::str::pattern::Utf8Pattern" ]
+          Self
+          (* Instance *) [ ("eq", InstanceField.Method eq) ].
+    End Impl_core_cmp_PartialEq_core_str_pattern_Utf8Pattern_for_core_str_pattern_Utf8Pattern.
+    
+    Module Impl_core_fmt_Debug_for_core_str_pattern_Utf8Pattern.
+      Definition Self : Ty.t := Ty.path "core::str::pattern::Utf8Pattern".
+      
+      (* Debug *)
+      Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self; f ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let f := M.alloc (| f |) in
+            M.read (|
+              M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "core::fmt::Error" ]),
+                self,
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      let γ1_0 :=
+                        M.SubPointer.get_struct_tuple_field (|
+                          γ,
+                          "core::str::pattern::Utf8Pattern::StringPattern",
+                          0
+                        |) in
+                      let __self_0 := M.alloc (| γ1_0 |) in
+                      M.alloc (|
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                          M.get_associated_function (|
+                            Ty.path "core::fmt::Formatter",
+                            "debug_tuple_field1_finish",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "StringPattern" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                            |)
+                          ]
+                        |)
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.read (| γ |) in
+                      let γ1_0 :=
+                        M.SubPointer.get_struct_tuple_field (|
+                          γ,
+                          "core::str::pattern::Utf8Pattern::CharPattern",
+                          0
+                        |) in
+                      let __self_0 := M.alloc (| γ1_0 |) in
+                      M.alloc (|
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "core::result::Result")
+                            []
+                            [ Ty.tuple []; Ty.path "core::fmt::Error" ],
+                          M.get_associated_function (|
+                            Ty.path "core::fmt::Formatter",
+                            "debug_tuple_field1_finish",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| Value.String "CharPattern" |) |)
+                            |);
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
+                            |)
+                          ]
+                        |)
+                      |)))
+                ]
+              |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Axiom Implements :
+        M.IsTraitInstance
+          "core::fmt::Debug"
+          (* Trait polymorphic consts *) []
+          (* Trait polymorphic types *) []
+          Self
+          (* Instance *) [ ("fmt", InstanceField.Method fmt) ].
+    End Impl_core_fmt_Debug_for_core_str_pattern_Utf8Pattern.
     
     (*
     Enum SearchStep
@@ -967,7 +1381,7 @@ Module str.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_str_pattern_SearchStep.
     
-    Module Impl_core_cmp_PartialEq_for_core_str_pattern_SearchStep.
+    Module Impl_core_cmp_PartialEq_core_str_pattern_SearchStep_for_core_str_pattern_SearchStep.
       Definition Self : Ty.t := Ty.path "core::str::pattern::SearchStep".
       
       (* PartialEq *)
@@ -1167,10 +1581,10 @@ Module str.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::str::pattern::SearchStep" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_core_str_pattern_SearchStep.
+    End Impl_core_cmp_PartialEq_core_str_pattern_SearchStep_for_core_str_pattern_SearchStep.
     
     Module Impl_core_fmt_Debug_for_core_str_pattern_SearchStep.
       Definition Self : Ty.t := Ty.path "core::str::pattern::SearchStep".
@@ -4668,6 +5082,26 @@ Module str.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
+      (*
+          fn as_utf8_pattern(&self) -> Option<Utf8Pattern<'_>> {
+              Some(Utf8Pattern::CharPattern( *self))
+          }
+      *)
+      Definition as_utf8_pattern (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            Value.StructTuple
+              "core::option::Option::Some"
+              [
+                Value.StructTuple
+                  "core::str::pattern::Utf8Pattern::CharPattern"
+                  [ M.read (| M.deref (| M.read (| self |) |) |) ]
+              ]))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
       Axiom Implements :
         M.IsTraitInstance
           "core::str::pattern::Pattern"
@@ -4682,7 +5116,8 @@ Module str.
             ("is_prefix_of", InstanceField.Method is_prefix_of);
             ("strip_prefix_of", InstanceField.Method strip_prefix_of);
             ("is_suffix_of", InstanceField.Method is_suffix_of);
-            ("strip_suffix_of", InstanceField.Method strip_suffix_of)
+            ("strip_suffix_of", InstanceField.Method strip_suffix_of);
+            ("as_utf8_pattern", InstanceField.Method as_utf8_pattern)
           ].
     End Impl_core_str_pattern_Pattern_for_char.
     
@@ -10524,6 +10959,45 @@ Module str.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
+      (*
+          fn as_utf8_pattern(&self) -> Option<Utf8Pattern<'_>> {
+              Some(Utf8Pattern::StringPattern(self.as_bytes()))
+          }
+      *)
+      Definition as_utf8_pattern (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            Value.StructTuple
+              "core::option::Option::Some"
+              [
+                Value.StructTuple
+                  "core::str::pattern::Utf8Pattern::StringPattern"
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                          M.get_associated_function (| Ty.path "str", "as_bytes", [], [] |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
+                            |)
+                          ]
+                        |)
+                      |)
+                    |)
+                  ]
+              ]))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
       Axiom Implements :
         M.IsTraitInstance
           "core::str::pattern::Pattern"
@@ -10538,7 +11012,8 @@ Module str.
             ("is_contained_in", InstanceField.Method is_contained_in);
             ("strip_prefix_of", InstanceField.Method strip_prefix_of);
             ("is_suffix_of", InstanceField.Method is_suffix_of);
-            ("strip_suffix_of", InstanceField.Method strip_suffix_of)
+            ("strip_suffix_of", InstanceField.Method strip_suffix_of);
+            ("as_utf8_pattern", InstanceField.Method as_utf8_pattern)
           ].
     End Impl_core_str_pattern_Pattern_for_ref__str.
     

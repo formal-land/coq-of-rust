@@ -4,8 +4,12 @@ Require Import CoqOfRust.CoqOfRust.
 Module iter.
   Module traits.
     Module iterator.
-      (* fn _assert_is_object_safe(_: &dyn Iterator<Item = ()>) {} *)
-      Definition _assert_is_object_safe (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      (* fn _assert_is_dyn_compatible(_: &dyn Iterator<Item = ()>) {} *)
+      Definition _assert_is_dyn_compatible
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         match ε, τ, α with
         | [], [], [ β0 ] =>
           ltac:(M.monadic
@@ -14,12 +18,12 @@ Module iter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance Instance_IsFunction__assert_is_object_safe :
+      Global Instance Instance_IsFunction__assert_is_dyn_compatible :
         M.IsFunction.Trait
-          "core::iter::traits::iterator::_assert_is_object_safe"
-          _assert_is_object_safe.
+          "core::iter::traits::iterator::_assert_is_dyn_compatible"
+          _assert_is_dyn_compatible.
       Admitted.
-      Global Typeclasses Opaque _assert_is_object_safe.
+      Global Typeclasses Opaque _assert_is_dyn_compatible.
       
       (* Trait *)
       Module Iterator.
@@ -6326,10 +6330,6 @@ Module iter.
           M.IsFunction.Trait "core::iter::traits::iterator::iter_compare::compare" compare.
         Admitted.
         Global Typeclasses Opaque compare.
-        
-        Module compare.
-          (* Error OpaqueTy *)
-        End compare.
       End iter_compare.
       
       Module Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_iterator_Iterator_I_where_core_marker_Sized_I_for_ref_mut_I.

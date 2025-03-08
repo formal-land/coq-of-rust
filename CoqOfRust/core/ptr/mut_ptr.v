@@ -138,7 +138,9 @@ Module ptr.
       
       (*
           pub fn addr(self) -> usize {
-              // FIXME(strict_provenance_magic): I am magic and should be a compiler intrinsic.
+              // A pointer-to-integer transmute currently has exactly the right semantics: it returns the
+              // address without exposing the provenance. Note that this is *not* a stable guarantee about
+              // transmute semantics, it relies on sysroot crates having special status.
               // SAFETY: Pointer-to-integer transmutes are valid (if you are okay with losing the
               // provenance).
               unsafe { mem::transmute(self.cast::<()>()) }
@@ -181,7 +183,6 @@ Module ptr.
       
       (*
           pub fn expose_provenance(self) -> usize {
-              // FIXME(strict_provenance_magic): I am magic and should be a compiler intrinsic.
               self.cast::<()>() as usize
           }
       *)
@@ -219,16 +220,12 @@ Module ptr.
       
       (*
           pub fn with_addr(self, addr: usize) -> Self {
-              // FIXME(strict_provenance_magic): I am magic and should be a compiler intrinsic.
-              //
-              // In the mean-time, this operation is defined to be "as if" it was
-              // a wrapping_offset, so we can emulate it as such. This should properly
-              // restore pointer provenance even under today's compiler.
+              // This should probably be an intrinsic to avoid doing any sort of arithmetic, but
+              // meanwhile, we can implement it with `wrapping_offset`, which preserves the pointer's
+              // provenance.
               let self_addr = self.addr() as isize;
               let dest_addr = addr as isize;
               let offset = dest_addr.wrapping_sub(self_addr);
-      
-              // This is the canonical desugaring of this operation
               self.wrapping_byte_offset(offset)
           }
       *)
@@ -586,6 +583,36 @@ Module ptr.
           where
               T: Sized,
           {
+              #[inline]
+              #[rustc_allow_const_fn_unstable(const_eval_select)]
+              const fn runtime_offset_nowrap(this: *const (), count: isize, size: usize) -> bool {
+                  // We can use const_eval_select here because this is only for UB checks.
+                  const_eval_select!(
+                      @capture { this: *const (), count: isize, size: usize } -> bool:
+                      if const {
+                          true
+                      } else {
+                          // `size` is the size of a Rust type, so we know that
+                          // `size <= isize::MAX` and thus `as` cast here is not lossy.
+                          let Some(byte_offset) = count.checked_mul(size as isize) else {
+                              return false;
+                          };
+                          let (_, overflow) = this.addr().overflowing_add_signed(byte_offset);
+                          !overflow
+                      }
+                  )
+              }
+      
+              ub_checks::assert_unsafe_precondition!(
+                  check_language_ub,
+                  "ptr::offset requires the address calculation to not overflow",
+                  (
+                      this: *const () = self as *const (),
+                      count: isize = count,
+                      size: usize = size_of::<T>(),
+                  ) => runtime_offset_nowrap(this, count, size)
+              );
+      
               // SAFETY: the caller must uphold the safety contract for `offset`.
               // The obtained pointer is valid for writes since the caller must
               // guarantee that it points to the same allocated object as `self`.
@@ -599,14 +626,63 @@ Module ptr.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let count := M.alloc (| count |) in
-            M.call_closure (|
-              Ty.apply (Ty.path "*mut") [] [ T ],
-              M.get_function (|
-                "core::intrinsics::offset",
-                [],
-                [ Ty.apply (Ty.path "*mut") [] [ T ]; Ty.path "isize" ]
-              |),
-              [ M.read (| self |); M.read (| count |) ]
+            M.read (|
+              let~ _ : Ty.tuple [] :=
+                M.match_operator (|
+                  Some (Ty.tuple []),
+                  M.alloc (| Value.Tuple [] |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ :=
+                          M.use
+                            (M.alloc (|
+                              M.call_closure (|
+                                Ty.path "bool",
+                                M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
+                                []
+                              |)
+                            |)) in
+                        let _ :=
+                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let~ _ : Ty.tuple [] :=
+                          M.alloc (|
+                            M.call_closure (|
+                              Ty.tuple [],
+                              M.get_associated_function (|
+                                Self,
+                                "precondition_check.offset",
+                                [],
+                                []
+                              |),
+                              [
+                                M.cast
+                                  (Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ])
+                                  (M.read (| self |));
+                                M.read (| count |);
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  M.get_function (| "core::mem::size_of", [], [ T ] |),
+                                  []
+                                |)
+                              ]
+                            |)
+                          |) in
+                        M.alloc (| Value.Tuple [] |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                  ]
+                |) in
+              M.alloc (|
+                M.call_closure (|
+                  Ty.apply (Ty.path "*mut") [] [ T ],
+                  M.get_function (|
+                    "core::intrinsics::offset",
+                    [],
+                    [ Ty.apply (Ty.path "*mut") [] [ T ]; Ty.path "isize" ]
+                  |),
+                  [ M.read (| self |); M.read (| count |) ]
+                |)
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1272,10 +1348,81 @@ Module ptr.
       Global Typeclasses Opaque sub_ptr.
       
       (*
+          pub const unsafe fn byte_sub_ptr<U: ?Sized>(self, origin: *mut U) -> usize {
+              // SAFETY: the caller must uphold the safety contract for `byte_sub_ptr`.
+              unsafe { (self as *const T).byte_sub_ptr(origin) }
+          }
+      *)
+      Definition byte_sub_ptr
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self T in
+        match ε, τ, α with
+        | [], [ U ], [ self; origin ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            let origin := M.alloc (| origin |) in
+            M.call_closure (|
+              Ty.path "usize",
+              M.get_associated_function (|
+                Ty.apply (Ty.path "*const") [] [ T ],
+                "byte_sub_ptr",
+                [],
+                [ U ]
+              |),
+              [
+                M.cast
+                  (Ty.apply (Ty.path "*const") [] [ T ])
+                  (* MutToConstPointer *) (M.pointer_coercion (M.read (| self |)));
+                (* MutToConstPointer *) M.pointer_coercion (M.read (| origin |))
+              ]
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Global Instance AssociatedFunction_byte_sub_ptr :
+        forall (T : Ty.t),
+        M.IsAssociatedFunction.Trait (Self T) "byte_sub_ptr" (byte_sub_ptr T).
+      Admitted.
+      Global Typeclasses Opaque byte_sub_ptr.
+      
+      (*
           pub const unsafe fn add(self, count: usize) -> Self
           where
               T: Sized,
           {
+              #[cfg(debug_assertions)]
+              #[inline]
+              #[rustc_allow_const_fn_unstable(const_eval_select)]
+              const fn runtime_add_nowrap(this: *const (), count: usize, size: usize) -> bool {
+                  const_eval_select!(
+                      @capture { this: *const (), count: usize, size: usize } -> bool:
+                      if const {
+                          true
+                      } else {
+                          let Some(byte_offset) = count.checked_mul(size) else {
+                              return false;
+                          };
+                          let (_, overflow) = this.addr().overflowing_add(byte_offset);
+                          byte_offset <= (isize::MAX as usize) && !overflow
+                      }
+                  )
+              }
+      
+              #[cfg(debug_assertions)] // Expensive, and doesn't catch much in the wild.
+              ub_checks::assert_unsafe_precondition!(
+                  check_language_ub,
+                  "ptr::add requires that the address calculation does not overflow",
+                  (
+                      this: *const () = self as *const (),
+                      count: usize = count,
+                      size: usize = size_of::<T>(),
+                  ) => runtime_add_nowrap(this, count, size)
+              );
+      
               // SAFETY: the caller must uphold the safety contract for `offset`.
               unsafe { intrinsics::offset(self, count) }
           }
@@ -1287,14 +1434,63 @@ Module ptr.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let count := M.alloc (| count |) in
-            M.call_closure (|
-              Ty.apply (Ty.path "*mut") [] [ T ],
-              M.get_function (|
-                "core::intrinsics::offset",
-                [],
-                [ Ty.apply (Ty.path "*mut") [] [ T ]; Ty.path "usize" ]
-              |),
-              [ M.read (| self |); M.read (| count |) ]
+            M.read (|
+              let~ _ : Ty.tuple [] :=
+                M.match_operator (|
+                  Some (Ty.tuple []),
+                  M.alloc (| Value.Tuple [] |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ :=
+                          M.use
+                            (M.alloc (|
+                              M.call_closure (|
+                                Ty.path "bool",
+                                M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
+                                []
+                              |)
+                            |)) in
+                        let _ :=
+                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let~ _ : Ty.tuple [] :=
+                          M.alloc (|
+                            M.call_closure (|
+                              Ty.tuple [],
+                              M.get_associated_function (|
+                                Self,
+                                "precondition_check.add",
+                                [],
+                                []
+                              |),
+                              [
+                                M.cast
+                                  (Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ])
+                                  (M.read (| self |));
+                                M.read (| count |);
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  M.get_function (| "core::mem::size_of", [], [ T ] |),
+                                  []
+                                |)
+                              ]
+                            |)
+                          |) in
+                        M.alloc (| Value.Tuple [] |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                  ]
+                |) in
+              M.alloc (|
+                M.call_closure (|
+                  Ty.apply (Ty.path "*mut") [] [ T ],
+                  M.get_function (|
+                    "core::intrinsics::offset",
+                    [],
+                    [ Ty.apply (Ty.path "*mut") [] [ T ]; Ty.path "usize" ]
+                  |),
+                  [ M.read (| self |); M.read (| count |) ]
+                |)
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1366,6 +1562,34 @@ Module ptr.
           where
               T: Sized,
           {
+              #[cfg(debug_assertions)]
+              #[inline]
+              #[rustc_allow_const_fn_unstable(const_eval_select)]
+              const fn runtime_sub_nowrap(this: *const (), count: usize, size: usize) -> bool {
+                  const_eval_select!(
+                      @capture { this: *const (), count: usize, size: usize } -> bool:
+                      if const {
+                          true
+                      } else {
+                          let Some(byte_offset) = count.checked_mul(size) else {
+                              return false;
+                          };
+                          byte_offset <= (isize::MAX as usize) && this.addr() >= byte_offset
+                      }
+                  )
+              }
+      
+              #[cfg(debug_assertions)] // Expensive, and doesn't catch much in the wild.
+              ub_checks::assert_unsafe_precondition!(
+                  check_language_ub,
+                  "ptr::sub requires that the address calculation does not overflow",
+                  (
+                      this: *const () = self as *const (),
+                      count: usize = count,
+                      size: usize = size_of::<T>(),
+                  ) => runtime_sub_nowrap(this, count, size)
+              );
+      
               if T::IS_ZST {
                   // Pointer arithmetic does nothing when the pointee is a ZST.
                   self
@@ -1373,7 +1597,7 @@ Module ptr.
                   // SAFETY: the caller must uphold the safety contract for `offset`.
                   // Because the pointee is *not* a ZST, that means that `count` is
                   // at most `isize::MAX`, and thus the negation cannot overflow.
-                  unsafe { self.offset((count as isize).unchecked_neg()) }
+                  unsafe { intrinsics::offset(self, intrinsics::unchecked_sub(0, count as isize)) }
               }
           }
       *)
@@ -1385,6 +1609,51 @@ Module ptr.
             (let self := M.alloc (| self |) in
             let count := M.alloc (| count |) in
             M.read (|
+              let~ _ : Ty.tuple [] :=
+                M.match_operator (|
+                  Some (Ty.tuple []),
+                  M.alloc (| Value.Tuple [] |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ :=
+                          M.use
+                            (M.alloc (|
+                              M.call_closure (|
+                                Ty.path "bool",
+                                M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
+                                []
+                              |)
+                            |)) in
+                        let _ :=
+                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let~ _ : Ty.tuple [] :=
+                          M.alloc (|
+                            M.call_closure (|
+                              Ty.tuple [],
+                              M.get_associated_function (|
+                                Self,
+                                "precondition_check.sub",
+                                [],
+                                []
+                              |),
+                              [
+                                M.cast
+                                  (Ty.apply (Ty.path "*const") [] [ Ty.tuple [] ])
+                                  (M.read (| self |));
+                                M.read (| count |);
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  M.get_function (| "core::mem::size_of", [], [ T ] |),
+                                  []
+                                |)
+                              ]
+                            |)
+                          |) in
+                        M.alloc (| Value.Tuple [] |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                  ]
+                |) in
               M.match_operator (|
                 Some (Ty.apply (Ty.path "*mut") [] [ T ]),
                 M.alloc (| Value.Tuple [] |),
@@ -1399,23 +1668,24 @@ Module ptr.
                       (M.alloc (|
                         M.call_closure (|
                           Ty.apply (Ty.path "*mut") [] [ T ],
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "*mut") [] [ T ],
-                            "offset",
+                          M.get_function (|
+                            "core::intrinsics::offset",
                             [],
-                            []
+                            [ Ty.apply (Ty.path "*mut") [] [ T ]; Ty.path "isize" ]
                           |),
                           [
                             M.read (| self |);
                             M.call_closure (|
                               Ty.path "isize",
-                              M.get_associated_function (|
-                                Ty.path "isize",
-                                "unchecked_neg",
+                              M.get_function (|
+                                "core::intrinsics::unchecked_sub",
                                 [],
-                                []
+                                [ Ty.path "isize" ]
                               |),
-                              [ M.cast (Ty.path "isize") (M.read (| count |)) ]
+                              [
+                                Value.Integer IntegerKind.Isize 0;
+                                M.cast (Ty.path "isize") (M.read (| count |))
+                              ]
                             |)
                           ]
                         |)
@@ -2158,7 +2428,7 @@ Module ptr.
       Global Typeclasses Opaque swap.
       
       (*
-          pub const fn align_offset(self, align: usize) -> usize
+          pub fn align_offset(self, align: usize) -> usize
           where
               T: Sized,
           {
@@ -2283,7 +2553,7 @@ Module ptr.
       Global Typeclasses Opaque align_offset.
       
       (*
-          pub const fn is_aligned(self) -> bool
+          pub fn is_aligned(self) -> bool
           where
               T: Sized,
           {
@@ -2323,26 +2593,12 @@ Module ptr.
       Global Typeclasses Opaque is_aligned.
       
       (*
-          pub const fn is_aligned_to(self, align: usize) -> bool {
+          pub fn is_aligned_to(self, align: usize) -> bool {
               if !align.is_power_of_two() {
                   panic!("is_aligned_to: align is not a power-of-two");
               }
       
-              #[inline]
-              fn runtime_impl(ptr: *mut (), align: usize) -> bool {
-                  ptr.addr() & (align - 1) == 0
-              }
-      
-              #[inline]
-              const fn const_impl(ptr: *mut (), align: usize) -> bool {
-                  // We can't use the address of `self` in a `const fn`, so we use `align_offset` instead.
-                  ptr.align_offset(align) == 0
-              }
-      
-              // The cast to `()` is used to
-              //   1. deal with fat pointers; and
-              //   2. ensure that `align_offset` (in `const_impl`) doesn't actually try to compute an offset.
-              const_eval_select((self.cast::<()>(), align), const_impl, runtime_impl)
+              self.addr() & (align - 1) == 0
           }
       *)
       Definition is_aligned_to
@@ -2425,40 +2681,20 @@ Module ptr.
                   ]
                 |) in
               M.alloc (|
-                M.call_closure (|
-                  Ty.path "bool",
-                  M.get_function (|
-                    "core::intrinsics::const_eval_select",
-                    [],
-                    [
-                      Ty.tuple [ Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ]; Ty.path "usize" ];
-                      Ty.function
-                        [ Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ]; Ty.path "usize" ]
-                        (Ty.path "bool");
-                      Ty.function
-                        [ Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ]; Ty.path "usize" ]
-                        (Ty.path "bool");
-                      Ty.path "bool"
-                    ]
-                  |),
-                  [
-                    Value.Tuple
-                      [
-                        M.call_closure (|
-                          Ty.apply (Ty.path "*mut") [] [ Ty.tuple [] ],
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "*mut") [] [ T ],
-                            "cast",
-                            [],
-                            [ Ty.tuple [] ]
-                          |),
-                          [ M.read (| self |) ]
-                        |);
-                        M.read (| align |)
-                      ];
-                    M.get_associated_function (| Self, "const_impl.is_aligned_to", [], [] |);
-                    M.get_associated_function (| Self, "runtime_impl.is_aligned_to", [], [] |)
-                  ]
+                BinOp.eq (|
+                  BinOp.bit_and
+                    (M.call_closure (|
+                      Ty.path "usize",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "*mut") [] [ T ],
+                        "addr",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |))
+                    (BinOp.Wrap.sub (| M.read (| align |), Value.Integer IntegerKind.Usize 1 |)),
+                  Value.Integer IntegerKind.Usize 0
                 |)
               |)
             |)))
@@ -2537,6 +2773,99 @@ Module ptr.
         M.IsAssociatedFunction.Trait (Self T) "is_empty" (is_empty T).
       Admitted.
       Global Typeclasses Opaque is_empty.
+      
+      (*
+          pub const fn as_mut_array<const N: usize>(self) -> Option<*mut [T; N]> {
+              if self.len() == N {
+                  let me = self.as_mut_ptr() as *mut [T; N];
+                  Some(me)
+              } else {
+                  None
+              }
+          }
+      *)
+      Definition as_mut_array
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        let Self : Ty.t := Self T in
+        match ε, τ, α with
+        | [ N ], [], [ self ] =>
+          ltac:(M.monadic
+            (let self := M.alloc (| self |) in
+            M.read (|
+              M.match_operator (|
+                Some
+                  (Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ] ]),
+                M.alloc (| Value.Tuple [] |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ :=
+                        M.use
+                          (M.alloc (|
+                            BinOp.eq (|
+                              M.call_closure (|
+                                Ty.path "usize",
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "*mut")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                  "len",
+                                  [],
+                                  []
+                                |),
+                                [ M.read (| self |) ]
+                              |),
+                              M.read (| M.get_constant "core::ptr::mut_ptr::as_mut_array::N" |)
+                            |)
+                          |)) in
+                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let~ me :
+                          Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ] :=
+                        M.alloc (|
+                          M.cast
+                            (Ty.apply
+                              (Ty.path "*mut")
+                              []
+                              [ Ty.apply (Ty.path "array") [ N ] [ T ] ])
+                            (M.call_closure (|
+                              Ty.apply (Ty.path "*mut") [] [ T ],
+                              M.get_associated_function (|
+                                Ty.apply
+                                  (Ty.path "*mut")
+                                  []
+                                  [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                "as_mut_ptr",
+                                [],
+                                []
+                              |),
+                              [ M.read (| self |) ]
+                            |))
+                        |) in
+                      M.alloc (|
+                        Value.StructTuple "core::option::Option::Some" [ M.read (| me |) ]
+                      |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (M.alloc (| Value.StructTuple "core::option::Option::None" [] |)))
+                ]
+              |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Global Instance AssociatedFunction_as_mut_array :
+        forall (T : Ty.t),
+        M.IsAssociatedFunction.Trait (Self T) "as_mut_array" (as_mut_array T).
+      Admitted.
+      Global Typeclasses Opaque as_mut_array.
       
       (*
           pub unsafe fn split_at_mut(self, mid: usize) -> ( *mut [T], *mut [T]) {
@@ -3133,7 +3462,7 @@ Module ptr.
       Global Typeclasses Opaque as_mut_slice.
     End Impl_pointer_mut_array_N_T.
     
-    Module Impl_core_cmp_PartialEq_where_core_marker_Sized_T_for_pointer_mut_T.
+    Module Impl_core_cmp_PartialEq_where_core_marker_Sized_T_pointer_mut_T_for_pointer_mut_T.
       Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "*mut") [] [ T ].
       
       (*
@@ -3160,10 +3489,10 @@ Module ptr.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "*mut") [] [ T ] ]
           (Self T)
           (* Instance *) [ ("eq", InstanceField.Method (eq T)) ].
-    End Impl_core_cmp_PartialEq_where_core_marker_Sized_T_for_pointer_mut_T.
+    End Impl_core_cmp_PartialEq_where_core_marker_Sized_T_pointer_mut_T_for_pointer_mut_T.
     
     Module Impl_core_cmp_Eq_where_core_marker_Sized_T_for_pointer_mut_T.
       Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "*mut") [] [ T ].
@@ -3300,7 +3629,7 @@ Module ptr.
           (* Instance *) [ ("cmp", InstanceField.Method (cmp T)) ].
     End Impl_core_cmp_Ord_where_core_marker_Sized_T_for_pointer_mut_T.
     
-    Module Impl_core_cmp_PartialOrd_where_core_marker_Sized_T_for_pointer_mut_T.
+    Module Impl_core_cmp_PartialOrd_where_core_marker_Sized_T_pointer_mut_T_for_pointer_mut_T.
       Definition Self (T : Ty.t) : Ty.t := Ty.apply (Ty.path "*mut") [] [ T ].
       
       (*
@@ -3419,7 +3748,7 @@ Module ptr.
         M.IsTraitInstance
           "core::cmp::PartialOrd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.apply (Ty.path "*mut") [] [ T ] ]
           (Self T)
           (* Instance *)
           [
@@ -3429,6 +3758,6 @@ Module ptr.
             ("gt", InstanceField.Method (gt T));
             ("ge", InstanceField.Method (ge T))
           ].
-    End Impl_core_cmp_PartialOrd_where_core_marker_Sized_T_for_pointer_mut_T.
+    End Impl_core_cmp_PartialOrd_where_core_marker_Sized_T_pointer_mut_T_for_pointer_mut_T.
   End mut_ptr.
 End ptr.

@@ -21,7 +21,7 @@ Module Impl_core_marker_StructuralPartialEq_for_derive_Centimeters.
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_derive_Centimeters.
 
-Module Impl_core_cmp_PartialEq_for_derive_Centimeters.
+Module Impl_core_cmp_PartialEq_derive_Centimeters_for_derive_Centimeters.
   Definition Self : Ty.t := Ty.path "derive::Centimeters".
   
   Parameter eq : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
@@ -30,12 +30,12 @@ Module Impl_core_cmp_PartialEq_for_derive_Centimeters.
     M.IsTraitInstance
       "core::cmp::PartialEq"
       (* Trait polymorphic consts *) []
-      (* Trait polymorphic types *) []
+      (* Trait polymorphic types *) [ Ty.path "derive::Centimeters" ]
       Self
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
-End Impl_core_cmp_PartialEq_for_derive_Centimeters.
+End Impl_core_cmp_PartialEq_derive_Centimeters_for_derive_Centimeters.
 
-Module Impl_core_cmp_PartialOrd_for_derive_Centimeters.
+Module Impl_core_cmp_PartialOrd_derive_Centimeters_for_derive_Centimeters.
   Definition Self : Ty.t := Ty.path "derive::Centimeters".
   
   Parameter partial_cmp : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
@@ -44,10 +44,10 @@ Module Impl_core_cmp_PartialOrd_for_derive_Centimeters.
     M.IsTraitInstance
       "core::cmp::PartialOrd"
       (* Trait polymorphic consts *) []
-      (* Trait polymorphic types *) []
+      (* Trait polymorphic types *) [ Ty.path "derive::Centimeters" ]
       Self
       (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-End Impl_core_cmp_PartialOrd_for_derive_Centimeters.
+End Impl_core_cmp_PartialOrd_derive_Centimeters_for_derive_Centimeters.
 
 (* StructTuple
   {

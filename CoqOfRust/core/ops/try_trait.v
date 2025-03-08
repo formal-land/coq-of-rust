@@ -287,7 +287,7 @@ Module ops.
           ].
     End Impl_core_ops_try_trait_Try_for_core_ops_try_trait_NeverShortCircuit_T.
     
-    Module Impl_core_ops_try_trait_FromResidual_for_core_ops_try_trait_NeverShortCircuit_T.
+    Module Impl_core_ops_try_trait_FromResidual_associated_in_trait_core_ops_try_trait_Try___core_ops_try_trait_NeverShortCircuit_T_Residual_for_core_ops_try_trait_NeverShortCircuit_T.
       Definition Self (T : Ty.t) : Ty.t :=
         Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ T ].
       
@@ -318,10 +318,18 @@ Module ops.
         M.IsTraitInstance
           "core::ops::try_trait::FromResidual"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [
+            Ty.associated_in_trait
+              "core::ops::try_trait::Try"
+              []
+              []
+              (Ty.apply (Ty.path "core::ops::try_trait::NeverShortCircuit") [] [ T ])
+              "Residual"
+          ]
           (Self T)
           (* Instance *) [ ("from_residual", InstanceField.Method (from_residual T)) ].
-    End Impl_core_ops_try_trait_FromResidual_for_core_ops_try_trait_NeverShortCircuit_T.
+    End Impl_core_ops_try_trait_FromResidual_associated_in_trait_core_ops_try_trait_Try___core_ops_try_trait_NeverShortCircuit_T_Residual_for_core_ops_try_trait_NeverShortCircuit_T.
     
     Module Impl_core_ops_try_trait_Residual_T_for_core_ops_try_trait_NeverShortCircuitResidual.
       Definition Self (T : Ty.t) : Ty.t :=

@@ -245,7 +245,7 @@ Module result.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_for_revm_context_interface_result_ResultAndState_HaltReasonT.
   
-  Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_HaltReasonT_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_for_revm_context_interface_result_ResultAndState_HaltReasonT.
+  Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_HaltReasonT_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_revm_context_interface_result_ResultAndState_HaltReasonT_for_revm_context_interface_result_ResultAndState_HaltReasonT.
     Definition Self (HaltReasonT : Ty.t) : Ty.t :=
       Ty.apply (Ty.path "revm_context_interface::result::ResultAndState") [] [ HaltReasonT ].
     
@@ -354,10 +354,11 @@ Module result.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *)
+        [ Ty.apply (Ty.path "revm_context_interface::result::ResultAndState") [] [ HaltReasonT ] ]
         (Self HaltReasonT)
         (* Instance *) [ ("eq", InstanceField.Method (eq HaltReasonT)) ].
-  End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_HaltReasonT_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_for_revm_context_interface_result_ResultAndState_HaltReasonT.
+  End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_HaltReasonT_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_revm_context_interface_result_ResultAndState_HaltReasonT_for_revm_context_interface_result_ResultAndState_HaltReasonT.
   
   Module Impl_core_cmp_Eq_where_core_cmp_Eq_HaltReasonT_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_for_revm_context_interface_result_ResultAndState_HaltReasonT.
     Definition Self (HaltReasonT : Ty.t) : Ty.t :=
@@ -982,7 +983,7 @@ Module result.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_for_revm_context_interface_result_ExecutionResult_HaltReasonT.
   
-  Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_HaltReasonT_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_for_revm_context_interface_result_ExecutionResult_HaltReasonT.
+  Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_HaltReasonT_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_revm_context_interface_result_ExecutionResult_HaltReasonT_for_revm_context_interface_result_ExecutionResult_HaltReasonT.
     Definition Self (HaltReasonT : Ty.t) : Ty.t :=
       Ty.apply (Ty.path "revm_context_interface::result::ExecutionResult") [] [ HaltReasonT ].
     
@@ -1435,10 +1436,11 @@ Module result.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *)
+        [ Ty.apply (Ty.path "revm_context_interface::result::ExecutionResult") [] [ HaltReasonT ] ]
         (Self HaltReasonT)
         (* Instance *) [ ("eq", InstanceField.Method (eq HaltReasonT)) ].
-  End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_HaltReasonT_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_for_revm_context_interface_result_ExecutionResult_HaltReasonT.
+  End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_HaltReasonT_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_revm_context_interface_result_ExecutionResult_HaltReasonT_for_revm_context_interface_result_ExecutionResult_HaltReasonT.
   
   Module Impl_core_cmp_Eq_where_core_cmp_Eq_HaltReasonT_where_revm_context_interface_result_HaltReasonTrait_HaltReasonT_for_revm_context_interface_result_ExecutionResult_HaltReasonT.
     Definition Self (HaltReasonT : Ty.t) : Ty.t :=
@@ -2762,7 +2764,7 @@ Module result.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_context_interface_result_Output.
   
-  Module Impl_core_cmp_PartialEq_for_revm_context_interface_result_Output.
+  Module Impl_core_cmp_PartialEq_revm_context_interface_result_Output_for_revm_context_interface_result_Output.
     Definition Self : Ty.t := Ty.path "revm_context_interface::result::Output".
     
     (* PartialEq *)
@@ -2973,10 +2975,10 @@ Module result.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "revm_context_interface::result::Output" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_revm_context_interface_result_Output.
+  End Impl_core_cmp_PartialEq_revm_context_interface_result_Output_for_revm_context_interface_result_Output.
   
   Module Impl_core_cmp_Eq_for_revm_context_interface_result_Output.
     Definition Self : Ty.t := Ty.path "revm_context_interface::result::Output".
@@ -3843,7 +3845,7 @@ Module result.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_context_interface_result_EVMError_DBError_TransactionError.
   
-  Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_DBError_where_core_cmp_PartialEq_TransactionError_for_revm_context_interface_result_EVMError_DBError_TransactionError.
+  Module Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_DBError_where_core_cmp_PartialEq_TransactionError_revm_context_interface_result_EVMError_DBError_TransactionError_for_revm_context_interface_result_EVMError_DBError_TransactionError.
     Definition Self (DBError TransactionError : Ty.t) : Ty.t :=
       Ty.apply
         (Ty.path "revm_context_interface::result::EVMError")
@@ -4130,10 +4132,16 @@ Module result.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *)
+        [
+          Ty.apply
+            (Ty.path "revm_context_interface::result::EVMError")
+            []
+            [ DBError; TransactionError ]
+        ]
         (Self DBError TransactionError)
         (* Instance *) [ ("eq", InstanceField.Method (eq DBError TransactionError)) ].
-  End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_DBError_where_core_cmp_PartialEq_TransactionError_for_revm_context_interface_result_EVMError_DBError_TransactionError.
+  End Impl_core_cmp_PartialEq_where_core_cmp_PartialEq_DBError_where_core_cmp_PartialEq_TransactionError_revm_context_interface_result_EVMError_DBError_TransactionError_for_revm_context_interface_result_EVMError_DBError_TransactionError.
   
   Module Impl_core_cmp_Eq_where_core_cmp_Eq_DBError_where_core_cmp_Eq_TransactionError_for_revm_context_interface_result_EVMError_DBError_TransactionError.
     Definition Self (DBError TransactionError : Ty.t) : Ty.t :=
@@ -6868,7 +6876,7 @@ Module result.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_context_interface_result_InvalidTransaction.
   
-  Module Impl_core_cmp_PartialEq_for_revm_context_interface_result_InvalidTransaction.
+  Module Impl_core_cmp_PartialEq_revm_context_interface_result_InvalidTransaction_for_revm_context_interface_result_InvalidTransaction.
     Definition Self : Ty.t := Ty.path "revm_context_interface::result::InvalidTransaction".
     
     (* PartialEq *)
@@ -7334,10 +7342,11 @@ Module result.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *)
+        [ Ty.path "revm_context_interface::result::InvalidTransaction" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_revm_context_interface_result_InvalidTransaction.
+  End Impl_core_cmp_PartialEq_revm_context_interface_result_InvalidTransaction_for_revm_context_interface_result_InvalidTransaction.
   
   Module Impl_core_cmp_Eq_for_revm_context_interface_result_InvalidTransaction.
     Definition Self : Ty.t := Ty.path "revm_context_interface::result::InvalidTransaction".
@@ -9720,7 +9729,7 @@ Module result.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_context_interface_result_InvalidHeader.
   
-  Module Impl_core_cmp_PartialEq_for_revm_context_interface_result_InvalidHeader.
+  Module Impl_core_cmp_PartialEq_revm_context_interface_result_InvalidHeader_for_revm_context_interface_result_InvalidHeader.
     Definition Self : Ty.t := Ty.path "revm_context_interface::result::InvalidHeader".
     
     (* PartialEq *)
@@ -9764,10 +9773,10 @@ Module result.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "revm_context_interface::result::InvalidHeader" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_revm_context_interface_result_InvalidHeader.
+  End Impl_core_cmp_PartialEq_revm_context_interface_result_InvalidHeader_for_revm_context_interface_result_InvalidHeader.
   
   Module Impl_core_cmp_Eq_for_revm_context_interface_result_InvalidHeader.
     Definition Self : Ty.t := Ty.path "revm_context_interface::result::InvalidHeader".
@@ -10180,7 +10189,7 @@ Module result.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_context_interface_result_SuccessReason.
   
-  Module Impl_core_cmp_PartialEq_for_revm_context_interface_result_SuccessReason.
+  Module Impl_core_cmp_PartialEq_revm_context_interface_result_SuccessReason_for_revm_context_interface_result_SuccessReason.
     Definition Self : Ty.t := Ty.path "revm_context_interface::result::SuccessReason".
     
     (* PartialEq *)
@@ -10224,10 +10233,10 @@ Module result.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "revm_context_interface::result::SuccessReason" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_revm_context_interface_result_SuccessReason.
+  End Impl_core_cmp_PartialEq_revm_context_interface_result_SuccessReason_for_revm_context_interface_result_SuccessReason.
   
   Module Impl_core_cmp_Eq_for_revm_context_interface_result_SuccessReason.
     Definition Self : Ty.t := Ty.path "revm_context_interface::result::SuccessReason".
@@ -11222,7 +11231,7 @@ Module result.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_context_interface_result_HaltReason.
   
-  Module Impl_core_cmp_PartialEq_for_revm_context_interface_result_HaltReason.
+  Module Impl_core_cmp_PartialEq_revm_context_interface_result_HaltReason_for_revm_context_interface_result_HaltReason.
     Definition Self : Ty.t := Ty.path "revm_context_interface::result::HaltReason".
     
     (* PartialEq *)
@@ -11326,10 +11335,10 @@ Module result.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "revm_context_interface::result::HaltReason" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_revm_context_interface_result_HaltReason.
+  End Impl_core_cmp_PartialEq_revm_context_interface_result_HaltReason_for_revm_context_interface_result_HaltReason.
   
   Module Impl_core_cmp_Eq_for_revm_context_interface_result_HaltReason.
     Definition Self : Ty.t := Ty.path "revm_context_interface::result::HaltReason".
@@ -11675,7 +11684,7 @@ Module result.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_context_interface_result_OutOfGasError.
   
-  Module Impl_core_cmp_PartialEq_for_revm_context_interface_result_OutOfGasError.
+  Module Impl_core_cmp_PartialEq_revm_context_interface_result_OutOfGasError_for_revm_context_interface_result_OutOfGasError.
     Definition Self : Ty.t := Ty.path "revm_context_interface::result::OutOfGasError".
     
     (* PartialEq *)
@@ -11719,10 +11728,10 @@ Module result.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "revm_context_interface::result::OutOfGasError" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_revm_context_interface_result_OutOfGasError.
+  End Impl_core_cmp_PartialEq_revm_context_interface_result_OutOfGasError_for_revm_context_interface_result_OutOfGasError.
   
   Module Impl_core_cmp_Eq_for_revm_context_interface_result_OutOfGasError.
     Definition Self : Ty.t := Ty.path "revm_context_interface::result::OutOfGasError".

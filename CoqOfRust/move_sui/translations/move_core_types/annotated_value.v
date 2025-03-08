@@ -130,7 +130,7 @@ Module annotated_value.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_core_types_annotated_value_MoveStruct.
   
-  Module Impl_core_cmp_PartialEq_for_move_core_types_annotated_value_MoveStruct.
+  Module Impl_core_cmp_PartialEq_move_core_types_annotated_value_MoveStruct_for_move_core_types_annotated_value_MoveStruct.
     Definition Self : Ty.t := Ty.path "move_core_types::annotated_value::MoveStruct".
     
     (* PartialEq *)
@@ -232,10 +232,10 @@ Module annotated_value.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::annotated_value::MoveStruct" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_core_types_annotated_value_MoveStruct.
+  End Impl_core_cmp_PartialEq_move_core_types_annotated_value_MoveStruct_for_move_core_types_annotated_value_MoveStruct.
   
   Module Impl_core_cmp_Eq_for_move_core_types_annotated_value_MoveStruct.
     Definition Self : Ty.t := Ty.path "move_core_types::annotated_value::MoveStruct".
@@ -898,7 +898,7 @@ Module annotated_value.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_core_types_annotated_value_MoveValue.
   
-  Module Impl_core_cmp_PartialEq_for_move_core_types_annotated_value_MoveValue.
+  Module Impl_core_cmp_PartialEq_move_core_types_annotated_value_MoveValue_for_move_core_types_annotated_value_MoveValue.
     Definition Self : Ty.t := Ty.path "move_core_types::annotated_value::MoveValue".
     
     (* PartialEq *)
@@ -1440,10 +1440,10 @@ Module annotated_value.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::annotated_value::MoveValue" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_core_types_annotated_value_MoveValue.
+  End Impl_core_cmp_PartialEq_move_core_types_annotated_value_MoveValue_for_move_core_types_annotated_value_MoveValue.
   
   Module Impl_core_cmp_Eq_for_move_core_types_annotated_value_MoveValue.
     Definition Self : Ty.t := Ty.path "move_core_types::annotated_value::MoveValue".

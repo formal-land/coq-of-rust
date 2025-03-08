@@ -173,7 +173,7 @@ Module alloc.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_alloc_layout_Layout.
     
-    Module Impl_core_cmp_PartialEq_for_core_alloc_layout_Layout.
+    Module Impl_core_cmp_PartialEq_core_alloc_layout_Layout_for_core_alloc_layout_Layout.
       Definition Self : Ty.t := Ty.path "core::alloc::layout::Layout".
       
       (* PartialEq *)
@@ -239,10 +239,10 @@ Module alloc.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::alloc::layout::Layout" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_core_alloc_layout_Layout.
+    End Impl_core_cmp_PartialEq_core_alloc_layout_Layout_for_core_alloc_layout_Layout.
     
     Module Impl_core_cmp_Eq_for_core_alloc_layout_Layout.
       Definition Self : Ty.t := Ty.path "core::alloc::layout::Layout".
@@ -1968,7 +1968,7 @@ Module alloc.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_alloc_layout_LayoutError.
     
-    Module Impl_core_cmp_PartialEq_for_core_alloc_layout_LayoutError.
+    Module Impl_core_cmp_PartialEq_core_alloc_layout_LayoutError_for_core_alloc_layout_LayoutError.
       Definition Self : Ty.t := Ty.path "core::alloc::layout::LayoutError".
       
       (* PartialEq *)
@@ -1986,10 +1986,10 @@ Module alloc.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::alloc::layout::LayoutError" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_core_alloc_layout_LayoutError.
+    End Impl_core_cmp_PartialEq_core_alloc_layout_LayoutError_for_core_alloc_layout_LayoutError.
     
     Module Impl_core_cmp_Eq_for_core_alloc_layout_LayoutError.
       Definition Self : Ty.t := Ty.path "core::alloc::layout::LayoutError".

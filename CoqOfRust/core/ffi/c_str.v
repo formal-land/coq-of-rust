@@ -23,7 +23,7 @@ Module ffi.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_ffi_c_str_CStr.
     
-    Module Impl_core_cmp_PartialEq_for_core_ffi_c_str_CStr.
+    Module Impl_core_cmp_PartialEq_core_ffi_c_str_CStr_for_core_ffi_c_str_CStr.
       Definition Self : Ty.t := Ty.path "core::ffi::c_str::CStr".
       
       (* PartialEq *)
@@ -70,10 +70,10 @@ Module ffi.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::ffi::c_str::CStr" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_core_ffi_c_str_CStr.
+    End Impl_core_cmp_PartialEq_core_ffi_c_str_CStr_for_core_ffi_c_str_CStr.
     
     Module Impl_core_cmp_Eq_for_core_ffi_c_str_CStr.
       Definition Self : Ty.t := Ty.path "core::ffi::c_str::CStr".
@@ -231,7 +231,7 @@ Module ffi.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_ffi_c_str_FromBytesWithNulError.
     
-    Module Impl_core_cmp_PartialEq_for_core_ffi_c_str_FromBytesWithNulError.
+    Module Impl_core_cmp_PartialEq_core_ffi_c_str_FromBytesWithNulError_for_core_ffi_c_str_FromBytesWithNulError.
       Definition Self : Ty.t := Ty.path "core::ffi::c_str::FromBytesWithNulError".
       
       (* PartialEq *)
@@ -278,10 +278,10 @@ Module ffi.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::ffi::c_str::FromBytesWithNulError" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_core_ffi_c_str_FromBytesWithNulError.
+    End Impl_core_cmp_PartialEq_core_ffi_c_str_FromBytesWithNulError_for_core_ffi_c_str_FromBytesWithNulError.
     
     Module Impl_core_cmp_Eq_for_core_ffi_c_str_FromBytesWithNulError.
       Definition Self : Ty.t := Ty.path "core::ffi::c_str::FromBytesWithNulError".
@@ -484,7 +484,7 @@ Module ffi.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_ffi_c_str_FromBytesWithNulErrorKind.
     
-    Module Impl_core_cmp_PartialEq_for_core_ffi_c_str_FromBytesWithNulErrorKind.
+    Module Impl_core_cmp_PartialEq_core_ffi_c_str_FromBytesWithNulErrorKind_for_core_ffi_c_str_FromBytesWithNulErrorKind.
       Definition Self : Ty.t := Ty.path "core::ffi::c_str::FromBytesWithNulErrorKind".
       
       (* PartialEq *)
@@ -580,10 +580,10 @@ Module ffi.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::ffi::c_str::FromBytesWithNulErrorKind" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_core_ffi_c_str_FromBytesWithNulErrorKind.
+    End Impl_core_cmp_PartialEq_core_ffi_c_str_FromBytesWithNulErrorKind_for_core_ffi_c_str_FromBytesWithNulErrorKind.
     
     Module Impl_core_cmp_Eq_for_core_ffi_c_str_FromBytesWithNulErrorKind.
       Definition Self : Ty.t := Ty.path "core::ffi::c_str::FromBytesWithNulErrorKind".
@@ -915,7 +915,7 @@ Module ffi.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_ffi_c_str_FromBytesUntilNulError.
     
-    Module Impl_core_cmp_PartialEq_for_core_ffi_c_str_FromBytesUntilNulError.
+    Module Impl_core_cmp_PartialEq_core_ffi_c_str_FromBytesUntilNulError_for_core_ffi_c_str_FromBytesUntilNulError.
       Definition Self : Ty.t := Ty.path "core::ffi::c_str::FromBytesUntilNulError".
       
       (* PartialEq *)
@@ -962,10 +962,10 @@ Module ffi.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::ffi::c_str::FromBytesUntilNulError" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_core_ffi_c_str_FromBytesUntilNulError.
+    End Impl_core_cmp_PartialEq_core_ffi_c_str_FromBytesUntilNulError_for_core_ffi_c_str_FromBytesUntilNulError.
     
     Module Impl_core_cmp_Eq_for_core_ffi_c_str_FromBytesUntilNulError.
       Definition Self : Ty.t := Ty.path "core::ffi::c_str::FromBytesUntilNulError".
@@ -2046,37 +2046,35 @@ Module ffi.
       
       (*
           pub const unsafe fn from_bytes_with_nul_unchecked(bytes: &[u8]) -> &CStr {
-              #[inline]
-              fn rt_impl(bytes: &[u8]) -> &CStr {
-                  // Chance at catching some UB at runtime with debug builds.
-                  debug_assert!(!bytes.is_empty() && bytes[bytes.len() - 1] == 0);
+              const_eval_select!(
+                  @capture { bytes: &[u8] } -> &CStr:
+                  if const {
+                      // Saturating so that an empty slice panics in the assert with a good
+                      // message, not here due to underflow.
+                      let mut i = bytes.len().saturating_sub(1);
+                      assert!(!bytes.is_empty() && bytes[i] == 0, "input was not nul-terminated");
       
-                  // SAFETY: Casting to CStr is safe because its internal representation
-                  // is a [u8] too (safe only inside std).
-                  // Dereferencing the obtained pointer is safe because it comes from a
-                  // reference. Making a reference is then safe because its lifetime
-                  // is bound by the lifetime of the given `bytes`.
-                  unsafe { &*(bytes as *const [u8] as *const CStr) }
-              }
+                      // Ending nul byte exists, skip to the rest.
+                      while i != 0 {
+                          i -= 1;
+                          let byte = bytes[i];
+                          assert!(byte != 0, "input contained interior nul");
+                      }
       
-              const fn const_impl(bytes: &[u8]) -> &CStr {
-                  // Saturating so that an empty slice panics in the assert with a good
-                  // message, not here due to underflow.
-                  let mut i = bytes.len().saturating_sub(1);
-                  assert!(!bytes.is_empty() && bytes[i] == 0, "input was not nul-terminated");
+                      // SAFETY: See runtime cast comment below.
+                      unsafe { &*(bytes as *const [u8] as *const CStr) }
+                  } else {
+                      // Chance at catching some UB at runtime with debug builds.
+                      debug_assert!(!bytes.is_empty() && bytes[bytes.len() - 1] == 0);
       
-                  // Ending nul byte exists, skip to the rest.
-                  while i != 0 {
-                      i -= 1;
-                      let byte = bytes[i];
-                      assert!(byte != 0, "input contained interior nul");
+                      // SAFETY: Casting to CStr is safe because its internal representation
+                      // is a [u8] too (safe only inside std).
+                      // Dereferencing the obtained pointer is safe because it comes from a
+                      // reference. Making a reference is then safe because its lifetime
+                      // is bound by the lifetime of the given `bytes`.
+                      unsafe { &*(bytes as *const [u8] as *const CStr) }
                   }
-      
-                  // SAFETY: See `rt_impl` cast.
-                  unsafe { &*(bytes as *const [u8] as *const CStr) }
-              }
-      
-              intrinsics::const_eval_select((bytes,), const_impl, rt_impl)
+              )
           }
       *)
       Definition from_bytes_with_nul_unchecked
@@ -2127,13 +2125,13 @@ Module ffi.
                     Value.Tuple [ M.read (| bytes |) ];
                     M.get_associated_function (|
                       Self,
-                      "const_impl.from_bytes_with_nul_unchecked",
+                      "compiletime.from_bytes_with_nul_unchecked",
                       [],
                       []
                     |);
                     M.get_associated_function (|
                       Self,
-                      "rt_impl.from_bytes_with_nul_unchecked",
+                      "runtime.from_bytes_with_nul_unchecked",
                       [],
                       []
                     |)
@@ -2190,7 +2188,7 @@ Module ffi.
       
       (*
           const fn as_non_null_ptr(&self) -> NonNull<c_char> {
-              // FIXME(effects) replace with `NonNull::from`
+              // FIXME(const_trait_impl) replace with `NonNull::from`
               // SAFETY: a reference is never null
               unsafe { NonNull::new_unchecked(&self.inner as *const [c_char] as *mut [c_char]) }
                   .as_non_null_ptr()
@@ -2535,7 +2533,7 @@ Module ffi.
       Global Typeclasses Opaque to_str.
     End Impl_core_ffi_c_str_CStr.
     
-    Module Impl_core_cmp_PartialOrd_for_core_ffi_c_str_CStr.
+    Module Impl_core_cmp_PartialOrd_core_ffi_c_str_CStr_for_core_ffi_c_str_CStr.
       Definition Self : Ty.t := Ty.path "core::ffi::c_str::CStr".
       
       (*
@@ -2612,10 +2610,10 @@ Module ffi.
         M.IsTraitInstance
           "core::cmp::PartialOrd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::ffi::c_str::CStr" ]
           Self
           (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-    End Impl_core_cmp_PartialOrd_for_core_ffi_c_str_CStr.
+    End Impl_core_cmp_PartialOrd_core_ffi_c_str_CStr_for_core_ffi_c_str_CStr.
     
     Module Impl_core_cmp_Ord_for_core_ffi_c_str_CStr.
       Definition Self : Ty.t := Ty.path "core::ffi::c_str::CStr".
@@ -3005,29 +3003,27 @@ Module ffi.
     
     (*
     const unsafe fn strlen(ptr: *const c_char) -> usize {
-        const fn strlen_ct(s: *const c_char) -> usize {
-            let mut len = 0;
+        const_eval_select!(
+            @capture { s: *const c_char = ptr } -> usize:
+            if const {
+                let mut len = 0;
     
-            // SAFETY: Outer caller has provided a pointer to a valid C string.
-            while unsafe { *s.add(len) } != 0 {
-                len += 1;
+                // SAFETY: Outer caller has provided a pointer to a valid C string.
+                while unsafe { *s.add(len) } != 0 {
+                    len += 1;
+                }
+    
+                len
+            } else {
+                extern "C" {
+                    /// Provided by libc or compiler_builtins.
+                    fn strlen(s: *const c_char) -> usize;
+                }
+    
+                // SAFETY: Outer caller has provided a pointer to a valid C string.
+                unsafe { strlen(s) }
             }
-    
-            len
-        }
-    
-        #[inline]
-        fn strlen_rt(s: *const c_char) -> usize {
-            extern "C" {
-                /// Provided by libc or compiler_builtins.
-                fn strlen(s: *const c_char) -> usize;
-            }
-    
-            // SAFETY: Outer caller has provided a pointer to a valid C string.
-            unsafe { strlen(s) }
-        }
-    
-        intrinsics::const_eval_select((ptr,), strlen_ct, strlen_rt)
+        )
     }
     *)
     Definition strlen (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -3049,8 +3045,8 @@ Module ffi.
             |),
             [
               Value.Tuple [ M.read (| ptr |) ];
-              M.get_function (| "core::ffi::c_str::strlen.strlen_ct", [], [] |);
-              M.get_function (| "core::ffi::c_str::strlen.strlen_rt", [], [] |)
+              M.get_function (| "core::ffi::c_str::strlen.compiletime", [], [] |);
+              M.get_function (| "core::ffi::c_str::strlen.runtime", [], [] |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3062,130 +3058,13 @@ Module ffi.
     Global Typeclasses Opaque strlen.
     
     Module strlen.
-      (*
-          const fn strlen_ct(s: *const c_char) -> usize {
-              let mut len = 0;
-      
-              // SAFETY: Outer caller has provided a pointer to a valid C string.
-              while unsafe { *s.add(len) } != 0 {
-                  len += 1;
-              }
-      
-              len
-          }
-      *)
-      Definition strlen_ct (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ s ] =>
-          ltac:(M.monadic
-            (let s := M.alloc (| s |) in
-            M.read (|
-              let~ len : Ty.path "usize" := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
-              let~ _ : Ty.tuple [] :=
-                M.loop (|
-                  Ty.tuple [],
-                  ltac:(M.monadic
-                    (M.match_operator (|
-                      Some (Ty.tuple []),
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  BinOp.ne (|
-                                    M.read (|
-                                      M.deref (|
-                                        M.call_closure (|
-                                          Ty.apply (Ty.path "*const") [] [ Ty.path "i8" ],
-                                          M.get_associated_function (|
-                                            Ty.apply (Ty.path "*const") [] [ Ty.path "i8" ],
-                                            "add",
-                                            [],
-                                            []
-                                          |),
-                                          [ M.read (| s |); M.read (| len |) ]
-                                        |)
-                                      |)
-                                    |),
-                                    Value.Integer IntegerKind.I8 0
-                                  |)
-                                |)) in
-                            let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            let~ _ : Ty.tuple [] :=
-                              M.alloc (|
-                                let β := len in
-                                M.write (|
-                                  β,
-                                  BinOp.Wrap.add (|
-                                    M.read (| β |),
-                                    Value.Integer IntegerKind.Usize 1
-                                  |)
-                                |)
-                              |) in
-                            M.alloc (| Value.Tuple [] |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  let~ _ : Ty.tuple [] :=
-                                    M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
-                                  M.alloc (| Value.Tuple [] |)
-                                |)
-                              |)
-                            |)))
-                      ]
-                    |)))
-                |) in
-              len
-            |)))
-        | _, _, _ => M.impossible "wrong number of arguments"
-        end.
-      
-      Global Instance Instance_IsFunction_strlen_ct :
-        M.IsFunction.Trait "core::ffi::c_str::strlen::strlen_ct" strlen_ct.
-      Admitted.
-      Global Typeclasses Opaque strlen_ct.
-      
-      (*
-          fn strlen_rt(s: *const c_char) -> usize {
-              extern "C" {
-                  /// Provided by libc or compiler_builtins.
-                  fn strlen(s: *const c_char) -> usize;
-              }
-      
-              // SAFETY: Outer caller has provided a pointer to a valid C string.
-              unsafe { strlen(s) }
-          }
-      *)
-      Definition strlen_rt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-        match ε, τ, α with
-        | [], [], [ s ] =>
-          ltac:(M.monadic
-            (let s := M.alloc (| s |) in
-            M.call_closure (|
-              Ty.path "usize",
-              M.get_function (| "core::ffi::c_str::strlen::strlen_rt::strlen", [], [] |),
-              [ M.read (| s |) ]
-            |)))
-        | _, _, _ => M.impossible "wrong number of arguments"
-        end.
-      
-      Global Instance Instance_IsFunction_strlen_rt :
-        M.IsFunction.Trait "core::ffi::c_str::strlen::strlen_rt" strlen_rt.
-      Admitted.
-      Global Typeclasses Opaque strlen_rt.
-      
-      Module strlen_rt.
+      Module runtime.
         Parameter strlen : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
         
         Global Instance Instance_IsFunction_strlen :
-          M.IsFunction.Trait "core::ffi::c_str::strlen::strlen_rt::strlen" strlen.
+          M.IsFunction.Trait "core::ffi::c_str::strlen::runtime::strlen" strlen.
         Admitted.
-      End strlen_rt.
+      End runtime.
     End strlen.
     
     (* StructRecord

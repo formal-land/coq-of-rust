@@ -1829,12 +1829,10 @@ Module intrinsics.
         let y := M.alloc (| y |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.tuple [],
-                M.get_function (| "core::ptr::swap_nonoverlapping", [], [ T ] |),
-                [ M.read (| x |); M.read (| y |); Value.Integer IntegerKind.Usize 1 ]
-              |)
+            M.call_closure (|
+              Ty.tuple [],
+              M.get_function (| "core::ptr::swap_nonoverlapping", [], [ T ] |),
+              [ M.read (| x |); M.read (| y |); Value.Integer IntegerKind.Usize 1 ]
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
@@ -2283,24 +2281,24 @@ Module intrinsics.
         let count := M.alloc (| count |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
-            M.match_operator (|
-              Some (Ty.tuple []),
-              M.alloc (| Value.Tuple [] |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ :=
-                      M.use
-                        (M.alloc (|
-                          M.call_closure (|
-                            Ty.path "bool",
-                            M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
-                            []
-                          |)
-                        |)) in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    let~ _ : Ty.tuple [] :=
-                      M.alloc (|
+            M.read (|
+              M.match_operator (|
+                Some (Ty.tuple []),
+                M.alloc (| Value.Tuple [] |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ :=
+                        M.use
+                          (M.alloc (|
+                            M.call_closure (|
+                              Ty.path "bool",
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
+                              []
+                            |)
+                          |)) in
+                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let~ _ : Ty.tuple [] :=
                         M.call_closure (|
                           Ty.tuple [],
                           M.get_function (|
@@ -2327,11 +2325,11 @@ Module intrinsics.
                             |);
                             M.read (| count |)
                           ]
-                        |)
-                      |) in
-                    M.alloc (| Value.Tuple [] |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-              ]
+                        |) in
+                      M.alloc (| Value.Tuple [] |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                ]
+              |)
             |) in
           M.alloc (|
             M.call_closure (|
@@ -2397,24 +2395,24 @@ Module intrinsics.
         let count := M.alloc (| count |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
-            M.match_operator (|
-              Some (Ty.tuple []),
-              M.alloc (| Value.Tuple [] |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ :=
-                      M.use
-                        (M.alloc (|
-                          M.call_closure (|
-                            Ty.path "bool",
-                            M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
-                            []
-                          |)
-                        |)) in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    let~ _ : Ty.tuple [] :=
-                      M.alloc (|
+            M.read (|
+              M.match_operator (|
+                Some (Ty.tuple []),
+                M.alloc (| Value.Tuple [] |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ :=
+                        M.use
+                          (M.alloc (|
+                            M.call_closure (|
+                              Ty.path "bool",
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
+                              []
+                            |)
+                          |)) in
+                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let~ _ : Ty.tuple [] :=
                         M.call_closure (|
                           Ty.tuple [],
                           M.get_function (| "core::intrinsics::copy.precondition_check", [], [] |),
@@ -2431,11 +2429,11 @@ Module intrinsics.
                               []
                             |)
                           ]
-                        |)
-                      |) in
-                    M.alloc (| Value.Tuple [] |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-              ]
+                        |) in
+                      M.alloc (| Value.Tuple [] |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                ]
+              |)
             |) in
           M.alloc (|
             M.call_closure (|
@@ -2491,24 +2489,24 @@ Module intrinsics.
         let count := M.alloc (| count |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
-            M.match_operator (|
-              Some (Ty.tuple []),
-              M.alloc (| Value.Tuple [] |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ :=
-                      M.use
-                        (M.alloc (|
-                          M.call_closure (|
-                            Ty.path "bool",
-                            M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
-                            []
-                          |)
-                        |)) in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    let~ _ : Ty.tuple [] :=
-                      M.alloc (|
+            M.read (|
+              M.match_operator (|
+                Some (Ty.tuple []),
+                M.alloc (| Value.Tuple [] |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ :=
+                        M.use
+                          (M.alloc (|
+                            M.call_closure (|
+                              Ty.path "bool",
+                              M.get_function (| "core::ub_checks::check_language_ub", [], [] |),
+                              []
+                            |)
+                          |)) in
+                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let~ _ : Ty.tuple [] :=
                         M.call_closure (|
                           Ty.tuple [],
                           M.get_function (|
@@ -2526,11 +2524,11 @@ Module intrinsics.
                               []
                             |)
                           ]
-                        |)
-                      |) in
-                    M.alloc (| Value.Tuple [] |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-              ]
+                        |) in
+                      M.alloc (| Value.Tuple [] |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                ]
+              |)
             |) in
           M.alloc (|
             M.call_closure (|

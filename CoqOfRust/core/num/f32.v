@@ -455,46 +455,6 @@ Module f32.
     Global Typeclasses Opaque is_nan.
     
     (*
-        pub(crate) const fn abs_private(self) -> f32 {
-            // SAFETY: This transmutation is fine just like in `to_bits`/`from_bits`.
-            unsafe { mem::transmute::<u32, f32>(mem::transmute::<f32, u32>(self) & !Self::SIGN_MASK) }
-        }
-    *)
-    Definition abs_private (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match ε, τ, α with
-      | [], [], [ self ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          M.call_closure (|
-            Ty.path "f32",
-            M.get_function (|
-              "core::intrinsics::transmute",
-              [],
-              [ Ty.path "u32"; Ty.path "f32" ]
-            |),
-            [
-              BinOp.bit_and
-                (M.call_closure (|
-                  Ty.path "u32",
-                  M.get_function (|
-                    "core::intrinsics::transmute",
-                    [],
-                    [ Ty.path "f32"; Ty.path "u32" ]
-                  |),
-                  [ M.read (| self |) ]
-                |))
-                (UnOp.not (| M.read (| M.get_constant "core::f32::SIGN_MASK" |) |))
-            ]
-          |)))
-      | _, _, _ => M.impossible "wrong number of arguments"
-      end.
-    
-    Global Instance AssociatedFunction_abs_private :
-      M.IsAssociatedFunction.Trait Self "abs_private" abs_private.
-    Admitted.
-    Global Typeclasses Opaque abs_private.
-    
-    (*
         pub const fn is_infinite(self) -> bool {
             // Getting clever with transmutation can result in incorrect answers on some FPUs
             // FIXME: alter the Rust <-> Rust calling convention to prevent this problem.
@@ -525,7 +485,7 @@ Module f32.
         pub const fn is_finite(self) -> bool {
             // There's no need to handle NaN separately: if self is NaN,
             // the comparison is not true, exactly as desired.
-            self.abs_private() < Self::INFINITY
+            self.abs() < Self::INFINITY
         }
     *)
     Definition is_finite (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -536,7 +496,7 @@ Module f32.
           BinOp.lt (|
             M.call_closure (|
               Ty.path "f32",
-              M.get_associated_function (| Ty.path "f32", "abs_private", [], [] |),
+              M.get_associated_function (| Ty.path "f32", "abs", [], [] |),
               [ M.read (| self |) ]
             |),
             M.read (| M.get_constant "core::f32::INFINITY" |)
@@ -1099,7 +1059,7 @@ Module f32.
     Global Typeclasses Opaque next_down.
     
     (*
-        pub fn recip(self) -> f32 {
+        pub const fn recip(self) -> f32 {
             1.0 / self
         }
     *)
@@ -1117,7 +1077,7 @@ Module f32.
     Global Typeclasses Opaque recip.
     
     (*
-        pub fn to_degrees(self) -> f32 {
+        pub const fn to_degrees(self) -> f32 {
             // Use a constant for better precision.
             const PIS_IN_180: f32 = 57.2957795130823208767981548141051703_f32;
             self * PIS_IN_180
@@ -1141,7 +1101,7 @@ Module f32.
     Global Typeclasses Opaque to_degrees.
     
     (*
-        pub fn to_radians(self) -> f32 {
+        pub const fn to_radians(self) -> f32 {
             const RADS_PER_DEG: f32 = consts::PI / 180.0;
             self * RADS_PER_DEG
         }
@@ -1164,7 +1124,7 @@ Module f32.
     Global Typeclasses Opaque to_radians.
     
     (*
-        pub fn max(self, other: f32) -> f32 {
+        pub const fn max(self, other: f32) -> f32 {
             intrinsics::maxnumf32(self, other)
         }
     *)
@@ -1187,7 +1147,7 @@ Module f32.
     Global Typeclasses Opaque max.
     
     (*
-        pub fn min(self, other: f32) -> f32 {
+        pub const fn min(self, other: f32) -> f32 {
             intrinsics::minnumf32(self, other)
         }
     *)
@@ -1210,7 +1170,7 @@ Module f32.
     Global Typeclasses Opaque min.
     
     (*
-        pub fn maximum(self, other: f32) -> f32 {
+        pub const fn maximum(self, other: f32) -> f32 {
             if self > other {
                 self
             } else if other > self {
@@ -1336,7 +1296,7 @@ Module f32.
     Global Typeclasses Opaque maximum.
     
     (*
-        pub fn minimum(self, other: f32) -> f32 {
+        pub const fn minimum(self, other: f32) -> f32 {
             if self < other {
                 self
             } else if other < self {
@@ -1463,28 +1423,28 @@ Module f32.
     Global Typeclasses Opaque minimum.
     
     (*
-        pub fn midpoint(self, other: f32) -> f32 {
+        pub const fn midpoint(self, other: f32) -> f32 {
             cfg_if! {
+                // Allow faster implementation that have known good 64-bit float
+                // implementations. Falling back to the branchy code on targets that don't
+                // have 64-bit hardware floats or buggy implementations.
+                // https://github.com/rust-lang/rust/pull/121062#issuecomment-2123408114
                 if #[cfg(any(
                         target_arch = "x86_64",
                         target_arch = "aarch64",
-                        all(any(target_arch="riscv32", target_arch= "riscv64"), target_feature="d"),
-                        all(target_arch = "arm", target_feature="vfp2"),
+                        all(any(target_arch = "riscv32", target_arch = "riscv64"), target_feature = "d"),
+                        all(target_arch = "arm", target_feature = "vfp2"),
                         target_arch = "wasm32",
                         target_arch = "wasm64",
                     ))] {
-                    // whitelist the faster implementation to targets that have known good 64-bit float
-                    // implementations. Falling back to the branchy code on targets that don't have
-                    // 64-bit hardware floats or buggy implementations.
-                    // see: https://github.com/rust-lang/rust/pull/121062#issuecomment-2123408114
-                    ((f64::from(self) + f64::from(other)) / 2.0) as f32
+                    ((self as f64 + other as f64) / 2.0) as f32
                 } else {
                     const LO: f32 = f32::MIN_POSITIVE * 2.;
                     const HI: f32 = f32::MAX / 2.;
     
                     let (a, b) = (self, other);
-                    let abs_a = a.abs_private();
-                    let abs_b = b.abs_private();
+                    let abs_a = a.abs();
+                    let abs_b = b.abs();
     
                     if abs_a <= HI && abs_b <= HI {
                         // Overflow is impossible
@@ -1513,32 +1473,8 @@ Module f32.
             (Ty.path "f32")
             (BinOp.Wrap.div (|
               BinOp.Wrap.add (|
-                M.call_closure (|
-                  Ty.path "f64",
-                  M.get_trait_method (|
-                    "core::convert::From",
-                    Ty.path "f64",
-                    [],
-                    [ Ty.path "f32" ],
-                    "from",
-                    [],
-                    []
-                  |),
-                  [ M.read (| self |) ]
-                |),
-                M.call_closure (|
-                  Ty.path "f64",
-                  M.get_trait_method (|
-                    "core::convert::From",
-                    Ty.path "f64",
-                    [],
-                    [ Ty.path "f32" ],
-                    "from",
-                    [],
-                    []
-                  |),
-                  [ M.read (| other |) ]
-                |)
+                M.cast (Ty.path "f64") (M.read (| self |)),
+                M.cast (Ty.path "f64") (M.read (| other |))
               |),
               M.read (| UnsupportedLiteral |)
             |))))
@@ -1940,8 +1876,15 @@ Module f32.
     Global Typeclasses Opaque total_cmp.
     
     (*
-        pub fn clamp(mut self, min: f32, max: f32) -> f32 {
-            assert!(min <= max, "min > max, or either was NaN. min = {min:?}, max = {max:?}");
+        pub const fn clamp(mut self, min: f32, max: f32) -> f32 {
+            const_assert!(
+                min <= max,
+                "min > max, or either was NaN",
+                "min > max, or either was NaN. min = {min:?}, max = {max:?}",
+                min: f32,
+                max: f32,
+            );
+    
             if self < min {
                 self = min;
             }
@@ -1969,94 +1912,21 @@ Module f32.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.not (| BinOp.le (| M.read (| min |), M.read (| max |) |) |)
+                            UnOp.not (|
+                              M.call_closure (|
+                                Ty.path "bool",
+                                M.get_function (| "core::intrinsics::likely", [], [] |),
+                                [ BinOp.le (| M.read (| min |), M.read (| max |) |) ]
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
                             Ty.path "never",
-                            M.get_function (| "core::panicking::panic_fmt", [], [] |),
-                            [
-                              M.call_closure (|
-                                Ty.path "core::fmt::Arguments",
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::Arguments",
-                                  "new_v1",
-                                  [
-                                    Value.Integer IntegerKind.Usize 2;
-                                    Value.Integer IntegerKind.Usize 2
-                                  ],
-                                  []
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (|
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.read (|
-                                                Value.String "min > max, or either was NaN. min = "
-                                              |);
-                                              M.read (| Value.String ", max = " |)
-                                            ]
-                                        |)
-                                      |)
-                                    |)
-                                  |);
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (|
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.call_closure (|
-                                                Ty.path "core::fmt::rt::Argument",
-                                                M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_debug",
-                                                  [],
-                                                  [ Ty.path "f32" ]
-                                                |),
-                                                [
-                                                  M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.deref (|
-                                                      M.borrow (| Pointer.Kind.Ref, min |)
-                                                    |)
-                                                  |)
-                                                ]
-                                              |);
-                                              M.call_closure (|
-                                                Ty.path "core::fmt::rt::Argument",
-                                                M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_debug",
-                                                  [],
-                                                  [ Ty.path "f32" ]
-                                                |),
-                                                [
-                                                  M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.deref (|
-                                                      M.borrow (| Pointer.Kind.Ref, max |)
-                                                    |)
-                                                  |)
-                                                ]
-                                              |)
-                                            ]
-                                        |)
-                                      |)
-                                    |)
-                                  |)
-                                ]
-                              |)
-                            ]
+                            M.get_associated_function (| Self, "do_panic.clamp", [], [] |),
+                            [ M.read (| min |); M.read (| max |) ]
                           |)
                         |)
                       |)));
@@ -2101,5 +1971,100 @@ Module f32.
     Global Instance AssociatedFunction_clamp : M.IsAssociatedFunction.Trait Self "clamp" clamp.
     Admitted.
     Global Typeclasses Opaque clamp.
+    
+    (*
+        pub const fn abs(self) -> f32 {
+            // SAFETY: this is actually a safe intrinsic
+            unsafe { intrinsics::fabsf32(self) }
+        }
+    *)
+    Definition abs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.call_closure (|
+            Ty.path "f32",
+            M.get_function (| "core::intrinsics::fabsf32", [], [] |),
+            [ M.read (| self |) ]
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Global Instance AssociatedFunction_abs : M.IsAssociatedFunction.Trait Self "abs" abs.
+    Admitted.
+    Global Typeclasses Opaque abs.
+    
+    (*
+        pub const fn signum(self) -> f32 {
+            if self.is_nan() { Self::NAN } else { 1.0_f32.copysign(self) }
+        }
+    *)
+    Definition signum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.read (|
+            M.match_operator (|
+              Some (Ty.path "f32"),
+              M.alloc (| Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ :=
+                      M.use
+                        (M.alloc (|
+                          M.call_closure (|
+                            Ty.path "bool",
+                            M.get_associated_function (| Ty.path "f32", "is_nan", [], [] |),
+                            [ M.read (| self |) ]
+                          |)
+                        |)) in
+                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    M.get_constant "core::f32::NAN"));
+                fun γ =>
+                  ltac:(M.monadic
+                    (M.alloc (|
+                      M.call_closure (|
+                        Ty.path "f32",
+                        M.get_associated_function (| Ty.path "f32", "copysign", [], [] |),
+                        [ M.read (| UnsupportedLiteral |); M.read (| self |) ]
+                      |)
+                    |)))
+              ]
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Global Instance AssociatedFunction_signum : M.IsAssociatedFunction.Trait Self "signum" signum.
+    Admitted.
+    Global Typeclasses Opaque signum.
+    
+    (*
+        pub const fn copysign(self, sign: f32) -> f32 {
+            // SAFETY: this is actually a safe intrinsic
+            unsafe { intrinsics::copysignf32(self, sign) }
+        }
+    *)
+    Definition copysign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; sign ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let sign := M.alloc (| sign |) in
+          M.call_closure (|
+            Ty.path "f32",
+            M.get_function (| "core::intrinsics::copysignf32", [], [] |),
+            [ M.read (| self |); M.read (| sign |) ]
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Global Instance AssociatedFunction_copysign :
+      M.IsAssociatedFunction.Trait Self "copysign" copysign.
+    Admitted.
+    Global Typeclasses Opaque copysign.
   End Impl_f32.
 End f32.

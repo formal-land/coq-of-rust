@@ -30,7 +30,7 @@ Module compatibility.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_compatibility_Compatibility.
   
-  Module Impl_core_cmp_PartialEq_for_move_binary_format_compatibility_Compatibility.
+  Module Impl_core_cmp_PartialEq_move_binary_format_compatibility_Compatibility_for_move_binary_format_compatibility_Compatibility.
     Definition Self : Ty.t := Ty.path "move_binary_format::compatibility::Compatibility".
     
     (* PartialEq *)
@@ -172,10 +172,10 @@ Module compatibility.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_binary_format::compatibility::Compatibility" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_binary_format_compatibility_Compatibility.
+  End Impl_core_cmp_PartialEq_move_binary_format_compatibility_Compatibility_for_move_binary_format_compatibility_Compatibility.
   
   Module Impl_core_cmp_Eq_for_move_binary_format_compatibility_Compatibility.
     Definition Self : Ty.t := Ty.path "move_binary_format::compatibility::Compatibility".
@@ -3743,7 +3743,7 @@ Module compatibility.
         (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
   End Impl_core_cmp_Ord_for_move_binary_format_compatibility_InclusionCheck.
   
-  Module Impl_core_cmp_PartialOrd_for_move_binary_format_compatibility_InclusionCheck.
+  Module Impl_core_cmp_PartialOrd_move_binary_format_compatibility_InclusionCheck_for_move_binary_format_compatibility_InclusionCheck.
     Definition Self : Ty.t := Ty.path "move_binary_format::compatibility::InclusionCheck".
     
     (* PartialOrd *)
@@ -3810,10 +3810,11 @@ Module compatibility.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *)
+        [ Ty.path "move_binary_format::compatibility::InclusionCheck" ]
         Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-  End Impl_core_cmp_PartialOrd_for_move_binary_format_compatibility_InclusionCheck.
+  End Impl_core_cmp_PartialOrd_move_binary_format_compatibility_InclusionCheck_for_move_binary_format_compatibility_InclusionCheck.
   
   Module Impl_core_cmp_Eq_for_move_binary_format_compatibility_InclusionCheck.
     Definition Self : Ty.t := Ty.path "move_binary_format::compatibility::InclusionCheck".
@@ -3854,7 +3855,7 @@ Module compatibility.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_binary_format_compatibility_InclusionCheck.
   
-  Module Impl_core_cmp_PartialEq_for_move_binary_format_compatibility_InclusionCheck.
+  Module Impl_core_cmp_PartialEq_move_binary_format_compatibility_InclusionCheck_for_move_binary_format_compatibility_InclusionCheck.
     Definition Self : Ty.t := Ty.path "move_binary_format::compatibility::InclusionCheck".
     
     (* PartialEq *)
@@ -3898,10 +3899,11 @@ Module compatibility.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *)
+        [ Ty.path "move_binary_format::compatibility::InclusionCheck" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_binary_format_compatibility_InclusionCheck.
+  End Impl_core_cmp_PartialEq_move_binary_format_compatibility_InclusionCheck_for_move_binary_format_compatibility_InclusionCheck.
   
   Module Impl_move_binary_format_compatibility_InclusionCheck.
     Definition Self : Ty.t := Ty.path "move_binary_format::compatibility::InclusionCheck".

@@ -231,7 +231,7 @@ Module legacy.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_revm_bytecode_legacy_analyzed_LegacyAnalyzedBytecode.
     
-    Module Impl_core_cmp_PartialEq_for_revm_bytecode_legacy_analyzed_LegacyAnalyzedBytecode.
+    Module Impl_core_cmp_PartialEq_revm_bytecode_legacy_analyzed_LegacyAnalyzedBytecode_for_revm_bytecode_legacy_analyzed_LegacyAnalyzedBytecode.
       Definition Self : Ty.t := Ty.path "revm_bytecode::legacy::analyzed::LegacyAnalyzedBytecode".
       
       (* PartialEq *)
@@ -330,10 +330,11 @@ Module legacy.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.path "revm_bytecode::legacy::analyzed::LegacyAnalyzedBytecode" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_revm_bytecode_legacy_analyzed_LegacyAnalyzedBytecode.
+    End Impl_core_cmp_PartialEq_revm_bytecode_legacy_analyzed_LegacyAnalyzedBytecode_for_revm_bytecode_legacy_analyzed_LegacyAnalyzedBytecode.
     
     Module Impl_core_cmp_Eq_for_revm_bytecode_legacy_analyzed_LegacyAnalyzedBytecode.
       Definition Self : Ty.t := Ty.path "revm_bytecode::legacy::analyzed::LegacyAnalyzedBytecode".
@@ -674,7 +675,7 @@ Module legacy.
           (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
     End Impl_core_cmp_Ord_for_revm_bytecode_legacy_analyzed_LegacyAnalyzedBytecode.
     
-    Module Impl_core_cmp_PartialOrd_for_revm_bytecode_legacy_analyzed_LegacyAnalyzedBytecode.
+    Module Impl_core_cmp_PartialOrd_revm_bytecode_legacy_analyzed_LegacyAnalyzedBytecode_for_revm_bytecode_legacy_analyzed_LegacyAnalyzedBytecode.
       Definition Self : Ty.t := Ty.path "revm_bytecode::legacy::analyzed::LegacyAnalyzedBytecode".
       
       (* PartialOrd *)
@@ -866,10 +867,11 @@ Module legacy.
         M.IsTraitInstance
           "core::cmp::PartialOrd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *)
+          [ Ty.path "revm_bytecode::legacy::analyzed::LegacyAnalyzedBytecode" ]
           Self
           (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-    End Impl_core_cmp_PartialOrd_for_revm_bytecode_legacy_analyzed_LegacyAnalyzedBytecode.
+    End Impl_core_cmp_PartialOrd_revm_bytecode_legacy_analyzed_LegacyAnalyzedBytecode_for_revm_bytecode_legacy_analyzed_LegacyAnalyzedBytecode.
     
     Module Impl_core_default_Default_for_revm_bytecode_legacy_analyzed_LegacyAnalyzedBytecode.
       Definition Self : Ty.t := Ty.path "revm_bytecode::legacy::analyzed::LegacyAnalyzedBytecode".

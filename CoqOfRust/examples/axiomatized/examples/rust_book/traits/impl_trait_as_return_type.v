@@ -15,10 +15,6 @@ Global Instance Instance_IsFunction_combine_vecs :
   M.IsFunction.Trait "impl_trait_as_return_type::combine_vecs" combine_vecs.
 Admitted.
 
-Module combine_vecs.
-  (* Error OpaqueTy *)
-End combine_vecs.
-
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_main :

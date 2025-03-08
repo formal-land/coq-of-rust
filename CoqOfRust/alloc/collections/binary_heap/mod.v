@@ -776,7 +776,10 @@ Module collections.
                   // the caller could've mutated the element. It is removed from the
                   // heap on the next line and pop() is not sensitive to its value.
               }
-              this.heap.pop().unwrap()
+      
+              // SAFETY: Have a `PeekMut` element proves that the associated binary heap being non-empty,
+              // so the `pop` operation will not fail.
+              unsafe { this.heap.pop().unwrap_unchecked() }
           }
       *)
       Definition pop (T A : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -890,7 +893,7 @@ Module collections.
                   T,
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::option::Option") [] [ T ],
-                    "unwrap",
+                    "unwrap_unchecked",
                     [],
                     []
                   |),

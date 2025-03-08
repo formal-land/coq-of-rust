@@ -399,10 +399,6 @@ Module iter.
       Admitted.
       Global Typeclasses Opaque inspect_fold.
       
-      Module inspect_fold.
-        (* Error OpaqueTy *)
-      End inspect_fold.
-      
       (*
       fn inspect_try_fold<'a, T, Acc, R>(
           f: &'a mut impl FnMut(&T),
@@ -503,10 +499,6 @@ Module iter.
         M.IsFunction.Trait "core::iter::adapters::inspect::inspect_try_fold" inspect_try_fold.
       Admitted.
       Global Typeclasses Opaque inspect_try_fold.
-      
-      Module inspect_try_fold.
-        (* Error OpaqueTy *)
-      End inspect_try_fold.
       
       Module Impl_core_iter_traits_iterator_Iterator_where_core_iter_traits_iterator_Iterator_I_where_core_ops_function_FnMut_F_Tuple_ref__associated_in_trait_core_iter_traits_iterator_Iterator___I_Item__for_core_iter_adapters_inspect_Inspect_I_F.
         Definition Self (I F : Ty.t) : Ty.t :=

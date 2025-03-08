@@ -87,9 +87,9 @@ Module ptr.
   
   (*
   pub const fn without_provenance<T>(addr: usize) -> *const T {
-      // FIXME(strict_provenance_magic): I am magic and should be a compiler intrinsic.
-      // We use transmute rather than a cast so tools like Miri can tell that this
-      // is *not* the same as with_exposed_provenance.
+      // An int-to-pointer transmute currently has exactly the intended semantics: it creates a
+      // pointer without provenance. Note that this is *not* a stable guarantee about transmute
+      // semantics, it relies on sysroot crates having special status.
       // SAFETY: every valid integer is also a valid pointer (as long as you don't dereference that
       // pointer).
       unsafe { mem::transmute(addr) }
@@ -146,9 +146,9 @@ Module ptr.
   
   (*
   pub const fn without_provenance_mut<T>(addr: usize) -> *mut T {
-      // FIXME(strict_provenance_magic): I am magic and should be a compiler intrinsic.
-      // We use transmute rather than a cast so tools like Miri can tell that this
-      // is *not* the same as with_exposed_provenance.
+      // An int-to-pointer transmute currently has exactly the intended semantics: it creates a
+      // pointer without provenance. Note that this is *not* a stable guarantee about transmute
+      // semantics, it relies on sysroot crates having special status.
       // SAFETY: every valid integer is also a valid pointer (as long as you don't dereference that
       // pointer).
       unsafe { mem::transmute(addr) }
@@ -205,11 +205,7 @@ Module ptr.
   Global Typeclasses Opaque dangling_mut.
   
   (*
-  pub fn with_exposed_provenance<T>(addr: usize) -> *const T
-  where
-      T: Sized,
-  {
-      // FIXME(strict_provenance_magic): I am magic and should be a compiler intrinsic.
+  pub fn with_exposed_provenance<T>(addr: usize) -> *const T {
       addr as *const T
   }
   *)
@@ -228,11 +224,7 @@ Module ptr.
   Global Typeclasses Opaque with_exposed_provenance.
   
   (*
-  pub fn with_exposed_provenance_mut<T>(addr: usize) -> *mut T
-  where
-      T: Sized,
-  {
-      // FIXME(strict_provenance_magic): I am magic and should be a compiler intrinsic.
+  pub fn with_exposed_provenance_mut<T>(addr: usize) -> *mut T {
       addr as *mut T
   }
   *)
@@ -478,10 +470,12 @@ Module ptr.
               size: usize = size_of::<T>(),
               align: usize = align_of::<T>(),
               count: usize = count,
-          ) =>
-          ub_checks::is_aligned_and_not_null(x, align)
-              && ub_checks::is_aligned_and_not_null(y, align)
-              && ub_checks::is_nonoverlapping(x, y, size, count)
+          ) => {
+              let zero_size = size == 0 || count == 0;
+              ub_checks::maybe_is_aligned_and_not_null(x, align, zero_size)
+                  && ub_checks::maybe_is_aligned_and_not_null(y, align, zero_size)
+                  && ub_checks::maybe_is_nonoverlapping(x, y, size, count)
+          }
       );
   
       // Split up the slice into small power-of-two-sized chunks that LLVM is able
@@ -1166,7 +1160,8 @@ Module ptr.
               (
                   addr: *const () = dst as *const (),
                   align: usize = align_of::<T>(),
-              ) => ub_checks::is_aligned_and_not_null(addr, align)
+                  is_zst: bool = T::IS_ZST,
+              ) => ub_checks::maybe_is_aligned_and_not_null(addr, align, is_zst)
           );
           mem::replace(&mut *dst, src)
       }
@@ -1209,7 +1204,8 @@ Module ptr.
                               Ty.path "usize",
                               M.get_function (| "core::mem::align_of", [], [ T ] |),
                               []
-                            |)
+                            |);
+                            M.read (| M.get_constant "core::mem::SizedTypeProperties::IS_ZST" |)
                           ]
                         |)
                       |) in
@@ -1275,7 +1271,8 @@ Module ptr.
               (
                   addr: *const () = src as *const (),
                   align: usize = align_of::<T>(),
-              ) => ub_checks::is_aligned_and_not_null(addr, align)
+                  is_zst: bool = T::IS_ZST,
+              ) => ub_checks::maybe_is_aligned_and_not_null(addr, align, is_zst)
           );
           crate::intrinsics::read_via_copy(src)
       }
@@ -1317,7 +1314,8 @@ Module ptr.
                               Ty.path "usize",
                               M.get_function (| "core::mem::align_of", [], [ T ] |),
                               []
-                            |)
+                            |);
+                            M.read (| M.get_constant "core::mem::SizedTypeProperties::IS_ZST" |)
                           ]
                         |)
                       |) in
@@ -1443,7 +1441,8 @@ Module ptr.
               (
                   addr: *mut () = dst as *mut (),
                   align: usize = align_of::<T>(),
-              ) => ub_checks::is_aligned_and_not_null(addr, align)
+                  is_zst: bool = T::IS_ZST,
+              ) => ub_checks::maybe_is_aligned_and_not_null(addr, align, is_zst)
           );
           intrinsics::write_via_move(dst, src)
       }
@@ -1486,7 +1485,8 @@ Module ptr.
                               Ty.path "usize",
                               M.get_function (| "core::mem::align_of", [], [ T ] |),
                               []
-                            |)
+                            |);
+                            M.read (| M.get_constant "core::mem::SizedTypeProperties::IS_ZST" |)
                           ]
                         |)
                       |) in
@@ -1574,7 +1574,8 @@ Module ptr.
               (
                   addr: *const () = src as *const (),
                   align: usize = align_of::<T>(),
-              ) => ub_checks::is_aligned_and_not_null(addr, align)
+                  is_zst: bool = T::IS_ZST,
+              ) => ub_checks::maybe_is_aligned_and_not_null(addr, align, is_zst)
           );
           intrinsics::volatile_load(src)
       }
@@ -1620,7 +1621,8 @@ Module ptr.
                               Ty.path "usize",
                               M.get_function (| "core::mem::align_of", [], [ T ] |),
                               []
-                            |)
+                            |);
+                            M.read (| M.get_constant "core::mem::SizedTypeProperties::IS_ZST" |)
                           ]
                         |)
                       |) in
@@ -1654,7 +1656,8 @@ Module ptr.
               (
                   addr: *mut () = dst as *mut (),
                   align: usize = align_of::<T>(),
-              ) => ub_checks::is_aligned_and_not_null(addr, align)
+                  is_zst: bool = T::IS_ZST,
+              ) => ub_checks::maybe_is_aligned_and_not_null(addr, align, is_zst)
           );
           intrinsics::volatile_store(dst, src);
       }
@@ -1701,7 +1704,8 @@ Module ptr.
                               Ty.path "usize",
                               M.get_function (| "core::mem::align_of", [], [ T ] |),
                               []
-                            |)
+                            |);
+                            M.read (| M.get_constant "core::mem::SizedTypeProperties::IS_ZST" |)
                           ]
                         |)
                       |) in
@@ -1728,7 +1732,7 @@ Module ptr.
   Global Typeclasses Opaque write_volatile.
   
   (*
-  pub(crate) const unsafe fn align_offset<T: Sized>(p: *const T, a: usize) -> usize {
+  pub(crate) unsafe fn align_offset<T: Sized>(p: *const T, a: usize) -> usize {
       // FIXME(#75598): Direct use of these intrinsics improves codegen significantly at opt-level <=
       // 1, where the method versions of these operations are not inlined.
       use intrinsics::{
@@ -1789,11 +1793,7 @@ Module ptr.
   
       let stride = mem::size_of::<T>();
   
-      // SAFETY: This is just an inlined `p.addr()` (which is not
-      // a `const fn` so we cannot call it).
-      // During const eval, we hook this function to ensure that the pointer never
-      // has provenance, making this sound.
-      let addr: usize = unsafe { mem::transmute(p) };
+      let addr: usize = p.addr();
   
       // SAFETY: `a` is a power-of-two, therefore non-zero.
       let a_minus_one = unsafe { unchecked_sub(a, 1) };
@@ -1925,10 +1925,11 @@ Module ptr.
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "usize",
-                    M.get_function (|
-                      "core::intrinsics::transmute",
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "*const") [] [ T ],
+                      "addr",
                       [],
-                      [ Ty.apply (Ty.path "*const") [] [ T ]; Ty.path "usize" ]
+                      []
                     |),
                     [ M.read (| p |) ]
                   |)
@@ -2652,7 +2653,7 @@ Module ptr.
   Admitted.
   Global Typeclasses Opaque hash.
   
-  Module Impl_core_cmp_PartialEq_where_core_marker_FnPtr_F_for_F.
+  Module Impl_core_cmp_PartialEq_where_core_marker_FnPtr_F_F_for_F.
     Definition Self (F : Ty.t) : Ty.t := F.
     
     (*
@@ -2687,10 +2688,10 @@ Module ptr.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ F ]
         (Self F)
         (* Instance *) [ ("eq", InstanceField.Method (eq F)) ].
-  End Impl_core_cmp_PartialEq_where_core_marker_FnPtr_F_for_F.
+  End Impl_core_cmp_PartialEq_where_core_marker_FnPtr_F_F_for_F.
   
   Module Impl_core_cmp_Eq_where_core_marker_FnPtr_F_for_F.
     Definition Self (F : Ty.t) : Ty.t := F.
@@ -2705,7 +2706,7 @@ Module ptr.
         (* Instance *) [].
   End Impl_core_cmp_Eq_where_core_marker_FnPtr_F_for_F.
   
-  Module Impl_core_cmp_PartialOrd_where_core_marker_FnPtr_F_for_F.
+  Module Impl_core_cmp_PartialOrd_where_core_marker_FnPtr_F_F_for_F.
     Definition Self (F : Ty.t) : Ty.t := F.
     
     (*
@@ -2767,10 +2768,10 @@ Module ptr.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ F ]
         (Self F)
         (* Instance *) [ ("partial_cmp", InstanceField.Method (partial_cmp F)) ].
-  End Impl_core_cmp_PartialOrd_where_core_marker_FnPtr_F_for_F.
+  End Impl_core_cmp_PartialOrd_where_core_marker_FnPtr_F_F_for_F.
   
   Module Impl_core_cmp_Ord_where_core_marker_FnPtr_F_for_F.
     Definition Self (F : Ty.t) : Ty.t := F.

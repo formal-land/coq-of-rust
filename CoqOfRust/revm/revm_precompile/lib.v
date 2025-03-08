@@ -3254,7 +3254,7 @@ Module Impl_core_marker_StructuralPartialEq_for_revm_precompile_PrecompileSpecId
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_revm_precompile_PrecompileSpecId.
 
-Module Impl_core_cmp_PartialEq_for_revm_precompile_PrecompileSpecId.
+Module Impl_core_cmp_PartialEq_revm_precompile_PrecompileSpecId_for_revm_precompile_PrecompileSpecId.
   Definition Self : Ty.t := Ty.path "revm_precompile::PrecompileSpecId".
   
   (* PartialEq *)
@@ -3298,10 +3298,10 @@ Module Impl_core_cmp_PartialEq_for_revm_precompile_PrecompileSpecId.
     M.IsTraitInstance
       "core::cmp::PartialEq"
       (* Trait polymorphic consts *) []
-      (* Trait polymorphic types *) []
+      (* Trait polymorphic types *) [ Ty.path "revm_precompile::PrecompileSpecId" ]
       Self
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
-End Impl_core_cmp_PartialEq_for_revm_precompile_PrecompileSpecId.
+End Impl_core_cmp_PartialEq_revm_precompile_PrecompileSpecId_for_revm_precompile_PrecompileSpecId.
 
 Module Impl_core_cmp_Eq_for_revm_precompile_PrecompileSpecId.
   Definition Self : Ty.t := Ty.path "revm_precompile::PrecompileSpecId".
@@ -3451,7 +3451,7 @@ Module Impl_core_cmp_Ord_for_revm_precompile_PrecompileSpecId.
       (* Instance *) [ ("cmp", InstanceField.Method cmp) ].
 End Impl_core_cmp_Ord_for_revm_precompile_PrecompileSpecId.
 
-Module Impl_core_cmp_PartialOrd_for_revm_precompile_PrecompileSpecId.
+Module Impl_core_cmp_PartialOrd_revm_precompile_PrecompileSpecId_for_revm_precompile_PrecompileSpecId.
   Definition Self : Ty.t := Ty.path "revm_precompile::PrecompileSpecId".
   
   (* PartialOrd *)
@@ -3518,10 +3518,10 @@ Module Impl_core_cmp_PartialOrd_for_revm_precompile_PrecompileSpecId.
     M.IsTraitInstance
       "core::cmp::PartialOrd"
       (* Trait polymorphic consts *) []
-      (* Trait polymorphic types *) []
+      (* Trait polymorphic types *) [ Ty.path "revm_precompile::PrecompileSpecId" ]
       Self
       (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-End Impl_core_cmp_PartialOrd_for_revm_precompile_PrecompileSpecId.
+End Impl_core_cmp_PartialOrd_revm_precompile_PrecompileSpecId_for_revm_precompile_PrecompileSpecId.
 
 Module Impl_core_convert_From_revm_specification_hardfork_SpecId_for_revm_precompile_PrecompileSpecId.
   Definition Self : Ty.t := Ty.path "revm_precompile::PrecompileSpecId".

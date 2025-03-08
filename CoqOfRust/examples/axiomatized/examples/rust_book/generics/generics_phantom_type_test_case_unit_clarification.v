@@ -155,7 +155,7 @@ Module Impl_core_marker_Copy_where_core_marker_Copy_Unit_for_generics_phantom_ty
       (* Instance *) [].
 End Impl_core_marker_Copy_where_core_marker_Copy_Unit_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
 
-Module Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
+Module Impl_core_ops_arith_Add_generics_phantom_type_test_case_unit_clarification_Length_Unit_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
   Definition Self (Unit : Ty.t) : Ty.t :=
     Ty.apply (Ty.path "generics_phantom_type_test_case_unit_clarification::Length") [] [ Unit ].
   
@@ -169,11 +169,13 @@ Module Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarific
     M.IsTraitInstance
       "core::ops::arith::Add"
       (* Trait polymorphic consts *) []
-      (* Trait polymorphic types *) []
+      (* Trait polymorphic types *)
+      [ Ty.apply (Ty.path "generics_phantom_type_test_case_unit_clarification::Length") [] [ Unit ]
+      ]
       (Self Unit)
       (* Instance *)
       [ ("Output", InstanceField.Ty (_Output Unit)); ("add", InstanceField.Method (add Unit)) ].
-End Impl_core_ops_arith_Add_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
+End Impl_core_ops_arith_Add_generics_phantom_type_test_case_unit_clarification_Length_Unit_for_generics_phantom_type_test_case_unit_clarification_Length_Unit.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 

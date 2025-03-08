@@ -126,7 +126,7 @@ Module net.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_net_ip_addr_IpAddr.
     
-    Module Impl_core_cmp_PartialEq_for_core_net_ip_addr_IpAddr.
+    Module Impl_core_cmp_PartialEq_core_net_ip_addr_IpAddr_for_core_net_ip_addr_IpAddr.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::IpAddr".
       
       (* PartialEq *)
@@ -286,10 +286,10 @@ Module net.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::net::ip_addr::IpAddr" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_core_net_ip_addr_IpAddr.
+    End Impl_core_cmp_PartialEq_core_net_ip_addr_IpAddr_for_core_net_ip_addr_IpAddr.
     
     Module Impl_core_hash_Hash_for_core_net_ip_addr_IpAddr.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::IpAddr".
@@ -411,7 +411,7 @@ Module net.
           (* Instance *) [ ("hash", InstanceField.Method hash) ].
     End Impl_core_hash_Hash_for_core_net_ip_addr_IpAddr.
     
-    Module Impl_core_cmp_PartialOrd_for_core_net_ip_addr_IpAddr.
+    Module Impl_core_cmp_PartialOrd_core_net_ip_addr_IpAddr_for_core_net_ip_addr_IpAddr.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::IpAddr".
       
       (* PartialOrd *)
@@ -572,10 +572,10 @@ Module net.
         M.IsTraitInstance
           "core::cmp::PartialOrd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::net::ip_addr::IpAddr" ]
           Self
           (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-    End Impl_core_cmp_PartialOrd_for_core_net_ip_addr_IpAddr.
+    End Impl_core_cmp_PartialOrd_core_net_ip_addr_IpAddr_for_core_net_ip_addr_IpAddr.
     
     Module Impl_core_cmp_Ord_for_core_net_ip_addr_IpAddr.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::IpAddr".
@@ -830,7 +830,7 @@ Module net.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_net_ip_addr_Ipv4Addr.
     
-    Module Impl_core_cmp_PartialEq_for_core_net_ip_addr_Ipv4Addr.
+    Module Impl_core_cmp_PartialEq_core_net_ip_addr_Ipv4Addr_for_core_net_ip_addr_Ipv4Addr.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::Ipv4Addr".
       
       (* PartialEq *)
@@ -878,10 +878,10 @@ Module net.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::net::ip_addr::Ipv4Addr" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_core_net_ip_addr_Ipv4Addr.
+    End Impl_core_cmp_PartialEq_core_net_ip_addr_Ipv4Addr_for_core_net_ip_addr_Ipv4Addr.
     
     Module Impl_core_cmp_Eq_for_core_net_ip_addr_Ipv4Addr.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::Ipv4Addr".
@@ -1048,7 +1048,7 @@ Module net.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_net_ip_addr_Ipv6Addr.
     
-    Module Impl_core_cmp_PartialEq_for_core_net_ip_addr_Ipv6Addr.
+    Module Impl_core_cmp_PartialEq_core_net_ip_addr_Ipv6Addr_for_core_net_ip_addr_Ipv6Addr.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::Ipv6Addr".
       
       (* PartialEq *)
@@ -1096,10 +1096,10 @@ Module net.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::net::ip_addr::Ipv6Addr" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_core_net_ip_addr_Ipv6Addr.
+    End Impl_core_cmp_PartialEq_core_net_ip_addr_Ipv6Addr_for_core_net_ip_addr_Ipv6Addr.
     
     Module Impl_core_cmp_Eq_for_core_net_ip_addr_Ipv6Addr.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::Ipv6Addr".
@@ -1280,7 +1280,7 @@ Module net.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_net_ip_addr_Ipv6MulticastScope.
     
-    Module Impl_core_cmp_PartialEq_for_core_net_ip_addr_Ipv6MulticastScope.
+    Module Impl_core_cmp_PartialEq_core_net_ip_addr_Ipv6MulticastScope_for_core_net_ip_addr_Ipv6MulticastScope.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::Ipv6MulticastScope".
       
       (* PartialEq *)
@@ -1324,10 +1324,10 @@ Module net.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::net::ip_addr::Ipv6MulticastScope" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_core_net_ip_addr_Ipv6MulticastScope.
+    End Impl_core_cmp_PartialEq_core_net_ip_addr_Ipv6MulticastScope_for_core_net_ip_addr_Ipv6MulticastScope.
     
     Module Impl_core_cmp_Eq_for_core_net_ip_addr_Ipv6MulticastScope.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::Ipv6MulticastScope".
@@ -2358,6 +2358,25 @@ Module net.
       Global Instance AssociatedFunction_octets : M.IsAssociatedFunction.Trait Self "octets" octets.
       Admitted.
       Global Typeclasses Opaque octets.
+      
+      (*
+          pub const fn from_octets(octets: [u8; 4]) -> Ipv4Addr {
+              Ipv4Addr { octets }
+          }
+      *)
+      Definition from_octets (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ octets ] =>
+          ltac:(M.monadic
+            (let octets := M.alloc (| octets |) in
+            Value.StructRecord "core::net::ip_addr::Ipv4Addr" [ ("octets", M.read (| octets |)) ]))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Global Instance AssociatedFunction_from_octets :
+        M.IsAssociatedFunction.Trait Self "from_octets" from_octets.
+      Admitted.
+      Global Typeclasses Opaque from_octets.
       
       (*
           pub const fn is_unspecified(&self) -> bool {
@@ -4450,7 +4469,7 @@ Module net.
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_core_net_ip_addr_IpAddr_for_core_net_ip_addr_Ipv4Addr.
     
-    Module Impl_core_cmp_PartialOrd_for_core_net_ip_addr_Ipv4Addr.
+    Module Impl_core_cmp_PartialOrd_core_net_ip_addr_Ipv4Addr_for_core_net_ip_addr_Ipv4Addr.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::Ipv4Addr".
       
       (*
@@ -4491,10 +4510,10 @@ Module net.
         M.IsTraitInstance
           "core::cmp::PartialOrd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::net::ip_addr::Ipv4Addr" ]
           Self
           (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-    End Impl_core_cmp_PartialOrd_for_core_net_ip_addr_Ipv4Addr.
+    End Impl_core_cmp_PartialOrd_core_net_ip_addr_Ipv4Addr_for_core_net_ip_addr_Ipv4Addr.
     
     Module Impl_core_cmp_PartialOrd_core_net_ip_addr_Ipv4Addr_for_core_net_ip_addr_IpAddr.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::IpAddr".
@@ -5256,6 +5275,72 @@ Module net.
         M.IsAssociatedFunction.Trait Self "segments" segments.
       Admitted.
       Global Typeclasses Opaque segments.
+      
+      (*
+          pub const fn from_segments(segments: [u16; 8]) -> Ipv6Addr {
+              let [a, b, c, d, e, f, g, h] = segments;
+              Ipv6Addr::new(a, b, c, d, e, f, g, h)
+          }
+      *)
+      Definition from_segments (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ segments ] =>
+          ltac:(M.monadic
+            (let segments := M.alloc (| segments |) in
+            M.read (|
+              M.match_operator (|
+                None,
+                segments,
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
+                      let γ0_2 := M.SubPointer.get_slice_index (| γ, 2 |) in
+                      let γ0_3 := M.SubPointer.get_slice_index (| γ, 3 |) in
+                      let γ0_4 := M.SubPointer.get_slice_index (| γ, 4 |) in
+                      let γ0_5 := M.SubPointer.get_slice_index (| γ, 5 |) in
+                      let γ0_6 := M.SubPointer.get_slice_index (| γ, 6 |) in
+                      let γ0_7 := M.SubPointer.get_slice_index (| γ, 7 |) in
+                      let a := M.copy (| γ0_0 |) in
+                      let b := M.copy (| γ0_1 |) in
+                      let c := M.copy (| γ0_2 |) in
+                      let d := M.copy (| γ0_3 |) in
+                      let e := M.copy (| γ0_4 |) in
+                      let f := M.copy (| γ0_5 |) in
+                      let g := M.copy (| γ0_6 |) in
+                      let h := M.copy (| γ0_7 |) in
+                      M.alloc (|
+                        M.call_closure (|
+                          Ty.path "core::net::ip_addr::Ipv6Addr",
+                          M.get_associated_function (|
+                            Ty.path "core::net::ip_addr::Ipv6Addr",
+                            "new",
+                            [],
+                            []
+                          |),
+                          [
+                            M.read (| a |);
+                            M.read (| b |);
+                            M.read (| c |);
+                            M.read (| d |);
+                            M.read (| e |);
+                            M.read (| f |);
+                            M.read (| g |);
+                            M.read (| h |)
+                          ]
+                        |)
+                      |)))
+                ]
+              |)
+            |)))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Global Instance AssociatedFunction_from_segments :
+        M.IsAssociatedFunction.Trait Self "from_segments" from_segments.
+      Admitted.
+      Global Typeclasses Opaque from_segments.
       
       (*
           pub const fn is_unspecified(&self) -> bool {
@@ -7253,6 +7338,25 @@ Module net.
       Global Instance AssociatedFunction_octets : M.IsAssociatedFunction.Trait Self "octets" octets.
       Admitted.
       Global Typeclasses Opaque octets.
+      
+      (*
+          pub const fn from_octets(octets: [u8; 16]) -> Ipv6Addr {
+              Ipv6Addr { octets }
+          }
+      *)
+      Definition from_octets (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        match ε, τ, α with
+        | [], [], [ octets ] =>
+          ltac:(M.monadic
+            (let octets := M.alloc (| octets |) in
+            Value.StructRecord "core::net::ip_addr::Ipv6Addr" [ ("octets", M.read (| octets |)) ]))
+        | _, _, _ => M.impossible "wrong number of arguments"
+        end.
+      
+      Global Instance AssociatedFunction_from_octets :
+        M.IsAssociatedFunction.Trait Self "from_octets" from_octets.
+      Admitted.
+      Global Typeclasses Opaque from_octets.
     End Impl_core_net_ip_addr_Ipv6Addr.
     
     Module Impl_core_fmt_Display_for_core_net_ip_addr_Ipv6Addr.
@@ -8785,7 +8889,7 @@ Module net.
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
     End Impl_core_cmp_PartialEq_core_net_ip_addr_Ipv6Addr_for_core_net_ip_addr_IpAddr.
     
-    Module Impl_core_cmp_PartialOrd_for_core_net_ip_addr_Ipv6Addr.
+    Module Impl_core_cmp_PartialOrd_core_net_ip_addr_Ipv6Addr_for_core_net_ip_addr_Ipv6Addr.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::Ipv6Addr".
       
       (*
@@ -8826,10 +8930,10 @@ Module net.
         M.IsTraitInstance
           "core::cmp::PartialOrd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::net::ip_addr::Ipv6Addr" ]
           Self
           (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-    End Impl_core_cmp_PartialOrd_for_core_net_ip_addr_Ipv6Addr.
+    End Impl_core_cmp_PartialOrd_core_net_ip_addr_Ipv6Addr_for_core_net_ip_addr_Ipv6Addr.
     
     Module Impl_core_cmp_PartialOrd_core_net_ip_addr_Ipv6Addr_for_core_net_ip_addr_IpAddr.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::IpAddr".
@@ -9711,7 +9815,7 @@ Module net.
           [ ("Output", InstanceField.Ty _Output); ("not", InstanceField.Method not) ].
     End Impl_core_ops_bit_Not_for_ref__core_net_ip_addr_Ipv6Addr.
     
-    Module Impl_core_ops_bit_BitAndAssign_for_core_net_ip_addr_Ipv4Addr.
+    Module Impl_core_ops_bit_BitAndAssign_core_net_ip_addr_Ipv4Addr_for_core_net_ip_addr_Ipv4Addr.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::Ipv4Addr".
       
       (*
@@ -9921,10 +10025,10 @@ Module net.
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::net::ip_addr::Ipv4Addr" ]
           Self
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
-    End Impl_core_ops_bit_BitAndAssign_for_core_net_ip_addr_Ipv4Addr.
+    End Impl_core_ops_bit_BitAndAssign_core_net_ip_addr_Ipv4Addr_for_core_net_ip_addr_Ipv4Addr.
     
     Module Impl_core_ops_bit_BitAndAssign_ref__core_net_ip_addr_Ipv4Addr_for_core_net_ip_addr_Ipv4Addr.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::Ipv4Addr".
@@ -9975,7 +10079,7 @@ Module net.
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
     End Impl_core_ops_bit_BitAndAssign_ref__core_net_ip_addr_Ipv4Addr_for_core_net_ip_addr_Ipv4Addr.
     
-    Module Impl_core_ops_bit_BitAnd_for_core_net_ip_addr_Ipv4Addr.
+    Module Impl_core_ops_bit_BitAnd_core_net_ip_addr_Ipv4Addr_for_core_net_ip_addr_Ipv4Addr.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::Ipv4Addr".
       
       (*                 type Output = $ty; *)
@@ -10019,11 +10123,11 @@ Module net.
         M.IsTraitInstance
           "core::ops::bit::BitAnd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::net::ip_addr::Ipv4Addr" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
-    End Impl_core_ops_bit_BitAnd_for_core_net_ip_addr_Ipv4Addr.
+    End Impl_core_ops_bit_BitAnd_core_net_ip_addr_Ipv4Addr_for_core_net_ip_addr_Ipv4Addr.
     
     Module Impl_core_ops_bit_BitAnd_ref__core_net_ip_addr_Ipv4Addr_for_core_net_ip_addr_Ipv4Addr.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::Ipv4Addr".
@@ -10191,7 +10295,7 @@ Module net.
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
     End Impl_core_ops_bit_BitAnd_ref__core_net_ip_addr_Ipv4Addr_for_ref__core_net_ip_addr_Ipv4Addr.
     
-    Module Impl_core_ops_bit_BitOrAssign_for_core_net_ip_addr_Ipv4Addr.
+    Module Impl_core_ops_bit_BitOrAssign_core_net_ip_addr_Ipv4Addr_for_core_net_ip_addr_Ipv4Addr.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::Ipv4Addr".
       
       (*
@@ -10401,10 +10505,10 @@ Module net.
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::net::ip_addr::Ipv4Addr" ]
           Self
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
-    End Impl_core_ops_bit_BitOrAssign_for_core_net_ip_addr_Ipv4Addr.
+    End Impl_core_ops_bit_BitOrAssign_core_net_ip_addr_Ipv4Addr_for_core_net_ip_addr_Ipv4Addr.
     
     Module Impl_core_ops_bit_BitOrAssign_ref__core_net_ip_addr_Ipv4Addr_for_core_net_ip_addr_Ipv4Addr.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::Ipv4Addr".
@@ -10455,7 +10559,7 @@ Module net.
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
     End Impl_core_ops_bit_BitOrAssign_ref__core_net_ip_addr_Ipv4Addr_for_core_net_ip_addr_Ipv4Addr.
     
-    Module Impl_core_ops_bit_BitOr_for_core_net_ip_addr_Ipv4Addr.
+    Module Impl_core_ops_bit_BitOr_core_net_ip_addr_Ipv4Addr_for_core_net_ip_addr_Ipv4Addr.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::Ipv4Addr".
       
       (*                 type Output = $ty; *)
@@ -10499,11 +10603,11 @@ Module net.
         M.IsTraitInstance
           "core::ops::bit::BitOr"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::net::ip_addr::Ipv4Addr" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
-    End Impl_core_ops_bit_BitOr_for_core_net_ip_addr_Ipv4Addr.
+    End Impl_core_ops_bit_BitOr_core_net_ip_addr_Ipv4Addr_for_core_net_ip_addr_Ipv4Addr.
     
     Module Impl_core_ops_bit_BitOr_ref__core_net_ip_addr_Ipv4Addr_for_core_net_ip_addr_Ipv4Addr.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::Ipv4Addr".
@@ -10671,7 +10775,7 @@ Module net.
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
     End Impl_core_ops_bit_BitOr_ref__core_net_ip_addr_Ipv4Addr_for_ref__core_net_ip_addr_Ipv4Addr.
     
-    Module Impl_core_ops_bit_BitAndAssign_for_core_net_ip_addr_Ipv6Addr.
+    Module Impl_core_ops_bit_BitAndAssign_core_net_ip_addr_Ipv6Addr_for_core_net_ip_addr_Ipv6Addr.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::Ipv6Addr".
       
       (*
@@ -10881,10 +10985,10 @@ Module net.
         M.IsTraitInstance
           "core::ops::bit::BitAndAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::net::ip_addr::Ipv6Addr" ]
           Self
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
-    End Impl_core_ops_bit_BitAndAssign_for_core_net_ip_addr_Ipv6Addr.
+    End Impl_core_ops_bit_BitAndAssign_core_net_ip_addr_Ipv6Addr_for_core_net_ip_addr_Ipv6Addr.
     
     Module Impl_core_ops_bit_BitAndAssign_ref__core_net_ip_addr_Ipv6Addr_for_core_net_ip_addr_Ipv6Addr.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::Ipv6Addr".
@@ -10935,7 +11039,7 @@ Module net.
           (* Instance *) [ ("bitand_assign", InstanceField.Method bitand_assign) ].
     End Impl_core_ops_bit_BitAndAssign_ref__core_net_ip_addr_Ipv6Addr_for_core_net_ip_addr_Ipv6Addr.
     
-    Module Impl_core_ops_bit_BitAnd_for_core_net_ip_addr_Ipv6Addr.
+    Module Impl_core_ops_bit_BitAnd_core_net_ip_addr_Ipv6Addr_for_core_net_ip_addr_Ipv6Addr.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::Ipv6Addr".
       
       (*                 type Output = $ty; *)
@@ -10979,11 +11083,11 @@ Module net.
         M.IsTraitInstance
           "core::ops::bit::BitAnd"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::net::ip_addr::Ipv6Addr" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
-    End Impl_core_ops_bit_BitAnd_for_core_net_ip_addr_Ipv6Addr.
+    End Impl_core_ops_bit_BitAnd_core_net_ip_addr_Ipv6Addr_for_core_net_ip_addr_Ipv6Addr.
     
     Module Impl_core_ops_bit_BitAnd_ref__core_net_ip_addr_Ipv6Addr_for_core_net_ip_addr_Ipv6Addr.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::Ipv6Addr".
@@ -11151,7 +11255,7 @@ Module net.
           [ ("Output", InstanceField.Ty _Output); ("bitand", InstanceField.Method bitand) ].
     End Impl_core_ops_bit_BitAnd_ref__core_net_ip_addr_Ipv6Addr_for_ref__core_net_ip_addr_Ipv6Addr.
     
-    Module Impl_core_ops_bit_BitOrAssign_for_core_net_ip_addr_Ipv6Addr.
+    Module Impl_core_ops_bit_BitOrAssign_core_net_ip_addr_Ipv6Addr_for_core_net_ip_addr_Ipv6Addr.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::Ipv6Addr".
       
       (*
@@ -11361,10 +11465,10 @@ Module net.
         M.IsTraitInstance
           "core::ops::bit::BitOrAssign"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::net::ip_addr::Ipv6Addr" ]
           Self
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
-    End Impl_core_ops_bit_BitOrAssign_for_core_net_ip_addr_Ipv6Addr.
+    End Impl_core_ops_bit_BitOrAssign_core_net_ip_addr_Ipv6Addr_for_core_net_ip_addr_Ipv6Addr.
     
     Module Impl_core_ops_bit_BitOrAssign_ref__core_net_ip_addr_Ipv6Addr_for_core_net_ip_addr_Ipv6Addr.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::Ipv6Addr".
@@ -11415,7 +11519,7 @@ Module net.
           (* Instance *) [ ("bitor_assign", InstanceField.Method bitor_assign) ].
     End Impl_core_ops_bit_BitOrAssign_ref__core_net_ip_addr_Ipv6Addr_for_core_net_ip_addr_Ipv6Addr.
     
-    Module Impl_core_ops_bit_BitOr_for_core_net_ip_addr_Ipv6Addr.
+    Module Impl_core_ops_bit_BitOr_core_net_ip_addr_Ipv6Addr_for_core_net_ip_addr_Ipv6Addr.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::Ipv6Addr".
       
       (*                 type Output = $ty; *)
@@ -11459,11 +11563,11 @@ Module net.
         M.IsTraitInstance
           "core::ops::bit::BitOr"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::net::ip_addr::Ipv6Addr" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("bitor", InstanceField.Method bitor) ].
-    End Impl_core_ops_bit_BitOr_for_core_net_ip_addr_Ipv6Addr.
+    End Impl_core_ops_bit_BitOr_core_net_ip_addr_Ipv6Addr_for_core_net_ip_addr_Ipv6Addr.
     
     Module Impl_core_ops_bit_BitOr_ref__core_net_ip_addr_Ipv6Addr_for_core_net_ip_addr_Ipv6Addr.
       Definition Self : Ty.t := Ty.path "core::net::ip_addr::Ipv6Addr".

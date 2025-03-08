@@ -2192,7 +2192,7 @@ Module Impl_core_marker_StructuralPartialEq_for_move_abstract_stack_AbsStackErro
       (* Instance *) [].
 End Impl_core_marker_StructuralPartialEq_for_move_abstract_stack_AbsStackError.
 
-Module Impl_core_cmp_PartialEq_for_move_abstract_stack_AbsStackError.
+Module Impl_core_cmp_PartialEq_move_abstract_stack_AbsStackError_for_move_abstract_stack_AbsStackError.
   Definition Self : Ty.t := Ty.path "move_abstract_stack::AbsStackError".
   
   (* PartialEq *)
@@ -2236,12 +2236,12 @@ Module Impl_core_cmp_PartialEq_for_move_abstract_stack_AbsStackError.
     M.IsTraitInstance
       "core::cmp::PartialEq"
       (* Trait polymorphic consts *) []
-      (* Trait polymorphic types *) []
+      (* Trait polymorphic types *) [ Ty.path "move_abstract_stack::AbsStackError" ]
       Self
       (* Instance *) [ ("eq", InstanceField.Method eq) ].
-End Impl_core_cmp_PartialEq_for_move_abstract_stack_AbsStackError.
+End Impl_core_cmp_PartialEq_move_abstract_stack_AbsStackError_for_move_abstract_stack_AbsStackError.
 
-Module Impl_core_cmp_PartialOrd_for_move_abstract_stack_AbsStackError.
+Module Impl_core_cmp_PartialOrd_move_abstract_stack_AbsStackError_for_move_abstract_stack_AbsStackError.
   Definition Self : Ty.t := Ty.path "move_abstract_stack::AbsStackError".
   
   (* PartialOrd *)
@@ -2308,10 +2308,10 @@ Module Impl_core_cmp_PartialOrd_for_move_abstract_stack_AbsStackError.
     M.IsTraitInstance
       "core::cmp::PartialOrd"
       (* Trait polymorphic consts *) []
-      (* Trait polymorphic types *) []
+      (* Trait polymorphic types *) [ Ty.path "move_abstract_stack::AbsStackError" ]
       Self
       (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-End Impl_core_cmp_PartialOrd_for_move_abstract_stack_AbsStackError.
+End Impl_core_cmp_PartialOrd_move_abstract_stack_AbsStackError_for_move_abstract_stack_AbsStackError.
 
 Module Impl_core_cmp_Ord_for_move_abstract_stack_AbsStackError.
   Definition Self : Ty.t := Ty.path "move_abstract_stack::AbsStackError".

@@ -1860,7 +1860,7 @@ Module cfg.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_context_interface_cfg_AnalysisKind.
   
-  Module Impl_core_cmp_PartialEq_for_revm_context_interface_cfg_AnalysisKind.
+  Module Impl_core_cmp_PartialEq_revm_context_interface_cfg_AnalysisKind_for_revm_context_interface_cfg_AnalysisKind.
     Definition Self : Ty.t := Ty.path "revm_context_interface::cfg::AnalysisKind".
     
     (* PartialEq *)
@@ -1904,10 +1904,10 @@ Module cfg.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "revm_context_interface::cfg::AnalysisKind" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_revm_context_interface_cfg_AnalysisKind.
+  End Impl_core_cmp_PartialEq_revm_context_interface_cfg_AnalysisKind_for_revm_context_interface_cfg_AnalysisKind.
   
   Module Impl_core_hash_Hash_for_revm_context_interface_cfg_AnalysisKind.
     Definition Self : Ty.t := Ty.path "revm_context_interface::cfg::AnalysisKind".
@@ -2189,7 +2189,7 @@ Module cfg.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_revm_context_interface_cfg_CreateScheme.
   
-  Module Impl_core_cmp_PartialEq_for_revm_context_interface_cfg_CreateScheme.
+  Module Impl_core_cmp_PartialEq_revm_context_interface_cfg_CreateScheme_for_revm_context_interface_cfg_CreateScheme.
     Definition Self : Ty.t := Ty.path "revm_context_interface::cfg::CreateScheme".
     
     (* PartialEq *)
@@ -2309,10 +2309,10 @@ Module cfg.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "revm_context_interface::cfg::CreateScheme" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_revm_context_interface_cfg_CreateScheme.
+  End Impl_core_cmp_PartialEq_revm_context_interface_cfg_CreateScheme_for_revm_context_interface_cfg_CreateScheme.
   
   Module Impl_core_hash_Hash_for_revm_context_interface_cfg_CreateScheme.
     Definition Self : Ty.t := Ty.path "revm_context_interface::cfg::CreateScheme".

@@ -645,7 +645,7 @@ Module identifier.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_core_types_identifier_Identifier.
   
-  Module Impl_core_cmp_PartialEq_for_move_core_types_identifier_Identifier.
+  Module Impl_core_cmp_PartialEq_move_core_types_identifier_Identifier_for_move_core_types_identifier_Identifier.
     Definition Self : Ty.t := Ty.path "move_core_types::identifier::Identifier".
     
     (* PartialEq *)
@@ -700,12 +700,12 @@ Module identifier.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::identifier::Identifier" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_core_types_identifier_Identifier.
+  End Impl_core_cmp_PartialEq_move_core_types_identifier_Identifier_for_move_core_types_identifier_Identifier.
   
-  Module Impl_core_cmp_PartialOrd_for_move_core_types_identifier_Identifier.
+  Module Impl_core_cmp_PartialOrd_move_core_types_identifier_Identifier_for_move_core_types_identifier_Identifier.
     Definition Self : Ty.t := Ty.path "move_core_types::identifier::Identifier".
     
     (* PartialOrd *)
@@ -770,10 +770,10 @@ Module identifier.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::identifier::Identifier" ]
         Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-  End Impl_core_cmp_PartialOrd_for_move_core_types_identifier_Identifier.
+  End Impl_core_cmp_PartialOrd_move_core_types_identifier_Identifier_for_move_core_types_identifier_Identifier.
   
   Module underscore.
     Module Impl_serde_ser_Serialize_for_move_core_types_identifier_Identifier.
@@ -1992,7 +1992,7 @@ Module identifier.
         (* Instance *) [].
   End Impl_core_marker_StructuralPartialEq_for_move_core_types_identifier_IdentStr.
   
-  Module Impl_core_cmp_PartialEq_for_move_core_types_identifier_IdentStr.
+  Module Impl_core_cmp_PartialEq_move_core_types_identifier_IdentStr_for_move_core_types_identifier_IdentStr.
     Definition Self : Ty.t := Ty.path "move_core_types::identifier::IdentStr".
     
     (* PartialEq *)
@@ -2039,12 +2039,12 @@ Module identifier.
       M.IsTraitInstance
         "core::cmp::PartialEq"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::identifier::IdentStr" ]
         Self
         (* Instance *) [ ("eq", InstanceField.Method eq) ].
-  End Impl_core_cmp_PartialEq_for_move_core_types_identifier_IdentStr.
+  End Impl_core_cmp_PartialEq_move_core_types_identifier_IdentStr_for_move_core_types_identifier_IdentStr.
   
-  Module Impl_core_cmp_PartialOrd_for_move_core_types_identifier_IdentStr.
+  Module Impl_core_cmp_PartialOrd_move_core_types_identifier_IdentStr_for_move_core_types_identifier_IdentStr.
     Definition Self : Ty.t := Ty.path "move_core_types::identifier::IdentStr".
     
     (* PartialOrd *)
@@ -2101,10 +2101,10 @@ Module identifier.
       M.IsTraitInstance
         "core::cmp::PartialOrd"
         (* Trait polymorphic consts *) []
-        (* Trait polymorphic types *) []
+        (* Trait polymorphic types *) [ Ty.path "move_core_types::identifier::IdentStr" ]
         Self
         (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
-  End Impl_core_cmp_PartialOrd_for_move_core_types_identifier_IdentStr.
+  End Impl_core_cmp_PartialOrd_move_core_types_identifier_IdentStr_for_move_core_types_identifier_IdentStr.
   
   Module Impl_ref_cast_RefCast_for_move_core_types_identifier_IdentStr.
     Definition Self : Ty.t := Ty.path "move_core_types::identifier::IdentStr".

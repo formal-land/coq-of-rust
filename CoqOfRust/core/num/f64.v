@@ -455,46 +455,6 @@ Module f64.
     Global Typeclasses Opaque is_nan.
     
     (*
-        pub(crate) const fn abs_private(self) -> f64 {
-            // SAFETY: This transmutation is fine just like in `to_bits`/`from_bits`.
-            unsafe { mem::transmute::<u64, f64>(mem::transmute::<f64, u64>(self) & !Self::SIGN_MASK) }
-        }
-    *)
-    Definition abs_private (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
-      match ε, τ, α with
-      | [], [], [ self ] =>
-        ltac:(M.monadic
-          (let self := M.alloc (| self |) in
-          M.call_closure (|
-            Ty.path "f64",
-            M.get_function (|
-              "core::intrinsics::transmute",
-              [],
-              [ Ty.path "u64"; Ty.path "f64" ]
-            |),
-            [
-              BinOp.bit_and
-                (M.call_closure (|
-                  Ty.path "u64",
-                  M.get_function (|
-                    "core::intrinsics::transmute",
-                    [],
-                    [ Ty.path "f64"; Ty.path "u64" ]
-                  |),
-                  [ M.read (| self |) ]
-                |))
-                (UnOp.not (| M.read (| M.get_constant "core::f64::SIGN_MASK" |) |))
-            ]
-          |)))
-      | _, _, _ => M.impossible "wrong number of arguments"
-      end.
-    
-    Global Instance AssociatedFunction_abs_private :
-      M.IsAssociatedFunction.Trait Self "abs_private" abs_private.
-    Admitted.
-    Global Typeclasses Opaque abs_private.
-    
-    (*
         pub const fn is_infinite(self) -> bool {
             // Getting clever with transmutation can result in incorrect answers on some FPUs
             // FIXME: alter the Rust <-> Rust calling convention to prevent this problem.
@@ -525,7 +485,7 @@ Module f64.
         pub const fn is_finite(self) -> bool {
             // There's no need to handle NaN separately: if self is NaN,
             // the comparison is not true, exactly as desired.
-            self.abs_private() < Self::INFINITY
+            self.abs() < Self::INFINITY
         }
     *)
     Definition is_finite (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
@@ -536,7 +496,7 @@ Module f64.
           BinOp.lt (|
             M.call_closure (|
               Ty.path "f64",
-              M.get_associated_function (| Ty.path "f64", "abs_private", [], [] |),
+              M.get_associated_function (| Ty.path "f64", "abs", [], [] |),
               [ M.read (| self |) ]
             |),
             M.read (| M.get_constant "core::f64::INFINITY" |)
@@ -1145,7 +1105,7 @@ Module f64.
     Global Typeclasses Opaque next_down.
     
     (*
-        pub fn recip(self) -> f64 {
+        pub const fn recip(self) -> f64 {
             1.0 / self
         }
     *)
@@ -1163,7 +1123,7 @@ Module f64.
     Global Typeclasses Opaque recip.
     
     (*
-        pub fn to_degrees(self) -> f64 {
+        pub const fn to_degrees(self) -> f64 {
             // The division here is correctly rounded with respect to the true
             // value of 180/π. (This differs from f32, where a constant must be
             // used to ensure a correctly rounded result.)
@@ -1191,7 +1151,7 @@ Module f64.
     Global Typeclasses Opaque to_degrees.
     
     (*
-        pub fn to_radians(self) -> f64 {
+        pub const fn to_radians(self) -> f64 {
             const RADS_PER_DEG: f64 = consts::PI / 180.0;
             self * RADS_PER_DEG
         }
@@ -1214,7 +1174,7 @@ Module f64.
     Global Typeclasses Opaque to_radians.
     
     (*
-        pub fn max(self, other: f64) -> f64 {
+        pub const fn max(self, other: f64) -> f64 {
             intrinsics::maxnumf64(self, other)
         }
     *)
@@ -1237,7 +1197,7 @@ Module f64.
     Global Typeclasses Opaque max.
     
     (*
-        pub fn min(self, other: f64) -> f64 {
+        pub const fn min(self, other: f64) -> f64 {
             intrinsics::minnumf64(self, other)
         }
     *)
@@ -1260,7 +1220,7 @@ Module f64.
     Global Typeclasses Opaque min.
     
     (*
-        pub fn maximum(self, other: f64) -> f64 {
+        pub const fn maximum(self, other: f64) -> f64 {
             if self > other {
                 self
             } else if other > self {
@@ -1386,7 +1346,7 @@ Module f64.
     Global Typeclasses Opaque maximum.
     
     (*
-        pub fn minimum(self, other: f64) -> f64 {
+        pub const fn minimum(self, other: f64) -> f64 {
             if self < other {
                 self
             } else if other < self {
@@ -1513,13 +1473,13 @@ Module f64.
     Global Typeclasses Opaque minimum.
     
     (*
-        pub fn midpoint(self, other: f64) -> f64 {
+        pub const fn midpoint(self, other: f64) -> f64 {
             const LO: f64 = f64::MIN_POSITIVE * 2.;
             const HI: f64 = f64::MAX / 2.;
     
             let (a, b) = (self, other);
-            let abs_a = a.abs_private();
-            let abs_b = b.abs_private();
+            let abs_a = a.abs();
+            let abs_b = b.abs();
     
             if abs_a <= HI && abs_b <= HI {
                 // Overflow is impossible
@@ -1557,7 +1517,7 @@ Module f64.
                       M.alloc (|
                         M.call_closure (|
                           Ty.path "f64",
-                          M.get_associated_function (| Ty.path "f64", "abs_private", [], [] |),
+                          M.get_associated_function (| Ty.path "f64", "abs", [], [] |),
                           [ M.read (| a |) ]
                         |)
                       |) in
@@ -1565,7 +1525,7 @@ Module f64.
                       M.alloc (|
                         M.call_closure (|
                           Ty.path "f64",
-                          M.get_associated_function (| Ty.path "f64", "abs_private", [], [] |),
+                          M.get_associated_function (| Ty.path "f64", "abs", [], [] |),
                           [ M.read (| b |) ]
                         |)
                       |) in
@@ -2081,8 +2041,15 @@ Module f64.
     Global Typeclasses Opaque total_cmp.
     
     (*
-        pub fn clamp(mut self, min: f64, max: f64) -> f64 {
-            assert!(min <= max, "min > max, or either was NaN. min = {min:?}, max = {max:?}");
+        pub const fn clamp(mut self, min: f64, max: f64) -> f64 {
+            const_assert!(
+                min <= max,
+                "min > max, or either was NaN",
+                "min > max, or either was NaN. min = {min:?}, max = {max:?}",
+                min: f64,
+                max: f64,
+            );
+    
             if self < min {
                 self = min;
             }
@@ -2110,94 +2077,21 @@ Module f64.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.not (| BinOp.le (| M.read (| min |), M.read (| max |) |) |)
+                            UnOp.not (|
+                              M.call_closure (|
+                                Ty.path "bool",
+                                M.get_function (| "core::intrinsics::likely", [], [] |),
+                                [ BinOp.le (| M.read (| min |), M.read (| max |) |) ]
+                              |)
+                            |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
                             Ty.path "never",
-                            M.get_function (| "core::panicking::panic_fmt", [], [] |),
-                            [
-                              M.call_closure (|
-                                Ty.path "core::fmt::Arguments",
-                                M.get_associated_function (|
-                                  Ty.path "core::fmt::Arguments",
-                                  "new_v1",
-                                  [
-                                    Value.Integer IntegerKind.Usize 2;
-                                    Value.Integer IntegerKind.Usize 2
-                                  ],
-                                  []
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (|
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.read (|
-                                                Value.String "min > max, or either was NaN. min = "
-                                              |);
-                                              M.read (| Value.String ", max = " |)
-                                            ]
-                                        |)
-                                      |)
-                                    |)
-                                  |);
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (|
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.call_closure (|
-                                                Ty.path "core::fmt::rt::Argument",
-                                                M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_debug",
-                                                  [],
-                                                  [ Ty.path "f64" ]
-                                                |),
-                                                [
-                                                  M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.deref (|
-                                                      M.borrow (| Pointer.Kind.Ref, min |)
-                                                    |)
-                                                  |)
-                                                ]
-                                              |);
-                                              M.call_closure (|
-                                                Ty.path "core::fmt::rt::Argument",
-                                                M.get_associated_function (|
-                                                  Ty.path "core::fmt::rt::Argument",
-                                                  "new_debug",
-                                                  [],
-                                                  [ Ty.path "f64" ]
-                                                |),
-                                                [
-                                                  M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.deref (|
-                                                      M.borrow (| Pointer.Kind.Ref, max |)
-                                                    |)
-                                                  |)
-                                                ]
-                                              |)
-                                            ]
-                                        |)
-                                      |)
-                                    |)
-                                  |)
-                                ]
-                              |)
-                            ]
+                            M.get_associated_function (| Self, "do_panic.clamp", [], [] |),
+                            [ M.read (| min |); M.read (| max |) ]
                           |)
                         |)
                       |)));
@@ -2242,5 +2136,100 @@ Module f64.
     Global Instance AssociatedFunction_clamp : M.IsAssociatedFunction.Trait Self "clamp" clamp.
     Admitted.
     Global Typeclasses Opaque clamp.
+    
+    (*
+        pub const fn abs(self) -> f64 {
+            // SAFETY: this is actually a safe intrinsic
+            unsafe { intrinsics::fabsf64(self) }
+        }
+    *)
+    Definition abs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.call_closure (|
+            Ty.path "f64",
+            M.get_function (| "core::intrinsics::fabsf64", [], [] |),
+            [ M.read (| self |) ]
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Global Instance AssociatedFunction_abs : M.IsAssociatedFunction.Trait Self "abs" abs.
+    Admitted.
+    Global Typeclasses Opaque abs.
+    
+    (*
+        pub const fn signum(self) -> f64 {
+            if self.is_nan() { Self::NAN } else { 1.0_f64.copysign(self) }
+        }
+    *)
+    Definition signum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          M.read (|
+            M.match_operator (|
+              Some (Ty.path "f64"),
+              M.alloc (| Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ :=
+                      M.use
+                        (M.alloc (|
+                          M.call_closure (|
+                            Ty.path "bool",
+                            M.get_associated_function (| Ty.path "f64", "is_nan", [], [] |),
+                            [ M.read (| self |) ]
+                          |)
+                        |)) in
+                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    M.get_constant "core::f64::NAN"));
+                fun γ =>
+                  ltac:(M.monadic
+                    (M.alloc (|
+                      M.call_closure (|
+                        Ty.path "f64",
+                        M.get_associated_function (| Ty.path "f64", "copysign", [], [] |),
+                        [ M.read (| UnsupportedLiteral |); M.read (| self |) ]
+                      |)
+                    |)))
+              ]
+            |)
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Global Instance AssociatedFunction_signum : M.IsAssociatedFunction.Trait Self "signum" signum.
+    Admitted.
+    Global Typeclasses Opaque signum.
+    
+    (*
+        pub const fn copysign(self, sign: f64) -> f64 {
+            // SAFETY: this is actually a safe intrinsic
+            unsafe { intrinsics::copysignf64(self, sign) }
+        }
+    *)
+    Definition copysign (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      match ε, τ, α with
+      | [], [], [ self; sign ] =>
+        ltac:(M.monadic
+          (let self := M.alloc (| self |) in
+          let sign := M.alloc (| sign |) in
+          M.call_closure (|
+            Ty.path "f64",
+            M.get_function (| "core::intrinsics::copysignf64", [], [] |),
+            [ M.read (| self |); M.read (| sign |) ]
+          |)))
+      | _, _, _ => M.impossible "wrong number of arguments"
+      end.
+    
+    Global Instance AssociatedFunction_copysign :
+      M.IsAssociatedFunction.Trait Self "copysign" copysign.
+    Admitted.
+    Global Typeclasses Opaque copysign.
   End Impl_f64.
 End f64.

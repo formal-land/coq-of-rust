@@ -11,7 +11,7 @@ Module fmt.
       
       (*
                   fn already_rounded_value_should_use_exponential(&self) -> bool {
-                      let abs = $t::abs_private( *self);
+                      let abs = $t::abs( *self);
                       (abs != 0.0 && abs < 1e-4) || abs >= 1e+16
                   }
       *)
@@ -29,7 +29,7 @@ Module fmt.
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "f32",
-                    M.get_associated_function (| Ty.path "f32", "abs_private", [], [] |),
+                    M.get_associated_function (| Ty.path "f32", "abs", [], [] |),
                     [ M.read (| M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
@@ -66,7 +66,7 @@ Module fmt.
       
       (*
                   fn already_rounded_value_should_use_exponential(&self) -> bool {
-                      let abs = $t::abs_private( *self);
+                      let abs = $t::abs( *self);
                       (abs != 0.0 && abs < 1e-4) || abs >= 1e+16
                   }
       *)
@@ -84,7 +84,7 @@ Module fmt.
                 M.alloc (|
                   M.call_closure (|
                     Ty.path "f64",
-                    M.get_associated_function (| Ty.path "f64", "abs_private", [], [] |),
+                    M.get_associated_function (| Ty.path "f64", "abs", [], [] |),
                     [ M.read (| M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
@@ -1339,9 +1339,9 @@ Module fmt.
       Definition Self : Ty.t := Ty.path "f32".
       
       (*
-                  fn fmt(&self, fmt: &mut Formatter<'_>) -> Result {
-                      float_to_general_debug(fmt, self)
-                  }
+                      fn fmt(&self, fmt: &mut Formatter<'_>) -> Result {
+                          float_to_general_debug(fmt, self)
+                      }
       *)
       Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
@@ -1380,9 +1380,9 @@ Module fmt.
       Definition Self : Ty.t := Ty.path "f32".
       
       (*
-                  fn fmt(&self, fmt: &mut Formatter<'_>) -> Result {
-                      float_to_decimal_display(fmt, self)
-                  }
+                      fn fmt(&self, fmt: &mut Formatter<'_>) -> Result {
+                          float_to_decimal_display(fmt, self)
+                      }
       *)
       Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
@@ -1421,9 +1421,9 @@ Module fmt.
       Definition Self : Ty.t := Ty.path "f32".
       
       (*
-                  fn fmt(&self, fmt: &mut Formatter<'_>) -> Result {
-                      float_to_exponential_common(fmt, self, false)
-                  }
+                      fn fmt(&self, fmt: &mut Formatter<'_>) -> Result {
+                          float_to_exponential_common(fmt, self, false)
+                      }
       *)
       Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
@@ -1463,9 +1463,9 @@ Module fmt.
       Definition Self : Ty.t := Ty.path "f32".
       
       (*
-                  fn fmt(&self, fmt: &mut Formatter<'_>) -> Result {
-                      float_to_exponential_common(fmt, self, true)
-                  }
+                      fn fmt(&self, fmt: &mut Formatter<'_>) -> Result {
+                          float_to_exponential_common(fmt, self, true)
+                      }
       *)
       Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
@@ -1505,9 +1505,9 @@ Module fmt.
       Definition Self : Ty.t := Ty.path "f64".
       
       (*
-                  fn fmt(&self, fmt: &mut Formatter<'_>) -> Result {
-                      float_to_general_debug(fmt, self)
-                  }
+                      fn fmt(&self, fmt: &mut Formatter<'_>) -> Result {
+                          float_to_general_debug(fmt, self)
+                      }
       *)
       Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
@@ -1546,9 +1546,9 @@ Module fmt.
       Definition Self : Ty.t := Ty.path "f64".
       
       (*
-                  fn fmt(&self, fmt: &mut Formatter<'_>) -> Result {
-                      float_to_decimal_display(fmt, self)
-                  }
+                      fn fmt(&self, fmt: &mut Formatter<'_>) -> Result {
+                          float_to_decimal_display(fmt, self)
+                      }
       *)
       Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
@@ -1587,9 +1587,9 @@ Module fmt.
       Definition Self : Ty.t := Ty.path "f64".
       
       (*
-                  fn fmt(&self, fmt: &mut Formatter<'_>) -> Result {
-                      float_to_exponential_common(fmt, self, false)
-                  }
+                      fn fmt(&self, fmt: &mut Formatter<'_>) -> Result {
+                          float_to_exponential_common(fmt, self, false)
+                      }
       *)
       Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
@@ -1629,9 +1629,9 @@ Module fmt.
       Definition Self : Ty.t := Ty.path "f64".
       
       (*
-                  fn fmt(&self, fmt: &mut Formatter<'_>) -> Result {
-                      float_to_exponential_common(fmt, self, true)
-                  }
+                      fn fmt(&self, fmt: &mut Formatter<'_>) -> Result {
+                          float_to_exponential_common(fmt, self, true)
+                      }
       *)
       Definition fmt (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with

@@ -1,5 +1,4 @@
 Require Import CoqOfRust.CoqOfRust.
-Require Import CoqOfRust.links.lib.
 Require Import CoqOfRust.links.M.
 Require Import core.num.mod.
 Require Import core.num.links.mod.

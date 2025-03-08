@@ -97,7 +97,7 @@ Module mem.
           (* Instance *) [].
     End Impl_core_marker_StructuralPartialEq_for_core_mem_transmutability_Assume.
     
-    Module Impl_core_cmp_PartialEq_for_core_mem_transmutability_Assume.
+    Module Impl_core_cmp_PartialEq_core_mem_transmutability_Assume_for_core_mem_transmutability_Assume.
       Definition Self : Ty.t := Ty.path "core::mem::transmutability::Assume".
       
       (* PartialEq *)
@@ -187,10 +187,10 @@ Module mem.
         M.IsTraitInstance
           "core::cmp::PartialEq"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::mem::transmutability::Assume" ]
           Self
           (* Instance *) [ ("eq", InstanceField.Method eq) ].
-    End Impl_core_cmp_PartialEq_for_core_mem_transmutability_Assume.
+    End Impl_core_cmp_PartialEq_core_mem_transmutability_Assume_for_core_mem_transmutability_Assume.
     
     Module Impl_core_cmp_Eq_for_core_mem_transmutability_Assume.
       Definition Self : Ty.t := Ty.path "core::mem::transmutability::Assume".
@@ -693,7 +693,7 @@ Module mem.
       Global Typeclasses Opaque but_not.
     End Impl_core_mem_transmutability_Assume.
     
-    Module Impl_core_ops_arith_Add_for_core_mem_transmutability_Assume.
+    Module Impl_core_ops_arith_Add_core_mem_transmutability_Assume_for_core_mem_transmutability_Assume.
       Definition Self : Ty.t := Ty.path "core::mem::transmutability::Assume".
       
       (*     type Output = Assume; *)
@@ -727,13 +727,13 @@ Module mem.
         M.IsTraitInstance
           "core::ops::arith::Add"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::mem::transmutability::Assume" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("add", InstanceField.Method add) ].
-    End Impl_core_ops_arith_Add_for_core_mem_transmutability_Assume.
+    End Impl_core_ops_arith_Add_core_mem_transmutability_Assume_for_core_mem_transmutability_Assume.
     
-    Module Impl_core_ops_arith_Sub_for_core_mem_transmutability_Assume.
+    Module Impl_core_ops_arith_Sub_core_mem_transmutability_Assume_for_core_mem_transmutability_Assume.
       Definition Self : Ty.t := Ty.path "core::mem::transmutability::Assume".
       
       (*     type Output = Assume; *)
@@ -767,10 +767,10 @@ Module mem.
         M.IsTraitInstance
           "core::ops::arith::Sub"
           (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) []
+          (* Trait polymorphic types *) [ Ty.path "core::mem::transmutability::Assume" ]
           Self
           (* Instance *)
           [ ("Output", InstanceField.Ty _Output); ("sub", InstanceField.Method sub) ].
-    End Impl_core_ops_arith_Sub_for_core_mem_transmutability_Assume.
+    End Impl_core_ops_arith_Sub_core_mem_transmutability_Assume_for_core_mem_transmutability_Assume.
   End transmutability.
 End mem.
