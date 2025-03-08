@@ -1,5 +1,4 @@
 Require Import CoqOfRust.CoqOfRust.
-Require Import CoqOfRust.links.lib.
 Require Import CoqOfRust.links.M.
 Require Import core.links.intrinsics.
 Require Import core.cmp.
@@ -10,6 +9,7 @@ Require Import revm.revm_interpreter.links.gas.
 Require Import revm.revm_interpreter.links.interpreter.
 Require Import revm.revm_interpreter.links.interpreter_types.
 Require Import revm.revm_interpreter.instructions.bitwise.
+Require Import revm.revm_interpreter.instructions.i256.
 
 Import Impl_Gas.
 
@@ -109,6 +109,8 @@ Proof.
       ).
 Qed.
 
+
+
 Instance run_slt
     {WIRE H : Set} `{Link WIRE} `{Link H}
     {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
@@ -134,12 +136,14 @@ Proof.
   run_symbolic.
   eapply Run.CallPrimitiveGetTraitMethod.
   - eapply IsTraitMethod.Defined.
-    + specialize (cmp.Impl_core_cmp_PartialEq_for_core_cmp_Ordering.Implements).
+    + specialize (cmp.Impl_core_cmp_PartialEq_core_cmp_Ordering_for_core_cmp_Ordering.Implements).
       intros.
-      unfold cmp.Impl_core_cmp_PartialEq_for_core_cmp_Ordering.Self in H3.
-      
+      apply H3.
     + simpl.
       reflexivity.
+  - run_symbolic.
+    +  
+
   Qed.
 
 
