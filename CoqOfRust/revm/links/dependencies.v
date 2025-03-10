@@ -4,74 +4,7 @@ Require Import core.convert.links.mod.
 Require Import core.links.array.
 Require core.links.clone.
 Require core.links.default.
-Import Run.
-
-Module ruint.
-  Module Uint.
-    Parameter t : Usize.t -> Usize.t -> Set.
-
-    Parameter to_value : forall {BITS LIMBS : Usize.t}, t BITS LIMBS -> Value.t.
-
-    Global Instance IsLink : forall {BITS LIMBS : Usize.t}, Link (t BITS LIMBS) := {
-      Φ := Ty.apply (Ty.path "ruint::Uint") [ φ BITS; φ LIMBS ] [];
-      φ := to_value;
-    }.
-
-    Definition of_ty (BITS' LIMBS' : Value.t) (BITS LIMBS : Usize.t) :
-      BITS' = φ BITS ->
-      LIMBS' = φ LIMBS ->
-      OfTy.t (Ty.apply (Ty.path "ruint::Uint") [ BITS' ; LIMBS' ] []).
-    Proof. intros. eapply OfTy.Make with (A := t BITS LIMBS). now subst. Defined.
-    Smpl Add eapply of_ty : of_ty.
-  End Uint.
-
-  Module Impl_Uint.
-    (* Uint<BITS, LIMBS> *)
-    Definition Self (BITS LIMBS : Usize.t) : Set :=
-      Uint.t BITS LIMBS.
-
-    Definition Self_ty (BITS LIMBS : Value.t) : Ty.t :=
-      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [].
-
-    (* pub fn wrapping_add(self, rhs: Self) -> Self *)
-    Parameter wrapping_add : forall (BITS LIMBS : Value.t), PolymorphicFunction.t.
-
-    Global Instance wrapping_add_IsAssociated :
-      forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait
-        (Self_ty BITS LIMBS)
-        "wrapping_add"
-        (wrapping_add BITS LIMBS).
-    Admitted.
-
-    Global Instance run_wrapping_add :
-      forall (BITS LIMBS : Usize.t),
-      forall (x1 x2 : Self BITS LIMBS),
-      Run.Trait
-        (wrapping_add (φ BITS) (φ LIMBS)) [] [] [ φ x1; φ x2 ]
-        (Self BITS LIMBS).
-    Admitted.
-
-    (* pub const fn to_be_bytes<const BYTES: usize>(&self) -> [u8; BYTES] *)
-    Parameter to_be_bytes : forall (BITS LIMBS : Value.t), PolymorphicFunction.t.
-
-    Global Instance to_be_bytes_IsAssociated :
-      forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait
-        (Self_ty BITS LIMBS)
-        "to_be_bytes"
-        (to_be_bytes BITS LIMBS).
-    Admitted.
-
-    Global Instance run_to_be_bytes :
-      forall (BITS LIMBS BYTES : Usize.t),
-      forall (x : Ref.t Pointer.Kind.Ref (Self BITS LIMBS)),
-      Run.Trait
-        (to_be_bytes (φ BITS) (φ LIMBS)) [ φ BYTES ] [] [ φ x ]
-        (array.t U8.t BYTES).
-    Admitted.
-  End Impl_Uint.
-End ruint.
+Require Import ruint.links.lib.
 
 Module alloy_primitives.
   Module bits.
@@ -254,7 +187,7 @@ End FixedBytes.
 
 Module U256.
   Definition t : Set :=
-    ruint.Uint.t {| Integer.value := 256 |} {| Integer.value := 4 |}.
+    Uint.t {| Integer.value := 256 |} {| Integer.value := 4 |}.
 End U256.
 
 Module B256.
