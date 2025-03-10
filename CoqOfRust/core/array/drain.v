@@ -26,66 +26,59 @@ Module array.
                   (Ty.path "core::mem::manually_drop::ManuallyDrop")
                   []
                   [ Ty.apply (Ty.path "array") [ N ] [ T ] ] :=
-              M.alloc (|
-                M.call_closure (|
+              M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                  []
+                  [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
+                M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::mem::manually_drop::ManuallyDrop")
                     []
                     [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                      []
-                      [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
-                    "new",
-                    [],
-                    []
-                  |),
-                  [ M.read (| array |) ]
-                |)
+                  "new",
+                  [],
+                  []
+                |),
+                [ M.read (| array |) ]
               |) in
             let~ drain : Ty.apply (Ty.path "core::array::drain::Drain") [] [ T ] :=
-              M.alloc (|
-                Value.StructTuple
-                  "core::array::drain::Drain"
-                  [
-                    M.call_closure (|
-                      Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [] [ T ],
-                        "iter_mut",
-                        [],
-                        []
-                      |),
-                      [
-                        M.borrow (|
-                          Pointer.Kind.MutRef,
-                          M.deref (|
-                            M.call_closure (|
+              Value.StructTuple
+                "core::array::drain::Drain"
+                [
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "slice") [] [ T ],
+                      "iter_mut",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (|
+                          M.call_closure (|
+                            Ty.apply (Ty.path "&mut") [] [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
+                            M.get_trait_method (|
+                              "core::ops::deref::DerefMut",
                               Ty.apply
-                                (Ty.path "&mut")
+                                (Ty.path "core::mem::manually_drop::ManuallyDrop")
                                 []
                                 [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
-                              M.get_trait_method (|
-                                "core::ops::deref::DerefMut",
-                                Ty.apply
-                                  (Ty.path "core::mem::manually_drop::ManuallyDrop")
-                                  []
-                                  [ Ty.apply (Ty.path "array") [ N ] [ T ] ],
-                                [],
-                                [],
-                                "deref_mut",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.MutRef, array |) ]
-                            |)
+                              [],
+                              [],
+                              "deref_mut",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.MutRef, array |) ]
                           |)
                         |)
-                      ]
-                    |)
-                  ]
-              |) in
+                      |)
+                    ]
+                  |)
+                ] in
             M.alloc (|
               M.call_closure (|
                 R,
@@ -203,7 +196,7 @@ Module array.
               ltac:(M.monadic
                 (M.read (|
                   let~ p : Ty.apply (Ty.path "*const") [] [ T ] :=
-                    M.copy (|
+                    M.read (|
                       M.match_operator (|
                         Some (Ty.apply (Ty.path "*const") [] [ T ]),
                         M.alloc (|
@@ -348,20 +341,18 @@ Module array.
             (let self := M.alloc (| self |) in
             M.read (|
               let~ n : Ty.path "usize" :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "usize",
-                    M.get_trait_method (|
-                      "core::iter::traits::exact_size::ExactSizeIterator",
-                      Ty.apply (Ty.path "core::array::drain::Drain") [] [ T ],
-                      [],
-                      [],
-                      "len",
-                      [],
-                      []
-                    |),
-                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                  |)
+                M.call_closure (|
+                  Ty.path "usize",
+                  M.get_trait_method (|
+                    "core::iter::traits::exact_size::ExactSizeIterator",
+                    Ty.apply (Ty.path "core::array::drain::Drain") [] [ T ],
+                    [],
+                    [],
+                    "len",
+                    [],
+                    []
+                  |),
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |) in
               M.alloc (|
                 Value.Tuple
@@ -476,32 +467,30 @@ Module array.
             (let self := M.alloc (| self |) in
             M.read (|
               let~ p : Ty.apply (Ty.path "*const") [] [ T ] :=
-                M.alloc (|
-                  M.borrow (|
-                    Pointer.Kind.ConstPointer,
-                    M.deref (|
-                      M.call_closure (|
-                        Ty.apply (Ty.path "&mut") [] [ T ],
-                        M.get_trait_method (|
-                          "core::iter::traits::unchecked_iterator::UncheckedIterator",
-                          Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
-                          [],
-                          [],
-                          "next_unchecked",
-                          [],
-                          []
-                        |),
-                        [
-                          M.borrow (|
-                            Pointer.Kind.MutRef,
-                            M.SubPointer.get_struct_tuple_field (|
-                              M.deref (| M.read (| self |) |),
-                              "core::array::drain::Drain",
-                              0
-                            |)
+                M.borrow (|
+                  Pointer.Kind.ConstPointer,
+                  M.deref (|
+                    M.call_closure (|
+                      Ty.apply (Ty.path "&mut") [] [ T ],
+                      M.get_trait_method (|
+                        "core::iter::traits::unchecked_iterator::UncheckedIterator",
+                        Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
+                        [],
+                        [],
+                        "next_unchecked",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.MutRef,
+                          M.SubPointer.get_struct_tuple_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::array::drain::Drain",
+                            0
                           |)
-                        ]
-                      |)
+                        |)
+                      ]
                     |)
                   |)
                 |) in

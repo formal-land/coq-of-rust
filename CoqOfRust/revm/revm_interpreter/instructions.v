@@ -36,34 +36,32 @@ Module instructions.
                     ]
                     (Ty.tuple [])
                 ] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.apply
-                  (Ty.path "array")
-                  [ Value.Integer IntegerKind.Usize 256 ]
-                  [
-                    Ty.function
-                      [
-                        Ty.apply
-                          (Ty.path "&mut")
-                          []
-                          [
-                            Ty.apply
-                              (Ty.path "revm_interpreter::interpreter::Interpreter")
-                              []
-                              [ WIRE ]
-                          ];
-                        Ty.apply (Ty.path "&mut") [] [ H ]
-                      ]
-                      (Ty.tuple [])
-                  ],
-                M.get_function (|
-                  "revm_interpreter::instructions::instruction_table",
-                  [],
-                  [ WIRE; H ]
-                |),
-                []
-              |)
+            M.call_closure (|
+              Ty.apply
+                (Ty.path "array")
+                [ Value.Integer IntegerKind.Usize 256 ]
+                [
+                  Ty.function
+                    [
+                      Ty.apply
+                        (Ty.path "&mut")
+                        []
+                        [
+                          Ty.apply
+                            (Ty.path "revm_interpreter::interpreter::Interpreter")
+                            []
+                            [ WIRE ]
+                        ];
+                      Ty.apply (Ty.path "&mut") [] [ H ]
+                    ]
+                    (Ty.tuple [])
+                ],
+              M.get_function (|
+                "revm_interpreter::instructions::instruction_table",
+                [],
+                [ WIRE; H ]
+              |),
+              []
             |) in
           M.SubPointer.get_array_field (| table, M.cast (Ty.path "usize") (M.read (| opcode |)) |)
         |)))
@@ -113,76 +111,64 @@ Module instructions.
                     ]
                     (Ty.tuple [])
                 ] :=
-            M.alloc (|
-              repeat (|
-                M.read (|
-                  M.use
-                    (M.alloc (|
-                      (* ReifyFnPointer *)
-                      M.pointer_coercion
-                        (M.get_function (|
-                          "revm_interpreter::instructions::control::unknown",
-                          [],
-                          [ WIRE; H ]
-                        |))
-                    |))
-                |),
-                Value.Integer IntegerKind.Usize 256
-              |)
+            repeat (|
+              M.read (|
+                M.use
+                  (M.alloc (|
+                    (* ReifyFnPointer *)
+                    M.pointer_coercion
+                      (M.get_function (|
+                        "revm_interpreter::instructions::control::unknown",
+                        [],
+                        [ WIRE; H ]
+                      |))
+                  |))
+              |),
+              Value.Integer IntegerKind.Usize 256
             |) in
           let~ _ : Ty.tuple [] :=
-            M.alloc (|
-              M.write (|
-                M.SubPointer.get_array_field (|
-                  table,
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::STOP" |))
-                |),
-                (* ReifyFnPointer *)
-                M.pointer_coercion
-                  (M.get_function (|
-                    "revm_interpreter::instructions::control::stop",
-                    [],
-                    [ WIRE; H ]
-                  |))
-              |)
+            M.write (|
+              M.SubPointer.get_array_field (|
+                table,
+                M.cast (Ty.path "usize") (M.read (| M.get_constant "revm_bytecode::opcode::STOP" |))
+              |),
+              (* ReifyFnPointer *)
+              M.pointer_coercion
+                (M.get_function (|
+                  "revm_interpreter::instructions::control::stop",
+                  [],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ : Ty.tuple [] :=
-            M.alloc (|
-              M.write (|
-                M.SubPointer.get_array_field (|
-                  table,
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::ADD" |))
-                |),
-                (* ReifyFnPointer *)
-                M.pointer_coercion
-                  (M.get_function (|
-                    "revm_interpreter::instructions::arithmetic::add",
-                    [],
-                    [ WIRE; H ]
-                  |))
-              |)
+            M.write (|
+              M.SubPointer.get_array_field (|
+                table,
+                M.cast (Ty.path "usize") (M.read (| M.get_constant "revm_bytecode::opcode::ADD" |))
+              |),
+              (* ReifyFnPointer *)
+              M.pointer_coercion
+                (M.get_function (|
+                  "revm_interpreter::instructions::arithmetic::add",
+                  [],
+                  [ WIRE; H ]
+                |))
             |) in
           let~ _ : Ty.tuple [] :=
-            M.alloc (|
-              M.write (|
-                M.SubPointer.get_array_field (|
-                  table,
-                  M.cast
-                    (Ty.path "usize")
-                    (M.read (| M.get_constant "revm_bytecode::opcode::BALANCE" |))
-                |),
-                (* ReifyFnPointer *)
-                M.pointer_coercion
-                  (M.get_function (|
-                    "revm_interpreter::instructions::host::balance",
-                    [],
-                    [ WIRE; H ]
-                  |))
-              |)
+            M.write (|
+              M.SubPointer.get_array_field (|
+                table,
+                M.cast
+                  (Ty.path "usize")
+                  (M.read (| M.get_constant "revm_bytecode::opcode::BALANCE" |))
+              |),
+              (* ReifyFnPointer *)
+              M.pointer_coercion
+                (M.get_function (|
+                  "revm_interpreter::instructions::host::balance",
+                  [],
+                  [ WIRE; H ]
+                |))
             |) in
           table
         |)))

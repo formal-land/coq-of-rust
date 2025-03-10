@@ -31,36 +31,32 @@ Module iter.
               (let iter := M.alloc (| iter |) in
               M.read (|
                 let~ res : Ty.tuple [ A; B ] :=
-                  M.alloc (|
-                    M.call_closure (|
+                  M.call_closure (|
+                    Ty.tuple [ A; B ],
+                    M.get_trait_method (|
+                      "core::default::Default",
                       Ty.tuple [ A; B ],
-                      M.get_trait_method (|
-                        "core::default::Default",
-                        Ty.tuple [ A; B ],
-                        [],
-                        [],
-                        "default",
-                        [],
-                        []
-                      |),
+                      [],
+                      [],
+                      "default",
+                      [],
                       []
-                    |)
+                    |),
+                    []
                   |) in
                 let~ _ : Ty.tuple [] :=
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.tuple [],
-                      M.get_trait_method (|
-                        "core::iter::traits::collect::Extend",
-                        Ty.tuple [ A; B ],
-                        [],
-                        [ Ty.tuple [ AE; BE ] ],
-                        "extend",
-                        [],
-                        [ I ]
-                      |),
-                      [ M.borrow (| Pointer.Kind.MutRef, res |); M.read (| iter |) ]
-                    |)
+                  M.call_closure (|
+                    Ty.tuple [],
+                    M.get_trait_method (|
+                      "core::iter::traits::collect::Extend",
+                      Ty.tuple [ A; B ],
+                      [],
+                      [ Ty.tuple [ AE; BE ] ],
+                      "extend",
+                      [],
+                      [ I ]
+                    |),
+                    [ M.borrow (| Pointer.Kind.MutRef, res |); M.read (| iter |) ]
                   |) in
                 res
               |)))
@@ -135,23 +131,21 @@ Module iter.
               let item := M.alloc (| item |) in
               M.read (|
                 let~ _ : Ty.tuple [] :=
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.tuple [],
-                      M.get_trait_method (|
-                        "core::iter::traits::collect::Extend",
-                        Self,
-                        [],
-                        [ A ],
-                        "extend",
-                        [],
-                        [ Ty.apply (Ty.path "core::option::Option") [] [ A ] ]
-                      |),
-                      [
-                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::option::Option::Some" [ M.read (| item |) ]
-                      ]
-                    |)
+                  M.call_closure (|
+                    Ty.tuple [],
+                    M.get_trait_method (|
+                      "core::iter::traits::collect::Extend",
+                      Self,
+                      [],
+                      [ A ],
+                      "extend",
+                      [],
+                      [ Ty.apply (Ty.path "core::option::Option") [] [ A ] ]
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::option::Option::Some" [ M.read (| item |) ]
+                    ]
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
@@ -201,23 +195,21 @@ Module iter.
               let item := M.alloc (| item |) in
               M.read (|
                 let~ _ : Ty.tuple [] :=
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.tuple [],
-                      M.get_trait_method (|
-                        "core::iter::traits::collect::Extend",
-                        Self,
-                        [],
-                        [ A ],
-                        "extend_one",
-                        [],
-                        []
-                      |),
-                      [
-                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
-                        M.read (| item |)
-                      ]
-                    |)
+                  M.call_closure (|
+                    Ty.tuple [],
+                    M.get_trait_method (|
+                      "core::iter::traits::collect::Extend",
+                      Self,
+                      [],
+                      [ A ],
+                      "extend_one",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                      M.read (| item |)
+                    ]
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
@@ -352,50 +344,46 @@ Module iter.
                               []
                               T
                               "IntoIter" :=
-                          M.alloc (|
-                            M.call_closure (|
+                          M.call_closure (|
+                            Ty.associated_in_trait
+                              "core::iter::traits::collect::IntoIterator"
+                              []
+                              []
+                              T
+                              "IntoIter",
+                            M.get_trait_method (|
+                              "core::iter::traits::collect::IntoIterator",
+                              T,
+                              [],
+                              [],
+                              "into_iter",
+                              [],
+                              []
+                            |),
+                            [ M.read (| into_iter |) ]
+                          |) in
+                        let~ _ : Ty.tuple [] :=
+                          M.call_closure (|
+                            Ty.tuple [],
+                            M.get_trait_method (|
+                              "core::iter::traits::collect::SpecTupleExtend",
                               Ty.associated_in_trait
                                 "core::iter::traits::collect::IntoIterator"
                                 []
                                 []
                                 T
                                 "IntoIter",
-                              M.get_trait_method (|
-                                "core::iter::traits::collect::IntoIterator",
-                                T,
-                                [],
-                                [],
-                                "into_iter",
-                                [],
-                                []
-                              |),
-                              [ M.read (| into_iter |) ]
-                            |)
-                          |) in
-                        let~ _ : Ty.tuple [] :=
-                          M.alloc (|
-                            M.call_closure (|
-                              Ty.tuple [],
-                              M.get_trait_method (|
-                                "core::iter::traits::collect::SpecTupleExtend",
-                                Ty.associated_in_trait
-                                  "core::iter::traits::collect::IntoIterator"
-                                  []
-                                  []
-                                  T
-                                  "IntoIter",
-                                [],
-                                [ ExtendA; ExtendB ],
-                                "extend",
-                                [],
-                                []
-                              |),
-                              [
-                                M.read (| iter |);
-                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| a |) |) |);
-                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| b |) |) |)
-                              ]
-                            |)
+                              [],
+                              [ ExtendA; ExtendB ],
+                              "extend",
+                              [],
+                              []
+                            |),
+                            [
+                              M.read (| iter |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| a |) |) |);
+                              M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| b |) |) |)
+                            ]
                           |) in
                         M.alloc (| Value.Tuple [] |)))
                   ]
@@ -424,48 +412,44 @@ Module iter.
               let item := M.alloc (| item |) in
               M.read (|
                 let~ _ : Ty.tuple [] :=
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.tuple [],
-                      M.get_trait_method (|
-                        "core::iter::traits::collect::Extend",
-                        ExtendA,
-                        [],
-                        [ A ],
-                        "extend_one",
-                        [],
-                        []
-                      |),
-                      [
-                        M.borrow (|
-                          Pointer.Kind.MutRef,
-                          M.SubPointer.get_tuple_field (| M.deref (| M.read (| self |) |), 0 |)
-                        |);
-                        M.read (| M.SubPointer.get_tuple_field (| item, 0 |) |)
-                      ]
-                    |)
+                  M.call_closure (|
+                    Ty.tuple [],
+                    M.get_trait_method (|
+                      "core::iter::traits::collect::Extend",
+                      ExtendA,
+                      [],
+                      [ A ],
+                      "extend_one",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_tuple_field (| M.deref (| M.read (| self |) |), 0 |)
+                      |);
+                      M.read (| M.SubPointer.get_tuple_field (| item, 0 |) |)
+                    ]
                   |) in
                 let~ _ : Ty.tuple [] :=
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.tuple [],
-                      M.get_trait_method (|
-                        "core::iter::traits::collect::Extend",
-                        ExtendB,
-                        [],
-                        [ B ],
-                        "extend_one",
-                        [],
-                        []
-                      |),
-                      [
-                        M.borrow (|
-                          Pointer.Kind.MutRef,
-                          M.SubPointer.get_tuple_field (| M.deref (| M.read (| self |) |), 1 |)
-                        |);
-                        M.read (| M.SubPointer.get_tuple_field (| item, 1 |) |)
-                      ]
-                    |)
+                  M.call_closure (|
+                    Ty.tuple [],
+                    M.get_trait_method (|
+                      "core::iter::traits::collect::Extend",
+                      ExtendB,
+                      [],
+                      [ B ],
+                      "extend_one",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_tuple_field (| M.deref (| M.read (| self |) |), 1 |)
+                      |);
+                      M.read (| M.SubPointer.get_tuple_field (| item, 1 |) |)
+                    ]
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
@@ -492,48 +476,44 @@ Module iter.
               let additional := M.alloc (| additional |) in
               M.read (|
                 let~ _ : Ty.tuple [] :=
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.tuple [],
-                      M.get_trait_method (|
-                        "core::iter::traits::collect::Extend",
-                        ExtendA,
-                        [],
-                        [ A ],
-                        "extend_reserve",
-                        [],
-                        []
-                      |),
-                      [
-                        M.borrow (|
-                          Pointer.Kind.MutRef,
-                          M.SubPointer.get_tuple_field (| M.deref (| M.read (| self |) |), 0 |)
-                        |);
-                        M.read (| additional |)
-                      ]
-                    |)
+                  M.call_closure (|
+                    Ty.tuple [],
+                    M.get_trait_method (|
+                      "core::iter::traits::collect::Extend",
+                      ExtendA,
+                      [],
+                      [ A ],
+                      "extend_reserve",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_tuple_field (| M.deref (| M.read (| self |) |), 0 |)
+                      |);
+                      M.read (| additional |)
+                    ]
                   |) in
                 let~ _ : Ty.tuple [] :=
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.tuple [],
-                      M.get_trait_method (|
-                        "core::iter::traits::collect::Extend",
-                        ExtendB,
-                        [],
-                        [ B ],
-                        "extend_reserve",
-                        [],
-                        []
-                      |),
-                      [
-                        M.borrow (|
-                          Pointer.Kind.MutRef,
-                          M.SubPointer.get_tuple_field (| M.deref (| M.read (| self |) |), 1 |)
-                        |);
-                        M.read (| additional |)
-                      ]
-                    |)
+                  M.call_closure (|
+                    Ty.tuple [],
+                    M.get_trait_method (|
+                      "core::iter::traits::collect::Extend",
+                      ExtendB,
+                      [],
+                      [ B ],
+                      "extend_reserve",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_tuple_field (| M.deref (| M.read (| self |) |), 1 |)
+                      |);
+                      M.read (| additional |)
+                    ]
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
@@ -563,48 +543,44 @@ Module iter.
               let item := M.alloc (| item |) in
               M.read (|
                 let~ _ : Ty.tuple [] :=
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.tuple [],
-                      M.get_trait_method (|
-                        "core::iter::traits::collect::Extend",
-                        ExtendA,
-                        [],
-                        [ A ],
-                        "extend_one_unchecked",
-                        [],
-                        []
-                      |),
-                      [
-                        M.borrow (|
-                          Pointer.Kind.MutRef,
-                          M.SubPointer.get_tuple_field (| M.deref (| M.read (| self |) |), 0 |)
-                        |);
-                        M.read (| M.SubPointer.get_tuple_field (| item, 0 |) |)
-                      ]
-                    |)
+                  M.call_closure (|
+                    Ty.tuple [],
+                    M.get_trait_method (|
+                      "core::iter::traits::collect::Extend",
+                      ExtendA,
+                      [],
+                      [ A ],
+                      "extend_one_unchecked",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_tuple_field (| M.deref (| M.read (| self |) |), 0 |)
+                      |);
+                      M.read (| M.SubPointer.get_tuple_field (| item, 0 |) |)
+                    ]
                   |) in
                 let~ _ : Ty.tuple [] :=
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.tuple [],
-                      M.get_trait_method (|
-                        "core::iter::traits::collect::Extend",
-                        ExtendB,
-                        [],
-                        [ B ],
-                        "extend_one_unchecked",
-                        [],
-                        []
-                      |),
-                      [
-                        M.borrow (|
-                          Pointer.Kind.MutRef,
-                          M.SubPointer.get_tuple_field (| M.deref (| M.read (| self |) |), 1 |)
-                        |);
-                        M.read (| M.SubPointer.get_tuple_field (| item, 1 |) |)
-                      ]
-                    |)
+                  M.call_closure (|
+                    Ty.tuple [],
+                    M.get_trait_method (|
+                      "core::iter::traits::collect::Extend",
+                      ExtendB,
+                      [],
+                      [ B ],
+                      "extend_one_unchecked",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.SubPointer.get_tuple_field (| M.deref (| M.read (| self |) |), 1 |)
+                      |);
+                      M.read (| M.SubPointer.get_tuple_field (| item, 1 |) |)
+                    ]
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
@@ -692,27 +668,27 @@ Module iter.
                       let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                       let lower_bound := M.copy (| γ0_0 |) in
                       let~ _ : Ty.tuple [] :=
-                        M.match_operator (|
-                          Some (Ty.tuple []),
-                          M.alloc (| Value.Tuple [] |),
-                          [
-                            fun γ =>
-                              ltac:(M.monadic
-                                (let γ :=
-                                  M.use
-                                    (M.alloc (|
-                                      BinOp.gt (|
-                                        M.read (| lower_bound |),
-                                        Value.Integer IntegerKind.Usize 0
-                                      |)
-                                    |)) in
-                                let _ :=
-                                  M.is_constant_or_break_match (|
-                                    M.read (| γ |),
-                                    Value.Bool true
-                                  |) in
-                                let~ _ : Ty.tuple [] :=
-                                  M.alloc (|
+                        M.read (|
+                          M.match_operator (|
+                            Some (Ty.tuple []),
+                            M.alloc (| Value.Tuple [] |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let γ :=
+                                    M.use
+                                      (M.alloc (|
+                                        BinOp.gt (|
+                                          M.read (| lower_bound |),
+                                          Value.Integer IntegerKind.Usize 0
+                                        |)
+                                      |)) in
+                                  let _ :=
+                                    M.is_constant_or_break_match (|
+                                      M.read (| γ |),
+                                      Value.Bool true
+                                    |) in
+                                  let~ _ : Ty.tuple [] :=
                                     M.call_closure (|
                                       Ty.tuple [],
                                       M.get_trait_method (|
@@ -731,10 +707,8 @@ Module iter.
                                         |);
                                         M.read (| lower_bound |)
                                       ]
-                                    |)
-                                  |) in
-                                let~ _ : Ty.tuple [] :=
-                                  M.alloc (|
+                                    |) in
+                                  let~ _ : Ty.tuple [] :=
                                     M.call_closure (|
                                       Ty.tuple [],
                                       M.get_trait_method (|
@@ -753,42 +727,40 @@ Module iter.
                                         |);
                                         M.read (| lower_bound |)
                                       ]
-                                    |)
-                                  |) in
-                                M.alloc (| Value.Tuple [] |)));
-                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                          ]
-                        |) in
-                      let~ _ : Ty.tuple [] :=
-                        M.alloc (|
-                          M.call_closure (|
-                            Ty.tuple [],
-                            M.get_trait_method (|
-                              "core::iter::traits::iterator::Iterator",
-                              impl_Iterator_Item____A__B__,
-                              [],
-                              [],
-                              "fold",
-                              [],
-                              [ Ty.tuple []; Ty.associated_unknown ]
-                            |),
-                            [
-                              M.read (| iter |);
-                              Value.Tuple [];
-                              M.call_closure (|
-                                Ty.associated_unknown,
-                                M.get_function (|
-                                  "core::iter::traits::collect::default_extend_tuple.extend",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| a |) |) |);
-                                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| b |) |) |)
-                                ]
-                              |)
+                                    |) in
+                                  M.alloc (| Value.Tuple [] |)));
+                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                             ]
                           |)
+                        |) in
+                      let~ _ : Ty.tuple [] :=
+                        M.call_closure (|
+                          Ty.tuple [],
+                          M.get_trait_method (|
+                            "core::iter::traits::iterator::Iterator",
+                            impl_Iterator_Item____A__B__,
+                            [],
+                            [],
+                            "fold",
+                            [],
+                            [ Ty.tuple []; Ty.associated_unknown ]
+                          |),
+                          [
+                            M.read (| iter |);
+                            Value.Tuple [];
+                            M.call_closure (|
+                              Ty.associated_unknown,
+                              M.get_function (|
+                                "core::iter::traits::collect::default_extend_tuple.extend",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| a |) |) |);
+                                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| b |) |) |)
+                              ]
+                            |)
+                          ]
                         |) in
                       M.alloc (| Value.Tuple [] |)))
                 ]
@@ -850,48 +822,44 @@ Module iter.
                                         let u := M.copy (| γ0_1 |) in
                                         M.read (|
                                           let~ _ : Ty.tuple [] :=
-                                            M.alloc (|
-                                              M.call_closure (|
-                                                Ty.tuple [],
-                                                M.get_trait_method (|
-                                                  "core::iter::traits::collect::Extend",
-                                                  impl_Extend_A_,
-                                                  [],
-                                                  [ A ],
-                                                  "extend_one",
-                                                  [],
-                                                  []
-                                                |),
-                                                [
-                                                  M.borrow (|
-                                                    Pointer.Kind.MutRef,
-                                                    M.deref (| M.read (| a |) |)
-                                                  |);
-                                                  M.read (| t |)
-                                                ]
-                                              |)
+                                            M.call_closure (|
+                                              Ty.tuple [],
+                                              M.get_trait_method (|
+                                                "core::iter::traits::collect::Extend",
+                                                impl_Extend_A_,
+                                                [],
+                                                [ A ],
+                                                "extend_one",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (| M.read (| a |) |)
+                                                |);
+                                                M.read (| t |)
+                                              ]
                                             |) in
                                           let~ _ : Ty.tuple [] :=
-                                            M.alloc (|
-                                              M.call_closure (|
-                                                Ty.tuple [],
-                                                M.get_trait_method (|
-                                                  "core::iter::traits::collect::Extend",
-                                                  impl_Extend_B_,
-                                                  [],
-                                                  [ B ],
-                                                  "extend_one",
-                                                  [],
-                                                  []
-                                                |),
-                                                [
-                                                  M.borrow (|
-                                                    Pointer.Kind.MutRef,
-                                                    M.deref (| M.read (| b |) |)
-                                                  |);
-                                                  M.read (| u |)
-                                                ]
-                                              |)
+                                            M.call_closure (|
+                                              Ty.tuple [],
+                                              M.get_trait_method (|
+                                                "core::iter::traits::collect::Extend",
+                                                impl_Extend_B_,
+                                                [],
+                                                [ B ],
+                                                "extend_one",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.deref (| M.read (| b |) |)
+                                                |);
+                                                M.read (| u |)
+                                              ]
                                             |) in
                                           M.alloc (| Value.Tuple [] |)
                                         |)))
@@ -936,20 +904,18 @@ Module iter.
               let b := M.alloc (| b |) in
               M.read (|
                 let~ _ : Ty.tuple [] :=
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.tuple [],
-                      M.get_function (|
-                        "core::iter::traits::collect::default_extend_tuple",
-                        [],
-                        [ A; B; ExtendA; ExtendB; Iter ]
-                      |),
-                      [
-                        M.read (| self |);
-                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| a |) |) |);
-                        M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| b |) |) |)
-                      ]
-                    |)
+                  M.call_closure (|
+                    Ty.tuple [],
+                    M.get_function (|
+                      "core::iter::traits::collect::default_extend_tuple",
+                      [],
+                      [ A; B; ExtendA; ExtendB; Iter ]
+                    |),
+                    [
+                      M.read (| self |);
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| a |) |) |);
+                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| b |) |) |)
+                    ]
                   |) in
                 M.alloc (| Value.Tuple [] |)
               |)))
@@ -1044,39 +1010,39 @@ Module iter.
                             let lower_bound := M.copy (| γ0_0 |) in
                             let upper_bound := M.copy (| γ0_1 |) in
                             let~ _ : Ty.tuple [] :=
-                              M.match_operator (|
-                                Some (Ty.tuple []),
-                                M.alloc (| Value.Tuple [] |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let γ :=
-                                        M.use
-                                          (M.alloc (|
-                                            M.call_closure (|
-                                              Ty.path "bool",
-                                              M.get_associated_function (|
-                                                Ty.apply
-                                                  (Ty.path "core::option::Option")
+                              M.read (|
+                                M.match_operator (|
+                                  Some (Ty.tuple []),
+                                  M.alloc (| Value.Tuple [] |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ :=
+                                          M.use
+                                            (M.alloc (|
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                M.get_associated_function (|
+                                                  Ty.apply
+                                                    (Ty.path "core::option::Option")
+                                                    []
+                                                    [ Ty.path "usize" ],
+                                                  "is_none",
+                                                  [],
                                                   []
-                                                  [ Ty.path "usize" ],
-                                                "is_none",
-                                                [],
-                                                []
-                                              |),
-                                              [ M.borrow (| Pointer.Kind.Ref, upper_bound |) ]
-                                            |)
-                                          |)) in
-                                      let _ :=
-                                        M.is_constant_or_break_match (|
-                                          M.read (| γ |),
-                                          Value.Bool true
-                                        |) in
-                                      M.alloc (|
-                                        M.never_to_any (|
-                                          M.read (|
-                                            let~ _ : Ty.tuple [] :=
-                                              M.alloc (|
+                                                |),
+                                                [ M.borrow (| Pointer.Kind.Ref, upper_bound |) ]
+                                              |)
+                                            |)) in
+                                        let _ :=
+                                          M.is_constant_or_break_match (|
+                                            M.read (| γ |),
+                                            Value.Bool true
+                                          |) in
+                                        M.alloc (|
+                                          M.never_to_any (|
+                                            M.read (|
+                                              let~ _ : Ty.tuple [] :=
                                                 M.call_closure (|
                                                   Ty.tuple [],
                                                   M.get_function (|
@@ -1095,37 +1061,37 @@ Module iter.
                                                       M.deref (| M.read (| b |) |)
                                                     |)
                                                   ]
-                                                |)
-                                              |) in
-                                            M.return_ (| Value.Tuple [] |)
+                                                |) in
+                                              M.return_ (| Value.Tuple [] |)
+                                            |)
                                           |)
-                                        |)
-                                      |)));
-                                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                                ]
+                                        |)));
+                                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                  ]
+                                |)
                               |) in
                             let~ _ : Ty.tuple [] :=
-                              M.match_operator (|
-                                Some (Ty.tuple []),
-                                M.alloc (| Value.Tuple [] |),
-                                [
-                                  fun γ =>
-                                    ltac:(M.monadic
-                                      (let γ :=
-                                        M.use
-                                          (M.alloc (|
-                                            BinOp.gt (|
-                                              M.read (| lower_bound |),
-                                              Value.Integer IntegerKind.Usize 0
-                                            |)
-                                          |)) in
-                                      let _ :=
-                                        M.is_constant_or_break_match (|
-                                          M.read (| γ |),
-                                          Value.Bool true
-                                        |) in
-                                      let~ _ : Ty.tuple [] :=
-                                        M.alloc (|
+                              M.read (|
+                                M.match_operator (|
+                                  Some (Ty.tuple []),
+                                  M.alloc (| Value.Tuple [] |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let γ :=
+                                          M.use
+                                            (M.alloc (|
+                                              BinOp.gt (|
+                                                M.read (| lower_bound |),
+                                                Value.Integer IntegerKind.Usize 0
+                                              |)
+                                            |)) in
+                                        let _ :=
+                                          M.is_constant_or_break_match (|
+                                            M.read (| γ |),
+                                            Value.Bool true
+                                          |) in
+                                        let~ _ : Ty.tuple [] :=
                                           M.call_closure (|
                                             Ty.tuple [],
                                             M.get_trait_method (|
@@ -1144,10 +1110,8 @@ Module iter.
                                               |);
                                               M.read (| lower_bound |)
                                             ]
-                                          |)
-                                        |) in
-                                      let~ _ : Ty.tuple [] :=
-                                        M.alloc (|
+                                          |) in
+                                        let~ _ : Ty.tuple [] :=
                                           M.call_closure (|
                                             Ty.tuple [],
                                             M.get_trait_method (|
@@ -1166,44 +1130,42 @@ Module iter.
                                               |);
                                               M.read (| lower_bound |)
                                             ]
-                                          |)
-                                        |) in
-                                      M.alloc (| Value.Tuple [] |)));
-                                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                                ]
-                              |) in
-                            let~ _ : Ty.tuple [] :=
-                              M.alloc (|
-                                M.call_closure (|
-                                  Ty.tuple [],
-                                  M.get_trait_method (|
-                                    "core::iter::traits::iterator::Iterator",
-                                    Iter,
-                                    [],
-                                    [],
-                                    "fold",
-                                    [],
-                                    [ Ty.tuple []; Ty.associated_unknown ]
-                                  |),
-                                  [
-                                    M.read (| self |);
-                                    Value.Tuple [];
-                                    M.call_closure (|
-                                      Ty.associated_unknown,
-                                      M.get_associated_function (| Self, "extend.extend", [], [] |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.MutRef,
-                                          M.deref (| M.read (| a |) |)
-                                        |);
-                                        M.borrow (|
-                                          Pointer.Kind.MutRef,
-                                          M.deref (| M.read (| b |) |)
-                                        |)
-                                      ]
-                                    |)
+                                          |) in
+                                        M.alloc (| Value.Tuple [] |)));
+                                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                   ]
                                 |)
+                              |) in
+                            let~ _ : Ty.tuple [] :=
+                              M.call_closure (|
+                                Ty.tuple [],
+                                M.get_trait_method (|
+                                  "core::iter::traits::iterator::Iterator",
+                                  Iter,
+                                  [],
+                                  [],
+                                  "fold",
+                                  [],
+                                  [ Ty.tuple []; Ty.associated_unknown ]
+                                |),
+                                [
+                                  M.read (| self |);
+                                  Value.Tuple [];
+                                  M.call_closure (|
+                                    Ty.associated_unknown,
+                                    M.get_associated_function (| Self, "extend.extend", [], [] |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| a |) |)
+                                      |);
+                                      M.borrow (|
+                                        Pointer.Kind.MutRef,
+                                        M.deref (| M.read (| b |) |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
                               |) in
                             M.alloc (| Value.Tuple [] |)))
                       ]

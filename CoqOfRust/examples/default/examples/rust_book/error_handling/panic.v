@@ -18,52 +18,54 @@ Definition drink (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       (let beverage := M.alloc (| beverage |) in
       M.read (|
         let~ _ : Ty.tuple [] :=
-          M.match_operator (|
-            Some (Ty.tuple []),
-            M.alloc (| Value.Tuple [] |),
-            [
-              fun γ =>
-                ltac:(M.monadic
-                  (let γ :=
-                    M.use
-                      (M.alloc (|
+          M.read (|
+            M.match_operator (|
+              Some (Ty.tuple []),
+              M.alloc (| Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ :=
+                      M.use
+                        (M.alloc (|
+                          M.call_closure (|
+                            Ty.path "bool",
+                            M.get_trait_method (|
+                              "core::cmp::PartialEq",
+                              Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                              [],
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                              "eq",
+                              [],
+                              []
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, beverage |);
+                              M.borrow (| Pointer.Kind.Ref, Value.String "lemonade" |)
+                            ]
+                          |)
+                        |)) in
+                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    M.alloc (|
+                      M.never_to_any (|
                         M.call_closure (|
-                          Ty.path "bool",
-                          M.get_trait_method (|
-                            "core::cmp::PartialEq",
-                            Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                          Ty.path "never",
+                          M.get_function (|
+                            "std::panicking::begin_panic",
                             [],
-                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                            "eq",
-                            [],
-                            []
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                           |),
-                          [
-                            M.borrow (| Pointer.Kind.Ref, beverage |);
-                            M.borrow (| Pointer.Kind.Ref, Value.String "lemonade" |)
-                          ]
+                          [ M.read (| Value.String "AAAaaaaa!!!!" |) ]
                         |)
-                      |)) in
-                  let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                  M.alloc (|
-                    M.never_to_any (|
-                      M.call_closure (|
-                        Ty.path "never",
-                        M.get_function (|
-                          "std::panicking::begin_panic",
-                          [],
-                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                        |),
-                        [ M.read (| Value.String "AAAaaaaa!!!!" |) ]
                       |)
-                    |)
-                  |)));
-              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-            ]
+                    |)));
+                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+              ]
+            |)
           |) in
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -124,9 +126,9 @@ Definition drink (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
@@ -148,21 +150,16 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ _ : Ty.tuple [] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.tuple [],
-              M.get_function (| "panic::drink", [], [] |),
-              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "water" |) |) |) ]
-            |)
+          M.call_closure (|
+            Ty.tuple [],
+            M.get_function (| "panic::drink", [], [] |),
+            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "water" |) |) |) ]
           |) in
         let~ _ : Ty.tuple [] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.tuple [],
-              M.get_function (| "panic::drink", [], [] |),
-              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "lemonade" |) |) |)
-              ]
-            |)
+          M.call_closure (|
+            Ty.tuple [],
+            M.get_function (| "panic::drink", [], [] |),
+            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "lemonade" |) |) |) ]
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))

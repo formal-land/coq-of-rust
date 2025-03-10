@@ -438,7 +438,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
                     ];
                   Ty.path "constructors_return_value::LangError"
                 ] :=
-            M.copy (|
+            M.read (|
               M.match_operator (|
                 Some
                   (Ty.apply
