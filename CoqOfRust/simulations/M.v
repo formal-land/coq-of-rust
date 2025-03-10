@@ -553,6 +553,17 @@ Module Stack.
           index path big_to_value projection injection
         ).
 
+    Definition runner {Stack : Stack.t} {A : Set} `{Link A} {index : Pointer.Index.t}
+        {ref_core : Ref.Core.t A}
+        (runner : SubPointer.Runner.t A index)
+        (H_ref_core : t Stack ref_core) :
+      t Stack (SubPointer.Runner.apply ref_core runner).
+    Proof.
+      destruct H_ref_core.
+      { apply Immediate. }
+      { apply Mutable. }
+    Defined.
+
     Definition read {A : Set} `{Link A} {Stack : Stack.t}
         {ref_core : Ref.Core.t A}
         (run : t Stack ref_core)
@@ -633,7 +644,7 @@ Module Run.
       {{ StackIn 🌲 k output' }}
     ) :
     {{ StackIn 🌲 LowM.Call e k }}
-  | Let {Output' : Set} `{Link Output'}
+  | LetAlloc {Output' : Set} `{Link Output'}
       (e : LowM.t R Output')
       (k : Output.t R (Ref.t Pointer.Kind.Raw Output') -> LowM.t R Output)
     (H_e : {{ StackIn 🌲 e }})
@@ -645,7 +656,7 @@ Module Run.
         end in
       {{ StackIn' 🌲 k ref }}
     ) :
-    {{ StackIn 🌲 LowM.Let e k }}
+    {{ StackIn 🌲 LowM.LetAlloc e k }}
 
   where "{{ StackIn 🌲 e }}" := (t StackIn e).
 End Run.

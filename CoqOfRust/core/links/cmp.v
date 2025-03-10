@@ -29,19 +29,6 @@ Proof.
   constructor.
   destruct Run_FnOnce_for_F as [[call_once [H_call_once run_call_once]]].
   run_symbolic; destruct_all Ordering.t; run_symbolic.
-  unshelve eapply Run.Let.
-  { smpl of_ty. }
-  { run_symbolic.
-    admit.
-  }
-  cbn; intros []; cbn.
-  { run_symbolic.
-  }
-  { run_symbolic.
-    admit.
-  }
-  { destruct_all Ordering.t.
-    { run_symbolic.
 Defined.
 
 (*
