@@ -3,6 +3,9 @@ Require Import CoqOfRust.links.M.
 Require Import core.convert.links.mod.
 Require Import revm.revm_interpreter.instructions.utility.
 Require Import revm.links.dependencies.
+Require Import ruint.links.bytes.
+
+Import bytes.Impl_Uint.
 
 (*
 pub trait IntoAddress {
