@@ -2272,7 +2272,7 @@ Module bn128.
                     (Ty.path "array")
                     [ Value.Integer IntegerKind.Usize 64 ]
                     [ Ty.path "u8" ] :=
-                repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 64 |) in
+                repeat (Value.Integer IntegerKind.U8 0) (Value.Integer IntegerKind.Usize 64) in
               let~ _ : Ty.tuple [] :=
                 M.read (|
                   M.match_operator (|
@@ -2935,7 +2935,7 @@ Module bn128.
                     (Ty.path "array")
                     [ Value.Integer IntegerKind.Usize 64 ]
                     [ Ty.path "u8" ] :=
-                repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 64 |) in
+                repeat (Value.Integer IntegerKind.U8 0) (Value.Integer IntegerKind.Usize 64) in
               let~ _ : Ty.tuple [] :=
                 M.read (|
                   M.match_operator (|

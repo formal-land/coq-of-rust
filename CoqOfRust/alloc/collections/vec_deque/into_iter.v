@@ -1244,13 +1244,12 @@ Module collections.
                           (Ty.path "array")
                           [ N ]
                           [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ] :=
-                      repeat (|
-                        M.read (|
+                      repeat
+                        (M.read (|
                           M.get_constant
                             "alloc::collections::vec_deque::into_iter::next_chunk_discriminant"
-                        |),
-                        N
-                      |) in
+                        |))
+                        N in
                     let~ raw_arr_ptr : Ty.apply (Ty.path "*mut") [] [ T ] :=
                       M.call_closure (|
                         Ty.apply (Ty.path "*mut") [] [ T ],

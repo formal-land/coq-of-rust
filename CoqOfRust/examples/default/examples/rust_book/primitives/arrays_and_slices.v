@@ -244,7 +244,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             ] in
         let~ ys :
             Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 500 ] [ Ty.path "i32" ] :=
-          repeat (| Value.Integer IntegerKind.I32 0, Value.Integer IntegerKind.Usize 500 |) in
+          repeat (Value.Integer IntegerKind.I32 0) (Value.Integer IntegerKind.Usize 500) in
         let~ _ : Ty.tuple [] :=
           M.read (|
             let~ _ : Ty.tuple [] :=

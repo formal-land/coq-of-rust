@@ -1815,10 +1815,9 @@ Module vec.
                         (Ty.path "array")
                         [ N ]
                         [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ] :=
-                    repeat (|
-                      M.read (| M.get_constant "alloc::vec::into_iter::next_chunk_discriminant" |),
-                      N
-                    |) in
+                    repeat
+                      (M.read (| M.get_constant "alloc::vec::into_iter::next_chunk_discriminant" |))
+                      N in
                   let~ len : Ty.path "usize" :=
                     M.call_closure (|
                       Ty.path "usize",

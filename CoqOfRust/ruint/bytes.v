@@ -1310,7 +1310,7 @@ Module bytes.
                                 M.read (|
                                   let~ limbs :
                                       Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] :=
-                                    repeat (| Value.Integer IntegerKind.U64 0, LIMBS |) in
+                                    repeat (Value.Integer IntegerKind.U64 0) LIMBS in
                                   let~ end_ : Ty.apply (Ty.path "*const") [] [ Ty.path "u8" ] :=
                                     M.read (|
                                       M.SubPointer.get_struct_record_field (|
@@ -1502,7 +1502,7 @@ Module bytes.
                     |)
                   |) in
                 let~ limbs : Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] :=
-                  repeat (| Value.Integer IntegerKind.U64 0, LIMBS |) in
+                  repeat (Value.Integer IntegerKind.U64 0) LIMBS in
                 let~ i : Ty.path "usize" := Value.Integer IntegerKind.Usize 0 in
                 let~ c : Ty.path "usize" :=
                   M.call_closure (|
@@ -2027,7 +2027,7 @@ Module bytes.
                                 M.read (|
                                   let~ limbs :
                                       Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] :=
-                                    repeat (| Value.Integer IntegerKind.U64 0, LIMBS |) in
+                                    repeat (Value.Integer IntegerKind.U64 0) LIMBS in
                                   let~ i : Ty.path "usize" := Value.Integer IntegerKind.Usize 0 in
                                   let~ _ : Ty.tuple [] :=
                                     M.read (|
@@ -2209,7 +2209,7 @@ Module bytes.
                     |)
                   |) in
                 let~ limbs : Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] :=
-                  repeat (| Value.Integer IntegerKind.U64 0, LIMBS |) in
+                  repeat (Value.Integer IntegerKind.U64 0) LIMBS in
                 let~ i : Ty.path "usize" := Value.Integer IntegerKind.Usize 0 in
                 let~ _ : Ty.tuple [] :=
                   M.read (|

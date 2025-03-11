@@ -390,10 +390,9 @@ Module str.
                                                 (Ty.path "array")
                                                 [ Value.Integer IntegerKind.Usize 32 ]
                                                 [ Ty.path "bool" ] :=
-                                            repeat (|
-                                              Value.Bool false,
-                                              Value.Integer IntegerKind.Usize 32
-                                            |) in
+                                            repeat
+                                              (Value.Bool false)
+                                              (Value.Integer IntegerKind.Usize 32) in
                                           let~ _ : Ty.tuple [] :=
                                             M.read (|
                                               M.use
@@ -11885,10 +11884,7 @@ Module str.
                         (Ty.path "array")
                         [ Value.Integer IntegerKind.Usize 2 ]
                         [ Ty.path "u16" ] :=
-                    repeat (|
-                      Value.Integer IntegerKind.U16 0,
-                      Value.Integer IntegerKind.Usize 2
-                    |) in
+                    repeat (Value.Integer IntegerKind.U16 0) (Value.Integer IntegerKind.Usize 2) in
                   M.alloc (|
                     M.call_closure (|
                       Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u16" ],

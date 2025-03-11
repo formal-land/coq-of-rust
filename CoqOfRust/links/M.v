@@ -1851,14 +1851,20 @@ Module BinOp.
   Smpl Add rewrite_make_comparison : run_symbolic.
 
   Module Wrap.
+    Definition make_arithmetic {kind : IntegerKind.t}
+        (bin_op : Z -> Z -> Z)
+        (v1 v2 : Integer.t kind) :
+        Integer.t kind :=
+    {|
+      Integer.value := Integer.normalize_wrap kind (bin_op v1.(Integer.value) v2.(Integer.value))
+    |}.
+
     Lemma make_arithmetic_eq (kind : IntegerKind.t)
         (bin_op : Z -> Z -> Z) (v1 v2 : Integer.t kind) (v1' v2' : Value.t) :
       v1' = φ v1 ->
       v2' = φ v2 ->
-      BinOp.Wrap.make_arithmetic bin_op v1' v2' =
-      M.pure (φ (Integer.Build_t kind (
-        Integer.normalize_wrap kind (bin_op v1.(Integer.value) v2.(Integer.value))
-      ))).
+      lib.BinOp.Wrap.make_arithmetic bin_op v1' v2' =
+      M.pure (φ (make_arithmetic bin_op v1 v2)).
     Proof.
       intros -> ->.
       now destruct kind.

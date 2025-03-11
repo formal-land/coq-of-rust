@@ -578,12 +578,11 @@ Module iter.
                       (Ty.path "array")
                       [ N ]
                       [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ B ] ] :=
-                  repeat (|
-                    M.read (|
+                  repeat
+                    (M.read (|
                       M.get_constant "core::iter::adapters::filter_map::next_chunk_discriminant"
-                    |),
-                    N
-                  |) in
+                    |))
+                    N in
                 let~ guard :
                     Ty.apply
                       (Ty.path "core::iter::adapters::filter_map::next_chunk::Guard")

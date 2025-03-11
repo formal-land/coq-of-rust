@@ -661,7 +661,7 @@ Module deserializer.
                     (Ty.path "array")
                     [ Value.Integer IntegerKind.Usize 2 ]
                     [ Ty.path "u8" ] :=
-                repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 2 |) in
+                repeat (Value.Integer IntegerKind.U8 0) (Value.Integer IntegerKind.Usize 2) in
               let~ _ : Ty.tuple [] :=
                 M.read (|
                   M.match_operator (|
@@ -887,7 +887,7 @@ Module deserializer.
                     (Ty.path "array")
                     [ Value.Integer IntegerKind.Usize 4 ]
                     [ Ty.path "u8" ] :=
-                repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 4 |) in
+                repeat (Value.Integer IntegerKind.U8 0) (Value.Integer IntegerKind.Usize 4) in
               let~ _ : Ty.tuple [] :=
                 M.read (|
                   M.match_operator (|
@@ -1113,7 +1113,7 @@ Module deserializer.
                     (Ty.path "array")
                     [ Value.Integer IntegerKind.Usize 8 ]
                     [ Ty.path "u8" ] :=
-                repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 8 |) in
+                repeat (Value.Integer IntegerKind.U8 0) (Value.Integer IntegerKind.Usize 8) in
               let~ _ : Ty.tuple [] :=
                 M.read (|
                   M.match_operator (|
@@ -1339,7 +1339,7 @@ Module deserializer.
                     (Ty.path "array")
                     [ Value.Integer IntegerKind.Usize 16 ]
                     [ Ty.path "u8" ] :=
-                repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 16 |) in
+                repeat (Value.Integer IntegerKind.U8 0) (Value.Integer IntegerKind.Usize 16) in
               let~ _ : Ty.tuple [] :=
                 M.read (|
                   M.match_operator (|
@@ -1567,7 +1567,7 @@ Module deserializer.
                     (Ty.path "array")
                     [ Value.Integer IntegerKind.Usize 32 ]
                     [ Ty.path "u8" ] :=
-                repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 32 |) in
+                repeat (Value.Integer IntegerKind.U8 0) (Value.Integer IntegerKind.Usize 32) in
               let~ _ : Ty.tuple [] :=
                 M.read (|
                   M.match_operator (|
@@ -45056,7 +45056,7 @@ Module deserializer.
                       (Ty.path "array")
                       [ Value.Integer IntegerKind.Usize 4 ]
                       [ Ty.path "u8" ] :=
-                  repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 4 |) in
+                  repeat (Value.Integer IntegerKind.U8 0) (Value.Integer IntegerKind.Usize 4) in
                 let~ _ : Ty.tuple [] :=
                   M.read (|
                     M.match_operator (|

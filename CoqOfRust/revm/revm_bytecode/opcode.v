@@ -3828,10 +3828,9 @@ Module opcode.
                   []
                   [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ]
               ] :=
-          repeat (|
-            Value.StructTuple "core::option::Option::None" [],
-            Value.Integer IntegerKind.Usize 256
-          |) in
+          repeat
+            (Value.StructTuple "core::option::Option::None" [])
+            (Value.Integer IntegerKind.Usize 256) in
         let~ prev : Ty.path "u8" := Value.Integer IntegerKind.U8 0 in
         let~ val : Ty.path "u8" := Value.Integer IntegerKind.U8 0 in
         let~ _ : Ty.tuple [] :=

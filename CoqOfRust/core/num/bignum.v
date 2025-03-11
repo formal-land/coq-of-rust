@@ -503,7 +503,7 @@ Module num.
                     (Ty.path "array")
                     [ Value.Integer IntegerKind.Usize 40 ]
                     [ Ty.path "u32" ] :=
-                repeat (| Value.Integer IntegerKind.U32 0, Value.Integer IntegerKind.Usize 40 |) in
+                repeat (Value.Integer IntegerKind.U32 0) (Value.Integer IntegerKind.Usize 40) in
               let~ _ : Ty.tuple [] :=
                 M.write (|
                   M.SubPointer.get_array_field (| base, Value.Integer IntegerKind.Usize 0 |),
@@ -546,7 +546,7 @@ Module num.
                     (Ty.path "array")
                     [ Value.Integer IntegerKind.Usize 40 ]
                     [ Ty.path "u32" ] :=
-                repeat (| Value.Integer IntegerKind.U32 0, Value.Integer IntegerKind.Usize 40 |) in
+                repeat (Value.Integer IntegerKind.U32 0) (Value.Integer IntegerKind.Usize 40) in
               let~ sz : Ty.path "usize" := Value.Integer IntegerKind.Usize 0 in
               let~ _ : Ty.tuple [] :=
                 M.read (|
@@ -3582,10 +3582,7 @@ Module num.
                         (Ty.path "array")
                         [ Value.Integer IntegerKind.Usize 40 ]
                         [ Ty.path "u32" ] :=
-                    repeat (|
-                      Value.Integer IntegerKind.U32 0,
-                      Value.Integer IntegerKind.Usize 40
-                    |) in
+                    repeat (Value.Integer IntegerKind.U32 0) (Value.Integer IntegerKind.Usize 40) in
                   let~ retsz : Ty.path "usize" :=
                     M.read (|
                       M.match_operator (|
@@ -6516,7 +6513,7 @@ Module num.
                       (Ty.path "array")
                       [ Value.Integer IntegerKind.Usize 3 ]
                       [ Ty.path "u8" ] :=
-                  repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 3 |) in
+                  repeat (Value.Integer IntegerKind.U8 0) (Value.Integer IntegerKind.Usize 3) in
                 let~ _ : Ty.tuple [] :=
                   M.write (|
                     M.SubPointer.get_array_field (| base, Value.Integer IntegerKind.Usize 0 |),
@@ -6559,7 +6556,7 @@ Module num.
                       (Ty.path "array")
                       [ Value.Integer IntegerKind.Usize 3 ]
                       [ Ty.path "u8" ] :=
-                  repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 3 |) in
+                  repeat (Value.Integer IntegerKind.U8 0) (Value.Integer IntegerKind.Usize 3) in
                 let~ sz : Ty.path "usize" := Value.Integer IntegerKind.Usize 0 in
                 let~ _ : Ty.tuple [] :=
                   M.read (|
@@ -9648,10 +9645,7 @@ Module num.
                           (Ty.path "array")
                           [ Value.Integer IntegerKind.Usize 3 ]
                           [ Ty.path "u8" ] :=
-                      repeat (|
-                        Value.Integer IntegerKind.U8 0,
-                        Value.Integer IntegerKind.Usize 3
-                      |) in
+                      repeat (Value.Integer IntegerKind.U8 0) (Value.Integer IntegerKind.Usize 3) in
                     let~ retsz : Ty.path "usize" :=
                       M.read (|
                         M.match_operator (|

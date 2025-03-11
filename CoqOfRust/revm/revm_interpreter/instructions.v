@@ -111,8 +111,8 @@ Module instructions.
                     ]
                     (Ty.tuple [])
                 ] :=
-            repeat (|
-              M.read (|
+            repeat
+              (M.read (|
                 M.use
                   (M.alloc (|
                     (* ReifyFnPointer *)
@@ -123,9 +123,8 @@ Module instructions.
                         [ WIRE; H ]
                       |))
                   |))
-              |),
-              Value.Integer IntegerKind.Usize 256
-            |) in
+              |))
+              (Value.Integer IntegerKind.Usize 256) in
           let~ _ : Ty.tuple [] :=
             M.write (|
               M.SubPointer.get_array_field (|

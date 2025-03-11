@@ -102,7 +102,7 @@ Module Impl_Gas.
           self.limit
       }
   *)
-  Definition run_limit (Stack : Stack.t)
+  Definition run_limit {Stack : Stack.t}
       (self : Ref.t Pointer.Kind.Ref Self)
       (H_self : Stack.CanAccess.t Stack self.(Ref.core)) :
     {{ Stack 🌲 links.M.evaluate (Impl_Gas.run_limit self).(Run.run_f) }}.
@@ -123,7 +123,7 @@ Module Impl_Gas.
       {| Ref.core := Ref.Core.Mutable 0%nat [] φ Some (fun _ => Some) |} in
     M.evaluate (
       run_limit
-        [Self]
+        (Stack := [Self])
         ref_self
         ltac:(apply (Stack.CanAccess.Mutable (A := Gas.t) Stack 0 []))
     ) self =
@@ -168,18 +168,11 @@ Module Impl_Gas.
     ) self =
     (Output.Success tt, {|
       Gas.limit := self.(Gas.limit);
-      Gas.remaining := {| Integer.value := 12 |};
+      Gas.remaining := BinOp.Wrap.make_arithmetic Z.add self.(Gas.remaining) returned;
       Gas.refunded := self.(Gas.refunded);
       Gas.memory := self.(Gas.memory);
     |}).
   Proof.
-    cbn.
-    set (foo := {|
-      Integer.value :=
-        (self.(Gas.remaining).(Integer.value) +
-         returned.(Integer.value))
-        mod 18446744073709551616
-    |}).
-    simpl.
+    reflexivity.
   Qed.
 End Impl_Gas.

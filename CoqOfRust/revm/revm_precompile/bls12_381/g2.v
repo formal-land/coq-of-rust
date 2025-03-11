@@ -1275,18 +1275,14 @@ Module bls12_381.
                               [ Ty.path "u8" ]
                           ]
                       ] :=
-                  repeat (|
-                    M.borrow (|
+                  repeat
+                    (M.borrow (|
                       Pointer.Kind.Ref,
                       M.alloc (|
-                        repeat (|
-                          Value.Integer IntegerKind.U8 0,
-                          Value.Integer IntegerKind.Usize 48
-                        |)
+                        repeat (Value.Integer IntegerKind.U8 0) (Value.Integer IntegerKind.Usize 48)
                       |)
-                    |),
-                    Value.Integer IntegerKind.Usize 4
-                  |) in
+                    |))
+                    (Value.Integer IntegerKind.Usize 4) in
                 let~ _ : Ty.tuple [] :=
                   M.read (|
                     M.use

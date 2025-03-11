@@ -469,10 +469,9 @@ Module fmt.
                           M.borrow (|
                             Pointer.Kind.MutRef,
                             M.alloc (|
-                              repeat (|
-                                Value.Integer IntegerKind.U8 0,
-                                Value.Integer IntegerKind.Usize 4
-                              |)
+                              repeat
+                                (Value.Integer IntegerKind.U8 0)
+                                (Value.Integer IntegerKind.Usize 4)
                             |)
                           |)
                         |)
@@ -5089,10 +5088,9 @@ Module fmt.
                                                             (Ty.path "array")
                                                             [ Value.Integer IntegerKind.Usize 5 ]
                                                             [ Ty.path "u8" ] :=
-                                                        repeat (|
-                                                          Value.Integer IntegerKind.U8 0,
-                                                          Value.Integer IntegerKind.Usize 5
-                                                        |) in
+                                                        repeat
+                                                          (Value.Integer IntegerKind.U8 0)
+                                                          (Value.Integer IntegerKind.Usize 5) in
                                                       let~ len : Ty.path "usize" :=
                                                         M.call_closure (|
                                                           Ty.path "usize",
@@ -13950,10 +13948,9 @@ Module fmt.
                                       M.borrow (|
                                         Pointer.Kind.MutRef,
                                         M.alloc (|
-                                          repeat (|
-                                            Value.Integer IntegerKind.U8 0,
-                                            Value.Integer IntegerKind.Usize 4
-                                          |)
+                                          repeat
+                                            (Value.Integer IntegerKind.U8 0)
+                                            (Value.Integer IntegerKind.Usize 4)
                                         |)
                                       |)
                                     |)

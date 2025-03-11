@@ -28,7 +28,7 @@ Module num.
                       (Ty.path "array")
                       [ Value.Integer IntegerKind.Usize 8 ]
                       [ Ty.path "u8" ] :=
-                  repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 8 |) in
+                  repeat (Value.Integer IntegerKind.U8 0) (Value.Integer IntegerKind.Usize 8) in
                 let~ _ : Ty.tuple [] :=
                   M.call_closure (|
                     Ty.tuple [],

@@ -121,7 +121,7 @@ Module array.
                     []
                     [ Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Output" ]
                 ] :=
-            repeat (| M.read (| M.get_constant "core::array::try_from_fn_discriminant" |), N |) in
+            repeat (M.read (| M.get_constant "core::array::try_from_fn_discriminant" |)) N in
           M.match_operator (|
             Some
               (Ty.associated_in_trait
@@ -6144,14 +6144,13 @@ Module array.
           (let self := M.alloc (| self |) in
           M.read (|
             let~ buf : Ty.apply (Ty.path "array") [ N ] [ Ty.apply (Ty.path "*const") [] [ T ] ] :=
-              repeat (|
-                M.call_closure (|
+              repeat
+                (M.call_closure (|
                   Ty.apply (Ty.path "*const") [] [ T ],
                   M.get_function (| "core::ptr::null", [], [ T ] |),
                   []
-                |),
-                N
-              |) in
+                |))
+                N in
             let~ i : Ty.path "usize" := Value.Integer IntegerKind.Usize 0 in
             let~ _ : Ty.tuple [] :=
               M.read (|
@@ -6264,14 +6263,13 @@ Module array.
           (let self := M.alloc (| self |) in
           M.read (|
             let~ buf : Ty.apply (Ty.path "array") [ N ] [ Ty.apply (Ty.path "*mut") [] [ T ] ] :=
-              repeat (|
-                M.call_closure (|
+              repeat
+                (M.call_closure (|
                   Ty.apply (Ty.path "*mut") [] [ T ],
                   M.get_function (| "core::ptr::null_mut", [], [ T ] |),
                   []
-                |),
-                N
-              |) in
+                |))
+                N in
             let~ i : Ty.path "usize" := Value.Integer IntegerKind.Usize 0 in
             let~ _ : Ty.tuple [] :=
               M.read (|
@@ -7703,10 +7701,7 @@ Module array.
                 (Ty.path "array")
                 [ N ]
                 [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ] :=
-            repeat (|
-              M.read (| M.get_constant "core::array::iter_next_chunk_discriminant" |),
-              N
-            |) in
+            repeat (M.read (| M.get_constant "core::array::iter_next_chunk_discriminant" |)) N in
           let~ r : Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "usize" ] :=
             M.call_closure (|
               Ty.apply (Ty.path "core::result::Result") [] [ Ty.tuple []; Ty.path "usize" ],

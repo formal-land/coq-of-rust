@@ -373,7 +373,7 @@ Module account_address.
           (M.alloc (|
             Value.StructTuple
               "move_core_types::account_address::AccountAddress"
-              [ repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 32 |) ]
+              [ repeat (Value.Integer IntegerKind.U8 0) (Value.Integer IntegerKind.Usize 32) ]
           |))).
     
     Global Instance AssociatedConstant_value_ZERO :
@@ -444,7 +444,7 @@ Module account_address.
                   (Ty.path "array")
                   [ Value.Integer IntegerKind.Usize 32 ]
                   [ Ty.path "u8" ] :=
-              repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 32 |) in
+              repeat (Value.Integer IntegerKind.U8 0) (Value.Integer IntegerKind.Usize 32) in
             let~ _ : Ty.tuple [] :=
               M.write (|
                 M.SubPointer.get_array_field (|
@@ -487,7 +487,7 @@ Module account_address.
                   (Ty.path "array")
                   [ Value.Integer IntegerKind.Usize 32 ]
                   [ Ty.path "u8" ] :=
-              repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 32 |) in
+              repeat (Value.Integer IntegerKind.U8 0) (Value.Integer IntegerKind.Usize 32) in
             let~ _ : Ty.tuple [] :=
               M.write (|
                 M.SubPointer.get_array_field (|

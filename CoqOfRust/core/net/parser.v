@@ -3242,10 +3242,9 @@ Module net.
                                           (Ty.path "array")
                                           [ Value.Integer IntegerKind.Usize 4 ]
                                           [ Ty.path "u8" ] :=
-                                      repeat (|
-                                        Value.Integer IntegerKind.U8 0,
-                                        Value.Integer IntegerKind.Usize 4
-                                      |) in
+                                      repeat
+                                        (Value.Integer IntegerKind.U8 0)
+                                        (Value.Integer IntegerKind.Usize 4) in
                                     let~ _ : Ty.tuple [] :=
                                       M.read (|
                                         M.use
@@ -3858,10 +3857,9 @@ Module net.
                                           (Ty.path "array")
                                           [ Value.Integer IntegerKind.Usize 8 ]
                                           [ Ty.path "u16" ] :=
-                                      repeat (|
-                                        Value.Integer IntegerKind.U16 0,
-                                        Value.Integer IntegerKind.Usize 8
-                                      |) in
+                                      repeat
+                                        (Value.Integer IntegerKind.U16 0)
+                                        (Value.Integer IntegerKind.Usize 8) in
                                     M.match_operator (|
                                       None,
                                       M.alloc (|
@@ -4227,10 +4225,9 @@ Module net.
                                                   (Ty.path "array")
                                                   [ Value.Integer IntegerKind.Usize 7 ]
                                                   [ Ty.path "u16" ] :=
-                                              repeat (|
-                                                Value.Integer IntegerKind.U16 0,
-                                                Value.Integer IntegerKind.Usize 7
-                                              |) in
+                                              repeat
+                                                (Value.Integer IntegerKind.U16 0)
+                                                (Value.Integer IntegerKind.Usize 7) in
                                             let~ limit : Ty.path "usize" :=
                                               BinOp.Wrap.sub (|
                                                 Value.Integer IntegerKind.Usize 8,

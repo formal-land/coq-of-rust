@@ -1344,13 +1344,12 @@ Module iter.
                           (Ty.path "array")
                           [ N ]
                           [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ] :=
-                      repeat (|
-                        M.read (|
+                      repeat
+                        (M.read (|
                           M.get_constant
                             "core::iter::adapters::copied::spec_next_chunk_discriminant"
-                        |),
-                        N
-                      |) in
+                        |))
+                        N in
                     let~ len : Ty.path "usize" :=
                       M.call_closure (|
                         Ty.path "usize",

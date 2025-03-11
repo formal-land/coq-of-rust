@@ -366,7 +366,7 @@ Module Impl_ruint_Uint_BITS_LIMBS.
               [],
               []
             |),
-            [ repeat (| Value.Integer IntegerKind.U64 0, LIMBS |) ]
+            [ repeat (Value.Integer IntegerKind.U64 0) LIMBS ]
           |)
         |))).
   
@@ -403,7 +403,7 @@ Module Impl_ruint_Uint_BITS_LIMBS.
     M.run
       ltac:(M.monadic
         (let~ limbs : Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] :=
-          repeat (| M.read (| M.get_constant "core::num::MAX" |), LIMBS |) in
+          repeat (M.read (| M.get_constant "core::num::MAX" |)) LIMBS in
         let~ _ : Ty.tuple [] :=
           M.read (|
             M.match_operator (|
@@ -960,7 +960,7 @@ Module Impl_ruint_Uint_BITS_LIMBS.
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   let~ limbs : Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] :=
-                    repeat (| Value.Integer IntegerKind.U64 0, LIMBS |) in
+                    repeat (Value.Integer IntegerKind.U64 0) LIMBS in
                   let~ _ : Ty.tuple [] :=
                     M.call_closure (|
                       Ty.tuple [],
@@ -1075,7 +1075,7 @@ Module Impl_ruint_Uint_BITS_LIMBS.
                           let head := M.copy (| γ0_0 |) in
                           let tail := M.copy (| γ0_1 |) in
                           let~ limbs : Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] :=
-                            repeat (| Value.Integer IntegerKind.U64 0, LIMBS |) in
+                            repeat (Value.Integer IntegerKind.U64 0) LIMBS in
                           let~ _ : Ty.tuple [] :=
                             M.call_closure (|
                               Ty.tuple [],

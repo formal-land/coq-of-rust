@@ -155,8 +155,8 @@ Module fmt.
                   [ Value.Integer IntegerKind.Usize 1024 ]
                   [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ]
                   ] :=
-              repeat (|
-                M.call_closure (|
+              repeat
+                (M.call_closure (|
                   Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
@@ -165,9 +165,8 @@ Module fmt.
                     []
                   |),
                   []
-                |),
-                Value.Integer IntegerKind.Usize 1024
-              |) in
+                |))
+                (Value.Integer IntegerKind.Usize 1024) in
             let~ parts :
                 Ty.apply
                   (Ty.path "array")
@@ -178,8 +177,8 @@ Module fmt.
                       []
                       [ Ty.path "core::num::fmt::Part" ]
                   ] :=
-              repeat (|
-                M.call_closure (|
+              repeat
+                (M.call_closure (|
                   Ty.apply
                     (Ty.path "core::mem::maybe_uninit::MaybeUninit")
                     []
@@ -194,9 +193,8 @@ Module fmt.
                     []
                   |),
                   []
-                |),
-                Value.Integer IntegerKind.Usize 4
-              |) in
+                |))
+                (Value.Integer IntegerKind.Usize 4) in
             let~ formatted : Ty.path "core::num::fmt::Formatted" :=
               M.call_closure (|
                 Ty.path "core::num::fmt::Formatted",
@@ -329,8 +327,8 @@ Module fmt.
                   [ Value.Integer IntegerKind.Usize 17 ]
                   [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ]
                   ] :=
-              repeat (|
-                M.call_closure (|
+              repeat
+                (M.call_closure (|
                   Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
@@ -339,9 +337,8 @@ Module fmt.
                     []
                   |),
                   []
-                |),
-                Value.Integer IntegerKind.Usize 17
-              |) in
+                |))
+                (Value.Integer IntegerKind.Usize 17) in
             let~ parts :
                 Ty.apply
                   (Ty.path "array")
@@ -352,8 +349,8 @@ Module fmt.
                       []
                       [ Ty.path "core::num::fmt::Part" ]
                   ] :=
-              repeat (|
-                M.call_closure (|
+              repeat
+                (M.call_closure (|
                   Ty.apply
                     (Ty.path "core::mem::maybe_uninit::MaybeUninit")
                     []
@@ -368,9 +365,8 @@ Module fmt.
                     []
                   |),
                   []
-                |),
-                Value.Integer IntegerKind.Usize 4
-              |) in
+                |))
+                (Value.Integer IntegerKind.Usize 4) in
             let~ formatted : Ty.path "core::num::fmt::Formatted" :=
               M.call_closure (|
                 Ty.path "core::num::fmt::Formatted",
@@ -633,8 +629,8 @@ Module fmt.
                   [ Value.Integer IntegerKind.Usize 1024 ]
                   [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ]
                   ] :=
-              repeat (|
-                M.call_closure (|
+              repeat
+                (M.call_closure (|
                   Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
@@ -643,9 +639,8 @@ Module fmt.
                     []
                   |),
                   []
-                |),
-                Value.Integer IntegerKind.Usize 1024
-              |) in
+                |))
+                (Value.Integer IntegerKind.Usize 1024) in
             let~ parts :
                 Ty.apply
                   (Ty.path "array")
@@ -656,8 +651,8 @@ Module fmt.
                       []
                       [ Ty.path "core::num::fmt::Part" ]
                   ] :=
-              repeat (|
-                M.call_closure (|
+              repeat
+                (M.call_closure (|
                   Ty.apply
                     (Ty.path "core::mem::maybe_uninit::MaybeUninit")
                     []
@@ -672,9 +667,8 @@ Module fmt.
                     []
                   |),
                   []
-                |),
-                Value.Integer IntegerKind.Usize 6
-              |) in
+                |))
+                (Value.Integer IntegerKind.Usize 6) in
             let~ formatted : Ty.path "core::num::fmt::Formatted" :=
               M.call_closure (|
                 Ty.path "core::num::fmt::Formatted",
@@ -809,8 +803,8 @@ Module fmt.
                   [ Value.Integer IntegerKind.Usize 17 ]
                   [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ]
                   ] :=
-              repeat (|
-                M.call_closure (|
+              repeat
+                (M.call_closure (|
                   Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
@@ -819,9 +813,8 @@ Module fmt.
                     []
                   |),
                   []
-                |),
-                Value.Integer IntegerKind.Usize 17
-              |) in
+                |))
+                (Value.Integer IntegerKind.Usize 17) in
             let~ parts :
                 Ty.apply
                   (Ty.path "array")
@@ -832,8 +825,8 @@ Module fmt.
                       []
                       [ Ty.path "core::num::fmt::Part" ]
                   ] :=
-              repeat (|
-                M.call_closure (|
+              repeat
+                (M.call_closure (|
                   Ty.apply
                     (Ty.path "core::mem::maybe_uninit::MaybeUninit")
                     []
@@ -848,9 +841,8 @@ Module fmt.
                     []
                   |),
                   []
-                |),
-                Value.Integer IntegerKind.Usize 6
-              |) in
+                |))
+                (Value.Integer IntegerKind.Usize 6) in
             let~ formatted : Ty.path "core::num::fmt::Formatted" :=
               M.call_closure (|
                 Ty.path "core::num::fmt::Formatted",

@@ -6340,7 +6340,7 @@ Module annotated_visitor.
           ltac:(M.monadic
             (M.read (|
               let~ buf : Ty.apply (Ty.path "array") [ N ] [ Ty.path "u8" ] :=
-                repeat (| Value.Integer IntegerKind.U8 0, N |) in
+                repeat (Value.Integer IntegerKind.U8 0) N in
               let~ _ : Ty.tuple [] :=
                 M.read (|
                   M.match_operator (|

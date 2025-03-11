@@ -826,8 +826,8 @@ Module fmt.
                     [ Value.Integer IntegerKind.Usize 128 ]
                     [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ]
                     ] :=
-                repeat (|
-                  M.call_closure (|
+                repeat
+                  (M.call_closure (|
                     Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
                     M.get_associated_function (|
                       Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
@@ -836,9 +836,8 @@ Module fmt.
                       []
                     |),
                     []
-                  |),
-                  Value.Integer IntegerKind.Usize 128
-                |) in
+                  |))
+                  (Value.Integer IntegerKind.Usize 128) in
               let~ curr : Ty.path "usize" :=
                 M.call_closure (|
                   Ty.path "usize",
@@ -6798,8 +6797,8 @@ Module fmt.
                           []
                           [ Ty.path "u8" ]
                       ] :=
-                  repeat (|
-                    M.call_closure (|
+                  repeat
+                    (M.call_closure (|
                       Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
                       M.get_associated_function (|
                         Ty.apply
@@ -6811,9 +6810,8 @@ Module fmt.
                         []
                       |),
                       []
-                    |),
-                    Value.Integer IntegerKind.Usize 3
-                  |) in
+                    |))
+                    (Value.Integer IntegerKind.Usize 3) in
                 let~ curr : Ty.path "usize" :=
                   M.read (| M.get_constant "core::fmt::num::imp::_fmt::SIZE" |) in
                 let~ buf_ptr : Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ] :=
@@ -7510,8 +7508,8 @@ Module fmt.
                           []
                           [ Ty.path "u8" ]
                       ] :=
-                  repeat (|
-                    M.call_closure (|
+                  repeat
+                    (M.call_closure (|
                       Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
                       M.get_associated_function (|
                         Ty.apply
@@ -7523,9 +7521,8 @@ Module fmt.
                         []
                       |),
                       []
-                    |),
-                    Value.Integer IntegerKind.Usize 5
-                  |) in
+                    |))
+                    (Value.Integer IntegerKind.Usize 5) in
                 let~ curr : Ty.path "usize" :=
                   M.read (| M.get_constant "core::fmt::num::imp::_fmt::SIZE" |) in
                 let~ buf_ptr : Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ] :=
@@ -8222,8 +8219,8 @@ Module fmt.
                           []
                           [ Ty.path "u8" ]
                       ] :=
-                  repeat (|
-                    M.call_closure (|
+                  repeat
+                    (M.call_closure (|
                       Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
                       M.get_associated_function (|
                         Ty.apply
@@ -8235,9 +8232,8 @@ Module fmt.
                         []
                       |),
                       []
-                    |),
-                    Value.Integer IntegerKind.Usize 10
-                  |) in
+                    |))
+                    (Value.Integer IntegerKind.Usize 10) in
                 let~ curr : Ty.path "usize" :=
                   M.read (| M.get_constant "core::fmt::num::imp::_fmt::SIZE" |) in
                 let~ buf_ptr : Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ] :=
@@ -8934,8 +8930,8 @@ Module fmt.
                           []
                           [ Ty.path "u8" ]
                       ] :=
-                  repeat (|
-                    M.call_closure (|
+                  repeat
+                    (M.call_closure (|
                       Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
                       M.get_associated_function (|
                         Ty.apply
@@ -8947,9 +8943,8 @@ Module fmt.
                         []
                       |),
                       []
-                    |),
-                    Value.Integer IntegerKind.Usize 20
-                  |) in
+                    |))
+                    (Value.Integer IntegerKind.Usize 20) in
                 let~ curr : Ty.path "usize" :=
                   M.read (| M.get_constant "core::fmt::num::imp::_fmt::SIZE" |) in
                 let~ buf_ptr : Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ] :=
@@ -9651,8 +9646,8 @@ Module fmt.
                           []
                           [ Ty.path "u8" ]
                       ] :=
-                  repeat (|
-                    M.call_closure (|
+                  repeat
+                    (M.call_closure (|
                       Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
                       M.get_associated_function (|
                         Ty.apply
@@ -9664,9 +9659,8 @@ Module fmt.
                         []
                       |),
                       []
-                    |),
-                    Value.Integer IntegerKind.Usize 20
-                  |) in
+                    |))
+                    (Value.Integer IntegerKind.Usize 20) in
                 let~ curr : Ty.path "usize" :=
                   M.read (| M.get_constant "core::fmt::num::imp::_fmt::SIZE" |) in
                 let~ buf_ptr : Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ] :=
@@ -10829,8 +10823,8 @@ Module fmt.
                                 []
                                 [ Ty.path "u8" ]
                             ] :=
-                        repeat (|
-                          M.call_closure (|
+                        repeat
+                          (M.call_closure (|
                             Ty.apply
                               (Ty.path "core::mem::maybe_uninit::MaybeUninit")
                               []
@@ -10845,9 +10839,8 @@ Module fmt.
                               []
                             |),
                             []
-                          |),
-                          Value.Integer IntegerKind.Usize 40
-                        |) in
+                          |))
+                          (Value.Integer IntegerKind.Usize 40) in
                       let~ curr : Ty.path "usize" :=
                         M.call_closure (|
                           Ty.path "usize",
@@ -11251,8 +11244,8 @@ Module fmt.
                                 []
                                 [ Ty.path "u8" ]
                             ] :=
-                        repeat (|
-                          M.call_closure (|
+                        repeat
+                          (M.call_closure (|
                             Ty.apply
                               (Ty.path "core::mem::maybe_uninit::MaybeUninit")
                               []
@@ -11267,9 +11260,8 @@ Module fmt.
                               []
                             |),
                             []
-                          |),
-                          Value.Integer IntegerKind.Usize 3
-                        |) in
+                          |))
+                          (Value.Integer IntegerKind.Usize 3) in
                       let~ exp_ptr : Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ] :=
                         M.call_closure (|
                           Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
@@ -14646,8 +14638,8 @@ Module fmt.
                               []
                               [ Ty.path "u8" ]
                           ] :=
-                      repeat (|
-                        M.call_closure (|
+                      repeat
+                        (M.call_closure (|
                           Ty.apply
                             (Ty.path "core::mem::maybe_uninit::MaybeUninit")
                             []
@@ -14662,9 +14654,8 @@ Module fmt.
                             []
                           |),
                           []
-                        |),
-                        Value.Integer IntegerKind.Usize 40
-                      |) in
+                        |))
+                        (Value.Integer IntegerKind.Usize 40) in
                     let~ curr : Ty.path "usize" :=
                       M.call_closure (|
                         Ty.path "usize",
@@ -15068,8 +15059,8 @@ Module fmt.
                               []
                               [ Ty.path "u8" ]
                           ] :=
-                      repeat (|
-                        M.call_closure (|
+                      repeat
+                        (M.call_closure (|
                           Ty.apply
                             (Ty.path "core::mem::maybe_uninit::MaybeUninit")
                             []
@@ -15084,9 +15075,8 @@ Module fmt.
                             []
                           |),
                           []
-                        |),
-                        Value.Integer IntegerKind.Usize 3
-                      |) in
+                        |))
+                        (Value.Integer IntegerKind.Usize 3) in
                     let~ exp_ptr : Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ] :=
                       M.call_closure (|
                         Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
@@ -17238,8 +17228,8 @@ Module fmt.
                   [ Value.Integer IntegerKind.Usize 39 ]
                   [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ]
                   ] :=
-              repeat (|
-                M.call_closure (|
+              repeat
+                (M.call_closure (|
                   Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
                   M.get_associated_function (|
                     Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
@@ -17248,9 +17238,8 @@ Module fmt.
                     []
                   |),
                   []
-                |),
-                Value.Integer IntegerKind.Usize 39
-              |) in
+                |))
+                (Value.Integer IntegerKind.Usize 39) in
             let~ curr : Ty.path "usize" :=
               M.call_closure (|
                 Ty.path "usize",

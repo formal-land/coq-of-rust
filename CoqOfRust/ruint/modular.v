@@ -372,10 +372,9 @@ Module modular.
                           [ Value.Integer IntegerKind.Usize 2 ]
                           [ Ty.path "u64" ]
                       ] :=
-                  repeat (|
-                    repeat (| Value.Integer IntegerKind.U64 0, Value.Integer IntegerKind.Usize 2 |),
-                    LIMBS
-                  |) in
+                  repeat
+                    (repeat (Value.Integer IntegerKind.U64 0) (Value.Integer IntegerKind.Usize 2))
+                    LIMBS in
                 let~ product_len : Ty.path "usize" :=
                   M.call_closure (|
                     Ty.path "usize",
