@@ -6,8 +6,7 @@ Require Import revm.revm_interpreter.links.interpreter.
 Require Import revm.revm_interpreter.links.interpreter_types.
 Require Import revm.revm_interpreter.instructions.arithmetic.
 Require Import ruint.links.add.
-(* Require Import ruint.links.mul. *)
-(* NOTE: ERROR: the instance in `mul` seems to collide with `wrapping_add` *)
+Require Import ruint.links.mul.
 
 Import Impl_Gas.
 Import Impl_Uint.
@@ -41,6 +40,7 @@ Proof.
   destruct run_StackTrait_for_Stack.
   destruct popn_top as [popn_top [H_popn_top run_popn_top]].
   run_symbolic. (* NOTE: if we import `ruint.links.mul` this line of code will leave with a goal unsolved *)
+  eapply add.Impl_Uint.run_wrapping_add. (* Not quite satisfying for a manual application? *)
 Defined.
 
 (*
@@ -75,7 +75,5 @@ Instance run_mul
     destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
     destruct run_StackTrait_for_Stack.
     destruct popn_top as [popn_top [H_popn_top run_popn_top]].
-    (* TODO: Create link file for `wrapping mul` *)
-    run_symbolic.
-  Admitted.
-  (* Defined. *)
+    run_symbolic. (* why we dont need to manually apply the instance here? *)
+  Defined.
