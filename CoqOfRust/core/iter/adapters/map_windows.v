@@ -1441,13 +1441,12 @@ Module iter.
                               |)
                             ]
                           |);
-                          repeat (|
-                            M.read (|
+                          repeat
+                            (M.read (|
                               M.get_constant
                                 "core::iter::adapters::map_windows::try_from_iter_discriminant"
-                            |),
+                            |))
                             N
-                          |)
                         ] in
                     M.alloc (|
                       Value.StructTuple
@@ -2636,20 +2635,18 @@ Module iter.
                       ("buffer",
                         Value.Array
                           [
-                            repeat (|
-                              M.read (|
+                            repeat
+                              (M.read (|
                                 M.get_constant
                                   "core::iter::adapters::map_windows::clone_discriminant"
-                              |),
-                              N
-                            |);
-                            repeat (|
-                              M.read (|
+                              |))
+                              N;
+                            repeat
+                              (M.read (|
                                 M.get_constant
                                   "core::iter::adapters::map_windows::clone_discriminant"
-                              |),
+                              |))
                               N
-                            |)
                           ]);
                       ("start",
                         M.read (|

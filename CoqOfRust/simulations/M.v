@@ -474,14 +474,14 @@ Module Stack.
     | A :: Stack => to_Set_aux A Stack
     end.
 
-  Definition read_Set (Stack : t) (index : nat) : Set :=
+  Definition nth (Stack : t) (index : nat) : Set :=
     List.nth index Stack unit.
 
   Fixpoint read_aux {A : Set} {Stack : t}
     (stack : to_Set_aux A Stack)
     (index : nat)
     {struct Stack} :
-    read_Set (A :: Stack) index.
+    nth (A :: Stack) index.
   Proof.
     destruct Stack as [|B Stack], index as [|index]; cbn in *.
     { exact stack. }
@@ -490,7 +490,7 @@ Module Stack.
     { exact (read_aux _ _ (snd stack) index). }
   Defined.
 
-  Definition read {Stack : t} (stack : to_Set Stack) (index : nat) : read_Set Stack index.
+  Definition read {Stack : t} (stack : to_Set Stack) (index : nat) : nth Stack index.
   Proof.
     destruct Stack; cbn in *.
     { destruct index; exact tt. }
@@ -500,7 +500,7 @@ Module Stack.
   Fixpoint write_aux {A : Set} {Stack : t}
     (stack : to_Set_aux A Stack)
     (index : nat)
-    (value : read_Set (A :: Stack) index)
+    (value : nth (A :: Stack) index)
     {struct Stack} :
     to_Set_aux A Stack.
   Proof.
@@ -514,7 +514,7 @@ Module Stack.
   Definition write {Stack : t}
     (stack : to_Set Stack)
     (index : nat)
-    (value : read_Set Stack index) :
+    (value : nth Stack index) :
     to_Set Stack.
   Proof.
     destruct Stack; cbn in *.
@@ -522,21 +522,45 @@ Module Stack.
     { apply (write_aux stack index value). }
   Defined.
 
-  (* Fixpoint pop_aux {A : Set} {Stack : t}
+  Fixpoint alloc_aux {A : Set} {Stack : t} {B : Set}
     (stack : to_Set_aux A Stack)
+    (value : B)
     {struct Stack} :
-    to_Set Stack.
+    to_Set_aux A (Stack ++ [B]).
   Proof.
-    destruct Stack as [|B Stack]; cbn in *.
-    { exact tt. }
-    { exact (fst stack, pop_aux _ (snd stack)). }
-  Defined. *)
+    destruct Stack as [|A' Stack]; cbn in *.
+    { exact (stack, value). }
+    { exact (fst stack, alloc_aux _ _ _ (snd stack) value). }
+  Defined.
 
-  Definition alloc {Stack : t} {A : Set} (stack : to_Set Stack) (value : A) : to_Set (Stack ++ [A]).
-  Admitted.
+  Definition alloc {Stack : t} {A : Set} (stack : to_Set Stack) (value : A) :
+    to_Set (Stack ++ [A]).
+  Proof.
+    destruct Stack; cbn in *.
+    { exact value. }
+    { apply (alloc_aux stack value). }
+  Defined.
 
-  Definition dealloc {Stack : t} {A : Set} (stack : to_Set (Stack ++ [A])) : to_Set Stack.
-  Admitted.
+  Fixpoint dealloc_aux {A : Set} {Stack : t} {B : Set}
+    (stack : to_Set_aux A (Stack ++ [B]))
+    {struct Stack} :
+    to_Set_aux A Stack * B.
+  Proof.
+    destruct Stack as [|A' Stack]; cbn in *.
+    { exact stack. }
+    { exact (
+        let '(stack', value) := dealloc_aux _ _ _ (snd stack) in
+        ((fst stack, stack'), value)
+      ).
+    }
+  Defined.
+
+  Definition dealloc {Stack : t} {A : Set} (stack : to_Set (Stack ++ [A])) : to_Set Stack * A.
+  Proof.
+    destruct Stack; cbn in *.
+    { exact (tt, stack). }
+    { exact (dealloc_aux stack). }
+  Defined.
 
   Module CanAccess.
     Inductive t {A : Set} `{Link A} (Stack : Stack.t) : Ref.Core.t A -> Set :=
@@ -546,10 +570,10 @@ Module Stack.
     | Mutable
         (index : nat)
         (path : Pointer.Path.t)
-        (big_to_value : read_Set Stack index -> Value.t)
-        (projection : read_Set Stack index -> option A)
-        (injection : read_Set Stack index -> A -> option (read_Set Stack index)) :
-      t Stack (Ref.Core.Mutable (Address := nat) (Big_A := read_Set Stack index)
+        (big_to_value : nth Stack index -> Value.t)
+        (projection : nth Stack index -> option A)
+        (injection : nth Stack index -> A -> option (nth Stack index)) :
+      t Stack (Ref.Core.Mutable (Address := nat) (Big_A := nth Stack index)
           index path big_to_value projection injection
         ).
 
@@ -676,7 +700,7 @@ Proof.
   { (* StateAlloc *)
     refine (
       let '(output, stack_out) := _ in
-      (output, Stack.dealloc (A := A) stack_out)
+      (output, fst (Stack.dealloc (A := A) stack_out))
     ).
     unshelve eapply (evaluate _ _ _ _ run _).
     exact (Stack.alloc stack_in value).
@@ -699,7 +723,7 @@ Proof.
     apply SuccessOrPanic.of_output.
     apply (evaluate _ _ _ _ run tt).
   }
-  { (* Let *)
+  { (* LetAlloc *)
     refine (
       let '(output', stack_in') := evaluate _ _ _ _ run stack_in in
       _
@@ -718,7 +742,7 @@ Proof.
       ).
       refine (
         let '(output, stack_out) := _ in
-        (output, Stack.dealloc (A := Output') stack_out)
+        (output, fst (Stack.dealloc (A := Output') stack_out))
       ).
       unshelve eapply (evaluate _ _ _ _ (H_k (Output.Success ref)) _).
       exact (Stack.alloc stack_in' output').

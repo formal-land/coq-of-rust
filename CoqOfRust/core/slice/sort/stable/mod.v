@@ -584,10 +584,9 @@ Module slice.
                 [
                   ("_align", Value.Array []);
                   ("storage",
-                    repeat (|
-                      M.read (| M.get_constant "core::slice::sort::stable::new_discriminant" |),
-                      N
-                    |))
+                    repeat
+                      (M.read (| M.get_constant "core::slice::sort::stable::new_discriminant" |))
+                      N)
                 ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.

@@ -2233,7 +2233,7 @@ Module interpreter.
                                 M.never_to_any (|
                                   M.read (|
                                     M.return_ (|
-                                      repeat (| M.read (| M.get_constant "ruint::ZERO" |), N |)
+                                      repeat (M.read (| M.get_constant "ruint::ZERO" |)) N
                                     |)
                                   |)
                                 |)
@@ -2253,7 +2253,7 @@ Module interpreter.
                             ]
                             []
                         ] :=
-                    repeat (| M.read (| M.get_constant "ruint::ZERO" |), N |) in
+                    repeat (M.read (| M.get_constant "ruint::ZERO" |)) N in
                   let~ _ : Ty.tuple [] :=
                     M.read (|
                       M.use
@@ -5161,10 +5161,9 @@ Module interpreter.
                                         (Ty.path "array")
                                         [ Value.Integer IntegerKind.Usize 8 ]
                                         [ Ty.path "u8" ] :=
-                                    repeat (|
-                                      Value.Integer IntegerKind.U8 0,
-                                      Value.Integer IntegerKind.Usize 8
-                                    |) in
+                                    repeat
+                                      (Value.Integer IntegerKind.U8 0)
+                                      (Value.Integer IntegerKind.Usize 8) in
                                   let~ _ : Ty.tuple [] :=
                                     M.call_closure (|
                                       Ty.tuple [],

@@ -4693,7 +4693,7 @@ Module file_format_common.
                     (Ty.path "array")
                     [ Value.Integer IntegerKind.Usize 1 ]
                     [ Ty.path "u8" ] :=
-                repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 1 |) in
+                repeat (Value.Integer IntegerKind.U8 0) (Value.Integer IntegerKind.Usize 1) in
               let~ _ : Ty.tuple [] :=
                 M.read (|
                   M.match_operator (|
@@ -4854,7 +4854,7 @@ Module file_format_common.
                     (Ty.path "array")
                     [ Value.Integer IntegerKind.Usize 4 ]
                     [ Ty.path "u8" ] :=
-                repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 4 |) in
+                repeat (Value.Integer IntegerKind.U8 0) (Value.Integer IntegerKind.Usize 4) in
               let~ _ : Ty.tuple [] :=
                 M.read (|
                   M.match_operator (|

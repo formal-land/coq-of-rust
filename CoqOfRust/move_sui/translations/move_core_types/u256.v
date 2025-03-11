@@ -3095,7 +3095,7 @@ Module u256.
                   (Ty.path "array")
                   [ Value.Integer IntegerKind.Usize 32 ]
                   [ Ty.path "u8" ] :=
-              repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 32 |) in
+              repeat (Value.Integer IntegerKind.U8 0) (Value.Integer IntegerKind.Usize 32) in
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
@@ -5547,7 +5547,7 @@ Module u256.
                   (Ty.path "array")
                   [ Value.Integer IntegerKind.Usize 32 ]
                   [ Ty.path "u8" ] :=
-              repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 32 |) in
+              repeat (Value.Integer IntegerKind.U8 0) (Value.Integer IntegerKind.Usize 32) in
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],

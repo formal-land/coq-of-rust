@@ -4599,7 +4599,7 @@ Module str.
                     (Ty.path "array")
                     [ Value.Integer IntegerKind.Usize 4 ]
                     [ Ty.path "u8" ] :=
-                repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 4 |) in
+                repeat (Value.Integer IntegerKind.U8 0) (Value.Integer IntegerKind.Usize 4) in
               let~ utf8_size : Ty.path "u8" :=
                 M.call_closure (|
                   Ty.path "u8",
@@ -4764,10 +4764,9 @@ Module str.
                             (Ty.path "array")
                             [ Value.Integer IntegerKind.Usize 4 ]
                             [ Ty.path "u8" ] :=
-                        repeat (|
-                          Value.Integer IntegerKind.U8 0,
-                          Value.Integer IntegerKind.Usize 4
-                        |) in
+                        repeat
+                          (Value.Integer IntegerKind.U8 0)
+                          (Value.Integer IntegerKind.Usize 4) in
                       M.alloc (|
                         M.call_closure (|
                           Ty.path "bool",
@@ -4849,10 +4848,9 @@ Module str.
                             M.borrow (|
                               Pointer.Kind.MutRef,
                               M.alloc (|
-                                repeat (|
-                                  Value.Integer IntegerKind.U8 0,
-                                  Value.Integer IntegerKind.Usize 4
-                                |)
+                                repeat
+                                  (Value.Integer IntegerKind.U8 0)
+                                  (Value.Integer IntegerKind.Usize 4)
                               |)
                             |)
                           |)
@@ -4907,10 +4905,9 @@ Module str.
                             M.borrow (|
                               Pointer.Kind.MutRef,
                               M.alloc (|
-                                repeat (|
-                                  Value.Integer IntegerKind.U8 0,
-                                  Value.Integer IntegerKind.Usize 4
-                                |)
+                                repeat
+                                  (Value.Integer IntegerKind.U8 0)
+                                  (Value.Integer IntegerKind.Usize 4)
                               |)
                             |)
                           |)
@@ -4965,10 +4962,9 @@ Module str.
                             M.borrow (|
                               Pointer.Kind.MutRef,
                               M.alloc (|
-                                repeat (|
-                                  Value.Integer IntegerKind.U8 0,
-                                  Value.Integer IntegerKind.Usize 4
-                                |)
+                                repeat
+                                  (Value.Integer IntegerKind.U8 0)
+                                  (Value.Integer IntegerKind.Usize 4)
                               |)
                             |)
                           |)
@@ -5026,10 +5022,9 @@ Module str.
                             M.borrow (|
                               Pointer.Kind.MutRef,
                               M.alloc (|
-                                repeat (|
-                                  Value.Integer IntegerKind.U8 0,
-                                  Value.Integer IntegerKind.Usize 4
-                                |)
+                                repeat
+                                  (Value.Integer IntegerKind.U8 0)
+                                  (Value.Integer IntegerKind.Usize 4)
                               |)
                             |)
                           |)
@@ -19789,10 +19784,9 @@ Module str.
                                       (Ty.path "array")
                                       [ Value.Integer IntegerKind.Usize 4 ]
                                       [ Ty.path "u16" ] :=
-                                  repeat (|
-                                    Value.Integer IntegerKind.U16 0,
-                                    Value.Integer IntegerKind.Usize 4
-                                  |) in
+                                  repeat
+                                    (Value.Integer IntegerKind.U16 0)
+                                    (Value.Integer IntegerKind.Usize 4) in
                                 let~ _ : Ty.tuple [] :=
                                   M.read (|
                                     M.use
