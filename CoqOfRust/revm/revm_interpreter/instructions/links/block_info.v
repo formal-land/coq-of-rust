@@ -6,9 +6,11 @@ Require Import revm.revm_interpreter.links.interpreter_types.
 Require Import revm.revm_interpreter.instructions.block_info.
 Require Import revm.revm_specification.links.hardfork.
 Require Import revm.revm_context_interface.links.cfg.
+Require Import ruint.links.from.
 
 Import Impl_SpecId.
 Import Impl_Gas.
+Import from.Impl_Uint.
 
 (*
 pub fn chainid<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -41,8 +43,7 @@ Instance run_chainid
     destruct run_StackTrait_for_Stack.
     destruct push as [push [H_push run_push]].
     (* TODO: 
-    - Create link file for `ruint::from` 
-    - Finish link for revm_context_interface::cfg::CfgGetter::cfg
+    - Finish link for "revm_context_interface::cfg::Cfg" trait to `run_chain_id`
     *)
     run_symbolic.
   Admitted.

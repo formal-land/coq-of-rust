@@ -3,8 +3,6 @@ Require Import CoqOfRust.links.M.
 Require Import ruint.links.lib.
 Require Import ruint.from.
 
-(* TODO: Add `from` impl from `from.v` *)
-
 Module Impl_Uint.
   (* Uint<BITS, LIMBS> *)
   Definition Self (BITS LIMBS : Usize.t) : Set :=
@@ -15,11 +13,11 @@ Module Impl_Uint.
         where
             Self: UintTryFrom<T>,
   *)
-  (* Instance run_from
-      (BITS LIMBS : Usize.t)
-      (x1 x2 : Self BITS LIMBS) :
+  Instance run_from
+    (BITS LIMBS : Usize.t)
+    (x1 x2 : Self BITS LIMBS) :
     Run.Trait
       (from.Impl_ruint_Uint_BITS_LIMBS.from (φ BITS) (φ LIMBS)) [] [] [ φ x1; φ x2 ]
       (Self BITS LIMBS).
-  Admitted. *)
+  Admitted.
 End Impl_Uint.
