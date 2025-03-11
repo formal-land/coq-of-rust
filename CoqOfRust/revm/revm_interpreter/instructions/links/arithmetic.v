@@ -6,6 +6,7 @@ Require Import revm.revm_interpreter.links.interpreter.
 Require Import revm.revm_interpreter.links.interpreter_types.
 Require Import revm.revm_interpreter.instructions.arithmetic.
 Require Import ruint.links.add.
+Require Import reint.links.mul.
 
 Import Impl_Gas.
 Import Impl_Uint.
@@ -74,4 +75,4 @@ Instance run_mul
     destruct run_StackTrait_for_Stack.
     destruct popn_top as [popn_top [H_popn_top run_popn_top]].
     run_symbolic.
-  Admitted.
+  Defined.
