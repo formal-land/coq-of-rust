@@ -77,3 +77,14 @@ Instance run_mul
     destruct popn_top as [popn_top [H_popn_top run_popn_top]].
     run_symbolic. (* why we dont need to manually apply the instance here? *)
   Defined.
+
+(*
+pub fn sub<WIRE: InterpreterTypes, H: Host + ?Sized>(
+    interpreter: &mut Interpreter<WIRE>,
+    _host: &mut H,
+) {
+    gas!(interpreter, gas::VERYLOW);
+    popn_top!([op1], op2, interpreter);
+    *op2 = op1.wrapping_sub( *op2);
+}
+*)
