@@ -149,6 +149,43 @@ Proof.
       run_symbolic.
 Qed.
 
+Instance run_sgt
+    {WIRE H : Set} `{Link WIRE} `{Link H}
+    {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
+    (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types)
+    (interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t WIRE WIRE_types))
+    (_host : Ref.t Pointer.Kind.MutRef H) :
+  Run.Trait
+    instructions.bitwise.sgt [] [ Φ WIRE; Φ H ] [ φ interpreter; φ _host ]
+    unit.
+Proof.
+  constructor.
+  cbn.
+  eapply Run.Rewrite. {
+    repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
+    reflexivity.
+  }
+  destruct run_InterpreterTypes_for_WIRE.
+  destruct run_StackTrait_for_Stack.
+  destruct popn_top as [popn_top [H_popn_top run_popn_top]].
+  destruct run_LoopControl_for_Control.
+  destruct gas as [gas [H_gas run_gas]].
+  destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
+  run_symbolic.
+  eapply Run.CallPrimitiveGetTraitMethod.
+  - eapply IsTraitMethod.Defined.
+    + specialize (cmp.Impl_core_cmp_PartialEq_core_cmp_Ordering_for_core_cmp_Ordering.Implements).
+      intros.
+      apply H3.
+    + simpl.
+      reflexivity.
+  - run_symbolic.
+    + constructor.
+      specialize (cmp.Impl_core_cmp_PartialEq_core_cmp_Ordering_for_core_cmp_Ordering.Implements).
+      intros.
+      run_symbolic.
+Qed.
+
 
 
 
