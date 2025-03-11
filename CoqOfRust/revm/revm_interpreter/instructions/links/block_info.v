@@ -15,7 +15,6 @@ pub fn chainid<WIRE: InterpreterTypes, H: Host + ?Sized>(
     host: &mut H,
 )
 *)
-Locate hardfork.hardfork.Impl_revm_specification_hardfork_SpecId.is_enabled_in.
 Instance run_chainid
   {WIRE H : Set} `{Link WIRE} `{Link H}
   {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
