@@ -913,7 +913,7 @@ Module instructions.
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
-    
+
     Global Instance Instance_IsFunction_i256_cmp :
       M.IsFunction.Trait "revm_interpreter::instructions::i256::i256_cmp" i256_cmp.
     Admitted.

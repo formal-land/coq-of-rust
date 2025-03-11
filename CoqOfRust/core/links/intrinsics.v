@@ -28,3 +28,8 @@ Instance run_sub_with_overflow
 Proof.
 Admitted.
 
+Instance run_discriminant_value (ref : Ref.t Pointer.Kind.Ref Ordering.t) :
+  Run.Trait intrinsics.discriminant_value [] [Φ Ordering.t] [φ ref]
+             (Integer.t IntegerKind.I8).
+Proof.
+Admitted.

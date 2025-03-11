@@ -8,6 +8,7 @@ Import revm.links.dependencies.ruint.
 Require Import revm.revm_interpreter.links.gas.
 Require Import revm.revm_interpreter.links.interpreter.
 Require Import revm.revm_interpreter.links.interpreter_types.
+Require Import revm.revm_interpreter.instructions.links.i256.
 Require Import revm.revm_interpreter.instructions.bitwise.
 Require Import revm.revm_interpreter.instructions.i256.
 
@@ -142,8 +143,14 @@ Proof.
     + simpl.
       reflexivity.
   - run_symbolic.
-    +  
+    + constructor.
+      specialize (cmp.Impl_core_cmp_PartialEq_core_cmp_Ordering_for_core_cmp_Ordering.Implements).
+      intros.
+      run_symbolic.
+Qed.
 
-  Qed.
+
+
+
 
 

@@ -66,13 +66,10 @@ Instance run_i256_sign (first : Ref.t Pointer.Kind.MutRef dependencies.U256.t) :
     [Ref.IsLink.(φ) (Ref.cast_to Pointer.Kind.Ref first)]
     Sign.t.
 Proof.
-    constructor.
-    run_symbolic.
+Admitted.
 
 (*  pub fn i256_cmp(first: &U256, second: &U256) -> Ordering  *)
 Instance run_i256_cmp (first second : Ref.t Pointer.Kind.Ref dependencies.U256.t) :
   Run.Trait instructions.i256.i256_cmp [] [] [ φ first; φ second ] cmpOrdering.Ordering.t.
 Proof.
-    constructor.
-    run_symbolic.
-    + 
+Admitted.
