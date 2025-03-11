@@ -31,10 +31,45 @@ Proof.
     reflexivity.
   }
   destruct run_InterpreterTypes_for_WIRE.
-  destruct run_StackTrait_for_Stack.
-  destruct popn_top as [popn_top [H_popn_top run_popn_top]].
   destruct run_LoopControl_for_Control.
   destruct gas as [gas [H_gas run_gas]].
   destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
+  destruct run_StackTrait_for_Stack.
+  destruct popn_top as [popn_top [H_popn_top run_popn_top]].
   run_symbolic.
 Defined.
+
+(*
+pub fn mul<WIRE: InterpreterTypes, H: Host + ?Sized>(
+    interpreter: &mut Interpreter<WIRE>,
+    _host: &mut H,
+) {
+    gas!(interpreter, gas::LOW);
+    popn_top!([op1], op2, interpreter);
+    *op2 = op1.wrapping_mul( *op2);
+}
+*)
+Instance run_mul
+    {WIRE H : Set} `{Link WIRE} `{Link H}
+    {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
+    (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types)
+    (interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t WIRE WIRE_types))
+    (_host : Ref.t Pointer.Kind.MutRef H) :
+  Run.Trait
+    instructions.arithmetic.mul [] [ Φ WIRE; Φ H ] [ φ interpreter; φ _host ]
+    unit.
+  Proof.
+    constructor.
+    cbn.
+    eapply Run.Rewrite. {
+      repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
+      reflexivity.
+    }
+    destruct run_InterpreterTypes_for_WIRE.
+    destruct run_LoopControl_for_Control.
+    destruct gas as [gas [H_gas run_gas]].
+    destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
+    destruct run_StackTrait_for_Stack.
+    destruct popn_top as [popn_top [H_popn_top run_popn_top]].
+    run_symbolic.
+  Admitted.
