@@ -233,8 +233,77 @@ Module ruint.
         forall (BITS LIMBS : Usize.t) (x y : Ref.t Pointer.Kind.Ref (Uint.t BITS LIMBS)),
         Run.Trait (eq (φ BITS) (φ LIMBS)) [] [] [ φ x; φ y ] bool.
       Admitted.
-      
+
     End Impl_PartialEq_for_Uint.
+
+    Module Impl_BitAnd_for_Uint.
+      Definition Self (BITS LIMBS : Value.t) : Ty.t :=
+        Ty.apply (Ty.path "ruint::Uint") [BITS; LIMBS] [].
+    
+      Parameter bitand : forall (BITS LIMBS : Value.t), PolymorphicFunction.t.
+    
+      Axiom Implements :
+        forall (BITS LIMBS : Value.t),
+          M.IsTraitInstance
+            "core::ops::bit::BitAnd"
+            []
+            [Ty.apply (Ty.path "ruint::Uint") [BITS; LIMBS] []]
+            (Self BITS LIMBS)
+            [("bitand", InstanceField.Method (bitand BITS LIMBS))].
+    
+      Instance run_bitand :
+        forall (BITS LIMBS : Usize.t)
+               (x y : Uint.t BITS LIMBS),
+          Run.Trait (bitand (φ BITS) (φ LIMBS)) [] [] [ φ x; φ y ] (Uint.t BITS LIMBS).
+      Proof.
+      Admitted.
+    End Impl_BitAnd_for_Uint.
+
+    Module Impl_BitOr_for_Uint.
+      Definition Self (BITS LIMBS : Value.t) : Ty.t :=
+        Ty.apply (Ty.path "ruint::Uint") [BITS; LIMBS] [].
+    
+      Parameter bitor : forall (BITS LIMBS : Value.t), PolymorphicFunction.t.
+    
+      Axiom Implements :
+        forall (BITS LIMBS : Value.t),
+          M.IsTraitInstance
+            "core::ops::bit::BitOr"
+            []
+            [Ty.apply (Ty.path "ruint::Uint") [BITS; LIMBS] []]
+            (Self BITS LIMBS)
+            [("bitor", InstanceField.Method (bitor BITS LIMBS))].
+    
+      Instance run_bitor :
+        forall (BITS LIMBS : Usize.t)
+               (x y : Uint.t BITS LIMBS),
+          Run.Trait (bitor (φ BITS) (φ LIMBS)) [] [] [ φ x; φ y ] (Uint.t BITS LIMBS).
+      Proof.
+      Admitted.
+    End Impl_BitOr_for_Uint.
+
+    Module Impl_BitXor_for_Uint.
+      Definition Self (BITS LIMBS : Value.t) : Ty.t :=
+        Ty.apply (Ty.path "ruint::Uint") [BITS; LIMBS] [].
+    
+      Parameter bitxor : forall (BITS LIMBS : Value.t), PolymorphicFunction.t.
+    
+      Axiom Implements :
+        forall (BITS LIMBS : Value.t),
+          M.IsTraitInstance
+            "core::ops::bit::BitXor"
+            []
+            [Ty.apply (Ty.path "ruint::Uint") [BITS; LIMBS] []]
+            (Self BITS LIMBS)
+            [("bitxor", InstanceField.Method (bitxor BITS LIMBS))].
+    
+      Instance run_bitxor :
+        forall (BITS LIMBS : Usize.t)
+               (x y : Uint.t BITS LIMBS),
+          Run.Trait (bitxor (φ BITS) (φ LIMBS)) [] [] [ φ x; φ y ] (Uint.t BITS LIMBS).
+      Proof.
+      Admitted.
+    End Impl_BitXor_for_Uint.
     
 End ruint.
 

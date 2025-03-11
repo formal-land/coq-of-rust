@@ -253,7 +253,131 @@ Proof.
   run_symbolic.
 Qed.
 
+Instance run_bitwise_bitand
+    {WIRE H : Set} `{Link WIRE} `{Link H}
+    {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
+    (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types)
+    (interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t WIRE WIRE_types))
+    (_host : Ref.t Pointer.Kind.MutRef H) :
+  Run.Trait
+    instructions.bitwise.bitand [] [ Φ WIRE; Φ H ] [ φ interpreter; φ _host ]
+    unit.
+Proof.
+  constructor.
+  cbn.
+  eapply Run.Rewrite. {
+    repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
+    reflexivity.
+  }
+  destruct run_InterpreterTypes_for_WIRE.
+  destruct run_StackTrait_for_Stack.
+  destruct popn_top as [popn_top [H_popn_top run_popn_top]].
+  destruct run_LoopControl_for_Control.
+  destruct gas as [gas [H_gas run_gas]].
+  destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
+  run_symbolic.
+  eapply Run.CallPrimitiveGetTraitMethod.
+  - eapply IsTraitMethod.Defined.
+    + specialize (Impl_BitAnd_for_Uint.Implements
+        (Value.Integer IntegerKind.Usize 256)
+        (Value.Integer IntegerKind.Usize 4)).
+      intros.
+      eapply H3.
+    + simpl.
+      reflexivity.
+  - run_symbolic.
+    + constructor.
+      specialize (Impl_BitAnd_for_Uint.Implements
+        (Value.Integer IntegerKind.Usize 256)
+        (Value.Integer IntegerKind.Usize 4)).
+      intros.
+      run_symbolic.
+      eapply dependencies.ruint.Impl_BitAnd_for_Uint.run_bitand.
+Qed.
 
+Instance run_bitwise_bitor
+    {WIRE H : Set} `{Link WIRE} `{Link H}
+    {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
+    (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types)
+    (interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t WIRE WIRE_types))
+    (_host : Ref.t Pointer.Kind.MutRef H) :
+  Run.Trait
+    instructions.bitwise.bitor [] [ Φ WIRE; Φ H ] [ φ interpreter; φ _host ]
+    unit.
+Proof.
+  constructor.
+  cbn.
+  eapply Run.Rewrite. {
+    repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
+    reflexivity.
+  }
+  destruct run_InterpreterTypes_for_WIRE.
+  destruct run_StackTrait_for_Stack.
+  destruct popn_top as [popn_top [H_popn_top run_popn_top]].
+  destruct run_LoopControl_for_Control.
+  destruct gas as [gas [H_gas run_gas]].
+  destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
+  run_symbolic.
+  eapply Run.CallPrimitiveGetTraitMethod.
+  - eapply IsTraitMethod.Defined.
+    + specialize (Impl_BitOr_for_Uint.Implements
+        (Value.Integer IntegerKind.Usize 256)
+        (Value.Integer IntegerKind.Usize 4)).
+      intros.
+      eapply H3.
+    + simpl.
+      reflexivity.
+  - run_symbolic.
+    + constructor.
+      specialize (Impl_BitOr_for_Uint.Implements
+        (Value.Integer IntegerKind.Usize 256)
+        (Value.Integer IntegerKind.Usize 4)).
+      intros.
+      run_symbolic.
+      eapply dependencies.ruint.Impl_BitOr_for_Uint.run_bitor.
+Qed.
+
+Instance run_bitwise_bitxor
+    {WIRE H : Set} `{Link WIRE} `{Link H}
+    {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
+    (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types)
+    (interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t WIRE WIRE_types))
+    (_host : Ref.t Pointer.Kind.MutRef H) :
+  Run.Trait
+    instructions.bitwise.bitxor [] [ Φ WIRE; Φ H ] [ φ interpreter; φ _host ]
+    unit.
+Proof.
+  constructor.
+  cbn.
+  eapply Run.Rewrite. {
+    repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
+    reflexivity.
+  }
+  destruct run_InterpreterTypes_for_WIRE.
+  destruct run_StackTrait_for_Stack.
+  destruct popn_top as [popn_top [H_popn_top run_popn_top]].
+  destruct run_LoopControl_for_Control.
+  destruct gas as [gas [H_gas run_gas]].
+  destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
+  run_symbolic.
+  eapply Run.CallPrimitiveGetTraitMethod.
+  - eapply IsTraitMethod.Defined.
+    + specialize (Impl_BitXor_for_Uint.Implements
+        (Value.Integer IntegerKind.Usize 256)
+        (Value.Integer IntegerKind.Usize 4)).
+      intros.
+      eapply H3.
+    + simpl.
+      reflexivity.
+  - run_symbolic.
+    + constructor.
+      specialize (Impl_BitXor_for_Uint.Implements
+        (Value.Integer IntegerKind.Usize 256)
+        (Value.Integer IntegerKind.Usize 4)).
+      intros.
+      run_symbolic.
+      eapply dependencies.ruint.Impl_BitXor_for_Uint.run_bitxor.
+Qed.
 
 
 
