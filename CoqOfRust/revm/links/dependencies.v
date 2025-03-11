@@ -172,7 +172,7 @@ Module ruint.
     Admitted.
   End Impl_from_Uint.
 
-    Module Impl_PartialOrd_for_Uint.
+  Module Impl_PartialOrd_for_Uint.
       Definition Self (BITS LIMBS : Value.t) : Ty.t :=
         Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [].
     
@@ -206,6 +206,36 @@ Module ruint.
         exact (lt BITS LIMBS).
       Defined.
     End Impl_PartialOrd_for_Uint.
+
+    Module Impl_PartialEq_for_Uint.
+      Definition Self (BITS LIMBS : Value.t) : Ty.t :=
+        Ty.apply (Ty.path "ruint::Uint") [BITS; LIMBS] [].
+    
+      Parameter eq : forall (BITS LIMBS : Value.t), PolymorphicFunction.t.
+    
+      Axiom Implements :
+        forall (BITS LIMBS : Value.t),
+          M.IsTraitInstance
+            "core::cmp::PartialEq"
+            []
+            [Ty.apply (Ty.path "ruint::Uint") [BITS; LIMBS] []]
+            (Ty.apply (Ty.path "ruint::Uint") [BITS; LIMBS] [])
+            [("eq", InstanceField.Method (Impl_PartialEq_for_Uint.eq BITS LIMBS))].
+
+      Definition run_eq :
+          forall (BITS LIMBS : Usize.t),
+          forall (x1 x2 : Ref.t Pointer.Kind.Ref (ruint.Uint.t BITS LIMBS)),
+          {{ eq (φ BITS) (φ LIMBS) [] [] [ φ x1; φ x2 ] 🔽 bool }}.
+      Proof.
+      Admitted.
+
+      Instance run_eq_Uint :
+        forall (BITS LIMBS : Usize.t) (x y : Ref.t Pointer.Kind.Ref (Uint.t BITS LIMBS)),
+        Run.Trait (eq (φ BITS) (φ LIMBS)) [] [] [ φ x; φ y ] bool.
+      Admitted.
+      
+    End Impl_PartialEq_for_Uint.
+    
 End ruint.
 
 Module alloy_primitives.
