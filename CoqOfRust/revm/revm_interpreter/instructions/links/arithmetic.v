@@ -40,8 +40,7 @@ Proof.
   destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
   destruct run_StackTrait_for_Stack.
   destruct popn_top as [popn_top [H_popn_top run_popn_top]].
-  run_symbolic. (* NOTE: if we import `ruint.links.mul` this line of code will leave with a goal unsolved *)
-  (* eapply add.Impl_Uint.run_wrapping_add. Not quite satisfying for a manual application? *)
+  run_symbolic. 
 Defined.
 
 (*
@@ -76,16 +75,7 @@ Instance run_mul
     destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
     destruct run_StackTrait_for_Stack.
     destruct popn_top as [popn_top [H_popn_top run_popn_top]].
-    run_symbolic. (* why we dont need to manually apply the instance here? *)
-    (* 
-    IsAssociatedFunction.Trait
-      (Ty.apply (Ty.path "ruint::Uint")
-        [Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4]
-        []) "wrapping_mul"
-      (add.add.Impl_ruint_Uint_BITS_LIMBS.wrapping_add
-        (Integer.IsLink.(φ) {| Integer.value := 256 |})
-        (Integer.IsLink.(φ) {| Integer.value := 4 |}))
-    *)
+    run_symbolic. 
   Defined.
 
 (*
