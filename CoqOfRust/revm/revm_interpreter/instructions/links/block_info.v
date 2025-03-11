@@ -63,4 +63,22 @@ Instance run_coinbase
   Run.Trait
     instructions.block_info.coinbase [] [ Φ WIRE; Φ H ] [ φ interpreter; φ _host ]
     unit.
-  Proof. Admitted.
+  Proof. 
+    constructor.
+    cbn.
+    eapply Run.Rewrite. {
+      repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
+      reflexivity.
+    }
+    destruct run_InterpreterTypes_for_WIRE.
+    destruct run_LoopControl_for_Control.
+    destruct gas as [gas [H_gas run_gas]].
+    destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
+    destruct run_StackTrait_for_Stack.
+    destruct push as [push [H_push run_push]].
+    (* TODO: fill in links for
+    - core::convert::Into::into 
+    - revm_context_interface::block::Block"::beneficiary 
+    - revm_context_interface::block::Block"::block *)
+    run_symbolic.
+  Admitted.
