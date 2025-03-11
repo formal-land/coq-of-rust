@@ -10,3 +10,6 @@
 [submodule "third-party/move-sui"]
 	path = third-party/move-sui
 	url = https://github.com/formal-land/move-sui.git
+[submodule "third-party/uint"]
+	path = third-party/uint
+	url = https://github.com/recmo/uint.git

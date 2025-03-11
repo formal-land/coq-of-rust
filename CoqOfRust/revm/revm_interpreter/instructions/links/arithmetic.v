@@ -5,8 +5,10 @@ Require Import revm.revm_interpreter.links.gas.
 Require Import revm.revm_interpreter.links.interpreter.
 Require Import revm.revm_interpreter.links.interpreter_types.
 Require Import revm.revm_interpreter.instructions.arithmetic.
+Require Import ruint.links.add.
 
 Import Impl_Gas.
+Import Impl_Uint.
 
 (*
 pub fn add<WIRE: InterpreterTypes, H: Host + ?Sized>(
