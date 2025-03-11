@@ -6,7 +6,7 @@ Require Import revm.revm_interpreter.links.interpreter.
 Require Import revm.revm_interpreter.links.interpreter_types.
 Require Import revm.revm_interpreter.instructions.arithmetic.
 Require Import ruint.links.add.
-Require Import reint.links.mul.
+Require Import ruint.links.mul.
 
 Import Impl_Gas.
 Import Impl_Uint.
