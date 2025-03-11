@@ -106,10 +106,8 @@ Instance run_sub
     destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
     destruct run_StackTrait_for_Stack.
     destruct popn_top as [popn_top [H_popn_top run_popn_top]].
-    (* TODO: add.add.Impl_ruint_Uint_BITS_LIMBS.wrapping_sub *)
     run_symbolic. 
-    Admitted.
-  (* Defined. *)
+  Defined.
 
 (*
 pub fn div<WIRE: InterpreterTypes, H: Host + ?Sized>(
