@@ -37,8 +37,8 @@ Module net.
               "core::net::display_buffer::DisplayBuffer"
               [
                 ("buf",
-                  repeat (|
-                    M.call_closure (|
+                  repeat
+                    (M.call_closure (|
                       Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ Ty.path "u8" ],
                       M.get_associated_function (|
                         Ty.apply
@@ -50,9 +50,8 @@ Module net.
                         []
                       |),
                       []
-                    |),
-                    SIZE
-                  |));
+                    |))
+                    SIZE);
                 ("len", Value.Integer IntegerKind.Usize 0)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"

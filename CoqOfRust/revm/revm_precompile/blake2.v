@@ -441,13 +441,13 @@ Module blake2.
                     (Ty.path "array")
                     [ Value.Integer IntegerKind.Usize 8 ]
                     [ Ty.path "u64" ] :=
-                repeat (| Value.Integer IntegerKind.U64 0, Value.Integer IntegerKind.Usize 8 |) in
+                repeat (Value.Integer IntegerKind.U64 0) (Value.Integer IntegerKind.Usize 8) in
               let~ m :
                   Ty.apply
                     (Ty.path "array")
                     [ Value.Integer IntegerKind.Usize 16 ]
                     [ Ty.path "u64" ] :=
-                repeat (| Value.Integer IntegerKind.U64 0, Value.Integer IntegerKind.Usize 16 |) in
+                repeat (Value.Integer IntegerKind.U64 0) (Value.Integer IntegerKind.Usize 16) in
               let~ _ : Ty.tuple [] :=
                 M.read (|
                   M.use
@@ -1336,7 +1336,7 @@ Module blake2.
                     (Ty.path "array")
                     [ Value.Integer IntegerKind.Usize 64 ]
                     [ Ty.path "u8" ] :=
-                repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 64 |) in
+                repeat (Value.Integer IntegerKind.U8 0) (Value.Integer IntegerKind.Usize 64) in
               let~ _ : Ty.tuple [] :=
                 M.read (|
                   M.use
@@ -2185,7 +2185,7 @@ Module blake2.
                   (Ty.path "array")
                   [ Value.Integer IntegerKind.Usize 16 ]
                   [ Ty.path "u64" ] :=
-              repeat (| Value.Integer IntegerKind.U64 0, Value.Integer IntegerKind.Usize 16 |) in
+              repeat (Value.Integer IntegerKind.U64 0) (Value.Integer IntegerKind.Usize 16) in
             let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],

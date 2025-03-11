@@ -1369,10 +1369,9 @@ Module bls12_381.
                                                 []
                                               |),
                                               [
-                                                repeat (|
-                                                  Value.Integer IntegerKind.U8 0,
-                                                  Value.Integer IntegerKind.Usize 128
-                                                |)
+                                                repeat
+                                                  (Value.Integer IntegerKind.U8 0)
+                                                  (Value.Integer IntegerKind.Usize 128)
                                               ]
                                             |)
                                           ]

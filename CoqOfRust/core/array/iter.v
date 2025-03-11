@@ -256,10 +256,7 @@ Module array.
                     (Ty.path "array")
                     [ N ]
                     [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ] :=
-                repeat (|
-                  M.read (| M.get_constant "core::array::iter::empty_discriminant" |),
-                  N
-                |) in
+                repeat (M.read (| M.get_constant "core::array::iter::empty_discriminant" |)) N in
               let~ initialized :
                   Ty.apply (Ty.path "core::ops::range::Range") [] [ Ty.path "usize" ] :=
                 Value.StructRecord
@@ -2121,10 +2118,9 @@ Module array.
                   "core::array::iter::IntoIter"
                   [
                     ("data",
-                      repeat (|
-                        M.read (| M.get_constant "core::array::iter::clone_discriminant" |),
-                        N
-                      |));
+                      repeat
+                        (M.read (| M.get_constant "core::array::iter::clone_discriminant" |))
+                        N);
                     ("alive",
                       M.call_closure (|
                         Ty.path "core::ops::index_range::IndexRange",

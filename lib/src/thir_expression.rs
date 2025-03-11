@@ -827,7 +827,7 @@ pub(crate) fn compile_expr<'a>(
             Rc::new(Expr::Call {
                 func,
                 args,
-                kind: CallKind::Effectful,
+                kind: CallKind::Pure,
             })
             .alloc()
         }

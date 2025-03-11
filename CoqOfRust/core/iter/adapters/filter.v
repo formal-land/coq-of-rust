@@ -166,13 +166,12 @@ Module iter.
                               "Item"
                           ]
                       ] :=
-                  repeat (|
-                    M.read (|
+                  repeat
+                    (M.read (|
                       M.get_constant
                         "core::iter::adapters::filter::next_chunk_dropless_discriminant"
-                    |),
-                    N
-                  |) in
+                    |))
+                    N in
                 let~ initialized : Ty.path "usize" := Value.Integer IntegerKind.Usize 0 in
                 let~ result :
                     Ty.apply
