@@ -75,6 +75,7 @@ Instance run_mul
     destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
     destruct run_StackTrait_for_Stack.
     destruct popn_top as [popn_top [H_popn_top run_popn_top]].
+    (* TODO: Create link file for `wrapping mul` *)
     run_symbolic.
   Admitted.
   (* Defined. *)

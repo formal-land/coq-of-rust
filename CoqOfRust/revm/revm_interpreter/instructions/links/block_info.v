@@ -5,6 +5,7 @@ Require Import revm.revm_interpreter.links.interpreter.
 Require Import revm.revm_interpreter.links.interpreter_types.
 Require Import revm.revm_interpreter.instructions.block_info.
 Require Import revm.revm_specification.links.hardfork.
+Require Import revm.revm_context_interface.links.cfg.
 
 Import Impl_SpecId.
 Import Impl_Gas.
@@ -39,6 +40,10 @@ Instance run_chainid
     destruct gas as [gas [H_gas run_gas]].
     destruct run_StackTrait_for_Stack.
     destruct push as [push [H_push run_push]].
+    (* TODO: 
+    - Create link file for `ruint::from` 
+    - Finish link for revm_context_interface::cfg::CfgGetter::cfg
+    *)
     run_symbolic.
   Admitted.
   (* Defined. *)
