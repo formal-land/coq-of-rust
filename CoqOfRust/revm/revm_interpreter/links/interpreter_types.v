@@ -795,3 +795,28 @@ Module InterpreterTypes.
     run_RuntimeFlag_for_RuntimeFlag : RuntimeFlag.Run types.(Types.RuntimeFlag);
   }.
 End InterpreterTypes.
+
+Module Impl_RuntimeFlag.
+
+  Parameter spec_id : PolymorphicFunction.t.
+
+  Axiom Implements :
+  forall (WIRE_types : InterpreterTypes.Types.t)
+         (H2 : InterpreterTypes.Types.AreLinks WIRE_types),
+    IsTraitInstance
+      "revm_interpreter::interpreter_types::RuntimeFlag"
+      []
+      []
+      (InterpreterTypes.Types.IsLinkRuntimeFlag WIRE_types H2).(Φ _)
+      [("spec_id", InstanceField.Method Impl_RuntimeFlag.spec_id)].
+
+  Instance run_spec_id_instance
+        (WIRE_types : InterpreterTypes.Types.t)
+        (H2 : InterpreterTypes.Types.AreLinks WIRE_types)
+        (self : Ref.t Pointer.Kind.MutRef (InterpreterTypes.Types.RuntimeFlag WIRE_types))
+        :
+        Run.Trait spec_id [] [] [φ self] SpecId.t.
+  Proof.
+  Admitted.
+
+End Impl_RuntimeFlag.

@@ -421,5 +421,39 @@ Proof.
       eapply dependencies.ruint.Impl_BitNot_for_Uint.run_bitnot.
 Qed.
 
+Instance run_bitwise_shl
+    {WIRE H : Set} `{Link WIRE} `{Link H}
+    {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
+    (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types)
+    (interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t WIRE WIRE_types))
+    (_host : Ref.t Pointer.Kind.MutRef H) :
+  Run.Trait
+    instructions.bitwise.shl [] [ Φ WIRE; Φ H ] [ φ interpreter; φ _host ]
+    unit.
+Proof.
+  constructor.
+  cbn.
+  eapply Run.Rewrite. {
+    repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
+    reflexivity.
+  }
+  destruct run_InterpreterTypes_for_WIRE.
+  destruct run_StackTrait_for_Stack.
+  destruct popn_top as [popn_top [H_popn_top run_popn_top]].
+  destruct run_LoopControl_for_Control.
+  destruct gas as [gas [H_gas run_gas]].
+  destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
+  run_symbolic.
+  - eapply Run.CallPrimitiveGetTraitMethod. 
+    + eapply IsTraitMethod.Defined.
+      ++ specialize (interpreter_types.Impl_RuntimeFlag.run_spec_id_instance).
+         intros.
+         eapply (interpreter_types.Impl_RuntimeFlag.Implements).
+      ++ simpl.
+         reflexivity.
+    + run_symbolic.
+      ++ constructor.
+Qed.
+
 
 
