@@ -32,6 +32,8 @@ Module CreateScheme.
   }.
 End CreateScheme.
 
+Locate Pointer.Kind.Ref.
+
 (* 
 #[auto_impl(&, &mut, Box, Arc)]
 pub trait Cfg {
@@ -61,32 +63,45 @@ pub trait Cfg {
 }
 *)
 Module Cfg.
-(* 
-  Definition Run_set_instruction_result (Self : Set) `{Link Self} : Set :=
+  (* TODO: refer to `InterpreterTypes`'s definition to translate types *)
+  (* type Spec: Into<SpecId> + Clone; *)
+  Module Types.
+    Record t : Type := {
+      Spec : Set;
+    }.
+
+    
+    Class AreLinks (types : t) : Set := {
+      H_Spec : Link types.(Spec);
+    }.
+
+    Global Instance IsLinkSpec (types : t) (H : AreLinks types) : Link types.(Spec) :=
+      H.(H_Spec _).
+  End Types.
+
+  (* fn set_instruction_result(&mut self, result: InstructionResult);
+    Definition Run_set_instruction_result (Self : Set) `{Link Self} : Set :=
     {set_instruction_result @
       IsTraitMethod.t "revm_interpreter::interpreter_types::LoopControl" [] [] (Φ Self) "set_instruction_result" set_instruction_result *
       forall (self : Ref.t Pointer.Kind.MutRef Self) (result : InstructionResult.t),
         {{ set_instruction_result [] [] [ φ self; φ result ] 🔽 unit }}
     }.
-
-  Record Run (Self : Set) `{Link Self} : Set := {
-    set_instruction_result : Run_set_instruction_result Self;
-  }.
-*)
-
-  Record Run (Self : Set) `{Link Self} : Set := {
-  }.
-
-  (* 
-  (Primitive.GetTraitMethod "revm_interpreter::interpreter_types::LoopControl"
-       (InterpreterTypes.Types.IsLinkControl WIRE_types H2).(Φ _) [] [] "gas" [] [])
   *)
+  Definition Run_chain_id (Self : Set) `{Link Self} : Set :=
+    {chain_id @
+      IsTraitMethod.t "revm_context_interface::cfg::Cfg" [] [] (Φ Self) "chain_id" chain_id *
+      forall (self : Ref.t Pointer.Kind.Ref Self),
+        {{ chain_id [] [] [ φ self ] 🔽 U64.t }}
+    }.
 
-  (* 
-  (Primitive.GetTraitMethod "revm_context_interface::cfg::Cfg"
-       (Ty.associated_in_trait "revm_context_interface::cfg::CfgGetter" [] []
-          H1.(Φ _) "Cfg") [] [] "chain_id" [] [])
-  *)
-
-
+  Record Run (Self : Set) `{Link Self} (types : Types.t) 
+    `{Types.AreLinks types} : Set := 
+  {
+    Spec_IsAssociated :
+      IsTraitAssociatedType
+        "revm_context_interface::cfg::Cfg" [] [] (Φ Self)
+        "Spec" (Φ types.(Types.Spec));
+    (* run_StackTrait_for_Stack : StackTrait.Run types.(Types.Stack); *) (* TODO: Do we need to implement `Into` for Spec? *)
+    chain_id : Run_chain_id Self;
+  }.
 End Cfg.

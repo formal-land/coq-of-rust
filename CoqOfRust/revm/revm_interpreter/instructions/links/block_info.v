@@ -16,7 +16,11 @@ Import from.Impl_Uint.
 pub fn chainid<WIRE: InterpreterTypes, H: Host + ?Sized>(
     interpreter: &mut Interpreter<WIRE>,
     host: &mut H,
-)
+) {
+    check!(interpreter, ISTANBUL);
+    gas!(interpreter, gas::BASE);
+    push!(interpreter, U256::from(host.cfg().chain_id()));
+  }
 *)
 Instance run_chainid
   {WIRE H : Set} `{Link WIRE} `{Link H}
@@ -79,7 +83,7 @@ Instance run_coinbase
     destruct push as [push [H_push run_push]].
     (* TODO: fill in links for
     - core::convert::Into::into 
-    - revm_context_interface::block::Block"::beneficiary 
-    - revm_context_interface::block::Block"::block *)
+    - revm_context_interface::block::Block::beneficiary 
+    - revm_context_interface::block::Block::block *)
     run_symbolic.
   Admitted.
