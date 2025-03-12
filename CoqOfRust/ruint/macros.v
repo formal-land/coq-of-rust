@@ -25,19 +25,17 @@ Module add.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
-              M.alloc (|
-                M.write (|
-                  M.deref (| M.read (| self |) |),
-                  M.call_closure (|
+              M.write (|
+                M.deref (| M.read (| self |) |),
+                M.call_closure (|
+                  Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                  M.get_associated_function (|
                     Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                      "wrapping_add",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
-                  |)
+                    "wrapping_add",
+                    [],
+                    []
+                  |),
+                  [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -78,22 +76,20 @@ Module add.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
-              M.alloc (|
-                M.write (|
-                  M.deref (| M.read (| self |) |),
-                  M.call_closure (|
+              M.write (|
+                M.deref (| M.read (| self |) |),
+                M.call_closure (|
+                  Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                  M.get_associated_function (|
                     Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                      "wrapping_add",
-                      [],
-                      []
-                    |),
-                    [
-                      M.read (| M.deref (| M.read (| self |) |) |);
-                      M.read (| M.deref (| M.read (| rhs |) |) |)
-                    ]
-                  |)
+                    "wrapping_add",
+                    [],
+                    []
+                  |),
+                  [
+                    M.read (| M.deref (| M.read (| self |) |) |);
+                    M.read (| M.deref (| M.read (| rhs |) |) |)
+                  ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -348,19 +344,17 @@ Module add.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
-              M.alloc (|
-                M.write (|
-                  M.deref (| M.read (| self |) |),
-                  M.call_closure (|
+              M.write (|
+                M.deref (| M.read (| self |) |),
+                M.call_closure (|
+                  Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                  M.get_associated_function (|
                     Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                      "wrapping_sub",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
-                  |)
+                    "wrapping_sub",
+                    [],
+                    []
+                  |),
+                  [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -401,22 +395,20 @@ Module add.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
-              M.alloc (|
-                M.write (|
-                  M.deref (| M.read (| self |) |),
-                  M.call_closure (|
+              M.write (|
+                M.deref (| M.read (| self |) |),
+                M.call_closure (|
+                  Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                  M.get_associated_function (|
                     Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                      "wrapping_sub",
-                      [],
-                      []
-                    |),
-                    [
-                      M.read (| M.deref (| M.read (| self |) |) |);
-                      M.read (| M.deref (| M.read (| rhs |) |) |)
-                    ]
-                  |)
+                    "wrapping_sub",
+                    [],
+                    []
+                  |),
+                  [
+                    M.read (| M.deref (| M.read (| self |) |) |);
+                    M.read (| M.deref (| M.read (| rhs |) |) |)
+                  ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -673,19 +665,17 @@ Module div.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
-              M.alloc (|
-                M.write (|
-                  M.deref (| M.read (| self |) |),
-                  M.call_closure (|
+              M.write (|
+                M.deref (| M.read (| self |) |),
+                M.call_closure (|
+                  Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                  M.get_associated_function (|
                     Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                      "wrapping_div",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
-                  |)
+                    "wrapping_div",
+                    [],
+                    []
+                  |),
+                  [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -726,22 +716,20 @@ Module div.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
-              M.alloc (|
-                M.write (|
-                  M.deref (| M.read (| self |) |),
-                  M.call_closure (|
+              M.write (|
+                M.deref (| M.read (| self |) |),
+                M.call_closure (|
+                  Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                  M.get_associated_function (|
                     Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                      "wrapping_div",
-                      [],
-                      []
-                    |),
-                    [
-                      M.read (| M.deref (| M.read (| self |) |) |);
-                      M.read (| M.deref (| M.read (| rhs |) |) |)
-                    ]
-                  |)
+                    "wrapping_div",
+                    [],
+                    []
+                  |),
+                  [
+                    M.read (| M.deref (| M.read (| self |) |) |);
+                    M.read (| M.deref (| M.read (| rhs |) |) |)
+                  ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -996,19 +984,17 @@ Module div.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
-              M.alloc (|
-                M.write (|
-                  M.deref (| M.read (| self |) |),
-                  M.call_closure (|
+              M.write (|
+                M.deref (| M.read (| self |) |),
+                M.call_closure (|
+                  Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                  M.get_associated_function (|
                     Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                      "wrapping_rem",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
-                  |)
+                    "wrapping_rem",
+                    [],
+                    []
+                  |),
+                  [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -1049,22 +1035,20 @@ Module div.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
-              M.alloc (|
-                M.write (|
-                  M.deref (| M.read (| self |) |),
-                  M.call_closure (|
+              M.write (|
+                M.deref (| M.read (| self |) |),
+                M.call_closure (|
+                  Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                  M.get_associated_function (|
                     Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                      "wrapping_rem",
-                      [],
-                      []
-                    |),
-                    [
-                      M.read (| M.deref (| M.read (| self |) |) |);
-                      M.read (| M.deref (| M.read (| rhs |) |) |)
-                    ]
-                  |)
+                    "wrapping_rem",
+                    [],
+                    []
+                  |),
+                  [
+                    M.read (| M.deref (| M.read (| self |) |) |);
+                    M.read (| M.deref (| M.read (| rhs |) |) |)
+                  ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -1321,19 +1305,17 @@ Module mul.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
-              M.alloc (|
-                M.write (|
-                  M.deref (| M.read (| self |) |),
-                  M.call_closure (|
+              M.write (|
+                M.deref (| M.read (| self |) |),
+                M.call_closure (|
+                  Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                  M.get_associated_function (|
                     Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                      "wrapping_mul",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
-                  |)
+                    "wrapping_mul",
+                    [],
+                    []
+                  |),
+                  [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| rhs |) ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)
@@ -1374,22 +1356,20 @@ Module mul.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
-              M.alloc (|
-                M.write (|
-                  M.deref (| M.read (| self |) |),
-                  M.call_closure (|
+              M.write (|
+                M.deref (| M.read (| self |) |),
+                M.call_closure (|
+                  Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                  M.get_associated_function (|
                     Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                      "wrapping_mul",
-                      [],
-                      []
-                    |),
-                    [
-                      M.read (| M.deref (| M.read (| self |) |) |);
-                      M.read (| M.deref (| M.read (| rhs |) |) |)
-                    ]
-                  |)
+                    "wrapping_mul",
+                    [],
+                    []
+                  |),
+                  [
+                    M.read (| M.deref (| M.read (| self |) |) |);
+                    M.read (| M.deref (| M.read (| rhs |) |) |)
+                  ]
                 |)
               |) in
             M.alloc (| Value.Tuple [] |)

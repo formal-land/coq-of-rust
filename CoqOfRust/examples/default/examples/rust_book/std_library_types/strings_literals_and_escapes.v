@@ -29,10 +29,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ byte_escape : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
-          M.copy (| Value.String "I'm writing Rust!" |) in
+          M.read (| Value.String "I'm writing Rust!" |) in
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -93,16 +93,16 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         let~ unicode_codepoint : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
-          M.copy (| Value.String (String.String "029" "") |) in
+          M.read (| Value.String (String.String "029" "") |) in
         let~ character_name : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
-          M.copy (| Value.String """DOUBLE-STRUCK CAPITAL R""" |) in
+          M.read (| Value.String """DOUBLE-STRUCK CAPITAL R""" |) in
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -183,19 +183,19 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         let~ long_string : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
-          M.copy (|
+          M.read (|
             Value.String
               "String literals
                         can span multiple lines.
                         The linebreak and indentation here -><- can be escaped too!"
           |) in
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -253,9 +253,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"

@@ -22,21 +22,31 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               (Ty.path "alloc::vec::Vec")
               []
               [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ]; Ty.path "alloc::alloc::Global" ] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.apply
-                (Ty.path "alloc::vec::Vec")
-                []
-                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ]; Ty.path "alloc::alloc::Global" ],
-              M.get_associated_function (|
-                Ty.apply (Ty.path "slice") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                "into_vec",
-                [],
-                [ Ty.path "alloc::alloc::Global" ]
-              |),
-              [
-                M.read (|
-                  M.call_closure (|
+          M.call_closure (|
+            Ty.apply
+              (Ty.path "alloc::vec::Vec")
+              []
+              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ]; Ty.path "alloc::alloc::Global" ],
+            M.get_associated_function (|
+              Ty.apply (Ty.path "slice") [] [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+              "into_vec",
+              [],
+              [ Ty.path "alloc::alloc::Global" ]
+            |),
+            [
+              M.read (|
+                M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::boxed::Box")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 3 ]
+                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ];
+                      Ty.path "alloc::alloc::Global"
+                    ],
+                  M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::boxed::Box")
                       []
@@ -47,41 +57,29 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ];
                         Ty.path "alloc::alloc::Global"
                       ],
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "alloc::boxed::Box")
-                        []
+                    "new",
+                    [],
+                    []
+                  |),
+                  [
+                    M.alloc (|
+                      Value.Array
                         [
-                          Ty.apply
-                            (Ty.path "array")
-                            [ Value.Integer IntegerKind.Usize 3 ]
-                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ];
-                          Ty.path "alloc::alloc::Global"
-                        ],
-                      "new",
-                      [],
-                      []
-                    |),
-                    [
-                      M.alloc (|
-                        Value.Array
-                          [
-                            M.read (| Value.String "tofu" |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "93" |) |)
-                            |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "18" |) |)
-                            |)
-                          ]
-                      |)
-                    ]
-                  |)
+                          M.read (| Value.String "tofu" |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "93" |) |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (| M.read (| Value.String "18" |) |)
+                          |)
+                        ]
+                    |)
+                  ]
                 |)
-              ]
-            |)
+              |)
+            ]
           |) in
         M.match_operator (|
           None,
@@ -293,8 +291,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 let numbers := M.copy (| γ0_0 |) in
                 let errors := M.copy (| γ0_1 |) in
                 let~ _ : Ty.tuple [] :=
-                  let~ _ : Ty.tuple [] :=
-                    M.alloc (|
+                  M.read (|
+                    let~ _ : Ty.tuple [] :=
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -372,12 +370,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             ]
                           |)
                         ]
-                      |)
-                    |) in
-                  M.alloc (| Value.Tuple [] |) in
+                      |) in
+                    M.alloc (| Value.Tuple [] |)
+                  |) in
                 let~ _ : Ty.tuple [] :=
-                  let~ _ : Ty.tuple [] :=
-                    M.alloc (|
+                  M.read (|
+                    let~ _ : Ty.tuple [] :=
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -455,9 +453,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             ]
                           |)
                         ]
-                      |)
-                    |) in
-                  M.alloc (| Value.Tuple [] |) in
+                      |) in
+                    M.alloc (| Value.Tuple [] |)
+                  |) in
                 M.alloc (| Value.Tuple [] |)))
           ]
         |)

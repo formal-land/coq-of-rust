@@ -81,15 +81,13 @@ Module interpreter.
             let result := M.alloc (| result |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "revm_interpreter::interpreter::loop_control::LoopControl",
-                      "instruction_result"
-                    |),
-                    M.read (| result |)
-                  |)
+                M.write (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "revm_interpreter::interpreter::loop_control::LoopControl",
+                    "instruction_result"
+                  |),
+                  M.read (| result |)
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
@@ -111,26 +109,22 @@ Module interpreter.
             let result := M.alloc (| result |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "revm_interpreter::interpreter::loop_control::LoopControl",
-                      "next_action"
-                    |),
-                    M.read (| action |)
-                  |)
+                M.write (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "revm_interpreter::interpreter::loop_control::LoopControl",
+                    "next_action"
+                  |),
+                  M.read (| action |)
                 |) in
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "revm_interpreter::interpreter::loop_control::LoopControl",
-                      "instruction_result"
-                    |),
-                    M.read (| result |)
-                  |)
+                M.write (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "revm_interpreter::interpreter::loop_control::LoopControl",
+                    "instruction_result"
+                  |),
+                  M.read (| result |)
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))

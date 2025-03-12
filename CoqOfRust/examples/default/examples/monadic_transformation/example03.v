@@ -13,35 +13,43 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ _ : Ty.tuple [ Ty.path "i32"; Ty.path "i32"; Ty.path "i32"; Ty.path "i32" ] :=
-          M.alloc (|
-            Value.Tuple
-              [
-                Value.Integer IntegerKind.I32 1;
-                Value.Integer IntegerKind.I32 2;
-                Value.Integer IntegerKind.I32 3;
-                Value.Integer IntegerKind.I32 4
-              ]
-          |) in
+          Value.Tuple
+            [
+              Value.Integer IntegerKind.I32 1;
+              Value.Integer IntegerKind.I32 2;
+              Value.Integer IntegerKind.I32 3;
+              Value.Integer IntegerKind.I32 4
+            ] in
         let~ _ :
             Ty.apply
               (Ty.path "alloc::vec::Vec")
               []
               [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.apply
-                (Ty.path "alloc::vec::Vec")
-                []
-                [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
-              M.get_associated_function (|
-                Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ],
-                "into_vec",
-                [],
-                [ Ty.path "alloc::alloc::Global" ]
-              |),
-              [
-                M.read (|
-                  M.call_closure (|
+          M.call_closure (|
+            Ty.apply
+              (Ty.path "alloc::vec::Vec")
+              []
+              [ Ty.path "i32"; Ty.path "alloc::alloc::Global" ],
+            M.get_associated_function (|
+              Ty.apply (Ty.path "slice") [] [ Ty.path "i32" ],
+              "into_vec",
+              [],
+              [ Ty.path "alloc::alloc::Global" ]
+            |),
+            [
+              M.read (|
+                M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::boxed::Box")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 4 ]
+                        [ Ty.path "i32" ];
+                      Ty.path "alloc::alloc::Global"
+                    ],
+                  M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::boxed::Box")
                       []
@@ -52,36 +60,24 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           [ Ty.path "i32" ];
                         Ty.path "alloc::alloc::Global"
                       ],
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "alloc::boxed::Box")
-                        []
+                    "new",
+                    [],
+                    []
+                  |),
+                  [
+                    M.alloc (|
+                      Value.Array
                         [
-                          Ty.apply
-                            (Ty.path "array")
-                            [ Value.Integer IntegerKind.Usize 4 ]
-                            [ Ty.path "i32" ];
-                          Ty.path "alloc::alloc::Global"
-                        ],
-                      "new",
-                      [],
-                      []
-                    |),
-                    [
-                      M.alloc (|
-                        Value.Array
-                          [
-                            Value.Integer IntegerKind.I32 5;
-                            Value.Integer IntegerKind.I32 6;
-                            Value.Integer IntegerKind.I32 7;
-                            Value.Integer IntegerKind.I32 8
-                          ]
-                      |)
-                    ]
-                  |)
+                          Value.Integer IntegerKind.I32 5;
+                          Value.Integer IntegerKind.I32 6;
+                          Value.Integer IntegerKind.I32 7;
+                          Value.Integer IntegerKind.I32 8
+                        ]
+                    |)
+                  ]
                 |)
-              ]
-            |)
+              |)
+            ]
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))

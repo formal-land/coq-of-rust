@@ -57,46 +57,44 @@ Module gcd.
           let other := M.alloc (| other |) in
           M.read (|
             let~ other : Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                  M.get_associated_function (|
+              M.call_closure (|
+                Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                M.get_associated_function (|
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ],
+                  "unwrap_or_default",
+                  [],
+                  []
+                |),
+                [
+                  M.call_closure (|
                     Ty.apply
                       (Ty.path "core::option::Option")
                       []
                       [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ],
-                    "unwrap_or_default",
-                    [],
-                    []
-                  |),
-                  [
-                    M.call_closure (|
-                      Ty.apply
-                        (Ty.path "core::option::Option")
-                        []
-                        [ Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] ],
-                      M.get_associated_function (|
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                      "checked_div",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| other |);
+                      M.call_closure (|
                         Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                        "checked_div",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| other |);
-                        M.call_closure (|
+                        M.get_associated_function (|
                           Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                            "gcd",
-                            [],
-                            []
-                          |),
-                          [ M.read (| self |); M.read (| other |) ]
-                        |)
-                      ]
-                    |)
-                  ]
-                |)
+                          "gcd",
+                          [],
+                          []
+                        |),
+                        [ M.read (| self |); M.read (| other |) ]
+                      |)
+                    ]
+                  |)
+                ]
               |) in
             M.alloc (|
               M.call_closure (|

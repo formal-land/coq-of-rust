@@ -1148,7 +1148,7 @@ Module constant.
             ltac:(M.monadic
               (M.read (|
                 let~ ty : Ty.path "move_core_types::runtime_value::MoveTypeLayout" :=
-                  M.copy (|
+                  M.read (|
                     M.match_operator (|
                       Some (Ty.path "move_core_types::runtime_value::MoveTypeLayout"),
                       M.alloc (|

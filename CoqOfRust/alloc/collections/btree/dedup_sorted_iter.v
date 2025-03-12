@@ -102,7 +102,7 @@ Module collections.
                         Ty.path "never",
                         ltac:(M.monadic
                           (let~ next : Ty.tuple [ K; V ] :=
-                            M.copy (|
+                            M.read (|
                               M.match_operator (|
                                 Some (Ty.tuple [ K; V ]),
                                 M.alloc (|
@@ -163,7 +163,7 @@ Module collections.
                               |)
                             |) in
                           let~ peeked : Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ] :=
-                            M.copy (|
+                            M.read (|
                               M.match_operator (|
                                 Some (Ty.apply (Ty.path "&") [] [ Ty.tuple [ K; V ] ]),
                                 M.alloc (|
