@@ -49,6 +49,28 @@ Instance run_chainid
     (* TODO: 
     - Finish link for "revm_context_interface::cfg::Cfg" trait to `run_chain_id`
     *)
+    (* 
+    CoqOfRust.M.LowM.CallPrimitive
+      (Primitive.GetTraitMethod
+        "revm_context_interface::cfg::Cfg"
+        (Ty.associated_in_trait
+            "revm_context_interface::cfg::CfgGetter"
+            [] [] H1.(Φ _) "Cfg") [] []
+        "chain_id" [] [])
+      (fun v : Value.t =>
+      CoqOfRust.M.LowM.CallPrimitive
+        (Primitive.GetTraitMethod
+            "revm_context_interface::cfg::CfgGetter"
+            H1.(Φ _) [] [] "cfg" [] [])
+        (fun v0 : Value.t =>
+          CoqOfRust.M.LowM.CallPrimitive
+            (CoqOfRust.M.Primitive.StateRead
+              (Ref.IsLink.(φ)
+                  (Ref.immediate
+                    Pointer.Kind.Raw
+                    _host)))
+            (fun v1 : Value.t =>
+    *)
     run_symbolic.
   Admitted.
   (* Defined. *)

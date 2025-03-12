@@ -32,8 +32,6 @@ Module CreateScheme.
   }.
 End CreateScheme.
 
-Locate Pointer.Kind.Ref.
-
 (* 
 #[auto_impl(&, &mut, Box, Arc)]
 pub trait Cfg {
@@ -63,7 +61,6 @@ pub trait Cfg {
 }
 *)
 Module Cfg.
-  (* TODO: refer to `InterpreterTypes`'s definition to translate types *)
   (* type Spec: Into<SpecId> + Clone; *)
   Module Types.
     Record t : Type := {
@@ -79,14 +76,6 @@ Module Cfg.
       H.(H_Spec _).
   End Types.
 
-  (* fn set_instruction_result(&mut self, result: InstructionResult);
-    Definition Run_set_instruction_result (Self : Set) `{Link Self} : Set :=
-    {set_instruction_result @
-      IsTraitMethod.t "revm_interpreter::interpreter_types::LoopControl" [] [] (Φ Self) "set_instruction_result" set_instruction_result *
-      forall (self : Ref.t Pointer.Kind.MutRef Self) (result : InstructionResult.t),
-        {{ set_instruction_result [] [] [ φ self; φ result ] 🔽 unit }}
-    }.
-  *)
   Definition Run_chain_id (Self : Set) `{Link Self} : Set :=
     {chain_id @
       IsTraitMethod.t "revm_context_interface::cfg::Cfg" [] [] (Φ Self) "chain_id" chain_id *
@@ -94,6 +83,7 @@ Module Cfg.
         {{ chain_id [] [] [ φ self ] 🔽 U64.t }}
     }.
 
+  (* NOTE: Is this the right design for `Run`'s parameters? *)
   Record Run (Self : Set) `{Link Self} (types : Types.t) 
     `{Types.AreLinks types} : Set := 
   {
