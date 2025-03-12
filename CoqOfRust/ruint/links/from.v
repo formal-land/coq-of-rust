@@ -1,5 +1,6 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
+Require Import core.convert.links.mod.
 Require Import ruint.links.lib.
 Require Import ruint.from.
 
@@ -15,9 +16,11 @@ Module Impl_Uint.
   *)
   Instance run_from
     (BITS LIMBS : Usize.t)
-    (x1 x2 : Self BITS LIMBS) :
+    (T : Set) `{Link T}
+    (* TODO: there should also be an instance of `UintTryFrom` that we ignore for now *)
+    (value : T) :
     Run.Trait
-      (from.Impl_ruint_Uint_BITS_LIMBS.from (φ BITS) (φ LIMBS)) [] [] [ φ x1; φ x2 ]
+      (from.Impl_ruint_Uint_BITS_LIMBS.from (φ BITS) (φ LIMBS)) [] [ Φ T ] [ φ value ]
       (Self BITS LIMBS).
   Admitted.
 End Impl_Uint.

@@ -1,5 +1,6 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
+Require Import revm.revm_context_interface.links.host.
 Require Import revm.revm_interpreter.links.gas.
 Require Import revm.revm_interpreter.links.interpreter.
 Require Import revm.revm_interpreter.links.interpreter_types.
@@ -25,7 +26,9 @@ pub fn chainid<WIRE: InterpreterTypes, H: Host + ?Sized>(
 Instance run_chainid
   {WIRE H : Set} `{Link WIRE} `{Link H}
   {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
+  {H_types : Host.Types.t} `{Host.Types.AreLinks H_types}
   (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types)
+  (run_Host_for_H : Host.Run H H_types)
   (interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t WIRE WIRE_types))
   (_host : Ref.t Pointer.Kind.MutRef H) :
   Run.Trait
@@ -35,7 +38,8 @@ Instance run_chainid
     constructor.
     cbn.
     eapply Run.Rewrite. {
-      repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
+      progress repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
+      progress repeat erewrite IsTraitAssociatedType_eq by apply run_Host_for_H.
       reflexivity.
     }
     destruct run_InterpreterTypes_for_WIRE.
@@ -46,34 +50,13 @@ Instance run_chainid
     destruct gas as [gas [H_gas run_gas]].
     destruct run_StackTrait_for_Stack.
     destruct push as [push [H_push run_push]].
-    (* TODO: 
-    - Finish link for "revm_context_interface::cfg::Cfg" trait to `run_chain_id`
-    *)
-    (* 
-    CoqOfRust.M.LowM.CallPrimitive
-      (Primitive.GetTraitMethod
-        "revm_context_interface::cfg::Cfg"
-        (Ty.associated_in_trait
-            "revm_context_interface::cfg::CfgGetter"
-            [] [] H1.(Φ _) "Cfg") [] []
-        "chain_id" [] [])
-      (fun v : Value.t =>
-      CoqOfRust.M.LowM.CallPrimitive
-        (Primitive.GetTraitMethod
-            "revm_context_interface::cfg::CfgGetter"
-            H1.(Φ _) [] [] "cfg" [] [])
-        (fun v0 : Value.t =>
-          CoqOfRust.M.LowM.CallPrimitive
-            (CoqOfRust.M.Primitive.StateRead
-              (Ref.IsLink.(φ)
-                  (Ref.immediate
-                    Pointer.Kind.Raw
-                    _host)))
-            (fun v1 : Value.t =>
-    *)
+    destruct run_Host_for_H.
+    destruct run_CfgGetter.
+    destruct run_Cfg_for_Cfg.
+    destruct chain_id as [chain_id [H_chain_id run_chain_id]].
+    destruct cfg as [cfg [H_cfg run_cfg]].
     run_symbolic.
-  Admitted.
-  (* Defined. *)
+  Defined.
 
 (*
 pub fn coinbase<WIRE: InterpreterTypes, H: Host + ?Sized>(

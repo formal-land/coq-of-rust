@@ -6,10 +6,14 @@ Require Import revm.revm_interpreter.links.interpreter.
 Require Import revm.revm_interpreter.links.interpreter_types.
 Require Import revm.revm_interpreter.instructions.arithmetic.
 Require Import ruint.links.add.
+Require Import ruint.links.cmp.
+Require Import ruint.links.div.
 Require Import ruint.links.mul.
 
 Import Impl_Gas.
 Import add.Impl_Uint.
+Import cmp.Impl_Uint.
+Import div.Impl_Uint.
 Import mul.Impl_Uint.
 
 (*
@@ -137,10 +141,8 @@ Instance run_div
     destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
     destruct run_StackTrait_for_Stack.
     destruct popn_top as [popn_top [H_popn_top run_popn_top]].
-    (* TODO: figure out the rest *)
-    run_symbolic. 
-    Admitted.
-  (* Defined. *)
+    run_symbolic.
+  Defined.
 
 (*
 pub fn sdiv<WIRE: InterpreterTypes, H: Host + ?Sized>(
