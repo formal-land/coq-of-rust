@@ -304,6 +304,29 @@ Module ruint.
       Proof.
       Admitted.
     End Impl_BitXor_for_Uint.
+
+    Module Impl_BitNot_for_Uint.
+      Definition Self (BITS LIMBS : Value.t) : Ty.t :=
+        Ty.apply (Ty.path "ruint::Uint") [BITS; LIMBS] [].
+    
+      Parameter bitnot : forall (BITS LIMBS : Value.t), PolymorphicFunction.t.
+    
+      Axiom Implements :
+        forall (BITS LIMBS : Value.t),
+          M.IsTraitInstance
+            "core::ops::bit::Not"
+            []
+            []
+            (Self BITS LIMBS)
+            [("not", InstanceField.Method (bitnot BITS LIMBS))].
+    
+      Instance run_bitnot :
+        forall (BITS LIMBS : Usize.t)
+               (x : Uint.t BITS LIMBS),
+          Run.Trait (bitnot (φ BITS) (φ LIMBS)) [] [] [ φ x ] (Uint.t BITS LIMBS).
+      Proof.
+      Admitted.
+    End Impl_BitNot_for_Uint.
     
 End ruint.
 
