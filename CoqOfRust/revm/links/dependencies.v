@@ -194,3 +194,10 @@ Module B256.
   Definition t : Set :=
     alloy_primitives.bits.links.fixed.FixedBytes.t {| Integer.value := 32 |}.
 End B256.
+
+Module Log.
+  Parameter t : Set.
+
+  Global Instance IsLink : Link t.
+  Admitted.
+End Log.
