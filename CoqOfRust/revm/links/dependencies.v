@@ -6,6 +6,10 @@ Require core.links.clone.
 Require core.links.default.
 Require Import ruint.links.lib.
 
+(* TODO:
+  - (alloy_primitives::Address) pub fn into_word(&self) -> FixedBytes<32>
+  - (alloy_primitives::FixedBytes) fn into(self) -> Uint
+*)
 Module alloy_primitives.
   Module bits.
     Module links.
@@ -84,6 +88,19 @@ Module alloy_primitives.
           Global Instance run_from_word (word : fixed.FixedBytes.t {| Integer.value := 32 |}) :
             Run.Trait from_word [] [] [ φ word ] Address.t.
           Admitted.
+
+          (* pub fn into_word(&self) -> FixedBytes<32> *)
+          Parameter into_word : PolymorphicFunction.t.
+
+          Global Instance AssociatedFunction_into_word :
+          (* TODO: figure out the meaning of Φ *)
+            M.IsAssociatedFunction.Trait (Φ Self) "into_word" into_word.
+          Admitted.
+
+          Global Instance run_into_word (self : Address.t) :
+            Run.Trait into_word [] [] [ φ self ] (fixed.FixedBytes.t {| Integer.value := 32 |}).
+          Admitted.
+
         End Impl_Address.
       End address.
     End links.
@@ -183,6 +200,10 @@ Module FixedBytes.
     Φ := Ty.path "alloy_primitives::bits::fixed::FixedBytes";
     φ := to_value;
   }.
+
+  (* TODO: 
+  - (alloy_primitives::FixedBytes) fn into(self) -> Uint
+  *)
 End FixedBytes.
 
 Module U256.

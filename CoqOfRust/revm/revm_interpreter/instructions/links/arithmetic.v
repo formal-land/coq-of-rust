@@ -25,7 +25,9 @@ pub fn add<WIRE: InterpreterTypes, H: Host + ?Sized>(
 Instance run_add
     {WIRE H : Set} `{Link WIRE} `{Link H}
     {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
+    {H_types : Host.Types.t} `{Host.Types.AreLinks H_types}
     (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types)
+    (run_Host_for_H : Host.Run H H_types)
     (interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t WIRE WIRE_types))
     (_host : Ref.t Pointer.Kind.MutRef H) :
   Run.Trait
@@ -35,7 +37,9 @@ Proof.
   constructor.
   cbn.
   eapply Run.Rewrite. {
-    repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
+    progress repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
+    (* Why does it fail? *)
+    progress repeat erewrite IsTraitAssociatedType_eq by apply run_Host_for_H.
     reflexivity.
   }
   destruct run_InterpreterTypes_for_WIRE.

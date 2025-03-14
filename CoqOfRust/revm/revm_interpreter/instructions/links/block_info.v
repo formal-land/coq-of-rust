@@ -8,10 +8,12 @@ Require Import revm.revm_interpreter.instructions.block_info.
 Require Import revm.revm_specification.links.hardfork.
 Require Import revm.revm_context_interface.links.cfg.
 Require Import ruint.links.from.
+Require Import core.convert.links.mod.
 
 Import Impl_SpecId.
 Import Impl_Gas.
 Import from.Impl_Uint.
+Import core.convert.links.mod.Into.
 
 (*
 pub fn chainid<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -67,7 +69,9 @@ pub fn coinbase<WIRE: InterpreterTypes, H: Host + ?Sized>(
 Instance run_coinbase
   {WIRE H : Set} `{Link WIRE} `{Link H}
   {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
+  {H_types : Host.Types.t} `{Host.Types.AreLinks H_types}
   (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types)
+  (run_Host_for_H : Host.Run H H_types)
   (interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t WIRE WIRE_types))
   (_host : Ref.t Pointer.Kind.MutRef H) :
   Run.Trait
@@ -87,9 +91,14 @@ Proof.
   destruct run_StackTrait_for_Stack.
   destruct push as [push [H_push run_push]].
   (* TODO: fill in links for
-  - core::convert::Into::into 
-  - revm_context_interface::block::Block::beneficiary 
-  - revm_context_interface::block::Block::block *)
+    - (revm_context_interface::block::Block::block) fn block(&self) -> &Self::Block;
+    - (revm_context_interface::block::Block::beneficiary)
+    (* - (alloy_primitives::Address) pub fn into_word(&self) -> FixedBytes<32> *)
+    - (alloy_primitives::FixedBytes) fn into(self) -> Uint
+    - (core::convert::Into::into) for Uint?
+  TODO: Who *runs* who? Figure out how `run` works with a reference to cfg
+  NOTE: into should have a way to run `uint` or `fixedbytes`?
+  *)
   run_symbolic.
 Admitted.
 

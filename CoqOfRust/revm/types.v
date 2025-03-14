@@ -7481,5 +7481,3 @@ Module RecoveredAuthorization.
       ]
   }.
 End RecoveredAuthorization.
-
-(* TODO: Should I create `Cfg` type here? *)
