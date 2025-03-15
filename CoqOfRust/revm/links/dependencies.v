@@ -6,10 +6,6 @@ Require core.links.clone.
 Require core.links.default.
 Require Import ruint.links.lib.
 
-(* TODO:
-  - (alloy_primitives::Address) pub fn into_word(&self) -> FixedBytes<32>
-  - (alloy_primitives::FixedBytes) fn into(self) -> Uint
-*)
 Module alloy_primitives.
   Module bits.
     Module links.
@@ -36,6 +32,7 @@ Module alloy_primitives.
           Smpl Add eapply of_ty : of_ty.
         End FixedBytes.
 
+        (* NOTE: Is this design outdated? *)
         Module Impl_From_for_FixedBytes.
           Definition Self (N : Usize.t) : Set :=
             FixedBytes.t N.
@@ -55,6 +52,26 @@ Module alloy_primitives.
             forall (N : Usize.t),
             core.convert.links.mod.From.Run (Self N) (T := array.t U8.t N).
         End Impl_From_for_FixedBytes.
+        
+        (* NOTE: Should I design this function in the same style as `from` above? Or should 
+        I design just like a normal parameter? *)
+        Module Impl_Into_for_FixedBytes.
+          Definition Self (N : Usize.t) : Set :=
+            FixedBytes.t N.
+                  
+          (* fn into(self) -> Uint *)
+          Parameter into : forall (N : Usize.t), PolymorphicFunction.t.
+
+          Axiom Implements :
+            forall (N : Usize.t),
+            M.IsTraitInstance
+              "core::convert::Into" [] [ Φ (array.t U8.t N) ] (Φ (Self N))
+              [ ("into", InstanceField.Method (into N)) ].
+
+          Parameter run :
+            forall (N : Usize.t),
+            core.convert.links.mod.Into.Run (Self N) (array.t U8.t N). (* NOTE: Why we don't need T := here? *)
+        End Impl_Into_for_FixedBytes.
       End fixed.
 
       Module address.
@@ -93,7 +110,6 @@ Module alloy_primitives.
           Parameter into_word : PolymorphicFunction.t.
 
           Global Instance AssociatedFunction_into_word :
-          (* TODO: figure out the meaning of Φ *)
             M.IsAssociatedFunction.Trait (Φ Self) "into_word" into_word.
           Admitted.
 
