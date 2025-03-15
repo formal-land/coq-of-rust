@@ -92,13 +92,10 @@ Proof.
   destruct run_StackTrait_for_Stack.
   destruct push as [push [H_push run_push]].
   (* TODO: fill in links for
-    - (revm_context_interface::block::BlockGetter::block) fn block(&self) -> &Self::Block;
-    - (revm_context_interface::block::BlockGetter::beneficiary)
-    - 
     (* - (alloy_primitives::Address) pub fn into_word(&self) -> FixedBytes<32> *)
     - (alloy_primitives::FixedBytes) fn into(self) -> Uint
     - (core::convert::Into::into) for Uint?
-  TODO: Who *runs* who? Figure out how `run` works with a reference to cfg
+    TODO: Who *runs* who? Figure out how `run` works with a reference to cfg
   *)
   run_symbolic.
 Admitted.
