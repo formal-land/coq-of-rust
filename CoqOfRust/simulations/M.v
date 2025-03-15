@@ -612,6 +612,14 @@ Module Stack.
         | None => None
         end
       end.
+
+    Ltac infer :=
+      cbn ||
+      match goal with
+      | |- t _ (SubPointer.Runner.apply _ ?r) =>
+        apply (runner r)
+      end ||
+      assumption.
   End CanAccess.
 End Stack.
 
@@ -660,14 +668,15 @@ Module Run.
       (k : Ref.Core.t runner.(SubPointer.Runner.Sub_A) -> LowM.t R Output)
     (H_k : {{ StackIn 🌲 k (SubPointer.Runner.apply ref_core runner) }}) :
     {{ StackIn 🌲 LowM.CallPrimitive (Primitive.GetSubPointer ref_core runner) k }}
-  | Call {Output' : Set}
-      (e : LowM.t Output' Output')
+  | Call {Output' : Set} `{Link Output'}
+      (e : M)
+      (run : {{ e 🔽 Output', Output' }})
       (k : SuccessOrPanic.t Output' -> LowM.t R Output)
-    (H_e : {{ [] 🌲 e }})
+    (H_e : {{ StackIn 🌲 M.evaluate run }})
     (H_k : forall (output' : SuccessOrPanic.t Output'),
       {{ StackIn 🌲 k output' }}
     ) :
-    {{ StackIn 🌲 LowM.Call e k }}
+    {{ StackIn 🌲 LowM.Call run k }}
   | LetAlloc {Output' : Set} `{Link Output'}
       (e : LowM.t R Output')
       (k : Output.t R (Ref.t Pointer.Kind.Raw Output') -> LowM.t R Output)
@@ -683,6 +692,10 @@ Module Run.
     {{ StackIn 🌲 LowM.LetAlloc e k }}
 
   where "{{ StackIn 🌲 e }}" := (t StackIn e).
+
+  Class Trait {R Output : Set} (StackIn : Stack.t) (e : LowM.t R Output) : Set := {
+    simulation : {{ StackIn 🌲 e }};
+  }.
 End Run.
 
 Export Run.
@@ -719,9 +732,14 @@ Proof.
     exact (evaluate _ _ _ _ run stack_in).
   }
   { (* Call *)
-    unshelve eapply (evaluate _ _ _ _ (H_k _) stack_in).
-    apply SuccessOrPanic.of_output.
-    apply (evaluate _ _ _ _ run tt).
+    match goal with
+    | H : {{  _ 🌲 M.evaluate _ }} |- _ => rename H into H_e
+    end.
+    refine (
+      let '(output', stack_in') := evaluate _ _ _ _ H_e stack_in in
+      _
+    ).
+    exact (evaluate _ _ _ _ (H_k (SuccessOrPanic.of_output output')) stack_in').
   }
   { (* LetAlloc *)
     refine (
@@ -750,3 +768,28 @@ Proof.
     { exact (evaluate _ _ _ _ (H_k (Output.Exception exception)) stack_in'). }
   }
 Defined.
+
+Ltac simulate_get_sub_pointer :=
+  match goal with
+  | |- {{ _ 🌲 LowM.CallPrimitive (Primitive.GetSubPointer ?ref_core ?runner) _ }} =>
+    let H := fresh "H" in
+    epose proof (Run.GetSubPointer _ _ ref_core runner) as H;
+    apply H; clear H
+  end.
+
+Ltac simulate_one_step :=
+  (* We make a careful reduction in order to avoid expanding the links runs *)
+  match goal with
+  | |- {{ _ 🌲 ?e }} =>
+    let e' := eval hnf in e in
+    change e with e'
+  end ||
+  apply Run.Pure ||
+  (apply Run.StateRead; [repeat Stack.CanAccess.infer | intros]) ||
+  (apply Run.StateWrite; [repeat Stack.CanAccess.infer |]) ||
+  simulate_get_sub_pointer ||
+  (apply Run.Call; [unshelve eapply Run.simulation | intros []]) ||
+  (apply Run.LetAlloc; [|intros []]).
+
+Ltac simulate :=
+  progress repeat simulate_one_step.

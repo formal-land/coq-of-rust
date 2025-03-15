@@ -14,20 +14,24 @@ Module Impl_MemoryGas.
   Definition Self : Set :=
     MemoryGas.t.
 
-  Definition run_new :
-    {{ [] 🌲 links.M.evaluate Impl_MemoryGas.run_new.(Run.run_f) }}.
+  Instance run_new Stack :
+    Run.Trait Stack (links.M.evaluate Impl_MemoryGas.run_new.(Run.run_f)).
   Proof.
     constructor.
+    simulate.
   Defined.
 
   Lemma new_eq :
-    M.evaluate run_new tt = (Output.Success Impl_Default_for_MemoryGas.default, tt).
+    M.evaluate (run_new []).(Run.simulation) tt =
+    (Output.Success Impl_Default_for_MemoryGas.default, tt).
   Proof.
     reflexivity.
   Qed.
 End Impl_MemoryGas.
 
 Module Impl_Gas.
+  Import Impl_MemoryGas.
+
   Definition Self : Set :=
     Gas.t.
 
@@ -41,19 +45,15 @@ Module Impl_Gas.
           }
       }
   *)
-  Definition run_new (limit : U64.t) :
-    {{ [] 🌲 links.M.evaluate (Impl_Gas.run_new limit).(Run.run_f) }}.
+  Instance run_new Stack (limit : U64.t) :
+    Run.Trait Stack (links.M.evaluate (Impl_Gas.run_new limit).(Run.run_f)).
   Proof.
-    cbn.
-    apply Run.Call. {
-      apply Impl_MemoryGas.run_new.
-    }
-    intros []; cbn; [|apply Run.Pure].
-    apply Run.Pure.
+    constructor.
+    simulate.
   Defined.
 
   Lemma new_eq (limit : U64.t) :
-    M.evaluate (run_new limit) tt =
+    M.evaluate (run_new [] limit).(Run.simulation) tt =
     (Output.Success {|
       Gas.limit := limit;
       Gas.remaining := limit;
@@ -74,19 +74,15 @@ Module Impl_Gas.
           }
       }
   *)
-  Definition run_new_spent (limit : U64.t) :
-    {{ [] 🌲 links.M.evaluate (Impl_Gas.run_new_spent limit).(Run.run_f) }}.
+  Instance run_new_spent Stack (limit : U64.t) :
+    Run.Trait Stack (links.M.evaluate (Impl_Gas.run_new_spent limit).(Run.run_f)).
   Proof.
-    cbn.
-    apply Run.Call. {
-      apply Impl_MemoryGas.run_new.
-    }
-    intros []; cbn; [|apply Run.Pure].
-    apply Run.Pure.
+    constructor.
+    simulate.
   Defined.
 
   Lemma new_spent_eq (limit : U64.t) :
-    M.evaluate (run_new_spent limit) tt =
+    M.evaluate (run_new_spent [] limit).(Run.simulation) tt =
     (Output.Success {|
       Gas.limit := limit;
       Gas.remaining := {| Integer.value := 0 |};
@@ -102,19 +98,13 @@ Module Impl_Gas.
           self.limit
       }
   *)
-  Definition run_limit {Stack : Stack.t}
+  Instance run_limit Stack
       (self : Ref.t Pointer.Kind.Ref Self)
       (H_self : Stack.CanAccess.t Stack self.(Ref.core)) :
-    {{ Stack 🌲 links.M.evaluate (Impl_Gas.run_limit self).(Run.run_f) }}.
+    Run.Trait Stack (links.M.evaluate (Impl_Gas.run_limit self).(Run.run_f)).
   Proof.
-    cbn.
-    epose proof (Run.GetSubPointer _ _ self.(Ref.core) Gas.SubPointer.get_limit).
-    apply H; clear H.
-    apply Run.StateRead. {
-      now apply (Stack.CanAccess.runner Gas.SubPointer.get_limit).
-    }
-    intros.
-    apply Run.Pure.
+    constructor.
+    simulate.
   Defined.
 
   Lemma limit_eq (self : Self) :
@@ -123,10 +113,10 @@ Module Impl_Gas.
       {| Ref.core := Ref.Core.Mutable 0%nat [] φ Some (fun _ => Some) |} in
     M.evaluate (
       run_limit
-        (Stack := [Self])
+        [Self]
         ref_self
         ltac:(apply (Stack.CanAccess.Mutable (A := Gas.t) Stack 0 []))
-    ) self =
+    ).(Run.simulation) self =
     (Output.Success self.(Gas.limit), self).
   Proof.
     reflexivity.
@@ -137,34 +127,13 @@ Module Impl_Gas.
           self.remaining += returned;
       }
   *)
-  Definition run_erase_cost {Stack}
+  Instance run_erase_cost Stack
       (self : Ref.t Pointer.Kind.Ref Self)
       (H_self : Stack.CanAccess.t Stack self.(Ref.core))
       (returned : U64.t) :
-    {{ Stack 🌲 links.M.evaluate (Impl_Gas.run_erase_cost self returned).(Run.run_f) }}.
+    Run.Trait Stack (links.M.evaluate (Impl_Gas.run_erase_cost self returned).(Run.run_f)).
   Proof.
-    cbn.
-    (* set (ref_core := Ref.Core.Mutable _ _ _ _ _). *)
-    epose proof (Run.GetSubPointer _ _ self.(Ref.core) Gas.SubPointer.get_remaining).
-    apply H; clear H.
-    apply Run.StateRead. {
-      match goal with
-      | |- Stack.CanAccess.t _ (SubPointer.Runner.apply _ ?runner) =>
-        apply (Stack.CanAccess.runner runner)
-      end.
-      assumption.
-    }
-    intros.
-    apply Run.StateWrite. {
-      match goal with
-      | |- Stack.CanAccess.t _ (SubPointer.Runner.apply _ ?runner) =>
-        apply (Stack.CanAccess.runner runner)
-      end.
-      assumption.
-    }
-    apply Run.LetAlloc. {
-      apply Run.Pure.
-    }
-    intros []; cbn; apply Run.Pure.
+    constructor.
+    simulate.
   Defined.
 End Impl_Gas.
