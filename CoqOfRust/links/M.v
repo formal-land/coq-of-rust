@@ -1029,8 +1029,7 @@ Module Primitive.
   | GetSubPointer {A : Set} `{Link A} {index : Pointer.Index.t}
     (ref_core : Ref.Core.t A) (runner : SubPointer.Runner.t A index) :
     let _ := runner.(SubPointer.Runner.H_Sub_A) in
-    t (Ref.Core.t runner.(SubPointer.Runner.Sub_A))
-  | AreEqual {A : Set} `{Link A} (x y : A) : t bool.
+    t (Ref.Core.t runner.(SubPointer.Runner.Sub_A)).
 End Primitive.
 
 Module LowM.
@@ -1039,14 +1038,14 @@ Module LowM.
   Inductive t (R Output : Set) : Set :=
   | Pure (value : Output.t R Output)
   | CallPrimitive {A : Set} (primitive : Primitive.t A) (k : A -> t R Output)
-  | Call {A : Set} `{Link A} {e : M} (run : {{ e 🔽 A, A }}) (k : SuccessOrPanic.t A -> t R Output)
+  | Call {A : Set} (e : t A A) (k : SuccessOrPanic.t A -> t R Output)
   | LetAlloc {A : Set} `{Link A}
       (e : t R A)
       (k : Output.t R (Ref.t Pointer.Kind.Raw A) -> t R Output)
   | Loop {A : Set} (body : t R A) (k : Output.t R A -> t R Output).
   Arguments Pure {_ _}.
   Arguments CallPrimitive {_ _ _}.
-  Arguments Call {_ _ _ _ _}.
+  Arguments Call {_ _ _}.
   Arguments LetAlloc {_ _ _ _}.
   Arguments Loop {_ _ _}.
 End LowM.
@@ -1145,7 +1144,7 @@ Proof.
   }
   { (* CallClosure *)
     eapply (LowM.Call (A := Output')). {
-      exact run.
+      exact (evaluate _ _ _ _ _ run).
     }
     intros output'; eapply evaluate.
     match goal with

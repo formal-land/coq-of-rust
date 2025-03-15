@@ -623,6 +623,133 @@ Module Stack.
   End CanAccess.
 End Stack.
 
+(** Here we define an execution mode where we keep dynamic cast to retrieve data from the stack. In
+    practice, these casts should always be correct as the original Rust code was well typed. *)
+Module StackM.
+  Inductive t (A : Set) : Set :=
+  | Pure (value : A)
+  | GetCanAccess {B : Set} `{Link B}
+      (Stack : Stack.t)
+      (ref_core : Ref.Core.t B)
+      (k : Stack.CanAccess.t Stack ref_core -> t A).
+  Arguments Pure {_}.
+  Arguments GetCanAccess {_ _ _}.
+
+  Fixpoint let_ {A B : Set} (e1 : t A) (e2 : A -> t B) : t B :=
+    match e1 with
+    | Pure value => e2 value
+    | GetCanAccess Stack ref_core k =>
+      GetCanAccess Stack ref_core (fun can_access => let_ (k can_access) e2)
+    end.
+
+  Parameter TodoLoop : forall {A : Set}, t A.
+
+  Fixpoint evaluate {R Output : Set} {Stack : Stack.t}
+      (e : LowM.t R Output)
+      (stack : Stack.to_Set Stack)
+      {struct e} :
+    t (Output.t R Output * Stack.to_Set Stack).
+  Proof.
+    destruct e.
+    { (* Pure *)
+      exact (Pure (value, stack)).
+    }
+    { (* CallPrimitive *)
+      destruct primitive.
+      { (* StateAlloc *)
+        exact (
+          let ref_core :=
+            Ref.Core.Mutable
+              (List.length Stack)
+              []
+              φ
+              Some
+              (fun _ => Some) in
+          let stack := Stack.alloc stack value in
+          let_ (evaluate _ _ _ (k ref_core) stack) (fun '(output, stack) =>
+          let '(stack, _) := Stack.dealloc stack in
+          Pure (output, stack)
+          )
+        ).
+      }
+      { (* StateRead *)
+        refine (
+          GetCanAccess Stack ref_core (fun H_access =>
+          _)
+        ).
+        destruct (Stack.CanAccess.read H_access stack) as [value|].
+        { exact (evaluate _ _ _ (k value) stack). }
+        { exact (Pure (Output.panic "StateRead: invalid reference", stack)). }
+      }
+      { (* StateWrite *)
+        refine (
+          GetCanAccess Stack ref_core (fun H_access =>
+          _)
+        ).
+        destruct (Stack.CanAccess.write H_access stack value) as [stack'|].
+        { exact (evaluate _ _ _ (k tt) stack'). }
+        { exact (Pure (Output.panic "StateWrite: invalid reference", stack)). }
+      }
+      { (* GetSubPointer *)
+        exact (evaluate _ _ _ (k (SubPointer.Runner.apply ref_core runner)) stack).
+      }
+    }
+    { (* Call *)
+      exact (
+        let_ (evaluate _ _ _ e stack) (fun '(output, stack) =>
+        evaluate _ _ _ (k (SuccessOrPanic.of_output output)) stack)
+      ).
+    }
+    { (* LetAlloc *)
+      refine (
+        let_ (evaluate _ _ _ e stack) (fun '(value_or_exception, stack') =>
+        _)
+      ); clear stack.
+      destruct value_or_exception as [value | exception].
+      { refine (
+          let ref_core :=
+            Ref.Core.Mutable
+              (List.length Stack)
+              []
+              φ
+              Some
+              (fun _ => Some) in
+          let ref : Ref.t Pointer.Kind.Raw A := {| Ref.core := ref_core |} in
+          _
+        ).
+        refine (
+          let_ _ (fun '(output, stack) =>
+          Pure (output, fst (Stack.dealloc (A := A) stack)))
+        ).
+        unshelve eapply (evaluate _ _ _ (k (Output.Success ref)) _).
+        exact (Stack.alloc stack' value).
+      }
+      { exact (evaluate _ _ _ (k (Output.Exception exception)) stack'). }
+    }
+    { (* Loop *)
+      exact TodoLoop.
+    }
+  Defined.
+End StackM.
+
+Module Run.
+  Reserved Notation "{{ e 🌲 result }}".
+
+  Inductive t {A : Set} (result : A) : StackM.t A -> Set :=
+  | Pure :
+    {{ StackM.Pure result 🌲 result }}
+  | GetCanAccess {B : Set} `{Link B}
+      (Stack : Stack.t)
+      (ref_core : Ref.Core.t B)
+      (k : Stack.CanAccess.t Stack ref_core -> StackM.t A)
+      (H_access : Stack.CanAccess.t Stack ref_core)
+    (H_k : {{ k H_access 🌲 result }}) :
+    {{ StackM.GetCanAccess Stack ref_core k 🌲 result }}
+
+  where "{{ e 🌲 result }}" := (t result e).
+End Run.
+
+(*
 Module Run.
   Reserved Notation "{{ StackIn 🌲 e }}".
 
@@ -693,8 +820,16 @@ Module Run.
 
   where "{{ StackIn 🌲 e }}" := (t StackIn e).
 
-  Class Trait {R Output : Set} (StackIn : Stack.t) (e : LowM.t R Output) : Set := {
-    simulation : {{ StackIn 🌲 e }};
+  Class Trait
+      {Output : Set} `{Link Output}
+      {f : PolymorphicFunction.t}
+      {ε : list Value.t}
+      {τ : list Ty.t}
+      {α : list Value.t}
+      (StackIn : Stack.t)
+      (run : links.M.Run.Trait f ε τ α Output) :
+      Set := {
+    simulation : {{ StackIn 🌲 links.M.evaluate run.(Run.run_f) }};
   }.
 End Run.
 
@@ -777,13 +912,17 @@ Ltac simulate_get_sub_pointer :=
     apply H; clear H
   end.
 
-Ltac simulate_one_step :=
-  (* We make a careful reduction in order to avoid expanding the links runs *)
+(** We make a careful reduction in order to avoid expanding the links runs *)
+Ltac simulate_reduce :=
   match goal with
   | |- {{ _ 🌲 ?e }} =>
     let e' := eval hnf in e in
     change e with e'
-  end ||
+  end.
+
+Ltac simulate_one_step :=
+  intros ||
+  simulate_reduce ||
   apply Run.Pure ||
   (apply Run.StateRead; [repeat Stack.CanAccess.infer | intros]) ||
   (apply Run.StateWrite; [repeat Stack.CanAccess.infer |]) ||
@@ -793,3 +932,12 @@ Ltac simulate_one_step :=
 
 Ltac simulate :=
   progress repeat simulate_one_step.
+
+Ltac simulate_destruct :=
+  match goal with
+  | |- {{ _ 🌲 ?e }} =>
+    match e with
+    | context [match ?e with _ => _ end] => destruct e
+    end
+  end.
+ *)
