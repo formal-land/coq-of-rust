@@ -56,8 +56,6 @@ Module Impl_Interpreter.
     }
     destruct run_InterpreterTypes_for_IW.
     destruct run_Jumps_for_Bytecode.
-    destruct opcode as [opcode [H_opcode run_opcode]].
-    destruct relative_jump as [relative_jump [H_relative_jump run_relative_jump]].
     destruct run_CustomInstruction_for_FN.
     destruct exec as [exec [H_exec run_exec]].
     run_symbolic.
@@ -97,10 +95,6 @@ Module Impl_Interpreter.
     }
     destruct run_InterpreterTypes_for_IW.
     destruct run_LoopControl_for_Control.
-    destruct gas as [gas [H_gas run_gas]].
-    destruct instruction_result as [instruction_result [H_instruction_result run_instruction_result]].
-    destruct set_next_action as [set_next_action [H_set_next_action run_set_next_action]].
-    destruct take_next_action as [take_next_action [H_take_next_action run_take_next_action]].
     run_symbolic.
   Defined.
 End Impl_Interpreter.
