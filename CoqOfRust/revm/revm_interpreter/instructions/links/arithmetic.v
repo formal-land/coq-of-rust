@@ -38,8 +38,8 @@ Proof.
   cbn.
   eapply Run.Rewrite. {
     progress repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
-    (* Why does it fail? *)
-    progress repeat erewrite IsTraitAssociatedType_eq by apply run_Host_for_H.
+    (* Seems like the code doesnt envolve proofs on `H` *)
+    (* progress repeat erewrite IsTraitAssociatedType_eq by apply run_Host_for_H. *)
     reflexivity.
   }
   destruct run_InterpreterTypes_for_WIRE.

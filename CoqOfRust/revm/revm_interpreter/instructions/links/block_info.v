@@ -1,5 +1,6 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
+Require Import CoqOfRust.revm.links.dependencies.
 Require Import revm.revm_context_interface.links.host.
 Require Import revm.revm_interpreter.links.gas.
 Require Import revm.revm_interpreter.links.interpreter.
@@ -91,13 +92,13 @@ Proof.
   destruct run_StackTrait_for_Stack.
   destruct push as [push [H_push run_push]].
   (* TODO: fill in links for
-    - (revm_context_interface::block::Block::block) fn block(&self) -> &Self::Block;
-    - (revm_context_interface::block::Block::beneficiary)
+    - (revm_context_interface::block::BlockGetter::block) fn block(&self) -> &Self::Block;
+    - (revm_context_interface::block::BlockGetter::beneficiary)
+    - 
     (* - (alloy_primitives::Address) pub fn into_word(&self) -> FixedBytes<32> *)
     - (alloy_primitives::FixedBytes) fn into(self) -> Uint
     - (core::convert::Into::into) for Uint?
   TODO: Who *runs* who? Figure out how `run` works with a reference to cfg
-  NOTE: into should have a way to run `uint` or `fixedbytes`?
   *)
   run_symbolic.
 Admitted.
