@@ -176,8 +176,10 @@ Proof.
   destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
   destruct run_StackTrait_for_Stack.
   destruct popn_top as [popn_top [H_popn_top run_popn_top]].
+  (* TODO: revm_interpreter::instructions::i256::i256_div *)
   run_symbolic.
-Defined.
+(* Defined. *)
+Admitted.
 
 (*
 pub fn rem<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -207,8 +209,12 @@ Proof.
   destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
   destruct run_StackTrait_for_Stack.
   destruct popn_top as [popn_top [H_popn_top run_popn_top]].
+  (* TODO:
+  - div.div.Impl_ruint_Uint_BITS_LIMBS.wrapping_rem
+   *)
   run_symbolic.
-Defined.
+  Admitted.
+(* Defined. *)
 
 (*
 pub fn smod<WIRE: InterpreterTypes, H: Host + ?Sized>(
