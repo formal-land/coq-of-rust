@@ -16,6 +16,8 @@ Import Impl_Gas.
 Import from.Impl_Uint.
 Import core.convert.links.mod.Into.
 
+(* TODO: fill out the link from Host to BlockGetter *)
+
 (*
 pub fn chainid<WIRE: InterpreterTypes, H: Host + ?Sized>(
     interpreter: &mut Interpreter<WIRE>,
@@ -91,13 +93,6 @@ Proof.
   destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
   destruct run_StackTrait_for_Stack.
   destruct push as [push [H_push run_push]].
-  (* TODO: fill in links for
-    (* 
-    - (alloy_primitives::Address) pub fn into_word(&self) -> FixedBytes<32> *)
-    - (alloy_primitives::FixedBytes) fn into(self) -> Uint
-    - (core::convert::Into::into) for Uint?
-    TODO: Who *runs* who? Figure out how `run` works with a reference to cfg
-  *)
   run_symbolic.
 Admitted.
 
