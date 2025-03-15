@@ -672,13 +672,13 @@ Module Run.
       (e : LowM.t R Output')
       (k : Output.t R (Ref.t Pointer.Kind.Raw Output') -> LowM.t R Output)
     (H_e : {{ StackIn 🌲 e }})
-    (H_k : forall (ref : Output.t R (Ref.t Pointer.Kind.Raw Output')),
+    (H_k : forall (ref_or_exception : Output.t R (Ref.t Pointer.Kind.Raw Output')),
       let StackIn' :=
-        match ref with
+        match ref_or_exception with
         | Output.Success _ => StackIn ++ [Output']
         | Output.Exception _ => StackIn
         end in
-      {{ StackIn' 🌲 k ref }}
+      {{ StackIn' 🌲 k ref_or_exception }}
     ) :
     {{ StackIn 🌲 LowM.LetAlloc e k }}
 

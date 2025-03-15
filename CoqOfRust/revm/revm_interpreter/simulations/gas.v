@@ -137,42 +137,34 @@ Module Impl_Gas.
           self.remaining += returned;
       }
   *)
-  Definition run_erase_cost (returned : U64.t) :
-    let self := {| Ref.core := Ref.Core.Mutable 0%nat [] φ Some (fun _ => Some) |} in
-    {{ [Self] 🌲 links.M.evaluate (Impl_Gas.run_erase_cost self returned).(Run.run_f) }}.
+  Definition run_erase_cost {Stack}
+      (self : Ref.t Pointer.Kind.Ref Self)
+      (H_self : Stack.CanAccess.t Stack self.(Ref.core))
+      (returned : U64.t) :
+    {{ Stack 🌲 links.M.evaluate (Impl_Gas.run_erase_cost self returned).(Run.run_f) }}.
   Proof.
     cbn.
-    set (ref_core := Ref.Core.Mutable _ _ _ _ _).
-    epose proof (Run.GetSubPointer _ _ ref_core Gas.SubPointer.get_remaining).
+    (* set (ref_core := Ref.Core.Mutable _ _ _ _ _). *)
+    epose proof (Run.GetSubPointer _ _ self.(Ref.core) Gas.SubPointer.get_remaining).
     apply H; clear H.
     apply Run.StateRead. {
-      cbn.
-      epose proof (Stack.CanAccess.Mutable (A := U64.t) [Self] 0%nat).
-      apply H.
+      match goal with
+      | |- Stack.CanAccess.t _ (SubPointer.Runner.apply _ ?runner) =>
+        apply (Stack.CanAccess.runner runner)
+      end.
+      assumption.
     }
     intros.
     apply Run.StateWrite. {
-      cbn.
-      epose proof (Stack.CanAccess.Mutable (A := U64.t) [Self] 0%nat).
-      apply H.
+      match goal with
+      | |- Stack.CanAccess.t _ (SubPointer.Runner.apply _ ?runner) =>
+        apply (Stack.CanAccess.runner runner)
+      end.
+      assumption.
     }
     apply Run.LetAlloc. {
       apply Run.Pure.
     }
     intros []; cbn; apply Run.Pure.
   Defined.
-
-  Lemma erase_cost_eq (self : Self) (returned : U64.t) :
-    M.evaluate (
-      run_erase_cost returned
-    ) self =
-    (Output.Success tt, {|
-      Gas.limit := self.(Gas.limit);
-      Gas.remaining := BinOp.Wrap.make_arithmetic Z.add self.(Gas.remaining) returned;
-      Gas.refunded := self.(Gas.refunded);
-      Gas.memory := self.(Gas.memory);
-    |}).
-  Proof.
-    reflexivity.
-  Qed.
 End Impl_Gas.
