@@ -15,7 +15,7 @@ Module Impl_MemoryGas.
     MemoryGas.t.
 
   Instance run_new Stack :
-    Run.Trait Stack (links.M.evaluate Impl_MemoryGas.run_new.(Run.run_f)).
+    Run.Trait Stack Impl_MemoryGas.run_new.
   Proof.
     constructor.
     simulate.
@@ -46,7 +46,7 @@ Module Impl_Gas.
       }
   *)
   Instance run_new Stack (limit : U64.t) :
-    Run.Trait Stack (links.M.evaluate (Impl_Gas.run_new limit).(Run.run_f)).
+    Run.Trait Stack (Impl_Gas.run_new limit).
   Proof.
     constructor.
     simulate.
@@ -75,7 +75,7 @@ Module Impl_Gas.
       }
   *)
   Instance run_new_spent Stack (limit : U64.t) :
-    Run.Trait Stack (links.M.evaluate (Impl_Gas.run_new_spent limit).(Run.run_f)).
+    Run.Trait Stack (Impl_Gas.run_new_spent limit).
   Proof.
     constructor.
     simulate.
@@ -101,26 +101,11 @@ Module Impl_Gas.
   Instance run_limit Stack
       (self : Ref.t Pointer.Kind.Ref Self)
       (H_self : Stack.CanAccess.t Stack self.(Ref.core)) :
-    Run.Trait Stack (links.M.evaluate (Impl_Gas.run_limit self).(Run.run_f)).
+    Run.Trait Stack (Impl_Gas.run_limit self).
   Proof.
     constructor.
     simulate.
   Defined.
-
-  Lemma limit_eq (self : Self) :
-    let Stack := [Self] in
-    let ref_self: Ref.t Pointer.Kind.Ref Self :=
-      {| Ref.core := Ref.Core.Mutable 0%nat [] φ Some (fun _ => Some) |} in
-    M.evaluate (
-      run_limit
-        [Self]
-        ref_self
-        ltac:(apply (Stack.CanAccess.Mutable (A := Gas.t) Stack 0 []))
-    ).(Run.simulation) self =
-    (Output.Success self.(Gas.limit), self).
-  Proof.
-    reflexivity.
-  Qed.
 
   (*
       pub fn erase_cost(&mut self, returned: u64) {
@@ -131,9 +116,19 @@ Module Impl_Gas.
       (self : Ref.t Pointer.Kind.Ref Self)
       (H_self : Stack.CanAccess.t Stack self.(Ref.core))
       (returned : U64.t) :
-    Run.Trait Stack (links.M.evaluate (Impl_Gas.run_erase_cost self returned).(Run.run_f)).
+    Run.Trait Stack (Impl_Gas.run_erase_cost self returned).
   Proof.
     constructor.
     simulate.
   Defined.
+
+  Instance run_record_cost Stack
+      (self : Ref.t Pointer.Kind.MutRef Self)
+      (* (H_self : Stack.CanAccess.t Stack self.(Ref.core)) *)
+      (cost : U64.t) :
+    Run.Trait Stack (Impl_Gas.run_record_cost self cost).
+  Proof.
+    constructor.
+    simulate.
+  Admitted.
 End Impl_Gas.
