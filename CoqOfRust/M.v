@@ -298,12 +298,30 @@ Module Primitive.
     (generic_tys : list Ty.t).
 End Primitive.
 
+Module Panic.
+  Inductive t : Set :=
+  | Make (message : string).
+End Panic.
+
+Module Exception.
+  Inductive t : Set :=
+  (** exceptions for Rust's `return` *)
+  | Return (value : Value.t) : t
+  (** exceptions for Rust's `continue` *)
+  | Continue : t
+  (** exceptions for Rust's `break` *)
+  | Break : t
+  (** escape from a match branch once we know that it is not valid *)
+  | BreakMatch : t
+  | Panic (panic : Panic.t) : t.
+End Exception.
+
 Module LowM.
   Inductive t (A : Set) : Set :=
   | Pure (value : A)
   | CallPrimitive (primitive : Primitive.t) (k : Value.t -> t A)
   | CallClosure (ty : Ty.t) (closure : Value.t) (args : list Value.t) (k : A -> t A)
-  | LetAlloc (ty : Ty.t) (e : t A) (k : A -> t A)
+  | LetAlloc (ty : Ty.t) (e : t (Value.t + Exception.t)) (k : Value.t + Exception.t -> t A)
   | Loop (ty : Ty.t) (body : t A) (k : A -> t A)
   | Impossible (message : string).
   Arguments Pure {_}.
@@ -327,24 +345,6 @@ Module LowM.
     | Impossible message => Impossible message
     end.
 End LowM.
-
-Module Panic.
-  Inductive t : Set :=
-  | Make (message : string).
-End Panic.
-
-Module Exception.
-  Inductive t : Set :=
-  (** exceptions for Rust's `return` *)
-  | Return (value : Value.t) : t
-  (** exceptions for Rust's `continue` *)
-  | Continue : t
-  (** exceptions for Rust's `break` *)
-  | Break : t
-  (** escape from a match branch once we know that it is not valid *)
-  | BreakMatch : t
-  | Panic (panic : Panic.t) : t.
-End Exception.
 
 Definition M : Set :=
   LowM.t (Value.t + Exception.t).
