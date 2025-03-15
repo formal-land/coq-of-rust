@@ -16,7 +16,11 @@ Import Impl_Gas.
 Import from.Impl_Uint.
 Import core.convert.links.mod.Into.
 
-(* TODO: fill out the link from Host to BlockGetter *)
+(* TODO: 
+  - fill out the link from Host to BlockGetter 
+  - Take a closer look at the syntax of M
+  - Take a closer look at associated functions
+  *)
 
 (*
 pub fn chainid<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -39,29 +43,29 @@ Instance run_chainid
   Run.Trait
     instructions.block_info.chainid [] [ Φ WIRE; Φ H ] [ φ interpreter; φ _host ]
     unit.
-  Proof.
-    constructor.
-    cbn.
-    eapply Run.Rewrite. {
-      progress repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
-      progress repeat erewrite IsTraitAssociatedType_eq by apply run_Host_for_H.
-      reflexivity.
-    }
-    destruct run_InterpreterTypes_for_WIRE.
-    destruct run_RuntimeFlag_for_RuntimeFlag.
-    destruct spec_id as [spec_id [H_spec_id  run_spec_id]].
-    destruct run_LoopControl_for_Control.
-    destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
-    destruct gas as [gas [H_gas run_gas]].
-    destruct run_StackTrait_for_Stack.
-    destruct push as [push [H_push run_push]].
-    destruct run_Host_for_H.
-    destruct run_CfgGetter.
-    destruct run_Cfg_for_Cfg.
-    destruct chain_id as [chain_id [H_chain_id run_chain_id]].
-    destruct cfg as [cfg [H_cfg run_cfg]].
-    run_symbolic.
-  Defined.
+Proof.
+  constructor.
+  cbn.
+  eapply Run.Rewrite. {
+    progress repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
+    progress repeat erewrite IsTraitAssociatedType_eq by apply run_Host_for_H.
+    reflexivity.
+  }
+  destruct run_InterpreterTypes_for_WIRE.
+  destruct run_RuntimeFlag_for_RuntimeFlag.
+  destruct spec_id as [spec_id [H_spec_id  run_spec_id]].
+  destruct run_LoopControl_for_Control.
+  destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
+  destruct gas as [gas [H_gas run_gas]].
+  destruct run_StackTrait_for_Stack.
+  destruct push as [push [H_push run_push]].
+  destruct run_Host_for_H.
+  destruct run_CfgGetter.
+  destruct run_Cfg_for_Cfg.
+  destruct chain_id as [chain_id [H_chain_id run_chain_id]].
+  destruct cfg as [cfg [H_cfg run_cfg]].
+  run_symbolic.
+Defined.
 
 (*
 pub fn coinbase<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -93,9 +97,9 @@ Proof.
   destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
   destruct run_StackTrait_for_Stack.
   destruct push as [push [H_push run_push]].
+  (* TODO: fill in host links *)
   run_symbolic.
 Admitted.
-
 
 (*
 pub fn timestamp<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -113,7 +117,7 @@ Instance run_timestamp
   (interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t WIRE WIRE_types))
   (_host : Ref.t Pointer.Kind.MutRef H) :
   Run.Trait
-    instructions.block_info.coinbase [] [ Φ WIRE; Φ H ] [ φ interpreter; φ _host ]
+    instructions.block_info.timestamp [] [ Φ WIRE; Φ H ] [ φ interpreter; φ _host ]
     unit.
 Proof. 
   constructor.
@@ -128,7 +132,9 @@ Proof.
   destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
   destruct run_StackTrait_for_Stack.
   destruct push as [push [H_push run_push]].
-  (* TODO: stub *)
+  (* TODO: 
+  - BlockGetter::timestamp
+  *)
   run_symbolic.
 Admitted.
 
@@ -141,3 +147,170 @@ pub fn block_number<WIRE: InterpreterTypes, H: Host + ?Sized>(
     push!(interpreter, U256::from(host.block().number()));
 }
 *)
+Instance block_number
+  {WIRE H : Set} `{Link WIRE} `{Link H}
+  {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
+  (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types)
+  (interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t WIRE WIRE_types))
+  (_host : Ref.t Pointer.Kind.MutRef H) :
+  Run.Trait
+    instructions.block_info.block_number [] [ Φ WIRE; Φ H ] [ φ interpreter; φ _host ]
+    unit.
+Proof. 
+  constructor.
+  cbn.
+  eapply Run.Rewrite. {
+    repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
+    reflexivity.
+  }
+  destruct run_InterpreterTypes_for_WIRE.
+  destruct run_LoopControl_for_Control.
+  destruct gas as [gas [H_gas run_gas]].
+  destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
+  destruct run_StackTrait_for_Stack.
+  destruct push as [push [H_push run_push]].
+  (* TODO: 
+  - BlockGetter::number
+  *)
+  run_symbolic.
+Admitted.
+
+(* 
+pub fn difficulty<WIRE: InterpreterTypes, H: Host + ?Sized>(
+    interpreter: &mut Interpreter<WIRE>,
+    host: &mut H,
+)
+*)
+Instance difficulty
+  {WIRE H : Set} `{Link WIRE} `{Link H}
+  {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
+  (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types)
+  (interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t WIRE WIRE_types))
+  (_host : Ref.t Pointer.Kind.MutRef H) :
+  Run.Trait
+    instructions.block_info.difficulty [] [ Φ WIRE; Φ H ] [ φ interpreter; φ _host ]
+    unit.
+Proof. 
+  constructor.
+  cbn.
+  eapply Run.Rewrite. {
+    repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
+    reflexivity.
+  }
+  destruct run_InterpreterTypes_for_WIRE.
+  destruct run_LoopControl_for_Control.
+  destruct gas as [gas [H_gas run_gas]].
+  destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
+  destruct run_StackTrait_for_Stack.
+  destruct push as [push [H_push run_push]].
+  (* TODO: 
+  - revm_interpreter::interpreter_types::RuntimeFlag::spec_id
+  - BlockGetter::difficulty
+  *)
+  run_symbolic.
+Admitted.
+
+(* 
+pub fn gaslimit<WIRE: InterpreterTypes, H: Host + ?Sized>(
+    interpreter: &mut Interpreter<WIRE>,
+    host: &mut H,
+)
+*)
+Instance gaslimit
+  {WIRE H : Set} `{Link WIRE} `{Link H}
+  {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
+  (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types)
+  (interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t WIRE WIRE_types))
+  (_host : Ref.t Pointer.Kind.MutRef H) :
+  Run.Trait
+    instructions.block_info.gaslimit [] [ Φ WIRE; Φ H ] [ φ interpreter; φ _host ]
+    unit.
+Proof. 
+  constructor.
+  cbn.
+  eapply Run.Rewrite. {
+    repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
+    reflexivity.
+  }
+  destruct run_InterpreterTypes_for_WIRE.
+  destruct run_LoopControl_for_Control.
+  destruct gas as [gas [H_gas run_gas]].
+  destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
+  destruct run_StackTrait_for_Stack.
+  destruct push as [push [H_push run_push]].
+  (* TODO: 
+  - BlockGetter::gas_limit
+  *)
+  run_symbolic.
+Admitted.
+
+
+(* 
+pub fn basefee<WIRE: InterpreterTypes, H: Host + ?Sized>(
+    interpreter: &mut Interpreter<WIRE>,
+    host: &mut H,
+)
+*)
+Instance basefee
+  {WIRE H : Set} `{Link WIRE} `{Link H}
+  {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
+  (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types)
+  (interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t WIRE WIRE_types))
+  (_host : Ref.t Pointer.Kind.MutRef H) :
+  Run.Trait
+    instructions.block_info.basefee [] [ Φ WIRE; Φ H ] [ φ interpreter; φ _host ]
+    unit.
+Proof. 
+  constructor.
+  cbn.
+  eapply Run.Rewrite. {
+    repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
+    reflexivity.
+  }
+  destruct run_InterpreterTypes_for_WIRE.
+  destruct run_LoopControl_for_Control.
+  destruct gas as [gas [H_gas run_gas]].
+  destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
+  destruct run_StackTrait_for_Stack.
+  destruct push as [push [H_push run_push]].
+  (* TODO: 
+  - RuntimeFlag::spec_id
+  - BlockGetter::base_fee
+  *)
+  run_symbolic.
+Admitted.
+
+(* 
+pub fn blob_basefee<WIRE: InterpreterTypes, H: Host + ?Sized>(
+    interpreter: &mut Interpreter<WIRE>,
+    host: &mut H,
+)
+*)
+Instance blob_basefee
+  {WIRE H : Set} `{Link WIRE} `{Link H}
+  {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
+  (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types)
+  (interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t WIRE WIRE_types))
+  (_host : Ref.t Pointer.Kind.MutRef H) :
+  Run.Trait
+    instructions.block_info.blob_basefee [] [ Φ WIRE; Φ H ] [ φ interpreter; φ _host ]
+    unit.
+Proof. 
+  constructor.
+  cbn.
+  eapply Run.Rewrite. {
+    repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
+    reflexivity.
+  }
+  destruct run_InterpreterTypes_for_WIRE.
+  destruct run_LoopControl_for_Control.
+  destruct gas as [gas [H_gas run_gas]].
+  destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
+  destruct run_StackTrait_for_Stack.
+  destruct push as [push [H_push run_push]].
+  (* TODO: 
+  - Runtimeflag::spec_id
+  - BlockGetter::blob_gasprice
+  *)
+  run_symbolic.
+Admitted.

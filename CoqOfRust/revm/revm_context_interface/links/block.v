@@ -28,12 +28,24 @@ pub trait Block {
 Module Block. 
   Parameter t : Set.
 
+  (* fn number(&self) -> u64; *)
+
   Definition Run_beneficiary (Self : Set) `{Link Self} : Set :=
     {beneficiary @
       IsTraitMethod.t "revm_context_interface::block::Block" [] [] (Φ Self) "beneficiary" beneficiary *
       forall (self : Ref.t Pointer.Kind.Ref Self),
         {{ beneficiary [] [] [ φ self ] 🔽 Address.t }}
     }.
+
+  (* fn timestamp(&self) -> u64; *)
+
+  (* fn gas_limit(&self) -> u64; *)
+
+  (* fn basefee(&self) -> u64; *)
+
+  (* fn difficulty(&self) -> U256; *)
+
+  (* fn blob_gasprice(&self) -> Option<u128> *)
 
   Record Run (Self : Set) `{Link Self} : Set := {
     beneficiary : Run_beneficiary Self;
