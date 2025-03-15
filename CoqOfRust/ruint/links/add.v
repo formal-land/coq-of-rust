@@ -16,4 +16,13 @@ Module Impl_Uint.
       (add.Impl_ruint_Uint_BITS_LIMBS.wrapping_add (φ BITS) (φ LIMBS)) [] [] [ φ x1; φ x2 ]
       (Self BITS LIMBS).
   Admitted.
+
+  (* pub const fn wrapping_add(self, rhs: Self) -> Self *)
+  Instance run_wrapping_sub
+    (BITS LIMBS : Usize.t)
+    (x1 x2 : Self BITS LIMBS) :
+  Run.Trait
+    (add.Impl_ruint_Uint_BITS_LIMBS.wrapping_sub (φ BITS) (φ LIMBS)) [] [] [ φ x1; φ x2 ]
+    (Self BITS LIMBS).
+  Admitted.
 End Impl_Uint.

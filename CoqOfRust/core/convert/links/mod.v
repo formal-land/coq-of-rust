@@ -21,3 +21,21 @@ Module From.
     from : Run_from Self T;
   }.
 End From.
+
+(*
+pub trait Into<T>: Sized {
+    fn into(self) -> T;
+}
+*)
+Module Into.
+  Definition Run_into (Self T : Set) `{Link Self} `{Link T} : Set :=
+    {into @
+      IsTraitMethod.t "core::convert::Into" [] [Φ T] (Φ Self) "into" into *
+      forall (self : Self),
+        {{ into [] [] [φ self] 🔽 T }}
+    }.
+
+  Record Run (Self : Set) (T : Set) `{Link Self} `{Link T} : Set := {
+    into : Run_into Self T;
+  }.
+End Into.

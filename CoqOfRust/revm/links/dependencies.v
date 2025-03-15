@@ -33,6 +33,7 @@ Module alloy_primitives.
           Smpl Add eapply of_ty : of_ty.
         End FixedBytes.
 
+        (* NOTE: Is this design outdated? *)
         Module Impl_From_for_FixedBytes.
           Definition Self (N : Usize.t) : Set :=
             FixedBytes.t N.
@@ -52,6 +53,26 @@ Module alloy_primitives.
             forall (N : Usize.t),
             core.convert.links.mod.From.Run (Self N) (T := array.t U8.t N).
         End Impl_From_for_FixedBytes.
+        
+        (* NOTE: Should I design this function in the same style as `from` above? Or should 
+        I design just like a normal parameter? *)
+        Module Impl_Into_for_FixedBytes.
+          Definition Self (N : Usize.t) : Set :=
+            FixedBytes.t N.
+                  
+          (* fn into(self) -> Uint *)
+          Parameter into : forall (N : Usize.t), PolymorphicFunction.t.
+
+          Axiom Implements :
+            forall (N : Usize.t),
+            M.IsTraitInstance
+              "core::convert::Into" [] [ Φ (array.t U8.t N) ] (Φ (Self N))
+              [ ("into", InstanceField.Method (into N)) ].
+
+          Parameter run :
+            forall (N : Usize.t),
+            core.convert.links.mod.Into.Run (Self N) (array.t U8.t N). (* NOTE: Why we don't need T := here? *)
+        End Impl_Into_for_FixedBytes.
       End fixed.
 
       Module address.
@@ -85,6 +106,18 @@ Module alloy_primitives.
           Global Instance run_from_word (word : fixed.FixedBytes.t {| Integer.value := 32 |}) :
             Run.Trait from_word [] [] [ φ word ] Address.t.
           Admitted.
+
+          (* pub fn into_word(&self) -> FixedBytes<32> *)
+          Parameter into_word : PolymorphicFunction.t.
+
+          Global Instance AssociatedFunction_into_word :
+            M.IsAssociatedFunction.Trait (Φ Self) "into_word" into_word.
+          Admitted.
+
+          Global Instance run_into_word (self : Address.t) :
+            Run.Trait into_word [] [] [ φ self ] (fixed.FixedBytes.t {| Integer.value := 32 |}).
+          Admitted.
+
         End Impl_Address.
       End address.
     End links.
@@ -198,6 +231,10 @@ Module FixedBytes.
     Φ := Ty.path "alloy_primitives::bits::fixed::FixedBytes";
     φ := to_value;
   }.
+
+  (* TODO: 
+  - (alloy_primitives::FixedBytes) fn into(self) -> Uint
+  *)
 End FixedBytes.
 
 Module U256.
@@ -209,3 +246,10 @@ Module B256.
   Definition t : Set :=
     alloy_primitives.bits.links.fixed.FixedBytes.t {| Integer.value := 32 |}.
 End B256.
+
+Module Log.
+  Parameter t : Set.
+
+  Global Instance IsLink : Link t.
+  Admitted.
+End Log.
