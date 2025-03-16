@@ -613,19 +613,25 @@ Module Stack.
         end
       end.
 
+    Axiom admit_access_for_now :
+      forall {A : Set} `{Link A} (Stack : Stack.t) (ref_core : Ref.Core.t A),
+      t Stack ref_core.
+
     Ltac infer :=
       cbn ||
       match goal with
       | |- t _ (SubPointer.Runner.apply _ ?r) =>
         apply (runner r)
       end ||
-      assumption.
+      assumption ||
+      apply Stack.CanAccess.Immediate ||
+      apply admit_access_for_now.
   End CanAccess.
 End Stack.
 
 (** Here we define an execution mode where we keep dynamic cast to retrieve data from the stack. In
     practice, these casts should always be correct as the original Rust code was well typed. *)
-Module StackM.
+(* Module StackM.
   Inductive t (A : Set) : Set :=
   | Pure (value : A)
   | GetCanAccess {B : Set} `{Link B}
@@ -747,9 +753,8 @@ Module Run.
     {{ StackM.GetCanAccess Stack ref_core k 🌲 result }}
 
   where "{{ e 🌲 result }}" := (t result e).
-End Run.
+End Run. *)
 
-(*
 Module Run.
   Reserved Notation "{{ StackIn 🌲 e }}".
 
@@ -927,11 +932,21 @@ Ltac simulate_one_step :=
   (apply Run.StateRead; [repeat Stack.CanAccess.infer | intros]) ||
   (apply Run.StateWrite; [repeat Stack.CanAccess.infer |]) ||
   simulate_get_sub_pointer ||
-  (apply Run.Call; [unshelve eapply Run.simulation | intros []]) ||
+  (apply Run.Call; [
+    (
+      unshelve eapply Run.simulation;
+      try match goal with
+      | H : _ |- Run.Trait ?Stack (_ ?x1) =>
+        apply (H Stack x1)
+      | H : _ |- Run.Trait ?Stack (_ ?x1 ?x2) =>
+        apply (H Stack x1 x2)
+      | H : _ |- Run.Trait ?Stack (_ ?x1 ?x2 ?x3) =>
+        apply (H Stack x1 x2 x3)
+      end
+    ) |
+    intros []
+  ]) ||
   (apply Run.LetAlloc; [|intros []]).
-
-Ltac simulate :=
-  progress repeat simulate_one_step.
 
 Ltac simulate_destruct :=
   match goal with
@@ -940,4 +955,6 @@ Ltac simulate_destruct :=
     | context [match ?e with _ => _ end] => destruct e
     end
   end.
- *)
+
+Ltac simulate :=
+  progress repeat (simulate_one_step || simulate_destruct).
