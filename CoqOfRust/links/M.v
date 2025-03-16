@@ -1038,14 +1038,14 @@ Module LowM.
   Inductive t (R Output : Set) : Set :=
   | Pure (value : Output.t R Output)
   | CallPrimitive {A : Set} (primitive : Primitive.t A) (k : A -> t R Output)
-  | Call {A : Set} (e : t A A) (k : SuccessOrPanic.t A -> t R Output)
+  | Call {A : Set} `{Link A} {e : M} (run : {{ e 🔽 A, A }}) (k : SuccessOrPanic.t A -> t R Output)
   | LetAlloc {A : Set} `{Link A}
       (e : t R A)
       (k : Output.t R (Ref.t Pointer.Kind.Raw A) -> t R Output)
   | Loop {A : Set} (body : t R A) (k : Output.t R A -> t R Output).
   Arguments Pure {_ _}.
   Arguments CallPrimitive {_ _ _}.
-  Arguments Call {_ _ _}.
+  Arguments Call {_ _ _ _ _}.
   Arguments LetAlloc {_ _ _ _}.
   Arguments Loop {_ _ _}.
 End LowM.
@@ -1144,7 +1144,7 @@ Proof.
   }
   { (* CallClosure *)
     eapply (LowM.Call (A := Output')). {
-      exact (evaluate _ _ _ _ _ run).
+      exact run.
     }
     intros output'; eapply evaluate.
     match goal with

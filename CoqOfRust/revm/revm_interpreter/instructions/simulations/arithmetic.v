@@ -6,8 +6,10 @@ Require Import revm.revm_interpreter.links.interpreter_types.
 Require Import revm.revm_interpreter.simulations.gas.
 Require Import revm.revm_interpreter.simulations.interpreter_types.
 Require Import revm.revm_interpreter.instructions.links.arithmetic.
+Require Import ruint.simulations.add.
 
 Import Impl_Gas.
+Import add.Impl_Uint.
 
 Instance run_add Stack
     {WIRE H : Set} `{Link WIRE} `{Link H}
@@ -20,69 +22,8 @@ Proof.
   constructor.
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_StackTrait_for_Stack, run_LoopControl_for_Control.
-  (* destruct popn_top as [? []].
-  destruct gas as [? []].
-  destruct set_instruction_result as [? []]. *)
-  Time simulate.
-  { Time simulate_destruct; simulate.
-    match goal with
-    | H : _ |- Run.Trait ?Stack (_ ?x1 ?x2) =>
-      apply (H Stack x1 x2)
-    end.
-  }
-    progress cbn in *.
-    idtac.
-    (* destruct link; cbn in *.
-    destruct run_StackTrait_for_Stack, run_LoopControl_for_Control; cbn in *. *)
-    generalize set_instruction_result; clear; intros.
-    match goal with
-    | |- Run.Trait _ (?f _ _) =>
-      set (f' := f) in |- *
-    end.
-    destruct WIRE_types; cbn in *.
-    destruct link, run_LoopControl_for_Control, set_instruction_result0; cbn in *.
-    progress fold f' in set_instruction_result.
-    unfold InterpreterTypes.Types.IsLinkControl in *; cbn in *.
-    with_strategy transparent [Φ φ] apply set_instruction_result.
-    progress fold f' in set_instruction_result.
-    apply set_instruction_result.
-    match goal with
-    | H : forall _ _ _, ?f _ _ _ = _ |- _ =>
-      specialize (H _ _ _ eq_refl)
-    end.
-    Check set_instruction_result.
-    refine (set_instruction_result _ _ _).
-    best.
-    match goal with.
-    dependent apply set_instruction_result.
-    epose proof (set_instruction_result Stack
-      (* ((Ref.cast_to Pointer.Kind.MutRef
-      {|
-        Ref.core :=
-          SubPointer.Runner.apply interpreter.(Ref.core)
-            Interpreter.get_control
-      |})) *)
-      (* instruction_result.InstructionResult.OutOfGas *)
-    ).
-    apply H5.
-    apply set_instruction_result.
-    typeclasses eauto.
-    match goal with
-    | |- context[if ?condition then _ else _] =>
-      let condition' := eval cbv in condition in
-      change condition with condition'
-    end.
-    Time match goal with
-    | |- context[if ?condition then _ else _] =>
-      destruct condition
-    end.
-    { Show.
-    simulate_reduce.
-
-  }
-  4: { intros. apply Impl_Gas.run_record_cost.
-    cbn in output.
-    Show.
+  simulate.
+Defined.
 
 (*
 Require Import revm.interpreter.links.interpreter.
