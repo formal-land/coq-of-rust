@@ -10,12 +10,14 @@ pub trait From<T>: Sized {
 }
 *)
 Module From.
+  Definition trait (Self T : Set) `{Link Self} `{Link T} : TraitMethod.Header.t :=
+    ("core::convert::From", [], [Φ T], Φ Self).
+
   Definition Run_from (Self T : Set) `{Link Self} `{Link T} : Set :=
-    {from @
-      IsTraitMethod.t "core::convert::From" [] [Φ T] (Φ Self) "from" from *
+    TraitMethod.C (trait Self T) "from" (fun method =>
       forall (value : T),
-        {{ from [] [] [φ value] 🔽 Self }}
-    }.
+      Run.Trait method [] [] [ φ value ] Self
+    ).
 
   Record Run (Self : Set) {T : Set} `{Link Self} `{Link T} : Set := {
     from : Run_from Self T;
