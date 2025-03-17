@@ -29,14 +29,11 @@ Proof.
   constructor.
   cbn.
   eapply Run.Rewrite. {
-    repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
+    progress repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
     reflexivity.
   }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_StackTrait_for_Stack.
-  destruct popn_top as [popn_top [H_popn_top run_popn_top]].
   destruct run_LoopControl_for_Control.
-  destruct gas as [gas [H_gas run_gas]].
-  destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
   run_symbolic.
 Defined.

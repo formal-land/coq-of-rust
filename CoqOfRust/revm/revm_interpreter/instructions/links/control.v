@@ -28,7 +28,6 @@ Proof.
   }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
-  destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
   run_symbolic.
 Defined.
 
@@ -56,6 +55,5 @@ Proof.
   }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
-  destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
   run_symbolic.
 Defined.
