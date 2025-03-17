@@ -339,10 +339,10 @@ Proof.
   destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
   destruct run_StackTrait_for_Stack.
   destruct popn_top as [popn_top [H_popn_top run_popn_top]].
+  destruct run_RuntimeFlag_for_RuntimeFlag.
+  destruct spec_id as [spec_id [H_spec_id run_spec_id]].
   (* TODO:
-  - revm_interpreter::interpreter_types::RuntimeFlag::spec_id
   - calc.gas.calc.exp_cost
-  - revm_interpreter::interpreter_types::LoopControl::set_instruction_result 
   - Uint::pow*)
   run_symbolic.
   Admitted.

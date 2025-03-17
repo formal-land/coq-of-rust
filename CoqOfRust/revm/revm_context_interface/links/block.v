@@ -29,6 +29,12 @@ Module Block.
   Parameter t : Set.
 
   (* fn number(&self) -> u64; *)
+  Definition Run_number (Self : Set) `{Link Self} : Set :=
+    {number @
+      IsTraitMethod.t "revm_context_interface::block::Block" [] [] (Φ Self) "number" number *
+      forall (self : Ref.t Pointer.Kind.Ref Self),
+        {{ number [] [] [ φ self ] 🔽 U64.t }}
+    }.
 
   Definition Run_beneficiary (Self : Set) `{Link Self} : Set :=
     {beneficiary @
@@ -38,8 +44,20 @@ Module Block.
     }.
 
   (* fn timestamp(&self) -> u64; *)
+  Definition Run_timestamp (Self : Set) `{Link Self} : Set :=
+    {timestamp @
+      IsTraitMethod.t "revm_context_interface::block::Block" [] [] (Φ Self) "timestamp" timestamp *
+      forall (self : Ref.t Pointer.Kind.Ref Self),
+        {{ timestamp [] [] [ φ self ] 🔽 U64.t }}
+    }.
 
   (* fn gas_limit(&self) -> u64; *)
+  Definition Run_gas_limit (Self : Set) `{Link Self} : Set :=
+    {gas_limit @
+      IsTraitMethod.t "revm_context_interface::block::Block" [] [] (Φ Self) "gas_limit" gas_limit *
+      forall (self : Ref.t Pointer.Kind.Ref Self),
+        {{ gas_limit [] [] [ φ self ] 🔽 U64.t }}
+    }.
 
   (* fn basefee(&self) -> u64; *)
 
@@ -49,6 +67,8 @@ Module Block.
 
   Record Run (Self : Set) `{Link Self} : Set := {
     beneficiary : Run_beneficiary Self;
+    timestamp : Run_timestamp Self;
+    gas_limit : Run_gas_limit Self;
   }.
 End Block. 
 

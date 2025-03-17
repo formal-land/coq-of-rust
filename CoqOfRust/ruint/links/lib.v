@@ -1,5 +1,7 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
+(* TODO: finish file for ruint.links.modular? *)
+(* Require Import ruint.links.modular. *)
 
 Module Uint.
   Parameter t : Usize.t -> Usize.t -> Set.
@@ -19,8 +21,8 @@ Module Uint.
   Smpl Add eapply of_ty : of_ty.
 
   (* TODO: 
-  - add_mod 
-  - mul_mod
-  - pow
+  - add_mod from ruint::modular
+  - mul_mod from ruint::modular
+  - pow from ruint::modular
   *)
 End Uint.
