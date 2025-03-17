@@ -613,9 +613,9 @@ Module Stack.
         end
       end.
 
-    Axiom admit_access_for_now :
+    (* Axiom admit_access_for_now :
       forall {A : Set} `{Link A} (Stack : Stack.t) (ref_core : Ref.Core.t A),
-      t Stack ref_core.
+      t Stack ref_core. *)
 
     Ltac infer :=
       cbn ||
@@ -624,8 +624,7 @@ Module Stack.
         apply (runner r)
       end ||
       assumption ||
-      apply Stack.CanAccess.Immediate ||
-      apply admit_access_for_now.
+      apply Stack.CanAccess.Immediate.
   End CanAccess.
 End Stack.
 
@@ -813,11 +812,25 @@ Module Run.
       (e : LowM.t R Output')
       (k : Output.t R (Ref.t Pointer.Kind.Raw Output') -> LowM.t R Output)
     (H_e : {{ StackIn 🌲 e }})
-    (H_k : forall (ref_or_exception : Output.t R (Ref.t Pointer.Kind.Raw Output')),
+    (H_k : forall (value_or_exception : Output.t R Output'),
       let StackIn' :=
-        match ref_or_exception with
+        match value_or_exception with
         | Output.Success _ => StackIn ++ [Output']
         | Output.Exception _ => StackIn
+        end in
+      let ref_or_exception : Output.t R (Ref.t Pointer.Kind.Raw Output') :=
+        match value_or_exception with
+        | Output.Success _ =>
+          Output.Success {|
+            Ref.core :=
+              Ref.Core.Mutable
+                (List.length StackIn)
+                []
+                φ
+                Some
+                (fun _ => Some)
+          |}
+        | Output.Exception exception => Output.Exception exception
         end in
       {{ StackIn' 🌲 k ref_or_exception }}
     ) :
@@ -883,29 +896,22 @@ Proof.
   }
   { (* LetAlloc *)
     refine (
-      let '(output', stack_in') := evaluate _ _ _ _ run stack_in in
+      let '(value_or_exception, stack_in') := evaluate _ _ _ _ run stack_in in
       _
     ).
-    destruct output' as [output' | exception].
+    refine (
+      let result := H_k value_or_exception in
+      _
+    ).
+    destruct value_or_exception as [value | exception].
     { refine (
-        let ref_core :=
-          Ref.Core.Mutable
-            (List.length StackIn)
-            []
-            φ
-            Some
-            (fun _ => Some) in
-        let ref : Ref.t Pointer.Kind.Raw Output' := {| Ref.core := ref_core |} in
-        _
-      ).
-      refine (
         let '(output, stack_out) := _ in
         (output, fst (Stack.dealloc (A := Output') stack_out))
       ).
-      unshelve eapply (evaluate _ _ _ _ (H_k (Output.Success ref)) _).
-      exact (Stack.alloc stack_in' output').
+      unshelve eapply (evaluate _ _ _ _ result _).
+      exact (Stack.alloc stack_in' value).
     }
-    { exact (evaluate _ _ _ _ (H_k (Output.Exception exception)) stack_in'). }
+    { exact (evaluate _ _ _ _ result stack_in'). }
   }
 Defined.
 
