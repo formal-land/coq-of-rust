@@ -2,6 +2,8 @@ Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
 Require Import core.links.intrinsics.
 Require Import core.cmp.
+Require Import core.result.
+Require Import core.convert.num.
 Require Import revm.revm_context_interface.links.host.
 Require revm.links.dependencies.
 Import revm.links.dependencies.ruint.
@@ -11,7 +13,7 @@ Require Import revm.revm_interpreter.links.interpreter_types.
 Require Import revm.revm_interpreter.instructions.links.i256.
 Require Import revm.revm_interpreter.instructions.bitwise.
 Require Import revm.revm_interpreter.instructions.i256.
-
+Require Import revm.revm_specification.links.hardfork.
 Import Impl_Gas.
 
 (*
@@ -443,16 +445,13 @@ Proof.
   destruct run_LoopControl_for_Control.
   destruct gas as [gas [H_gas run_gas]].
   destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
+  destruct run_RuntimeFlag_for_RuntimeFlag.
+  destruct spec_id as [spec_id [H_spec_id run_spec_id]].
   run_symbolic.
-  - eapply Run.CallPrimitiveGetTraitMethod. 
-    + eapply IsTraitMethod.Defined.
-      ++ specialize (interpreter_types.Impl_RuntimeFlag.run_spec_id_instance).
-         intros.
-         eapply (interpreter_types.Impl_RuntimeFlag.Implements).
-      ++ simpl.
-         reflexivity.
-    + run_symbolic.
-      ++ constructor.
+  + eapply (Impl_SpecId.run_is_enabled_in output SpecId.CONSTANTINOPLE).
+  + eapply convert.num.Impl_core_convert_TryFrom_u64_for_usize.  
+  run_symbolic.
+
 Qed.
 
 
