@@ -229,9 +229,9 @@ Module Impl_Default_for_EofBody.
 End Impl_Default_for_EofBody.
 
 Module Impl_EofBody.
-  Import Impl_alloc_vec_Vec_T_A.
   Import Impl_EofHeader.
   Import Impl_Slice.
+  Import Impl_Vec_T_A.
   Import Impl_core_ops_index_Index_where_core_slice_index_SliceIndex_I_slice_T_where_core_alloc_Allocator_A_I_for_alloc_vec_Vec_T_A.
 
   Definition Self : Set := EofBody.t.

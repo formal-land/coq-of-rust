@@ -919,8 +919,13 @@ End Run.
 Export Run.
 
 Module TraitMethod.
+  Module Header.
+    Definition t : Set :=
+      string * list Value.t * list Ty.t * Ty.t.
+  End Header.
+
   Class C
-      (trait : string * list Value.t * list Ty.t * Ty.t)
+      (trait : Header.t)
       (method_name : string)
       (run : PolymorphicFunction.t -> Set) :
       Set :=

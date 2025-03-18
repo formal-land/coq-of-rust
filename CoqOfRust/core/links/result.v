@@ -15,4 +15,14 @@ Module Result.
       | Err x => Value.StructTuple "core::result::Result::Err" [φ x]
       end;
   }.
+
+  Definition of_ty T_ty E_ty :
+    OfTy.t T_ty ->
+    OfTy.t E_ty ->
+    OfTy.t (Ty.apply (Ty.path "core::result::Result") [] [ T_ty; E_ty ]).
+  Proof.
+    intros [T] [E]; eapply OfTy.Make with (A := t T E).
+    subst; reflexivity.
+  Defined.
+  Smpl Add apply of_ty : of_ty.
 End Result.

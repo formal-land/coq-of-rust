@@ -1,5 +1,6 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import links.M.
+Require Import core.links.result.
 Require Import core.option.
 Require core.ops.links.function.
 Import Run.
@@ -88,5 +89,21 @@ Module Impl_Option.
     )
     (self: Self T) (f : F) :
     {{ option.Impl_core_option_Option_T.map (Φ T) [] [ Φ U; Φ F ] [ φ self; φ f ] 🔽 option U }}.
-    Admitted.
+  Admitted.
+
+  (* pub fn ok_or<E>(self, err: E) -> Result<T, E> *)
+  Instance run_ok_or {T E : Set} `{Link T} `{Link E}
+      (self : Self T) (err : E) :
+    Run.Trait
+      (option.Impl_core_option_Option_T.ok_or (Φ T)) [] [ Φ E ] [ φ self; φ err ]
+      (Result.t T E).
+  Admitted.
+
+  (* pub const unsafe fn unwrap_unchecked(self) -> T *)
+  Instance run_unwrap_unchecked {T : Set} `{Link T}
+      (self : Self T) :
+    Run.Trait
+      (option.Impl_core_option_Option_T.unwrap_unchecked (Φ T)) [] [] [ φ self ]
+      T.
+  Admitted.
 End Impl_Option.
