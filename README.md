@@ -1,6 +1,6 @@
 # <img src="logo.png" alt= "logo" width="120px" height="120px" style="vertical-align: middle;"> <span style="vertical-align: middle;">coq-of-rust</span>
 
-> Formal verification tool for Rust: check 100% of execution cases of your programs 🦀 to make applications with no bugs! ✈️ 🚀 ⚕️ 🏦
+> Formal verification tool for Rust: check 100% of execution cases of your programs 🦀 to make super safe applications! ✈️ 🚀 ⚕️ 🏦
 
 Even if Rust's type system prevents many mistakes, including memory errors, the code is still not immune to vulnerabilities, such as unexpected panics or wrongly implemented business rules.
 
