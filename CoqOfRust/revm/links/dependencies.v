@@ -209,3 +209,19 @@ Module B256.
   Definition t : Set :=
     alloy_primitives.bits.links.fixed.FixedBytes.t {| Integer.value := 32 |}.
 End B256.
+
+Module Impl_from_Uint.
+  Definition Self : Set :=
+    Uint.t {| Integer.value := 256 |} {| Integer.value := 4 |}.
+
+  (* pub fn from(value: T) -> Self *)
+  Parameter from : PolymorphicFunction.t.
+
+  Global Instance AssociatedFunction_from :
+    M.IsAssociatedFunction.Trait (Φ Self) "from" from.
+  Admitted.
+
+  Global Instance run_from (value : _) :
+    Run.Trait from [] [] [ φ value ] Self.
+  Admitted.
+End Impl_from_Uint.

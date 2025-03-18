@@ -6,7 +6,6 @@ Require Import core.result.
 Require Import core.convert.num.
 Require Import revm.revm_context_interface.links.host.
 Require revm.links.dependencies.
-Import revm.links.dependencies.ruint.
 Require Import revm.revm_interpreter.links.gas.
 Require Import revm.revm_interpreter.links.interpreter.
 Require Import revm.revm_interpreter.links.interpreter_types.
@@ -22,6 +21,7 @@ pub fn lt<WIRE: InterpreterTypes, H: Host + ?Sized>(
     _host: &mut H,
 )
 *)
+
 Instance run_lt
     {WIRE H : Set} `{Link WIRE} `{Link H}
     {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
@@ -40,9 +40,11 @@ Proof.
   }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_StackTrait_for_Stack.
-  destruct popn_top as [popn_top [H_popn_top run_popn_top]].
-  destruct run_LoopControl_for_Control.
-  destruct gas as [gas [H_gas run_gas]].
+  run_symbolic.
+  + destruct run_LoopControl_for_Control.
+    run_symbolic.
+  + 
+   destruct gas as [gas [H_gas run_gas]].
   destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
   run_symbolic.
   eapply Run.CallPrimitiveGetTraitMethod.

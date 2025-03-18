@@ -2,13 +2,9 @@ Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
 Require Import core.links.intrinsics.
 Require Import core.cmp.
+Require Import revm.links.dependencies.
 Require Import revm.revm_context_interface.links.host.
-Require revm.links.dependencies.
-Import revm.links.dependencies.ruint.
-Import revm.links.dependencies.U256.
 Require Import revm.revm_interpreter.links.gas.
-Require Import revm.revm_interpreter.links.interpreter.
-Require Import revm.revm_interpreter.links.interpreter_types.
 Require Import revm.revm_interpreter.instructions.bitwise.
 Require Import revm.revm_interpreter.instructions.i256.
 
@@ -61,7 +57,7 @@ Module Sign.
   Smpl Add simple apply of_value_with_Positive : of_value.
 End Sign.
 
-Instance run_i256_sign (first : Ref.t Pointer.Kind.MutRef dependencies.U256.t) :
+Instance run_i256_sign (first : Ref.t Pointer.Kind.MutRef U256.t) :
   Run.Trait instructions.i256.i256_sign [] [] 
     [Ref.IsLink.(φ) (Ref.cast_to Pointer.Kind.Ref first)]
     Sign.t.
