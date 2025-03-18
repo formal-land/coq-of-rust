@@ -139,6 +139,15 @@ jobs:
             cd ..
             cd ../../..
           endGroup
+          startGroup "Translate ruint"
+            cd third-party/uint
+            cp ../../rust-toolchain ./
+            cargo coq-of-rust
+            touch src/lib.rs
+            cargo coq-of-rust
+            rsync -rcv src/ ../../CoqOfRust/ruint/ --include='*/' --include='*.v' --exclude='*'
+            cd ../..
+          endGroup
           startGroup "Translate Move Sui"
             cd third-party/move-sui
             cp ../../rust-toolchain ./

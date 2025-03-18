@@ -29,8 +29,6 @@ Proof.
   }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_StackTrait_for_Stack.
-  destruct popn_top as [popn_top [H_popn_top run_popn_top]].
   destruct Impl_IntoAddress_for_U256.run.
-  destruct into_address as [into_address [H_into_address run_into_address]].
   run_symbolic.
 Admitted.

@@ -83,7 +83,7 @@ Module SliceIndex.
         Ref.t Pointer.Kind.MutRef Output }}
     }.
 
-  Record Run 
+  Class Run
       (Self : Set) `{Link Self}
       {T : Set} `{Link T}
       {Output : Set} `{Link Output} :
@@ -104,8 +104,8 @@ End SliceIndex.
 (* unsafe impl<T> SliceIndex<[T]> for usize {
     type Output = T; *)
 Module Impl_SliceIndex_for_Usize.
-  Definition run 
-      (T : Set) `{Link T} :
-      SliceIndex.Run Usize.t (T := list T) (Output := T).
-    Admitted.
+  Instance run
+    (T : Set) `{Link T} :
+    SliceIndex.Run Usize.t (T := list T) (Output := T).
+  Admitted.
 End Impl_SliceIndex_for_Usize.

@@ -4,6 +4,7 @@ Require Import alloc.links.alloc.
 Require Import alloc.vec.links.mod.
 Require core.links.clone.
 Require core.links.default.
+Require Import core.links.result.
 Require Import core.links.option.
 Require Import revm.links.dependencies.
 Require Export revm.revm_bytecode.eof.links.body_EofBody.
@@ -12,8 +13,6 @@ Require Import revm.revm_bytecode.eof.links.types_section.
 Require Import revm.revm_bytecode.links.eof.
 Require Import revm_bytecode.eof.body.
 Require Import core.slice.links.mod.
-
-Import Run.
 
 Module EofBody.
   Record t : Set := {
@@ -230,9 +229,10 @@ Module Impl_Default_for_EofBody.
 End Impl_Default_for_EofBody.
 
 Module Impl_EofBody.
-  Import Impl_alloc_vec_Vec_T_A.
   Import Impl_EofHeader.
   Import Impl_Slice.
+  Import Impl_Vec_T_A.
+  Import Impl_core_ops_index_Index_where_core_slice_index_SliceIndex_I_slice_T_where_core_alloc_Allocator_A_I_for_alloc_vec_Vec_T_A.
 
   Definition Self : Set := EofBody.t.
 
@@ -243,8 +243,12 @@ Module Impl_EofBody.
     Run.Trait body.eof.body.Impl_revm_bytecode_eof_body_EofBody.code [] [] [φ self; φ index] (option alloy_primitives.links.bytes_.Bytes.t).
   Proof.
     constructor.
-    run_symbolic. 
+    destruct (vec.links.mod.Impl_core_ops_index_Index_where_core_slice_index_SliceIndex_I_slice_T_where_core_alloc_Allocator_A_I_for_alloc_vec_Vec_T_A.run (T := Usize.t) (I := Usize.t) (A := Global.t)) as [index' [H_index' run_index']].
+    destruct (vec.links.mod.Impl_Deref_for_Vec.run (T := Usize.t) (A := Global.t)).
+    destruct deref.
+    run_symbolic.
   Admitted.
+
   
   (*
     pub fn encode(&self, buffer: &mut Vec<u8>)
@@ -281,4 +285,10 @@ Module Impl_EofBody.
   (*
     pub fn decode(input: &Bytes, header: &EofHeader) -> Result<Self, EofDecodeError>
   *)
+  Instance run_decode (input : Ref.t Pointer.Kind.Ref alloy_primitives.links.bytes_.Bytes.t) (header : Ref.t Pointer.Kind.Ref EofHeader.t) :
+    Run.Trait body.eof.body.Impl_revm_bytecode_eof_body_EofBody.decode [] [] [φ input; φ header] (Result.t EofBody.t EofDecodeError.t).
+  Proof.  
+    constructor.
+    run_symbolic.
+  Admitted.
 End Impl_EofBody.
