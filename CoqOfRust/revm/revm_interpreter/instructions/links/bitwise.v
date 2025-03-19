@@ -254,22 +254,23 @@ Proof.
   run_symbolic.
   + eapply Run.CallPrimitiveGetTraitMethod.
     ++ eapply IsTraitMethod.Defined.
-       - specialize (Impl_BitAnd_for_Uint.Implements
+       - specialize (dependencies.ruint.Impl_BitAnd_for_Uint.Implements
         (Value.Integer IntegerKind.Usize 256)
         (Value.Integer IntegerKind.Usize 4)).
-      intros.
-      eapply H3.
-    + simpl.
-      reflexivity.
-  - run_symbolic.
-    + constructor.
-      specialize (Impl_BitAnd_for_Uint.Implements
-        (Value.Integer IntegerKind.Usize 256)
-        (Value.Integer IntegerKind.Usize 4)).
-      intros.
-      run_symbolic.
-      eapply dependencies.ruint.Impl_BitAnd_for_Uint.run_bitand.
-Qed.
+        intros.
+        unfold dependencies.ruint.Impl_BitAnd_for_Uint.Self in H3.
+        eapply dependencies.ruint.Impl_BitAnd_for_Uint.Implements.
+      - simpl. reflexivity. 
+    ++ run_symbolic.
+       constructor.
+       run_symbolic.
+       destruct (dependencies.ruint.Impl_BitAnd_for_Uint.run_bitand
+         {| Integer.value := 256 |}
+         {| Integer.value := 4 |}
+         value
+         value1).
+       exact run_f0.
+Defined.
 
 Instance run_bitwise_bitor
     {WIRE H : Set} `{Link WIRE} `{Link H}
@@ -289,29 +290,27 @@ Proof.
   }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_StackTrait_for_Stack.
-  destruct popn_top as [popn_top [H_popn_top run_popn_top]].
   destruct run_LoopControl_for_Control.
-  destruct gas as [gas [H_gas run_gas]].
-  destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
   run_symbolic.
-  eapply Run.CallPrimitiveGetTraitMethod.
-  - eapply IsTraitMethod.Defined.
-    + specialize (Impl_BitOr_for_Uint.Implements
+  + eapply Run.CallPrimitiveGetTraitMethod.
+    ++ eapply IsTraitMethod.Defined.
+       - specialize (dependencies.ruint.Impl_BitOr_for_Uint.Implements
         (Value.Integer IntegerKind.Usize 256)
         (Value.Integer IntegerKind.Usize 4)).
-      intros.
-      eapply H3.
-    + simpl.
-      reflexivity.
-  - run_symbolic.
-    + constructor.
-      specialize (Impl_BitOr_for_Uint.Implements
-        (Value.Integer IntegerKind.Usize 256)
-        (Value.Integer IntegerKind.Usize 4)).
-      intros.
-      run_symbolic.
-      eapply dependencies.ruint.Impl_BitOr_for_Uint.run_bitor.
-Qed.
+        intros.
+        unfold dependencies.ruint.Impl_BitOr_for_Uint.Self in H3.
+        eapply dependencies.ruint.Impl_BitOr_for_Uint.Implements.
+      - simpl. reflexivity. 
+    ++ run_symbolic.
+       constructor.
+       run_symbolic.
+       destruct (dependencies.ruint.Impl_BitOr_for_Uint.run_bitor
+         {| Integer.value := 256 |}
+         {| Integer.value := 4 |}
+         value
+         value1).
+       exact run_f0.
+Defined.
 
 Instance run_bitwise_bitxor
     {WIRE H : Set} `{Link WIRE} `{Link H}
@@ -331,29 +330,27 @@ Proof.
   }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_StackTrait_for_Stack.
-  destruct popn_top as [popn_top [H_popn_top run_popn_top]].
   destruct run_LoopControl_for_Control.
-  destruct gas as [gas [H_gas run_gas]].
-  destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
   run_symbolic.
-  eapply Run.CallPrimitiveGetTraitMethod.
-  - eapply IsTraitMethod.Defined.
-    + specialize (Impl_BitXor_for_Uint.Implements
+  + eapply Run.CallPrimitiveGetTraitMethod.
+    ++ eapply IsTraitMethod.Defined.
+       - specialize (dependencies.ruint.Impl_BitXor_for_Uint.Implements
         (Value.Integer IntegerKind.Usize 256)
         (Value.Integer IntegerKind.Usize 4)).
-      intros.
-      eapply H3.
-    + simpl.
-      reflexivity.
-  - run_symbolic.
-    + constructor.
-      specialize (Impl_BitXor_for_Uint.Implements
-        (Value.Integer IntegerKind.Usize 256)
-        (Value.Integer IntegerKind.Usize 4)).
-      intros.
-      run_symbolic.
-      eapply dependencies.ruint.Impl_BitXor_for_Uint.run_bitxor.
-Qed.
+        intros.
+        unfold dependencies.ruint.Impl_BitXor_for_Uint.Self in H3.
+        eapply dependencies.ruint.Impl_BitXor_for_Uint.Implements.
+      - simpl. reflexivity. 
+    ++ run_symbolic.
+       constructor.
+       run_symbolic.
+       destruct (dependencies.ruint.Impl_BitXor_for_Uint.run_bitxor
+         {| Integer.value := 256 |}
+         {| Integer.value := 4 |}
+         value
+         value1).
+       exact run_f0.
+Defined.
 
 Instance run_bitwise_not
     {WIRE H : Set} `{Link WIRE} `{Link H}
@@ -373,29 +370,26 @@ Proof.
   }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_StackTrait_for_Stack.
-  destruct popn_top as [popn_top [H_popn_top run_popn_top]].
   destruct run_LoopControl_for_Control.
-  destruct gas as [gas [H_gas run_gas]].
-  destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
   run_symbolic.
-  eapply Run.CallPrimitiveGetTraitMethod.
-  - eapply IsTraitMethod.Defined.
-    + specialize (Impl_BitNot_for_Uint.Implements
+  + eapply Run.CallPrimitiveGetTraitMethod.
+    ++ eapply IsTraitMethod.Defined.
+       - specialize (dependencies.ruint.Impl_BitNot_for_Uint.Implements
         (Value.Integer IntegerKind.Usize 256)
         (Value.Integer IntegerKind.Usize 4)).
-      intros.
-      eapply H3.
-    + simpl.
-      reflexivity.
-  - run_symbolic.
-    + constructor.
-      specialize (Impl_BitXor_for_Uint.Implements
-        (Value.Integer IntegerKind.Usize 256)
-        (Value.Integer IntegerKind.Usize 4)).
-      intros.
-      run_symbolic.
-      eapply dependencies.ruint.Impl_BitNot_for_Uint.run_bitnot.
-Qed.
+        intros.
+        unfold dependencies.ruint.Impl_BitNot_for_Uint.Self in H3.
+        eapply dependencies.ruint.Impl_BitNot_for_Uint.Implements.
+      - simpl. reflexivity. 
+    ++ run_symbolic.
+       constructor.
+       run_symbolic.
+       destruct (dependencies.ruint.Impl_BitNot_for_Uint.run_bitnot
+         {| Integer.value := 256 |}
+         {| Integer.value := 4 |}
+         value0).
+       exact run_f0.
+Defined.
 
 Instance run_bitwise_shl
     {WIRE H : Set} `{Link WIRE} `{Link H}
@@ -415,12 +409,25 @@ Proof.
   }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_StackTrait_for_Stack.
-  destruct popn_top as [popn_top [H_popn_top run_popn_top]].
   destruct run_LoopControl_for_Control.
-  destruct gas as [gas [H_gas run_gas]].
-  destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
-  destruct run_RuntimeFlag_for_RuntimeFlag.
-  destruct spec_id as [spec_id [H_spec_id run_spec_id]].
+  run_symbolic.
+  - eapply Run.CallPrimitiveGetTraitMethod.
+    + eapply IsTraitMethod.Defined. 
+      ++ apply Impl_RuntimeFlag.Implements.
+      ++ simpl. reflexivity.
+    + run_symbolic.
+      ++ constructor.
+         run_symbolic.
+         destruct (Impl_RuntimeFlag.run_spec_id_instance WIRE_types H2 (Ref.cast_to Pointer.Kind.MutRef sub_ref)
+         ).
+         exact run_f0.
+
+
+
+
+
+  Print interpreter_types.Impl_RuntimeFlag.
+
   run_symbolic.
   + eapply (Impl_SpecId.run_is_enabled_in output SpecId.CONSTANTINOPLE).
   + eapply convert.num.Impl_core_convert_TryFrom_u64_for_usize.  
