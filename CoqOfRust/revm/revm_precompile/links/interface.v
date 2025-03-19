@@ -3,8 +3,6 @@ Require Import CoqOfRust.links.M.
 Require Import alloc.links.string.
 Require Import revm.revm_precompile.interface.
 
-Import Run.
-
 Module PrecompileError.
   Inductive t : Set :=
   | OutOfGas

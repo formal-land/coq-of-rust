@@ -11,31 +11,32 @@ Require Import core.ops.function.
     }
 *)
 Module FnOnce.
-  Definition Run_call_once (Self Args : Set) {Output : Set}
-      `{Link Self} `{Link Args} `{Link Output} : Set :=
-    {call_once @
-      IsTraitMethod.t "core::ops::function::FnOnce" [] [ Φ Args ] (Φ Self) "call_once" call_once *
-      forall (self : Self) (args : Args),
-      {{ call_once [] [] [ φ self; φ args ] 🔽 Output, Output }}
-    }.
+  Definition trait (Self Args : Set) `{Link Self} `{Link Args} : TraitMethod.Header.t :=
+    ("core::ops::function::FnOnce", [], [Φ Args], Φ Self).
 
-  Record Run (Self Args : Set) {Output : Set}
+  Definition Run_call_once (Self Args Output : Set)
+      `{Link Self} `{Link Args} `{Link Output} : Set :=
+    TraitMethod.C (trait Self Args) "call_once" (fun method =>
+      forall (self : Self) (args : Args),
+      Run.Trait method [] [] [ φ self; φ args ] Output
+    ).
+
+  Class Run (Self Args Output : Set)
       `{Link Self} `{Link Args} `{Link Output} : Set := {
-    call_once : Run_call_once Self Args (Output := Output);
+    call_once : Run_call_once Self Args Output;
   }.
 End FnOnce.
 
 Module Impl_FnOnce_for_Function2.
   Definition run_call_once (A1 A2 Output: Set) `{Link A1} `{Link A2} `{Link Output} :
-    FnOnce.Run_call_once (Function2.t A1 A2 Output) (A1 * A2) (Output := Output).
+    FnOnce.Run_call_once (Function2.t A1 A2 Output) (A1 * A2) Output.
   Proof.
-    eexists; split.
+    eexists.
     { eapply IsTraitMethod.Defined.
       { apply FunctionTraitAutomaticImpl.FunctionImplementsFnOnce. }
       { reflexivity. }
     }
-    { intros.
-      cbn.
+    { constructor.
       destruct args as [a1 a2].
       with_strategy transparent [φ] cbn.
       run_symbolic_closure.
@@ -43,12 +44,9 @@ Module Impl_FnOnce_for_Function2.
     }
   Defined.
 
-  Definition run (A1 A2 Output: Set) `{Link A1} `{Link A2} `{Link Output} :
-    FnOnce.Run (Function2.t A1 A2 Output) (A1 * A2) (Output := Output).
-  Proof.
-    constructor.
-    { (* call_once *)
-      apply run_call_once.
-    }
-  Defined.
+  Instance run (A1 A2 Output: Set) `{Link A1} `{Link A2} `{Link Output} :
+      FnOnce.Run (Function2.t A1 A2 Output) (A1 * A2) Output :=
+  {
+    FnOnce.call_once := run_call_once A1 A2 Output;
+  }.
 End Impl_FnOnce_for_Function2.

@@ -1,8 +1,8 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
-Require core.links.clone.
+Require Import core.links.clone.
 Require core.links.cmp.
-Require core.links.default.
+Require Import core.links.default.
 Require core.links.option.
 Require Import core.mem.links.mod.
 Require core.mem.mod.
@@ -92,29 +92,23 @@ Module MemoryGas.
 End MemoryGas.
 
 Module Impl_Default_for_MemoryGas.
-  Definition run_default : default.Default.Run_default MemoryGas.t.
+  Definition run_default : Default.Run_default MemoryGas.t.
   Proof.
-    eexists; split.
+    eexists.
     { eapply IsTraitMethod.Defined.
       { apply gas.Impl_core_default_Default_for_revm_interpreter_gas_MemoryGas.Implements. }
       { reflexivity. }
     }
-    { intros; cbn.
-      destruct (default.Impl_Default_for_integer.run_default IntegerKind.Usize)
-        as [default_usize [H_default_usize run_default_usize]].
-      destruct (default.Impl_Default_for_integer.run_default IntegerKind.U64)
-        as [default_u64 [H_default_u64 run_default_u64]].
+    { constructor.
+      pose (Impl_Default_for_integer.run_default IntegerKind.Usize).
+      pose (Impl_Default_for_integer.run_default IntegerKind.U64).
       run_symbolic.
     }
   Defined.
 
-  Definition run : default.Default.Run MemoryGas.t.
-  Proof.
-    constructor.
-    { (* default *)
-      exact run_default.
-    }
-  Defined.
+  Instance run : Default.Run MemoryGas.t := {
+    Default.default := run_default;
+  }.
 End Impl_Default_for_MemoryGas.
 
 Module Impl_MemoryGas.
@@ -353,57 +347,42 @@ Module Gas.
 End Gas.
 
 Module Impl_Clone_for_Gas.
-  Definition run_clone : clone.Clone.Run_clone Gas.t.
+  Definition run_clone : Clone.Run_clone Gas.t.
   Proof.
-    eexists; split.
+    eexists.
     { eapply IsTraitMethod.Defined.
       { apply gas.Impl_core_clone_Clone_for_revm_interpreter_gas_Gas.Implements. }
       { reflexivity. }
     }
-    { intros.
+    { constructor.
       run_symbolic.
     }
   Defined.
 
-  Definition run : clone.Clone.Run Gas.t.
-  Proof.
-    constructor.
-    { (* clone *)
-      exact run_clone.
-    }
-  Defined.
+  Instance run : clone.Clone.Run Gas.t := {
+    Clone.clone := run_clone;
+  }.
 End Impl_Clone_for_Gas.
 
 Module Impl_Default_for_Gas.
-  Definition run_default : default.Default.Run_default Gas.t.
+  Definition run_default : Default.Run_default Gas.t.
   Proof.
-    eexists; split.
+    eexists.
     { eapply IsTraitMethod.Defined.
       { apply gas.Impl_core_default_Default_for_revm_interpreter_gas_Gas.Implements. }
       { reflexivity. }
     }
-    { intros; cbn.
-      destruct (default.Impl_Default_for_integer.run_default IntegerKind.U64)
-        as [default_u64 [H_default_u64 run_default_u64]].
-      destruct (default.Impl_Default_for_integer.run_default IntegerKind.I64)
-        as [default_i64 [H_default_i64 run_default_i64]].
-      destruct Impl_Default_for_MemoryGas.run_default
-        as [default_memory_gas [H_default_memory_gas run_default_memory_gas]].
-      eapply Run.CallPrimitiveGetTraitMethod. {
-        apply H_default_u64.
-      }
-      run_symbolic_closure.
-      intros []; run_symbolic.
+    { constructor.
+      pose (default.Impl_Default_for_integer.run_default IntegerKind.U64).
+      pose (default.Impl_Default_for_integer.run_default IntegerKind.I64).
+      pose Impl_Default_for_MemoryGas.run_default.
+      run_symbolic.
     }
   Defined.
 
-  Definition run : default.Default.Run Gas.t.
-  Proof.
-    constructor.
-    { (* default *)
-      exact run_default.
-    }
-  Defined.
+  Instance run : Default.Run Gas.t := {
+    Default.default := run_default;
+  }.
 End Impl_Default_for_Gas.
 
 Module Impl_Gas.
@@ -564,7 +543,7 @@ Module Impl_Gas.
     Run.Trait gas.Impl_revm_interpreter_gas_Gas.set_final_refund [] [] [φ self; φ is_london] unit.
   Proof.
     constructor.
-    destruct cmp.Impl_Ord_for_u64.run_min as [min [H_min run_min]].
+    pose cmp.Impl_Ord_for_u64.run_min.
     run_symbolic.
   Defined.
 

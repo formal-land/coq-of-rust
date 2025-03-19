@@ -65,6 +65,9 @@ End Bound.
   }
 *)
 Module RangeBounds.
+  Definition trait (Self T : Set) `{Link Self} `{Link T} : TraitMethod.Header.t :=
+    ("core::ops::RangeBounds", [], [Φ T], Φ Self).
+
   Definition Run_start_bound (Self : Set) `{Link Self} 
       (T : Set) `{Link T} : Set :=
     {start_bound @

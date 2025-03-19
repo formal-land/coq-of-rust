@@ -2,13 +2,11 @@ Require Import CoqOfRust.CoqOfRust.
 Require Import alloc.vec.mod.
 Require Import links.M.
 Require Import alloc.links.alloc.
-Require core.links.clone.
-Require core.links.default.
+Require Import core.links.clone.
+Require Import core.links.default.
 Require Import core.links.option.
-Require core.ops.links.deref.
-Require core.ops.links.index.
-
-Import Run.
+Require Import core.ops.links.deref.
+Require Import core.ops.links.index.
 
 Module Vec.
   Record t {T A : Set} : Set := {
@@ -37,59 +35,40 @@ Module Vec.
 End Vec.
 
 Module Impl_Clone_for_Vec.
-  Definition run_clone {T A : Set} `{Link T} `{Link A} : clone.Clone.Run_clone (Vec.t T A).
+  Definition run_clone {T A : Set} `{Link T} `{Link A} : Clone.Run_clone (Vec.t T A).
   Admitted.
 
-  Definition run {T A : Set} `{Link T} `{Link A} : clone.Clone.Run (Vec.t T A).
-  Proof.
-    constructor.
-    { (* clone *)
-      exact run_clone.
-    }
-  Defined.
+  Instance run {T A : Set} `{Link T} `{Link A} : Clone.Run (Vec.t T A) := {
+    Clone.clone := run_clone;
+  }.
 End Impl_Clone_for_Vec.
 
 Module Impl_Default_for_Vec.
-  Definition run_default {T A : Set} `{Link T} `{Link A} : default.Default.Run_default (Vec.t T A).
+  Definition run_default {T A : Set} `{Link T} `{Link A} : Default.Run_default (Vec.t T A).
   Admitted.
 
-  Definition run {T A : Set} `{Link T} `{Link A} : default.Default.Run (Vec.t T A).
-  Proof.
-    constructor.
-    { (* clone *)
-      exact run_default.
-    }
-  Defined.
+  Instance run {T A : Set} `{Link T} `{Link A} : Default.Run (Vec.t T A) := {
+    Default.default := run_default;
+  }.
 End Impl_Default_for_Vec.
 
 Module Impl_Deref_for_Vec.
-  Definition run_deref {T A : Set} `{Link T} `{Link A} : 
-    deref.Deref.Run_deref (Vec.t T A) (Target := list T).
+  Definition run_deref {T A : Set} `{Link T} `{Link A} : Deref.Run_deref (Vec.t T A) (list T).
   Admitted.
 
-  Definition run {T A : Set} `{Link T} `{Link A} : 
-    deref.Deref.Run (Vec.t T A) (Target := list T).
-  Proof.
-    constructor.
-    { (* clone *)
-      exact run_deref.
-    }
-  Defined.
+  Instance run {T A : Set} `{Link T} `{Link A} : Deref.Run (Vec.t T A) (list T) := {
+    Deref.deref := run_deref;
+  }.
 End Impl_Deref_for_Vec.
 
 Module Impl_DerefMut_for_Vec.
   Definition run_deref_mut {T A : Set} `{Link T} `{Link A} : 
-    deref.DerefMut.Run_deref_mut (Vec.t T A) (list T).
+    DerefMut.Run_deref_mut (Vec.t T A) (list T).
   Admitted.
 
-  Definition run {T A : Set} `{Link T} `{Link A} : 
-    deref.DerefMut.Run (Vec.t T A) (list T).
-  Proof.
-    constructor.
-    { (* clone *)
-      exact run_deref_mut.
-    }
-  Defined.
+  Instance run {T A : Set} `{Link T} `{Link A} : DerefMut.Run (Vec.t T A) (list T) := {
+    DerefMut.deref_mut := run_deref_mut;
+  }.
 End Impl_DerefMut_for_Vec.
 
 Module Impl_Vec_T.
@@ -133,19 +112,10 @@ Module Impl_Vec_T_A.
   Admitted.
 End Impl_Vec_T_A.
 
-Module Impl_core_ops_index_Index_where_core_slice_index_SliceIndex_I_slice_T_where_core_alloc_Allocator_A_I_for_alloc_vec_Vec_T_A.
+Module Impl_Index_for_Vec_T_A.
   Definition Self := Vec.t.
   
-  (*
-    fn index(&self, index: I) -> &Self::Output
-  *)
-  Instance run_index {T I A Output : Set} `{Link T} `{Link I} `{Link A} `{Link Output} 
-      {self : Ref.t Pointer.Kind.Ref (Self T A)}
-      {index : I} : 
-    Run.Trait (vec.Impl_core_ops_index_Index_where_core_slice_index_SliceIndex_I_slice_T_where_core_alloc_Allocator_A_I_for_alloc_vec_Vec_T_A.index (Φ T) (Φ I) (Φ A)) [] [Φ I] [φ self; φ index] (Ref.t Pointer.Kind.Ref Output).
-  Admitted.
-
-  Definition run {T I A Output : Set} `{Link T} `{Link I} `{Link A} `{Link Output} : 
+  Instance run {T I A Output : Set} `{Link T} `{Link I} `{Link A} `{Link Output} :
     index.Index.Run (Self T A) I Output.
   Admitted.
-End Impl_core_ops_index_Index_where_core_slice_index_SliceIndex_I_slice_T_where_core_alloc_Allocator_A_I_for_alloc_vec_Vec_T_A.
+End Impl_Index_for_Vec_T_A.

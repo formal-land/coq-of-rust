@@ -22,7 +22,7 @@ Module IntoAddress.
       Run.Trait method [] [] [ φ self ] alloy_primitives.bits.links.address.Address.t
     ).
 
-  Record Run (Self : Set) `{Link Self} : Set := {
+  Class Run (Self : Set) `{Link Self} : Set := {
     into_address : Run_into_address Self;
   }.
 End IntoAddress.
@@ -49,11 +49,7 @@ Module Impl_IntoAddress_for_U256.
     }
   Defined.
 
-  Definition run : IntoAddress.Run Self.
-  Proof.
-    constructor.
-    { (* into_address *)
-      apply run_into_address.
-    }
-  Defined.
+  Instance run : IntoAddress.Run Self := {
+    IntoAddress.into_address := run_into_address;
+  }.
 End Impl_IntoAddress_for_U256.

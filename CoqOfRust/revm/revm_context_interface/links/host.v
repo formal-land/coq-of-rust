@@ -27,5 +27,7 @@ pub trait Host: TransactionGetter + BlockGetter + CfgGetter {
 *)
 Module Host.
   (* TODO *)
-  Parameter Run : forall (Self : Set), Set.
+  Class Run (Self : Set) `{Link Self} : Set := {
+    TODO : unit;
+  }.
 End Host.

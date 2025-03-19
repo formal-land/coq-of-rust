@@ -64,5 +64,4 @@ Instance run_instruction
 Proof.
   constructor.
   run_symbolic.
-  apply (run_instruction_table run_InterpreterTypes_for_WIRE).
 Defined.
