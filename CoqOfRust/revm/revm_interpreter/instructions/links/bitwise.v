@@ -43,32 +43,27 @@ Proof.
   run_symbolic.
   + destruct run_LoopControl_for_Control.
     run_symbolic.
-  + 
-   destruct gas as [gas [H_gas run_gas]].
-  destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
-  run_symbolic.
-  eapply Run.CallPrimitiveGetTraitMethod.
-  - eapply IsTraitMethod.Defined.
-    + specialize (Impl_PartialOrd_for_Uint.Implements
-    (Value.Integer IntegerKind.Usize 256)
-    (Value.Integer IntegerKind.Usize 4)).
-      intros.
-      unfold Impl_PartialOrd_for_Uint.Self in H3.
-      apply H3 with (trait_tys := [Ty.apply (Ty.path "ruint::Uint")
-        [Value.Integer IntegerKind.Usize 256;
-         Value.Integer IntegerKind.Usize 4] []]).
-    + simpl.
-      reflexivity.
-  - run_symbolic.
-    + constructor.
-      apply (Impl_PartialOrd_for_Uint.run_lt
-        {| Integer.value := 256 |}  (* BITS *)
-        {| Integer.value := 4 |}    (* LIMBS *)
-        (Ref.cast_to Pointer.Kind.Ref (Ref.immediate Pointer.Kind.Raw value))
-        (Ref.cast_to Pointer.Kind.Ref value0)
-      ).
-Qed.
+  + eapply Run.CallPrimitiveGetTraitMethod.
+   ++ specialize (dependencies.ruint.Impl_PartialOrd_for_Uint.run_lt
+    {| Integer.value := 256 |}
+    {| Integer.value := 4 |}
+    (Ref.cast_to Pointer.Kind.Ref value0)
+    (Ref.cast_to Pointer.Kind.Ref (Ref.immediate Pointer.Kind.Raw value))).
+    intros.
+    unfold dependencies.ruint.Impl_PartialOrd_for_Uint.Self in H3.
+    eapply IsTraitMethod.Defined.
+    - eapply dependencies.ruint.Impl_PartialOrd_for_Uint.Implements.
+    - simpl. reflexivity.
+  ++ run_symbolic.
+     constructor.
+     exact (dependencies.ruint.Impl_PartialOrd_for_Uint.run_lt
+     {| Integer.value := 256 |}
+     {| Integer.value := 4 |}
+     (Ref.cast_to Pointer.Kind.Ref (Ref.immediate Pointer.Kind.Raw value))
+     (Ref.cast_to Pointer.Kind.Ref value0)).
+Defined.
 
+ 
 Instance run_gt
     {WIRE H : Set} `{Link WIRE} `{Link H}
     {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
@@ -87,34 +82,28 @@ Proof.
   }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_StackTrait_for_Stack.
-  destruct popn_top as [popn_top [H_popn_top run_popn_top]].
-  destruct run_LoopControl_for_Control.
-  destruct gas as [gas [H_gas run_gas]].
-  destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
   run_symbolic.
-  eapply Run.CallPrimitiveGetTraitMethod.
-  - eapply IsTraitMethod.Defined.
-    + specialize (Impl_PartialOrd_for_Uint.Implements
-    (Value.Integer IntegerKind.Usize 256)
-    (Value.Integer IntegerKind.Usize 4)).
-      intros.
-      unfold Impl_PartialOrd_for_Uint.Self in H3.
-      apply H3 with (trait_tys := [Ty.apply (Ty.path "ruint::Uint")
-        [Value.Integer IntegerKind.Usize 256;
-         Value.Integer IntegerKind.Usize 4] []]).
-    + simpl.
-      reflexivity.
-  - run_symbolic.
-    + constructor.
-      apply (Impl_PartialOrd_for_Uint.run_gt
-        {| Integer.value := 256 |}  (* BITS *)
-        {| Integer.value := 4 |}    (* LIMBS *)
-        (Ref.cast_to Pointer.Kind.Ref (Ref.immediate Pointer.Kind.Raw value))
-        (Ref.cast_to Pointer.Kind.Ref value0)
-      ).
-Qed.
-
-
+  + destruct run_LoopControl_for_Control.
+    run_symbolic.
+  + eapply Run.CallPrimitiveGetTraitMethod.
+   ++ specialize (dependencies.ruint.Impl_PartialOrd_for_Uint.run_gt
+    {| Integer.value := 256 |}
+    {| Integer.value := 4 |}
+    (Ref.cast_to Pointer.Kind.Ref value0)
+    (Ref.cast_to Pointer.Kind.Ref (Ref.immediate Pointer.Kind.Raw value))).
+    intros.
+    unfold dependencies.ruint.Impl_PartialOrd_for_Uint.Self in H3.
+    eapply IsTraitMethod.Defined.
+    - eapply dependencies.ruint.Impl_PartialOrd_for_Uint.Implements.
+    - simpl. reflexivity.
+  ++ run_symbolic.
+     constructor.
+     exact (dependencies.ruint.Impl_PartialOrd_for_Uint.run_gt
+     {| Integer.value := 256 |}
+     {| Integer.value := 4 |}
+     (Ref.cast_to Pointer.Kind.Ref (Ref.immediate Pointer.Kind.Raw value))
+     (Ref.cast_to Pointer.Kind.Ref value0)).
+Defined.
 
 Instance run_slt
     {WIRE H : Set} `{Link WIRE} `{Link H}
@@ -134,24 +123,20 @@ Proof.
   }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_StackTrait_for_Stack.
-  destruct popn_top as [popn_top [H_popn_top run_popn_top]].
-  destruct run_LoopControl_for_Control.
-  destruct gas as [gas [H_gas run_gas]].
-  destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
   run_symbolic.
-  eapply Run.CallPrimitiveGetTraitMethod.
-  - eapply IsTraitMethod.Defined.
-    + specialize (cmp.Impl_core_cmp_PartialEq_core_cmp_Ordering_for_core_cmp_Ordering.Implements).
-      intros.
-      apply H3.
-    + simpl.
-      reflexivity.
-  - run_symbolic.
-    + constructor.
-      specialize (cmp.Impl_core_cmp_PartialEq_core_cmp_Ordering_for_core_cmp_Ordering.Implements).
-      intros.
-      run_symbolic.
-Qed.
+  + destruct run_LoopControl_for_Control.
+    run_symbolic.
+  + eapply Run.CallPrimitiveGetTraitMethod.
+    ++ specialize (cmp.Impl_core_cmp_PartialEq_core_cmp_Ordering_for_core_cmp_Ordering.Implements).
+       intros.
+       unfold cmp.Impl_core_cmp_PartialEq_core_cmp_Ordering_for_core_cmp_Ordering.Self in H3.
+       eapply IsTraitMethod.Defined.
+       - eapply cmp.Impl_core_cmp_PartialEq_core_cmp_Ordering_for_core_cmp_Ordering.Implements.
+       - simpl. reflexivity.
+    ++ run_symbolic.
+       constructor.
+       run_symbolic.
+Defined.
 
 Instance run_sgt
     {WIRE H : Set} `{Link WIRE} `{Link H}
@@ -171,24 +156,20 @@ Proof.
   }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_StackTrait_for_Stack.
-  destruct popn_top as [popn_top [H_popn_top run_popn_top]].
-  destruct run_LoopControl_for_Control.
-  destruct gas as [gas [H_gas run_gas]].
-  destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
   run_symbolic.
-  eapply Run.CallPrimitiveGetTraitMethod.
-  - eapply IsTraitMethod.Defined.
-    + specialize (cmp.Impl_core_cmp_PartialEq_core_cmp_Ordering_for_core_cmp_Ordering.Implements).
-      intros.
-      apply H3.
-    + simpl.
-      reflexivity.
-  - run_symbolic.
-    + constructor.
-      specialize (cmp.Impl_core_cmp_PartialEq_core_cmp_Ordering_for_core_cmp_Ordering.Implements).
-      intros.
-      run_symbolic.
-Qed.
+  + destruct run_LoopControl_for_Control.
+    run_symbolic.
+  + eapply Run.CallPrimitiveGetTraitMethod.
+    ++ specialize (cmp.Impl_core_cmp_PartialEq_core_cmp_Ordering_for_core_cmp_Ordering.Implements).
+       intros.
+       unfold cmp.Impl_core_cmp_PartialEq_core_cmp_Ordering_for_core_cmp_Ordering.Self in H3.
+       eapply IsTraitMethod.Defined.
+       - eapply cmp.Impl_core_cmp_PartialEq_core_cmp_Ordering_for_core_cmp_Ordering.Implements.
+       - simpl. reflexivity.
+    ++ run_symbolic.
+       constructor.
+       run_symbolic.
+Defined.
 
 Instance run_bitwise_eq
     {WIRE H : Set} `{Link WIRE} `{Link H}
@@ -208,29 +189,26 @@ Proof.
   }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_StackTrait_for_Stack.
-  destruct popn_top as [popn_top [H_popn_top run_popn_top]].
-  destruct run_LoopControl_for_Control.
-  destruct gas as [gas [H_gas run_gas]].
-  destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
-  run_symbolic.
+  + destruct run_LoopControl_for_Control.
+    run_symbolic.
   eapply Run.CallPrimitiveGetTraitMethod.
-  - eapply IsTraitMethod.Defined.
-    + specialize (Impl_PartialEq_for_Uint.Implements
+  ++ specialize (dependencies.ruint.Impl_PartialEq_for_Uint.Implements
         (Value.Integer IntegerKind.Usize 256)
         (Value.Integer IntegerKind.Usize 4)).
       intros.
-      eapply H3.
-    + simpl.
-      reflexivity.
-  - run_symbolic.
-    + constructor.
-      specialize (Impl_PartialEq_for_Uint.Implements
-        (Value.Integer IntegerKind.Usize 256)
-        (Value.Integer IntegerKind.Usize 4)).
-      intros.
-      run_symbolic.
-      eapply dependencies.ruint.Impl_PartialEq_for_Uint.run_eq_Uint.
-Qed.
+      unfold dependencies.ruint.Impl_PartialEq_for_Uint.Self in H3.
+      eapply IsTraitMethod.Defined.
+      - eapply dependencies.ruint.Impl_PartialEq_for_Uint.Implements.
+      - simpl. reflexivity.
+  ++ run_symbolic.
+     constructor.
+     run_symbolic.
+     exact (dependencies.ruint.Impl_PartialEq_for_Uint.run_eq
+     {| Integer.value := 256 |}
+     {| Integer.value := 4 |}
+     (Ref.cast_to Pointer.Kind.Ref (Ref.immediate Pointer.Kind.Raw value))
+     (Ref.cast_to Pointer.Kind.Ref value0)).  
+Defined.
 
 Instance run_bitwise_is_zero
     {WIRE H : Set} `{Link WIRE} `{Link H}
