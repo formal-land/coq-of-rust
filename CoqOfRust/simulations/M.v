@@ -574,8 +574,8 @@ Module Stack.
         (projection : nth Stack index -> option A)
         (injection : nth Stack index -> A -> option (nth Stack index)) :
       t Stack (Ref.Core.Mutable (Address := nat) (Big_A := nth Stack index)
-          index path big_to_value projection injection
-        ).
+        index path big_to_value projection injection
+      ).
 
     Definition runner {Stack : Stack.t} {A : Set} `{Link A} {index : Pointer.Index.t}
         {ref_core : Ref.Core.t A}
@@ -618,38 +618,45 @@ Module Stack.
       t Stack ref_core. *)
 
     Ltac infer :=
-      cbn ||
-      match goal with
-      | |- t _ (SubPointer.Runner.apply _ ?r) =>
-        apply (runner r)
-      end ||
-      assumption ||
-      apply Stack.CanAccess.Immediate.
+      progress repeat (
+        cbn ||
+        match goal with
+        | |- t _ (SubPointer.Runner.apply _ ?r) =>
+          apply (runner r)
+        end ||
+        assumption ||
+        apply Stack.CanAccess.Immediate
+      ).
   End CanAccess.
 End Stack.
 
 (** Here we define an execution mode where we keep dynamic cast to retrieve data from the stack. In
     practice, these casts should always be correct as the original Rust code was well typed. *)
-(* Module StackM.
+Module StackM.
   Inductive t (A : Set) : Set :=
   | Pure (value : A)
   | GetCanAccess {B : Set} `{Link B}
       (Stack : Stack.t)
       (ref_core : Ref.Core.t B)
-      (k : Stack.CanAccess.t Stack ref_core -> t A).
+      (k : Stack.CanAccess.t Stack ref_core -> t A)
+  | Call {B : Set}
+      (e : t B)
+      (k : B -> t A).
   Arguments Pure {_}.
   Arguments GetCanAccess {_ _ _}.
+  Arguments Call {_ _}.
 
   Fixpoint let_ {A B : Set} (e1 : t A) (e2 : A -> t B) : t B :=
     match e1 with
     | Pure value => e2 value
     | GetCanAccess Stack ref_core k =>
       GetCanAccess Stack ref_core (fun can_access => let_ (k can_access) e2)
+    | Call e k => Call e (fun value => let_ (k value) e2)
     end.
 
   Parameter TodoLoop : forall {A : Set}, t A.
 
-  Fixpoint evaluate {R Output : Set} {Stack : Stack.t}
+  Fixpoint eval {R Output : Set} {Stack : Stack.t}
       (e : LowM.t R Output)
       (stack : Stack.to_Set Stack)
       {struct e} :
@@ -671,7 +678,7 @@ End Stack.
               Some
               (fun _ => Some) in
           let stack := Stack.alloc stack value in
-          let_ (evaluate _ _ _ (k ref_core) stack) (fun '(output, stack) =>
+          let_ (eval _ _ _ (k ref_core) stack) (fun '(output, stack) =>
           let '(stack, _) := Stack.dealloc stack in
           Pure (output, stack)
           )
@@ -683,7 +690,7 @@ End Stack.
           _)
         ).
         destruct (Stack.CanAccess.read H_access stack) as [value|].
-        { exact (evaluate _ _ _ (k value) stack). }
+        { exact (eval _ _ _ (k value) stack). }
         { exact (Pure (Output.panic "StateRead: invalid reference", stack)). }
       }
       { (* StateWrite *)
@@ -692,22 +699,22 @@ End Stack.
           _)
         ).
         destruct (Stack.CanAccess.write H_access stack value) as [stack'|].
-        { exact (evaluate _ _ _ (k tt) stack'). }
+        { exact (eval _ _ _ (k tt) stack'). }
         { exact (Pure (Output.panic "StateWrite: invalid reference", stack)). }
       }
       { (* GetSubPointer *)
-        exact (evaluate _ _ _ (k (SubPointer.Runner.apply ref_core runner)) stack).
+        exact (eval _ _ _ (k (SubPointer.Runner.apply ref_core runner)) stack).
       }
     }
     { (* Call *)
       exact (
-        let_ (evaluate _ _ _ e stack) (fun '(output, stack) =>
-        evaluate _ _ _ (k (SuccessOrPanic.of_output output)) stack)
+        Call (eval _ _ _ e stack) (fun '(output, stack) =>
+        eval _ _ _ (k (SuccessOrPanic.of_output output)) stack)
       ).
     }
     { (* LetAlloc *)
       refine (
-        let_ (evaluate _ _ _ e stack) (fun '(value_or_exception, stack') =>
+        let_ (eval _ _ _ e stack) (fun '(value_or_exception, stack') =>
         _)
       ); clear stack.
       destruct value_or_exception as [value | exception].
@@ -726,10 +733,10 @@ End Stack.
           let_ _ (fun '(output, stack) =>
           Pure (output, fst (Stack.dealloc (A := A) stack)))
         ).
-        unshelve eapply (evaluate _ _ _ (k (Output.Success ref)) _).
+        unshelve eapply (eval _ _ _ (k (Output.Success ref)) _).
         exact (Stack.alloc stack' value).
       }
-      { exact (evaluate _ _ _ (k (Output.Exception exception)) stack'). }
+      { exact (eval _ _ _ (k (Output.Exception exception)) stack'). }
     }
     { (* Loop *)
       exact TodoLoop.
@@ -738,22 +745,60 @@ End Stack.
 End StackM.
 
 Module Run.
-  Reserved Notation "{{ e 🌲 result }}".
+  Reserved Notation "{{ e 🌲 P }}".
 
-  Inductive t {A : Set} (result : A) : StackM.t A -> Set :=
-  | Pure :
-    {{ StackM.Pure result 🌲 result }}
+  Inductive t {A : Set} (P : A -> Set) : StackM.t A -> Set :=
+  | Pure
+      (result : A) :
+    P result ->
+    {{ StackM.Pure result 🌲 P }}
   | GetCanAccess {B : Set} `{Link B}
       (Stack : Stack.t)
       (ref_core : Ref.Core.t B)
       (k : Stack.CanAccess.t Stack ref_core -> StackM.t A)
       (H_access : Stack.CanAccess.t Stack ref_core)
-    (H_k : {{ k H_access 🌲 result }}) :
-    {{ StackM.GetCanAccess Stack ref_core k 🌲 result }}
+    (H_k : {{ k H_access 🌲 P }}) :
+    {{ StackM.GetCanAccess Stack ref_core k 🌲 P }}
+  | Call {B : Set} (P_B : B -> Set)
+      (e : StackM.t B)
+      (k : B -> StackM.t A)
+    (H_e : {{ e 🌲 P_B }})
+    (H_k : forall (value : B),
+      P_B value ->
+      {{ k value 🌲 P }}
+    ) :
+    {{ StackM.Call e k 🌲 P }}
 
-  where "{{ e 🌲 result }}" := (t result e).
-End Run. *)
+  where "{{ e 🌲 P }}" := (t P e).
 
+  Fixpoint eval {A : Set} {e : StackM.t A} {P : A -> Set} (run : {{ e 🌲 P }}) : sigS P.
+  Proof.
+    destruct run.
+    { exists result; assumption. }
+    { exact (eval _ _ _ run). }
+    { destruct (eval _ _ _ run) as [result ?].
+      refine (eval _ _ _ (H_k result _)).
+      assumption.
+    }
+  Defined.
+
+  Class C
+    {f : PolymorphicFunction.t}
+    {ε : list Value.t} {τ : list Ty.t} {α : list Value.t}
+    {Output : Set} `{Link Output}
+    (run : Run.Trait f ε τ α Output)
+    {Stack}
+    (P : Output.t Output Output * Stack.to_Set Stack -> Set)
+    (stack : Stack.to_Set Stack) :
+    Set :=
+  {
+    simulation : {{ StackM.eval (links.M.evaluate run.(Run.run_f)) stack 🌲 P }};
+  }.
+End Run.
+
+Export Run.
+
+(*
 Module Run.
   Reserved Notation "{{ StackIn 🌲 e }}".
 
@@ -935,8 +980,8 @@ Ltac simulate_one_step :=
   intros ||
   simulate_reduce ||
   apply Run.Pure ||
-  (apply Run.StateRead; [repeat Stack.CanAccess.infer | intros]) ||
-  (apply Run.StateWrite; [repeat Stack.CanAccess.infer |]) ||
+  (apply Run.StateRead; [Stack.CanAccess.infer | intros]) ||
+  (apply Run.StateWrite; [Stack.CanAccess.infer |]) ||
   simulate_get_sub_pointer ||
   (apply Run.Call; [
     (
@@ -964,3 +1009,4 @@ Ltac simulate_destruct :=
 
 Ltac simulate :=
   progress repeat (simulate_one_step || simulate_destruct).
+*)
