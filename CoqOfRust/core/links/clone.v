@@ -2,50 +2,46 @@ Require Import CoqOfRust.CoqOfRust.
 Require Import links.M.
 Require Import core.clone.
 
-Import Run.
-
 (*
     pub trait Clone: Sized {
         fn clone(&self) -> Self;
-
-        fn clone_from(&mut self, source: &Self) {
-            *self = source.clone()
-        }
+        fn clone_from(&mut self, source: &Self)
     }
 *)
 Module Clone.
-  Definition Run_clone (Self : Set) `{Link Self} : Set :=
-    {clone @
-      IsTraitMethod.t "core::clone::Clone" [] [] (Φ Self) "clone" clone *
-      forall (self : Ref.t Pointer.Kind.Ref Self),
-        {{ clone [] [] [ φ self ] 🔽 Self }}
-    }.
+  Definition trait (Self : Set) `{Link Self} : TraitMethod.Header.t :=
+    ("core::clone::Clone", [], [], Φ Self).
 
-  Record Run (Self : Set) `{Link Self} : Set := {
+  Definition Run_clone (Self : Set) `{Link Self} : Set :=
+    TraitMethod.C (trait Self) "clone" (fun method =>
+      forall (self : Ref.t Pointer.Kind.Ref Self),
+      Run.Trait method [] [] [ φ self ] Self
+    ).
+
+  Class Run (Self : Set) `{Link Self} : Set := {
     clone : Run_clone Self;
     (* TODO: add [clone_from] *)
   }.
 End Clone.
 
 Module Impl_Clone_for_bool.
+  Definition Self : Set :=
+    bool.
+
   Definition run_clone : clone.Clone.Run_clone bool.
   Proof.
-    eexists; split.
+    eexists.
     { eapply IsTraitMethod.Defined.
       { apply clone.impls.Impl_core_clone_Clone_for_bool.Implements. }
       { reflexivity. }
     }
-    { intros.
+    { constructor.
       run_symbolic.
     }
   Defined.
 
 
-  Definition run : clone.Clone.Run bool.
-  Proof.
-    constructor.
-    { (* clone *)
-      exact run_clone.
-    }
-  Defined.
+  Instance run : clone.Clone.Run bool := {
+    Clone.clone := run_clone;
+  }.
 End Impl_Clone_for_bool.

@@ -3,8 +3,8 @@ Require Import CoqOfRust.links.M.
 Require Import core.convert.links.mod.
 Require Import core.links.array.
 Require Import core.ops.links.range.
-Require core.links.clone.
-Require core.links.default.
+Require Import core.links.clone.
+Require Import core.links.default.
 Require Import ruint.links.lib.
 
 Module alloy_primitives.
@@ -152,13 +152,9 @@ Module alloy_primitives.
         Definition run_clone : clone.Clone.Run_clone Bytes.t.
         Admitted.
       
-        Definition run : clone.Clone.Run Bytes.t.
-        Proof.
-          constructor.
-          { (* clone *)
-            exact run_clone.
-          }
-        Defined.
+        Instance run : Clone.Run Bytes.t := {
+          CLone.clone := run_clone;
+        }.
       End Impl_Clone_for_Bytes.
 
       Module Impl_Default_for_Bytes.
@@ -177,13 +173,9 @@ Module alloy_primitives.
         Definition run_default : default.Default.Run_default Bytes.t.
         Admitted.
       
-        Definition run : default.Default.Run Bytes.t.
-        Proof.
-          constructor.
-          { (* clone *)
-            exact run_default.
-          }
-        Defined.
+        Instance run : Default.Run Bytes.t := {
+          Default.default := run_default;
+        }.
       End Impl_Default_for_Bytes.
     End bytes_.
   End links.
@@ -200,6 +192,8 @@ Module FixedBytes.
   }.
 End FixedBytes.
 
+(** ** Here we define some aliases that are convenient *)
+
 Module U256.
   Definition t : Set :=
     Uint.t {| Integer.value := 256 |} {| Integer.value := 4 |}.
@@ -209,3 +203,13 @@ Module B256.
   Definition t : Set :=
     alloy_primitives.bits.links.fixed.FixedBytes.t {| Integer.value := 32 |}.
 End B256.
+
+Module Address.
+  Definition t : Set :=
+    alloy_primitives.bits.links.address.Address.t.
+End Address.
+
+Module Bytes.
+  Definition t : Set :=
+    alloy_primitives.links.bytes_.Bytes.t.
+End Bytes.

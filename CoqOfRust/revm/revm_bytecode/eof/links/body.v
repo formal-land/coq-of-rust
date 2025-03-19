@@ -2,8 +2,8 @@ Require Import CoqOfRust.CoqOfRust.
 Require Import links.M.
 Require Import alloc.links.alloc.
 Require Import alloc.vec.links.mod.
-Require core.links.clone.
-Require core.links.default.
+Require Import core.links.clone.
+Require Import core.links.default.
 Require Import core.links.result.
 Require Import core.links.option.
 Require Import revm.links.dependencies.
@@ -173,66 +173,56 @@ Module EofBody.
 End EofBody.
 
 Module Impl_Clone_for_EofBody.
-  Definition run_clone : clone.Clone.Run_clone EofBody.t.
+  Definition run_clone : Clone.Run_clone EofBody.t.
   Proof.
-    eexists; split.
+    eexists.
     { eapply IsTraitMethod.Defined.
       { apply body.eof.body.Impl_core_clone_Clone_for_revm_bytecode_eof_body_EofBody.Implements. }
       { reflexivity. }
     }
-    { intros.
+    { constructor.
       destruct (vec.links.mod.Impl_Clone_for_Vec.run (T := TypesSection.t) (A := Global.t)).
-      destruct clone.
       destruct (vec.links.mod.Impl_Clone_for_Vec.run (T := Usize.t) (A := Global.t)).
-      destruct clone.
       destruct alloy_primitives.links.bytes_.Impl_Clone_for_Bytes.run.
-      destruct clone.
       destruct (vec.links.mod.Impl_Clone_for_Vec.run (T := alloy_primitives.links.bytes_.Bytes.t) (A := Global.t)).
-      destruct clone.
       destruct clone.Impl_Clone_for_bool.run.
-      destruct clone.
       run_symbolic.
     }
   Defined.
 
-  Definition run : clone.Clone.Run EofBody.t.
-  Proof.
-    constructor.
-    { (* clone *)
-      exact run_clone.
-    }
-  Defined.
+  Instance run : Clone.Run EofBody.t := {
+    Clone.clone := run_clone;
+  }.
 End Impl_Clone_for_EofBody.
 
 Module Impl_Default_for_EofBody.
-  Definition run_default : default.Default.Run_default EofBody.t.
+  Definition run_default : Default.Run_default EofBody.t.
   Proof.
-    eexists; split.
+    eexists.
     { eapply IsTraitMethod.Defined.
       { apply body.eof.body.Impl_core_default_Default_for_revm_bytecode_eof_body_EofBody.Implements. }
       { reflexivity. }
     }
-    { intros.
+    { constructor.
       destruct (vec.links.mod.Impl_Default_for_Vec.run (T := TypesSection.t) (A := Global.t)).
-      destruct default.
       destruct (vec.links.mod.Impl_Default_for_Vec.run (T := Usize.t) (A := Global.t)).
-      destruct default.
       destruct alloy_primitives.links.bytes_.Impl_Default_for_Bytes.run.
-      destruct default.
       destruct (vec.links.mod.Impl_Default_for_Vec.run (T := alloy_primitives.links.bytes_.Bytes.t) (A := Global.t)).
-      destruct default.
       destruct default.Impl_Default_for_bool.run.
-      destruct default.
       run_symbolic. 
     }
   Defined.
+
+  Instance run : Default.Run EofBody.t := {
+    Default.default := run_default;
+  }.
 End Impl_Default_for_EofBody.
 
 Module Impl_EofBody.
   Import Impl_EofHeader.
   Import Impl_Slice.
   Import Impl_Vec_T_A.
-  Import Impl_core_ops_index_Index_where_core_slice_index_SliceIndex_I_slice_T_where_core_alloc_Allocator_A_I_for_alloc_vec_Vec_T_A.
+  Import Impl_Index_for_Vec_T_A.
 
   Definition Self : Set := EofBody.t.
 
@@ -243,9 +233,8 @@ Module Impl_EofBody.
     Run.Trait body.eof.body.Impl_revm_bytecode_eof_body_EofBody.code [] [] [φ self; φ index] (option alloy_primitives.links.bytes_.Bytes.t).
   Proof.
     constructor.
-    destruct (vec.links.mod.Impl_core_ops_index_Index_where_core_slice_index_SliceIndex_I_slice_T_where_core_alloc_Allocator_A_I_for_alloc_vec_Vec_T_A.run (T := Usize.t) (I := Usize.t) (A := Global.t)) as [index' [H_index' run_index']].
+    destruct (vec.links.mod.Impl_Index_for_Vec_T_A.run (T := Usize.t) (I := Usize.t) (A := Global.t)) as [index' [H_index' run_index']].
     destruct (vec.links.mod.Impl_Deref_for_Vec.run (T := Usize.t) (A := Global.t)).
-    destruct deref.
     run_symbolic.
   Admitted.
 

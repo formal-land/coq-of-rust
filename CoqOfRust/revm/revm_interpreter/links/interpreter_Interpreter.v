@@ -9,8 +9,6 @@ Require Import revm_interpreter.links.interpreter_action.
 Require Import revm_interpreter.links.interpreter_types.
 Require Import revm_interpreter.interpreter.
 
-Import Run.
-
 (*
 pub struct Interpreter<WIRE: InterpreterTypes> {
     pub bytecode: WIRE::Bytecode,

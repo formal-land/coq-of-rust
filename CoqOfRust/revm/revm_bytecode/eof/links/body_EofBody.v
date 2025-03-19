@@ -11,8 +11,6 @@ Require Import revm.links.dependencies.
 Require Import revm.revm_bytecode.eof.links.types_section.
 Require Import revm_bytecode.eof.body.
 
-Import Run.
-
 Module EofBody.
   Record t : Set := {
     types_section: Vec.t revm_bytecode.eof.links.types_section.TypesSection.t Global.t;

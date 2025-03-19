@@ -3,8 +3,6 @@ Require Import links.M.
 Require Import simulations.M.
 Require Import revm_interpreter.links.gas.
 
-Import Run.
-
 Module Impl_Default_for_MemoryGas.
   Definition default : MemoryGas.t := {|
     MemoryGas.words_num := {| Integer.value := 0 |};

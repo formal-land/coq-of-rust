@@ -3,11 +3,9 @@ Require Import links.M.
 Require Import core.cmp.
 Require Import core.intrinsics.
 Require Import core.links.option.
-Require core.ops.links.function.
+Require Import core.ops.links.function.
 Require Import core.links.intrinsics.
 Require Export core.links.cmpOrdering.
-
-Import Run.
 
 (*
     pub fn max_by<T, F: FnOnce(&T, &T) -> Ordering>(v1: T, v2: T, compare: F) -> T {
@@ -22,13 +20,13 @@ Instance run_max_by {T F : Set} `{Link T} `{Link F}
       function.FnOnce.Run
         F
         (Ref.t Pointer.Kind.Ref T * Ref.t Pointer.Kind.Ref T)
-        (Output := Ordering.t)
+        Ordering.t
     )
     (v1 v2 : T) (compare : F) :
   Run.Trait cmp.max_by [] [ Φ T; Φ F ] [ φ v1; φ v2; φ compare ] T.
 Proof.
   constructor.
-  destruct Run_FnOnce_for_F as [[call_once [H_call_once run_call_once]]].
+  destruct Run_FnOnce_for_F.
   run_symbolic; destruct_all Ordering.t; run_symbolic.
 Defined.
 
@@ -47,35 +45,34 @@ Defined.
     }
 *)
 Module Ord.
+  Definition trait (Self : Set) `{Link Self} : TraitMethod.Header.t :=
+    ("core::cmp::Ord", [], [], Φ Self).
+
   Definition Run_cmp (Self : Set) `{Link Self} : Set :=
-    {cmp @
-      IsTraitMethod.t "core::cmp::Ord" [] [] (Φ Self) "cmp" cmp *
+    TraitMethod.C (trait Self) "cmp" (fun method =>
       forall (self other : Ref.t Pointer.Kind.Ref Self),
-        {{ cmp [] [] [ φ self; φ other ] 🔽 Ordering.t }}
-    }.
+      Run.Trait method [] [] [ φ self; φ other ] Ordering.t
+    ).
 
   Definition Run_max (Self : Set) `{Link Self} : Set :=
-    {max @
-      IsTraitMethod.t "core::cmp::Ord" [] [] (Φ Self) "max" max *
+    TraitMethod.C (trait Self) "max" (fun method =>
       forall (self other : Self),
-        {{ max [] [] [ φ self; φ other ] 🔽 Self }}
-    }.
+      Run.Trait method [] [] [ φ self; φ other ] Self
+    ).
 
   Definition Run_min (Self : Set) `{Link Self} : Set :=
-    {min @
-      IsTraitMethod.t "core::cmp::Ord" [] [] (Φ Self) "min" min *
+    TraitMethod.C (trait Self) "min" (fun method =>
       forall (self other : Self),
-        {{ min [] [] [ φ self; φ other ] 🔽 Self }}
-    }.
+      Run.Trait method [] [] [ φ self; φ other ] Self
+    ).
 
   Definition Run_clamp (Self : Set) `{Link Self} : Set :=
-    {clamp @
-      IsTraitMethod.t "core::cmp::Ord" [] [] (Φ Self) "clamp" clamp *
+    TraitMethod.C (trait Self) "clamp" (fun method =>
       forall (self min max : Self),
-        {{ clamp [] [] [ φ self; φ min; φ max ] 🔽 Self }}
-    }.
+      Run.Trait method [] [] [ φ self; φ min; φ max ] Self
+    ).
 
-  Record Run (Self : Set) `{Link Self} : Set := {
+  Class Run (Self : Set) `{Link Self} : Set := {
     cmp : Run_cmp Self;
     max : Run_max Self;
     min : Run_min Self;
@@ -83,17 +80,16 @@ Module Ord.
   }.
 
   Instance run_max {Self : Set} `{Link Self} (self other : Self)
-      (H_cmp : Run_cmp Self) :
+      (run_cmp : Run_cmp Self) :
     Run.Trait (cmp.cmp.Ord.max (Φ Self)) [] [] [ φ self; φ other ] Self.
   Proof.
     constructor.
-    destruct H_cmp as [cmp [H_cmp run_cmp]].
     run_symbolic.
     apply (
       run_max_by
         (function.Impl_FnOnce_for_Function2.run _ _ _)
         self other
-        {| Function2.run := run_cmp |}
+        (Function2.of_run run_cmp.(TraitMethod.run))
     ).
   Defined.
 
@@ -115,25 +111,25 @@ Module Impl_Ord_for_u64.
 
   Definition run_cmp : Ord.Run_cmp Self.
   Proof.
-    eexists; split.
+    eexists.
     { eapply IsTraitMethod.Defined.
       { apply cmp.impls.Impl_core_cmp_Ord_for_u64.Implements. }
       { reflexivity. }
     }
-    { intros.
+    { constructor.
       run_symbolic.
     }
   Defined.
 
   Definition run_max : Ord.Run_max Self.
   Proof.
-    eexists; split.
+    eexists.
     { eapply IsTraitMethod.Provided.
       { apply cmp.impls.Impl_core_cmp_Ord_for_u64.Implements. }
       { reflexivity. }
       { apply cmp.Ord.ProvidedMethod_max. }
     }
-    { intros.
+    { constructor.
       apply Ord.run_max.
       apply run_cmp.
     }
@@ -141,13 +137,13 @@ Module Impl_Ord_for_u64.
 
   Definition run_min : Ord.Run_min Self.
   Proof.
-    eexists; split.
+    eexists.
     { eapply IsTraitMethod.Provided.
       { apply cmp.impls.Impl_core_cmp_Ord_for_u64.Implements. }
       { reflexivity. }
       { apply cmp.Ord.ProvidedMethod_min. }
     }
-    { intros.
+    { constructor.
       apply Ord.run_min.
       apply run_cmp.
     }
@@ -155,91 +151,74 @@ Module Impl_Ord_for_u64.
 
   Definition run_clamp : Ord.Run_clamp Self.
   Proof.
-    eexists; split.
+    eexists.
     { eapply IsTraitMethod.Provided.
       { apply cmp.impls.Impl_core_cmp_Ord_for_u64.Implements. }
       { reflexivity. }
       { apply cmp.Ord.ProvidedMethod_clamp. }
     }
-    { intros.
+    { constructor.
       apply Ord.run_clamp.
       apply run_cmp.
     }
   Defined.
 
-  Definition run : Ord.Run Self.
-  Proof.
-    constructor.
-    { (* cmp *)
-      exact run_cmp.
-    }
-    { (* max *)
-      exact run_max.
-    }
-    { (* min *)
-      exact run_min.
-    }
-    { (* clamp *)
-      exact run_clamp.
-    }
-  Defined.
+  Instance run : Ord.Run Self := {
+    Ord.cmp := run_cmp;
+    Ord.max := run_max;
+    Ord.min := run_min;
+    Ord.clamp := run_clamp;
+  }.
 End Impl_Ord_for_u64.
 
+(*
+  pub trait PartialOrd<Rhs: ?Sized = Self>: PartialEq<Rhs> {
+    fn partial_cmp(&self, other: &Rhs) -> Option<Ordering>;
+    fn lt(&self, other: &Rhs) -> bool;
+    fn le(&self, other: &Rhs) -> bool;
+    fn gt(&self, other: &Rhs) -> bool;
+    fn ge(&self, other: &Rhs) -> bool;
+  }
+*)
 Module PartialOrd.
-  (*
-    pub trait PartialOrd<Rhs: ?Sized = Self>: PartialEq<Rhs> {
-      fn partial_cmp(&self, other: &Rhs) -> Option<Ordering>;
-      fn lt(&self, other: &Rhs) -> bool;
-      fn le(&self, other: &Rhs) -> bool;
-      fn gt(&self, other: &Rhs) -> bool;
-      fn ge(&self, other: &Rhs) -> bool;
-    }
-  *)
+  Definition trait (Self Rhs : Set) `{Link Self} `{Link Rhs} : TraitMethod.Header.t :=
+    ("core::cmp::PartialOrd", [], [], Φ Self).
+
   Definition Run_partial_cmp (Self Rhs : Set) `{Link Self} `{Link Rhs} : Set :=
-    {partial_cmp  @
-      IsTraitMethod.t "core::cmp::PartialOrd" [] [] (Φ Self) "partial_cmp" partial_cmp  *
-      forall (self : Ref.t Pointer.Kind.Ref Self) (other: Ref.t Pointer.Kind.Ref Rhs),
-        {{ partial_cmp  [] [] [φ self; φ other] 🔽 option Ordering.t }}
-    }.
+    TraitMethod.C (trait Self Rhs) "partial_cmp" (fun method =>
+      forall (self other : Ref.t Pointer.Kind.Ref Self),
+      Run.Trait method [] [] [ φ self; φ other ] (option Ordering.t)
+    ).
 
   Definition Run_lt (Self Rhs : Set) `{Link Self} `{Link Rhs} : Set :=
-    {lt  @
-      IsTraitMethod.t "core::cmp::PartialOrd" [] [] (Φ Self) "lt" lt  *
-      forall (self : Ref.t Pointer.Kind.Ref Self) (other: Ref.t Pointer.Kind.Ref Rhs),
-        {{ lt  [] [] [φ self; φ other] 🔽 bool }}
-    }.
+    TraitMethod.C (trait Self Rhs) "lt" (fun method =>
+      forall (self other : Ref.t Pointer.Kind.Ref Self),
+      Run.Trait method [] [] [ φ self; φ other ] bool
+    ).
 
   Definition Run_le (Self Rhs : Set) `{Link Self} `{Link Rhs} : Set :=
-    {le  @
-      IsTraitMethod.t "core::cmp::PartialOrd" [] [] (Φ Self) "le" le  *
-      forall (self : Ref.t Pointer.Kind.Ref Self) (other: Ref.t Pointer.Kind.Ref Rhs),
-        {{ le  [] [] [φ self; φ other] 🔽 bool }}
-    }.
+    TraitMethod.C (trait Self Rhs) "le" (fun method =>
+      forall (self other : Ref.t Pointer.Kind.Ref Self),
+      Run.Trait method [] [] [ φ self; φ other ] bool
+    ).
 
   Definition Run_gt (Self Rhs : Set) `{Link Self} `{Link Rhs} : Set :=
-    {gt  @
-      IsTraitMethod.t "core::cmp::PartialOrd" [] [] (Φ Self) "gt" gt  *
-      forall (self : Ref.t Pointer.Kind.Ref Self) (other: Ref.t Pointer.Kind.Ref Rhs),
-        {{ gt  [] [] [φ self; φ other] 🔽 bool }}
-    }.
+    TraitMethod.C (trait Self Rhs) "gt" (fun method =>
+      forall (self other : Ref.t Pointer.Kind.Ref Self),
+      Run.Trait method [] [] [ φ self; φ other ] bool
+    ).
 
   Definition Run_ge (Self Rhs : Set) `{Link Self} `{Link Rhs} : Set :=
-    {ge  @
-      IsTraitMethod.t "core::cmp::PartialOrd" [] [] (Φ Self) "ge" ge  *
-      forall (self : Ref.t Pointer.Kind.Ref Self) (other: Ref.t Pointer.Kind.Ref Rhs),
-        {{ ge  [] [] [φ self; φ other] 🔽 bool }}
-    }.
+    TraitMethod.C (trait Self Rhs) "ge" (fun method =>
+      forall (self other : Ref.t Pointer.Kind.Ref Self),
+      Run.Trait method [] [] [ φ self; φ other ] bool
+    ).
 
-  Record Run (Self Rhs : Set) `{Link Self} `{Link Rhs} : Set := {
+  Class Run (Self Rhs : Set) `{Link Self} `{Link Rhs} : Set := {
     partial_cmp : Run_partial_cmp Self Rhs;
     lt : Run_lt Self Rhs;
     le : Run_le Self Rhs;
     gt : Run_gt Self Rhs;
     ge : Run_ge Self Rhs;
   }.
-
-  (* Instance run_partial_cmp {Self Rhs : Set} `{Link Self} `{Link Rhs}
-      (self : Ref.t Pointer.Kind.Ref Self) (other : Ref.t Pointer.Kind.Ref Rhs) :
-    Run.Trait cmp.Impl_core_cmp_PartialOrd_for_core_cmp_Ordering.partial_cmp [] [] [φ self; φ other] (option Ordering.t).
-  Admitted. *)
 End PartialOrd.

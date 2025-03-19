@@ -10,8 +10,6 @@ Require Import revm_interpreter.links.interpreter_types.
 Require Import revm_interpreter.links.table.
 Require Import revm_interpreter.interpreter.
 
-Import Run.
-
 Require Export revm.revm_interpreter.links.interpreter_Interpreter.
 
 (* impl<IW: InterpreterTypes> Interpreter<IW> { *)
@@ -57,7 +55,6 @@ Module Impl_Interpreter.
     destruct run_InterpreterTypes_for_IW.
     destruct run_Jumps_for_Bytecode.
     destruct run_CustomInstruction_for_FN.
-    destruct exec as [exec [H_exec run_exec]].
     run_symbolic.
   Defined.
 

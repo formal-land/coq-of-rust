@@ -9,8 +9,6 @@ Require Import revm.revm_interpreter.links.gas.
 Require Import revm.revm_interpreter.links.interpreter_InterpreterResult.
 Require Import revm.revm_interpreter.interpreter_action.
 
-Import Run.
-
 Module FrameInput.
   Inductive t : Set :=
   | Call
