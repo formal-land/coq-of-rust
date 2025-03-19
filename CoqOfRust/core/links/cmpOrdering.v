@@ -56,4 +56,8 @@ Module Ordering.
   Definition of_value_Greater : OfValue.t (Value.StructTuple "core::cmp::Ordering::Greater" []).
   Proof. eapply OfValue.Make with (value := Greater); reflexivity. Defined.
   Smpl Add apply of_value_Greater : of_value.
+
+  Module Impl_PartialOrd_for_Ordering.
+
+  End Impl_PartialOrd_for_Ordering.
 End Ordering.
