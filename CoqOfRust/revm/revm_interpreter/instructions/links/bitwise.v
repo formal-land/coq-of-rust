@@ -228,10 +228,7 @@ Proof.
   }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_StackTrait_for_Stack.
-  destruct popn_top as [popn_top [H_popn_top run_popn_top]].
   destruct run_LoopControl_for_Control.
-  destruct gas as [gas [H_gas run_gas]].
-  destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
   run_symbolic.
 Qed.
 
@@ -253,14 +250,11 @@ Proof.
   }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_StackTrait_for_Stack.
-  destruct popn_top as [popn_top [H_popn_top run_popn_top]].
   destruct run_LoopControl_for_Control.
-  destruct gas as [gas [H_gas run_gas]].
-  destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
   run_symbolic.
-  eapply Run.CallPrimitiveGetTraitMethod.
-  - eapply IsTraitMethod.Defined.
-    + specialize (Impl_BitAnd_for_Uint.Implements
+  + eapply Run.CallPrimitiveGetTraitMethod.
+    ++ eapply IsTraitMethod.Defined.
+       - specialize (Impl_BitAnd_for_Uint.Implements
         (Value.Integer IntegerKind.Usize 256)
         (Value.Integer IntegerKind.Usize 4)).
       intros.
