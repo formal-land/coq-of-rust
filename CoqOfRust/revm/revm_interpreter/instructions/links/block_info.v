@@ -15,10 +15,11 @@ Require Import core.convert.links.mod.
 Import Impl_SpecId.
 Import Impl_Gas.
 Import from.Impl_Uint.
-Import core.convert.links.mod.Into.
+(* TODO: check if we need to implement `into` function in `from` *)
+(* Import into.Impl_Uint. *)
 
-(* TODO: 
-  - fill out the link for Into and link it eventually to Host
+(* TODO(progress): 
+  - finish link in `dependencies` and link to here
   - Take a closer look at the syntax of M
   *)
 
@@ -105,8 +106,7 @@ Proof.
   (* 
     TODO: Complete link for 
       `push!(interpreter, host.block().beneficiary().into_word().into());`
-     NOTE: how to use tactics to represent a function chain 
-      like a().b().c()?... Or is it the issue with polymorphic function itself without a determined `self`?
+     NOTE: how to get a `run_Address` so that I can link further?
     TODO: find a way to import `into_word`?
   *)
   (* destruct run_beneficiary. *)

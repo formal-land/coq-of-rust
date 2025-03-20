@@ -1,8 +1,6 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
-(* Require Import CoqOfRust.core.convert.links.mod. *)
 Require Import CoqOfRust.revm.links.dependencies.
-(* Require Import CoqOfRust.revm.revm_specification.links.hardfork. *)
 
 Module Address := dependencies.alloy_primitives.bits.links.address.Address.
 

@@ -24,10 +24,6 @@ Module alloy_primitives.
 
           Parameter to_value : forall {N : Usize.t}, t N -> Value.t.
 
-          (* TODO: draft *)
-          (* Module Types.
-          End Types. *)
-
           Global Instance IsLink {N : Usize.t} : Link (t N) := {
             Φ := Ty.apply (Ty.path "alloy_primitives::bits::fixed::FixedBytes") [ φ N ] [];
             φ := to_value;
@@ -44,7 +40,6 @@ Module alloy_primitives.
           Smpl Add eapply of_ty : of_ty.
         End FixedBytes.
 
-        (* NOTE: Is this design outdated? *)
         Module Impl_From_for_FixedBytes.
           Definition Self (N : Usize.t) : Set :=
             FixedBytes.t N.
@@ -65,8 +60,6 @@ Module alloy_primitives.
             core.convert.links.mod.From.Run (Self N) (T := array.t U8.t N).
         End Impl_From_for_FixedBytes.
         
-        (* NOTE: Should I design this function in the same style as `from` above? Or should 
-        I design just like a normal parameter? *)
         Module Impl_Into_for_FixedBytes.
           Definition Self (N : Usize.t) : Set :=
             FixedBytes.t N.
