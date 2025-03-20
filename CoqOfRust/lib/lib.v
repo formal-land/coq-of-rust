@@ -147,40 +147,30 @@ Module BinOp.
   Definition eq : Value.t -> Value.t -> M :=
     M.are_equal.
 
-  Definition ne (v1 v2 : Value.t) : M :=
-    let* are_equal := M.are_equal v1 v2 in
-    match are_equal with
-    | Value.Bool are_equal => M.pure (Value.Bool (negb are_equal))
-    | _ => M.impossible "expected a boolean for the equality"
+  Definition make_comparison (cmp : Z -> Z -> bool) (v1 v2 : Value.t) : M :=
+    match v1, v2 with
+    | Value.Integer kind1 i1, Value.Integer kind2 i2 =>
+      if negb (IntegerKind.eqb kind1 kind2) then
+        M.impossible "expected the same kind of integers"
+      else
+        M.pure (Value.Bool (cmp i1 i2))
+    | _, _ => M.impossible "expected integers"
     end.
+
+  Definition ne (v1 v2 : Value.t) : M :=
+    make_comparison (fun i1 i2 => negb (Z.eqb i1 i2)) v1 v2.
 
   Definition lt (v1 v2 : Value.t) : M :=
-    match v1, v2 with
-    | Value.Integer kind1 i1, Value.Integer kind2 i2 =>
-      M.pure (Value.Bool (andb (IntegerKind.eqb kind1 kind2) (Z.ltb i1 i2)))
-    | _, _ => M.impossible "unexpected parameter for lt"
-    end.
+    make_comparison Z.ltb v1 v2.
 
   Definition le (v1 v2 : Value.t) : M :=
-    match v1, v2 with
-    | Value.Integer kind1 i1, Value.Integer kind2 i2 =>
-      M.pure (Value.Bool (andb (IntegerKind.eqb kind1 kind2) (Z.leb i1 i2)))
-    | _, _ => M.impossible "unexpected parameter for le"
-    end.
-
-  Definition ge (v1 v2 : Value.t) : M :=
-    match v1, v2 with
-    | Value.Integer kind1 i1, Value.Integer kind2 i2 =>
-      M.pure (Value.Bool (andb (IntegerKind.eqb kind1 kind2) (Z.geb i1 i2)))
-    | _, _ => M.impossible "unexpected parameter for ge"
-    end.
+    make_comparison Z.leb v1 v2.
 
   Definition gt (v1 v2 : Value.t) : M :=
-    match v1, v2 with
-    | Value.Integer kind1 i1, Value.Integer kind2 i2 =>
-      M.pure (Value.Bool (andb (IntegerKind.eqb kind1 kind2) (Z.gtb i1 i2)))
-    | _, _ => M.impossible "unexpected parameter for gt"
-    end.
+    make_comparison Z.gtb v1 v2.
+
+  Definition ge (v1 v2 : Value.t) : M :=
+    make_comparison Z.geb v1 v2.
 
   Module Wrap.
     Definition make_arithmetic
