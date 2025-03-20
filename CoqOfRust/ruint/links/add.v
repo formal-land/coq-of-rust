@@ -17,7 +17,7 @@ Module Impl_Uint.
       (Self BITS LIMBS).
   Admitted.
 
-  (* pub const fn wrapping_add(self, rhs: Self) -> Self *)
+  (* pub const fn wrapping_sub(self, rhs: Self) -> Self *)
   Instance run_wrapping_sub
     (BITS LIMBS : Usize.t)
     (x1 x2 : Self BITS LIMBS) :
