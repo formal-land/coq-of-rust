@@ -259,21 +259,14 @@ Module ruint.
   End Impl_Uint.
 
   Module Impl_bit_for_Uint.
-    (* Define Self as the underlying Uint type parameterized by BITS and LIMBS. *)
     Definition Self (BITS LIMBS : Usize.t) : Set :=
       Uint.t BITS LIMBS.
     
-    (* The linked type for Self is given by the application of the Uint path to the bit and limb parameters. *)
     Definition Self_ty (BITS LIMBS : Value.t) : Ty.t :=
       Ty.apply (Ty.path "ruint::Uint") [BITS; LIMBS] [].
     
-    (* Declare the polymorphic function "bit". The type here is abstract;
-      it represents the associated function in Rust that takes an extra argument
-      (for example, a Usize) and returns a Uint. Adjust the argument list as needed. *)
     Parameter bit : forall (BITS LIMBS : Value.t), PolymorphicFunction.t.
     
-    (* Declare the associated function instance. This tells our framework that "bit"
-      is the associated function for the Uint type with the given BITS and LIMBS. *)
     Global Instance bit_IsAssociated :
       forall (BITS LIMBS : Value.t),
         M.IsAssociatedFunction.Trait
@@ -282,34 +275,26 @@ Module ruint.
           (bit BITS LIMBS).
     Admitted.
     
-    (* Provide a run-instance for "bit" in case the function takes an extra argument.
-      For instance, if "bit" takes a Usize.t argument (say, a bit index or similar),
-      then the run instance might look like this. Adjust the argument types as needed.
-      
-      Here we assume it takes one Usize.t argument. If it takes no arguments, simply leave the list empty.
-    *)
     Global Instance run_bit :
-      forall (BITS LIMBS : Usize.t) (input : Usize.t),
-        Run.Trait (bit (φ BITS) (φ LIMBS))
-                  []           (* no polymorphic constants *)
-                  []           (* no trait polymorphic types; adjust if needed *)
-                  [ φ input ]  (* the argument list *)
-                  (Self BITS LIMBS).
+      forall (BITS LIMBS : Usize.t)
+           (input : Ref.t Pointer.Kind.Ref (Self BITS LIMBS))
+           (index : Integer.t IntegerKind.Usize),
+    Run.Trait (bit (φ BITS) (φ LIMBS))
+         []           
+         []           
+         [ φ input; φ index ]  
+         bool.
     Admitted.
     
   End Impl_bit_for_Uint.
 
   Module Impl_is_zero_Uint.
-    (* We assume the type of Uint is already defined, e.g.: *)
     Definition Self (BITS LIMBS : Usize.t) : Set :=
       Uint.t BITS LIMBS.
     
     Definition Self_ty (BITS LIMBS : Value.t) : Ty.t :=
       Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [].
     
-    (* The associated function "is_zero" as a polymorphic function.
-      Its parameters are the polymorphic parameters for BITS and LIMBS.
-      Its intended meaning is that when invoked on a Uint, it returns a bool. *)
     Parameter is_zero : forall (BITS LIMBS : Value.t), PolymorphicFunction.t.
     
     Global Instance is_zero_IsAssociated :
@@ -320,8 +305,6 @@ Module ruint.
           (is_zero BITS LIMBS).
     Admitted.
     
-    (* The runtime instance: when you run "is_zero" (with the linked BITS and LIMBS) on an
-      argument – here a reference to the Uint – you get a bool. *)
     Global Instance run_is_zero :
       forall (BITS LIMBS : Usize.t)
             (self : Ref.t Pointer.Kind.Ref (Self BITS LIMBS)),
@@ -369,10 +352,10 @@ Module ruint.
       forall (BITS LIMBS : Value.t) (trait_tys : list Ty.t),
         M.IsTraitInstance
           "core::cmp::PartialOrd"
-          (* Trait polymorphic consts *) []
-          (* Trait polymorphic types *) trait_tys
+          []
+          trait_tys
           (Self BITS LIMBS)
-          (* Instance *) [ ("lt", InstanceField.Method (lt BITS LIMBS)); ("gt", InstanceField.Method (gt BITS LIMBS)) ].
+          [ ("lt", InstanceField.Method (lt BITS LIMBS)); ("gt", InstanceField.Method (gt BITS LIMBS)) ].
   
     Definition run_lt :
       forall (BITS LIMBS : Usize.t),
@@ -512,4 +495,73 @@ Module ruint.
     Proof.
     Admitted.
   End Impl_BitNot_for_Uint.
+  Module Impl_ArithmeticShr_for_Uint.
+    Definition Self (BITS LIMBS : Value.t) : Ty.t :=
+      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [].
+  
+    Parameter arithmetic_shr :
+      forall (BITS LIMBS : Value.t), PolymorphicFunction.t.
+  
+    Axiom Implements :
+      forall (BITS LIMBS : Value.t),
+        IsAssociatedFunction.t (Self BITS LIMBS) "arithmetic_shr" (arithmetic_shr BITS LIMBS).
+
+    Instance run_arithmetic_shr :
+        forall (BITS LIMBS : Usize.t)
+               (x1 : Uint.t BITS LIMBS)
+               (x2 : Integer.t IntegerKind.Usize),
+          Run.Trait (arithmetic_shr (φ BITS) (φ LIMBS)) [] [] [ φ x1; φ x2 ] (Uint.t BITS LIMBS).
+    Proof.
+    Admitted.
+  End Impl_ArithmeticShr_for_Uint.
+
+  Module Impl_Shr_for_Uint.
+    Definition Self (BITS LIMBS : Value.t) : Ty.t :=
+      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [].
+  
+    Parameter shr : forall (BITS LIMBS : Value.t), PolymorphicFunction.t.
+  
+    Axiom Implements :
+      forall (BITS LIMBS : Value.t),
+        IsTraitInstance "core::ops::bit::Shr"
+          [] 
+          [Ty.path "usize"] 
+          (Self BITS LIMBS) 
+          [("shr", InstanceField.Method (shr BITS LIMBS))].
+  
+    Instance run_shr :
+          forall (BITS LIMBS : Usize.t)
+                 (x1 : Uint.t BITS LIMBS)
+                 (x2 : Integer.t IntegerKind.Usize),
+            Run.Trait (shr (φ BITS) (φ LIMBS)) [] [] [ φ x1; φ x2 ] (Uint.t BITS LIMBS).
+    Proof.
+    Admitted.
+  End Impl_Shr_for_Uint.
+
+  Module Impl_Shl_for_Uint.
+    Definition Self (BITS LIMBS : Value.t) : Ty.t :=
+      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [].
+  
+    Parameter shl : forall (BITS LIMBS : Value.t), PolymorphicFunction.t.
+  
+    Axiom Implements :
+      forall (BITS LIMBS : Value.t),
+        IsTraitInstance "core::ops::bit::Shl"
+          [] 
+          [Ty.path "usize"] 
+          (Self BITS LIMBS) 
+          [("shl", InstanceField.Method (shl BITS LIMBS))].
+  
+    Instance run_shl :
+          forall (BITS LIMBS : Usize.t)
+                 (x1 : Uint.t BITS LIMBS)
+                 (x2 : Integer.t IntegerKind.Usize),
+            Run.Trait (shl (φ BITS) (φ LIMBS)) [] [] [ φ x1; φ x2 ] (Uint.t BITS LIMBS).
+    Proof.
+    Admitted.
+  End Impl_Shl_for_Uint.
+
+  
+  
+  
 End ruint.

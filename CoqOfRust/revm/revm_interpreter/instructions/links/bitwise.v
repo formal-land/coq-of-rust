@@ -391,6 +391,44 @@ Proof.
        exact run_f0.
 Defined.
 
+Instance run_bitwise_sar
+    {WIRE H : Set} `{Link WIRE} `{Link H}
+    {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
+    (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types)
+    (interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t WIRE WIRE_types))
+    (_host : Ref.t Pointer.Kind.MutRef H) :
+  Run.Trait
+    instructions.bitwise.sar [] [ Φ WIRE; Φ H ] [ φ interpreter; φ _host ]
+    unit.
+Proof.
+  constructor.
+  cbn.
+  eapply Run.Rewrite. {
+    repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
+    reflexivity.
+  }
+  destruct run_InterpreterTypes_for_WIRE.
+  destruct run_StackTrait_for_Stack.
+  destruct run_LoopControl_for_Control.
+  destruct run_RuntimeFlag_for_RuntimeFlag.
+  run_symbolic.
+  - constructor.
+    run_symbolic.
+    admit.
+  - admit.
+  - constructor.
+    apply dependencies.ruint.Impl_ArithmeticShr_for_Uint.Implements.
+  - constructor.
+    destruct (dependencies.ruint.Impl_ArithmeticShr_for_Uint.run_arithmetic_shr
+      {| Integer.value := 256 |}
+      {| Integer.value := 4 |}
+      value2
+      value3).
+    exact run_f0.
+  - admit.
+  - admit.
+Admitted.
+
 Instance run_bitwise_shl
     {WIRE H : Set} `{Link WIRE} `{Link H}
     {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
@@ -410,30 +448,63 @@ Proof.
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_StackTrait_for_Stack.
   destruct run_LoopControl_for_Control.
+  destruct run_RuntimeFlag_for_RuntimeFlag.
   run_symbolic.
+  - constructor.
+    run_symbolic.
+    admit.
+  - admit.
   - eapply Run.CallPrimitiveGetTraitMethod.
-    + eapply IsTraitMethod.Defined. 
-      ++ apply Impl_RuntimeFlag.Implements.
+    + eapply IsTraitMethod.Defined.
+      ++ apply dependencies.ruint.Impl_Shl_for_Uint.Implements.
       ++ simpl. reflexivity.
     + run_symbolic.
-      ++ constructor.
-         run_symbolic.
-         destruct (Impl_RuntimeFlag.run_spec_id_instance WIRE_types H2 (Ref.cast_to Pointer.Kind.MutRef sub_ref)
-         ).
-         exact run_f0.
+      constructor.
+      destruct (dependencies.ruint.Impl_Shl_for_Uint.run_shl
+        {| Integer.value := 256 |}
+        {| Integer.value := 4 |}
+        value2
+        value3).
+      exact run_f0.
+  - admit.
+Admitted. 
 
-
-
-
-
-  Print interpreter_types.Impl_RuntimeFlag.
-
+Instance run_bitwise_shr
+    {WIRE H : Set} `{Link WIRE} `{Link H}
+    {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
+    (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types)
+    (interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t WIRE WIRE_types))
+    (_host : Ref.t Pointer.Kind.MutRef H) :
+  Run.Trait
+    instructions.bitwise.shr [] [ Φ WIRE; Φ H ] [ φ interpreter; φ _host ]
+    unit.
+Proof.
+  constructor.
+  cbn.
+  eapply Run.Rewrite. {
+    repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
+    reflexivity.
+  }
+  destruct run_InterpreterTypes_for_WIRE.
+  destruct run_StackTrait_for_Stack.
+  destruct run_LoopControl_for_Control.
+  destruct run_RuntimeFlag_for_RuntimeFlag.
   run_symbolic.
-  + eapply (Impl_SpecId.run_is_enabled_in output SpecId.CONSTANTINOPLE).
-  + eapply convert.num.Impl_core_convert_TryFrom_u64_for_usize.  
-  run_symbolic.
-
-Qed.
-
-
-
+  - constructor.
+    run_symbolic.
+    admit.
+  - admit.
+  - eapply Run.CallPrimitiveGetTraitMethod.
+    + eapply IsTraitMethod.Defined.
+      ++ apply dependencies.ruint.Impl_Shr_for_Uint.Implements.
+      ++ simpl. reflexivity.
+    + run_symbolic.
+      constructor.
+      destruct (dependencies.ruint.Impl_Shr_for_Uint.run_shr
+        {| Integer.value := 256 |}
+        {| Integer.value := 4 |}
+        value2
+        value3).
+      exact run_f0.
+  - admit.
+Admitted.
