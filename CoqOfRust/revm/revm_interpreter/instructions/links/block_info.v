@@ -102,10 +102,12 @@ Proof.
   destruct run_Block_for_Block.
   destruct beneficiary as [beneficiary [H_beneficiary run_beneficiary]].
   destruct block as [block [H_block run_block]].
-  (* TODO: Complete link for 
+  (* 
+    TODO: Complete link for 
       `push!(interpreter, host.block().beneficiary().into_word().into());`
      NOTE: how to use tactics to represent a function chain 
       like a().b().c()?... Or is it the issue with polymorphic function itself without a determined `self`?
+    TODO: find a way to import `into_word`?
   *)
   (* destruct run_beneficiary. *)
   run_symbolic.
