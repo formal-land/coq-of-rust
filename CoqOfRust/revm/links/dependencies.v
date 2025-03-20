@@ -6,6 +6,14 @@ Require core.links.clone.
 Require core.links.default.
 Require Import ruint.links.lib.
 
+(* 
+TODO: 
+- Start link with beneficiary's Address return type
+- In `beneficiary`, link it to Address type(?)
+- Link Addesss::into_word
+- Link Uint::into
+*)
+
 Module alloy_primitives.
   Module bits.
     Module links.
@@ -15,6 +23,10 @@ Module alloy_primitives.
           Parameter t : Usize.t -> Set.
 
           Parameter to_value : forall {N : Usize.t}, t N -> Value.t.
+
+          (* TODO: draft *)
+          (* Module Types.
+          End Types. *)
 
           Global Instance IsLink {N : Usize.t} : Link (t N) := {
             Φ := Ty.apply (Ty.path "alloy_primitives::bits::fixed::FixedBytes") [ φ N ] [];

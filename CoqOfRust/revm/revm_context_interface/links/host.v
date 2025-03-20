@@ -105,6 +105,13 @@ Module Host.
       |}.
   End Types.
 
+  Definition Run_cfg (Self : Set) `{Link Self} (types : Types.t) `{Types.AreLinks types} : Set :=
+  {cfg @
+    IsTraitMethod.t "revm_context_interface::cfg::CfgGetter" [] [] (Φ Self) "cfg" cfg *
+    forall (self : Ref.t Pointer.Kind.Ref Self),
+      {{ cfg [] [] [ φ self ] 🔽 Ref.t Pointer.Kind.Ref types.(Types.Cfg) }}
+  }.
+
   Definition Run_load_account_delegated (Self : Set) `{Link Self} : Set :=
     {load_account_delegated @
       IsTraitMethod.t "revm_context_interface::cfg::Cfg" [] [] (Φ Self) "load_account_delegated" load_account_delegated *
