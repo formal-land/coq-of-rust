@@ -339,6 +339,7 @@ Module ruint.
       forall (BITS LIMBS : Usize.t) (value : bool),
       Run.Trait (from (φ BITS) (φ LIMBS)) [] [ Φ bool ] [ φ value ] (Self BITS LIMBS).
     Admitted.
+
   End Impl_from_Uint.
 
   Module Impl_PartialOrd_for_Uint.
@@ -561,6 +562,28 @@ Module ruint.
     Admitted.
   End Impl_Shl_for_Uint.
 
+  Module Impl_AsLimbs_Uint.
+    Definition Self (BITS LIMBS : Usize.t) : Set :=
+      Uint.t BITS LIMBS.
+  
+    Parameter as_limbs : forall (BITS LIMBS : Value.t), PolymorphicFunction.t.
+  
+    Axiom Implements_AsLimbs :
+      forall (BITS LIMBS : Value.t),
+        IsAssociatedFunction.Trait
+          (Ty.apply (Ty.path "ruint::Uint") [BITS; LIMBS] [])
+          "as_limbs"
+          (as_limbs BITS LIMBS).
+  
+    Global Instance run_as_limbs :
+      forall (BITS LIMBS : Usize.t)
+             (x : Ref.t Pointer.Kind.Ref (Self BITS LIMBS)),
+        Run.Trait
+          (as_limbs (φ BITS) (φ LIMBS)) [] [] [ φ x ]
+          (Ref.t Pointer.Kind.Ref (array.t (Integer.t IntegerKind.U64) LIMBS)).
+    Admitted.
+  
+  End Impl_AsLimbs_Uint.
   
   
   

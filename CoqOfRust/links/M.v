@@ -1723,7 +1723,7 @@ Module Pair.
 End Pair.
 
 Module BinOp.
-  Module Wrap.
+ Module Wrap.
     Lemma make_arithmetic_eq (kind : IntegerKind.t)
         (bin_op : Z -> Z -> Z) (v1 v2 : Integer.t kind) (v1' v2' : Value.t) :
       v1' = φ v1 ->

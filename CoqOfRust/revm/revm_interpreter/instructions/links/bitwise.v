@@ -493,8 +493,27 @@ Proof.
   - constructor.
     run_symbolic.
     admit.
-  - admit.
   - eapply Run.CallPrimitiveGetTraitMethod.
+    + eapply IsTraitMethod.Defined.
+      ++ specialize convert.num.ptr_try_from_impls.Impl_core_convert_TryFrom_u64_for_usize.Implements.
+          intros.
+          unfold convert.num.ptr_try_from_impls.Impl_core_convert_TryFrom_u64_for_usize.Self in H3.
+          eapply H3.
+      ++ simpl. reflexivity.
+   + run_symbolic.
+      ++ constructor.
+         apply dependencies.ruint.Impl_AsLimbs_Uint.Implements_AsLimbs.
+      ++ admit.
+      ++ admit.
+      ++ admit.
+      ++ admit.
+      ++ admit.
+      ++ admit.
+      ++ admit.
+      ++ admit.
+      ++ admit.
+      ++ admit.
+- eapply Run.CallPrimitiveGetTraitMethod.
     + eapply IsTraitMethod.Defined.
       ++ apply dependencies.ruint.Impl_Shr_for_Uint.Implements.
       ++ simpl. reflexivity.
