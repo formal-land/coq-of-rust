@@ -2,6 +2,7 @@ Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
 Require Import CoqOfRust.revm.links.dependencies.
 Require Import CoqOfRust.revm.revm_context_interface.links.cfg.
+Require Import CoqOfRust.revm.revm_context_interface.links.block.
 Require Import CoqOfRust.revm.revm_context_interface.links.journaled_state.
 
 (*
@@ -59,13 +60,15 @@ pub trait Host: TransactionGetter + BlockGetter + CfgGetter {
 Module Host.
   Module Types.
     Record t : Type := {
-      Cfg : Set;
-      Spec : Set;
+      Cfg : Set; (* For CfgGetter *)
+      Spec : Set; (* For CfgGetter *)
+      Block : Set; (* For BlockGetter *)
     }.
 
     Class AreLinks (types : t) : Set := {
       H_Cfg : Link types.(Cfg);
       H_Spec : Link types.(Spec);
+      H_Block : Link types.(Block);
     }.
 
     Global Instance IsLinkCfg (types : t) (H : AreLinks types) : Link types.(Cfg) :=
@@ -73,6 +76,20 @@ Module Host.
 
     Global Instance IsLinkSpec (types : t) (H : AreLinks types) : Link types.(Spec) :=
       H.(H_Spec _).
+
+    Global Instance IsLinkBlock (types : t) (H : AreLinks types) : Link types.(Block) :=
+      H.(H_Block _).
+
+    Definition to_BlockGetter_types (types : t) : BlockGetter.Types.t :=
+      {|
+        BlockGetter.Types.Block := types.(Block);
+      |}.
+
+    Global Instance AreLinks_to_BlockGetter_types (types : t) (H : AreLinks types) :
+      BlockGetter.Types.AreLinks (to_BlockGetter_types types) :=
+      {|
+        BlockGetter.Types.H_Block := _;
+      |}.
 
     Definition to_CfgGetter_types (types : t) : CfgGetter.Types.t :=
       {|
@@ -198,6 +215,7 @@ Module Host.
     (types : Types.t) `{Types.AreLinks types} :
     Set :=
   {
+    run_BlockGetter : BlockGetter.Run Self (Types.to_BlockGetter_types types);
     run_CfgGetter : CfgGetter.Run Self (Types.to_CfgGetter_types types);
     load_account_delegated : Run_load_account_delegated Self;
     block_hash : Run_block_hash Self;

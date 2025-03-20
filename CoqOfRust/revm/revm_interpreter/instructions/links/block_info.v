@@ -18,9 +18,8 @@ Import from.Impl_Uint.
 Import core.convert.links.mod.Into.
 
 (* TODO: 
-  - fill out the link from Host to BlockGetter 
+  - fill out the link for Into and link it eventually to Host
   - Take a closer look at the syntax of M
-  - Take a closer look at associated functions
   *)
 
 (*
@@ -98,7 +97,15 @@ Proof.
   destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
   destruct run_StackTrait_for_Stack.
   destruct push as [push [H_push run_push]].
-  (* TODO: fill in host links *)
+  destruct run_Host_for_H.
+  destruct run_BlockGetter.
+  destruct run_Block_for_Block.
+  destruct beneficiary as [beneficiary [H_beneficiary run_beneficiary]].
+  destruct block as [block [H_block run_block]].
+  (* TODO: 
+  - core::convert::Into::into 
+  - alloy_primitives::bits::address::Address
+  *)
   run_symbolic.
 Admitted.
 
@@ -133,9 +140,6 @@ Proof.
   destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
   destruct run_StackTrait_for_Stack.
   destruct push as [push [H_push run_push]].
-  (* TODO: 
-  - BlockGetter::timestamp
-  *)
   run_symbolic.
 Admitted.
 
@@ -170,9 +174,6 @@ Proof.
   destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
   destruct run_StackTrait_for_Stack.
   destruct push as [push [H_push run_push]].
-  (* TODO: 
-  - BlockGetter::number
-  *)
   run_symbolic.
 Admitted.
 
@@ -239,12 +240,8 @@ Proof.
   destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
   destruct run_StackTrait_for_Stack.
   destruct push as [push [H_push run_push]].
-  (* TODO: 
-  - BlockGetter::gas_limit
-  *)
   run_symbolic.
 Admitted.
-
 
 (* 
 pub fn basefee<WIRE: InterpreterTypes, H: Host + ?Sized>(
