@@ -23,6 +23,23 @@ Module Impl_Slice.
       (run_SliceIndex_for_I : SliceIndex.Run I (T := Self T) (Output := Output))
       (self : Ref.t Pointer.Kind.Ref (Self T)) 
       (index : I) :
-    Run.Trait (slice.Impl_slice_T.get (Φ T)) [] [Φ I] [φ self; φ index] (option (Ref.t Pointer.Kind.Ref Output)).
+    Run.Trait (slice.Impl_slice_T.get (Φ T)) [] [Φ I] [φ self; φ index]
+      (option (Ref.t Pointer.Kind.Ref Output)).
+  Admitted.
+
+  (*
+    pub unsafe fn get_unchecked_mut<I>(&mut self, index: I) -> &mut I::Output
+        where
+            I: SliceIndex<Self>,
+  *)
+  Instance run_get_unchecked_mut 
+      (T : Set) `{Link T}
+      {I : Set} `{Link I} 
+      {Output : Set} `{Link Output}
+      (run_SliceIndex_for_I : SliceIndex.Run I (T := Self T) (Output := Output))
+      (self : Ref.t Pointer.Kind.MutRef (Self T)) 
+      (index : I) :
+    Run.Trait (slice.Impl_slice_T.get_unchecked_mut (Φ T)) [] [Φ I] [φ self; φ index]
+      (Ref.t Pointer.Kind.MutRef Output).
   Admitted.
 End Impl_Slice.

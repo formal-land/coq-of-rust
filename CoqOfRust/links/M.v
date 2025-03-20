@@ -909,12 +909,34 @@ Module Run.
       (ε : list Value.t)
       (τ : list Ty.t)
       (α : list Value.t)
-      (Output : Set) `{Link Output} := {
+      (Output : Set) `{Link Output} :
+      Set :=
+  {
     run_f : {{ f ε τ α 🔽 Output, Output }};
   }.
 End Run.
 
 Export Run.
+
+Module TraitMethod.
+  Module Header.
+    Definition t : Set :=
+      string * list Value.t * list Ty.t * Ty.t.
+  End Header.
+
+  Class C
+      (trait : Header.t)
+      (method_name : string)
+      (run : PolymorphicFunction.t -> Set) :
+      Set :=
+    {
+      method : PolymorphicFunction.t;
+      is_trait_method :
+        let '(trait_name, trait_consts, trait_tys, self_ty) := trait in
+        IsTraitMethod.t trait_name trait_consts trait_tys self_ty method_name method;
+      run : run method;
+    }.
+End TraitMethod.
 
 Module Primitive.
   (** These primitives are equivalent to the ones in the generated code, except that we are now

@@ -1,11 +1,12 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import alloc.vec.mod.
 Require Import links.M.
-Require core.links.clone.
-Require core.links.default.
-Require core.ops.links.deref.
-
-Import Run.
+Require Import alloc.links.alloc.
+Require Import core.links.clone.
+Require Import core.links.default.
+Require Import core.links.option.
+Require Import core.ops.links.deref.
+Require Import core.ops.links.index.
 
 Module Vec.
   Record t {T A : Set} : Set := {
@@ -34,71 +35,87 @@ Module Vec.
 End Vec.
 
 Module Impl_Clone_for_Vec.
-  Definition run_clone {T A : Set} `{Link T} `{Link A} : clone.Clone.Run_clone (Vec.t T A).
+  Definition run_clone {T A : Set} `{Link T} `{Link A} : Clone.Run_clone (Vec.t T A).
   Admitted.
 
-  Definition run {T A : Set} `{Link T} `{Link A} : clone.Clone.Run (Vec.t T A).
-  Proof.
-    constructor.
-    { (* clone *)
-      exact run_clone.
-    }
-  Defined.
+  Instance run {T A : Set} `{Link T} `{Link A} : Clone.Run (Vec.t T A) := {
+    Clone.clone := run_clone;
+  }.
 End Impl_Clone_for_Vec.
 
 Module Impl_Default_for_Vec.
-  Definition run_default {T A : Set} `{Link T} `{Link A} : default.Default.Run_default (Vec.t T A).
+  Definition run_default {T A : Set} `{Link T} `{Link A} : Default.Run_default (Vec.t T A).
   Admitted.
 
-  Definition run {T A : Set} `{Link T} `{Link A} : default.Default.Run (Vec.t T A).
-  Proof.
-    constructor.
-    { (* clone *)
-      exact run_default.
-    }
-  Defined.
+  Instance run {T A : Set} `{Link T} `{Link A} : Default.Run (Vec.t T A) := {
+    Default.default := run_default;
+  }.
 End Impl_Default_for_Vec.
 
 Module Impl_Deref_for_Vec.
-  Definition run_deref {T A : Set} `{Link T} `{Link A} : 
-    deref.Deref.Run_deref (Vec.t T A) (Target := list T).
+  Definition run_deref {T A : Set} `{Link T} `{Link A} : Deref.Run_deref (Vec.t T A) (list T).
   Admitted.
 
-  Definition run {T A : Set} `{Link T} `{Link A} : 
-    deref.Deref.Run (Vec.t T A) (Target := list T).
-  Proof.
-    constructor.
-    { (* clone *)
-      exact run_deref.
-    }
-  Defined.
+  Instance run {T A : Set} `{Link T} `{Link A} : Deref.Run (Vec.t T A) (list T) := {
+    Deref.deref := run_deref;
+  }.
 End Impl_Deref_for_Vec.
 
-Module Impl_alloc_vec_Vec_T_A.
-  Definition Self := Vec.t.
-
-  (*
-    pub const fn new() -> Self {
-      Vec { buf: RawVec::new(), len: 0 }
-    }
-  *)
-  Instance run_new {T A : Set} `{Link T} `{Link A} : 
-    Run.Trait (vec.Impl_alloc_vec_Vec_T_alloc_alloc_Global.new (Φ T)) [] [] [] (Self T A).
+Module Impl_DerefMut_for_Vec.
+  Definition run_deref_mut {T A : Set} `{Link T} `{Link A} : 
+    DerefMut.Run_deref_mut (Vec.t T A) (list T).
   Admitted.
 
+  Instance run {T A : Set} `{Link T} `{Link A} : DerefMut.Run (Vec.t T A) (list T) := {
+    DerefMut.deref_mut := run_deref_mut;
+  }.
+End Impl_DerefMut_for_Vec.
+
+Module Impl_Vec_T.
+  Definition Self (T : Set) `{Link T} : Set :=
+    Vec.t T Global.t.
+
   (*
-    pub const fn len(&self) -> usize {
-        let len = self.len;
+    pub const fn new() -> Self 
+  *)
+  Instance run_new {T : Set} `{Link T} :
+    Run.Trait (vec.Impl_alloc_vec_Vec_T_alloc_alloc_Global.new (Φ T)) [] [] [] (Self T).
+  Admitted.
 
-        // SAFETY: The maximum capacity of `Vec<T>` is `isize::MAX` bytes, so the maximum value can
-        // be returned is `usize::checked_div(mem::size_of::<T>()).unwrap_or(usize::MAX)`, which
-        // matches the definition of `T::MAX_SLICE_LEN`.
-        unsafe { intrinsics::assume(len <= T::MAX_SLICE_LEN) };
+  (* pub fn with_capacity(capacity: usize) -> Self *)
+  Instance run_with_capacity {T : Set} `{Link T} (capacity : Usize.t) :
+    Run.Trait
+      (vec.Impl_alloc_vec_Vec_T_alloc_alloc_Global.with_capacity (Φ T)) [] [] [φ capacity]
+      (Self T).
+  Admitted.
+End Impl_Vec_T.
 
-        len
-    }
+Module Impl_Vec_T_A.
+  Definition Self (T A : Set) `{Link T} `{Link A} : Set :=
+    Vec.t T A.
+
+  (*
+    pub const fn len(&self) -> usize
   *)
   Instance run_len {T A : Set} `{Link T} `{Link A} (self : Ref.t Pointer.Kind.Ref (Self T A)) : 
     Run.Trait (vec.Impl_alloc_vec_Vec_T_A.len (Φ T) (Φ A)) [] [] [φ self] Usize.t.
   Admitted.
-End Impl_alloc_vec_Vec_T_A.
+
+  (* pub const fn is_empty(&self) -> bool *)
+  Instance run_is_empty {T A : Set} `{Link T} `{Link A} (self : Ref.t Pointer.Kind.Ref (Self T A)) : 
+    Run.Trait (vec.Impl_alloc_vec_Vec_T_A.is_empty (Φ T) (Φ A)) [] [] [φ self] bool.
+  Admitted.
+
+  (* pub fn pop(&mut self) -> Option<T> *)
+  Instance run_pop {T A : Set} `{Link T} `{Link A} (self : Ref.t Pointer.Kind.MutRef (Self T A)) : 
+    Run.Trait (vec.Impl_alloc_vec_Vec_T_A.pop (Φ T) (Φ A)) [] [] [φ self] (option T).
+  Admitted.
+End Impl_Vec_T_A.
+
+Module Impl_Index_for_Vec_T_A.
+  Definition Self := Vec.t.
+  
+  Instance run {T I A Output : Set} `{Link T} `{Link I} `{Link A} `{Link Output} :
+    index.Index.Run (Self T A) I Output.
+  Admitted.
+End Impl_Index_for_Vec_T_A.

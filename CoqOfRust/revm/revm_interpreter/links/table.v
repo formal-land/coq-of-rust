@@ -4,8 +4,6 @@ Require Import revm.revm_interpreter.links.interpreter_Interpreter.
 Require Import revm.revm_interpreter.links.interpreter_types.
 Require Import revm.revm_interpreter.table.
 
-Import Run.
-
 (*
 pub type Instruction<W, H> = for<'a> fn(&'a mut Interpreter<W>, &'a mut H);
 *)
@@ -31,33 +29,36 @@ pub trait CustomInstruction {
 }
 *)
 Module CustomInstruction.
-  Definition run_exec
-      (Self : Set) `{Link Self}
-      (Wire : Set) `{Link Wire}
-      (Wire_types : InterpreterTypes.Types.t) `{InterpreterTypes.Types.AreLinks Wire_types}
-      (Host : Set) `{Link Host} :
-      Set :=
-    {exec @
-      IsTraitMethod.t "revm_interpreter::table::CustomInstruction" [] [] (Φ Self) "exec" exec *
-      forall
-          (self : Ref.t Pointer.Kind.Ref Self)
-          (interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t Wire Wire_types))
-          (host : Ref.t Pointer.Kind.MutRef Host),
-        {{ exec [] [] [ φ self; φ interpreter; φ host ] 🔽 unit }}
-    }.
+  Definition trait (Self Wire Host : Set) `{Link Self} `{Link Wire} `{Link Host} :
+      TraitMethod.Header.t :=
+    ("revm_interpreter::table::CustomInstruction", [], [], Φ Self).
 
-  Definition run_from_base
+  Definition Run_exec
       (Self : Set) `{Link Self}
       (Wire : Set) `{Link Wire}
       (Wire_types : InterpreterTypes.Types.t) `{InterpreterTypes.Types.AreLinks Wire_types}
       (Host : Set) `{Link Host} :
       Set :=
-    {from_base @
-      IsTraitMethod.t "revm_interpreter::table::CustomInstruction" [] [] (Φ Self) "from_base" from_base *
+    TraitMethod.C (trait Self Wire Host) "exec" (fun method =>
       forall
-          (instruction : Ref.t Pointer.Kind.Ref (Instruction.t Wire Host Wire_types)),
-        {{ from_base [] [] [ φ instruction ] 🔽 Ref.t Pointer.Kind.Ref Self }}
-    }.
+        (self : Ref.t Pointer.Kind.Ref Self)
+        (interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t Wire Wire_types))
+        (host : Ref.t Pointer.Kind.MutRef Host),
+      Run.Trait method [] [] [ φ self; φ interpreter; φ host ] unit
+    ).
+
+  Definition Run_from_base
+      (Self : Set) `{Link Self}
+      (Wire : Set) `{Link Wire}
+      (Wire_types : InterpreterTypes.Types.t) `{InterpreterTypes.Types.AreLinks Wire_types}
+      (Host : Set) `{Link Host} :
+      Set :=
+    TraitMethod.C (trait Self Wire Host) "from_base" (fun method =>
+      forall
+        (instruction : Ref.t Pointer.Kind.Ref (Instruction.t Wire Host Wire_types)),
+      Run.Trait method [] [] [ φ instruction ] (Ref.t Pointer.Kind.Ref Self)
+    ).
+
 
   Class Run
       (Self : Set) `{Link Self}
@@ -73,7 +74,7 @@ Module CustomInstruction.
       IsTraitAssociatedType
       "revm_interpreter::table::CustomInstruction" [] [] (Φ Self)
       "Host" (Φ Host);
-    exec : run_exec Self Wire Wire_types Host;
-    from_base : run_from_base Self Wire Wire_types Host;
+    exec : Run_exec Self Wire Wire_types Host;
+    from_base : Run_from_base Self Wire Wire_types Host;
   }.
 End CustomInstruction.

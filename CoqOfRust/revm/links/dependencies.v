@@ -2,8 +2,9 @@ Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
 Require Import core.convert.links.mod.
 Require Import core.links.array.
-Require core.links.clone.
-Require core.links.default.
+Require Import core.ops.links.range.
+Require Import core.links.clone.
+Require Import core.links.default.
 Require Import ruint.links.lib.
 
 (* 
@@ -157,6 +158,20 @@ Module alloy_primitives.
 
         Global Instance run_new : Run.Trait new [] [] [] Bytes.t.
         Admitted.
+
+        (* pub fn slice(&self, range: impl RangeBounds<usize>) -> Self *)
+        Parameter slice : PolymorphicFunction.t.
+
+        Global Instance AssociatedFunction_slice :
+          M.IsAssociatedFunction.Trait (Φ Self) "slice" slice.
+        Admitted.
+
+        Global Instance run_slice {A : Set} `{Link A} 
+          (self : Ref.t Pointer.Kind.Ref Self) 
+          (range : A) 
+          (run_RangeBounds_for_A : RangeBounds.Run A) :
+          Run.Trait slice [] [] [φ self; φ range] Self.
+        Admitted.
       End Impl_Bytes.
       
       Module Impl_Clone_for_Bytes.
@@ -175,13 +190,9 @@ Module alloy_primitives.
         Definition run_clone : clone.Clone.Run_clone Bytes.t.
         Admitted.
       
-        Definition run : clone.Clone.Run Bytes.t.
-        Proof.
-          constructor.
-          { (* clone *)
-            exact run_clone.
-          }
-        Defined.
+        Instance run : Clone.Run Bytes.t := {
+          CLone.clone := run_clone;
+        }.
       End Impl_Clone_for_Bytes.
 
       Module Impl_Default_for_Bytes.
@@ -200,13 +211,9 @@ Module alloy_primitives.
         Definition run_default : default.Default.Run_default Bytes.t.
         Admitted.
       
-        Definition run : default.Default.Run Bytes.t.
-        Proof.
-          constructor.
-          { (* clone *)
-            exact run_default.
-          }
-        Defined.
+        Instance run : Default.Run Bytes.t := {
+          Default.default := run_default;
+        }.
       End Impl_Default_for_Bytes.
     End bytes_.
   End links.
@@ -227,6 +234,8 @@ Module FixedBytes.
   *)
 End FixedBytes.
 
+(** ** Here we define some aliases that are convenient *)
+
 Module U256.
   Definition t : Set :=
     Uint.t {| Integer.value := 256 |} {| Integer.value := 4 |}.
@@ -237,9 +246,12 @@ Module B256.
     alloy_primitives.bits.links.fixed.FixedBytes.t {| Integer.value := 32 |}.
 End B256.
 
-Module Log.
-  Parameter t : Set.
+Module Address.
+  Definition t : Set :=
+    alloy_primitives.bits.links.address.Address.t.
+End Address.
 
-  Global Instance IsLink : Link t.
-  Admitted.
-End Log.
+Module Bytes.
+  Definition t : Set :=
+    alloy_primitives.links.bytes_.Bytes.t.
+End Bytes.
