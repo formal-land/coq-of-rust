@@ -65,70 +65,64 @@ Module Cfg.
       H.(H_Spec _).
   End Types.
 
+  Definition trait (Self : Set) `{Link Self} : TraitMethod.Header.t :=
+    ("revm_context_interface::cfg::Cfg", [], [], Φ Self).
+
   Definition Run_chain_id (Self : Set) `{Link Self} : Set :=
-    {chain_id @
-      IsTraitMethod.t "revm_context_interface::cfg::Cfg" [] [] (Φ Self) "chain_id" chain_id *
+    TraitMethod.C (trait Self) "chain_id" (fun method =>
       forall (self : Ref.t Pointer.Kind.Ref Self),
-        {{ chain_id [] [] [ φ self ] 🔽 U64.t }}
-    }.
+        Run.Trait method [] [] [ φ self ] U64.t
+    ).
 
   Definition Run_spec (Self : Set) `{Link Self} (types : Types.t) `{Types.AreLinks types} : Set :=
-    {spec @
-      IsTraitMethod.t "revm_context_interface::cfg::Cfg" [] [] (Φ Self) "spec" spec *
+    TraitMethod.C (trait Self) "spec" (fun method =>
       forall (self : Ref.t Pointer.Kind.Ref Self),
-        {{ spec [] [] [ φ self ] 🔽 types.(Types.Spec) }}
-    }.
+        Run.Trait method [] [] [ φ self ] types.(Types.Spec)
+    ).
 
   Definition Run_blob_max_count (Self : Set) `{Link Self} (types : Types.t) `{Types.AreLinks types} : Set :=
-    {blob_max_count @
-      IsTraitMethod.t "revm_context_interface::cfg::Cfg" [] [] (Φ Self) "blob_max_count" blob_max_count *
-      forall (self : Ref.t Pointer.Kind.Ref Self) (spec_id : SpecId.t),
-        {{ blob_max_count [] [] [ φ self; φ spec_id ] 🔽 U8.t }}
-    }.
+    TraitMethod.C (trait Self) "blob_max_count" (fun method =>
+      forall (self : Ref.t Pointer.Kind.Ref Self),
+        Run.Trait method [] [] [ φ self] U8.t
+    ).
 
   Definition Run_max_code_size (Self : Set) `{Link Self} : Set :=
-    {max_code_size @
-      IsTraitMethod.t "revm_context_interface::cfg::Cfg" [] [] (Φ Self) "max_code_size" max_code_size *
+    TraitMethod.C (trait Self) "max_code_size" (fun method =>
       forall (self : Ref.t Pointer.Kind.Ref Self),
-        {{ max_code_size [] [] [ φ self ] 🔽 Usize.t }}
-    }.
+        Run.Trait method [] [] [ φ self] Usize.t
+    ).
 
   Definition Run_is_eip3607_disabled (Self : Set) `{Link Self} : Set :=
-    {is_eip3607_disabled @
-      IsTraitMethod.t "revm_context_interface::cfg::Cfg" [] [] (Φ Self) "is_eip3607_disabled" is_eip3607_disabled *
+    TraitMethod.C (trait Self) "is_eip3607_disabled" (fun method =>
       forall (self : Ref.t Pointer.Kind.Ref Self),
-        {{ is_eip3607_disabled [] [] [ φ self ] 🔽 bool }}
-    }.
+        Run.Trait method [] [] [ φ self] bool
+    ).
 
   Definition Run_is_balance_check_disabled (Self : Set) `{Link Self} : Set :=
-    {is_balance_check_disabled @
-      IsTraitMethod.t "revm_context_interface::cfg::Cfg" [] [] (Φ Self) "is_balance_check_disabled" is_balance_check_disabled *
+    TraitMethod.C (trait Self) "is_balance_check_disabled" (fun method =>
       forall (self : Ref.t Pointer.Kind.Ref Self),
-        {{ is_balance_check_disabled [] [] [ φ self ] 🔽 bool }}
-    }.
+        Run.Trait method [] [] [ φ self] bool
+    ).
 
   Definition Run_is_block_gas_limit_disabled (Self : Set) `{Link Self} : Set :=
-    {is_block_gas_limit_disabled @
-      IsTraitMethod.t "revm_context_interface::cfg::Cfg" [] [] (Φ Self) "is_block_gas_limit_disabled" is_block_gas_limit_disabled *
+    TraitMethod.C (trait Self) "is_block_gas_limit_disabled" (fun method =>
       forall (self : Ref.t Pointer.Kind.Ref Self),
-        {{ is_block_gas_limit_disabled [] [] [ φ self ] 🔽 bool }}
-    }.
+        Run.Trait method [] [] [ φ self] bool
+    ).
 
   Definition Run_is_nonce_check_disabled (Self : Set) `{Link Self} : Set :=
-    {is_nonce_check_disabled @
-      IsTraitMethod.t "revm_context_interface::cfg::Cfg" [] [] (Φ Self) "is_nonce_check_disabled" is_nonce_check_disabled *
+    TraitMethod.C (trait Self) "is_nonce_check_disabled" (fun method =>
       forall (self : Ref.t Pointer.Kind.Ref Self),
-        {{ is_nonce_check_disabled [] [] [ φ self ] 🔽 bool }}
-    }.
+        Run.Trait method [] [] [ φ self] bool
+    ).
 
   Definition Run_is_base_fee_check_disabled (Self : Set) `{Link Self} : Set :=
-    {is_base_fee_check_disabled @
-      IsTraitMethod.t "revm_context_interface::cfg::Cfg" [] [] (Φ Self) "is_base_fee_check_disabled" is_base_fee_check_disabled *
+    TraitMethod.C (trait Self) "is_base_fee_check_disabled" (fun method =>
       forall (self : Ref.t Pointer.Kind.Ref Self),
-        {{ is_base_fee_check_disabled [] [] [ φ self ] 🔽 bool }}
-    }.
+        Run.Trait method [] [] [ φ self] bool
+    ).
 
-  Record Run (Self : Set) `{Link Self} (types : Types.t)  `{Types.AreLinks types} : Set :=
+  Class Run (Self : Set) `{Link Self} (types : Types.t)  `{Types.AreLinks types} : Set :=
   {
     Spec_IsAssociated :
       IsTraitAssociatedType
@@ -184,12 +178,14 @@ Module CfgGetter.
       |}.
   End Types.
 
+  Definition trait (Self : Set) `{Link Self} : TraitMethod.Header.t :=
+    ("revm_context_interface::cfg::CfgGetter", [], [], Φ Self).
+
   Definition Run_cfg (Self : Set) `{Link Self} (types : Types.t) `{Types.AreLinks types} : Set :=
-    {cfg @
-      IsTraitMethod.t "revm_context_interface::cfg::CfgGetter" [] [] (Φ Self) "cfg" cfg *
+    TraitMethod.C (trait Self) "cfg" (fun method =>
       forall (self : Ref.t Pointer.Kind.Ref Self),
-        {{ cfg [] [] [ φ self ] 🔽 Ref.t Pointer.Kind.Ref types.(Types.Cfg) }}
-    }.
+        Run.Trait method [] [] [ φ self] (Ref.t Pointer.Kind.Ref types.(Types.Cfg))
+    ).
 
   Record Run (Self : Set) `{Link Self} (types : Types.t) `{Types.AreLinks types} : Set :=
   {
