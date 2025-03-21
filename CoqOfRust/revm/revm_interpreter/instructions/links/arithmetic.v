@@ -44,10 +44,7 @@ Proof.
   }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
-  destruct gas as [gas [H_gas run_gas]].
-  destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
   destruct run_StackTrait_for_Stack.
-  destruct popn_top as [popn_top [H_popn_top run_popn_top]].
   run_symbolic. 
 Defined.
 
@@ -79,10 +76,7 @@ Proof.
   }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
-  destruct gas as [gas [H_gas run_gas]].
-  destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
   destruct run_StackTrait_for_Stack.
-  destruct popn_top as [popn_top [H_popn_top run_popn_top]].
   run_symbolic. 
 Defined.
 
@@ -110,10 +104,7 @@ Proof.
   }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
-  destruct gas as [gas [H_gas run_gas]].
-  destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
   destruct run_StackTrait_for_Stack.
-  destruct popn_top as [popn_top [H_popn_top run_popn_top]].
   run_symbolic. 
 Defined.
 
@@ -141,10 +132,7 @@ Proof.
   }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
-  destruct gas as [gas [H_gas run_gas]].
-  destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
   destruct run_StackTrait_for_Stack.
-  destruct popn_top as [popn_top [H_popn_top run_popn_top]].
   run_symbolic.
 Defined.
 
@@ -172,10 +160,7 @@ Proof.
   }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
-  destruct gas as [gas [H_gas run_gas]].
-  destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
   destruct run_StackTrait_for_Stack.
-  destruct popn_top as [popn_top [H_popn_top run_popn_top]].
   (* TODO: revm_interpreter::instructions::i256::i256_div *)
   run_symbolic.
 (* Defined. *)
@@ -205,10 +190,7 @@ Proof.
   }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
-  destruct gas as [gas [H_gas run_gas]].
-  destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
   destruct run_StackTrait_for_Stack.
-  destruct popn_top as [popn_top [H_popn_top run_popn_top]].
   run_symbolic.
 Defined.
 
@@ -236,10 +218,7 @@ Proof.
   }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
-  destruct gas as [gas [H_gas run_gas]].
-  destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
   destruct run_StackTrait_for_Stack.
-  destruct popn_top as [popn_top [H_popn_top run_popn_top]].
   (* TODO: revm_interpreter::instructions::i256::i256_mod *)
   run_symbolic.
   Admitted.
@@ -269,10 +248,7 @@ Proof.
   }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
-  destruct gas as [gas [H_gas run_gas]].
-  destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
   destruct run_StackTrait_for_Stack.
-  destruct popn_top as [popn_top [H_popn_top run_popn_top]].
   (* TODO: Uint::add_mod *)
   run_symbolic.
   Admitted.
@@ -302,10 +278,7 @@ Proof.
   }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
-  destruct gas as [gas [H_gas run_gas]].
-  destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
   destruct run_StackTrait_for_Stack.
-  destruct popn_top as [popn_top [H_popn_top run_popn_top]].
   (* TODO: Uint::mul_mod *)
   run_symbolic.
   Admitted.
@@ -335,12 +308,8 @@ Proof.
   }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
-  destruct gas as [gas [H_gas run_gas]].
-  destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
   destruct run_StackTrait_for_Stack.
-  destruct popn_top as [popn_top [H_popn_top run_popn_top]].
   destruct run_RuntimeFlag_for_RuntimeFlag.
-  destruct spec_id as [spec_id [H_spec_id run_spec_id]].
   (* TODO:
   - calc.gas.calc.exp_cost
   - Uint::pow*)
@@ -372,10 +341,7 @@ Proof.
   }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
-  destruct gas as [gas [H_gas run_gas]].
-  destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
   destruct run_StackTrait_for_Stack.
-  destruct popn_top as [popn_top [H_popn_top run_popn_top]].
   (* TODO:
   - core::cmp::PartialOrd::lt
   *)

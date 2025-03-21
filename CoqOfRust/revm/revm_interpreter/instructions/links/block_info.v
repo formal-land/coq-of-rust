@@ -54,19 +54,15 @@ Proof.
   }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_RuntimeFlag_for_RuntimeFlag.
-  destruct spec_id as [spec_id [H_spec_id  run_spec_id]].
   destruct run_LoopControl_for_Control.
-  destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
-  destruct gas as [gas [H_gas run_gas]].
   destruct run_StackTrait_for_Stack.
-  destruct push as [push [H_push run_push]].
   destruct run_Host_for_H.
   destruct run_CfgGetter.
   destruct run_Cfg_for_Cfg.
-  destruct chain_id as [chain_id [H_chain_id run_chain_id]].
-  destruct cfg as [cfg [H_cfg run_cfg]].
   run_symbolic.
-Defined.
+  (* TODO: check `cfg::cfg` *)
+Admitted.
+(* Defined. *)
 
 (*
 pub fn coinbase<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -94,22 +90,10 @@ Proof.
   }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
-  destruct gas as [gas [H_gas run_gas]].
-  destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
   destruct run_StackTrait_for_Stack.
-  destruct push as [push [H_push run_push]].
   destruct run_Host_for_H.
   destruct run_BlockGetter.
   destruct run_Block_for_Block.
-  destruct beneficiary as [beneficiary [H_beneficiary run_beneficiary]].
-  destruct block as [block [H_block run_block]].
-  (* 
-    TODO: Complete link for 
-      `push!(interpreter, host.block().beneficiary().into_word().into());`
-     NOTE: how to get a `run_Address` so that I can link further?
-    TODO: find a way to import `into_word`?
-  *)
-  (* destruct run_beneficiary. *)
   run_symbolic.
 Admitted.
 
@@ -140,10 +124,7 @@ Proof.
   }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
-  destruct gas as [gas [H_gas run_gas]].
-  destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
   destruct run_StackTrait_for_Stack.
-  destruct push as [push [H_push run_push]].
   run_symbolic.
 Admitted.
 
@@ -174,10 +155,7 @@ Proof.
   }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
-  destruct gas as [gas [H_gas run_gas]].
-  destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
   destruct run_StackTrait_for_Stack.
-  destruct push as [push [H_push run_push]].
   run_symbolic.
 Admitted.
 
@@ -205,10 +183,7 @@ Proof.
   }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
-  destruct gas as [gas [H_gas run_gas]].
-  destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
   destruct run_StackTrait_for_Stack.
-  destruct push as [push [H_push run_push]].
   (* TODO: 
   - revm_interpreter::interpreter_types::RuntimeFlag::spec_id
   - BlockGetter::difficulty
@@ -240,10 +215,7 @@ Proof.
   }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
-  destruct gas as [gas [H_gas run_gas]].
-  destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
   destruct run_StackTrait_for_Stack.
-  destruct push as [push [H_push run_push]].
   run_symbolic.
 Admitted.
 
@@ -271,10 +243,7 @@ Proof.
   }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
-  destruct gas as [gas [H_gas run_gas]].
-  destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
   destruct run_StackTrait_for_Stack.
-  destruct push as [push [H_push run_push]].
   (* TODO: 
   - RuntimeFlag::spec_id
   - BlockGetter::base_fee
@@ -306,10 +275,7 @@ Proof.
   }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
-  destruct gas as [gas [H_gas run_gas]].
-  destruct set_instruction_result as [set_instruction_result [H_set_instruction_result run_set_instruction_result]].
   destruct run_StackTrait_for_Stack.
-  destruct push as [push [H_push run_push]].
   (* TODO: 
   - Runtimeflag::spec_id
   - BlockGetter::blob_gasprice
