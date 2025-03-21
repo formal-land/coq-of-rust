@@ -76,7 +76,7 @@ Module alloy_primitives.
 
           Parameter run :
             forall (N : Usize.t),
-            core.convert.links.mod.Into.Run (Self N) (array.t U8.t N). (* NOTE: Why we don't need T := here? *)
+            core.convert.links.mod.Into.Run (Self N) (array.t U8.t N).
         End Impl_Into_for_FixedBytes.
       End fixed.
 
