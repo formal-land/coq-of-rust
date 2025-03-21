@@ -5,6 +5,14 @@ Require Import CoqOfRust.revm.revm_context_interface.links.cfg.
 Require Import CoqOfRust.revm.revm_context_interface.links.block.
 Require Import CoqOfRust.revm.revm_context_interface.links.journaled_state.
 
+(* TODO: Add source code *)
+Module Log.
+  Parameter t : Set.
+
+  Global Instance IsLink : Link t.
+  Admitted.
+End Log.
+
 (*
 pub struct SStoreResult {
     pub original_value: U256,
