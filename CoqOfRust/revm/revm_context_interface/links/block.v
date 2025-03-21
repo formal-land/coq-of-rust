@@ -26,47 +26,66 @@ pub trait Block {
 Module Block. 
   Parameter t : Set.
 
+  Definition trait (Self : Set) `{Link Self} : TraitMethod.Header.t :=
+    ("revm_context_interface::block::Block", [], [], Φ Self).
+
   (* fn number(&self) -> u64; *)
   Definition Run_number (Self : Set) `{Link Self} : Set :=
-    {number @
-      IsTraitMethod.t "revm_context_interface::block::Block" [] [] (Φ Self) "number" number *
-      forall (self : Ref.t Pointer.Kind.Ref Self),
-        {{ number [] [] [ φ self ] 🔽 U64.t }}
-    }.
+    TraitMethod.C (trait Self) "number" (fun method =>
+      forall (self : Ref.t Pointer.Kind.MutRef Self),
+        Run.Trait method [] [] [ φ self ] U64.t
+    ).
 
+  (* fn beneficiary(&self) -> Address; *)
   Definition Run_beneficiary (Self : Set) `{Link Self} : Set :=
-    {beneficiary @
-      IsTraitMethod.t "revm_context_interface::block::Block" [] [] (Φ Self) "beneficiary" beneficiary *
-      forall (self : Ref.t Pointer.Kind.Ref Self),
-        {{ beneficiary [] [] [ φ self ] 🔽 Address.t }}
-    }.
+    TraitMethod.C (trait Self) "beneficiary" (fun method =>
+      forall (self : Ref.t Pointer.Kind.MutRef Self),
+        Run.Trait method [] [] [ φ self ] Address.t
+    ).
 
   (* fn timestamp(&self) -> u64; *)
   Definition Run_timestamp (Self : Set) `{Link Self} : Set :=
-    {timestamp @
-      IsTraitMethod.t "revm_context_interface::block::Block" [] [] (Φ Self) "timestamp" timestamp *
-      forall (self : Ref.t Pointer.Kind.Ref Self),
-        {{ timestamp [] [] [ φ self ] 🔽 U64.t }}
-    }.
+    TraitMethod.C (trait Self) "timestamp" (fun method =>
+      forall (self : Ref.t Pointer.Kind.MutRef Self),
+        Run.Trait method [] [] [ φ self ] U64.t
+    ).
 
   (* fn gas_limit(&self) -> u64; *)
   Definition Run_gas_limit (Self : Set) `{Link Self} : Set :=
-    {gas_limit @
-      IsTraitMethod.t "revm_context_interface::block::Block" [] [] (Φ Self) "gas_limit" gas_limit *
-      forall (self : Ref.t Pointer.Kind.Ref Self),
-        {{ gas_limit [] [] [ φ self ] 🔽 U64.t }}
-    }.
+    TraitMethod.C (trait Self) "gas_limit" (fun method =>
+      forall (self : Ref.t Pointer.Kind.MutRef Self),
+        Run.Trait method [] [] [ φ self ] U64.t
+    ).
 
   (* fn basefee(&self) -> u64; *)
+  Definition Run_basefee (Self : Set) `{Link Self} : Set :=
+    TraitMethod.C (trait Self) "basefee" (fun method =>
+      forall (self : Ref.t Pointer.Kind.MutRef Self),
+        Run.Trait method [] [] [ φ self ] U64.t
+    ).
 
   (* fn difficulty(&self) -> U256; *)
+  Definition Run_difficulty (Self : Set) `{Link Self} : Set :=
+    TraitMethod.C (trait Self) "difficulty" (fun method =>
+      forall (self : Ref.t Pointer.Kind.MutRef Self),
+        Run.Trait method [] [] [ φ self ] U256.t
+    ).
 
   (* fn blob_gasprice(&self) -> Option<u128> *)
+  Definition Run_blob_gasprice (Self : Set) `{Link Self} : Set :=
+    TraitMethod.C (trait Self) "blob_gasprice" (fun method =>
+      forall (self : Ref.t Pointer.Kind.MutRef Self),
+        Run.Trait method [] [] [ φ self ] (option U128.t)
+    ).
 
-  Record Run (Self : Set) `{Link Self} : Set := {
+  Class Run (Self : Set) `{Link Self} : Set := {
+    number : Run_number Self;
     beneficiary : Run_beneficiary Self;
     timestamp : Run_timestamp Self;
     gas_limit : Run_gas_limit Self;
+    basefee : Run_basefee Self;
+    difficulty : Run_difficulty Self;
+    blob_gasprice : Run_blob_gasprice Self;
   }.
 End Block. 
 
@@ -92,12 +111,14 @@ Module BlockGetter.
       H.(H_Block _).
   End Types.
 
+  Definition trait (Self : Set) `{Link Self} : TraitMethod.Header.t :=
+    ("revm_context_interface::block::BlockGetter", [], [], Φ Self).
+
   Definition Run_block (Self : Set) `{Link Self} : Set :=
-    {block @
-      IsTraitMethod.t "revm_context_interface::block::BlockGetter" [] [] (Φ Self) "block" block *
-      forall (self : Ref.t Pointer.Kind.Ref Self),
-        {{ block [] [] [ φ self ] 🔽 unit }}
-    }.
+    TraitMethod.C (trait Self) "block" (fun method =>
+      forall (self : Ref.t Pointer.Kind.MutRef Self),
+        Run.Trait method [] [] [ φ self ] unit
+    ).
 
   Record Run (Self : Set) `{Link Self} (types : Types.t)  `{Types.AreLinks types} : Set := {
     Block_IsAssociated : 
