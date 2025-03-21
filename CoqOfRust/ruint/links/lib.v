@@ -1,7 +1,5 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
-(* TODO: finish file for ruint.links.modular? *)
-(* Require Import ruint.links.modular. *)
 
 Module Uint.
   Parameter t : Usize.t -> Usize.t -> Set.
