@@ -188,7 +188,7 @@ Module errmap.
                 (M.read (|
                   let~ __serde_state :
                       Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct" :=
-                    M.copy (|
+                    M.read (|
                       M.match_operator (|
                         Some
                           (Ty.associated_in_trait
@@ -268,166 +268,170 @@ Module errmap.
                       |)
                     |) in
                   let~ _ : Ty.tuple [] :=
-                    M.match_operator (|
-                      Some (Ty.tuple []),
-                      M.alloc (|
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
+                    M.read (|
+                      M.match_operator (|
+                        Some (Ty.tuple []),
+                        M.alloc (|
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.tuple [];
+                                Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                              ],
+                            M.get_trait_method (|
+                              "serde::ser::SerializeStruct",
+                              Ty.associated_in_trait
+                                "serde::ser::Serializer"
+                                []
+                                []
+                                __S
+                                "SerializeStruct",
+                              [],
+                              [],
+                              "serialize_field",
+                              [],
+                              [ Ty.path "alloc::string::String" ]
+                            |),
                             [
-                              Ty.tuple [];
-                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
-                            ],
-                          M.get_trait_method (|
-                            "serde::ser::SerializeStruct",
-                            Ty.associated_in_trait
-                              "serde::ser::Serializer"
-                              []
-                              []
-                              __S
-                              "SerializeStruct",
-                            [],
-                            [],
-                            "serialize_field",
-                            [],
-                            [ Ty.path "alloc::string::String" ]
-                          |),
-                          [
-                            M.borrow (|
-                              Pointer.Kind.MutRef,
-                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
-                            |);
-                            M.read (| Value.String "code_name" |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "move_core_types::errmap::ErrorDescription",
-                                    "code_name"
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                              |);
+                              M.read (| Value.String "code_name" |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "move_core_types::errmap::ErrorDescription",
+                                      "code_name"
+                                    |)
                                   |)
                                 |)
                               |)
-                            |)
-                          ]
-                        |)
-                      |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::result::Result::Ok",
-                                0
-                              |) in
-                            let __val := M.copy (| γ0_0 |) in
-                            __val));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::result::Result::Err",
-                                0
-                              |) in
-                            let __err := M.copy (| γ0_0 |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  M.return_ (|
-                                    Value.StructTuple
-                                      "core::result::Result::Err"
-                                      [ M.read (| __err |) ]
+                            ]
+                          |)
+                        |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ0_0 :=
+                                M.SubPointer.get_struct_tuple_field (|
+                                  γ,
+                                  "core::result::Result::Ok",
+                                  0
+                                |) in
+                              let __val := M.copy (| γ0_0 |) in
+                              __val));
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ0_0 :=
+                                M.SubPointer.get_struct_tuple_field (|
+                                  γ,
+                                  "core::result::Result::Err",
+                                  0
+                                |) in
+                              let __err := M.copy (| γ0_0 |) in
+                              M.alloc (|
+                                M.never_to_any (|
+                                  M.read (|
+                                    M.return_ (|
+                                      Value.StructTuple
+                                        "core::result::Result::Err"
+                                        [ M.read (| __err |) ]
+                                    |)
                                   |)
                                 |)
-                              |)
-                            |)))
-                      ]
+                              |)))
+                        ]
+                      |)
                     |) in
                   let~ _ : Ty.tuple [] :=
-                    M.match_operator (|
-                      Some (Ty.tuple []),
-                      M.alloc (|
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
+                    M.read (|
+                      M.match_operator (|
+                        Some (Ty.tuple []),
+                        M.alloc (|
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.tuple [];
+                                Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                              ],
+                            M.get_trait_method (|
+                              "serde::ser::SerializeStruct",
+                              Ty.associated_in_trait
+                                "serde::ser::Serializer"
+                                []
+                                []
+                                __S
+                                "SerializeStruct",
+                              [],
+                              [],
+                              "serialize_field",
+                              [],
+                              [ Ty.path "alloc::string::String" ]
+                            |),
                             [
-                              Ty.tuple [];
-                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
-                            ],
-                          M.get_trait_method (|
-                            "serde::ser::SerializeStruct",
-                            Ty.associated_in_trait
-                              "serde::ser::Serializer"
-                              []
-                              []
-                              __S
-                              "SerializeStruct",
-                            [],
-                            [],
-                            "serialize_field",
-                            [],
-                            [ Ty.path "alloc::string::String" ]
-                          |),
-                          [
-                            M.borrow (|
-                              Pointer.Kind.MutRef,
-                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
-                            |);
-                            M.read (| Value.String "code_description" |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "move_core_types::errmap::ErrorDescription",
-                                    "code_description"
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                              |);
+                              M.read (| Value.String "code_description" |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "move_core_types::errmap::ErrorDescription",
+                                      "code_description"
+                                    |)
                                   |)
                                 |)
                               |)
-                            |)
-                          ]
-                        |)
-                      |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::result::Result::Ok",
-                                0
-                              |) in
-                            let __val := M.copy (| γ0_0 |) in
-                            __val));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::result::Result::Err",
-                                0
-                              |) in
-                            let __err := M.copy (| γ0_0 |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  M.return_ (|
-                                    Value.StructTuple
-                                      "core::result::Result::Err"
-                                      [ M.read (| __err |) ]
+                            ]
+                          |)
+                        |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ0_0 :=
+                                M.SubPointer.get_struct_tuple_field (|
+                                  γ,
+                                  "core::result::Result::Ok",
+                                  0
+                                |) in
+                              let __val := M.copy (| γ0_0 |) in
+                              __val));
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ0_0 :=
+                                M.SubPointer.get_struct_tuple_field (|
+                                  γ,
+                                  "core::result::Result::Err",
+                                  0
+                                |) in
+                              let __err := M.copy (| γ0_0 |) in
+                              M.alloc (|
+                                M.never_to_any (|
+                                  M.read (|
+                                    M.return_ (|
+                                      Value.StructTuple
+                                        "core::result::Result::Err"
+                                        [ M.read (| __err |) ]
+                                    |)
                                   |)
                                 |)
-                              |)
-                            |)))
-                      ]
+                              |)))
+                        ]
+                      |)
                     |) in
                   M.alloc (|
                     M.call_closure (|
@@ -527,7 +531,7 @@ Module errmap.
                 (M.read (|
                   let~ __serde_state :
                       Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct" :=
-                    M.copy (|
+                    M.read (|
                       M.match_operator (|
                         Some
                           (Ty.associated_in_trait
@@ -607,191 +611,195 @@ Module errmap.
                       |)
                     |) in
                   let~ _ : Ty.tuple [] :=
-                    M.match_operator (|
-                      Some (Ty.tuple []),
-                      M.alloc (|
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [
-                              Ty.tuple [];
-                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
-                            ],
-                          M.get_trait_method (|
-                            "serde::ser::SerializeStruct",
-                            Ty.associated_in_trait
-                              "serde::ser::Serializer"
+                    M.read (|
+                      M.match_operator (|
+                        Some (Ty.tuple []),
+                        M.alloc (|
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
                               []
-                              []
-                              __S
-                              "SerializeStruct",
-                            [],
-                            [],
-                            "serialize_field",
-                            [],
-                            [
-                              Ty.apply
-                                (Ty.path "alloc::collections::btree::map::BTreeMap")
+                              [
+                                Ty.tuple [];
+                                Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                              ],
+                            M.get_trait_method (|
+                              "serde::ser::SerializeStruct",
+                              Ty.associated_in_trait
+                                "serde::ser::Serializer"
                                 []
-                                [
-                                  Ty.path "u64";
-                                  Ty.path "move_core_types::errmap::ErrorDescription";
-                                  Ty.path "alloc::alloc::Global"
-                                ]
+                                []
+                                __S
+                                "SerializeStruct",
+                              [],
+                              [],
+                              "serialize_field",
+                              [],
+                              [
+                                Ty.apply
+                                  (Ty.path "alloc::collections::btree::map::BTreeMap")
+                                  []
+                                  [
+                                    Ty.path "u64";
+                                    Ty.path "move_core_types::errmap::ErrorDescription";
+                                    Ty.path "alloc::alloc::Global"
+                                  ]
+                              ]
+                            |),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                              |);
+                              M.read (| Value.String "error_categories" |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "move_core_types::errmap::ErrorMapping",
+                                      "error_categories"
+                                    |)
+                                  |)
+                                |)
+                              |)
                             ]
-                          |),
-                          [
-                            M.borrow (|
-                              Pointer.Kind.MutRef,
-                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
-                            |);
-                            M.read (| Value.String "error_categories" |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "move_core_types::errmap::ErrorMapping",
-                                    "error_categories"
+                          |)
+                        |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ0_0 :=
+                                M.SubPointer.get_struct_tuple_field (|
+                                  γ,
+                                  "core::result::Result::Ok",
+                                  0
+                                |) in
+                              let __val := M.copy (| γ0_0 |) in
+                              __val));
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ0_0 :=
+                                M.SubPointer.get_struct_tuple_field (|
+                                  γ,
+                                  "core::result::Result::Err",
+                                  0
+                                |) in
+                              let __err := M.copy (| γ0_0 |) in
+                              M.alloc (|
+                                M.never_to_any (|
+                                  M.read (|
+                                    M.return_ (|
+                                      Value.StructTuple
+                                        "core::result::Result::Err"
+                                        [ M.read (| __err |) ]
+                                    |)
                                   |)
                                 |)
-                              |)
-                            |)
-                          ]
-                        |)
-                      |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::result::Result::Ok",
-                                0
-                              |) in
-                            let __val := M.copy (| γ0_0 |) in
-                            __val));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::result::Result::Err",
-                                0
-                              |) in
-                            let __err := M.copy (| γ0_0 |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  M.return_ (|
-                                    Value.StructTuple
-                                      "core::result::Result::Err"
-                                      [ M.read (| __err |) ]
-                                  |)
-                                |)
-                              |)
-                            |)))
-                      ]
+                              |)))
+                        ]
+                      |)
                     |) in
                   let~ _ : Ty.tuple [] :=
-                    M.match_operator (|
-                      Some (Ty.tuple []),
-                      M.alloc (|
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
-                            [
-                              Ty.tuple [];
-                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
-                            ],
-                          M.get_trait_method (|
-                            "serde::ser::SerializeStruct",
-                            Ty.associated_in_trait
-                              "serde::ser::Serializer"
+                    M.read (|
+                      M.match_operator (|
+                        Some (Ty.tuple []),
+                        M.alloc (|
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
                               []
-                              []
-                              __S
-                              "SerializeStruct",
-                            [],
-                            [],
-                            "serialize_field",
-                            [],
-                            [
-                              Ty.apply
-                                (Ty.path "alloc::collections::btree::map::BTreeMap")
+                              [
+                                Ty.tuple [];
+                                Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                              ],
+                            M.get_trait_method (|
+                              "serde::ser::SerializeStruct",
+                              Ty.associated_in_trait
+                                "serde::ser::Serializer"
                                 []
-                                [
-                                  Ty.path "move_core_types::language_storage::ModuleId";
-                                  Ty.apply
-                                    (Ty.path "alloc::collections::btree::map::BTreeMap")
-                                    []
-                                    [
-                                      Ty.path "u64";
-                                      Ty.path "move_core_types::errmap::ErrorDescription";
-                                      Ty.path "alloc::alloc::Global"
-                                    ];
-                                  Ty.path "alloc::alloc::Global"
-                                ]
+                                []
+                                __S
+                                "SerializeStruct",
+                              [],
+                              [],
+                              "serialize_field",
+                              [],
+                              [
+                                Ty.apply
+                                  (Ty.path "alloc::collections::btree::map::BTreeMap")
+                                  []
+                                  [
+                                    Ty.path "move_core_types::language_storage::ModuleId";
+                                    Ty.apply
+                                      (Ty.path "alloc::collections::btree::map::BTreeMap")
+                                      []
+                                      [
+                                        Ty.path "u64";
+                                        Ty.path "move_core_types::errmap::ErrorDescription";
+                                        Ty.path "alloc::alloc::Global"
+                                      ];
+                                    Ty.path "alloc::alloc::Global"
+                                  ]
+                              ]
+                            |),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                              |);
+                              M.read (| Value.String "module_error_maps" |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "move_core_types::errmap::ErrorMapping",
+                                      "module_error_maps"
+                                    |)
+                                  |)
+                                |)
+                              |)
                             ]
-                          |),
-                          [
-                            M.borrow (|
-                              Pointer.Kind.MutRef,
-                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
-                            |);
-                            M.read (| Value.String "module_error_maps" |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "move_core_types::errmap::ErrorMapping",
-                                    "module_error_maps"
+                          |)
+                        |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ0_0 :=
+                                M.SubPointer.get_struct_tuple_field (|
+                                  γ,
+                                  "core::result::Result::Ok",
+                                  0
+                                |) in
+                              let __val := M.copy (| γ0_0 |) in
+                              __val));
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ0_0 :=
+                                M.SubPointer.get_struct_tuple_field (|
+                                  γ,
+                                  "core::result::Result::Err",
+                                  0
+                                |) in
+                              let __err := M.copy (| γ0_0 |) in
+                              M.alloc (|
+                                M.never_to_any (|
+                                  M.read (|
+                                    M.return_ (|
+                                      Value.StructTuple
+                                        "core::result::Result::Err"
+                                        [ M.read (| __err |) ]
+                                    |)
                                   |)
                                 |)
-                              |)
-                            |)
-                          ]
-                        |)
-                      |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::result::Result::Ok",
-                                0
-                              |) in
-                            let __val := M.copy (| γ0_0 |) in
-                            __val));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::result::Result::Err",
-                                0
-                              |) in
-                            let __err := M.copy (| γ0_0 |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  M.return_ (|
-                                    Value.StructTuple
-                                      "core::result::Result::Err"
-                                      [ M.read (| __err |) ]
-                                  |)
-                                |)
-                              |)
-                            |)))
-                      ]
+                              |)))
+                        ]
+                      |)
                     |) in
                   M.alloc (|
                     M.call_closure (|
@@ -1242,77 +1250,78 @@ Module errmap.
             ltac:(M.monadic
               (M.read (|
                 let~ _ : Ty.tuple [] :=
-                  M.match_operator (|
-                    Some (Ty.tuple []),
-                    M.alloc (| Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ :=
-                            M.alloc (|
-                              M.call_closure (|
-                                Ty.apply
-                                  (Ty.path "core::option::Option")
-                                  []
-                                  [ Ty.path "move_core_types::errmap::ErrorDescription" ],
-                                M.get_associated_function (|
+                  M.read (|
+                    M.match_operator (|
+                      Some (Ty.tuple []),
+                      M.alloc (| Value.Tuple [] |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ :=
+                              M.alloc (|
+                                M.call_closure (|
                                   Ty.apply
-                                    (Ty.path "alloc::collections::btree::map::BTreeMap")
+                                    (Ty.path "core::option::Option")
                                     []
-                                    [
-                                      Ty.path "u64";
-                                      Ty.path "move_core_types::errmap::ErrorDescription";
-                                      Ty.path "alloc::alloc::Global"
-                                    ],
-                                  "insert",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.MutRef,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "move_core_types::errmap::ErrorMapping",
-                                      "error_categories"
-                                    |)
-                                  |);
-                                  M.read (| category_id |);
-                                  M.read (| description |)
-                                ]
-                              |)
-                            |) in
-                          let γ0_0 :=
-                            M.SubPointer.get_struct_tuple_field (|
-                              γ,
-                              "core::option::Option::Some",
-                              0
-                            |) in
-                          let previous_entry := M.copy (| γ0_0 |) in
-                          M.alloc (|
-                            M.never_to_any (|
-                              M.read (|
-                                M.return_ (|
-                                  Value.StructTuple
-                                    "core::result::Result::Err"
-                                    [
-                                      M.read (|
-                                        let~ error : Ty.path "anyhow::Error" :=
-                                          M.copy (|
-                                            M.match_operator (|
-                                              Some (Ty.path "anyhow::Error"),
-                                              M.alloc (|
-                                                M.call_closure (|
-                                                  Ty.path "alloc::string::String",
-                                                  M.get_function (|
-                                                    "core::hint::must_use",
-                                                    [],
-                                                    [ Ty.path "alloc::string::String" ]
-                                                  |),
-                                                  [
-                                                    M.read (|
-                                                      let~ res : Ty.path "alloc::string::String" :=
-                                                        M.alloc (|
+                                    [ Ty.path "move_core_types::errmap::ErrorDescription" ],
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "alloc::collections::btree::map::BTreeMap")
+                                      []
+                                      [
+                                        Ty.path "u64";
+                                        Ty.path "move_core_types::errmap::ErrorDescription";
+                                        Ty.path "alloc::alloc::Global"
+                                      ],
+                                    "insert",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "move_core_types::errmap::ErrorMapping",
+                                        "error_categories"
+                                      |)
+                                    |);
+                                    M.read (| category_id |);
+                                    M.read (| description |)
+                                  ]
+                                |)
+                              |) in
+                            let γ0_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ,
+                                "core::option::Option::Some",
+                                0
+                              |) in
+                            let previous_entry := M.copy (| γ0_0 |) in
+                            M.alloc (|
+                              M.never_to_any (|
+                                M.read (|
+                                  M.return_ (|
+                                    Value.StructTuple
+                                      "core::result::Result::Err"
+                                      [
+                                        M.read (|
+                                          let~ error : Ty.path "anyhow::Error" :=
+                                            M.read (|
+                                              M.match_operator (|
+                                                Some (Ty.path "anyhow::Error"),
+                                                M.alloc (|
+                                                  M.call_closure (|
+                                                    Ty.path "alloc::string::String",
+                                                    M.get_function (|
+                                                      "core::hint::must_use",
+                                                      [],
+                                                      [ Ty.path "alloc::string::String" ]
+                                                    |),
+                                                    [
+                                                      M.read (|
+                                                        let~ res :
+                                                            Ty.path "alloc::string::String" :=
                                                           M.call_closure (|
                                                             Ty.path "alloc::string::String",
                                                             M.get_function (|
@@ -1499,69 +1508,70 @@ Module errmap.
                                                                 ]
                                                               |)
                                                             ]
-                                                          |)
-                                                        |) in
-                                                      res
-                                                    |)
-                                                  ]
-                                                |)
-                                              |),
-                                              [
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (let error := M.copy (| γ |) in
-                                                    M.alloc (|
-                                                      M.call_closure (|
-                                                        Ty.path "anyhow::Error",
-                                                        M.get_associated_function (|
-                                                          Ty.path "anyhow::kind::Adhoc",
-                                                          "new",
-                                                          [],
-                                                          [ Ty.path "alloc::string::String" ]
-                                                        |),
-                                                        [
-                                                          M.call_closure (|
+                                                          |) in
+                                                        res
+                                                      |)
+                                                    ]
+                                                  |)
+                                                |),
+                                                [
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let error := M.copy (| γ |) in
+                                                      M.alloc (|
+                                                        M.call_closure (|
+                                                          Ty.path "anyhow::Error",
+                                                          M.get_associated_function (|
                                                             Ty.path "anyhow::kind::Adhoc",
-                                                            M.get_trait_method (|
-                                                              "anyhow::kind::AdhocKind",
-                                                              Ty.apply
-                                                                (Ty.path "&")
+                                                            "new",
+                                                            [],
+                                                            [ Ty.path "alloc::string::String" ]
+                                                          |),
+                                                          [
+                                                            M.call_closure (|
+                                                              Ty.path "anyhow::kind::Adhoc",
+                                                              M.get_trait_method (|
+                                                                "anyhow::kind::AdhocKind",
+                                                                Ty.apply
+                                                                  (Ty.path "&")
+                                                                  []
+                                                                  [ Ty.path "alloc::string::String"
+                                                                  ],
+                                                                [],
+                                                                [],
+                                                                "anyhow_kind",
+                                                                [],
                                                                 []
-                                                                [ Ty.path "alloc::string::String" ],
-                                                              [],
-                                                              [],
-                                                              "anyhow_kind",
-                                                              [],
-                                                              []
-                                                            |),
-                                                            [
-                                                              M.borrow (|
-                                                                Pointer.Kind.Ref,
-                                                                M.alloc (|
-                                                                  M.borrow (|
-                                                                    Pointer.Kind.Ref,
-                                                                    error
+                                                              |),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.alloc (|
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      error
+                                                                    |)
                                                                   |)
                                                                 |)
-                                                              |)
-                                                            ]
-                                                          |);
-                                                          M.read (| error |)
-                                                        ]
-                                                      |)
-                                                    |)))
-                                              ]
-                                            |)
-                                          |) in
-                                        error
-                                      |)
-                                    ]
+                                                              ]
+                                                            |);
+                                                            M.read (| error |)
+                                                          ]
+                                                        |)
+                                                      |)))
+                                                ]
+                                              |)
+                                            |) in
+                                          error
+                                        |)
+                                      ]
+                                  |)
                                 |)
                               |)
-                            |)
-                          |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                    ]
+                            |)));
+                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      ]
+                    |)
                   |) in
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
@@ -1616,12 +1626,26 @@ Module errmap.
                             Ty.path "alloc::alloc::Global"
                           ]
                       ] :=
-                  M.alloc (|
-                    M.call_closure (|
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "&mut")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "alloc::collections::btree::map::BTreeMap")
+                          []
+                          [
+                            Ty.path "u64";
+                            Ty.path "move_core_types::errmap::ErrorDescription";
+                            Ty.path "alloc::alloc::Global"
+                          ]
+                      ],
+                    M.get_associated_function (|
                       Ty.apply
-                        (Ty.path "&mut")
+                        (Ty.path "alloc::collections::btree::map::entry::Entry")
                         []
                         [
+                          Ty.path "move_core_types::language_storage::ModuleId";
                           Ty.apply
                             (Ty.path "alloc::collections::btree::map::BTreeMap")
                             []
@@ -1629,9 +1653,15 @@ Module errmap.
                               Ty.path "u64";
                               Ty.path "move_core_types::errmap::ErrorDescription";
                               Ty.path "alloc::alloc::Global"
-                            ]
+                            ];
+                          Ty.path "alloc::alloc::Global"
                         ],
-                      M.get_associated_function (|
+                      "or_default",
+                      [],
+                      []
+                    |),
+                    [
+                      M.call_closure (|
                         Ty.apply
                           (Ty.path "alloc::collections::btree::map::entry::Entry")
                           []
@@ -1647,14 +1677,9 @@ Module errmap.
                               ];
                             Ty.path "alloc::alloc::Global"
                           ],
-                        "or_default",
-                        [],
-                        []
-                      |),
-                      [
-                        M.call_closure (|
+                        M.get_associated_function (|
                           Ty.apply
-                            (Ty.path "alloc::collections::btree::map::entry::Entry")
+                            (Ty.path "alloc::collections::btree::map::BTreeMap")
                             []
                             [
                               Ty.path "move_core_types::language_storage::ModuleId";
@@ -1668,121 +1693,105 @@ Module errmap.
                                 ];
                               Ty.path "alloc::alloc::Global"
                             ],
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "alloc::collections::btree::map::BTreeMap")
-                              []
-                              [
-                                Ty.path "move_core_types::language_storage::ModuleId";
-                                Ty.apply
-                                  (Ty.path "alloc::collections::btree::map::BTreeMap")
-                                  []
-                                  [
-                                    Ty.path "u64";
-                                    Ty.path "move_core_types::errmap::ErrorDescription";
-                                    Ty.path "alloc::alloc::Global"
-                                  ];
-                                Ty.path "alloc::alloc::Global"
-                              ],
-                            "entry",
-                            [],
-                            []
-                          |),
-                          [
-                            M.borrow (|
-                              Pointer.Kind.MutRef,
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "move_core_types::errmap::ErrorMapping",
-                                "module_error_maps"
-                              |)
-                            |);
-                            M.call_closure (|
-                              Ty.path "move_core_types::language_storage::ModuleId",
-                              M.get_trait_method (|
-                                "core::clone::Clone",
-                                Ty.path "move_core_types::language_storage::ModuleId",
-                                [],
-                                [],
-                                "clone",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, module_id |) ]
+                          "entry",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.MutRef,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "move_core_types::errmap::ErrorMapping",
+                              "module_error_maps"
                             |)
-                          ]
-                        |)
-                      ]
-                    |)
+                          |);
+                          M.call_closure (|
+                            Ty.path "move_core_types::language_storage::ModuleId",
+                            M.get_trait_method (|
+                              "core::clone::Clone",
+                              Ty.path "move_core_types::language_storage::ModuleId",
+                              [],
+                              [],
+                              "clone",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, module_id |) ]
+                          |)
+                        ]
+                      |)
+                    ]
                   |) in
                 let~ _ : Ty.tuple [] :=
-                  M.match_operator (|
-                    Some (Ty.tuple []),
-                    M.alloc (| Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ :=
-                            M.alloc (|
-                              M.call_closure (|
-                                Ty.apply
-                                  (Ty.path "core::option::Option")
-                                  []
-                                  [ Ty.path "move_core_types::errmap::ErrorDescription" ],
-                                M.get_associated_function (|
+                  M.read (|
+                    M.match_operator (|
+                      Some (Ty.tuple []),
+                      M.alloc (| Value.Tuple [] |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ :=
+                              M.alloc (|
+                                M.call_closure (|
                                   Ty.apply
-                                    (Ty.path "alloc::collections::btree::map::BTreeMap")
+                                    (Ty.path "core::option::Option")
                                     []
-                                    [
-                                      Ty.path "u64";
-                                      Ty.path "move_core_types::errmap::ErrorDescription";
-                                      Ty.path "alloc::alloc::Global"
-                                    ],
-                                  "insert",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.MutRef,
-                                    M.deref (| M.read (| module_error_map |) |)
-                                  |);
-                                  M.read (| abort_code |);
-                                  M.read (| description |)
-                                ]
-                              |)
-                            |) in
-                          let γ0_0 :=
-                            M.SubPointer.get_struct_tuple_field (|
-                              γ,
-                              "core::option::Option::Some",
-                              0
-                            |) in
-                          let previous_entry := M.copy (| γ0_0 |) in
-                          M.alloc (|
-                            M.never_to_any (|
-                              M.read (|
-                                M.return_ (|
-                                  Value.StructTuple
-                                    "core::result::Result::Err"
-                                    [
-                                      M.read (|
-                                        let~ error : Ty.path "anyhow::Error" :=
-                                          M.copy (|
-                                            M.match_operator (|
-                                              Some (Ty.path "anyhow::Error"),
-                                              M.alloc (|
-                                                M.call_closure (|
-                                                  Ty.path "alloc::string::String",
-                                                  M.get_function (|
-                                                    "core::hint::must_use",
-                                                    [],
-                                                    [ Ty.path "alloc::string::String" ]
-                                                  |),
-                                                  [
-                                                    M.read (|
-                                                      let~ res : Ty.path "alloc::string::String" :=
-                                                        M.alloc (|
+                                    [ Ty.path "move_core_types::errmap::ErrorDescription" ],
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "alloc::collections::btree::map::BTreeMap")
+                                      []
+                                      [
+                                        Ty.path "u64";
+                                        Ty.path "move_core_types::errmap::ErrorDescription";
+                                        Ty.path "alloc::alloc::Global"
+                                      ],
+                                    "insert",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.deref (| M.read (| module_error_map |) |)
+                                    |);
+                                    M.read (| abort_code |);
+                                    M.read (| description |)
+                                  ]
+                                |)
+                              |) in
+                            let γ0_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ,
+                                "core::option::Option::Some",
+                                0
+                              |) in
+                            let previous_entry := M.copy (| γ0_0 |) in
+                            M.alloc (|
+                              M.never_to_any (|
+                                M.read (|
+                                  M.return_ (|
+                                    Value.StructTuple
+                                      "core::result::Result::Err"
+                                      [
+                                        M.read (|
+                                          let~ error : Ty.path "anyhow::Error" :=
+                                            M.read (|
+                                              M.match_operator (|
+                                                Some (Ty.path "anyhow::Error"),
+                                                M.alloc (|
+                                                  M.call_closure (|
+                                                    Ty.path "alloc::string::String",
+                                                    M.get_function (|
+                                                      "core::hint::must_use",
+                                                      [],
+                                                      [ Ty.path "alloc::string::String" ]
+                                                    |),
+                                                    [
+                                                      M.read (|
+                                                        let~ res :
+                                                            Ty.path "alloc::string::String" :=
                                                           M.call_closure (|
                                                             Ty.path "alloc::string::String",
                                                             M.get_function (|
@@ -2028,69 +2037,70 @@ Module errmap.
                                                                 ]
                                                               |)
                                                             ]
-                                                          |)
-                                                        |) in
-                                                      res
-                                                    |)
-                                                  ]
-                                                |)
-                                              |),
-                                              [
-                                                fun γ =>
-                                                  ltac:(M.monadic
-                                                    (let error := M.copy (| γ |) in
-                                                    M.alloc (|
-                                                      M.call_closure (|
-                                                        Ty.path "anyhow::Error",
-                                                        M.get_associated_function (|
-                                                          Ty.path "anyhow::kind::Adhoc",
-                                                          "new",
-                                                          [],
-                                                          [ Ty.path "alloc::string::String" ]
-                                                        |),
-                                                        [
-                                                          M.call_closure (|
+                                                          |) in
+                                                        res
+                                                      |)
+                                                    ]
+                                                  |)
+                                                |),
+                                                [
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let error := M.copy (| γ |) in
+                                                      M.alloc (|
+                                                        M.call_closure (|
+                                                          Ty.path "anyhow::Error",
+                                                          M.get_associated_function (|
                                                             Ty.path "anyhow::kind::Adhoc",
-                                                            M.get_trait_method (|
-                                                              "anyhow::kind::AdhocKind",
-                                                              Ty.apply
-                                                                (Ty.path "&")
+                                                            "new",
+                                                            [],
+                                                            [ Ty.path "alloc::string::String" ]
+                                                          |),
+                                                          [
+                                                            M.call_closure (|
+                                                              Ty.path "anyhow::kind::Adhoc",
+                                                              M.get_trait_method (|
+                                                                "anyhow::kind::AdhocKind",
+                                                                Ty.apply
+                                                                  (Ty.path "&")
+                                                                  []
+                                                                  [ Ty.path "alloc::string::String"
+                                                                  ],
+                                                                [],
+                                                                [],
+                                                                "anyhow_kind",
+                                                                [],
                                                                 []
-                                                                [ Ty.path "alloc::string::String" ],
-                                                              [],
-                                                              [],
-                                                              "anyhow_kind",
-                                                              [],
-                                                              []
-                                                            |),
-                                                            [
-                                                              M.borrow (|
-                                                                Pointer.Kind.Ref,
-                                                                M.alloc (|
-                                                                  M.borrow (|
-                                                                    Pointer.Kind.Ref,
-                                                                    error
+                                                              |),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.alloc (|
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      error
+                                                                    |)
                                                                   |)
                                                                 |)
-                                                              |)
-                                                            ]
-                                                          |);
-                                                          M.read (| error |)
-                                                        ]
-                                                      |)
-                                                    |)))
-                                              ]
-                                            |)
-                                          |) in
-                                        error
-                                      |)
-                                    ]
+                                                              ]
+                                                            |);
+                                                            M.read (| error |)
+                                                          ]
+                                                        |)
+                                                      |)))
+                                                ]
+                                              |)
+                                            |) in
+                                          error
+                                        |)
+                                      ]
+                                  |)
                                 |)
                               |)
-                            |)
-                          |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                    ]
+                            |)));
+                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      ]
+                    |)
                   |) in
                 M.alloc (| Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ] |)
               |)))
@@ -2121,93 +2131,89 @@ Module errmap.
                   (Ty.path "alloc::vec::Vec")
                   []
                   [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ] :=
-              M.alloc (|
-                M.call_closure (|
+              M.call_closure (|
+                Ty.apply
+                  (Ty.path "alloc::vec::Vec")
+                  []
+                  [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                M.get_associated_function (|
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
                     []
                     [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "alloc::vec::Vec")
-                      []
-                      [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                    "new",
-                    [],
-                    []
-                  |),
+                  "new",
+                  [],
                   []
-                |)
+                |),
+                []
               |) in
             let~ _ : Ty.path "usize" :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "usize",
-                  M.get_associated_function (|
+              M.call_closure (|
+                Ty.path "usize",
+                M.get_associated_function (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "usize"; Ty.path "std::io::error::Error" ],
+                  "unwrap",
+                  [],
+                  []
+                |),
+                [
+                  M.call_closure (|
                     Ty.apply
                       (Ty.path "core::result::Result")
                       []
                       [ Ty.path "usize"; Ty.path "std::io::error::Error" ],
-                    "unwrap",
-                    [],
-                    []
-                  |),
-                  [
-                    M.call_closure (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.path "usize"; Ty.path "std::io::error::Error" ],
-                      M.get_trait_method (|
-                        "std::io::Read",
-                        Ty.path "std::fs::File",
-                        [],
-                        [],
-                        "read_to_end",
-                        [],
-                        []
-                      |),
-                      [
-                        M.borrow (|
-                          Pointer.Kind.MutRef,
-                          M.alloc (|
-                            M.call_closure (|
-                              Ty.path "std::fs::File",
-                              M.get_associated_function (|
+                    M.get_trait_method (|
+                      "std::io::Read",
+                      Ty.path "std::fs::File",
+                      [],
+                      [],
+                      "read_to_end",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.alloc (|
+                          M.call_closure (|
+                            Ty.path "std::fs::File",
+                            M.get_associated_function (|
+                              Ty.apply
+                                (Ty.path "core::result::Result")
+                                []
+                                [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ],
+                              "unwrap",
+                              [],
+                              []
+                            |),
+                            [
+                              M.call_closure (|
                                 Ty.apply
                                   (Ty.path "core::result::Result")
                                   []
                                   [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ],
-                                "unwrap",
-                                [],
-                                []
-                              |),
-                              [
-                                M.call_closure (|
-                                  Ty.apply
-                                    (Ty.path "core::result::Result")
-                                    []
-                                    [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ],
-                                  M.get_associated_function (|
-                                    Ty.path "std::fs::File",
-                                    "open",
-                                    [],
-                                    [ P ]
-                                  |),
-                                  [ M.read (| path |) ]
-                                |)
-                              ]
-                            |)
+                                M.get_associated_function (|
+                                  Ty.path "std::fs::File",
+                                  "open",
+                                  [],
+                                  [ P ]
+                                |),
+                                [ M.read (| path |) ]
+                              |)
+                            ]
                           |)
-                        |);
-                        M.borrow (|
-                          Pointer.Kind.MutRef,
-                          M.deref (| M.borrow (| Pointer.Kind.MutRef, bytes |) |)
                         |)
-                      ]
-                    |)
-                  ]
-                |)
+                      |);
+                      M.borrow (|
+                        Pointer.Kind.MutRef,
+                        M.deref (| M.borrow (| Pointer.Kind.MutRef, bytes |) |)
+                      |)
+                    ]
+                  |)
+                ]
               |) in
             M.alloc (|
               M.call_closure (|
@@ -2297,13 +2303,28 @@ Module errmap.
                   (Ty.path "alloc::vec::Vec")
                   []
                   [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ] :=
-              M.alloc (|
-                M.call_closure (|
+              M.call_closure (|
+                Ty.apply
+                  (Ty.path "alloc::vec::Vec")
+                  []
+                  [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                M.get_associated_function (|
                   Ty.apply
-                    (Ty.path "alloc::vec::Vec")
+                    (Ty.path "core::result::Result")
                     []
-                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                  M.get_associated_function (|
+                    [
+                      Ty.apply
+                        (Ty.path "alloc::vec::Vec")
+                        []
+                        [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ];
+                      Ty.path "bcs::error::Error"
+                    ],
+                  "unwrap",
+                  [],
+                  []
+                |),
+                [
+                  M.call_closure (|
                     Ty.apply
                       (Ty.path "core::result::Result")
                       []
@@ -2314,120 +2335,99 @@ Module errmap.
                           [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ];
                         Ty.path "bcs::error::Error"
                       ],
-                    "unwrap",
-                    [],
-                    []
-                  |),
-                  [
-                    M.call_closure (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [
-                          Ty.apply
-                            (Ty.path "alloc::vec::Vec")
-                            []
-                            [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ];
-                          Ty.path "bcs::error::Error"
-                        ],
-                      M.get_function (|
-                        "bcs::ser::to_bytes",
-                        [],
-                        [ Ty.path "move_core_types::errmap::ErrorMapping" ]
-                      |),
-                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                    |)
-                  ]
-                |)
+                    M.get_function (|
+                      "bcs::ser::to_bytes",
+                      [],
+                      [ Ty.path "move_core_types::errmap::ErrorMapping" ]
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                  |)
+                ]
               |) in
             let~ file : Ty.path "std::fs::File" :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "std::fs::File",
-                  M.get_associated_function (|
+              M.call_closure (|
+                Ty.path "std::fs::File",
+                M.get_associated_function (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ],
+                  "unwrap",
+                  [],
+                  []
+                |),
+                [
+                  M.call_closure (|
                     Ty.apply
                       (Ty.path "core::result::Result")
                       []
                       [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ],
-                    "unwrap",
-                    [],
-                    []
-                  |),
-                  [
-                    M.call_closure (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.path "std::fs::File"; Ty.path "std::io::error::Error" ],
-                      M.get_associated_function (| Ty.path "std::fs::File", "create", [], [ P ] |),
-                      [ M.read (| path |) ]
-                    |)
-                  ]
-                |)
+                    M.get_associated_function (| Ty.path "std::fs::File", "create", [], [ P ] |),
+                    [ M.read (| path |) ]
+                  |)
+                ]
               |) in
             let~ _ : Ty.tuple [] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_associated_function (|
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_associated_function (|
+                  Ty.apply
+                    (Ty.path "core::result::Result")
+                    []
+                    [ Ty.tuple []; Ty.path "std::io::error::Error" ],
+                  "unwrap",
+                  [],
+                  []
+                |),
+                [
+                  M.call_closure (|
                     Ty.apply
                       (Ty.path "core::result::Result")
                       []
                       [ Ty.tuple []; Ty.path "std::io::error::Error" ],
-                    "unwrap",
-                    [],
-                    []
-                  |),
-                  [
-                    M.call_closure (|
-                      Ty.apply
-                        (Ty.path "core::result::Result")
-                        []
-                        [ Ty.tuple []; Ty.path "std::io::error::Error" ],
-                      M.get_trait_method (|
-                        "std::io::Write",
-                        Ty.path "std::fs::File",
-                        [],
-                        [],
-                        "write_all",
-                        [],
-                        []
-                      |),
-                      [
-                        M.borrow (| Pointer.Kind.MutRef, file |);
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (|
-                            M.call_closure (|
+                    M.get_trait_method (|
+                      "std::io::Write",
+                      Ty.path "std::fs::File",
+                      [],
+                      [],
+                      "write_all",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (| Pointer.Kind.MutRef, file |);
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                            M.get_trait_method (|
+                              "core::ops::deref::Deref",
                               Ty.apply
-                                (Ty.path "&")
+                                (Ty.path "alloc::vec::Vec")
                                 []
-                                [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                              M.get_trait_method (|
-                                "core::ops::deref::Deref",
-                                Ty.apply
-                                  (Ty.path "alloc::vec::Vec")
-                                  []
-                                  [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                                [],
-                                [],
-                                "deref",
-                                [],
-                                []
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (| M.borrow (| Pointer.Kind.Ref, bytes |) |)
-                                |)
-                              ]
-                            |)
+                                [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                              [],
+                              [],
+                              "deref",
+                              [],
+                              []
+                            |),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| M.borrow (| Pointer.Kind.Ref, bytes |) |)
+                              |)
+                            ]
                           |)
                         |)
-                      ]
-                    |)
-                  ]
-                |)
+                      |)
+                    ]
+                  |)
+                ]
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))

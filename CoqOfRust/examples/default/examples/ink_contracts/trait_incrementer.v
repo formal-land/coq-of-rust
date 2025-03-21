@@ -49,15 +49,13 @@ Module Impl_trait_incrementer_Incrementer.
         let delta := M.alloc (| delta |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
-            M.alloc (|
-              let β :=
-                M.SubPointer.get_struct_record_field (|
-                  M.deref (| M.read (| self |) |),
-                  "trait_incrementer::Incrementer",
-                  "value"
-                |) in
-              M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| delta |) |) |)
-            |) in
+            let β :=
+              M.SubPointer.get_struct_record_field (|
+                M.deref (| M.read (| self |) |),
+                "trait_incrementer::Incrementer",
+                "value"
+              |) in
+            M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| delta |) |) |) in
           M.alloc (| Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -141,15 +139,13 @@ Module Impl_trait_incrementer_Reset_for_trait_incrementer_Incrementer.
         (let self := M.alloc (| self |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
-            M.alloc (|
-              M.write (|
-                M.SubPointer.get_struct_record_field (|
-                  M.deref (| M.read (| self |) |),
-                  "trait_incrementer::Incrementer",
-                  "value"
-                |),
-                Value.Integer IntegerKind.U64 0
-              |)
+            M.write (|
+              M.SubPointer.get_struct_record_field (|
+                M.deref (| M.read (| self |) |),
+                "trait_incrementer::Incrementer",
+                "value"
+              |),
+              Value.Integer IntegerKind.U64 0
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))

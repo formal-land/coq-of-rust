@@ -6,26 +6,26 @@ Require Import core.links.array.
 Require Import revm.links.dependencies.
 Require Import revm_interpreter.interpreter.links.stack.
 
-(*
 Module Stack.
   (*
-    /// Returns the length of the stack in words.
-    #[inline]
-    pub fn len(&self) -> usize {
-        self.data.len()
-    }
+  pub struct Stack {
+      data: Vec<U256>,
+  }
   *)
-  Definition len '(Stack.data stack) : Z :=
-    Z.of_nat (List.length stack).
+  Record t : Set := {
+    data: list U256.t;
+  }.
+End Stack.
 
-  (*
-    /// Removes the topmost element from the stack and returns it, or `StackUnderflow` if it is
-    /// empty.
-    #[inline]
-    pub fn pop(&mut self) -> Result<U256, InstructionResult> {
-        self.data.pop().ok_or(InstructionResult::StackUnderflow)
-    }
-  *)
+Module Impl_Stack.
+  Definition Self : Set :=
+    Stack.t.
+
+  (* pub fn len(&self) -> usize *)
+  Definition len (self : Self) : Usize.t :=
+    Integer.wrap_of_Z (Z.of_nat (List.length self.(Stack.data))).
+
+  (* pub fn pop(&mut self) -> Result<U256, InstructionResult> *)
   Definition pop :
       MS? Stack.t string (U256.t + InstructionResult.t) :=
     letS? '(Stack.data stack) := readS? in
@@ -120,4 +120,3 @@ Module Stack.
     letS? pop2 := pop_unsafe in
     returnS? (pop1, pop2, top_unsafe).
 End Stack.
-*)

@@ -1,8 +1,36 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
 Require Import CoqOfRust.simulations.M.
-Import simulations.M.Notations.
-Require Import revm.links.dependencies.
+Require Import revm.revm_interpreter.links.interpreter.
+Require Import revm.revm_interpreter.links.interpreter_types.
+Require Import revm.revm_interpreter.simulations.gas.
+Require Import revm.revm_interpreter.simulations.interpreter_types.
+Require Import revm.revm_interpreter.instructions.links.arithmetic.
+Require Import ruint.simulations.add.
+
+Import Impl_Gas.
+Import add.Impl_Uint.
+
+Instance run_add Stack
+    {WIRE H : Set} `{Link WIRE} `{Link H}
+    {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
+    `(run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types)
+    (interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t WIRE WIRE_types))
+    (_host : Ref.t Pointer.Kind.MutRef H) :
+  Run.Trait Stack (links.arithmetic.run_add _ interpreter _host).
+Proof.
+  constructor.
+  destruct run_InterpreterTypes_for_WIRE.
+  destruct run_StackTrait_for_Stack, run_LoopControl_for_Control.
+  simulate_one_step.
+  simulate_one_step.
+  simulate.
+  { admit. }
+  { 
+
+  }
+Defined.
+
 (*
 Require Import revm.interpreter.links.interpreter.
 Require Import revm.interpreter.interpreter.links.instruction_result.

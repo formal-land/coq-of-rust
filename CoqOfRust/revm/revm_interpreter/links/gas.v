@@ -13,9 +13,7 @@ Require Import revm_interpreter.gas.
 
 (*
 pub struct MemoryGas {
-    /// Current memory length
     pub words_num: usize,
-    /// Current memory expansion cost
     pub expansion_cost: u64,
 }
 *)

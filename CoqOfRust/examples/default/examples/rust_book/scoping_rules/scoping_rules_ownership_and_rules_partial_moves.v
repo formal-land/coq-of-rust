@@ -34,43 +34,41 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ person : Ty.path "scoping_rules_ownership_and_rules_partial_moves::main::Person" :=
-          M.alloc (|
-            Value.StructRecord
-              "scoping_rules_ownership_and_rules_partial_moves::main::Person"
-              [
-                ("name",
-                  M.call_closure (|
+          Value.StructRecord
+            "scoping_rules_ownership_and_rules_partial_moves::main::Person"
+            [
+              ("name",
+                M.call_closure (|
+                  Ty.path "alloc::string::String",
+                  M.get_trait_method (|
+                    "core::convert::From",
                     Ty.path "alloc::string::String",
-                    M.get_trait_method (|
-                      "core::convert::From",
-                      Ty.path "alloc::string::String",
-                      [],
-                      [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                      "from",
-                      [],
-                      []
-                    |),
-                    [ M.read (| Value.String "Alice" |) ]
-                  |));
-                ("age",
-                  M.call_closure (|
+                    [],
+                    [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                    "from",
+                    [],
+                    []
+                  |),
+                  [ M.read (| Value.String "Alice" |) ]
+                |));
+              ("age",
+                M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::boxed::Box")
+                    []
+                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                  M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::boxed::Box")
                       []
                       [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "alloc::boxed::Box")
-                        []
-                        [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                      "new",
-                      [],
-                      []
-                    |),
-                    [ Value.Integer IntegerKind.U8 20 ]
-                  |))
-              ]
-          |) in
+                    "new",
+                    [],
+                    []
+                  |),
+                  [ Value.Integer IntegerKind.U8 20 ]
+                |))
+            ] in
         M.match_operator (|
           None,
           person,
@@ -92,8 +90,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 let name := M.copy (| γ0_0 |) in
                 let age := M.alloc (| γ0_1 |) in
                 let~ _ : Ty.tuple [] :=
-                  let~ _ : Ty.tuple [] :=
-                    M.alloc (|
+                  M.read (|
+                    let~ _ : Ty.tuple [] :=
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -166,12 +164,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             ]
                           |)
                         ]
-                      |)
-                    |) in
-                  M.alloc (| Value.Tuple [] |) in
+                      |) in
+                    M.alloc (| Value.Tuple [] |)
+                  |) in
                 let~ _ : Ty.tuple [] :=
-                  let~ _ : Ty.tuple [] :=
-                    M.alloc (|
+                  M.read (|
+                    let~ _ : Ty.tuple [] :=
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -233,12 +231,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             ]
                           |)
                         ]
-                      |)
-                    |) in
-                  M.alloc (| Value.Tuple [] |) in
+                      |) in
+                    M.alloc (| Value.Tuple [] |)
+                  |) in
                 let~ _ : Ty.tuple [] :=
-                  let~ _ : Ty.tuple [] :=
-                    M.alloc (|
+                  M.read (|
+                    let~ _ : Ty.tuple [] :=
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -316,9 +314,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             ]
                           |)
                         ]
-                      |)
-                    |) in
-                  M.alloc (| Value.Tuple [] |) in
+                      |) in
+                    M.alloc (| Value.Tuple [] |)
+                  |) in
                 M.alloc (| Value.Tuple [] |)))
           ]
         |)
