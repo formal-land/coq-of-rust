@@ -17,4 +17,10 @@ Module Uint.
     OfTy.t (Ty.apply (Ty.path "ruint::Uint") [ BITS' ; LIMBS' ] []).
   Proof. intros. eapply OfTy.Make with (A := t BITS LIMBS). now subst. Defined.
   Smpl Add eapply of_ty : of_ty.
+
+  (* TODO: 
+  - add_mod from ruint::modular
+  - mul_mod from ruint::modular
+  - pow from ruint::modular
+  *)
 End Uint.
