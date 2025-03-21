@@ -4,6 +4,8 @@ Require Import revm.revm_context_interface.links.host.
 Require Import revm.revm_interpreter.links.gas.
 Require Import revm.revm_interpreter.links.interpreter.
 Require Import revm.revm_interpreter.links.interpreter_types.
+(* NOTE: might be deleted *)
+(* Require Import revm.revm_interpreter.instructions.i256. *)
 Require Import revm.revm_interpreter.instructions.arithmetic.
 Require Import ruint.links.add.
 Require Import ruint.links.cmp.
@@ -39,7 +41,7 @@ Proof.
   eapply Run.Rewrite. {
     progress repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
     (* Seems like the code doesnt envolve proofs on `H` *)
-    (* progress repeat erewrite IsTraitAssociatedType_eq by apply run_Host_for_H.  *)
+    (* progress repeat erewrite IsTraitAssociatedType_eq by apply run_Host_for_H. *)
     reflexivity.
   }
   destruct run_InterpreterTypes_for_WIRE.
@@ -162,6 +164,16 @@ Proof.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
   (* TODO: revm_interpreter::instructions::i256::i256_div *)
+  (* NOTE:
+  Trait instructions.i256.i256_div [] [] 
+    [lib.Uint.IsLink.(φ) value; lib.Uint.IsLink.(φ) value1]
+    (lib.Uint.t {| Integer.value := 256 |} {| Integer.value := 4 |}) 
+  Here's an interesting result: the goal says we need to prove `i256_div` belongs to some trait,
+  in othr word, it's an associated function. 
+  Two problems here: 
+  1. `i256_div` is not an associated function;
+  2. I wonder how to link `i256_div`. My tried to generate an instance but it seems to be unrelated.
+  *)
   run_symbolic.
 (* Defined. *)
 Admitted.
