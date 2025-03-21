@@ -32,49 +32,49 @@ Module Block.
   (* fn number(&self) -> u64; *)
   Definition Run_number (Self : Set) `{Link Self} : Set :=
     TraitMethod.C (trait Self) "number" (fun method =>
-      forall (self : Ref.t Pointer.Kind.MutRef Self),
+      forall (self : Ref.t Pointer.Kind.Ref Self),
         Run.Trait method [] [] [ φ self ] U64.t
     ).
 
   (* fn beneficiary(&self) -> Address; *)
   Definition Run_beneficiary (Self : Set) `{Link Self} : Set :=
     TraitMethod.C (trait Self) "beneficiary" (fun method =>
-      forall (self : Ref.t Pointer.Kind.MutRef Self),
+      forall (self : Ref.t Pointer.Kind.Ref Self),
         Run.Trait method [] [] [ φ self ] Address.t
     ).
 
   (* fn timestamp(&self) -> u64; *)
   Definition Run_timestamp (Self : Set) `{Link Self} : Set :=
     TraitMethod.C (trait Self) "timestamp" (fun method =>
-      forall (self : Ref.t Pointer.Kind.MutRef Self),
+      forall (self : Ref.t Pointer.Kind.Ref Self),
         Run.Trait method [] [] [ φ self ] U64.t
     ).
 
   (* fn gas_limit(&self) -> u64; *)
   Definition Run_gas_limit (Self : Set) `{Link Self} : Set :=
     TraitMethod.C (trait Self) "gas_limit" (fun method =>
-      forall (self : Ref.t Pointer.Kind.MutRef Self),
+      forall (self : Ref.t Pointer.Kind.Ref Self),
         Run.Trait method [] [] [ φ self ] U64.t
     ).
 
   (* fn basefee(&self) -> u64; *)
   Definition Run_basefee (Self : Set) `{Link Self} : Set :=
     TraitMethod.C (trait Self) "basefee" (fun method =>
-      forall (self : Ref.t Pointer.Kind.MutRef Self),
+      forall (self : Ref.t Pointer.Kind.Ref Self),
         Run.Trait method [] [] [ φ self ] U64.t
     ).
 
   (* fn difficulty(&self) -> U256; *)
   Definition Run_difficulty (Self : Set) `{Link Self} : Set :=
     TraitMethod.C (trait Self) "difficulty" (fun method =>
-      forall (self : Ref.t Pointer.Kind.MutRef Self),
+      forall (self : Ref.t Pointer.Kind.Ref Self),
         Run.Trait method [] [] [ φ self ] U256.t
     ).
 
   (* fn blob_gasprice(&self) -> Option<u128> *)
   Definition Run_blob_gasprice (Self : Set) `{Link Self} : Set :=
     TraitMethod.C (trait Self) "blob_gasprice" (fun method =>
-      forall (self : Ref.t Pointer.Kind.MutRef Self),
+      forall (self : Ref.t Pointer.Kind.Ref Self),
         Run.Trait method [] [] [ φ self ] (option U128.t)
     ).
 
@@ -116,7 +116,7 @@ Module BlockGetter.
 
   Definition Run_block (Self : Set) `{Link Self} : Set :=
     TraitMethod.C (trait Self) "block" (fun method =>
-      forall (self : Ref.t Pointer.Kind.MutRef Self),
+      forall (self : Ref.t Pointer.Kind.Ref Self),
         Run.Trait method [] [] [ φ self ] unit
     ).
 
