@@ -120,7 +120,7 @@ Module BlockGetter.
         Run.Trait method [] [] [ φ self ] unit
     ).
 
-  Record Run (Self : Set) `{Link Self} (types : Types.t)  `{Types.AreLinks types} : Set := {
+  Class Run (Self : Set) `{Link Self} (types : Types.t)  `{Types.AreLinks types} : Set := {
     Block_IsAssociated : 
       IsTraitAssociatedType
         "revm_context_interface::block::BlockGetter" [] [] (Φ Self)
