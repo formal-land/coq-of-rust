@@ -172,7 +172,7 @@ Proof.
   in othr word, it's an associated function. 
   Two problems here: 
   1. `i256_div` is not an associated function;
-  2. I wonder how to link `i256_div`. My tried to generate an instance but it seems to be unrelated.
+  2. `i256_div` seems to be unlinkable. My tried to generate an instance but it seems to be unrelated.
   *)
   run_symbolic.
 (* Defined. *)
