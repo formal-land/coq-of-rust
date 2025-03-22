@@ -15,8 +15,6 @@ Require Import core.convert.links.mod.
 Import Impl_SpecId.
 Import Impl_Gas.
 Import from.Impl_Uint.
-(* TODO: check if we need to implement `into` function in `from` *)
-(* Import into.Impl_Uint. *)
 
 (* TODO(progress): 
   - finish link in `dependencies` and link to here
@@ -92,7 +90,8 @@ Proof.
   destruct run_Host_for_H.
   destruct run_BlockGetter.
   destruct run_Block_for_Block.
-  (* TODO: core::convert::Into *)
+  (* TODO: why `core::convert::Into` still doesn't work? *)
+  (* assert ( forall (A : Set), A )  . *)
   run_symbolic.
 Admitted.
 

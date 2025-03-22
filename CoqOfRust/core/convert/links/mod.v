@@ -28,14 +28,16 @@ pub trait Into<T>: Sized {
 }
 *)
 Module Into.
-  Definition Run_into (Self T : Set) `{Link Self} `{Link T} : Set :=
-    {into @
-      IsTraitMethod.t "core::convert::Into" [] [Φ T] (Φ Self) "into" into *
-      forall (self : Self),
-        {{ into [] [] [φ self] 🔽 T }}
-    }.
+  Definition trait (Self T : Set) `{Link Self} `{Link T} : TraitMethod.Header.t :=
+    ("core::convert::Into", [], [Φ T], Φ Self).
 
-  Record Run (Self : Set) (T : Set) `{Link Self} `{Link T} : Set := {
+  Definition Run_into (Self T : Set) `{Link Self} `{Link T} : Set :=
+    TraitMethod.C (trait Self T) "into" (fun method =>
+      forall (self : Ref.t Pointer.Kind.Ref Self),
+        Run.Trait method [] [] [ φ self ] T
+    ).
+
+  Class Run (Self : Set) (T : Set) `{Link Self} `{Link T} : Set := {
     into : Run_into Self T;
   }.
 End Into.
