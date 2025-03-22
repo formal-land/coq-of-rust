@@ -1,8 +1,6 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import links.M.
 
-Import Run.
-
 (*
 pub trait Deref {
     type Target: ?Sized;
@@ -10,21 +8,23 @@ pub trait Deref {
 }
 *)
 Module Deref.
+  Definition trait (Self : Set) `{Link Self} : TraitMethod.Header.t :=
+    ("core::ops::deref::Deref", [], [], Φ Self).
+
   Definition Run_deref
       (Self : Set) `{Link Self}
-      {Target : Set} `{Link Target} :
+      (Target : Set) `{Link Target} :
       Set :=
-    {deref @
-      IsTraitMethod.t "core::ops::deref::Deref" [] [] (Φ Self) "deref" deref *
+    TraitMethod.C (trait Self) "deref" (fun method =>
       forall (self : Ref.t Pointer.Kind.Ref Self),
-        {{ deref [] [] [ φ self ] 🔽 Ref.t Pointer.Kind.Ref Target }}
-    }.
+      Run.Trait method [] [] [ φ self ] (Ref.t Pointer.Kind.Ref Target)
+    ).
 
-  Record Run
+  Class Run
       (Self : Set) `{Link Self}
-      {Target : Set} `{Link Target} :
+      (Target : Set) `{Link Target} :
       Set := {
-    deref : Run_deref Self (Target := Target);
+    deref : Run_deref Self Target;
   }.
 End Deref.
 

@@ -1,8 +1,6 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import links.M.
 
-Import Run.
-
 (*
     pub enum Ordering {
         Less = -1,

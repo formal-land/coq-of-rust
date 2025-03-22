@@ -3,8 +3,6 @@ Require Import CoqOfRust.links.M.
 Require core.links.option.
 Require Import revm.revm_specification.hardfork.
 
-Import Run.
-
 Module SpecId.
   Inductive t : Set :=
   | FRONTIER

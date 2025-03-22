@@ -1723,7 +1723,41 @@ Module Pair.
 End Pair.
 
 Module BinOp.
- Module Wrap.
+  Lemma make_comparison_eq (kind : IntegerKind.t)
+      (cmp : Z -> Z -> bool) (v1 v2 : Integer.t kind) (v1' v2' : Value.t) :
+    v1' = φ v1 ->
+    v2' = φ v2 ->
+    BinOp.make_comparison cmp v1' v2' =
+    M.pure (φ (cmp v1.(Integer.value) v2.(Integer.value))).
+  Proof.
+    intros -> ->.
+    now destruct kind.
+  Qed.
+
+  Ltac rewrite_make_comparison :=
+    match goal with
+    | |- context[BinOp.make_comparison _ _ _] =>
+      eapply Run.Rewrite; [
+        (
+          (erewrite (make_comparison_eq IntegerKind.U8) by smpl of_value) ||
+          (erewrite (make_comparison_eq IntegerKind.U16) by smpl of_value) ||
+          (erewrite (make_comparison_eq IntegerKind.U32) by smpl of_value) ||
+          (erewrite (make_comparison_eq IntegerKind.U64) by smpl of_value) ||
+          (erewrite (make_comparison_eq IntegerKind.U128) by smpl of_value) ||
+          (erewrite (make_comparison_eq IntegerKind.Usize) by smpl of_value) ||
+          (erewrite (make_comparison_eq IntegerKind.I8) by smpl of_value) ||
+          (erewrite (make_comparison_eq IntegerKind.I16) by smpl of_value) ||
+          (erewrite (make_comparison_eq IntegerKind.I32) by smpl of_value) ||
+          (erewrite (make_comparison_eq IntegerKind.I64) by smpl of_value) ||
+          (erewrite (make_comparison_eq IntegerKind.I128) by smpl of_value) ||
+          (erewrite (make_comparison_eq IntegerKind.Isize) by smpl of_value)
+        );
+        reflexivity
+      |]
+    end.
+  Smpl Add rewrite_make_comparison : run_symbolic.
+
+  Module Wrap.
     Lemma make_arithmetic_eq (kind : IntegerKind.t)
         (bin_op : Z -> Z -> Z) (v1 v2 : Integer.t kind) (v1' v2' : Value.t) :
       v1' = φ v1 ->

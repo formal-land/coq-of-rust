@@ -2,8 +2,6 @@ Require Import CoqOfRust.CoqOfRust.
 Require Import links.M.
 Require Import core.default.
 
-Import Run.
-
 (*
     pub trait Default: Sized {
         // Required method
@@ -11,13 +9,15 @@ Import Run.
     }
 *)
 Module Default.
-  Definition Run_default (Self : Set) `{Link Self} : Set :=
-    {default @
-      IsTraitMethod.t "core::default::Default" [] [] (Φ Self) "default" default *
-      {{ default [] [] [] 🔽 Self }}
-    }.
+  Definition trait (Self : Set) `{Link Self} : TraitMethod.Header.t :=
+    ("core::default::Default", [], [], Φ Self).
 
-  Record Run (Self : Set) `{Link Self} : Set := {
+  Definition Run_default (Self : Set) `{Link Self} : Set :=
+    TraitMethod.C (trait Self) "default" (fun method =>
+      Run.Trait method [] [] [] Self
+    ).
+
+  Class Run (Self : Set) `{Link Self} : Set := {
     default : Run_default Self;
   }.
 End Default.
@@ -27,21 +27,19 @@ Module Impl_Default_for_unit.
 
   Definition run_default : Default.Run_default Self.
   Proof.
-    eexists; split.
+    eexists.
     { eapply IsTraitMethod.Defined.
       { apply default.Impl_core_default_Default_for_Tuple_.Implements. }
       { reflexivity. }
     }
-    { run_symbolic. }
+    { constructor.
+      run_symbolic.
+  }
   Defined.
 
-  Definition run : Default.Run Self.
-  Proof.
-    constructor.
-    { (* default *)
-      exact run_default.
-    }
-  Defined.
+  Instance run : Default.Run Self := {
+    Default.default := run_default;
+  }.
 End Impl_Default_for_unit.
 
 Module Impl_Default_for_bool.
@@ -49,21 +47,19 @@ Module Impl_Default_for_bool.
 
   Definition run_default : Default.Run_default Self.
   Proof.
-    eexists; split.
+    eexists.
     { eapply IsTraitMethod.Defined.
       { apply default.Impl_core_default_Default_for_bool.Implements. }
       { reflexivity. }
     }
-    { run_symbolic. }
-  Defined.
-
-  Definition run : Default.Run Self.
-  Proof.
-    constructor.
-    { (* default *)
-      exact run_default.
+    { constructor.
+      run_symbolic.
     }
   Defined.
+
+  Instance run : Default.Run Self := {
+    Default.default := run_default;
+  }.
 End Impl_Default_for_bool.
 
 Module Impl_Default_for_char.
@@ -113,19 +109,17 @@ Module Impl_Default_for_integer.
 
   Definition run_default (kind : IntegerKind.t) : Default.Run_default (Self kind).
   Proof.
-    eexists; split.
+    eexists.
     { eapply IsTraitMethod.Defined.
       { apply implements_of_integer_kind. }
       { reflexivity. }
     }
-    { destruct kind; run_symbolic. }
-  Defined.
-
-  Definition run (kind : IntegerKind.t) : Default.Run (Self kind).
-  Proof.
-    constructor.
-    { (* default *)
-      apply run_default.
+    { constructor.
+      destruct kind; run_symbolic.
     }
   Defined.
+
+  Instance run (kind : IntegerKind.t) : Default.Run (Self kind) := {
+    Default.default := run_default kind;
+  }.
 End Impl_Default_for_integer.

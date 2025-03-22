@@ -3,7 +3,6 @@ Require Import links.M.
 Require Import core.links.result.
 Require Import core.option.
 Require core.ops.links.function.
-Import Run.
 
 Module Option.
   Global Instance IsLink (A : Set) `{Link A} : Link (option A) := {
@@ -81,12 +80,7 @@ Module Impl_Option.
         F: FnOnce(T) -> U
   *)
   Definition run_map {F T U : Set} `{Link F} `{Link T} `{Link U} 
-    (Run_FnOnce_for_F :
-      function.FnOnce.Run
-        F
-        T
-        (Output := U)
-    )
+    (Run_FnOnce_for_F : function.FnOnce.Run F T U)
     (self: Self T) (f : F) :
     {{ option.Impl_core_option_Option_T.map (Φ T) [] [ Φ U; Φ F ] [ φ self; φ f ] 🔽 option U }}.
   Admitted.

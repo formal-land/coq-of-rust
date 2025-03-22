@@ -9,17 +9,18 @@ Require Import links.M.
   }
 *)
 Module Index.
-  Definition run_index 
-      (Self : Set) `{Link Self} 
-      (Idx : Set) `{Link Idx} 
-      (Output : Set) `{Link Output} : Set :=
-    { index' @ 
-      IsTraitMethod.t "core::ops::index::Index" [] [Φ Idx] (Φ Self) "index" index' *
-      forall (self : Ref.t Pointer.Kind.Ref Self) (index : Idx),
-        {{ index' [] [] [φ self; φ index] 🔽 Ref.t Pointer.Kind.Ref Output }}
-    }.
+  Definition trait (Self Idx : Set) `{Link Self} `{Link Idx} : TraitMethod.Header.t :=
+    ("core::ops::index::Index", [], [Φ Idx], Φ Self).
 
-  Record Run
+  Definition Run_index
+      (Self Idx Output : Set) `{Link Self} `{Link Idx} `{Link Output} :
+      Set :=
+    TraitMethod.C (trait Self Idx) "index" (fun method =>
+      forall (self : Ref.t Pointer.Kind.Ref Self) (index : Idx),
+      Run.Trait method [] [] [ φ self; φ index ] (Ref.t Pointer.Kind.Ref Output)
+    ).
+
+  Class Run
       (Self : Set) `{Link Self}
       (Idx : Set) `{Link Idx}
       (Output : Set) `{Link Output} : 
@@ -28,6 +29,6 @@ Module Index.
       IsTraitAssociatedType
         "core::slice::index::SliceIndex" [] [Φ Idx] (Φ Self)
         "Output" (Φ Output);
-      index : run_index Self Idx Output;
+      index : Run_index Self Idx Output;
   }.
 End Index.
