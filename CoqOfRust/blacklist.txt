@@ -16,7 +16,7 @@ core/iter/adapters/flatten.v
 core/net/ip_addr.v
 core/num/int_sqrt.v
 token-2022
-# Links that are not working yet
+# Links that are not working yet     
 move_sui/links/
-# We ignore the metering for now
+# We ignore the metering for now  
 move_sui/simulations/move_bytecode_verifier_meter/lib.v

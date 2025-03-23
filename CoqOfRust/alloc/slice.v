@@ -9,7 +9,7 @@ Module slice.
                 let len = b.len();
                 let (b, alloc) = Box::into_raw_with_allocator(b);
                 Vec::from_raw_parts_in(b as *mut T, len, len, alloc)
-            }
+            } 
         }
     *)
     Definition into_vec (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=

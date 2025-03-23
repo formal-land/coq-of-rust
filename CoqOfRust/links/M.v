@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 Import List.ListNotations.
 
 Local Open Scope list.
-
+ 
 Axiom IsTraitAssociatedType_eq :
   forall
     (trait_name : string)
