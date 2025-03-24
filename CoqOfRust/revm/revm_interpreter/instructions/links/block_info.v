@@ -90,8 +90,7 @@ Proof.
   destruct run_Host_for_H.
   destruct run_BlockGetter.
   destruct run_Block_for_Block.
-  (* TODO: why `core::convert::Into` still doesn't work? *)
-  (* assert ( forall (A : Set), A )  . *)
+  destruct alloy_primitives.bits.links.fixed.Impl_Into_U256_for_FixedBytes.run.
   run_symbolic.
 Admitted.
 

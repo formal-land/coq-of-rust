@@ -4,9 +4,9 @@ Require Import revm.revm_context_interface.links.host.
 Require Import revm.revm_interpreter.links.gas.
 Require Import revm.revm_interpreter.links.interpreter.
 Require Import revm.revm_interpreter.links.interpreter_types.
-(* NOTE: might be deleted *)
-(* Require Import revm.revm_interpreter.instructions.i256. *)
+Require Import revm.revm_interpreter.instructions.links.i256.
 Require Import revm.revm_interpreter.instructions.arithmetic.
+Require Import revm.revm_interpreter.instructions.i256.
 Require Import ruint.links.add.
 Require Import ruint.links.cmp.
 Require Import ruint.links.div.
@@ -175,8 +175,7 @@ Proof.
   2. `i256_div` seems to be unlinkable. My tried to generate an instance but it seems to be unrelated.
   *)
   run_symbolic.
-(* Defined. *)
-Admitted.
+Defined.
 
 (*
 pub fn rem<WIRE: InterpreterTypes, H: Host + ?Sized>(
