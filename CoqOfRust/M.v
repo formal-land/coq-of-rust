@@ -13,7 +13,7 @@ Import List.ListNotations.
 Local Open Scope list.
 Local Open Scope string.
 
-(** Activate the handling of modulo in `lia`. *)
+(** Activate the handling of modulo in `lia`.  *)
 Ltac Zify.zify_post_hook ::= Z.to_euclidean_division_equations.
 
 Inductive sigS {A : Type} (P : A -> Set) : Set :=

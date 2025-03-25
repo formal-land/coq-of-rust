@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 Import List.ListNotations.
 
 Local Open Scope list.
-
+ 
 Axiom IsTraitAssociatedType_eq :
   forall
     (trait_name : string)
@@ -114,6 +114,7 @@ Module PrimitiveEq.
 End PrimitiveEq.
 
 Module Bool.
+
   Global Instance IsLink : Link bool := {
     Φ := Ty.path "bool";
     φ b := Value.Bool b;

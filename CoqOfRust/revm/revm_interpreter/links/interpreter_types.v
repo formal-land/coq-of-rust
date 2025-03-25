@@ -12,6 +12,9 @@ Require Import revm.revm_interpreter.interpreter_types.
 Require Import revm.revm_specification.links.hardfork.
 Require Import revm.links.dependencies.
 
+Import alloy_primitives.bits.links.address.
+Import alloy_primitives.links.bytes_.
+
 (*
 pub trait StackTrait {
     fn len(&self) -> usize;
