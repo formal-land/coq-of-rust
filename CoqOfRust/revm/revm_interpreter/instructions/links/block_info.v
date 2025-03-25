@@ -19,7 +19,7 @@ Import from.Impl_Uint.
 (* TODO(progress): 
   - finish link in `dependencies` and link to here
   - Take a closer look at the syntax of M
-  *)
+*)
 
 (*
 pub fn chainid<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -106,7 +106,9 @@ pub fn timestamp<WIRE: InterpreterTypes, H: Host + ?Sized>(
 Instance run_timestamp
   {WIRE H : Set} `{Link WIRE} `{Link H}
   {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
+  {H_types : Host.Types.t} `{Host.Types.AreLinks H_types}
   (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types)
+  (run_Host_for_H : Host.Run H H_types)
   (interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t WIRE WIRE_types))
   (_host : Ref.t Pointer.Kind.MutRef H) :
   Run.Trait
@@ -122,6 +124,13 @@ Proof.
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
+  destruct run_Host_for_H.
+  destruct run_BlockGetter.
+  destruct run_Block_for_Block.
+  (* TODO: 
+  - check BlockGetter::timestamp
+  - check BlockGetter::block
+  *)
   run_symbolic.
 Admitted.
 

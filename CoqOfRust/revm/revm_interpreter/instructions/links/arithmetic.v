@@ -163,17 +163,6 @@ Proof.
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
-  (* TODO: revm_interpreter::instructions::i256::i256_div *)
-  (* NOTE:
-  Trait instructions.i256.i256_div [] [] 
-    [lib.Uint.IsLink.(φ) value; lib.Uint.IsLink.(φ) value1]
-    (lib.Uint.t {| Integer.value := 256 |} {| Integer.value := 4 |}) 
-  Here's an interesting result: the goal says we need to prove `i256_div` belongs to some trait,
-  in othr word, it's an associated function. 
-  Two problems here: 
-  1. `i256_div` is not an associated function;
-  2. `i256_div` seems to be unlinkable. My tried to generate an instance but it seems to be unrelated.
-  *)
   run_symbolic.
 Defined.
 

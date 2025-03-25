@@ -120,6 +120,16 @@ Module BlockGetter.
         Run.Trait method [] [] [ φ self ] unit
     ).
 
+  (* NOTE: something to confirm is that, if `BlockGetter` "inherhits" several methods
+    from `Block` trait, do we still need to additionally write instances for these methods? *)
+  (* TODO: fill in timestamp *)
+  Definition Run_timestamp (Self : Set) `{Link Self} : Set :=
+    (* TraitMethod.C (trait Self) "block" (fun method =>
+      forall (self : Ref.t Pointer.Kind.Ref Self),
+        Run.Trait method [] [] [ φ self ] unit
+    ). *)
+    .
+
   Class Run (Self : Set) `{Link Self} (types : Types.t)  `{Types.AreLinks types} : Set := {
     Block_IsAssociated : 
       IsTraitAssociatedType
