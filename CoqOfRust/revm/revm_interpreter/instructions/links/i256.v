@@ -10,3 +10,11 @@ Proof.
   constructor.
   run_symbolic.
 Admitted.
+
+(* pub fn i256_mod(mut first: U256, mut second: U256) -> U256 *)
+Instance run_i256_mod (first second : U256.t) :
+  Run.Trait instructions.i256.i256_mod [] [] [ φ first; φ second ] U256.t.
+Proof.
+  constructor.
+  run_symbolic.
+Admitted.

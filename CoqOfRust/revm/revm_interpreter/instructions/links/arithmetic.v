@@ -219,10 +219,8 @@ Proof.
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
-  (* TODO: revm_interpreter::instructions::i256::i256_mod *)
   run_symbolic.
-  Admitted.
-(* Defined. *)
+Defined.
 
 (*
 pub fn addmod<WIRE: InterpreterTypes, H: Host + ?Sized>(

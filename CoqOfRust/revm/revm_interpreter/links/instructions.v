@@ -74,5 +74,5 @@ Proof.
 (* TODO: resolve the incomplete run in future PRs 
   In this file our major change results from adding `H` parameters in the `run_add` function
 *)
-Admitted.
-(* Defined. *)
+(* Admitted. *)
+Defined.
