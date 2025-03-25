@@ -492,7 +492,15 @@ Proof.
   run_symbolic.
   - constructor.
     run_symbolic.
-    admit.
+    rewrite (hardfork.SpecId.cast_integer_eq IntegerKind.U8).
+    run_symbolic.
+    specialize (hardfork.SpecId.get_discriminant output).
+    intro.
+    set (discr_output := Integer.Build_t IntegerKind.U8 (SpecId.get_discriminant output mod 256)).
+    replace (SpecId.get_discriminant output mod 256) with discr_output.(Integer.value). 
+    + admit.
+    + simpl.
+      reflexivity.
   - eapply Run.CallPrimitiveGetTraitMethod.
     + eapply IsTraitMethod.Defined.
       ++ specialize convert.num.ptr_try_from_impls.Impl_core_convert_TryFrom_u64_for_usize.Implements.
@@ -503,7 +511,14 @@ Proof.
    + run_symbolic.
       ++ constructor.
          apply dependencies.ruint.Impl_AsLimbs_Uint.Implements_AsLimbs.
-      ++ admit.
+      ++ eapply Run.CallPrimitiveStateAlloc.
+         intro.
+         run_symbolic.
+         eapply Run.CallPrimitiveAreEqualBool.
+         +++ admit. 
+         +++ simpl. reflexivity.
+         +++ intro.
+             admit.
       ++ admit.
       ++ admit.
       ++ admit.
