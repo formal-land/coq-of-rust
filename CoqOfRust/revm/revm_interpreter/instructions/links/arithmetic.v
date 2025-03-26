@@ -42,8 +42,6 @@ Proof.
   cbn.
   eapply Run.Rewrite. {
     progress repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
-    (* Seems like the code doesnt envolve proofs on `H` *)
-    (* progress repeat erewrite IsTraitAssociatedType_eq by apply run_Host_for_H. *)
     reflexivity.
   }
   destruct run_InterpreterTypes_for_WIRE.
@@ -250,8 +248,23 @@ Proof.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
   (* TODO: Uint::add_mod *)
+  (* 
+  Trait
+    (add.add.Impl_ruint_Uint_BITS_LIMBS.wrapping_add
+      (Integer.IsLink.(φ) {| Integer.value := 256 |})
+      (Integer.IsLink.(φ) {| Integer.value := 4 |})) [] []
+    [lib.Uint.IsLink.(φ) value; lib.Uint.IsLink.(φ) value1]
+    (lib.Uint.t {| Integer.value := 256 |} {| Integer.value := 4 |})
+  --------
+  Trait
+    (modular.modular.Impl_ruint_Uint_BITS_LIMBS.add_mod
+      (Integer.IsLink.(φ) {| Integer.value := 256 |})
+      (Integer.IsLink.(φ) {| Integer.value := 4 |})) [] []
+    [lib.Uint.IsLink.(φ) value; lib.Uint.IsLink.(φ) value0;
+    lib.Uint.IsLink.(φ) value2]
+    (lib.Uint.t {| Integer.value := 256 |} {| Integer.value := 4 |})
+  *)
   run_symbolic.
-  (* Admitted. *)
 Defined.
 
 (*
@@ -281,8 +294,7 @@ Proof.
   destruct run_StackTrait_for_Stack.
   (* TODO: Uint::mul_mod *)
   run_symbolic.
-  Admitted.
-(* Defined. *)
+Defined.
 
 (*
 pub fn exp<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -312,7 +324,8 @@ Proof.
   destruct run_RuntimeFlag_for_RuntimeFlag.
   (* TODO:
   - calc.gas.calc.exp_cost
-  - Uint::pow*)
+  - Uint::pow
+  *)
   run_symbolic.
   Admitted.
 (* Defined. *)

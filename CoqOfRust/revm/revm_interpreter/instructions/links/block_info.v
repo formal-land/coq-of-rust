@@ -17,10 +17,10 @@ Import Impl_Gas.
 Import from.Impl_Uint.
 
 (* TODO(progress):
-  - finish `ruint` related components
+  - (PRIORITY) refer to `interpreter_types` on `block.v` to see anything missing
   - check revm_interpreter::gas::Gas::record_cost
   - check revm_interpreter::interpreter_types::LoopControl::gas 
-  *)
+*)
 
 (*
 pub fn chainid<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -191,8 +191,8 @@ Proof.
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
+  destruct run_RuntimeFlag_for_RuntimeFlag.
   (* TODO: 
-  - revm_interpreter::interpreter_types::RuntimeFlag::spec_id
   - BlockGetter::difficulty
   *)
   run_symbolic.
@@ -251,8 +251,8 @@ Proof.
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
+  destruct run_RuntimeFlag_for_RuntimeFlag.
   (* TODO: 
-  - RuntimeFlag::spec_id
   - BlockGetter::base_fee
   *)
   run_symbolic.
