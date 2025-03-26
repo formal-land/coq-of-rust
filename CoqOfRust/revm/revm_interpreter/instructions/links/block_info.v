@@ -16,11 +16,6 @@ Import Impl_SpecId.
 Import Impl_Gas.
 Import from.Impl_Uint.
 
-(* TODO(progress): 
-  - finish link in `dependencies` and link to here
-  - Take a closer look at the syntax of M
-*)
-
 (*
 pub fn chainid<WIRE: InterpreterTypes, H: Host + ?Sized>(
     interpreter: &mut Interpreter<WIRE>,

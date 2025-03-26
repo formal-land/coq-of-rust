@@ -12,14 +12,6 @@ Module U256.
     Uint.t {| Integer.value := 256 |} {| Integer.value := 4 |}.
 End U256.
 
-(* 
-TODO: 
-- Start link with beneficiary's Address return type
-- In `beneficiary`, link it to Address type(?)
-- Link Addesss::into_word
-- Link Uint::into
-*)
-
 Module alloy_primitives.
   Module bits.
     Module links.
@@ -248,10 +240,6 @@ Module FixedBytes.
     Φ := Ty.path "alloy_primitives::bits::fixed::FixedBytes";
     φ := to_value;
   }.
-
-  (* TODO: 
-  - (alloy_primitives::FixedBytes) fn into(self) -> Uint
-  *)
 End FixedBytes.
 
 (** ** Here we define some aliases that are convenient *)
