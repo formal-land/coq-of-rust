@@ -19,6 +19,8 @@ Module Uint.
   Smpl Add eapply of_ty : of_ty.
 
   (* TODO: 
+  - find source code
+  - Maybe refer to `i256` for implementing functions without traits?
   - add_mod from ruint::modular
   - mul_mod from ruint::modular
   - pow from ruint::modular

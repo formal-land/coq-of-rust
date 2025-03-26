@@ -128,8 +128,8 @@ Proof.
   destruct run_BlockGetter.
   destruct run_Block_for_Block.
   (* TODO: 
-  - check BlockGetter::timestamp
-  - check BlockGetter::block
+  - check revm_interpreter::gas::Gas::record_cost
+  - check revm_interpreter::interpreter_types::LoopControl"::gas
   *)
   run_symbolic.
 Admitted.
