@@ -251,8 +251,8 @@ Proof.
   destruct run_StackTrait_for_Stack.
   (* TODO: Uint::add_mod *)
   run_symbolic.
-  Admitted.
-(* Defined. *)
+  (* Admitted. *)
+Defined.
 
 (*
 pub fn mulmod<WIRE: InterpreterTypes, H: Host + ?Sized>(

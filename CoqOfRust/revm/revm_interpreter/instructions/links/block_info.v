@@ -130,7 +130,7 @@ Proof.
   destruct run_Block_for_Block.
   (* TODO: 
   - check revm_interpreter::gas::Gas::record_cost
-  - check revm_interpreter::interpreter_types::LoopControl"::gas
+  - check revm_interpreter::interpreter_types::LoopControl::gas
   *)
   run_symbolic.
 Admitted.

@@ -5,6 +5,7 @@ Require Import ruint.modular.
 
 (* impl<const BITS: usize, const LIMBS: usize> Uint<BITS, LIMBS> *)
 Module Impl_Uint.
+  (* Uint<BITS, LIMBS> *)
   Definition Self (BITS LIMBS : Usize.t) : Set :=
       Uint.t BITS LIMBS.
 
