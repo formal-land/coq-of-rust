@@ -12,27 +12,27 @@ Module Impl_Uint.
   (* pub fn add_mod(self, rhs: Self, modulus: Self) -> Self *)
   Instance run_add_mod
         (BITS LIMBS : Usize.t)
-        (x1 x2 : Self BITS LIMBS) :
+        (x1 x2 x3 : Self BITS LIMBS) :
     Run.Trait
-      (modular.Impl_ruint_Uint_BITS_LIMBS.add_mod (φ BITS) (φ LIMBS)) [] [] [ φ x1; φ x2 ]
+      (modular.Impl_ruint_Uint_BITS_LIMBS.add_mod (φ BITS) (φ LIMBS)) [] [] [ φ x1; φ x2; φ x3 ]
       (Self BITS LIMBS).
-    Admitted.
+  Admitted.
 
   (* pub fn mul_mod(self, rhs: Self, modulus: Self) -> Self *)
   Instance run_mul_mod
       (BITS LIMBS : Usize.t)
-      (x1 x2 : Self BITS LIMBS) :
-  Run.Trait
-    (modular.Impl_ruint_Uint_BITS_LIMBS.mul_mod (φ BITS) (φ LIMBS)) [] [] [ φ x1; φ x2 ]
-    (Self BITS LIMBS).
+      (x1 x2 x3 : Self BITS LIMBS) :
+    Run.Trait
+      (modular.Impl_ruint_Uint_BITS_LIMBS.mul_mod (φ BITS) (φ LIMBS)) [] [] [ φ x1; φ x2; φ x3 ]
+      (Self BITS LIMBS).
   Admitted.
 
   (* pub fn pow_mod(self, exp: Self, modulus: Self) -> Self *)
   Instance run_pow_mod
       (BITS LIMBS : Usize.t)
-      (x1 x2 : Self BITS LIMBS) :
-  Run.Trait
-    (modular.Impl_ruint_Uint_BITS_LIMBS.pow_mod (φ BITS) (φ LIMBS)) [] [] [ φ x1; φ x2 ]
-    (Self BITS LIMBS).
+      (x1 x2 x3 : Self BITS LIMBS) :
+    Run.Trait
+      (modular.Impl_ruint_Uint_BITS_LIMBS.pow_mod (φ BITS) (φ LIMBS)) [] [] [ φ x1; φ x2; φ x3 ]
+      (Self BITS LIMBS).
   Admitted.
 End Impl_Uint.
