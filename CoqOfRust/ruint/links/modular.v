@@ -3,23 +3,35 @@ Require Import CoqOfRust.links.M.
 Require Import ruint.links.lib.
 Require Import ruint.modular.
 
-(* 
-TODO:
-- ruint::modular::add_mod
-- ruint::modular::mul_mod
-- ruint::modular::pow
-- find source code
-- Maybe refer to `i256` for implementing functions without traits?
-*)
+(* impl<const BITS: usize, const LIMBS: usize> Uint<BITS, LIMBS> *)
+Module Impl_Uint.
+  Definition Self (BITS LIMBS : Usize.t) : Set :=
+      Uint.t BITS LIMBS.
 
-(* 
-  Definition trait (Self : Set) `{Link Self} : TraitMethod.Header.t :=
-  ("revm_context_interface::block::Block", [], [], Φ Self).
+  (* pub fn add_mod(self, rhs: Self, modulus: Self) -> Self *)
+  Instance run_add_mod
+        (BITS LIMBS : Usize.t)
+        (x1 x2 : Self BITS LIMBS) :
+    Run.Trait
+      (modular.Impl_ruint_Uint_BITS_LIMBS.add_mod (φ BITS) (φ LIMBS)) [] [] [ φ x1; φ x2 ]
+      (Self BITS LIMBS).
+    Admitted.
 
-(* fn number(&self) -> u64; *)
-Definition Run_number (Self : Set) `{Link Self} : Set :=
-  TraitMethod.C (trait Self) "number" (fun method =>
-    forall (self : Ref.t Pointer.Kind.Ref Self),
-      Run.Trait method [] [] [ φ self ] U64.t
-  ).
-*)
+  (* pub fn mul_mod(self, rhs: Self, modulus: Self) -> Self *)
+  Instance run_mul_mod
+      (BITS LIMBS : Usize.t)
+      (x1 x2 : Self BITS LIMBS) :
+  Run.Trait
+    (modular.Impl_ruint_Uint_BITS_LIMBS.mul_mod (φ BITS) (φ LIMBS)) [] [] [ φ x1; φ x2 ]
+    (Self BITS LIMBS).
+  Admitted.
+
+  (* pub fn pow_mod(self, exp: Self, modulus: Self) -> Self *)
+  Instance run_pow_mod
+      (BITS LIMBS : Usize.t)
+      (x1 x2 : Self BITS LIMBS) :
+  Run.Trait
+    (modular.Impl_ruint_Uint_BITS_LIMBS.pow_mod (φ BITS) (φ LIMBS)) [] [] [ φ x1; φ x2 ]
+    (Self BITS LIMBS).
+  Admitted.
+End Impl_Uint.
