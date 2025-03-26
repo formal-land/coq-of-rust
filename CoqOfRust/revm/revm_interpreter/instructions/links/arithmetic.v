@@ -11,12 +11,14 @@ Require Import ruint.links.add.
 Require Import ruint.links.cmp.
 Require Import ruint.links.div.
 Require Import ruint.links.mul.
+Require Import ruint.links.modular.
 
 Import Impl_Gas.
 Import add.Impl_Uint.
 Import cmp.Impl_Uint.
 Import div.Impl_Uint.
 Import mul.Impl_Uint.
+Import modular.Impl_Uint.
 
 (*
 pub fn add<WIRE: InterpreterTypes, H: Host + ?Sized>(

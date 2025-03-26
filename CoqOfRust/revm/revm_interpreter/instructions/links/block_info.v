@@ -16,6 +16,12 @@ Import Impl_SpecId.
 Import Impl_Gas.
 Import from.Impl_Uint.
 
+(* TODO(progress):
+  - finish `ruint` related components
+  - check revm_interpreter::gas::Gas::record_cost
+  - check revm_interpreter::interpreter_types::LoopControl::gas 
+  *)
+
 (*
 pub fn chainid<WIRE: InterpreterTypes, H: Host + ?Sized>(
     interpreter: &mut Interpreter<WIRE>,
