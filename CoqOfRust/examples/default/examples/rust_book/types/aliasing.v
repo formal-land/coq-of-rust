@@ -29,12 +29,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ nanoseconds : Ty.path "u64" :=
-          M.copy (| M.use (M.alloc (| Value.Integer IntegerKind.U64 5 |)) |) in
+          M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U64 5 |)) |) in
         let~ inches : Ty.path "u64" :=
-          M.copy (| M.use (M.alloc (| Value.Integer IntegerKind.U64 2 |)) |) in
+          M.read (| M.use (M.alloc (| Value.Integer IntegerKind.U64 2 |)) |) in
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -137,9 +137,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"

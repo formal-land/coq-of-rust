@@ -19,8 +19,7 @@ Module utils.
         (let a := M.alloc (| a |) in
         let b := M.alloc (| b |) in
         M.read (|
-          let~ rem : Ty.path "usize" :=
-            M.alloc (| BinOp.Wrap.rem (| M.read (| a |), M.read (| b |) |) |) in
+          let~ rem : Ty.path "usize" := BinOp.Wrap.rem (| M.read (| a |), M.read (| b |) |) in
           M.match_operator (|
             Some (Ty.path "usize"),
             M.alloc (| Value.Tuple [] |),
@@ -232,47 +231,45 @@ Module utils.
         let value := M.alloc (| value |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.tuple [],
-                M.get_associated_function (|
-                  Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ],
-                  "truncate",
-                  [],
-                  []
-                |),
-                [
-                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| vec |) |) |);
-                  M.call_closure (|
-                    Ty.path "usize",
-                    M.get_function (| "ruint::utils::last_idx", [], [ T ] |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.call_closure (|
-                            Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                            M.get_trait_method (|
-                              "core::ops::deref::Deref",
-                              Ty.apply
-                                (Ty.path "alloc::vec::Vec")
-                                []
-                                [ T; Ty.path "alloc::alloc::Global" ],
-                              [],
-                              [],
-                              "deref",
-                              [],
+            M.call_closure (|
+              Ty.tuple [],
+              M.get_associated_function (|
+                Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; Ty.path "alloc::alloc::Global" ],
+                "truncate",
+                [],
+                []
+              |),
+              [
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| vec |) |) |);
+                M.call_closure (|
+                  Ty.path "usize",
+                  M.get_function (| "ruint::utils::last_idx", [], [ T ] |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                          M.get_trait_method (|
+                            "core::ops::deref::Deref",
+                            Ty.apply
+                              (Ty.path "alloc::vec::Vec")
                               []
-                            |),
-                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| vec |) |) |) ]
-                          |)
+                              [ T; Ty.path "alloc::alloc::Global" ],
+                            [],
+                            [],
+                            "deref",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| vec |) |) |) ]
                         |)
-                      |);
-                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value |) |) |)
-                    ]
-                  |)
-                ]
-              |)
+                      |)
+                    |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| value |) |) |)
+                  ]
+                |)
+              ]
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))

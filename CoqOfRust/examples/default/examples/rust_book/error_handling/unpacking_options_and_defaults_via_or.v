@@ -162,71 +162,65 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               (Ty.path "core::option::Option")
               []
               [ Ty.path "unpacking_options_and_defaults_via_or::Fruit" ] :=
-          M.alloc (|
-            Value.StructTuple
-              "core::option::Option::Some"
-              [ Value.StructTuple "unpacking_options_and_defaults_via_or::Fruit::Apple" [] ]
-          |) in
+          Value.StructTuple
+            "core::option::Option::Some"
+            [ Value.StructTuple "unpacking_options_and_defaults_via_or::Fruit::Apple" [] ] in
         let~ orange :
             Ty.apply
               (Ty.path "core::option::Option")
               []
               [ Ty.path "unpacking_options_and_defaults_via_or::Fruit" ] :=
-          M.alloc (|
-            Value.StructTuple
-              "core::option::Option::Some"
-              [ Value.StructTuple "unpacking_options_and_defaults_via_or::Fruit::Orange" [] ]
-          |) in
+          Value.StructTuple
+            "core::option::Option::Some"
+            [ Value.StructTuple "unpacking_options_and_defaults_via_or::Fruit::Orange" [] ] in
         let~ no_fruit :
             Ty.apply
               (Ty.path "core::option::Option")
               []
               [ Ty.path "unpacking_options_and_defaults_via_or::Fruit" ] :=
-          M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
+          Value.StructTuple "core::option::Option::None" [] in
         let~ first_available_fruit :
             Ty.apply
               (Ty.path "core::option::Option")
               []
               [ Ty.path "unpacking_options_and_defaults_via_or::Fruit" ] :=
-          M.alloc (|
-            M.call_closure (|
+          M.call_closure (|
+            Ty.apply
+              (Ty.path "core::option::Option")
+              []
+              [ Ty.path "unpacking_options_and_defaults_via_or::Fruit" ],
+            M.get_associated_function (|
               Ty.apply
                 (Ty.path "core::option::Option")
                 []
                 [ Ty.path "unpacking_options_and_defaults_via_or::Fruit" ],
-              M.get_associated_function (|
+              "or",
+              [],
+              []
+            |),
+            [
+              M.call_closure (|
                 Ty.apply
                   (Ty.path "core::option::Option")
                   []
                   [ Ty.path "unpacking_options_and_defaults_via_or::Fruit" ],
-                "or",
-                [],
-                []
-              |),
-              [
-                M.call_closure (|
+                M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::option::Option")
                     []
                     [ Ty.path "unpacking_options_and_defaults_via_or::Fruit" ],
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.path "unpacking_options_and_defaults_via_or::Fruit" ],
-                    "or",
-                    [],
-                    []
-                  |),
-                  [ M.read (| no_fruit |); M.read (| orange |) ]
-                |);
-                M.read (| apple |)
-              ]
-            |)
+                  "or",
+                  [],
+                  []
+                |),
+                [ M.read (| no_fruit |); M.read (| orange |) ]
+              |);
+              M.read (| apple |)
+            ]
           |) in
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -291,9 +285,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"

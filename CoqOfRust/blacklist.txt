@@ -9,7 +9,6 @@ examples/axiomatized/examples/subtle.v
 # These files take a very long time (ten minutes)
 # revm/revm_bytecode/opcode.v
 revm/types.v
-revm/revm_interpreter/simulations/gas.v
 core/array/mod.v
 core/future/async_drop.v
 core/iter/adapters/flatten.v

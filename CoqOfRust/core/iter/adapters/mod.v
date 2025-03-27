@@ -43,38 +43,32 @@ Module iter.
           let f := M.alloc (| f |) in
           M.read (|
             let~ residual : Ty.apply (Ty.path "core::option::Option") [] [ R ] :=
-              M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
+              Value.StructTuple "core::option::Option::None" [] in
             let~ shunt : Ty.apply (Ty.path "core::iter::adapters::GenericShunt") [] [ I; R ] :=
-              M.alloc (|
-                Value.StructRecord
-                  "core::iter::adapters::GenericShunt"
-                  [
-                    ("iter", M.read (| iter |));
-                    ("residual",
-                      M.borrow (|
-                        Pointer.Kind.MutRef,
-                        M.deref (| M.borrow (| Pointer.Kind.MutRef, residual |) |)
-                      |))
-                  ]
-              |) in
+              Value.StructRecord
+                "core::iter::adapters::GenericShunt"
+                [
+                  ("iter", M.read (| iter |));
+                  ("residual",
+                    M.borrow (|
+                      Pointer.Kind.MutRef,
+                      M.deref (| M.borrow (| Pointer.Kind.MutRef, residual |) |)
+                    |))
+                ] in
             let~ value : U :=
-              M.alloc (|
-                M.call_closure (|
-                  U,
-                  M.get_trait_method (|
-                    "core::ops::function::FnMut",
-                    F,
-                    [],
-                    [
-                      Ty.tuple
-                        [ Ty.apply (Ty.path "core::iter::adapters::GenericShunt") [] [ I; R ] ]
-                    ],
-                    "call_mut",
-                    [],
-                    []
-                  |),
-                  [ M.borrow (| Pointer.Kind.MutRef, f |); Value.Tuple [ M.read (| shunt |) ] ]
-                |)
+              M.call_closure (|
+                U,
+                M.get_trait_method (|
+                  "core::ops::function::FnMut",
+                  F,
+                  [],
+                  [ Ty.tuple [ Ty.apply (Ty.path "core::iter::adapters::GenericShunt") [] [ I; R ] ]
+                  ],
+                  "call_mut",
+                  [],
+                  []
+                |),
+                [ M.borrow (| Pointer.Kind.MutRef, f |); Value.Tuple [ M.read (| shunt |) ] ]
               |) in
             M.match_operator (|
               Some (Ty.associated_in_trait "core::ops::try_trait::Residual" [] [ U ] R "TryType"),
@@ -675,21 +669,19 @@ Module iter.
                                                           |) in
                                                         let r := M.copy (| γ0_0 |) in
                                                         let~ _ : Ty.tuple [] :=
-                                                          M.alloc (|
-                                                            M.write (|
-                                                              M.deref (|
-                                                                M.read (|
-                                                                  M.SubPointer.get_struct_record_field (|
-                                                                    M.deref (| M.read (| self |) |),
-                                                                    "core::iter::adapters::GenericShunt",
-                                                                    "residual"
-                                                                  |)
+                                                          M.write (|
+                                                            M.deref (|
+                                                              M.read (|
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  M.deref (| M.read (| self |) |),
+                                                                  "core::iter::adapters::GenericShunt",
+                                                                  "residual"
                                                                 |)
-                                                              |),
-                                                              Value.StructTuple
-                                                                "core::option::Option::Some"
-                                                                [ M.read (| r |) ]
-                                                            |)
+                                                              |)
+                                                            |),
+                                                            Value.StructTuple
+                                                              "core::option::Option::Some"
+                                                              [ M.read (| r |) ]
                                                           |) in
                                                         M.alloc (|
                                                           Value.StructTuple

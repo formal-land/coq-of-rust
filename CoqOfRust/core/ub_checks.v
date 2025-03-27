@@ -135,18 +135,16 @@ Module intrinsics.
                           UnOp.not (|
                             M.read (|
                               let~ zero_size : Ty.path "bool" :=
-                                M.alloc (|
-                                  LogicalOp.or (|
-                                    BinOp.eq (|
-                                      M.read (| count |),
+                                LogicalOp.or (|
+                                  BinOp.eq (|
+                                    M.read (| count |),
+                                    Value.Integer IntegerKind.Usize 0
+                                  |),
+                                  ltac:(M.monadic
+                                    (BinOp.eq (|
+                                      M.read (| size |),
                                       Value.Integer IntegerKind.Usize 0
-                                    |),
-                                    ltac:(M.monadic
-                                      (BinOp.eq (|
-                                        M.read (| size |),
-                                        Value.Integer IntegerKind.Usize 0
-                                      |)))
-                                  |)
+                                    |)))
                                 |) in
                               M.alloc (|
                                 LogicalOp.and (|
@@ -410,18 +408,16 @@ Module ptr.
                           UnOp.not (|
                             M.read (|
                               let~ zero_size : Ty.path "bool" :=
-                                M.alloc (|
-                                  LogicalOp.or (|
-                                    BinOp.eq (|
-                                      M.read (| size |),
+                                LogicalOp.or (|
+                                  BinOp.eq (|
+                                    M.read (| size |),
+                                    Value.Integer IntegerKind.Usize 0
+                                  |),
+                                  ltac:(M.monadic
+                                    (BinOp.eq (|
+                                      M.read (| count |),
                                       Value.Integer IntegerKind.Usize 0
-                                    |),
-                                    ltac:(M.monadic
-                                      (BinOp.eq (|
-                                        M.read (| count |),
-                                        Value.Integer IntegerKind.Usize 0
-                                      |)))
-                                  |)
+                                    |)))
                                 |) in
                               M.alloc (|
                                 LogicalOp.and (|
@@ -975,7 +971,7 @@ Module ub_checks.
         let len := M.alloc (| len |) in
         M.read (|
           let~ max_len : Ty.path "usize" :=
-            M.copy (|
+            M.read (|
               M.match_operator (|
                 Some (Ty.path "usize"),
                 M.alloc (| Value.Tuple [] |),

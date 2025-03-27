@@ -257,18 +257,16 @@ Module Impl_updated_incrementer_Incrementer.
         (let self := M.alloc (| self |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
-            M.alloc (|
-              let β :=
-                M.SubPointer.get_struct_record_field (|
-                  M.deref (| M.read (| self |) |),
-                  "updated_incrementer::Incrementer",
-                  "count"
-                |) in
-              M.write (| β, BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.U32 4 |) |)
-            |) in
+            let β :=
+              M.SubPointer.get_struct_record_field (|
+                M.deref (| M.read (| self |) |),
+                "updated_incrementer::Incrementer",
+                "count"
+              |) in
+            M.write (| β, BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.U32 4 |) |) in
           let~ _ : Ty.tuple [] :=
-            let~ _ : Ty.tuple [] :=
-              M.alloc (|
+            M.read (|
+              let~ _ : Ty.tuple [] :=
                 M.call_closure (|
                   Ty.tuple [],
                   M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -340,9 +338,9 @@ Module Impl_updated_incrementer_Incrementer.
                       ]
                     |)
                   ]
-                |)
-              |) in
-            M.alloc (| Value.Tuple [] |) in
+                |) in
+              M.alloc (| Value.Tuple [] |)
+            |) in
           M.alloc (| Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -392,99 +390,96 @@ Module Impl_updated_incrementer_Incrementer.
         let code_hash := M.alloc (| code_hash |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.tuple [],
-                M.get_associated_function (|
+            M.call_closure (|
+              Ty.tuple [],
+              M.get_associated_function (|
+                Ty.apply
+                  (Ty.path "core::result::Result")
+                  []
+                  [ Ty.tuple []; Ty.path "updated_incrementer::Error" ],
+                "unwrap_or_else",
+                [],
+                [ Ty.function [ Ty.tuple [ Ty.path "updated_incrementer::Error" ] ] (Ty.tuple []) ]
+              |),
+              [
+                M.call_closure (|
                   Ty.apply
                     (Ty.path "core::result::Result")
                     []
                     [ Ty.tuple []; Ty.path "updated_incrementer::Error" ],
-                  "unwrap_or_else",
-                  [],
-                  [ Ty.function [ Ty.tuple [ Ty.path "updated_incrementer::Error" ] ] (Ty.tuple [])
-                  ]
-                |),
-                [
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
-                      [ Ty.tuple []; Ty.path "updated_incrementer::Error" ],
-                    M.get_associated_function (|
-                      Ty.path "updated_incrementer::Env",
-                      "set_code_hash",
-                      [],
-                      [
-                        Ty.apply
-                          (Ty.path "array")
-                          [ Value.Integer IntegerKind.Usize 32 ]
-                          [ Ty.path "u8" ]
-                      ]
-                    |),
+                  M.get_associated_function (|
+                    Ty.path "updated_incrementer::Env",
+                    "set_code_hash",
+                    [],
                     [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          M.call_closure (|
-                            Ty.path "updated_incrementer::Env",
-                            M.get_associated_function (|
-                              Ty.path "updated_incrementer::Incrementer",
-                              "env",
-                              [],
-                              []
-                            |),
-                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                          |)
-                        |)
-                      |);
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (| M.borrow (| Pointer.Kind.Ref, code_hash |) |)
-                      |)
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 32 ]
+                        [ Ty.path "u8" ]
                     ]
-                  |);
-                  M.closure
-                    (fun γ =>
-                      ltac:(M.monadic
-                        match γ with
-                        | [ α0 ] =>
-                          ltac:(M.monadic
-                            (M.match_operator (|
-                              Some
-                                (Ty.function
-                                  [ Ty.tuple [ Ty.path "updated_incrementer::Error" ] ]
-                                  (Ty.tuple [])),
-                              M.alloc (| α0 |),
-                              [
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (let err := M.copy (| γ |) in
-                                    M.never_to_any (|
-                                      M.call_closure (|
-                                        Ty.path "never",
-                                        M.get_function (|
-                                          "std::panicking::begin_panic",
-                                          [],
-                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                                        |),
-                                        [
-                                          mk_str (|
-                                            "Failed to `set_code_hash` to {code_hash:?} due to {err:?}"
-                                          |)
-                                        ]
-                                      |)
-                                    |)))
-                              ]
-                            |)))
-                        | _ => M.impossible "wrong number of arguments"
-                        end))
-                ]
-              |)
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.alloc (|
+                        M.call_closure (|
+                          Ty.path "updated_incrementer::Env",
+                          M.get_associated_function (|
+                            Ty.path "updated_incrementer::Incrementer",
+                            "env",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                        |)
+                      |)
+                    |);
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (| M.borrow (| Pointer.Kind.Ref, code_hash |) |)
+                    |)
+                  ]
+                |);
+                M.closure
+                  (fun γ =>
+                    ltac:(M.monadic
+                      match γ with
+                      | [ α0 ] =>
+                        ltac:(M.monadic
+                          (M.match_operator (|
+                            Some
+                              (Ty.function
+                                [ Ty.tuple [ Ty.path "updated_incrementer::Error" ] ]
+                                (Ty.tuple [])),
+                            M.alloc (| α0 |),
+                            [
+                              fun γ =>
+                                ltac:(M.monadic
+                                  (let err := M.copy (| γ |) in
+                                  M.never_to_any (|
+                                    M.call_closure (|
+                                      Ty.path "never",
+                                      M.get_function (|
+                                        "std::panicking::begin_panic",
+                                        [],
+                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                      |),
+                                      [
+                                        mk_str (|
+                                          "Failed to `set_code_hash` to {code_hash:?} due to {err:?}"
+                                        |)
+                                      ]
+                                    |)
+                                  |)))
+                            ]
+                          |)))
+                      | _ => M.impossible "wrong number of arguments"
+                      end))
+              ]
             |) in
           let~ _ : Ty.tuple [] :=
-            let~ _ : Ty.tuple [] :=
-              M.alloc (|
+            M.read (|
+              let~ _ : Ty.tuple [] :=
                 M.call_closure (|
                   Ty.tuple [],
                   M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -547,9 +542,9 @@ Module Impl_updated_incrementer_Incrementer.
                       ]
                     |)
                   ]
-                |)
-              |) in
-            M.alloc (| Value.Tuple [] |) in
+                |) in
+              M.alloc (| Value.Tuple [] |)
+            |) in
           M.alloc (| Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"

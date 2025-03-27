@@ -485,168 +485,158 @@ Module legacy.
             (let self := M.alloc (| self |) in
             M.read (|
               let~ jump_table : Ty.path "revm_bytecode::legacy::jump_map::JumpTable" :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "revm_bytecode::legacy::jump_map::JumpTable",
-                    M.get_associated_function (|
-                      Ty.path "revm_bytecode::legacy::raw::LegacyRawBytecode",
-                      "analysis",
-                      [],
-                      []
-                    |),
-                    [ M.borrow (| Pointer.Kind.Ref, self |) ]
-                  |)
+                M.call_closure (|
+                  Ty.path "revm_bytecode::legacy::jump_map::JumpTable",
+                  M.get_associated_function (|
+                    Ty.path "revm_bytecode::legacy::raw::LegacyRawBytecode",
+                    "analysis",
+                    [],
+                    []
+                  |),
+                  [ M.borrow (| Pointer.Kind.Ref, self |) ]
                 |) in
               let~ len : Ty.path "usize" :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "usize",
-                    M.get_associated_function (| Ty.path "bytes::bytes::Bytes", "len", [], [] |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.call_closure (|
-                            Ty.apply (Ty.path "&") [] [ Ty.path "bytes::bytes::Bytes" ],
-                            M.get_trait_method (|
-                              "core::ops::deref::Deref",
-                              Ty.path "alloy_primitives::bytes_::Bytes",
-                              [],
-                              [],
-                              "deref",
-                              [],
-                              []
-                            |),
-                            [
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.SubPointer.get_struct_tuple_field (|
-                                  self,
-                                  "revm_bytecode::legacy::raw::LegacyRawBytecode",
-                                  0
-                                |)
+                M.call_closure (|
+                  Ty.path "usize",
+                  M.get_associated_function (| Ty.path "bytes::bytes::Bytes", "len", [], [] |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          Ty.apply (Ty.path "&") [] [ Ty.path "bytes::bytes::Bytes" ],
+                          M.get_trait_method (|
+                            "core::ops::deref::Deref",
+                            Ty.path "alloy_primitives::bytes_::Bytes",
+                            [],
+                            [],
+                            "deref",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.SubPointer.get_struct_tuple_field (|
+                                self,
+                                "revm_bytecode::legacy::raw::LegacyRawBytecode",
+                                0
                               |)
-                            ]
-                          |)
+                            |)
+                          ]
                         |)
                       |)
-                    ]
-                  |)
+                    |)
+                  ]
                 |) in
               let~ padded_bytecode :
                   Ty.apply
                     (Ty.path "alloc::vec::Vec")
                     []
                     [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ] :=
-                M.alloc (|
-                  M.call_closure (|
+                M.call_closure (|
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                  M.get_associated_function (|
                     Ty.apply
                       (Ty.path "alloc::vec::Vec")
                       []
                       [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "alloc::vec::Vec")
-                        []
-                        [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                      "with_capacity",
-                      [],
-                      []
-                    |),
-                    [ BinOp.Wrap.add (| M.read (| len |), Value.Integer IntegerKind.Usize 33 |) ]
-                  |)
+                    "with_capacity",
+                    [],
+                    []
+                  |),
+                  [ BinOp.Wrap.add (| M.read (| len |), Value.Integer IntegerKind.Usize 33 |) ]
                 |) in
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.tuple [],
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "alloc::vec::Vec")
-                        []
-                        [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                      "extend_from_slice",
-                      [],
+                M.call_closure (|
+                  Ty.tuple [],
+                  M.get_associated_function (|
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
                       []
-                    |),
-                    [
-                      M.borrow (| Pointer.Kind.MutRef, padded_bytecode |);
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (|
-                          M.call_closure (|
-                            Ty.apply
-                              (Ty.path "&")
-                              []
-                              [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
-                            M.get_trait_method (|
-                              "core::ops::deref::Deref",
-                              Ty.path "bytes::bytes::Bytes",
-                              [],
-                              [],
-                              "deref",
-                              [],
-                              []
-                            |),
-                            [
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.call_closure (|
-                                    Ty.apply (Ty.path "&") [] [ Ty.path "bytes::bytes::Bytes" ],
-                                    M.get_trait_method (|
-                                      "core::ops::deref::Deref",
-                                      Ty.path "alloy_primitives::bytes_::Bytes",
-                                      [],
-                                      [],
-                                      "deref",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (|
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.SubPointer.get_struct_tuple_field (|
-                                              self,
-                                              "revm_bytecode::legacy::raw::LegacyRawBytecode",
-                                              0
-                                            |)
+                      [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                    "extend_from_slice",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, padded_bytecode |);
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.deref (|
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "&")
+                            []
+                            [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ],
+                          M.get_trait_method (|
+                            "core::ops::deref::Deref",
+                            Ty.path "bytes::bytes::Bytes",
+                            [],
+                            [],
+                            "deref",
+                            [],
+                            []
+                          |),
+                          [
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.deref (|
+                                M.call_closure (|
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "bytes::bytes::Bytes" ],
+                                  M.get_trait_method (|
+                                    "core::ops::deref::Deref",
+                                    Ty.path "alloy_primitives::bytes_::Bytes",
+                                    [],
+                                    [],
+                                    "deref",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_tuple_field (|
+                                            self,
+                                            "revm_bytecode::legacy::raw::LegacyRawBytecode",
+                                            0
                                           |)
                                         |)
                                       |)
-                                    ]
-                                  |)
+                                    |)
+                                  ]
                                 |)
                               |)
-                            ]
-                          |)
+                            |)
+                          ]
                         |)
                       |)
-                    ]
-                  |)
+                    |)
+                  ]
                 |) in
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.tuple [],
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "alloc::vec::Vec")
-                        []
-                        [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                      "resize",
-                      [],
+                M.call_closure (|
+                  Ty.tuple [],
+                  M.get_associated_function (|
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
                       []
-                    |),
-                    [
-                      M.borrow (| Pointer.Kind.MutRef, padded_bytecode |);
-                      BinOp.Wrap.add (| M.read (| len |), Value.Integer IntegerKind.Usize 33 |);
-                      Value.Integer IntegerKind.U8 0
-                    ]
-                  |)
+                      [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                    "resize",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, padded_bytecode |);
+                    BinOp.Wrap.add (| M.read (| len |), Value.Integer IntegerKind.Usize 33 |);
+                    Value.Integer IntegerKind.U8 0
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -822,35 +812,33 @@ Module legacy.
                   (Ty.path "bitvec::vec::BitVec")
                   []
                   [ Ty.path "u8"; Ty.path "bitvec::order::Lsb0" ] :=
-              M.alloc (|
-                M.call_closure (|
+              M.call_closure (|
+                Ty.apply
+                  (Ty.path "bitvec::vec::BitVec")
+                  []
+                  [ Ty.path "u8"; Ty.path "bitvec::order::Lsb0" ],
+                M.get_associated_function (|
                   Ty.apply
                     (Ty.path "bitvec::vec::BitVec")
                     []
                     [ Ty.path "u8"; Ty.path "bitvec::order::Lsb0" ],
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "bitvec::vec::BitVec")
+                  "repeat",
+                  [],
+                  []
+                |),
+                [
+                  BinOp.ne (| Value.Integer IntegerKind.I32 0, Value.Integer IntegerKind.I32 0 |);
+                  M.call_closure (|
+                    Ty.path "usize",
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                      "len",
+                      [],
                       []
-                      [ Ty.path "u8"; Ty.path "bitvec::order::Lsb0" ],
-                    "repeat",
-                    [],
-                    []
-                  |),
-                  [
-                    BinOp.ne (| Value.Integer IntegerKind.I32 0, Value.Integer IntegerKind.I32 0 |);
-                    M.call_closure (|
-                      Ty.path "usize",
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                        "len",
-                        [],
-                        []
-                      |),
-                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| bytetecode |) |) |) ]
-                    |)
-                  ]
-                |)
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| bytetecode |) |) |) ]
+                  |)
+                ]
               |) in
             M.alloc (|
               Value.StructTuple

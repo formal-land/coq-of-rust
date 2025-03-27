@@ -516,26 +516,24 @@ Module Impl_mapping_integration_tests_Mappings.
                 (Ty.path "mapping_integration_tests::Mapping")
                 []
                 [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ] :=
-            M.alloc (|
-              M.call_closure (|
+            M.call_closure (|
+              Ty.apply
+                (Ty.path "mapping_integration_tests::Mapping")
+                []
+                [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ],
+              M.get_trait_method (|
+                "core::default::Default",
                 Ty.apply
                   (Ty.path "mapping_integration_tests::Mapping")
                   []
                   [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ],
-                M.get_trait_method (|
-                  "core::default::Default",
-                  Ty.apply
-                    (Ty.path "mapping_integration_tests::Mapping")
-                    []
-                    [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ],
-                  [],
-                  [],
-                  "default",
-                  [],
-                  []
-                |),
+                [],
+                [],
+                "default",
+                [],
                 []
-              |)
+              |),
+              []
             |) in
           M.alloc (|
             Value.StructRecord
@@ -563,33 +561,31 @@ Module Impl_mapping_integration_tests_Mappings.
         (let self := M.alloc (| self |) in
         M.read (|
           let~ caller : Ty.path "mapping_integration_tests::AccountId" :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.path "mapping_integration_tests::AccountId",
-                M.get_associated_function (|
-                  Ty.path "mapping_integration_tests::Env",
-                  "caller",
-                  [],
-                  []
-                |),
-                [
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.path "mapping_integration_tests::Env",
-                        M.get_associated_function (|
-                          Ty.path "mapping_integration_tests::Mappings",
-                          "env",
-                          [],
-                          []
-                        |),
+            M.call_closure (|
+              Ty.path "mapping_integration_tests::AccountId",
+              M.get_associated_function (|
+                Ty.path "mapping_integration_tests::Env",
+                "caller",
+                [],
+                []
+              |),
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
+                      Ty.path "mapping_integration_tests::Env",
+                      M.get_associated_function (|
+                        Ty.path "mapping_integration_tests::Mappings",
+                        "env",
+                        [],
                         []
-                      |)
+                      |),
+                      []
                     |)
                   |)
-                ]
-              |)
+                |)
+              ]
             |) in
           M.alloc (|
             M.call_closure (|
@@ -642,33 +638,31 @@ Module Impl_mapping_integration_tests_Mappings.
         let value := M.alloc (| value |) in
         M.read (|
           let~ caller : Ty.path "mapping_integration_tests::AccountId" :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.path "mapping_integration_tests::AccountId",
-                M.get_associated_function (|
-                  Ty.path "mapping_integration_tests::Env",
-                  "caller",
-                  [],
-                  []
-                |),
-                [
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.path "mapping_integration_tests::Env",
-                        M.get_associated_function (|
-                          Ty.path "mapping_integration_tests::Mappings",
-                          "env",
-                          [],
-                          []
-                        |),
+            M.call_closure (|
+              Ty.path "mapping_integration_tests::AccountId",
+              M.get_associated_function (|
+                Ty.path "mapping_integration_tests::Env",
+                "caller",
+                [],
+                []
+              |),
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
+                      Ty.path "mapping_integration_tests::Env",
+                      M.get_associated_function (|
+                        Ty.path "mapping_integration_tests::Mappings",
+                        "env",
+                        [],
                         []
-                      |)
+                      |),
+                      []
                     |)
                   |)
-                ]
-              |)
+                |)
+              ]
             |) in
           M.alloc (|
             M.call_closure (|
@@ -718,33 +712,31 @@ Module Impl_mapping_integration_tests_Mappings.
         (let self := M.alloc (| self |) in
         M.read (|
           let~ caller : Ty.path "mapping_integration_tests::AccountId" :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.path "mapping_integration_tests::AccountId",
-                M.get_associated_function (|
-                  Ty.path "mapping_integration_tests::Env",
-                  "caller",
-                  [],
-                  []
-                |),
-                [
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.path "mapping_integration_tests::Env",
-                        M.get_associated_function (|
-                          Ty.path "mapping_integration_tests::Mappings",
-                          "env",
-                          [],
-                          []
-                        |),
+            M.call_closure (|
+              Ty.path "mapping_integration_tests::AccountId",
+              M.get_associated_function (|
+                Ty.path "mapping_integration_tests::Env",
+                "caller",
+                [],
+                []
+              |),
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
+                      Ty.path "mapping_integration_tests::Env",
+                      M.get_associated_function (|
+                        Ty.path "mapping_integration_tests::Mappings",
+                        "env",
+                        [],
                         []
-                      |)
+                      |),
+                      []
                     |)
                   |)
-                ]
-              |)
+                |)
+              ]
             |) in
           M.alloc (|
             M.call_closure (|
@@ -793,33 +785,31 @@ Module Impl_mapping_integration_tests_Mappings.
         (let self := M.alloc (| self |) in
         M.read (|
           let~ caller : Ty.path "mapping_integration_tests::AccountId" :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.path "mapping_integration_tests::AccountId",
-                M.get_associated_function (|
-                  Ty.path "mapping_integration_tests::Env",
-                  "caller",
-                  [],
-                  []
-                |),
-                [
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.path "mapping_integration_tests::Env",
-                        M.get_associated_function (|
-                          Ty.path "mapping_integration_tests::Mappings",
-                          "env",
-                          [],
-                          []
-                        |),
+            M.call_closure (|
+              Ty.path "mapping_integration_tests::AccountId",
+              M.get_associated_function (|
+                Ty.path "mapping_integration_tests::Env",
+                "caller",
+                [],
+                []
+              |),
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
+                      Ty.path "mapping_integration_tests::Env",
+                      M.get_associated_function (|
+                        Ty.path "mapping_integration_tests::Mappings",
+                        "env",
+                        [],
                         []
-                      |)
+                      |),
+                      []
                     |)
                   |)
-                ]
-              |)
+                |)
+              ]
             |) in
           M.alloc (|
             M.call_closure (|
@@ -871,59 +861,55 @@ Module Impl_mapping_integration_tests_Mappings.
         (let self := M.alloc (| self |) in
         M.read (|
           let~ caller : Ty.path "mapping_integration_tests::AccountId" :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.path "mapping_integration_tests::AccountId",
-                M.get_associated_function (|
-                  Ty.path "mapping_integration_tests::Env",
-                  "caller",
-                  [],
-                  []
-                |),
-                [
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.path "mapping_integration_tests::Env",
-                        M.get_associated_function (|
-                          Ty.path "mapping_integration_tests::Mappings",
-                          "env",
-                          [],
-                          []
-                        |),
+            M.call_closure (|
+              Ty.path "mapping_integration_tests::AccountId",
+              M.get_associated_function (|
+                Ty.path "mapping_integration_tests::Env",
+                "caller",
+                [],
+                []
+              |),
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
+                      Ty.path "mapping_integration_tests::Env",
+                      M.get_associated_function (|
+                        Ty.path "mapping_integration_tests::Mappings",
+                        "env",
+                        [],
                         []
-                      |)
+                      |),
+                      []
                     |)
                   |)
-                ]
-              |)
+                |)
+              ]
             |) in
           let~ _ : Ty.tuple [] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.tuple [],
-                M.get_associated_function (|
-                  Ty.apply
-                    (Ty.path "mapping_integration_tests::Mapping")
-                    []
-                    [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ],
-                  "remove",
-                  [],
+            M.call_closure (|
+              Ty.tuple [],
+              M.get_associated_function (|
+                Ty.apply
+                  (Ty.path "mapping_integration_tests::Mapping")
                   []
-                |),
-                [
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "mapping_integration_tests::Mappings",
-                      "balances"
-                    |)
-                  |);
-                  M.read (| caller |)
-                ]
-              |)
+                  [ Ty.path "mapping_integration_tests::AccountId"; Ty.path "u128" ],
+                "remove",
+                [],
+                []
+              |),
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "mapping_integration_tests::Mappings",
+                    "balances"
+                  |)
+                |);
+                M.read (| caller |)
+              ]
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
@@ -948,33 +934,31 @@ Module Impl_mapping_integration_tests_Mappings.
         (let self := M.alloc (| self |) in
         M.read (|
           let~ caller : Ty.path "mapping_integration_tests::AccountId" :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.path "mapping_integration_tests::AccountId",
-                M.get_associated_function (|
-                  Ty.path "mapping_integration_tests::Env",
-                  "caller",
-                  [],
-                  []
-                |),
-                [
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.path "mapping_integration_tests::Env",
-                        M.get_associated_function (|
-                          Ty.path "mapping_integration_tests::Mappings",
-                          "env",
-                          [],
-                          []
-                        |),
+            M.call_closure (|
+              Ty.path "mapping_integration_tests::AccountId",
+              M.get_associated_function (|
+                Ty.path "mapping_integration_tests::Env",
+                "caller",
+                [],
+                []
+              |),
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.alloc (|
+                    M.call_closure (|
+                      Ty.path "mapping_integration_tests::Env",
+                      M.get_associated_function (|
+                        Ty.path "mapping_integration_tests::Mappings",
+                        "env",
+                        [],
                         []
-                      |)
+                      |),
+                      []
                     |)
                   |)
-                ]
-              |)
+                |)
+              ]
             |) in
           M.alloc (|
             M.call_closure (|

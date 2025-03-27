@@ -170,31 +170,27 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ name : Ty.path "alloc::string::String" :=
-          M.alloc (|
-            M.call_closure (|
+          M.call_closure (|
+            Ty.path "alloc::string::String",
+            M.get_trait_method (|
+              "core::convert::From",
               Ty.path "alloc::string::String",
-              M.get_trait_method (|
-                "core::convert::From",
-                Ty.path "alloc::string::String",
-                [],
-                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                "from",
-                [],
-                []
-              |),
-              [ mk_str (| "Peter" |) ]
-            |)
+              [],
+              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+              "from",
+              [],
+              []
+            |),
+            [ mk_str (| "Peter" |) ]
           |) in
-        let~ age : Ty.path "u8" := M.alloc (| Value.Integer IntegerKind.U8 27 |) in
+        let~ age : Ty.path "u8" := Value.Integer IntegerKind.U8 27 in
         let~ peter : Ty.path "structures::Person" :=
-          M.alloc (|
-            Value.StructRecord
-              "structures::Person"
-              [ ("name", M.read (| name |)); ("age", M.read (| age |)) ]
-          |) in
+          Value.StructRecord
+            "structures::Person"
+            [ ("name", M.read (| name |)); ("age", M.read (| age |)) ] in
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -249,18 +245,16 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
-        let~ point : Ty.path "structures::Point" :=
-          M.alloc (|
-            Value.StructRecord
-              "structures::Point"
-              [ ("x", M.read (| UnsupportedLiteral |)); ("y", M.read (| UnsupportedLiteral |)) ]
+              |) in
+            M.alloc (| Value.Tuple [] |)
           |) in
+        let~ point : Ty.path "structures::Point" :=
+          Value.StructRecord
+            "structures::Point"
+            [ ("x", M.read (| UnsupportedLiteral |)); ("y", M.read (| UnsupportedLiteral |)) ] in
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -355,16 +349,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
-        let~ bottom_right : Ty.path "structures::Point" :=
-          M.alloc (|
-            M.struct_record_update (M.read (| point |)) [ ("x", M.read (| UnsupportedLiteral |)) ]
+              |) in
+            M.alloc (| Value.Tuple [] |)
           |) in
+        let~ bottom_right : Ty.path "structures::Point" :=
+          M.struct_record_update (M.read (| point |)) [ ("x", M.read (| UnsupportedLiteral |)) ] in
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -459,9 +451,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         M.match_operator (|
           None,
           point,
@@ -475,28 +467,24 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 let left_edge := M.copy (| γ0_0 |) in
                 let top_edge := M.copy (| γ0_1 |) in
                 let~ _rectangle : Ty.path "structures::Rectangle" :=
-                  M.alloc (|
-                    Value.StructRecord
-                      "structures::Rectangle"
-                      [
-                        ("top_left",
-                          Value.StructRecord
-                            "structures::Point"
-                            [ ("x", M.read (| left_edge |)); ("y", M.read (| top_edge |)) ]);
-                        ("bottom_right", M.read (| bottom_right |))
-                      ]
-                  |) in
+                  Value.StructRecord
+                    "structures::Rectangle"
+                    [
+                      ("top_left",
+                        Value.StructRecord
+                          "structures::Point"
+                          [ ("x", M.read (| left_edge |)); ("y", M.read (| top_edge |)) ]);
+                      ("bottom_right", M.read (| bottom_right |))
+                    ] in
                 let~ _unit : Ty.path "structures::Unit" :=
-                  M.alloc (| Value.StructTuple "structures::Unit" [] |) in
+                  Value.StructTuple "structures::Unit" [] in
                 let~ pair_ : Ty.path "structures::Pair" :=
-                  M.alloc (|
-                    Value.StructTuple
-                      "structures::Pair"
-                      [ Value.Integer IntegerKind.I32 1; M.read (| UnsupportedLiteral |) ]
-                  |) in
+                  Value.StructTuple
+                    "structures::Pair"
+                    [ Value.Integer IntegerKind.I32 1; M.read (| UnsupportedLiteral |) ] in
                 let~ _ : Ty.tuple [] :=
-                  let~ _ : Ty.tuple [] :=
-                    M.alloc (|
+                  M.read (|
+                    let~ _ : Ty.tuple [] :=
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -592,9 +580,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             ]
                           |)
                         ]
-                      |)
-                    |) in
-                  M.alloc (| Value.Tuple [] |) in
+                      |) in
+                    M.alloc (| Value.Tuple [] |)
+                  |) in
                 M.match_operator (|
                   None,
                   pair_,
@@ -608,8 +596,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         let integer := M.copy (| γ0_0 |) in
                         let decimal := M.copy (| γ0_1 |) in
                         let~ _ : Ty.tuple [] :=
-                          let~ _ : Ty.tuple [] :=
-                            M.alloc (|
+                          M.read (|
+                            let~ _ : Ty.tuple [] :=
                               M.call_closure (|
                                 Ty.tuple [],
                                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -693,9 +681,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     ]
                                   |)
                                 ]
-                              |)
-                            |) in
-                          M.alloc (| Value.Tuple [] |) in
+                              |) in
+                            M.alloc (| Value.Tuple [] |)
+                          |) in
                         M.alloc (| Value.Tuple [] |)))
                   ]
                 |)))

@@ -143,20 +143,18 @@ Module Impl_basic_contract_caller_OtherContract.
         (let self := M.alloc (| self |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
-            M.alloc (|
-              M.write (|
-                M.SubPointer.get_struct_record_field (|
-                  M.deref (| M.read (| self |) |),
-                  "basic_contract_caller::OtherContract",
-                  "value"
-                |),
-                UnOp.not (|
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "basic_contract_caller::OtherContract",
-                      "value"
-                    |)
+            M.write (|
+              M.SubPointer.get_struct_record_field (|
+                M.deref (| M.read (| self |) |),
+                "basic_contract_caller::OtherContract",
+                "value"
+              |),
+              UnOp.not (|
+                M.read (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "basic_contract_caller::OtherContract",
+                    "value"
                   |)
                 |)
               |)
@@ -225,13 +223,11 @@ Module Impl_basic_contract_caller_BasicContractCaller.
         (let other_contract_code_hash := M.alloc (| other_contract_code_hash |) in
         M.read (|
           let~ other_contract : Ty.path "basic_contract_caller::OtherContract" :=
-            M.alloc (|
-              M.never_to_any (|
-                M.call_closure (|
-                  Ty.path "never",
-                  M.get_function (| "core::panicking::panic", [], [] |),
-                  [ mk_str (| "not yet implemented" |) ]
-                |)
+            M.never_to_any (|
+              M.call_closure (|
+                Ty.path "never",
+                M.get_function (| "core::panicking::panic", [], [] |),
+                [ mk_str (| "not yet implemented" |) ]
               |)
             |) in
           M.alloc (|
@@ -260,26 +256,24 @@ Module Impl_basic_contract_caller_BasicContractCaller.
         (let self := M.alloc (| self |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.tuple [],
-                M.get_associated_function (|
-                  Ty.path "basic_contract_caller::OtherContract",
-                  "flip",
-                  [],
-                  []
-                |),
-                [
-                  M.borrow (|
-                    Pointer.Kind.MutRef,
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "basic_contract_caller::BasicContractCaller",
-                      "other_contract"
-                    |)
+            M.call_closure (|
+              Ty.tuple [],
+              M.get_associated_function (|
+                Ty.path "basic_contract_caller::OtherContract",
+                "flip",
+                [],
+                []
+              |),
+              [
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "basic_contract_caller::BasicContractCaller",
+                    "other_contract"
                   |)
-                ]
-              |)
+                |)
+              ]
             |) in
           M.alloc (|
             M.call_closure (|

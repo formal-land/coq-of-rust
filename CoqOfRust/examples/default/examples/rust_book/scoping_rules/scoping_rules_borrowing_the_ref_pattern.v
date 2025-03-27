@@ -111,7 +111,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ c : Ty.path "char" := M.alloc (| Value.UnicodeChar 81 |) in
+        let~ c : Ty.path "char" := Value.UnicodeChar 81 in
         M.match_operator (|
           None,
           c,
@@ -120,10 +120,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               ltac:(M.monadic
                 (let ref_c1 := M.alloc (| γ |) in
                 let~ ref_c2 : Ty.apply (Ty.path "&") [] [ Ty.path "char" ] :=
-                  M.alloc (| M.borrow (| Pointer.Kind.Ref, c |) |) in
+                  M.borrow (| Pointer.Kind.Ref, c |) in
                 let~ _ : Ty.tuple [] :=
-                  let~ _ : Ty.tuple [] :=
-                    M.alloc (|
+                  M.read (|
+                    let~ _ : Ty.tuple [] :=
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -196,20 +196,16 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             ]
                           |)
                         ]
-                      |)
-                    |) in
-                  M.alloc (| Value.Tuple [] |) in
-                let~ point : Ty.path "scoping_rules_borrowing_the_ref_pattern::Point" :=
-                  M.alloc (|
-                    Value.StructRecord
-                      "scoping_rules_borrowing_the_ref_pattern::Point"
-                      [
-                        ("x", Value.Integer IntegerKind.I32 0);
-                        ("y", Value.Integer IntegerKind.I32 0)
-                      ]
+                      |) in
+                    M.alloc (| Value.Tuple [] |)
                   |) in
+                let~ point : Ty.path "scoping_rules_borrowing_the_ref_pattern::Point" :=
+                  Value.StructRecord
+                    "scoping_rules_borrowing_the_ref_pattern::Point"
+                    [ ("x", Value.Integer IntegerKind.I32 0); ("y", Value.Integer IntegerKind.I32 0)
+                    ] in
                 let~ _copy_of_x : Ty.path "i32" :=
-                  M.copy (|
+                  M.read (|
                     M.match_operator (|
                       None,
                       point,
@@ -234,40 +230,40 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     |)
                   |) in
                 let~ mutable_point : Ty.path "scoping_rules_borrowing_the_ref_pattern::Point" :=
-                  M.copy (| point |) in
+                  M.read (| point |) in
                 let~ _ : Ty.tuple [] :=
-                  M.match_operator (|
-                    None,
-                    mutable_point,
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ0_0 :=
-                            M.SubPointer.get_struct_record_field (|
-                              γ,
-                              "scoping_rules_borrowing_the_ref_pattern::Point",
-                              "x"
-                            |) in
-                          let γ0_1 :=
-                            M.SubPointer.get_struct_record_field (|
-                              γ,
-                              "scoping_rules_borrowing_the_ref_pattern::Point",
-                              "y"
-                            |) in
-                          let mut_ref_to_y := M.alloc (| γ0_1 |) in
-                          let~ _ : Ty.tuple [] :=
-                            M.alloc (|
+                  M.read (|
+                    M.match_operator (|
+                      None,
+                      mutable_point,
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 :=
+                              M.SubPointer.get_struct_record_field (|
+                                γ,
+                                "scoping_rules_borrowing_the_ref_pattern::Point",
+                                "x"
+                              |) in
+                            let γ0_1 :=
+                              M.SubPointer.get_struct_record_field (|
+                                γ,
+                                "scoping_rules_borrowing_the_ref_pattern::Point",
+                                "y"
+                              |) in
+                            let mut_ref_to_y := M.alloc (| γ0_1 |) in
+                            let~ _ : Ty.tuple [] :=
                               M.write (|
                                 M.deref (| M.read (| mut_ref_to_y |) |),
                                 Value.Integer IntegerKind.I32 1
-                              |)
-                            |) in
-                          M.alloc (| Value.Tuple [] |)))
-                    ]
+                              |) in
+                            M.alloc (| Value.Tuple [] |)))
+                      ]
+                    |)
                   |) in
                 let~ _ : Ty.tuple [] :=
-                  let~ _ : Ty.tuple [] :=
-                    M.alloc (|
+                  M.read (|
+                    let~ _ : Ty.tuple [] :=
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -363,12 +359,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             ]
                           |)
                         ]
-                      |)
-                    |) in
-                  M.alloc (| Value.Tuple [] |) in
+                      |) in
+                    M.alloc (| Value.Tuple [] |)
+                  |) in
                 let~ _ : Ty.tuple [] :=
-                  let~ _ : Ty.tuple [] :=
-                    M.alloc (|
+                  M.read (|
+                    let~ _ : Ty.tuple [] :=
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -464,9 +460,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             ]
                           |)
                         ]
-                      |)
-                    |) in
-                  M.alloc (| Value.Tuple [] |) in
+                      |) in
+                    M.alloc (| Value.Tuple [] |)
+                  |) in
                 let~ mutable_tuple :
                     Ty.tuple
                       [
@@ -476,51 +472,49 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ];
                         Ty.path "u32"
                       ] :=
-                  M.alloc (|
-                    Value.Tuple
-                      [
-                        M.call_closure (|
+                  Value.Tuple
+                    [
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "alloc::boxed::Box")
+                          []
+                          [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ],
+                        M.get_associated_function (|
                           Ty.apply
                             (Ty.path "alloc::boxed::Box")
                             []
                             [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ],
-                          M.get_associated_function (|
-                            Ty.apply
-                              (Ty.path "alloc::boxed::Box")
-                              []
-                              [ Ty.path "u32"; Ty.path "alloc::alloc::Global" ],
-                            "new",
-                            [],
-                            []
-                          |),
-                          [ Value.Integer IntegerKind.U32 5 ]
-                        |);
-                        Value.Integer IntegerKind.U32 3
-                      ]
-                  |) in
+                          "new",
+                          [],
+                          []
+                        |),
+                        [ Value.Integer IntegerKind.U32 5 ]
+                      |);
+                      Value.Integer IntegerKind.U32 3
+                    ] in
                 let~ _ : Ty.tuple [] :=
-                  M.match_operator (|
-                    None,
-                    mutable_tuple,
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                          let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                          let last := M.alloc (| γ0_1 |) in
-                          let~ _ : Ty.tuple [] :=
-                            M.alloc (|
+                  M.read (|
+                    M.match_operator (|
+                      None,
+                      mutable_tuple,
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                            let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                            let last := M.alloc (| γ0_1 |) in
+                            let~ _ : Ty.tuple [] :=
                               M.write (|
                                 M.deref (| M.read (| last |) |),
                                 Value.Integer IntegerKind.U32 2
-                              |)
-                            |) in
-                          M.alloc (| Value.Tuple [] |)))
-                    ]
+                              |) in
+                            M.alloc (| Value.Tuple [] |)))
+                      ]
+                    |)
                   |) in
                 let~ _ : Ty.tuple [] :=
-                  let~ _ : Ty.tuple [] :=
-                    M.alloc (|
+                  M.read (|
+                    let~ _ : Ty.tuple [] :=
                       M.call_closure (|
                         Ty.tuple [],
                         M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -592,9 +586,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             ]
                           |)
                         ]
-                      |)
-                    |) in
-                  M.alloc (| Value.Tuple [] |) in
+                      |) in
+                    M.alloc (| Value.Tuple [] |)
+                  |) in
                 M.alloc (| Value.Tuple [] |)))
           ]
         |)

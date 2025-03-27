@@ -37,33 +37,35 @@ Definition div (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       let b := M.alloc (| b |) in
       M.read (|
         let~ _ : Ty.tuple [] :=
-          M.match_operator (|
-            Some (Ty.tuple []),
-            M.alloc (| Value.Tuple [] |),
-            [
-              fun γ =>
-                ltac:(M.monadic
-                  (let γ :=
-                    M.use
-                      (M.alloc (|
-                        BinOp.eq (| M.read (| b |), Value.Integer IntegerKind.I32 0 |)
-                      |)) in
-                  let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                  M.alloc (|
-                    M.never_to_any (|
-                      M.call_closure (|
-                        Ty.path "never",
-                        M.get_function (|
-                          "std::panicking::begin_panic",
-                          [],
-                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                        |),
-                        [ mk_str (| "Divide-by-zero error" |) ]
+          M.read (|
+            M.match_operator (|
+              Some (Ty.tuple []),
+              M.alloc (| Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ :=
+                      M.use
+                        (M.alloc (|
+                          BinOp.eq (| M.read (| b |), Value.Integer IntegerKind.I32 0 |)
+                        |)) in
+                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    M.alloc (|
+                      M.never_to_any (|
+                        M.call_closure (|
+                          Ty.path "never",
+                          M.get_function (|
+                            "std::panicking::begin_panic",
+                            [],
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                          |),
+                          [ mk_str (| "Divide-by-zero error" |) ]
+                        |)
                       |)
-                    |)
-                  |)));
-              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-            ]
+                    |)));
+                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+              ]
+            |)
           |) in
         M.alloc (| BinOp.Wrap.div (| M.read (| a |), M.read (| b |) |) |)
       |)))

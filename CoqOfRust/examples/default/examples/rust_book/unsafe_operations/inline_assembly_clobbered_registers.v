@@ -43,17 +43,27 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       (M.read (|
         let~ name_buf :
             Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 12 ] [ Ty.path "u8" ] :=
-          M.alloc (|
-            repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 12 |)
-          |) in
+          repeat (Value.Integer IntegerKind.U8 0) (Value.Integer IntegerKind.Usize 12) in
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] := InlineAssembly in
-          M.alloc (| Value.Tuple [] |) in
+          M.read (|
+            let~ _ : Ty.tuple [] := M.read (| InlineAssembly |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         let~ name : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-              M.get_associated_function (|
+          M.call_closure (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+            M.get_associated_function (|
+              Ty.apply
+                (Ty.path "core::result::Result")
+                []
+                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ]; Ty.path "core::str::error::Utf8Error"
+                ],
+              "unwrap",
+              [],
+              []
+            |),
+            [
+              M.call_closure (|
                 Ty.apply
                   (Ty.path "core::result::Result")
                   []
@@ -61,33 +71,19 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
                     Ty.path "core::str::error::Utf8Error"
                   ],
-                "unwrap",
-                [],
-                []
-              |),
-              [
-                M.call_closure (|
-                  Ty.apply
-                    (Ty.path "core::result::Result")
-                    []
-                    [
-                      Ty.apply (Ty.path "&") [] [ Ty.path "str" ];
-                      Ty.path "core::str::error::Utf8Error"
-                    ],
-                  M.get_function (| "core::str::converts::from_utf8", [], [] |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (| M.borrow (| Pointer.Kind.Ref, name_buf |) |)
-                    |)
-                  ]
-                |)
-              ]
-            |)
+                M.get_function (| "core::str::converts::from_utf8", [], [] |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (| M.borrow (| Pointer.Kind.Ref, name_buf |) |)
+                  |)
+                ]
+              |)
+            ]
           |) in
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -144,9 +140,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"

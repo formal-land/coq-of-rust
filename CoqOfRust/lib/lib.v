@@ -242,10 +242,10 @@ Fixpoint repeat_nat {A : Set} (times : nat) (v : A) : list A :=
   end.
 
 (** The repeat operator to create new arrays, like in `[0; 32]`. *)
-Definition repeat (v times : Value.t) : M :=
+Definition repeat (value times : Value.t) : Value.t :=
   match times with
-  | Value.Integer IntegerKind.Usize times => M.pure (Value.Array (repeat_nat (Z.to_nat times) v))
-  | _ => M.impossible "expected a usize integer for the repeat operator"
+  | Value.Integer IntegerKind.Usize times => Value.Array (repeat_nat (Z.to_nat times) value)
+  | _ => Value.Error "invalid parameters for the repeat operator"
   end.
 
 Global Opaque repeat.

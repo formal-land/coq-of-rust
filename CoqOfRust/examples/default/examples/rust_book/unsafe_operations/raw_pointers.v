@@ -16,43 +16,43 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ raw_p : Ty.apply (Ty.path "*const") [] [ Ty.path "u32" ] :=
-          M.alloc (|
-            M.borrow (|
-              Pointer.Kind.ConstPointer,
-              M.deref (|
-                M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Integer IntegerKind.U32 10 |) |)
-              |)
+          M.borrow (|
+            Pointer.Kind.ConstPointer,
+            M.deref (|
+              M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Integer IntegerKind.U32 10 |) |)
             |)
           |) in
         let~ _ : Ty.tuple [] :=
-          M.match_operator (|
-            Some (Ty.tuple []),
-            M.alloc (| Value.Tuple [] |),
-            [
-              fun γ =>
-                ltac:(M.monadic
-                  (let γ :=
-                    M.use
-                      (M.alloc (|
-                        UnOp.not (|
-                          BinOp.eq (|
-                            M.read (| M.deref (| M.read (| raw_p |) |) |),
-                            Value.Integer IntegerKind.U32 10
+          M.read (|
+            M.match_operator (|
+              Some (Ty.tuple []),
+              M.alloc (| Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ :=
+                      M.use
+                        (M.alloc (|
+                          UnOp.not (|
+                            BinOp.eq (|
+                              M.read (| M.deref (| M.read (| raw_p |) |) |),
+                              Value.Integer IntegerKind.U32 10
+                            |)
                           |)
+                        |)) in
+                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    M.alloc (|
+                      M.never_to_any (|
+                        M.call_closure (|
+                          Ty.path "never",
+                          M.get_function (| "core::panicking::panic", [], [] |),
+                          [ mk_str (| "assertion failed: *raw_p == 10" |) ]
                         |)
-                      |)) in
-                  let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                  M.alloc (|
-                    M.never_to_any (|
-                      M.call_closure (|
-                        Ty.path "never",
-                        M.get_function (| "core::panicking::panic", [], [] |),
-                        [ mk_str (| "assertion failed: *raw_p == 10" |) ]
                       |)
-                    |)
-                  |)));
-              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-            ]
+                    |)));
+                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+              ]
+            |)
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))

@@ -251,28 +251,24 @@ Module string.
           let other := M.alloc (| other |) in
           M.read (|
             let~ __self_discr : Ty.path "isize" :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "isize",
-                  M.get_function (|
-                    "core::intrinsics::discriminant_value",
-                    [],
-                    [ Ty.path "ruint::string::ParseError" ]
-                  |),
-                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                |)
+              M.call_closure (|
+                Ty.path "isize",
+                M.get_function (|
+                  "core::intrinsics::discriminant_value",
+                  [],
+                  [ Ty.path "ruint::string::ParseError" ]
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |) in
             let~ __arg1_discr : Ty.path "isize" :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "isize",
-                  M.get_function (|
-                    "core::intrinsics::discriminant_value",
-                    [],
-                    [ Ty.path "ruint::string::ParseError" ]
-                  |),
-                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
-                |)
+              M.call_closure (|
+                Ty.path "isize",
+                M.get_function (|
+                  "core::intrinsics::discriminant_value",
+                  [],
+                  [ Ty.path "ruint::string::ParseError" ]
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |) in
             M.alloc (|
               LogicalOp.and (|
@@ -860,43 +856,48 @@ Module string.
             ltac:(M.monadic
               (M.read (|
                 let~ _ : Ty.tuple [] :=
-                  M.match_operator (|
-                    Some (Ty.tuple []),
-                    M.alloc (| Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ :=
-                            M.use
-                              (M.alloc (|
-                                BinOp.gt (| M.read (| radix |), Value.Integer IntegerKind.U64 64 |)
-                              |)) in
-                          let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          M.alloc (|
-                            M.never_to_any (|
-                              M.read (|
-                                M.return_ (|
-                                  Value.StructTuple
-                                    "core::result::Result::Err"
-                                    [
-                                      Value.StructTuple
-                                        "ruint::string::ParseError::InvalidRadix"
-                                        [ M.read (| radix |) ]
-                                    ]
+                  M.read (|
+                    M.match_operator (|
+                      Some (Ty.tuple []),
+                      M.alloc (| Value.Tuple [] |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ :=
+                              M.use
+                                (M.alloc (|
+                                  BinOp.gt (|
+                                    M.read (| radix |),
+                                    Value.Integer IntegerKind.U64 64
+                                  |)
+                                |)) in
+                            let _ :=
+                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            M.alloc (|
+                              M.never_to_any (|
+                                M.read (|
+                                  M.return_ (|
+                                    Value.StructTuple
+                                      "core::result::Result::Err"
+                                      [
+                                        Value.StructTuple
+                                          "ruint::string::ParseError::InvalidRadix"
+                                          [ M.read (| radix |) ]
+                                      ]
+                                  |)
                                 |)
                               |)
-                            |)
-                          |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                    ]
+                            |)));
+                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      ]
+                    |)
                   |) in
                 let~ err :
                     Ty.apply
                       (Ty.path "core::option::Option")
                       []
                       [ Ty.path "ruint::string::ParseError" ] :=
-                  M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
+                  Value.StructTuple "core::option::Option::None" [] in
                 let~ digits :
                     Ty.apply
                       (Ty.path "core::iter::adapters::filter_map::FilterMap")
@@ -907,58 +908,58 @@ Module string.
                           [ Ty.tuple [ Ty.path "char" ] ]
                           (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ])
                       ] :=
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.apply
-                        (Ty.path "core::iter::adapters::filter_map::FilterMap")
-                        []
-                        [
-                          Ty.path "core::str::iter::Chars";
-                          Ty.function
-                            [ Ty.tuple [ Ty.path "char" ] ]
-                            (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ])
-                        ],
-                      M.get_trait_method (|
-                        "core::iter::traits::iterator::Iterator",
-                        Ty.path "core::str::iter::Chars",
-                        [],
-                        [],
-                        "filter_map",
-                        [],
-                        [
-                          Ty.path "u64";
-                          Ty.function
-                            [ Ty.tuple [ Ty.path "char" ] ]
-                            (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ])
-                        ]
-                      |),
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::iter::adapters::filter_map::FilterMap")
+                      []
                       [
-                        M.call_closure (|
-                          Ty.path "core::str::iter::Chars",
-                          M.get_associated_function (| Ty.path "str", "chars", [], [] |),
-                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| src |) |) |) ]
-                        |);
-                        M.closure
-                          (fun γ =>
-                            ltac:(M.monadic
-                              match γ with
-                              | [ α0 ] =>
-                                ltac:(M.monadic
-                                  (M.match_operator (|
-                                    Some
-                                      (Ty.function
-                                        [ Ty.tuple [ Ty.path "char" ] ]
-                                        (Ty.apply
-                                          (Ty.path "core::option::Option")
-                                          []
-                                          [ Ty.path "u64" ])),
-                                    M.alloc (| α0 |),
-                                    [
-                                      fun γ =>
-                                        ltac:(M.monadic
-                                          (let c := M.copy (| γ |) in
-                                          M.read (|
-                                            let~ _ : Ty.tuple [] :=
+                        Ty.path "core::str::iter::Chars";
+                        Ty.function
+                          [ Ty.tuple [ Ty.path "char" ] ]
+                          (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ])
+                      ],
+                    M.get_trait_method (|
+                      "core::iter::traits::iterator::Iterator",
+                      Ty.path "core::str::iter::Chars",
+                      [],
+                      [],
+                      "filter_map",
+                      [],
+                      [
+                        Ty.path "u64";
+                        Ty.function
+                          [ Ty.tuple [ Ty.path "char" ] ]
+                          (Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "u64" ])
+                      ]
+                    |),
+                    [
+                      M.call_closure (|
+                        Ty.path "core::str::iter::Chars",
+                        M.get_associated_function (| Ty.path "str", "chars", [], [] |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| src |) |) |) ]
+                      |);
+                      M.closure
+                        (fun γ =>
+                          ltac:(M.monadic
+                            match γ with
+                            | [ α0 ] =>
+                              ltac:(M.monadic
+                                (M.match_operator (|
+                                  Some
+                                    (Ty.function
+                                      [ Ty.tuple [ Ty.path "char" ] ]
+                                      (Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [ Ty.path "u64" ])),
+                                  M.alloc (| α0 |),
+                                  [
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (let c := M.copy (| γ |) in
+                                        M.read (|
+                                          let~ _ : Ty.tuple [] :=
+                                            M.read (|
                                               M.match_operator (|
                                                 Some (Ty.tuple []),
                                                 M.alloc (| Value.Tuple [] |),
@@ -1005,35 +1006,69 @@ Module string.
                                                   fun γ =>
                                                     ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                                                 ]
-                                              |) in
-                                            let~ digit : Ty.path "u64" :=
-                                              M.copy (|
-                                                M.match_operator (|
-                                                  Some (Ty.path "u64"),
-                                                  M.alloc (| Value.Tuple [] |),
-                                                  [
-                                                    fun γ =>
-                                                      ltac:(M.monadic
-                                                        (let γ :=
-                                                          M.use
-                                                            (M.alloc (|
-                                                              BinOp.le (|
-                                                                M.read (| radix |),
-                                                                Value.Integer IntegerKind.U64 36
-                                                              |)
-                                                            |)) in
-                                                        let _ :=
-                                                          M.is_constant_or_break_match (|
-                                                            M.read (| γ |),
-                                                            Value.Bool true
-                                                          |) in
-                                                        M.match_operator (|
-                                                          Some (Ty.path "u64"),
-                                                          c,
-                                                          [
-                                                            fun γ =>
-                                                              ltac:(M.monadic
-                                                                (M.alloc (|
+                                              |)
+                                            |) in
+                                          let~ digit : Ty.path "u64" :=
+                                            M.read (|
+                                              M.match_operator (|
+                                                Some (Ty.path "u64"),
+                                                M.alloc (| Value.Tuple [] |),
+                                                [
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (let γ :=
+                                                        M.use
+                                                          (M.alloc (|
+                                                            BinOp.le (|
+                                                              M.read (| radix |),
+                                                              Value.Integer IntegerKind.U64 36
+                                                            |)
+                                                          |)) in
+                                                      let _ :=
+                                                        M.is_constant_or_break_match (|
+                                                          M.read (| γ |),
+                                                          Value.Bool true
+                                                        |) in
+                                                      M.match_operator (|
+                                                        Some (Ty.path "u64"),
+                                                        c,
+                                                        [
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (M.alloc (|
+                                                                BinOp.Wrap.sub (|
+                                                                  M.call_closure (|
+                                                                    Ty.path "u64",
+                                                                    M.get_trait_method (|
+                                                                      "core::convert::From",
+                                                                      Ty.path "u64",
+                                                                      [],
+                                                                      [ Ty.path "char" ],
+                                                                      "from",
+                                                                      [],
+                                                                      []
+                                                                    |),
+                                                                    [ M.read (| c |) ]
+                                                                  |),
+                                                                  M.call_closure (|
+                                                                    Ty.path "u64",
+                                                                    M.get_trait_method (|
+                                                                      "core::convert::From",
+                                                                      Ty.path "u64",
+                                                                      [],
+                                                                      [ Ty.path "char" ],
+                                                                      "from",
+                                                                      [],
+                                                                      []
+                                                                    |),
+                                                                    [ Value.UnicodeChar 48 ]
+                                                                  |)
+                                                                |)
+                                                              |)));
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (M.alloc (|
+                                                                BinOp.Wrap.add (|
                                                                   BinOp.Wrap.sub (|
                                                                     M.call_closure (|
                                                                       Ty.path "u64",
@@ -1059,135 +1094,16 @@ Module string.
                                                                         [],
                                                                         []
                                                                       |),
-                                                                      [ Value.UnicodeChar 48 ]
+                                                                      [ Value.UnicodeChar 97 ]
                                                                     |)
-                                                                  |)
-                                                                |)));
-                                                            fun γ =>
-                                                              ltac:(M.monadic
-                                                                (M.alloc (|
-                                                                  BinOp.Wrap.add (|
-                                                                    BinOp.Wrap.sub (|
-                                                                      M.call_closure (|
-                                                                        Ty.path "u64",
-                                                                        M.get_trait_method (|
-                                                                          "core::convert::From",
-                                                                          Ty.path "u64",
-                                                                          [],
-                                                                          [ Ty.path "char" ],
-                                                                          "from",
-                                                                          [],
-                                                                          []
-                                                                        |),
-                                                                        [ M.read (| c |) ]
-                                                                      |),
-                                                                      M.call_closure (|
-                                                                        Ty.path "u64",
-                                                                        M.get_trait_method (|
-                                                                          "core::convert::From",
-                                                                          Ty.path "u64",
-                                                                          [],
-                                                                          [ Ty.path "char" ],
-                                                                          "from",
-                                                                          [],
-                                                                          []
-                                                                        |),
-                                                                        [ Value.UnicodeChar 97 ]
-                                                                      |)
-                                                                    |),
-                                                                    Value.Integer IntegerKind.U64 10
-                                                                  |)
-                                                                |)));
-                                                            fun γ =>
-                                                              ltac:(M.monadic
-                                                                (M.alloc (|
-                                                                  BinOp.Wrap.add (|
-                                                                    BinOp.Wrap.sub (|
-                                                                      M.call_closure (|
-                                                                        Ty.path "u64",
-                                                                        M.get_trait_method (|
-                                                                          "core::convert::From",
-                                                                          Ty.path "u64",
-                                                                          [],
-                                                                          [ Ty.path "char" ],
-                                                                          "from",
-                                                                          [],
-                                                                          []
-                                                                        |),
-                                                                        [ M.read (| c |) ]
-                                                                      |),
-                                                                      M.call_closure (|
-                                                                        Ty.path "u64",
-                                                                        M.get_trait_method (|
-                                                                          "core::convert::From",
-                                                                          Ty.path "u64",
-                                                                          [],
-                                                                          [ Ty.path "char" ],
-                                                                          "from",
-                                                                          [],
-                                                                          []
-                                                                        |),
-                                                                        [ Value.UnicodeChar 65 ]
-                                                                      |)
-                                                                    |),
-                                                                    Value.Integer IntegerKind.U64 10
-                                                                  |)
-                                                                |)));
-                                                            fun γ =>
-                                                              ltac:(M.monadic
-                                                                (let _ :=
-                                                                  M.is_constant_or_break_match (|
-                                                                    M.read (| γ |),
-                                                                    Value.UnicodeChar 95
-                                                                  |) in
-                                                                M.alloc (|
-                                                                  M.never_to_any (|
-                                                                    M.read (|
-                                                                      M.return_ (|
-                                                                        Value.StructTuple
-                                                                          "core::option::Option::None"
-                                                                          []
-                                                                      |)
-                                                                    |)
-                                                                  |)
-                                                                |)));
-                                                            fun γ =>
-                                                              ltac:(M.monadic
-                                                                (M.alloc (|
-                                                                  M.never_to_any (|
-                                                                    M.read (|
-                                                                      let~ _ : Ty.tuple [] :=
-                                                                        M.alloc (|
-                                                                          M.write (|
-                                                                            err,
-                                                                            Value.StructTuple
-                                                                              "core::option::Option::Some"
-                                                                              [
-                                                                                Value.StructTuple
-                                                                                  "ruint::string::ParseError::InvalidDigit"
-                                                                                  [ M.read (| c |) ]
-                                                                              ]
-                                                                          |)
-                                                                        |) in
-                                                                      M.return_ (|
-                                                                        Value.StructTuple
-                                                                          "core::option::Option::None"
-                                                                          []
-                                                                      |)
-                                                                    |)
-                                                                  |)
-                                                                |)))
-                                                          ]
-                                                        |)));
-                                                    fun γ =>
-                                                      ltac:(M.monadic
-                                                        (M.match_operator (|
-                                                          Some (Ty.path "u64"),
-                                                          c,
-                                                          [
-                                                            fun γ =>
-                                                              ltac:(M.monadic
-                                                                (M.alloc (|
+                                                                  |),
+                                                                  Value.Integer IntegerKind.U64 10
+                                                                |)
+                                                              |)));
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (M.alloc (|
+                                                                BinOp.Wrap.add (|
                                                                   BinOp.Wrap.sub (|
                                                                     M.call_closure (|
                                                                       Ty.path "u64",
@@ -1215,257 +1131,338 @@ Module string.
                                                                       |),
                                                                       [ Value.UnicodeChar 65 ]
                                                                     |)
-                                                                  |)
-                                                                |)));
-                                                            fun γ =>
-                                                              ltac:(M.monadic
-                                                                (M.alloc (|
-                                                                  BinOp.Wrap.add (|
-                                                                    BinOp.Wrap.sub (|
-                                                                      M.call_closure (|
-                                                                        Ty.path "u64",
-                                                                        M.get_trait_method (|
-                                                                          "core::convert::From",
-                                                                          Ty.path "u64",
-                                                                          [],
-                                                                          [ Ty.path "char" ],
-                                                                          "from",
-                                                                          [],
-                                                                          []
-                                                                        |),
-                                                                        [ M.read (| c |) ]
-                                                                      |),
-                                                                      M.call_closure (|
-                                                                        Ty.path "u64",
-                                                                        M.get_trait_method (|
-                                                                          "core::convert::From",
-                                                                          Ty.path "u64",
-                                                                          [],
-                                                                          [ Ty.path "char" ],
-                                                                          "from",
-                                                                          [],
-                                                                          []
-                                                                        |),
-                                                                        [ Value.UnicodeChar 97 ]
-                                                                      |)
-                                                                    |),
-                                                                    Value.Integer IntegerKind.U64 26
-                                                                  |)
-                                                                |)));
-                                                            fun γ =>
-                                                              ltac:(M.monadic
-                                                                (M.alloc (|
-                                                                  BinOp.Wrap.add (|
-                                                                    BinOp.Wrap.sub (|
-                                                                      M.call_closure (|
-                                                                        Ty.path "u64",
-                                                                        M.get_trait_method (|
-                                                                          "core::convert::From",
-                                                                          Ty.path "u64",
-                                                                          [],
-                                                                          [ Ty.path "char" ],
-                                                                          "from",
-                                                                          [],
-                                                                          []
-                                                                        |),
-                                                                        [ M.read (| c |) ]
-                                                                      |),
-                                                                      M.call_closure (|
-                                                                        Ty.path "u64",
-                                                                        M.get_trait_method (|
-                                                                          "core::convert::From",
-                                                                          Ty.path "u64",
-                                                                          [],
-                                                                          [ Ty.path "char" ],
-                                                                          "from",
-                                                                          [],
-                                                                          []
-                                                                        |),
-                                                                        [ Value.UnicodeChar 48 ]
-                                                                      |)
-                                                                    |),
-                                                                    Value.Integer IntegerKind.U64 52
-                                                                  |)
-                                                                |)));
-                                                            fun γ =>
-                                                              ltac:(M.monadic
-                                                                (M.find_or_pattern (|
-                                                                  γ,
-                                                                  [
-                                                                    fun γ =>
-                                                                      ltac:(M.monadic
-                                                                        (let _ :=
-                                                                          M.is_constant_or_break_match (|
-                                                                            M.read (| γ |),
-                                                                            Value.UnicodeChar 43
-                                                                          |) in
-                                                                        Value.Tuple []));
-                                                                    fun γ =>
-                                                                      ltac:(M.monadic
-                                                                        (let _ :=
-                                                                          M.is_constant_or_break_match (|
-                                                                            M.read (| γ |),
-                                                                            Value.UnicodeChar 45
-                                                                          |) in
-                                                                        Value.Tuple []))
-                                                                  ],
-                                                                  fun γ =>
-                                                                    ltac:(M.monadic
-                                                                      match γ with
-                                                                      | [] =>
-                                                                        ltac:(M.monadic
-                                                                          (M.alloc (|
-                                                                            Value.Integer
-                                                                              IntegerKind.U64
-                                                                              62
-                                                                          |)))
-                                                                      | _ =>
-                                                                        M.impossible
-                                                                          "wrong number of arguments"
-                                                                      end)
-                                                                |)));
-                                                            fun γ =>
-                                                              ltac:(M.monadic
-                                                                (M.find_or_pattern (|
-                                                                  γ,
-                                                                  [
-                                                                    fun γ =>
-                                                                      ltac:(M.monadic
-                                                                        (let _ :=
-                                                                          M.is_constant_or_break_match (|
-                                                                            M.read (| γ |),
-                                                                            Value.UnicodeChar 47
-                                                                          |) in
-                                                                        Value.Tuple []));
-                                                                    fun γ =>
-                                                                      ltac:(M.monadic
-                                                                        (let _ :=
-                                                                          M.is_constant_or_break_match (|
-                                                                            M.read (| γ |),
-                                                                            Value.UnicodeChar 44
-                                                                          |) in
-                                                                        Value.Tuple []));
-                                                                    fun γ =>
-                                                                      ltac:(M.monadic
-                                                                        (let _ :=
-                                                                          M.is_constant_or_break_match (|
-                                                                            M.read (| γ |),
-                                                                            Value.UnicodeChar 95
-                                                                          |) in
-                                                                        Value.Tuple []))
-                                                                  ],
-                                                                  fun γ =>
-                                                                    ltac:(M.monadic
-                                                                      match γ with
-                                                                      | [] =>
-                                                                        ltac:(M.monadic
-                                                                          (M.alloc (|
-                                                                            Value.Integer
-                                                                              IntegerKind.U64
-                                                                              63
-                                                                          |)))
-                                                                      | _ =>
-                                                                        M.impossible
-                                                                          "wrong number of arguments"
-                                                                      end)
-                                                                |)));
-                                                            fun γ =>
-                                                              ltac:(M.monadic
-                                                                (M.find_or_pattern (|
-                                                                  γ,
-                                                                  [
-                                                                    fun γ =>
-                                                                      ltac:(M.monadic
-                                                                        (let _ :=
-                                                                          M.is_constant_or_break_match (|
-                                                                            M.read (| γ |),
-                                                                            Value.UnicodeChar 61
-                                                                          |) in
-                                                                        Value.Tuple []));
-                                                                    fun γ =>
-                                                                      ltac:(M.monadic
-                                                                        (let _ :=
-                                                                          M.is_constant_or_break_match (|
-                                                                            M.read (| γ |),
-                                                                            Value.UnicodeChar 13
-                                                                          |) in
-                                                                        Value.Tuple []));
-                                                                    fun γ =>
-                                                                      ltac:(M.monadic
-                                                                        (let _ :=
-                                                                          M.is_constant_or_break_match (|
-                                                                            M.read (| γ |),
-                                                                            Value.UnicodeChar 10
-                                                                          |) in
-                                                                        Value.Tuple []))
-                                                                  ],
-                                                                  fun γ =>
-                                                                    ltac:(M.monadic
-                                                                      match γ with
-                                                                      | [] =>
-                                                                        ltac:(M.monadic
-                                                                          (M.alloc (|
-                                                                            M.never_to_any (|
-                                                                              M.read (|
-                                                                                M.return_ (|
-                                                                                  Value.StructTuple
-                                                                                    "core::option::Option::None"
-                                                                                    []
-                                                                                |)
-                                                                              |)
-                                                                            |)
-                                                                          |)))
-                                                                      | _ =>
-                                                                        M.impossible
-                                                                          "wrong number of arguments"
-                                                                      end)
-                                                                |)));
-                                                            fun γ =>
-                                                              ltac:(M.monadic
-                                                                (M.alloc (|
-                                                                  M.never_to_any (|
-                                                                    M.read (|
-                                                                      let~ _ : Ty.tuple [] :=
-                                                                        M.alloc (|
-                                                                          M.write (|
-                                                                            err,
-                                                                            Value.StructTuple
-                                                                              "core::option::Option::Some"
-                                                                              [
-                                                                                Value.StructTuple
-                                                                                  "ruint::string::ParseError::InvalidDigit"
-                                                                                  [ M.read (| c |) ]
-                                                                              ]
-                                                                          |)
-                                                                        |) in
-                                                                      M.return_ (|
-                                                                        Value.StructTuple
-                                                                          "core::option::Option::None"
-                                                                          []
-                                                                      |)
+                                                                  |),
+                                                                  Value.Integer IntegerKind.U64 10
+                                                                |)
+                                                              |)));
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (let _ :=
+                                                                M.is_constant_or_break_match (|
+                                                                  M.read (| γ |),
+                                                                  Value.UnicodeChar 95
+                                                                |) in
+                                                              M.alloc (|
+                                                                M.never_to_any (|
+                                                                  M.read (|
+                                                                    M.return_ (|
+                                                                      Value.StructTuple
+                                                                        "core::option::Option::None"
+                                                                        []
                                                                     |)
                                                                   |)
-                                                                |)))
-                                                          ]
-                                                        |)))
-                                                  ]
-                                                |)
-                                              |) in
-                                            M.alloc (|
-                                              Value.StructTuple
-                                                "core::option::Option::Some"
-                                                [ M.read (| digit |) ]
-                                            |)
-                                          |)))
-                                    ]
-                                  |)))
-                              | _ => M.impossible "wrong number of arguments"
-                              end))
-                      ]
-                    |)
+                                                                |)
+                                                              |)));
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (M.alloc (|
+                                                                M.never_to_any (|
+                                                                  M.read (|
+                                                                    let~ _ : Ty.tuple [] :=
+                                                                      M.write (|
+                                                                        err,
+                                                                        Value.StructTuple
+                                                                          "core::option::Option::Some"
+                                                                          [
+                                                                            Value.StructTuple
+                                                                              "ruint::string::ParseError::InvalidDigit"
+                                                                              [ M.read (| c |) ]
+                                                                          ]
+                                                                      |) in
+                                                                    M.return_ (|
+                                                                      Value.StructTuple
+                                                                        "core::option::Option::None"
+                                                                        []
+                                                                    |)
+                                                                  |)
+                                                                |)
+                                                              |)))
+                                                        ]
+                                                      |)));
+                                                  fun γ =>
+                                                    ltac:(M.monadic
+                                                      (M.match_operator (|
+                                                        Some (Ty.path "u64"),
+                                                        c,
+                                                        [
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (M.alloc (|
+                                                                BinOp.Wrap.sub (|
+                                                                  M.call_closure (|
+                                                                    Ty.path "u64",
+                                                                    M.get_trait_method (|
+                                                                      "core::convert::From",
+                                                                      Ty.path "u64",
+                                                                      [],
+                                                                      [ Ty.path "char" ],
+                                                                      "from",
+                                                                      [],
+                                                                      []
+                                                                    |),
+                                                                    [ M.read (| c |) ]
+                                                                  |),
+                                                                  M.call_closure (|
+                                                                    Ty.path "u64",
+                                                                    M.get_trait_method (|
+                                                                      "core::convert::From",
+                                                                      Ty.path "u64",
+                                                                      [],
+                                                                      [ Ty.path "char" ],
+                                                                      "from",
+                                                                      [],
+                                                                      []
+                                                                    |),
+                                                                    [ Value.UnicodeChar 65 ]
+                                                                  |)
+                                                                |)
+                                                              |)));
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (M.alloc (|
+                                                                BinOp.Wrap.add (|
+                                                                  BinOp.Wrap.sub (|
+                                                                    M.call_closure (|
+                                                                      Ty.path "u64",
+                                                                      M.get_trait_method (|
+                                                                        "core::convert::From",
+                                                                        Ty.path "u64",
+                                                                        [],
+                                                                        [ Ty.path "char" ],
+                                                                        "from",
+                                                                        [],
+                                                                        []
+                                                                      |),
+                                                                      [ M.read (| c |) ]
+                                                                    |),
+                                                                    M.call_closure (|
+                                                                      Ty.path "u64",
+                                                                      M.get_trait_method (|
+                                                                        "core::convert::From",
+                                                                        Ty.path "u64",
+                                                                        [],
+                                                                        [ Ty.path "char" ],
+                                                                        "from",
+                                                                        [],
+                                                                        []
+                                                                      |),
+                                                                      [ Value.UnicodeChar 97 ]
+                                                                    |)
+                                                                  |),
+                                                                  Value.Integer IntegerKind.U64 26
+                                                                |)
+                                                              |)));
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (M.alloc (|
+                                                                BinOp.Wrap.add (|
+                                                                  BinOp.Wrap.sub (|
+                                                                    M.call_closure (|
+                                                                      Ty.path "u64",
+                                                                      M.get_trait_method (|
+                                                                        "core::convert::From",
+                                                                        Ty.path "u64",
+                                                                        [],
+                                                                        [ Ty.path "char" ],
+                                                                        "from",
+                                                                        [],
+                                                                        []
+                                                                      |),
+                                                                      [ M.read (| c |) ]
+                                                                    |),
+                                                                    M.call_closure (|
+                                                                      Ty.path "u64",
+                                                                      M.get_trait_method (|
+                                                                        "core::convert::From",
+                                                                        Ty.path "u64",
+                                                                        [],
+                                                                        [ Ty.path "char" ],
+                                                                        "from",
+                                                                        [],
+                                                                        []
+                                                                      |),
+                                                                      [ Value.UnicodeChar 48 ]
+                                                                    |)
+                                                                  |),
+                                                                  Value.Integer IntegerKind.U64 52
+                                                                |)
+                                                              |)));
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (M.find_or_pattern (|
+                                                                γ,
+                                                                [
+                                                                  fun γ =>
+                                                                    ltac:(M.monadic
+                                                                      (let _ :=
+                                                                        M.is_constant_or_break_match (|
+                                                                          M.read (| γ |),
+                                                                          Value.UnicodeChar 43
+                                                                        |) in
+                                                                      Value.Tuple []));
+                                                                  fun γ =>
+                                                                    ltac:(M.monadic
+                                                                      (let _ :=
+                                                                        M.is_constant_or_break_match (|
+                                                                          M.read (| γ |),
+                                                                          Value.UnicodeChar 45
+                                                                        |) in
+                                                                      Value.Tuple []))
+                                                                ],
+                                                                fun γ =>
+                                                                  ltac:(M.monadic
+                                                                    match γ with
+                                                                    | [] =>
+                                                                      ltac:(M.monadic
+                                                                        (M.alloc (|
+                                                                          Value.Integer
+                                                                            IntegerKind.U64
+                                                                            62
+                                                                        |)))
+                                                                    | _ =>
+                                                                      M.impossible
+                                                                        "wrong number of arguments"
+                                                                    end)
+                                                              |)));
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (M.find_or_pattern (|
+                                                                γ,
+                                                                [
+                                                                  fun γ =>
+                                                                    ltac:(M.monadic
+                                                                      (let _ :=
+                                                                        M.is_constant_or_break_match (|
+                                                                          M.read (| γ |),
+                                                                          Value.UnicodeChar 47
+                                                                        |) in
+                                                                      Value.Tuple []));
+                                                                  fun γ =>
+                                                                    ltac:(M.monadic
+                                                                      (let _ :=
+                                                                        M.is_constant_or_break_match (|
+                                                                          M.read (| γ |),
+                                                                          Value.UnicodeChar 44
+                                                                        |) in
+                                                                      Value.Tuple []));
+                                                                  fun γ =>
+                                                                    ltac:(M.monadic
+                                                                      (let _ :=
+                                                                        M.is_constant_or_break_match (|
+                                                                          M.read (| γ |),
+                                                                          Value.UnicodeChar 95
+                                                                        |) in
+                                                                      Value.Tuple []))
+                                                                ],
+                                                                fun γ =>
+                                                                  ltac:(M.monadic
+                                                                    match γ with
+                                                                    | [] =>
+                                                                      ltac:(M.monadic
+                                                                        (M.alloc (|
+                                                                          Value.Integer
+                                                                            IntegerKind.U64
+                                                                            63
+                                                                        |)))
+                                                                    | _ =>
+                                                                      M.impossible
+                                                                        "wrong number of arguments"
+                                                                    end)
+                                                              |)));
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (M.find_or_pattern (|
+                                                                γ,
+                                                                [
+                                                                  fun γ =>
+                                                                    ltac:(M.monadic
+                                                                      (let _ :=
+                                                                        M.is_constant_or_break_match (|
+                                                                          M.read (| γ |),
+                                                                          Value.UnicodeChar 61
+                                                                        |) in
+                                                                      Value.Tuple []));
+                                                                  fun γ =>
+                                                                    ltac:(M.monadic
+                                                                      (let _ :=
+                                                                        M.is_constant_or_break_match (|
+                                                                          M.read (| γ |),
+                                                                          Value.UnicodeChar 13
+                                                                        |) in
+                                                                      Value.Tuple []));
+                                                                  fun γ =>
+                                                                    ltac:(M.monadic
+                                                                      (let _ :=
+                                                                        M.is_constant_or_break_match (|
+                                                                          M.read (| γ |),
+                                                                          Value.UnicodeChar 10
+                                                                        |) in
+                                                                      Value.Tuple []))
+                                                                ],
+                                                                fun γ =>
+                                                                  ltac:(M.monadic
+                                                                    match γ with
+                                                                    | [] =>
+                                                                      ltac:(M.monadic
+                                                                        (M.alloc (|
+                                                                          M.never_to_any (|
+                                                                            M.read (|
+                                                                              M.return_ (|
+                                                                                Value.StructTuple
+                                                                                  "core::option::Option::None"
+                                                                                  []
+                                                                              |)
+                                                                            |)
+                                                                          |)
+                                                                        |)))
+                                                                    | _ =>
+                                                                      M.impossible
+                                                                        "wrong number of arguments"
+                                                                    end)
+                                                              |)));
+                                                          fun γ =>
+                                                            ltac:(M.monadic
+                                                              (M.alloc (|
+                                                                M.never_to_any (|
+                                                                  M.read (|
+                                                                    let~ _ : Ty.tuple [] :=
+                                                                      M.write (|
+                                                                        err,
+                                                                        Value.StructTuple
+                                                                          "core::option::Option::Some"
+                                                                          [
+                                                                            Value.StructTuple
+                                                                              "ruint::string::ParseError::InvalidDigit"
+                                                                              [ M.read (| c |) ]
+                                                                          ]
+                                                                      |) in
+                                                                    M.return_ (|
+                                                                      Value.StructTuple
+                                                                        "core::option::Option::None"
+                                                                        []
+                                                                    |)
+                                                                  |)
+                                                                |)
+                                                              |)))
+                                                        ]
+                                                      |)))
+                                                ]
+                                              |)
+                                            |) in
+                                          M.alloc (|
+                                            Value.StructTuple
+                                              "core::option::Option::Some"
+                                              [ M.read (| digit |) ]
+                                          |)
+                                        |)))
+                                  ]
+                                |)))
+                            | _ => M.impossible "wrong number of arguments"
+                            end))
+                    ]
                   |) in
                 let~ value : Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] :=
-                  M.copy (|
+                  M.read (|
                     M.match_operator (|
                       Some (Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []),
                       M.alloc (|

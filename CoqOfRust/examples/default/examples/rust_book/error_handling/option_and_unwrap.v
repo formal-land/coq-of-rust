@@ -28,34 +28,32 @@ Definition give_adult (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
                 let _ :=
                   M.is_constant_or_break_match (| M.read (| γ0_0 |), mk_str (| "lemonade" |) |) in
                 let~ _ : Ty.tuple [] :=
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.tuple [],
-                      M.get_function (| "std::io::stdio::_print", [], [] |),
-                      [
-                        M.call_closure (|
+                  M.call_closure (|
+                    Ty.tuple [],
+                    M.get_function (| "std::io::stdio::_print", [], [] |),
+                    [
+                      M.call_closure (|
+                        Ty.path "core::fmt::Arguments",
+                        M.get_associated_function (|
                           Ty.path "core::fmt::Arguments",
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::Arguments",
-                            "new_const",
-                            [ Value.Integer IntegerKind.Usize 1 ],
-                            []
-                          |),
-                          [
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.alloc (| Value.Array [ mk_str (| "Yuck! Too sugary.
+                          "new_const",
+                          [ Value.Integer IntegerKind.Usize 1 ],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (| Value.Array [ mk_str (| "Yuck! Too sugary.
 " |) ] |)
-                                |)
                               |)
                             |)
-                          ]
-                        |)
-                      ]
-                    |)
+                          |)
+                        ]
+                      |)
+                    ]
                   |) in
                 M.alloc (| Value.Tuple [] |)));
             fun γ =>
@@ -64,99 +62,94 @@ Definition give_adult (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
                   M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                 let inner := M.copy (| γ0_0 |) in
                 let~ _ : Ty.tuple [] :=
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.tuple [],
-                      M.get_function (| "std::io::stdio::_print", [], [] |),
-                      [
-                        M.call_closure (|
+                  M.call_closure (|
+                    Ty.tuple [],
+                    M.get_function (| "std::io::stdio::_print", [], [] |),
+                    [
+                      M.call_closure (|
+                        Ty.path "core::fmt::Arguments",
+                        M.get_associated_function (|
                           Ty.path "core::fmt::Arguments",
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::Arguments",
-                            "new_v1",
-                            [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1
-                            ],
-                            []
-                          |),
-                          [
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.alloc (|
-                                    Value.Array [ mk_str (| "" |); mk_str (| "? How nice.
+                          "new_v1",
+                          [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1 ],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  Value.Array [ mk_str (| "" |); mk_str (| "? How nice.
 " |) ]
-                                  |)
-                                |)
-                              |)
-                            |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.call_closure (|
-                                          Ty.path "core::fmt::rt::Argument",
-                                          M.get_associated_function (|
-                                            Ty.path "core::fmt::rt::Argument",
-                                            "new_display",
-                                            [],
-                                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                                          |),
-                                          [
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (| M.borrow (| Pointer.Kind.Ref, inner |) |)
-                                            |)
-                                          ]
-                                        |)
-                                      ]
-                                  |)
                                 |)
                               |)
                             |)
-                          ]
-                        |)
-                      ]
-                    |)
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "core::fmt::rt::Argument",
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_display",
+                                          [],
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.borrow (| Pointer.Kind.Ref, inner |) |)
+                                          |)
+                                        ]
+                                      |)
+                                    ]
+                                |)
+                              |)
+                            |)
+                          |)
+                        ]
+                      |)
+                    ]
                   |) in
                 M.alloc (| Value.Tuple [] |)));
             fun γ =>
               ltac:(M.monadic
                 (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
                 let~ _ : Ty.tuple [] :=
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.tuple [],
-                      M.get_function (| "std::io::stdio::_print", [], [] |),
-                      [
-                        M.call_closure (|
+                  M.call_closure (|
+                    Ty.tuple [],
+                    M.get_function (| "std::io::stdio::_print", [], [] |),
+                    [
+                      M.call_closure (|
+                        Ty.path "core::fmt::Arguments",
+                        M.get_associated_function (|
                           Ty.path "core::fmt::Arguments",
-                          M.get_associated_function (|
-                            Ty.path "core::fmt::Arguments",
-                            "new_const",
-                            [ Value.Integer IntegerKind.Usize 1 ],
-                            []
-                          |),
-                          [
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.alloc (| Value.Array [ mk_str (| "No drink? Oh well.
+                          "new_const",
+                          [ Value.Integer IntegerKind.Usize 1 ],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (| Value.Array [ mk_str (| "No drink? Oh well.
 " |) ] |)
-                                |)
                               |)
                             |)
-                          ]
-                        |)
-                      ]
-                    |)
+                          |)
+                        ]
+                      |)
+                    ]
                   |) in
                 M.alloc (| Value.Tuple [] |)))
           ]
@@ -188,68 +181,68 @@ Definition drink (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       (let drink := M.alloc (| drink |) in
       M.read (|
         let~ inside : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-              M.get_associated_function (|
-                Ty.apply
-                  (Ty.path "core::option::Option")
-                  []
-                  [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                "unwrap",
-                [],
+          M.call_closure (|
+            Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+            M.get_associated_function (|
+              Ty.apply
+                (Ty.path "core::option::Option")
                 []
-              |),
-              [ M.read (| drink |) ]
+                [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+              "unwrap",
+              [],
+              []
+            |),
+            [ M.read (| drink |) ]
+          |) in
+        let~ _ : Ty.tuple [] :=
+          M.read (|
+            M.match_operator (|
+              Some (Ty.tuple []),
+              M.alloc (| Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ :=
+                      M.use
+                        (M.alloc (|
+                          M.call_closure (|
+                            Ty.path "bool",
+                            M.get_trait_method (|
+                              "core::cmp::PartialEq",
+                              Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
+                              [],
+                              [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
+                              "eq",
+                              [],
+                              []
+                            |),
+                            [
+                              M.borrow (| Pointer.Kind.Ref, inside |);
+                              M.borrow (| Pointer.Kind.Ref, M.alloc (| mk_str (| "lemonade" |) |) |)
+                            ]
+                          |)
+                        |)) in
+                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    M.alloc (|
+                      M.never_to_any (|
+                        M.call_closure (|
+                          Ty.path "never",
+                          M.get_function (|
+                            "std::panicking::begin_panic",
+                            [],
+                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                          |),
+                          [ mk_str (| "AAAaaaaa!!!!" |) ]
+                        |)
+                      |)
+                    |)));
+                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+              ]
             |)
           |) in
         let~ _ : Ty.tuple [] :=
-          M.match_operator (|
-            Some (Ty.tuple []),
-            M.alloc (| Value.Tuple [] |),
-            [
-              fun γ =>
-                ltac:(M.monadic
-                  (let γ :=
-                    M.use
-                      (M.alloc (|
-                        M.call_closure (|
-                          Ty.path "bool",
-                          M.get_trait_method (|
-                            "core::cmp::PartialEq",
-                            Ty.apply (Ty.path "&") [] [ Ty.path "str" ],
-                            [],
-                            [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ],
-                            "eq",
-                            [],
-                            []
-                          |),
-                          [
-                            M.borrow (| Pointer.Kind.Ref, inside |);
-                            M.borrow (| Pointer.Kind.Ref, M.alloc (| mk_str (| "lemonade" |) |) |)
-                          ]
-                        |)
-                      |)) in
-                  let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                  M.alloc (|
-                    M.never_to_any (|
-                      M.call_closure (|
-                        Ty.path "never",
-                        M.get_function (|
-                          "std::panicking::begin_panic",
-                          [],
-                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
-                        |),
-                        [ mk_str (| "AAAaaaaa!!!!" |) ]
-                      |)
-                    |)
-                  |)));
-              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-            ]
-          |) in
-        let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -306,9 +299,9 @@ Definition drink (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
@@ -345,72 +338,60 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               (Ty.path "core::option::Option")
               []
               [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] :=
-          M.alloc (| Value.StructTuple "core::option::Option::Some" [ mk_str (| "water" |) ] |) in
+          Value.StructTuple "core::option::Option::Some" [ mk_str (| "water" |) ] in
         let~ lemonade :
             Ty.apply
               (Ty.path "core::option::Option")
               []
               [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] :=
-          M.alloc (|
-            Value.StructTuple "core::option::Option::Some" [ mk_str (| "lemonade" |) ]
-          |) in
+          Value.StructTuple "core::option::Option::Some" [ mk_str (| "lemonade" |) ] in
         let~ void :
             Ty.apply
               (Ty.path "core::option::Option")
               []
               [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] :=
-          M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
+          Value.StructTuple "core::option::Option::None" [] in
         let~ _ : Ty.tuple [] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.tuple [],
-              M.get_function (| "option_and_unwrap::give_adult", [], [] |),
-              [ M.read (| water |) ]
-            |)
+          M.call_closure (|
+            Ty.tuple [],
+            M.get_function (| "option_and_unwrap::give_adult", [], [] |),
+            [ M.read (| water |) ]
           |) in
         let~ _ : Ty.tuple [] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.tuple [],
-              M.get_function (| "option_and_unwrap::give_adult", [], [] |),
-              [ M.read (| lemonade |) ]
-            |)
+          M.call_closure (|
+            Ty.tuple [],
+            M.get_function (| "option_and_unwrap::give_adult", [], [] |),
+            [ M.read (| lemonade |) ]
           |) in
         let~ _ : Ty.tuple [] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.tuple [],
-              M.get_function (| "option_and_unwrap::give_adult", [], [] |),
-              [ M.read (| void |) ]
-            |)
+          M.call_closure (|
+            Ty.tuple [],
+            M.get_function (| "option_and_unwrap::give_adult", [], [] |),
+            [ M.read (| void |) ]
           |) in
         let~ coffee :
             Ty.apply
               (Ty.path "core::option::Option")
               []
               [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] :=
-          M.alloc (| Value.StructTuple "core::option::Option::Some" [ mk_str (| "coffee" |) ] |) in
+          Value.StructTuple "core::option::Option::Some" [ mk_str (| "coffee" |) ] in
         let~ nothing :
             Ty.apply
               (Ty.path "core::option::Option")
               []
               [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ] :=
-          M.alloc (| Value.StructTuple "core::option::Option::None" [] |) in
+          Value.StructTuple "core::option::Option::None" [] in
         let~ _ : Ty.tuple [] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.tuple [],
-              M.get_function (| "option_and_unwrap::drink", [], [] |),
-              [ M.read (| coffee |) ]
-            |)
+          M.call_closure (|
+            Ty.tuple [],
+            M.get_function (| "option_and_unwrap::drink", [], [] |),
+            [ M.read (| coffee |) ]
           |) in
         let~ _ : Ty.tuple [] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.tuple [],
-              M.get_function (| "option_and_unwrap::drink", [], [] |),
-              [ M.read (| nothing |) ]
-            |)
+          M.call_closure (|
+            Ty.tuple [],
+            M.get_function (| "option_and_unwrap::drink", [], [] |),
+            [ M.read (| nothing |) ]
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))

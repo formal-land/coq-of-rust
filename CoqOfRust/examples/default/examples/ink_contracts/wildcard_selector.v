@@ -137,8 +137,8 @@ Module Impl_wildcard_selector_WildcardSelector.
                   let _selector := M.copy (| γ0_0 |) in
                   let _message := M.copy (| γ0_1 |) in
                   let~ _ : Ty.tuple [] :=
-                    let~ _ : Ty.tuple [] :=
-                      M.alloc (|
+                    M.read (|
+                      let~ _ : Ty.tuple [] :=
                         M.call_closure (|
                           Ty.tuple [],
                           M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -227,9 +227,9 @@ Module Impl_wildcard_selector_WildcardSelector.
                               ]
                             |)
                           ]
-                        |)
-                      |) in
-                    M.alloc (| Value.Tuple [] |) in
+                        |) in
+                      M.alloc (| Value.Tuple [] |)
+                    |) in
                   M.alloc (| Value.Tuple [] |)))
             ]
           |)
@@ -255,8 +255,8 @@ Module Impl_wildcard_selector_WildcardSelector.
         let _message := M.alloc (| _message |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
-            let~ _ : Ty.tuple [] :=
-              M.alloc (|
+            M.read (|
+              let~ _ : Ty.tuple [] :=
                 M.call_closure (|
                   Ty.tuple [],
                   M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -314,9 +314,9 @@ Module Impl_wildcard_selector_WildcardSelector.
                       ]
                     |)
                   ]
-                |)
-              |) in
-            M.alloc (| Value.Tuple [] |) in
+                |) in
+              M.alloc (| Value.Tuple [] |)
+            |) in
           M.alloc (| Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"

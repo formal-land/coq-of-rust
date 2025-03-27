@@ -163,31 +163,27 @@ Module error.
           (let self := M.alloc (| self |) in
           M.read (|
             let~ t : Ty.path "core::any::TypeId" :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "core::any::TypeId",
-                  M.get_associated_function (| Ty.path "core::any::TypeId", "of", [], [ T ] |),
-                  []
-                |)
+              M.call_closure (|
+                Ty.path "core::any::TypeId",
+                M.get_associated_function (| Ty.path "core::any::TypeId", "of", [], [ T ] |),
+                []
               |) in
             let~ concrete : Ty.path "core::any::TypeId" :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "core::any::TypeId",
-                  M.get_trait_method (|
-                    "core::error::Error",
-                    Ty.dyn [ ("core::error::Error::Trait", []) ],
-                    [],
-                    [],
-                    "type_id",
-                    [],
-                    []
-                  |),
-                  [
-                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                    Value.StructTuple "core::error::private::Internal" []
-                  ]
-                |)
+              M.call_closure (|
+                Ty.path "core::any::TypeId",
+                M.get_trait_method (|
+                  "core::error::Error",
+                  Ty.dyn [ ("core::error::Error::Trait", []) ],
+                  [],
+                  [],
+                  "type_id",
+                  [],
+                  []
+                |),
+                [
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
+                  Value.StructTuple "core::error::private::Internal" []
+                ]
               |) in
             M.alloc (|
               M.call_closure (|
@@ -678,57 +674,53 @@ Module error.
                 (Ty.path "core::error::Tagged")
                 []
                 [ Ty.apply (Ty.path "core::error::TaggedOption") [] [ I ] ] :=
-            M.alloc (|
-              Value.StructRecord
-                "core::error::Tagged"
-                [
-                  ("tag_id",
-                    M.call_closure (|
-                      Ty.path "core::any::TypeId",
-                      M.get_associated_function (| Ty.path "core::any::TypeId", "of", [], [ I ] |),
-                      []
-                    |));
-                  ("value",
-                    Value.StructTuple
-                      "core::error::TaggedOption"
-                      [ Value.StructTuple "core::option::Option::None" [] ])
-                ]
-            |) in
+            Value.StructRecord
+              "core::error::Tagged"
+              [
+                ("tag_id",
+                  M.call_closure (|
+                    Ty.path "core::any::TypeId",
+                    M.get_associated_function (| Ty.path "core::any::TypeId", "of", [], [ I ] |),
+                    []
+                  |));
+                ("value",
+                  Value.StructTuple
+                    "core::error::TaggedOption"
+                    [ Value.StructTuple "core::option::Option::None" [] ])
+              ] in
           let~ _ : Ty.tuple [] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.tuple [],
-                M.get_trait_method (|
-                  "core::error::Error",
-                  impl_Error__plus___Sized,
-                  [],
-                  [],
-                  "provide",
-                  [],
-                  []
-                |),
-                [
-                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| err |) |) |);
-                  M.borrow (|
-                    Pointer.Kind.MutRef,
-                    M.deref (|
-                      M.call_closure (|
-                        Ty.apply (Ty.path "&mut") [] [ Ty.path "core::error::Request" ],
-                        M.get_associated_function (|
-                          Ty.apply
-                            (Ty.path "core::error::Tagged")
-                            []
-                            [ Ty.apply (Ty.path "core::error::TaggedOption") [] [ I ] ],
-                          "as_request",
-                          [],
+            M.call_closure (|
+              Ty.tuple [],
+              M.get_trait_method (|
+                "core::error::Error",
+                impl_Error__plus___Sized,
+                [],
+                [],
+                "provide",
+                [],
+                []
+              |),
+              [
+                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| err |) |) |);
+                M.borrow (|
+                  Pointer.Kind.MutRef,
+                  M.deref (|
+                    M.call_closure (|
+                      Ty.apply (Ty.path "&mut") [] [ Ty.path "core::error::Request" ],
+                      M.get_associated_function (|
+                        Ty.apply
+                          (Ty.path "core::error::Tagged")
                           []
-                        |),
-                        [ M.borrow (| Pointer.Kind.MutRef, tagged |) ]
-                      |)
+                          [ Ty.apply (Ty.path "core::error::TaggedOption") [] [ I ] ],
+                        "as_request",
+                        [],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.MutRef, tagged |) ]
                     |)
                   |)
-                ]
-              |)
+                |)
+              ]
             |) in
           M.SubPointer.get_struct_tuple_field (|
             M.SubPointer.get_struct_record_field (| tagged, "core::error::Tagged", "value" |),
@@ -974,62 +966,62 @@ Module error.
             M.deref (|
               M.read (|
                 let~ _ : Ty.tuple [] :=
-                  M.match_operator (|
-                    Some (Ty.tuple []),
-                    M.alloc (| Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ :=
-                            M.alloc (|
-                              M.call_closure (|
-                                Ty.apply
-                                  (Ty.path "core::option::Option")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&mut")
-                                      []
-                                      [ Ty.apply (Ty.path "core::error::TaggedOption") [] [ I ] ]
-                                  ],
-                                M.get_associated_function (|
+                  M.read (|
+                    M.match_operator (|
+                      Some (Ty.tuple []),
+                      M.alloc (| Value.Tuple [] |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ :=
+                              M.alloc (|
+                                M.call_closure (|
                                   Ty.apply
-                                    (Ty.path "core::error::Tagged")
+                                    (Ty.path "core::option::Option")
                                     []
-                                    [ Ty.dyn [ ("core::error::Erased::Trait", []) ] ],
-                                  "downcast_mut",
-                                  [],
-                                  [ I ]
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.MutRef,
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "core::error::Request",
-                                      0
+                                    [
+                                      Ty.apply
+                                        (Ty.path "&mut")
+                                        []
+                                        [ Ty.apply (Ty.path "core::error::TaggedOption") [] [ I ] ]
+                                    ],
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "core::error::Tagged")
+                                      []
+                                      [ Ty.dyn [ ("core::error::Erased::Trait", []) ] ],
+                                    "downcast_mut",
+                                    [],
+                                    [ I ]
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.SubPointer.get_struct_tuple_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "core::error::Request",
+                                        0
+                                      |)
                                     |)
-                                  |)
-                                ]
-                              |)
-                            |) in
-                          let γ0_0 :=
-                            M.SubPointer.get_struct_tuple_field (|
-                              γ,
-                              "core::option::Option::Some",
-                              0
-                            |) in
-                          let res := M.copy (| γ0_0 |) in
-                          let γ0_0 := M.read (| γ0_0 |) in
-                          let γ3_0 :=
-                            M.SubPointer.get_struct_tuple_field (|
-                              γ0_0,
-                              "core::error::TaggedOption",
-                              0
-                            |) in
-                          let _ := M.is_struct_tuple (| γ3_0, "core::option::Option::None" |) in
-                          let~ _ : Ty.tuple [] :=
-                            M.alloc (|
+                                  ]
+                                |)
+                              |) in
+                            let γ0_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ,
+                                "core::option::Option::Some",
+                                0
+                              |) in
+                            let res := M.copy (| γ0_0 |) in
+                            let γ0_0 := M.read (| γ0_0 |) in
+                            let γ3_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ0_0,
+                                "core::error::TaggedOption",
+                                0
+                              |) in
+                            let _ := M.is_struct_tuple (| γ3_0, "core::option::Option::None" |) in
+                            let~ _ : Ty.tuple [] :=
                               M.write (|
                                 M.SubPointer.get_struct_tuple_field (|
                                   M.deref (| M.read (| res |) |),
@@ -1039,11 +1031,11 @@ Module error.
                                 Value.StructTuple
                                   "core::option::Option::Some"
                                   [ M.read (| value |) ]
-                              |)
-                            |) in
-                          M.alloc (| Value.Tuple [] |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                    ]
+                              |) in
+                            M.alloc (| Value.Tuple [] |)));
+                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      ]
+                    |)
                   |) in
                 M.alloc (| M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) |)
               |)
@@ -1079,62 +1071,62 @@ Module error.
             M.deref (|
               M.read (|
                 let~ _ : Ty.tuple [] :=
-                  M.match_operator (|
-                    Some (Ty.tuple []),
-                    M.alloc (| Value.Tuple [] |),
-                    [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ :=
-                            M.alloc (|
-                              M.call_closure (|
-                                Ty.apply
-                                  (Ty.path "core::option::Option")
-                                  []
-                                  [
-                                    Ty.apply
-                                      (Ty.path "&mut")
-                                      []
-                                      [ Ty.apply (Ty.path "core::error::TaggedOption") [] [ I ] ]
-                                  ],
-                                M.get_associated_function (|
+                  M.read (|
+                    M.match_operator (|
+                      Some (Ty.tuple []),
+                      M.alloc (| Value.Tuple [] |),
+                      [
+                        fun γ =>
+                          ltac:(M.monadic
+                            (let γ :=
+                              M.alloc (|
+                                M.call_closure (|
                                   Ty.apply
-                                    (Ty.path "core::error::Tagged")
+                                    (Ty.path "core::option::Option")
                                     []
-                                    [ Ty.dyn [ ("core::error::Erased::Trait", []) ] ],
-                                  "downcast_mut",
-                                  [],
-                                  [ I ]
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.MutRef,
-                                    M.SubPointer.get_struct_tuple_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "core::error::Request",
-                                      0
+                                    [
+                                      Ty.apply
+                                        (Ty.path "&mut")
+                                        []
+                                        [ Ty.apply (Ty.path "core::error::TaggedOption") [] [ I ] ]
+                                    ],
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "core::error::Tagged")
+                                      []
+                                      [ Ty.dyn [ ("core::error::Erased::Trait", []) ] ],
+                                    "downcast_mut",
+                                    [],
+                                    [ I ]
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.MutRef,
+                                      M.SubPointer.get_struct_tuple_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "core::error::Request",
+                                        0
+                                      |)
                                     |)
-                                  |)
-                                ]
-                              |)
-                            |) in
-                          let γ0_0 :=
-                            M.SubPointer.get_struct_tuple_field (|
-                              γ,
-                              "core::option::Option::Some",
-                              0
-                            |) in
-                          let res := M.copy (| γ0_0 |) in
-                          let γ0_0 := M.read (| γ0_0 |) in
-                          let γ3_0 :=
-                            M.SubPointer.get_struct_tuple_field (|
-                              γ0_0,
-                              "core::error::TaggedOption",
-                              0
-                            |) in
-                          let _ := M.is_struct_tuple (| γ3_0, "core::option::Option::None" |) in
-                          let~ _ : Ty.tuple [] :=
-                            M.alloc (|
+                                  ]
+                                |)
+                              |) in
+                            let γ0_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ,
+                                "core::option::Option::Some",
+                                0
+                              |) in
+                            let res := M.copy (| γ0_0 |) in
+                            let γ0_0 := M.read (| γ0_0 |) in
+                            let γ3_0 :=
+                              M.SubPointer.get_struct_tuple_field (|
+                                γ0_0,
+                                "core::error::TaggedOption",
+                                0
+                              |) in
+                            let _ := M.is_struct_tuple (| γ3_0, "core::option::Option::None" |) in
+                            let~ _ : Ty.tuple [] :=
                               M.write (|
                                 M.SubPointer.get_struct_tuple_field (|
                                   M.deref (| M.read (| res |) |),
@@ -1163,11 +1155,11 @@ Module error.
                                       [ M.read (| fulfil |); Value.Tuple [] ]
                                     |)
                                   ]
-                              |)
-                            |) in
-                          M.alloc (| Value.Tuple [] |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                    ]
+                              |) in
+                            M.alloc (| Value.Tuple [] |)));
+                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                      ]
+                    |)
                   |) in
                 M.alloc (| M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |) |)
               |)
@@ -1722,7 +1714,7 @@ Module error.
                           []
                           [ Ty.dyn [ ("core::error::Erased::Trait", []) ] ]
                       ] :=
-                  M.copy (|
+                  M.read (|
                     M.use
                       (M.alloc (|
                         M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |)
@@ -2288,7 +2280,7 @@ Module error.
                   (Ty.path "core::option::Option")
                   []
                   [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ] ] :=
-              M.copy (|
+              M.read (|
                 M.SubPointer.get_struct_record_field (|
                   M.deref (| M.read (| self |) |),
                   "core::error::Source",
@@ -2296,66 +2288,59 @@ Module error.
                 |)
               |) in
             let~ _ : Ty.tuple [] :=
-              M.alloc (|
-                M.write (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "core::error::Source",
-                    "current"
-                  |),
-                  M.call_closure (|
+              M.write (|
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "core::error::Source",
+                  "current"
+                |),
+                M.call_closure (|
+                  Ty.apply
+                    (Ty.path "core::option::Option")
+                    []
+                    [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ] ],
+                  M.get_associated_function (|
                     Ty.apply
                       (Ty.path "core::option::Option")
                       []
                       [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]
                       ],
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "core::option::Option")
-                        []
+                    "and_then",
+                    [],
+                    [
+                      Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ];
+                      Ty.function
                         [ Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]
-                        ],
-                      "and_then",
-                      [],
-                      [
-                        Ty.apply (Ty.path "&") [] [ Ty.dyn [ ("core::error::Error::Trait", []) ] ];
-                        Ty.function
+                        ]
+                        (Ty.apply
+                          (Ty.path "core::option::Option")
+                          []
                           [
                             Ty.apply
                               (Ty.path "&")
                               []
                               [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]
-                          ]
-                          (Ty.apply
-                            (Ty.path "core::option::Option")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path "&")
-                                []
-                                [ Ty.dyn [ ("core::error::Error::Trait", []) ] ]
-                            ])
-                      ]
-                    |),
-                    [
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "core::error::Source",
-                          "current"
-                        |)
-                      |);
-                      M.get_trait_method (|
-                        "core::error::Error",
-                        Ty.dyn [ ("core::error::Error::Trait", []) ],
-                        [],
-                        [],
-                        "source",
-                        [],
-                        []
-                      |)
+                          ])
                     ]
-                  |)
+                  |),
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::error::Source",
+                        "current"
+                      |)
+                    |);
+                    M.get_trait_method (|
+                      "core::error::Error",
+                      Ty.dyn [ ("core::error::Error::Trait", []) ],
+                      [],
+                      [],
+                      "source",
+                      [],
+                      []
+                    |)
+                  ]
                 |)
               |) in
             current
@@ -2582,23 +2567,21 @@ Module error.
           let request := M.alloc (| request |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_trait_method (| "core::error::Error", T, [], [], "provide", [], [] |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
-                        |)
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_trait_method (| "core::error::Error", T, [], [], "provide", [], [] |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.deref (|
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| M.read (| M.deref (| M.read (| self |) |) |) |)
                       |)
-                    |);
-                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| request |) |) |)
-                  ]
-                |)
+                    |)
+                  |);
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| request |) |) |)
+                ]
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))

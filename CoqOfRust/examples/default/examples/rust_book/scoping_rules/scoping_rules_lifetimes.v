@@ -27,78 +27,80 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [], [] =>
     ltac:(M.monadic
       (M.read (|
-        let~ i : Ty.path "i32" := M.alloc (| Value.Integer IntegerKind.I32 3 |) in
+        let~ i : Ty.path "i32" := Value.Integer IntegerKind.I32 3 in
         let~ _ : Ty.tuple [] :=
-          let~ borrow1 : Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] :=
-            M.alloc (| M.borrow (| Pointer.Kind.Ref, i |) |) in
-          let~ _ : Ty.tuple [] :=
+          M.read (|
+            let~ borrow1 : Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] :=
+              M.borrow (| Pointer.Kind.Ref, i |) in
             let~ _ : Ty.tuple [] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_function (| "std::io::stdio::_print", [], [] |),
-                  [
-                    M.call_closure (|
-                      Ty.path "core::fmt::Arguments",
-                      M.get_associated_function (|
+              M.read (|
+                let~ _ : Ty.tuple [] :=
+                  M.call_closure (|
+                    Ty.tuple [],
+                    M.get_function (| "std::io::stdio::_print", [], [] |),
+                    [
+                      M.call_closure (|
                         Ty.path "core::fmt::Arguments",
-                        "new_v1",
-                        [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1 ],
-                        []
-                      |),
-                      [
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.alloc (|
-                                Value.Array [ mk_str (| "borrow1: " |); mk_str (| "
+                        M.get_associated_function (|
+                          Ty.path "core::fmt::Arguments",
+                          "new_v1",
+                          [ Value.Integer IntegerKind.Usize 2; Value.Integer IntegerKind.Usize 1 ],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  Value.Array [ mk_str (| "borrow1: " |); mk_str (| "
 " |) ]
+                                |)
                               |)
                             |)
-                          |)
-                        |);
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.call_closure (|
-                                      Ty.path "core::fmt::rt::Argument",
-                                      M.get_associated_function (|
+                          |);
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.alloc (|
+                                  Value.Array
+                                    [
+                                      M.call_closure (|
                                         Ty.path "core::fmt::rt::Argument",
-                                        "new_display",
-                                        [],
-                                        [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (| M.borrow (| Pointer.Kind.Ref, borrow1 |) |)
-                                        |)
-                                      ]
-                                    |)
-                                  ]
+                                        M.get_associated_function (|
+                                          Ty.path "core::fmt::rt::Argument",
+                                          "new_display",
+                                          [],
+                                          [ Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] ]
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.borrow (| Pointer.Kind.Ref, borrow1 |) |)
+                                          |)
+                                        ]
+                                      |)
+                                    ]
+                                |)
                               |)
                             |)
                           |)
-                        |)
-                      ]
-                    |)
-                  ]
-                |)
+                        ]
+                      |)
+                    ]
+                  |) in
+                M.alloc (| Value.Tuple [] |)
               |) in
-            M.alloc (| Value.Tuple [] |) in
-          M.alloc (| Value.Tuple [] |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         let~ borrow2 : Ty.apply (Ty.path "&") [] [ Ty.path "i32" ] :=
-          M.alloc (| M.borrow (| Pointer.Kind.Ref, i |) |) in
+          M.borrow (| Pointer.Kind.Ref, i |) in
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -153,9 +155,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"

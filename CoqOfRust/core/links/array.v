@@ -72,11 +72,41 @@ Proof.
   induction times; cbn; congruence.
 Qed.
 
-Lemma repeat_φ_eq {A : Set} `{Link A} (times : Z) (value : A) :
-  repeat (φ value) (Value.Integer IntegerKind.Usize times) =
-  M.pure (φ ({| value := repeat_nat (Z.to_nat times) value |} : t A {| Integer.value := times |})).
+Lemma repeat_φ_eq {A : Set} `{Link A} (times : Usize.t) (value : A) :
+  repeat (φ value) (φ times) =
+  φ (
+    {| value := repeat_nat (Z.to_nat times.(Integer.value)) value |} :
+    t A times
+  ).
 Proof.
   with_strategy transparent [φ repeat] cbn.
   rewrite repeat_nat_φ_eq.
   reflexivity.
 Qed.
+
+Lemma of_value_with {A : Set} `{Link A}
+    (times : Usize.t) (times' : Value.t)
+    (value : A) (value' : Value.t) :
+  times' = φ times ->
+  value' = φ value ->
+  repeat value' times' =
+  φ ({| value := repeat_nat (Z.to_nat times.(Integer.value)) value |} : t A times).
+Proof.
+  intros -> ->.
+  now rewrite repeat_φ_eq.
+Qed.
+Smpl Add eapply of_value_with : of_value.
+
+Definition of_value (times : Usize.t) (times' : Value.t) (value' : Value.t) :
+  times' = φ times ->
+  OfValue.t value' ->
+  OfValue.t (repeat value' times').
+Proof.
+  intros ? [A ? item].
+  eapply OfValue.Make with
+    (A := t A times)
+    (value := {| value := repeat_nat (Z.to_nat times.(Integer.value)) item |}).
+  subst.
+  now rewrite repeat_φ_eq.
+Defined.
+Smpl Add eapply of_value : of_value.

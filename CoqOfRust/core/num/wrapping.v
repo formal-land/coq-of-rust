@@ -718,22 +718,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::Shl",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::Shl",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
-                        [],
-                        [ Ty.path "usize" ],
-                        "shl",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.path "usize" ],
+                      "shl",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -823,22 +821,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::Shr",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::Shr",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
-                        [],
-                        [ Ty.path "usize" ],
-                        "shr",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.path "usize" ],
+                      "shr",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -928,22 +924,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::Shl",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::Shl",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
-                        [],
-                        [ Ty.path "usize" ],
-                        "shl",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.path "usize" ],
+                      "shl",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -1033,22 +1027,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::Shr",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::Shr",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
-                        [],
-                        [ Ty.path "usize" ],
-                        "shr",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.path "usize" ],
+                      "shr",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -1138,22 +1130,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::Shl",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::Shl",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
-                        [],
-                        [ Ty.path "usize" ],
-                        "shl",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.path "usize" ],
+                      "shl",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -1243,22 +1233,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::Shr",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::Shr",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
-                        [],
-                        [ Ty.path "usize" ],
-                        "shr",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.path "usize" ],
+                      "shr",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -1348,22 +1336,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::Shl",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::Shl",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
-                        [],
-                        [ Ty.path "usize" ],
-                        "shl",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.path "usize" ],
+                      "shl",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -1453,22 +1439,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::Shr",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::Shr",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
-                        [],
-                        [ Ty.path "usize" ],
-                        "shr",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.path "usize" ],
+                      "shr",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -1558,22 +1542,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::Shl",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::Shl",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
-                        [],
-                        [ Ty.path "usize" ],
-                        "shl",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.path "usize" ],
+                      "shl",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -1663,22 +1645,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::Shr",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::Shr",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
-                        [],
-                        [ Ty.path "usize" ],
-                        "shr",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.path "usize" ],
+                      "shr",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -1770,22 +1750,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::Shl",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::Shl",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
-                        [],
-                        [ Ty.path "usize" ],
-                        "shl",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.path "usize" ],
+                      "shl",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -1877,22 +1855,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::Shr",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::Shr",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
-                        [],
-                        [ Ty.path "usize" ],
-                        "shr",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.path "usize" ],
+                      "shr",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -1982,22 +1958,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::Shl",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::Shl",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
-                        [],
-                        [ Ty.path "usize" ],
-                        "shl",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.path "usize" ],
+                      "shl",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -2087,22 +2061,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::Shr",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::Shr",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
-                        [],
-                        [ Ty.path "usize" ],
-                        "shr",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.path "usize" ],
+                      "shr",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -2192,22 +2164,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::Shl",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::Shl",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
-                        [],
-                        [ Ty.path "usize" ],
-                        "shl",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.path "usize" ],
+                      "shl",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -2297,22 +2267,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::Shr",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::Shr",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
-                        [],
-                        [ Ty.path "usize" ],
-                        "shr",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.path "usize" ],
+                      "shr",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -2402,22 +2370,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::Shl",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::Shl",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
-                        [],
-                        [ Ty.path "usize" ],
-                        "shl",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.path "usize" ],
+                      "shl",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -2507,22 +2473,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::Shr",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::Shr",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
-                        [],
-                        [ Ty.path "usize" ],
-                        "shr",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.path "usize" ],
+                      "shr",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -2612,22 +2576,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::Shl",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::Shl",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
-                        [],
-                        [ Ty.path "usize" ],
-                        "shl",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.path "usize" ],
+                      "shl",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -2717,22 +2679,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::Shr",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::Shr",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
-                        [],
-                        [ Ty.path "usize" ],
-                        "shr",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.path "usize" ],
+                      "shr",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -2822,22 +2782,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::Shl",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::Shl",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
-                        [],
-                        [ Ty.path "usize" ],
-                        "shl",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.path "usize" ],
+                      "shl",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -2927,22 +2885,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::Shr",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::Shr",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
-                        [],
-                        [ Ty.path "usize" ],
-                        "shr",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.path "usize" ],
+                      "shr",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -3034,22 +2990,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::Shl",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::Shl",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
-                        [],
-                        [ Ty.path "usize" ],
-                        "shl",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.path "usize" ],
+                      "shl",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -3141,22 +3095,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::Shr",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::Shr",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
-                        [],
-                        [ Ty.path "usize" ],
-                        "shr",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.path "usize" ],
+                      "shr",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -3247,23 +3199,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Add",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Add",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ]
-                        ],
-                        "add",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ] ],
+                      "add",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -3298,26 +3247,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Add",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Add",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ]
-                        ],
-                        "add",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ] ],
+                      "add",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -3408,23 +3354,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Sub",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Sub",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ]
-                        ],
-                        "sub",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ] ],
+                      "sub",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -3459,26 +3402,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Sub",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Sub",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ]
-                        ],
-                        "sub",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ] ],
+                      "sub",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -3569,23 +3509,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Mul",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Mul",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ]
-                        ],
-                        "mul",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ] ],
+                      "mul",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -3620,26 +3557,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Mul",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Mul",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ]
-                        ],
-                        "mul",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ] ],
+                      "mul",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -3730,23 +3664,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Div",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Div",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ]
-                        ],
-                        "div",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ] ],
+                      "div",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -3781,26 +3712,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Div",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Div",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ]
-                        ],
-                        "div",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ] ],
+                      "div",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -3891,23 +3819,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Rem",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Rem",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ]
-                        ],
-                        "rem",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ] ],
+                      "rem",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -3942,26 +3867,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Rem",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Rem",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ]
-                        ],
-                        "rem",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ] ],
+                      "rem",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -4091,23 +4013,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitXor",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitXor",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ]
-                        ],
-                        "bitxor",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ] ],
+                      "bitxor",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -4142,26 +4061,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitXor",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitXor",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ]
-                        ],
-                        "bitxor",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ] ],
+                      "bitxor",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -4247,23 +4163,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitOr",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitOr",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ]
-                        ],
-                        "bitor",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ] ],
+                      "bitor",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -4298,26 +4211,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitOr",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitOr",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ]
-                        ],
-                        "bitor",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ] ],
+                      "bitor",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -4403,23 +4313,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitAnd",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitAnd",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ]
-                        ],
-                        "bitand",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ] ],
+                      "bitand",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -4454,26 +4361,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitAnd",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitAnd",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ]
-                        ],
-                        "bitand",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "usize" ] ],
+                      "bitand",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -4613,22 +4517,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Add",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Add",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ] ],
-                        "add",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ] ],
+                      "add",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -4663,25 +4565,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Add",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Add",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ] ],
-                        "add",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ] ],
+                      "add",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -4772,22 +4672,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Sub",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Sub",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ] ],
-                        "sub",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ] ],
+                      "sub",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -4822,25 +4720,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Sub",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Sub",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ] ],
-                        "sub",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ] ],
+                      "sub",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -4931,22 +4827,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Mul",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Mul",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ] ],
-                        "mul",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ] ],
+                      "mul",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -4981,25 +4875,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Mul",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Mul",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ] ],
-                        "mul",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ] ],
+                      "mul",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -5090,22 +4982,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Div",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Div",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ] ],
-                        "div",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ] ],
+                      "div",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -5140,25 +5030,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Div",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Div",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ] ],
-                        "div",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ] ],
+                      "div",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -5249,22 +5137,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Rem",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Rem",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ] ],
-                        "rem",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ] ],
+                      "rem",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -5299,25 +5185,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Rem",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Rem",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ] ],
-                        "rem",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ] ],
+                      "rem",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -5447,22 +5331,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitXor",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitXor",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ] ],
-                        "bitxor",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ] ],
+                      "bitxor",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -5497,25 +5379,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitXor",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitXor",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ] ],
-                        "bitxor",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ] ],
+                      "bitxor",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -5601,22 +5481,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitOr",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitOr",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ] ],
-                        "bitor",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ] ],
+                      "bitor",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -5651,25 +5529,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitOr",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitOr",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ] ],
-                        "bitor",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ] ],
+                      "bitor",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -5755,22 +5631,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitAnd",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitAnd",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ] ],
-                        "bitand",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ] ],
+                      "bitand",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -5805,25 +5679,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitAnd",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitAnd",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ] ],
-                        "bitand",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u8" ] ],
+                      "bitand",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -5963,22 +5835,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Add",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Add",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ] ],
-                        "add",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ] ],
+                      "add",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -6013,25 +5883,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Add",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Add",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ] ],
-                        "add",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ] ],
+                      "add",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -6122,22 +5990,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Sub",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Sub",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ] ],
-                        "sub",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ] ],
+                      "sub",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -6172,25 +6038,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Sub",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Sub",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ] ],
-                        "sub",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ] ],
+                      "sub",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -6281,22 +6145,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Mul",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Mul",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ] ],
-                        "mul",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ] ],
+                      "mul",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -6331,25 +6193,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Mul",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Mul",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ] ],
-                        "mul",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ] ],
+                      "mul",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -6440,22 +6300,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Div",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Div",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ] ],
-                        "div",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ] ],
+                      "div",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -6490,25 +6348,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Div",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Div",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ] ],
-                        "div",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ] ],
+                      "div",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -6599,22 +6455,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Rem",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Rem",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ] ],
-                        "rem",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ] ],
+                      "rem",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -6649,25 +6503,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Rem",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Rem",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ] ],
-                        "rem",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ] ],
+                      "rem",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -6797,22 +6649,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitXor",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitXor",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ] ],
-                        "bitxor",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ] ],
+                      "bitxor",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -6847,25 +6697,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitXor",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitXor",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ] ],
-                        "bitxor",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ] ],
+                      "bitxor",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -6951,22 +6799,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitOr",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitOr",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ] ],
-                        "bitor",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ] ],
+                      "bitor",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -7001,25 +6847,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitOr",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitOr",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ] ],
-                        "bitor",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ] ],
+                      "bitor",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -7105,22 +6949,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitAnd",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitAnd",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ] ],
-                        "bitand",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ] ],
+                      "bitand",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -7155,25 +6997,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitAnd",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitAnd",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ] ],
-                        "bitand",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u16" ] ],
+                      "bitand",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -7313,22 +7153,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Add",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Add",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ] ],
-                        "add",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ] ],
+                      "add",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -7363,25 +7201,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Add",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Add",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ] ],
-                        "add",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ] ],
+                      "add",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -7472,22 +7308,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Sub",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Sub",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ] ],
-                        "sub",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ] ],
+                      "sub",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -7522,25 +7356,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Sub",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Sub",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ] ],
-                        "sub",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ] ],
+                      "sub",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -7631,22 +7463,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Mul",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Mul",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ] ],
-                        "mul",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ] ],
+                      "mul",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -7681,25 +7511,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Mul",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Mul",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ] ],
-                        "mul",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ] ],
+                      "mul",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -7790,22 +7618,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Div",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Div",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ] ],
-                        "div",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ] ],
+                      "div",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -7840,25 +7666,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Div",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Div",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ] ],
-                        "div",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ] ],
+                      "div",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -7949,22 +7773,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Rem",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Rem",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ] ],
-                        "rem",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ] ],
+                      "rem",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -7999,25 +7821,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Rem",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Rem",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ] ],
-                        "rem",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ] ],
+                      "rem",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -8147,22 +7967,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitXor",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitXor",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ] ],
-                        "bitxor",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ] ],
+                      "bitxor",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -8197,25 +8015,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitXor",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitXor",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ] ],
-                        "bitxor",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ] ],
+                      "bitxor",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -8301,22 +8117,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitOr",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitOr",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ] ],
-                        "bitor",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ] ],
+                      "bitor",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -8351,25 +8165,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitOr",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitOr",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ] ],
-                        "bitor",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ] ],
+                      "bitor",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -8455,22 +8267,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitAnd",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitAnd",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ] ],
-                        "bitand",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ] ],
+                      "bitand",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -8505,25 +8315,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitAnd",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitAnd",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ] ],
-                        "bitand",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u32" ] ],
+                      "bitand",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -8663,22 +8471,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Add",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Add",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ] ],
-                        "add",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ] ],
+                      "add",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -8713,25 +8519,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Add",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Add",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ] ],
-                        "add",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ] ],
+                      "add",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -8822,22 +8626,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Sub",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Sub",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ] ],
-                        "sub",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ] ],
+                      "sub",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -8872,25 +8674,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Sub",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Sub",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ] ],
-                        "sub",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ] ],
+                      "sub",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -8981,22 +8781,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Mul",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Mul",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ] ],
-                        "mul",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ] ],
+                      "mul",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -9031,25 +8829,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Mul",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Mul",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ] ],
-                        "mul",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ] ],
+                      "mul",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -9140,22 +8936,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Div",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Div",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ] ],
-                        "div",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ] ],
+                      "div",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -9190,25 +8984,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Div",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Div",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ] ],
-                        "div",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ] ],
+                      "div",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -9299,22 +9091,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Rem",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Rem",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ] ],
-                        "rem",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ] ],
+                      "rem",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -9349,25 +9139,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Rem",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Rem",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ] ],
-                        "rem",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ] ],
+                      "rem",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -9497,22 +9285,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitXor",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitXor",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ] ],
-                        "bitxor",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ] ],
+                      "bitxor",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -9547,25 +9333,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitXor",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitXor",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ] ],
-                        "bitxor",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ] ],
+                      "bitxor",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -9651,22 +9435,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitOr",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitOr",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ] ],
-                        "bitor",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ] ],
+                      "bitor",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -9701,25 +9483,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitOr",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitOr",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ] ],
-                        "bitor",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ] ],
+                      "bitor",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -9805,22 +9585,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitAnd",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitAnd",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ] ],
-                        "bitand",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ] ],
+                      "bitand",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -9855,25 +9633,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitAnd",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitAnd",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ] ],
-                        "bitand",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u64" ] ],
+                      "bitand",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -10013,23 +9789,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Add",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Add",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ]
-                        ],
-                        "add",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ] ],
+                      "add",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -10064,26 +9837,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Add",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Add",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ]
-                        ],
-                        "add",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ] ],
+                      "add",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -10174,23 +9944,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Sub",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Sub",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ]
-                        ],
-                        "sub",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ] ],
+                      "sub",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -10225,26 +9992,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Sub",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Sub",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ]
-                        ],
-                        "sub",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ] ],
+                      "sub",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -10335,23 +10099,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Mul",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Mul",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ]
-                        ],
-                        "mul",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ] ],
+                      "mul",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -10386,26 +10147,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Mul",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Mul",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ]
-                        ],
-                        "mul",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ] ],
+                      "mul",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -10496,23 +10254,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Div",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Div",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ]
-                        ],
-                        "div",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ] ],
+                      "div",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -10547,26 +10302,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Div",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Div",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ]
-                        ],
-                        "div",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ] ],
+                      "div",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -10657,23 +10409,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Rem",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Rem",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ]
-                        ],
-                        "rem",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ] ],
+                      "rem",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -10708,26 +10457,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Rem",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Rem",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ]
-                        ],
-                        "rem",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ] ],
+                      "rem",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -10857,23 +10603,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitXor",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitXor",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ]
-                        ],
-                        "bitxor",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ] ],
+                      "bitxor",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -10908,26 +10651,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitXor",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitXor",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ]
-                        ],
-                        "bitxor",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ] ],
+                      "bitxor",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -11013,23 +10753,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitOr",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitOr",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ]
-                        ],
-                        "bitor",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ] ],
+                      "bitor",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -11064,26 +10801,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitOr",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitOr",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ]
-                        ],
-                        "bitor",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ] ],
+                      "bitor",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -11169,23 +10903,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitAnd",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitAnd",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ]
-                        ],
-                        "bitand",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ] ],
+                      "bitand",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -11220,26 +10951,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitAnd",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitAnd",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ]
-                        ],
-                        "bitand",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "u128" ] ],
+                      "bitand",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -11379,23 +11107,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Add",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Add",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ]
-                        ],
-                        "add",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ] ],
+                      "add",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -11430,26 +11155,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Add",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Add",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ]
-                        ],
-                        "add",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ] ],
+                      "add",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -11540,23 +11262,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Sub",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Sub",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ]
-                        ],
-                        "sub",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ] ],
+                      "sub",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -11591,26 +11310,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Sub",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Sub",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ]
-                        ],
-                        "sub",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ] ],
+                      "sub",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -11701,23 +11417,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Mul",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Mul",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ]
-                        ],
-                        "mul",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ] ],
+                      "mul",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -11752,26 +11465,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Mul",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Mul",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ]
-                        ],
-                        "mul",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ] ],
+                      "mul",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -11862,23 +11572,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Div",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Div",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ]
-                        ],
-                        "div",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ] ],
+                      "div",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -11913,26 +11620,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Div",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Div",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ]
-                        ],
-                        "div",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ] ],
+                      "div",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -12023,23 +11727,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Rem",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Rem",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ]
-                        ],
-                        "rem",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ] ],
+                      "rem",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -12074,26 +11775,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Rem",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Rem",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ]
-                        ],
-                        "rem",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ] ],
+                      "rem",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -12223,23 +11921,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitXor",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitXor",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ]
-                        ],
-                        "bitxor",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ] ],
+                      "bitxor",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -12274,26 +11969,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitXor",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitXor",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ]
-                        ],
-                        "bitxor",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ] ],
+                      "bitxor",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -12379,23 +12071,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitOr",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitOr",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ]
-                        ],
-                        "bitor",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ] ],
+                      "bitor",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -12430,26 +12119,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitOr",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitOr",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ]
-                        ],
-                        "bitor",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ] ],
+                      "bitor",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -12535,23 +12221,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitAnd",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitAnd",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ]
-                        ],
-                        "bitand",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ] ],
+                      "bitand",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -12586,26 +12269,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitAnd",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitAnd",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ]
-                        ],
-                        "bitand",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "isize" ] ],
+                      "bitand",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -12745,22 +12425,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Add",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Add",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ] ],
-                        "add",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ] ],
+                      "add",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -12795,25 +12473,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Add",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Add",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ] ],
-                        "add",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ] ],
+                      "add",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -12904,22 +12580,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Sub",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Sub",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ] ],
-                        "sub",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ] ],
+                      "sub",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -12954,25 +12628,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Sub",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Sub",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ] ],
-                        "sub",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ] ],
+                      "sub",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -13063,22 +12735,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Mul",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Mul",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ] ],
-                        "mul",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ] ],
+                      "mul",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -13113,25 +12783,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Mul",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Mul",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ] ],
-                        "mul",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ] ],
+                      "mul",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -13222,22 +12890,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Div",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Div",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ] ],
-                        "div",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ] ],
+                      "div",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -13272,25 +12938,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Div",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Div",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ] ],
-                        "div",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ] ],
+                      "div",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -13381,22 +13045,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Rem",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Rem",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ] ],
-                        "rem",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ] ],
+                      "rem",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -13431,25 +13093,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Rem",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Rem",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ] ],
-                        "rem",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ] ],
+                      "rem",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -13579,22 +13239,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitXor",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitXor",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ] ],
-                        "bitxor",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ] ],
+                      "bitxor",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -13629,25 +13287,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitXor",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitXor",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ] ],
-                        "bitxor",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ] ],
+                      "bitxor",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -13733,22 +13389,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitOr",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitOr",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ] ],
-                        "bitor",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ] ],
+                      "bitor",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -13783,25 +13437,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitOr",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitOr",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ] ],
-                        "bitor",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ] ],
+                      "bitor",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -13887,22 +13539,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitAnd",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitAnd",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ] ],
-                        "bitand",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ] ],
+                      "bitand",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -13937,25 +13587,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitAnd",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitAnd",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ] ],
-                        "bitand",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i8" ] ],
+                      "bitand",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -14095,22 +13743,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Add",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Add",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ] ],
-                        "add",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ] ],
+                      "add",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -14145,25 +13791,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Add",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Add",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ] ],
-                        "add",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ] ],
+                      "add",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -14254,22 +13898,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Sub",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Sub",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ] ],
-                        "sub",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ] ],
+                      "sub",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -14304,25 +13946,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Sub",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Sub",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ] ],
-                        "sub",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ] ],
+                      "sub",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -14413,22 +14053,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Mul",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Mul",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ] ],
-                        "mul",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ] ],
+                      "mul",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -14463,25 +14101,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Mul",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Mul",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ] ],
-                        "mul",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ] ],
+                      "mul",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -14572,22 +14208,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Div",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Div",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ] ],
-                        "div",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ] ],
+                      "div",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -14622,25 +14256,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Div",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Div",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ] ],
-                        "div",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ] ],
+                      "div",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -14731,22 +14363,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Rem",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Rem",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ] ],
-                        "rem",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ] ],
+                      "rem",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -14781,25 +14411,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Rem",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Rem",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ] ],
-                        "rem",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ] ],
+                      "rem",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -14929,22 +14557,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitXor",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitXor",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ] ],
-                        "bitxor",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ] ],
+                      "bitxor",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -14979,25 +14605,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitXor",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitXor",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ] ],
-                        "bitxor",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ] ],
+                      "bitxor",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -15083,22 +14707,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitOr",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitOr",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ] ],
-                        "bitor",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ] ],
+                      "bitor",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -15133,25 +14755,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitOr",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitOr",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ] ],
-                        "bitor",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ] ],
+                      "bitor",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -15237,22 +14857,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitAnd",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitAnd",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ] ],
-                        "bitand",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ] ],
+                      "bitand",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -15287,25 +14905,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitAnd",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitAnd",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ] ],
-                        "bitand",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i16" ] ],
+                      "bitand",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -15445,22 +15061,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Add",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Add",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ] ],
-                        "add",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ] ],
+                      "add",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -15495,25 +15109,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Add",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Add",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ] ],
-                        "add",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ] ],
+                      "add",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -15604,22 +15216,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Sub",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Sub",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ] ],
-                        "sub",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ] ],
+                      "sub",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -15654,25 +15264,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Sub",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Sub",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ] ],
-                        "sub",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ] ],
+                      "sub",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -15763,22 +15371,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Mul",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Mul",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ] ],
-                        "mul",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ] ],
+                      "mul",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -15813,25 +15419,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Mul",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Mul",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ] ],
-                        "mul",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ] ],
+                      "mul",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -15922,22 +15526,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Div",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Div",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ] ],
-                        "div",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ] ],
+                      "div",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -15972,25 +15574,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Div",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Div",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ] ],
-                        "div",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ] ],
+                      "div",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -16081,22 +15681,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Rem",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Rem",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ] ],
-                        "rem",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ] ],
+                      "rem",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -16131,25 +15729,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Rem",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Rem",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ] ],
-                        "rem",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ] ],
+                      "rem",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -16279,22 +15875,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitXor",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitXor",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ] ],
-                        "bitxor",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ] ],
+                      "bitxor",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -16329,25 +15923,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitXor",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitXor",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ] ],
-                        "bitxor",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ] ],
+                      "bitxor",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -16433,22 +16025,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitOr",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitOr",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ] ],
-                        "bitor",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ] ],
+                      "bitor",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -16483,25 +16073,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitOr",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitOr",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ] ],
-                        "bitor",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ] ],
+                      "bitor",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -16587,22 +16175,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitAnd",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitAnd",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ] ],
-                        "bitand",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ] ],
+                      "bitand",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -16637,25 +16223,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitAnd",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitAnd",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ] ],
-                        "bitand",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i32" ] ],
+                      "bitand",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -16795,22 +16379,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Add",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Add",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ] ],
-                        "add",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ] ],
+                      "add",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -16845,25 +16427,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Add",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Add",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ] ],
-                        "add",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ] ],
+                      "add",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -16954,22 +16534,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Sub",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Sub",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ] ],
-                        "sub",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ] ],
+                      "sub",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -17004,25 +16582,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Sub",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Sub",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ] ],
-                        "sub",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ] ],
+                      "sub",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -17113,22 +16689,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Mul",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Mul",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ] ],
-                        "mul",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ] ],
+                      "mul",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -17163,25 +16737,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Mul",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Mul",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ] ],
-                        "mul",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ] ],
+                      "mul",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -17272,22 +16844,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Div",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Div",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ] ],
-                        "div",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ] ],
+                      "div",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -17322,25 +16892,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Div",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Div",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ] ],
-                        "div",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ] ],
+                      "div",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -17431,22 +16999,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Rem",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Rem",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ] ],
-                        "rem",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ] ],
+                      "rem",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -17481,25 +17047,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Rem",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Rem",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ] ],
-                        "rem",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ] ],
+                      "rem",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -17629,22 +17193,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitXor",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitXor",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ] ],
-                        "bitxor",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ] ],
+                      "bitxor",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -17679,25 +17241,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitXor",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitXor",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ] ],
-                        "bitxor",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ] ],
+                      "bitxor",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -17783,22 +17343,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitOr",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitOr",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ] ],
-                        "bitor",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ] ],
+                      "bitor",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -17833,25 +17391,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitOr",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitOr",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ] ],
-                        "bitor",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ] ],
+                      "bitor",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -17937,22 +17493,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitAnd",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitAnd",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ] ],
-                        "bitand",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ] ],
+                      "bitand",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -17987,25 +17541,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitAnd",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitAnd",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ] ],
-                        "bitand",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i64" ] ],
+                      "bitand",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -18145,23 +17697,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Add",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Add",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ]
-                        ],
-                        "add",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ] ],
+                      "add",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -18196,26 +17745,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Add",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Add",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ]
-                        ],
-                        "add",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ] ],
+                      "add",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -18306,23 +17852,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Sub",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Sub",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ]
-                        ],
-                        "sub",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ] ],
+                      "sub",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -18357,26 +17900,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Sub",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Sub",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ]
-                        ],
-                        "sub",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ] ],
+                      "sub",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -18467,23 +18007,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Mul",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Mul",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ]
-                        ],
-                        "mul",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ] ],
+                      "mul",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -18518,26 +18055,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Mul",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Mul",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ]
-                        ],
-                        "mul",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ] ],
+                      "mul",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -18628,23 +18162,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Div",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Div",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ]
-                        ],
-                        "div",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ] ],
+                      "div",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -18679,26 +18210,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Div",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Div",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ]
-                        ],
-                        "div",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ] ],
+                      "div",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -18789,23 +18317,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Rem",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Rem",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ]
-                        ],
-                        "rem",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ] ],
+                      "rem",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -18840,26 +18365,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
+                    M.get_trait_method (|
+                      "core::ops::arith::Rem",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
-                      M.get_trait_method (|
-                        "core::ops::arith::Rem",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ]
-                        ],
-                        "rem",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ] ],
+                      "rem",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -18989,23 +18511,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitXor",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitXor",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ]
-                        ],
-                        "bitxor",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ] ],
+                      "bitxor",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -19040,26 +18559,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitXor",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitXor",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ]
-                        ],
-                        "bitxor",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ] ],
+                      "bitxor",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -19145,23 +18661,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitOr",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitOr",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ]
-                        ],
-                        "bitor",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ] ],
+                      "bitor",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -19196,26 +18709,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitOr",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitOr",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ]
-                        ],
-                        "bitor",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ] ],
+                      "bitor",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -19301,23 +18811,20 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitAnd",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitAnd",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ]
-                        ],
-                        "bitand",
-                        [],
-                        []
-                      |),
-                      [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ] ],
+                      "bitand",
+                      [],
+                      []
+                    |),
+                    [ M.read (| M.deref (| M.read (| self |) |) |); M.read (| other |) ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -19352,26 +18859,23 @@ Module num.
             let other := M.alloc (| other |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.deref (| M.read (| self |) |),
-                    M.call_closure (|
+                M.write (|
+                  M.deref (| M.read (| self |) |),
+                  M.call_closure (|
+                    Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
+                    M.get_trait_method (|
+                      "core::ops::bit::BitAnd",
                       Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
-                      M.get_trait_method (|
-                        "core::ops::bit::BitAnd",
-                        Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ],
-                        [],
-                        [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ]
-                        ],
-                        "bitand",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (| M.deref (| M.read (| self |) |) |);
-                        Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
-                      ]
-                    |)
+                      [],
+                      [ Ty.apply (Ty.path "core::num::wrapping::Wrapping") [] [ Ty.path "i128" ] ],
+                      "bitand",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (| M.deref (| M.read (| self |) |) |);
+                      Value.StructTuple "core::num::wrapping::Wrapping" [ M.read (| other |) ]
+                    ]
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)

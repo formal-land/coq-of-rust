@@ -281,12 +281,10 @@ Module mem.
       ltac:(M.monadic
         (M.read (|
           let~ _ : Ty.tuple [] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.tuple [],
-                M.get_function (| "core::intrinsics::assert_zero_valid", [], [ T ] |),
-                []
-              |)
+            M.call_closure (|
+              Ty.tuple [],
+              M.get_function (| "core::intrinsics::assert_zero_valid", [], [ T ] |),
+              []
             |) in
           M.alloc (|
             M.call_closure (|
@@ -342,37 +340,33 @@ Module mem.
       ltac:(M.monadic
         (M.read (|
           let~ _ : Ty.tuple [] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.tuple [],
-                M.get_function (| "core::intrinsics::assert_mem_uninitialized_valid", [], [ T ] |),
-                []
-              |)
+            M.call_closure (|
+              Ty.tuple [],
+              M.get_function (| "core::intrinsics::assert_mem_uninitialized_valid", [], [ T ] |),
+              []
             |) in
           let~ val : Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] :=
-            M.alloc (|
-              M.call_closure (|
+            M.call_closure (|
+              Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
+              M.get_associated_function (|
                 Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
-                M.get_associated_function (|
-                  Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ],
-                  "uninit",
-                  [],
-                  []
-                |),
+                "uninit",
+                [],
                 []
-              |)
+              |),
+              []
             |) in
           let~ _ : Ty.tuple [] :=
-            M.match_operator (|
-              Some (Ty.tuple []),
-              M.alloc (| Value.Tuple [] |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ := M.use (M.alloc (| UnOp.not (| Value.Bool false |) |)) in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    let~ _ : Ty.tuple [] :=
-                      M.alloc (|
+            M.read (|
+              M.match_operator (|
+                Some (Ty.tuple []),
+                M.alloc (| Value.Tuple [] |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ := M.use (M.alloc (| UnOp.not (| Value.Bool false |) |)) in
+                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let~ _ : Ty.tuple [] :=
                         M.call_closure (|
                           Ty.tuple [],
                           M.get_associated_function (|
@@ -395,11 +389,11 @@ Module mem.
                             Value.Integer IntegerKind.U8 1;
                             Value.Integer IntegerKind.Usize 1
                           ]
-                        |)
-                      |) in
-                    M.alloc (| Value.Tuple [] |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-              ]
+                        |) in
+                      M.alloc (| Value.Tuple [] |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                ]
+              |)
             |) in
           M.alloc (|
             M.call_closure (|
@@ -503,23 +497,19 @@ Module mem.
         let src := M.alloc (| src |) in
         M.read (|
           let~ result : T :=
-            M.alloc (|
-              M.call_closure (|
-                T,
-                M.get_function (| "core::ptr::read", [], [ T ] |),
-                [ M.borrow (| Pointer.Kind.ConstPointer, M.deref (| M.read (| dest |) |) |) ]
-              |)
+            M.call_closure (|
+              T,
+              M.get_function (| "core::ptr::read", [], [ T ] |),
+              [ M.borrow (| Pointer.Kind.ConstPointer, M.deref (| M.read (| dest |) |) |) ]
             |) in
           let~ _ : Ty.tuple [] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.tuple [],
-                M.get_function (| "core::ptr::write", [], [ T ] |),
-                [
-                  M.borrow (| Pointer.Kind.MutPointer, M.deref (| M.read (| dest |) |) |);
-                  M.read (| src |)
-                ]
-              |)
+            M.call_closure (|
+              Ty.tuple [],
+              M.get_function (| "core::ptr::write", [], [ T ] |),
+              [
+                M.borrow (| Pointer.Kind.MutPointer, M.deref (| M.read (| dest |) |) |);
+                M.read (| src |)
+              ]
             |) in
           result
         |)))
@@ -589,70 +579,72 @@ Module mem.
         (let src := M.alloc (| src |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
-            M.match_operator (|
-              Some (Ty.tuple []),
-              M.alloc (| Value.Tuple [] |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ :=
-                      M.use
-                        (M.alloc (|
-                          UnOp.not (|
-                            BinOp.ge (|
-                              M.call_closure (|
-                                Ty.path "usize",
-                                M.get_function (| "core::mem::size_of", [], [ Src ] |),
-                                []
-                              |),
-                              M.call_closure (|
-                                Ty.path "usize",
-                                M.get_function (| "core::mem::size_of", [], [ Dst ] |),
-                                []
+            M.read (|
+              M.match_operator (|
+                Some (Ty.tuple []),
+                M.alloc (| Value.Tuple [] |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ :=
+                        M.use
+                          (M.alloc (|
+                            UnOp.not (|
+                              BinOp.ge (|
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  M.get_function (| "core::mem::size_of", [], [ Src ] |),
+                                  []
+                                |),
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  M.get_function (| "core::mem::size_of", [], [ Dst ] |),
+                                  []
+                                |)
                               |)
                             |)
-                          |)
-                        |)) in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.alloc (|
-                      M.never_to_any (|
-                        M.call_closure (|
-                          Ty.path "never",
-                          M.get_function (| "core::panicking::panic_fmt", [], [] |),
-                          [
-                            M.call_closure (|
-                              Ty.path "core::fmt::Arguments",
-                              M.get_associated_function (|
+                          |)) in
+                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      M.alloc (|
+                        M.never_to_any (|
+                          M.call_closure (|
+                            Ty.path "never",
+                            M.get_function (| "core::panicking::panic_fmt", [], [] |),
+                            [
+                              M.call_closure (|
                                 Ty.path "core::fmt::Arguments",
-                                "new_const",
-                                [ Value.Integer IntegerKind.Usize 1 ],
-                                []
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.alloc (|
-                                        Value.Array
-                                          [
-                                            mk_str (|
-                                              "cannot transmute_copy if Dst is larger than Src"
-                                            |)
-                                          ]
+                                M.get_associated_function (|
+                                  Ty.path "core::fmt::Arguments",
+                                  "new_const",
+                                  [ Value.Integer IntegerKind.Usize 1 ],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.alloc (|
+                                          Value.Array
+                                            [
+                                              mk_str (|
+                                                "cannot transmute_copy if Dst is larger than Src"
+                                              |)
+                                            ]
+                                        |)
                                       |)
                                     |)
                                   |)
-                                |)
-                              ]
-                            |)
-                          ]
+                                ]
+                              |)
+                            ]
+                          |)
                         |)
-                      |)
-                    |)));
-                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-              ]
+                      |)));
+                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                ]
+              |)
             |) in
           M.match_operator (|
             Some Dst,
@@ -865,30 +857,28 @@ Module mem.
           let state := M.alloc (| state |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_trait_method (|
-                    "core::hash::Hash",
-                    Ty.associated_in_trait "core::marker::DiscriminantKind" [] [] T "Discriminant",
-                    [],
-                    [],
-                    "hash",
-                    [],
-                    [ H ]
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_tuple_field (|
-                        M.deref (| M.read (| self |) |),
-                        "core::mem::Discriminant",
-                        0
-                      |)
-                    |);
-                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
-                  ]
-                |)
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_trait_method (|
+                  "core::hash::Hash",
+                  Ty.associated_in_trait "core::marker::DiscriminantKind" [] [] T "Discriminant",
+                  [],
+                  [],
+                  "hash",
+                  [],
+                  [ H ]
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::mem::Discriminant",
+                      0
+                    |)
+                  |);
+                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+                ]
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))

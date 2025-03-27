@@ -406,10 +406,9 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
                               []
                             |),
                             [
-                              repeat (|
-                                Value.Integer IntegerKind.U8 0,
-                                Value.Integer IntegerKind.Usize 32
-                              |)
+                              repeat
+                                (Value.Integer IntegerKind.U8 0)
+                                (Value.Integer IntegerKind.Usize 32)
                             ]
                           |)
                         ]
@@ -462,7 +461,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
                     ];
                   Ty.path "constructors_return_value::LangError"
                 ] :=
-            M.copy (|
+            M.read (|
               M.match_operator (|
                 Some
                   (Ty.apply
@@ -508,10 +507,9 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
                                     []
                                   |),
                                   [
-                                    repeat (|
-                                      Value.Integer IntegerKind.U8 0,
-                                      Value.Integer IntegerKind.Usize 32
-                                    |)
+                                    repeat
+                                      (Value.Integer IntegerKind.U8 0)
+                                      (Value.Integer IntegerKind.Usize 32)
                                   ]
                                 |)
                               ]

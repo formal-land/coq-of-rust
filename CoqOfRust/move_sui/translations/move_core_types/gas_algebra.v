@@ -111,7 +111,7 @@ Module gas_algebra.
                 (M.read (|
                   let~ __serde_state :
                       Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "SerializeStruct" :=
-                    M.copy (|
+                    M.read (|
                       M.match_operator (|
                         Some
                           (Ty.associated_in_trait
@@ -191,166 +191,170 @@ Module gas_algebra.
                       |)
                     |) in
                   let~ _ : Ty.tuple [] :=
-                    M.match_operator (|
-                      Some (Ty.tuple []),
-                      M.alloc (|
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
+                    M.read (|
+                      M.match_operator (|
+                        Some (Ty.tuple []),
+                        M.alloc (|
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.tuple [];
+                                Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                              ],
+                            M.get_trait_method (|
+                              "serde::ser::SerializeStruct",
+                              Ty.associated_in_trait
+                                "serde::ser::Serializer"
+                                []
+                                []
+                                __S
+                                "SerializeStruct",
+                              [],
+                              [],
+                              "serialize_field",
+                              [],
+                              [ Ty.path "u64" ]
+                            |),
                             [
-                              Ty.tuple [];
-                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
-                            ],
-                          M.get_trait_method (|
-                            "serde::ser::SerializeStruct",
-                            Ty.associated_in_trait
-                              "serde::ser::Serializer"
-                              []
-                              []
-                              __S
-                              "SerializeStruct",
-                            [],
-                            [],
-                            "serialize_field",
-                            [],
-                            [ Ty.path "u64" ]
-                          |),
-                          [
-                            M.borrow (|
-                              Pointer.Kind.MutRef,
-                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
-                            |);
-                            mk_str (| "val" |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "move_core_types::gas_algebra::GasQuantity",
-                                    "val"
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                              |);
+                              mk_str (| "val" |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "move_core_types::gas_algebra::GasQuantity",
+                                      "val"
+                                    |)
                                   |)
                                 |)
                               |)
-                            |)
-                          ]
-                        |)
-                      |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::result::Result::Ok",
-                                0
-                              |) in
-                            let __val := M.copy (| γ0_0 |) in
-                            __val));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::result::Result::Err",
-                                0
-                              |) in
-                            let __err := M.copy (| γ0_0 |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  M.return_ (|
-                                    Value.StructTuple
-                                      "core::result::Result::Err"
-                                      [ M.read (| __err |) ]
+                            ]
+                          |)
+                        |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ0_0 :=
+                                M.SubPointer.get_struct_tuple_field (|
+                                  γ,
+                                  "core::result::Result::Ok",
+                                  0
+                                |) in
+                              let __val := M.copy (| γ0_0 |) in
+                              __val));
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ0_0 :=
+                                M.SubPointer.get_struct_tuple_field (|
+                                  γ,
+                                  "core::result::Result::Err",
+                                  0
+                                |) in
+                              let __err := M.copy (| γ0_0 |) in
+                              M.alloc (|
+                                M.never_to_any (|
+                                  M.read (|
+                                    M.return_ (|
+                                      Value.StructTuple
+                                        "core::result::Result::Err"
+                                        [ M.read (| __err |) ]
+                                    |)
                                   |)
                                 |)
-                              |)
-                            |)))
-                      ]
+                              |)))
+                        ]
+                      |)
                     |) in
                   let~ _ : Ty.tuple [] :=
-                    M.match_operator (|
-                      Some (Ty.tuple []),
-                      M.alloc (|
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "core::result::Result")
-                            []
+                    M.read (|
+                      M.match_operator (|
+                        Some (Ty.tuple []),
+                        M.alloc (|
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "core::result::Result")
+                              []
+                              [
+                                Ty.tuple [];
+                                Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
+                              ],
+                            M.get_trait_method (|
+                              "serde::ser::SerializeStruct",
+                              Ty.associated_in_trait
+                                "serde::ser::Serializer"
+                                []
+                                []
+                                __S
+                                "SerializeStruct",
+                              [],
+                              [],
+                              "serialize_field",
+                              [],
+                              [ Ty.apply (Ty.path "core::marker::PhantomData") [] [ U ] ]
+                            |),
                             [
-                              Ty.tuple [];
-                              Ty.associated_in_trait "serde::ser::Serializer" [] [] __S "Error"
-                            ],
-                          M.get_trait_method (|
-                            "serde::ser::SerializeStruct",
-                            Ty.associated_in_trait
-                              "serde::ser::Serializer"
-                              []
-                              []
-                              __S
-                              "SerializeStruct",
-                            [],
-                            [],
-                            "serialize_field",
-                            [],
-                            [ Ty.apply (Ty.path "core::marker::PhantomData") [] [ U ] ]
-                          |),
-                          [
-                            M.borrow (|
-                              Pointer.Kind.MutRef,
-                              M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
-                            |);
-                            mk_str (| "phantom" |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (|
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "move_core_types::gas_algebra::GasQuantity",
-                                    "phantom"
+                              M.borrow (|
+                                Pointer.Kind.MutRef,
+                                M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
+                              |);
+                              mk_str (| "phantom" |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (|
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "move_core_types::gas_algebra::GasQuantity",
+                                      "phantom"
+                                    |)
                                   |)
                                 |)
                               |)
-                            |)
-                          ]
-                        |)
-                      |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::result::Result::Ok",
-                                0
-                              |) in
-                            let __val := M.copy (| γ0_0 |) in
-                            __val));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ0_0 :=
-                              M.SubPointer.get_struct_tuple_field (|
-                                γ,
-                                "core::result::Result::Err",
-                                0
-                              |) in
-                            let __err := M.copy (| γ0_0 |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  M.return_ (|
-                                    Value.StructTuple
-                                      "core::result::Result::Err"
-                                      [ M.read (| __err |) ]
+                            ]
+                          |)
+                        |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ0_0 :=
+                                M.SubPointer.get_struct_tuple_field (|
+                                  γ,
+                                  "core::result::Result::Ok",
+                                  0
+                                |) in
+                              let __val := M.copy (| γ0_0 |) in
+                              __val));
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ0_0 :=
+                                M.SubPointer.get_struct_tuple_field (|
+                                  γ,
+                                  "core::result::Result::Err",
+                                  0
+                                |) in
+                              let __err := M.copy (| γ0_0 |) in
+                              M.alloc (|
+                                M.never_to_any (|
+                                  M.read (|
+                                    M.return_ (|
+                                      Value.StructTuple
+                                        "core::result::Result::Err"
+                                        [ M.read (| __err |) ]
+                                    |)
                                   |)
                                 |)
-                              |)
-                            |)))
-                      ]
+                              |)))
+                        ]
+                      |)
                     |) in
                   M.alloc (|
                     M.call_closure (|
@@ -885,90 +889,93 @@ Module gas_algebra.
           (let self := M.alloc (| self |) in
           M.read (|
             let~ _ : Ty.tuple [] :=
-              M.match_operator (|
-                Some (Ty.tuple []),
-                M.alloc (|
-                  Value.Tuple
-                    [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.get_constant "move_core_types::gas_algebra::ToUnit::MULTIPLIER"
-                      |);
-                      M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Integer IntegerKind.U64 0 |) |)
-                    ]
-                |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                      let left_val := M.copy (| γ0_0 |) in
-                      let right_val := M.copy (| γ0_1 |) in
-                      M.match_operator (|
-                        Some (Ty.tuple []),
-                        M.alloc (| Value.Tuple [] |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ :=
-                                M.use
-                                  (M.alloc (|
-                                    BinOp.eq (|
-                                      M.read (| M.deref (| M.read (| left_val |) |) |),
-                                      M.read (| M.deref (| M.read (| right_val |) |) |)
-                                    |)
-                                  |)) in
-                              let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
-                              M.alloc (|
-                                M.never_to_any (|
-                                  M.read (|
-                                    let~ kind : Ty.path "core::panicking::AssertKind" :=
+              M.read (|
+                M.match_operator (|
+                  Some (Ty.tuple []),
+                  M.alloc (|
+                    Value.Tuple
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.get_constant "move_core_types::gas_algebra::ToUnit::MULTIPLIER"
+                        |);
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (| Value.Integer IntegerKind.U64 0 |)
+                        |)
+                      ]
+                  |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                        let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                        let left_val := M.copy (| γ0_0 |) in
+                        let right_val := M.copy (| γ0_1 |) in
+                        M.match_operator (|
+                          Some (Ty.tuple []),
+                          M.alloc (| Value.Tuple [] |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ :=
+                                  M.use
+                                    (M.alloc (|
+                                      BinOp.eq (|
+                                        M.read (| M.deref (| M.read (| left_val |) |) |),
+                                        M.read (| M.deref (| M.read (| right_val |) |) |)
+                                      |)
+                                    |)) in
+                                let _ :=
+                                  M.is_constant_or_break_match (|
+                                    M.read (| γ |),
+                                    Value.Bool true
+                                  |) in
+                                M.alloc (|
+                                  M.never_to_any (|
+                                    M.read (|
+                                      let~ kind : Ty.path "core::panicking::AssertKind" :=
+                                        Value.StructTuple "core::panicking::AssertKind::Ne" [] in
                                       M.alloc (|
-                                        Value.StructTuple "core::panicking::AssertKind::Ne" []
-                                      |) in
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        Ty.path "never",
-                                        M.get_function (|
-                                          "core::panicking::assert_failed",
-                                          [],
-                                          [ Ty.path "u64"; Ty.path "u64" ]
-                                        |),
-                                        [
-                                          M.read (| kind |);
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (|
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (| M.read (| left_val |) |)
+                                        M.call_closure (|
+                                          Ty.path "never",
+                                          M.get_function (|
+                                            "core::panicking::assert_failed",
+                                            [],
+                                            [ Ty.path "u64"; Ty.path "u64" ]
+                                          |),
+                                          [
+                                            M.read (| kind |);
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| left_val |) |)
+                                                |)
                                               |)
-                                            |)
-                                          |);
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (|
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (| M.read (| right_val |) |)
+                                            |);
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| right_val |) |)
+                                                |)
                                               |)
-                                            |)
-                                          |);
-                                          Value.StructTuple "core::option::Option::None" []
-                                        ]
+                                            |);
+                                            Value.StructTuple "core::option::Option::None" []
+                                          ]
+                                        |)
                                       |)
                                     |)
                                   |)
-                                |)
-                              |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                        ]
-                      |)))
-                ]
+                                |)));
+                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          ]
+                        |)))
+                  ]
+                |)
               |) in
             M.alloc (|
               M.call_closure (|
@@ -1153,103 +1160,104 @@ Module gas_algebra.
           let params := M.alloc (| params |) in
           M.read (|
             let~ multiplier : Ty.path "u64" :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.path "u64",
-                  M.get_trait_method (|
-                    "move_core_types::gas_algebra::ToUnitWithParams",
-                    U,
-                    [],
-                    [ T ],
-                    "multiplier",
-                    [],
-                    []
-                  |),
-                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| params |) |) |) ]
-                |)
+              M.call_closure (|
+                Ty.path "u64",
+                M.get_trait_method (|
+                  "move_core_types::gas_algebra::ToUnitWithParams",
+                  U,
+                  [],
+                  [ T ],
+                  "multiplier",
+                  [],
+                  []
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| params |) |) |) ]
               |) in
             let~ _ : Ty.tuple [] :=
-              M.match_operator (|
-                Some (Ty.tuple []),
-                M.alloc (|
-                  Value.Tuple
-                    [
-                      M.borrow (| Pointer.Kind.Ref, multiplier |);
-                      M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Integer IntegerKind.U64 0 |) |)
-                    ]
-                |),
-                [
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                      let left_val := M.copy (| γ0_0 |) in
-                      let right_val := M.copy (| γ0_1 |) in
-                      M.match_operator (|
-                        Some (Ty.tuple []),
-                        M.alloc (| Value.Tuple [] |),
-                        [
-                          fun γ =>
-                            ltac:(M.monadic
-                              (let γ :=
-                                M.use
-                                  (M.alloc (|
-                                    BinOp.eq (|
-                                      M.read (| M.deref (| M.read (| left_val |) |) |),
-                                      M.read (| M.deref (| M.read (| right_val |) |) |)
-                                    |)
-                                  |)) in
-                              let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
-                              M.alloc (|
-                                M.never_to_any (|
-                                  M.read (|
-                                    let~ kind : Ty.path "core::panicking::AssertKind" :=
+              M.read (|
+                M.match_operator (|
+                  Some (Ty.tuple []),
+                  M.alloc (|
+                    Value.Tuple
+                      [
+                        M.borrow (| Pointer.Kind.Ref, multiplier |);
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.alloc (| Value.Integer IntegerKind.U64 0 |)
+                        |)
+                      ]
+                  |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                        let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                        let left_val := M.copy (| γ0_0 |) in
+                        let right_val := M.copy (| γ0_1 |) in
+                        M.match_operator (|
+                          Some (Ty.tuple []),
+                          M.alloc (| Value.Tuple [] |),
+                          [
+                            fun γ =>
+                              ltac:(M.monadic
+                                (let γ :=
+                                  M.use
+                                    (M.alloc (|
+                                      BinOp.eq (|
+                                        M.read (| M.deref (| M.read (| left_val |) |) |),
+                                        M.read (| M.deref (| M.read (| right_val |) |) |)
+                                      |)
+                                    |)) in
+                                let _ :=
+                                  M.is_constant_or_break_match (|
+                                    M.read (| γ |),
+                                    Value.Bool true
+                                  |) in
+                                M.alloc (|
+                                  M.never_to_any (|
+                                    M.read (|
+                                      let~ kind : Ty.path "core::panicking::AssertKind" :=
+                                        Value.StructTuple "core::panicking::AssertKind::Ne" [] in
                                       M.alloc (|
-                                        Value.StructTuple "core::panicking::AssertKind::Ne" []
-                                      |) in
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        Ty.path "never",
-                                        M.get_function (|
-                                          "core::panicking::assert_failed",
-                                          [],
-                                          [ Ty.path "u64"; Ty.path "u64" ]
-                                        |),
-                                        [
-                                          M.read (| kind |);
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (|
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (| M.read (| left_val |) |)
+                                        M.call_closure (|
+                                          Ty.path "never",
+                                          M.get_function (|
+                                            "core::panicking::assert_failed",
+                                            [],
+                                            [ Ty.path "u64"; Ty.path "u64" ]
+                                          |),
+                                          [
+                                            M.read (| kind |);
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| left_val |) |)
+                                                |)
                                               |)
-                                            |)
-                                          |);
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (|
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (| M.read (| right_val |) |)
+                                            |);
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| right_val |) |)
+                                                |)
                                               |)
-                                            |)
-                                          |);
-                                          Value.StructTuple "core::option::Option::None" []
-                                        ]
+                                            |);
+                                            Value.StructTuple "core::option::Option::None" []
+                                          ]
+                                        |)
                                       |)
                                     |)
                                   |)
-                                |)
-                              |)));
-                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                        ]
-                      |)))
-                ]
+                                |)));
+                            fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                          ]
+                        |)))
+                  ]
+                |)
               |) in
             M.alloc (|
               M.call_closure (|
@@ -2268,174 +2276,178 @@ Module gas_algebra.
         let denominator := M.alloc (| denominator |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
-            M.match_operator (|
-              Some (Ty.tuple []),
-              M.alloc (|
-                Value.Tuple
-                  [
-                    M.borrow (| Pointer.Kind.Ref, nominator |);
-                    M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Integer IntegerKind.U64 0 |) |)
-                  ]
-              |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let left_val := M.copy (| γ0_0 |) in
-                    let right_val := M.copy (| γ0_1 |) in
-                    M.match_operator (|
-                      Some (Ty.tuple []),
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  BinOp.eq (|
-                                    M.read (| M.deref (| M.read (| left_val |) |) |),
-                                    M.read (| M.deref (| M.read (| right_val |) |) |)
-                                  |)
-                                |)) in
-                            let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  let~ kind : Ty.path "core::panicking::AssertKind" :=
+            M.read (|
+              M.match_operator (|
+                Some (Ty.tuple []),
+                M.alloc (|
+                  Value.Tuple
+                    [
+                      M.borrow (| Pointer.Kind.Ref, nominator |);
+                      M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Integer IntegerKind.U64 0 |) |)
+                    ]
+                |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let left_val := M.copy (| γ0_0 |) in
+                      let right_val := M.copy (| γ0_1 |) in
+                      M.match_operator (|
+                        Some (Ty.tuple []),
+                        M.alloc (| Value.Tuple [] |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ :=
+                                M.use
+                                  (M.alloc (|
+                                    BinOp.eq (|
+                                      M.read (| M.deref (| M.read (| left_val |) |) |),
+                                      M.read (| M.deref (| M.read (| right_val |) |) |)
+                                    |)
+                                  |)) in
+                              let _ :=
+                                M.is_constant_or_break_match (|
+                                  M.read (| γ |),
+                                  Value.Bool true
+                                |) in
+                              M.alloc (|
+                                M.never_to_any (|
+                                  M.read (|
+                                    let~ kind : Ty.path "core::panicking::AssertKind" :=
+                                      Value.StructTuple "core::panicking::AssertKind::Ne" [] in
                                     M.alloc (|
-                                      Value.StructTuple "core::panicking::AssertKind::Ne" []
-                                    |) in
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      Ty.path "never",
-                                      M.get_function (|
-                                        "core::panicking::assert_failed",
-                                        [],
-                                        [ Ty.path "u64"; Ty.path "u64" ]
-                                      |),
-                                      [
-                                        M.read (| kind |);
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (|
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (| M.read (| left_val |) |)
+                                      M.call_closure (|
+                                        Ty.path "never",
+                                        M.get_function (|
+                                          "core::panicking::assert_failed",
+                                          [],
+                                          [ Ty.path "u64"; Ty.path "u64" ]
+                                        |),
+                                        [
+                                          M.read (| kind |);
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| left_val |) |)
+                                              |)
                                             |)
-                                          |)
-                                        |);
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (|
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (| M.read (| right_val |) |)
+                                          |);
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| right_val |) |)
+                                              |)
                                             |)
-                                          |)
-                                        |);
-                                        Value.StructTuple "core::option::Option::None" []
-                                      ]
+                                          |);
+                                          Value.StructTuple "core::option::Option::None" []
+                                        ]
+                                      |)
                                     |)
                                   |)
                                 |)
-                              |)
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                      ]
-                    |)))
-              ]
+                              |)));
+                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        ]
+                      |)))
+                ]
+              |)
             |) in
           let~ _ : Ty.tuple [] :=
-            M.match_operator (|
-              Some (Ty.tuple []),
-              M.alloc (|
-                Value.Tuple
-                  [
-                    M.borrow (| Pointer.Kind.Ref, denominator |);
-                    M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Integer IntegerKind.U64 0 |) |)
-                  ]
-              |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let left_val := M.copy (| γ0_0 |) in
-                    let right_val := M.copy (| γ0_1 |) in
-                    M.match_operator (|
-                      Some (Ty.tuple []),
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  BinOp.eq (|
-                                    M.read (| M.deref (| M.read (| left_val |) |) |),
-                                    M.read (| M.deref (| M.read (| right_val |) |) |)
-                                  |)
-                                |)) in
-                            let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  let~ kind : Ty.path "core::panicking::AssertKind" :=
+            M.read (|
+              M.match_operator (|
+                Some (Ty.tuple []),
+                M.alloc (|
+                  Value.Tuple
+                    [
+                      M.borrow (| Pointer.Kind.Ref, denominator |);
+                      M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Integer IntegerKind.U64 0 |) |)
+                    ]
+                |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let left_val := M.copy (| γ0_0 |) in
+                      let right_val := M.copy (| γ0_1 |) in
+                      M.match_operator (|
+                        Some (Ty.tuple []),
+                        M.alloc (| Value.Tuple [] |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ :=
+                                M.use
+                                  (M.alloc (|
+                                    BinOp.eq (|
+                                      M.read (| M.deref (| M.read (| left_val |) |) |),
+                                      M.read (| M.deref (| M.read (| right_val |) |) |)
+                                    |)
+                                  |)) in
+                              let _ :=
+                                M.is_constant_or_break_match (|
+                                  M.read (| γ |),
+                                  Value.Bool true
+                                |) in
+                              M.alloc (|
+                                M.never_to_any (|
+                                  M.read (|
+                                    let~ kind : Ty.path "core::panicking::AssertKind" :=
+                                      Value.StructTuple "core::panicking::AssertKind::Ne" [] in
                                     M.alloc (|
-                                      Value.StructTuple "core::panicking::AssertKind::Ne" []
-                                    |) in
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      Ty.path "never",
-                                      M.get_function (|
-                                        "core::panicking::assert_failed",
-                                        [],
-                                        [ Ty.path "u64"; Ty.path "u64" ]
-                                      |),
-                                      [
-                                        M.read (| kind |);
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (|
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (| M.read (| left_val |) |)
+                                      M.call_closure (|
+                                        Ty.path "never",
+                                        M.get_function (|
+                                          "core::panicking::assert_failed",
+                                          [],
+                                          [ Ty.path "u64"; Ty.path "u64" ]
+                                        |),
+                                        [
+                                          M.read (| kind |);
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| left_val |) |)
+                                              |)
                                             |)
-                                          |)
-                                        |);
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (|
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (| M.read (| right_val |) |)
+                                          |);
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| right_val |) |)
+                                              |)
                                             |)
-                                          |)
-                                        |);
-                                        Value.StructTuple "core::option::Option::None" []
-                                      ]
+                                          |);
+                                          Value.StructTuple "core::option::Option::None" []
+                                        ]
+                                      |)
                                     |)
                                   |)
                                 |)
-                              |)
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                      ]
-                    |)))
-              ]
+                              |)));
+                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        ]
+                      |)))
+                ]
+              |)
             |) in
           let~ res : Ty.path "u128" :=
-            M.alloc (|
-              BinOp.Wrap.div (|
-                BinOp.Wrap.mul (|
-                  M.cast (Ty.path "u128") (M.read (| val |)),
-                  M.cast (Ty.path "u128") (M.read (| nominator |))
-                |),
-                M.cast (Ty.path "u128") (M.read (| denominator |))
-              |)
+            BinOp.Wrap.div (|
+              BinOp.Wrap.mul (|
+                M.cast (Ty.path "u128") (M.read (| val |)),
+                M.cast (Ty.path "u128") (M.read (| nominator |))
+              |),
+              M.cast (Ty.path "u128") (M.read (| denominator |))
             |) in
           M.match_operator (|
             Some (Ty.path "u64"),
@@ -2492,199 +2504,200 @@ Module gas_algebra.
         let denominator := M.alloc (| denominator |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
-            M.match_operator (|
-              Some (Ty.tuple []),
-              M.alloc (|
-                Value.Tuple
-                  [
-                    M.borrow (| Pointer.Kind.Ref, nominator |);
-                    M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Integer IntegerKind.U64 0 |) |)
-                  ]
-              |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let left_val := M.copy (| γ0_0 |) in
-                    let right_val := M.copy (| γ0_1 |) in
-                    M.match_operator (|
-                      Some (Ty.tuple []),
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  BinOp.eq (|
-                                    M.read (| M.deref (| M.read (| left_val |) |) |),
-                                    M.read (| M.deref (| M.read (| right_val |) |) |)
-                                  |)
-                                |)) in
-                            let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  let~ kind : Ty.path "core::panicking::AssertKind" :=
+            M.read (|
+              M.match_operator (|
+                Some (Ty.tuple []),
+                M.alloc (|
+                  Value.Tuple
+                    [
+                      M.borrow (| Pointer.Kind.Ref, nominator |);
+                      M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Integer IntegerKind.U64 0 |) |)
+                    ]
+                |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let left_val := M.copy (| γ0_0 |) in
+                      let right_val := M.copy (| γ0_1 |) in
+                      M.match_operator (|
+                        Some (Ty.tuple []),
+                        M.alloc (| Value.Tuple [] |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ :=
+                                M.use
+                                  (M.alloc (|
+                                    BinOp.eq (|
+                                      M.read (| M.deref (| M.read (| left_val |) |) |),
+                                      M.read (| M.deref (| M.read (| right_val |) |) |)
+                                    |)
+                                  |)) in
+                              let _ :=
+                                M.is_constant_or_break_match (|
+                                  M.read (| γ |),
+                                  Value.Bool true
+                                |) in
+                              M.alloc (|
+                                M.never_to_any (|
+                                  M.read (|
+                                    let~ kind : Ty.path "core::panicking::AssertKind" :=
+                                      Value.StructTuple "core::panicking::AssertKind::Ne" [] in
                                     M.alloc (|
-                                      Value.StructTuple "core::panicking::AssertKind::Ne" []
-                                    |) in
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      Ty.path "never",
-                                      M.get_function (|
-                                        "core::panicking::assert_failed",
-                                        [],
-                                        [ Ty.path "u64"; Ty.path "u64" ]
-                                      |),
-                                      [
-                                        M.read (| kind |);
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (|
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (| M.read (| left_val |) |)
+                                      M.call_closure (|
+                                        Ty.path "never",
+                                        M.get_function (|
+                                          "core::panicking::assert_failed",
+                                          [],
+                                          [ Ty.path "u64"; Ty.path "u64" ]
+                                        |),
+                                        [
+                                          M.read (| kind |);
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| left_val |) |)
+                                              |)
                                             |)
-                                          |)
-                                        |);
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (|
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (| M.read (| right_val |) |)
+                                          |);
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| right_val |) |)
+                                              |)
                                             |)
-                                          |)
-                                        |);
-                                        Value.StructTuple "core::option::Option::None" []
-                                      ]
+                                          |);
+                                          Value.StructTuple "core::option::Option::None" []
+                                        ]
+                                      |)
                                     |)
                                   |)
                                 |)
-                              |)
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                      ]
-                    |)))
-              ]
-            |) in
-          let~ _ : Ty.tuple [] :=
-            M.match_operator (|
-              Some (Ty.tuple []),
-              M.alloc (|
-                Value.Tuple
-                  [
-                    M.borrow (| Pointer.Kind.Ref, denominator |);
-                    M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Integer IntegerKind.U64 0 |) |)
-                  ]
-              |),
-              [
-                fun γ =>
-                  ltac:(M.monadic
-                    (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
-                    let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
-                    let left_val := M.copy (| γ0_0 |) in
-                    let right_val := M.copy (| γ0_1 |) in
-                    M.match_operator (|
-                      Some (Ty.tuple []),
-                      M.alloc (| Value.Tuple [] |),
-                      [
-                        fun γ =>
-                          ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  BinOp.eq (|
-                                    M.read (| M.deref (| M.read (| left_val |) |) |),
-                                    M.read (| M.deref (| M.read (| right_val |) |) |)
-                                  |)
-                                |)) in
-                            let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.alloc (|
-                              M.never_to_any (|
-                                M.read (|
-                                  let~ kind : Ty.path "core::panicking::AssertKind" :=
-                                    M.alloc (|
-                                      Value.StructTuple "core::panicking::AssertKind::Ne" []
-                                    |) in
-                                  M.alloc (|
-                                    M.call_closure (|
-                                      Ty.path "never",
-                                      M.get_function (|
-                                        "core::panicking::assert_failed",
-                                        [],
-                                        [ Ty.path "u64"; Ty.path "u64" ]
-                                      |),
-                                      [
-                                        M.read (| kind |);
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (|
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (| M.read (| left_val |) |)
-                                            |)
-                                          |)
-                                        |);
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (|
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (| M.read (| right_val |) |)
-                                            |)
-                                          |)
-                                        |);
-                                        Value.StructTuple "core::option::Option::None" []
-                                      ]
-                                    |)
-                                  |)
-                                |)
-                              |)
-                            |)));
-                        fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                      ]
-                    |)))
-              ]
-            |) in
-          let~ n : Ty.path "u128" :=
-            M.alloc (|
-              BinOp.Wrap.mul (|
-                M.cast (Ty.path "u128") (M.read (| val |)),
-                M.cast (Ty.path "u128") (M.read (| nominator |))
+                              |)));
+                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        ]
+                      |)))
+                ]
               |)
             |) in
-          let~ d : Ty.path "u128" :=
-            M.alloc (| M.cast (Ty.path "u128") (M.read (| denominator |)) |) in
-          let~ res : Ty.path "u128" :=
-            M.alloc (|
-              BinOp.Wrap.add (|
-                BinOp.Wrap.div (| M.read (| n |), M.read (| d |) |),
-                M.read (|
-                  M.match_operator (|
-                    Some (Ty.path "u128"),
-                    M.alloc (| Value.Tuple [] |),
+          let~ _ : Ty.tuple [] :=
+            M.read (|
+              M.match_operator (|
+                Some (Ty.tuple []),
+                M.alloc (|
+                  Value.Tuple
                     [
-                      fun γ =>
-                        ltac:(M.monadic
-                          (let γ :=
-                            M.use
-                              (M.alloc (|
-                                BinOp.eq (|
-                                  BinOp.Wrap.rem (| M.read (| n |), M.read (| d |) |),
-                                  Value.Integer IntegerKind.U128 0
-                                |)
-                              |)) in
-                          let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                          M.alloc (| Value.Integer IntegerKind.U128 0 |)));
-                      fun γ => ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 1 |)))
+                      M.borrow (| Pointer.Kind.Ref, denominator |);
+                      M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Integer IntegerKind.U64 0 |) |)
                     ]
-                  |)
+                |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
+                      let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
+                      let left_val := M.copy (| γ0_0 |) in
+                      let right_val := M.copy (| γ0_1 |) in
+                      M.match_operator (|
+                        Some (Ty.tuple []),
+                        M.alloc (| Value.Tuple [] |),
+                        [
+                          fun γ =>
+                            ltac:(M.monadic
+                              (let γ :=
+                                M.use
+                                  (M.alloc (|
+                                    BinOp.eq (|
+                                      M.read (| M.deref (| M.read (| left_val |) |) |),
+                                      M.read (| M.deref (| M.read (| right_val |) |) |)
+                                    |)
+                                  |)) in
+                              let _ :=
+                                M.is_constant_or_break_match (|
+                                  M.read (| γ |),
+                                  Value.Bool true
+                                |) in
+                              M.alloc (|
+                                M.never_to_any (|
+                                  M.read (|
+                                    let~ kind : Ty.path "core::panicking::AssertKind" :=
+                                      Value.StructTuple "core::panicking::AssertKind::Ne" [] in
+                                    M.alloc (|
+                                      M.call_closure (|
+                                        Ty.path "never",
+                                        M.get_function (|
+                                          "core::panicking::assert_failed",
+                                          [],
+                                          [ Ty.path "u64"; Ty.path "u64" ]
+                                        |),
+                                        [
+                                          M.read (| kind |);
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| left_val |) |)
+                                              |)
+                                            |)
+                                          |);
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| right_val |) |)
+                                              |)
+                                            |)
+                                          |);
+                                          Value.StructTuple "core::option::Option::None" []
+                                        ]
+                                      |)
+                                    |)
+                                  |)
+                                |)
+                              |)));
+                          fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                        ]
+                      |)))
+                ]
+              |)
+            |) in
+          let~ n : Ty.path "u128" :=
+            BinOp.Wrap.mul (|
+              M.cast (Ty.path "u128") (M.read (| val |)),
+              M.cast (Ty.path "u128") (M.read (| nominator |))
+            |) in
+          let~ d : Ty.path "u128" := M.cast (Ty.path "u128") (M.read (| denominator |)) in
+          let~ res : Ty.path "u128" :=
+            BinOp.Wrap.add (|
+              BinOp.Wrap.div (| M.read (| n |), M.read (| d |) |),
+              M.read (|
+                M.match_operator (|
+                  Some (Ty.path "u128"),
+                  M.alloc (| Value.Tuple [] |),
+                  [
+                    fun γ =>
+                      ltac:(M.monadic
+                        (let γ :=
+                          M.use
+                            (M.alloc (|
+                              BinOp.eq (|
+                                BinOp.Wrap.rem (| M.read (| n |), M.read (| d |) |),
+                                Value.Integer IntegerKind.U128 0
+                              |)
+                            |)) in
+                        let _ :=
+                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        M.alloc (| Value.Integer IntegerKind.U128 0 |)));
+                    fun γ => ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U128 1 |)))
+                  ]
                 |)
               |)
             |) in

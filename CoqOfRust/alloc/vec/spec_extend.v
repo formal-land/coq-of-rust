@@ -123,8 +123,8 @@ Module vec.
             let iterator := M.alloc (| iterator |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                let~ _ : Ty.tuple [] :=
-                  M.alloc (|
+                M.read (|
+                  let~ _ : Ty.tuple [] :=
                     M.call_closure (|
                       Ty.tuple [],
                       M.get_associated_function (|
@@ -162,24 +162,22 @@ Module vec.
                             |))
                         |)
                       ]
-                    |)
-                  |) in
-                M.alloc (| Value.Tuple [] |) in
+                    |) in
+                  M.alloc (| Value.Tuple [] |)
+                |) in
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.tuple [],
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "alloc::vec::into_iter::IntoIter")
-                        []
-                        [ T; Ty.path "alloc::alloc::Global" ],
-                      "forget_remaining_elements",
-                      [],
+                M.call_closure (|
+                  Ty.tuple [],
+                  M.get_associated_function (|
+                    Ty.apply
+                      (Ty.path "alloc::vec::into_iter::IntoIter")
                       []
-                    |),
-                    [ M.borrow (| Pointer.Kind.MutRef, iterator |) ]
-                  |)
+                      [ T; Ty.path "alloc::alloc::Global" ],
+                    "forget_remaining_elements",
+                    [],
+                    []
+                  |),
+                  [ M.borrow (| Pointer.Kind.MutRef, iterator |) ]
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
@@ -287,33 +285,29 @@ Module vec.
             let iterator := M.alloc (| iterator |) in
             M.read (|
               let~ slice : Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
-                      "as_slice",
-                      [],
-                      []
-                    |),
-                    [ M.borrow (| Pointer.Kind.Ref, iterator |) ]
-                  |)
+                M.call_closure (|
+                  Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "core::slice::iter::Iter") [] [ T ],
+                    "as_slice",
+                    [],
+                    []
+                  |),
+                  [ M.borrow (| Pointer.Kind.Ref, iterator |) ]
                 |) in
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.tuple [],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
-                      "append_elements",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
-                      M.borrow (| Pointer.Kind.ConstPointer, M.deref (| M.read (| slice |) |) |)
-                    ]
-                  |)
+                M.call_closure (|
+                  Ty.tuple [],
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "alloc::vec::Vec") [] [ T; A ],
+                    "append_elements",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                    M.borrow (| Pointer.Kind.ConstPointer, M.deref (| M.read (| slice |) |) |)
+                  ]
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))

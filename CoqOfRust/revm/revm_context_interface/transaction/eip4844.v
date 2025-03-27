@@ -94,74 +94,70 @@ Module transaction.
                     (Ty.path "ruint::Uint")
                     [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                     [] :=
-                M.alloc (|
-                  M.call_closure (|
+                M.call_closure (|
+                  Ty.apply
+                    (Ty.path "ruint::Uint")
+                    [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                    [],
+                  M.get_associated_function (|
                     Ty.apply
                       (Ty.path "ruint::Uint")
                       [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                       [],
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "ruint::Uint")
-                        [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                    "from",
+                    [],
+                    [ Ty.path "u64" ]
+                  |),
+                  [
+                    M.call_closure (|
+                      Ty.path "u64",
+                      M.get_trait_method (|
+                        "revm_context_interface::transaction::eip4844::Eip4844Tx",
+                        Self,
                         [],
-                      "from",
-                      [],
-                      [ Ty.path "u64" ]
-                    |),
-                    [
-                      M.call_closure (|
-                        Ty.path "u64",
-                        M.get_trait_method (|
-                          "revm_context_interface::transaction::eip4844::Eip4844Tx",
-                          Self,
-                          [],
-                          [],
-                          "total_blob_gas",
-                          [],
-                          []
-                        |),
-                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                      |)
-                    ]
-                  |)
+                        [],
+                        "total_blob_gas",
+                        [],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                    |)
+                  ]
                 |) in
               let~ max_blob_fee :
                   Ty.apply
                     (Ty.path "ruint::Uint")
                     [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                     [] :=
-                M.alloc (|
-                  M.call_closure (|
+                M.call_closure (|
+                  Ty.apply
+                    (Ty.path "ruint::Uint")
+                    [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                    [],
+                  M.get_associated_function (|
                     Ty.apply
                       (Ty.path "ruint::Uint")
                       [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                       [],
-                    M.get_associated_function (|
-                      Ty.apply
-                        (Ty.path "ruint::Uint")
-                        [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                    "from",
+                    [],
+                    [ Ty.path "u128" ]
+                  |),
+                  [
+                    M.call_closure (|
+                      Ty.path "u128",
+                      M.get_trait_method (|
+                        "revm_context_interface::transaction::eip4844::Eip4844Tx",
+                        Self,
                         [],
-                      "from",
-                      [],
-                      [ Ty.path "u128" ]
-                    |),
-                    [
-                      M.call_closure (|
-                        Ty.path "u128",
-                        M.get_trait_method (|
-                          "revm_context_interface::transaction::eip4844::Eip4844Tx",
-                          Self,
-                          [],
-                          [],
-                          "max_fee_per_blob_gas",
-                          [],
-                          []
-                        |),
-                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                      |)
-                    ]
-                  |)
+                        [],
+                        "max_fee_per_blob_gas",
+                        [],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                    |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|

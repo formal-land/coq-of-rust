@@ -85,8 +85,8 @@ Definition borrow_book (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
       (let book := M.alloc (| book |) in
       M.read (|
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -181,9 +181,9 @@ Definition borrow_book (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
@@ -207,19 +207,17 @@ Definition new_edition (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
       (let book := M.alloc (| book |) in
       M.read (|
         let~ _ : Ty.tuple [] :=
-          M.alloc (|
-            M.write (|
-              M.SubPointer.get_struct_record_field (|
-                M.deref (| M.read (| book |) |),
-                "scoping_rules_borrowing_mutablity::Book",
-                "year"
-              |),
-              Value.Integer IntegerKind.U32 2014
-            |)
+          M.write (|
+            M.SubPointer.get_struct_record_field (|
+              M.deref (| M.read (| book |) |),
+              "scoping_rules_borrowing_mutablity::Book",
+              "year"
+            |),
+            Value.Integer IntegerKind.U32 2014
           |) in
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -314,9 +312,9 @@ Definition new_edition (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
@@ -360,55 +358,47 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ immutabook : Ty.path "scoping_rules_borrowing_mutablity::Book" :=
-          M.alloc (|
-            Value.StructRecord
-              "scoping_rules_borrowing_mutablity::Book"
-              [
-                ("author", mk_str (| "Douglas Hofstadter" |));
-                ("title", mk_str (| String.append "G" (String.String "246" "del, Escher, Bach") |));
-                ("year", Value.Integer IntegerKind.U32 1979)
-              ]
-          |) in
+          Value.StructRecord
+            "scoping_rules_borrowing_mutablity::Book"
+            [
+              ("author", mk_str (| "Douglas Hofstadter" |));
+              ("title", mk_str (| String.append "G" (String.String "246" "del, Escher, Bach") |));
+              ("year", Value.Integer IntegerKind.U32 1979)
+            ] in
         let~ mutabook : Ty.path "scoping_rules_borrowing_mutablity::Book" :=
-          M.copy (| immutabook |) in
+          M.read (| immutabook |) in
         let~ _ : Ty.tuple [] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.tuple [],
-              M.get_function (| "scoping_rules_borrowing_mutablity::borrow_book", [], [] |),
-              [
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.borrow (| Pointer.Kind.Ref, immutabook |) |)
-                |)
-              ]
-            |)
+          M.call_closure (|
+            Ty.tuple [],
+            M.get_function (| "scoping_rules_borrowing_mutablity::borrow_book", [], [] |),
+            [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.borrow (| Pointer.Kind.Ref, immutabook |) |)
+              |)
+            ]
           |) in
         let~ _ : Ty.tuple [] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.tuple [],
-              M.get_function (| "scoping_rules_borrowing_mutablity::borrow_book", [], [] |),
-              [
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.borrow (| Pointer.Kind.Ref, mutabook |) |)
-                |)
-              ]
-            |)
+          M.call_closure (|
+            Ty.tuple [],
+            M.get_function (| "scoping_rules_borrowing_mutablity::borrow_book", [], [] |),
+            [
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.deref (| M.borrow (| Pointer.Kind.Ref, mutabook |) |)
+              |)
+            ]
           |) in
         let~ _ : Ty.tuple [] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.tuple [],
-              M.get_function (| "scoping_rules_borrowing_mutablity::new_edition", [], [] |),
-              [
-                M.borrow (|
-                  Pointer.Kind.MutRef,
-                  M.deref (| M.borrow (| Pointer.Kind.MutRef, mutabook |) |)
-                |)
-              ]
-            |)
+          M.call_closure (|
+            Ty.tuple [],
+            M.get_function (| "scoping_rules_borrowing_mutablity::new_edition", [], [] |),
+            [
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (| M.borrow (| Pointer.Kind.MutRef, mutabook |) |)
+              |)
+            ]
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))

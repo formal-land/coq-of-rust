@@ -13,8 +13,8 @@ Module my_mod.
       ltac:(M.monadic
         (M.read (|
           let~ _ : Ty.tuple [] :=
-            let~ _ : Ty.tuple [] :=
-              M.alloc (|
+            M.read (|
+              let~ _ : Ty.tuple [] :=
                 M.call_closure (|
                   Ty.tuple [],
                   M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -43,9 +43,9 @@ Module my_mod.
                       ]
                     |)
                   ]
-                |)
-              |) in
-            M.alloc (| Value.Tuple [] |) in
+                |) in
+              M.alloc (| Value.Tuple [] |)
+            |) in
           M.alloc (| Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -67,8 +67,8 @@ Module my_mod.
       ltac:(M.monadic
         (M.read (|
           let~ _ : Ty.tuple [] :=
-            let~ _ : Ty.tuple [] :=
-              M.alloc (|
+            M.read (|
+              let~ _ : Ty.tuple [] :=
                 M.call_closure (|
                   Ty.tuple [],
                   M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -97,9 +97,9 @@ Module my_mod.
                       ]
                     |)
                   ]
-                |)
-              |) in
-            M.alloc (| Value.Tuple [] |) in
+                |) in
+              M.alloc (| Value.Tuple [] |)
+            |) in
           M.alloc (| Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -122,8 +122,8 @@ Module my_mod.
       ltac:(M.monadic
         (M.read (|
           let~ _ : Ty.tuple [] :=
-            let~ _ : Ty.tuple [] :=
-              M.alloc (|
+            M.read (|
+              let~ _ : Ty.tuple [] :=
                 M.call_closure (|
                   Ty.tuple [],
                   M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -153,16 +153,14 @@ Module my_mod.
                       ]
                     |)
                   ]
-                |)
-              |) in
-            M.alloc (| Value.Tuple [] |) in
+                |) in
+              M.alloc (| Value.Tuple [] |)
+            |) in
           let~ _ : Ty.tuple [] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.tuple [],
-                M.get_function (| "visibility::my_mod::private_function", [], [] |),
-                []
-              |)
+            M.call_closure (|
+              Ty.tuple [],
+              M.get_function (| "visibility::my_mod::private_function", [], [] |),
+              []
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
@@ -186,8 +184,8 @@ Module my_mod.
         ltac:(M.monadic
           (M.read (|
             let~ _ : Ty.tuple [] :=
-              let~ _ : Ty.tuple [] :=
-                M.alloc (|
+              M.read (|
+                let~ _ : Ty.tuple [] :=
                   M.call_closure (|
                     Ty.tuple [],
                     M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -217,9 +215,9 @@ Module my_mod.
                         ]
                       |)
                     ]
-                  |)
-                |) in
-              M.alloc (| Value.Tuple [] |) in
+                  |) in
+                M.alloc (| Value.Tuple [] |)
+              |) in
             M.alloc (| Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -241,8 +239,8 @@ Module my_mod.
         ltac:(M.monadic
           (M.read (|
             let~ _ : Ty.tuple [] :=
-              let~ _ : Ty.tuple [] :=
-                M.alloc (|
+              M.read (|
+                let~ _ : Ty.tuple [] :=
                   M.call_closure (|
                     Ty.tuple [],
                     M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -272,9 +270,9 @@ Module my_mod.
                         ]
                       |)
                     ]
-                  |)
-                |) in
-              M.alloc (| Value.Tuple [] |) in
+                  |) in
+                M.alloc (| Value.Tuple [] |)
+              |) in
             M.alloc (| Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -301,8 +299,8 @@ Module my_mod.
         ltac:(M.monadic
           (M.read (|
             let~ _ : Ty.tuple [] :=
-              let~ _ : Ty.tuple [] :=
-                M.alloc (|
+              M.read (|
+                let~ _ : Ty.tuple [] :=
                   M.call_closure (|
                     Ty.tuple [],
                     M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -336,20 +334,18 @@ Module my_mod.
                         ]
                       |)
                     ]
-                  |)
-                |) in
-              M.alloc (| Value.Tuple [] |) in
+                  |) in
+                M.alloc (| Value.Tuple [] |)
+              |) in
             let~ _ : Ty.tuple [] :=
-              M.alloc (|
-                M.call_closure (|
-                  Ty.tuple [],
-                  M.get_function (|
-                    "visibility::my_mod::nested::public_function_in_nested",
-                    [],
-                    []
-                  |),
+              M.call_closure (|
+                Ty.tuple [],
+                M.get_function (|
+                  "visibility::my_mod::nested::public_function_in_nested",
+                  [],
                   []
-                |)
+                |),
+                []
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
@@ -378,8 +374,8 @@ Module my_mod.
         ltac:(M.monadic
           (M.read (|
             let~ _ : Ty.tuple [] :=
-              let~ _ : Ty.tuple [] :=
-                M.alloc (|
+              M.read (|
+                let~ _ : Ty.tuple [] :=
                   M.call_closure (|
                     Ty.tuple [],
                     M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -413,9 +409,9 @@ Module my_mod.
                         ]
                       |)
                     ]
-                  |)
-                |) in
-              M.alloc (| Value.Tuple [] |) in
+                  |) in
+                M.alloc (| Value.Tuple [] |)
+              |) in
             M.alloc (| Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -443,8 +439,8 @@ Module my_mod.
         ltac:(M.monadic
           (M.read (|
             let~ _ : Ty.tuple [] :=
-              let~ _ : Ty.tuple [] :=
-                M.alloc (|
+              M.read (|
+                let~ _ : Ty.tuple [] :=
                   M.call_closure (|
                     Ty.tuple [],
                     M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -478,9 +474,9 @@ Module my_mod.
                         ]
                       |)
                     ]
-                  |)
-                |) in
-              M.alloc (| Value.Tuple [] |) in
+                  |) in
+                M.alloc (| Value.Tuple [] |)
+              |) in
             M.alloc (| Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -512,8 +508,8 @@ Module my_mod.
       ltac:(M.monadic
         (M.read (|
           let~ _ : Ty.tuple [] :=
-            let~ _ : Ty.tuple [] :=
-              M.alloc (|
+            M.read (|
+              let~ _ : Ty.tuple [] :=
                 M.call_closure (|
                   Ty.tuple [],
                   M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -547,24 +543,18 @@ Module my_mod.
                       ]
                     |)
                   ]
-                |)
-              |) in
-            M.alloc (| Value.Tuple [] |) in
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.tuple [],
-                M.get_function (|
-                  "visibility::my_mod::nested::public_function_in_my_mod",
-                  [],
-                  []
-                |),
-                []
-              |)
+                |) in
+              M.alloc (| Value.Tuple [] |)
             |) in
           let~ _ : Ty.tuple [] :=
-            let~ _ : Ty.tuple [] :=
-              M.alloc (|
+            M.call_closure (|
+              Ty.tuple [],
+              M.get_function (| "visibility::my_mod::nested::public_function_in_my_mod", [], [] |),
+              []
+            |) in
+          let~ _ : Ty.tuple [] :=
+            M.read (|
+              let~ _ : Ty.tuple [] :=
                 M.call_closure (|
                   Ty.tuple [],
                   M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -590,20 +580,18 @@ Module my_mod.
                       ]
                     |)
                   ]
-                |)
-              |) in
-            M.alloc (| Value.Tuple [] |) in
+                |) in
+              M.alloc (| Value.Tuple [] |)
+            |) in
           let~ _ : Ty.tuple [] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.tuple [],
-                M.get_function (|
-                  "visibility::my_mod::nested::public_function_in_super_mod",
-                  [],
-                  []
-                |),
+            M.call_closure (|
+              Ty.tuple [],
+              M.get_function (|
+                "visibility::my_mod::nested::public_function_in_super_mod",
+                [],
                 []
-              |)
+              |),
+              []
             |) in
           M.alloc (| Value.Tuple [] |)
         |)))
@@ -628,8 +616,8 @@ Module my_mod.
       ltac:(M.monadic
         (M.read (|
           let~ _ : Ty.tuple [] :=
-            let~ _ : Ty.tuple [] :=
-              M.alloc (|
+            M.read (|
+              let~ _ : Ty.tuple [] :=
                 M.call_closure (|
                   Ty.tuple [],
                   M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -659,9 +647,9 @@ Module my_mod.
                       ]
                     |)
                   ]
-                |)
-              |) in
-            M.alloc (| Value.Tuple [] |) in
+                |) in
+              M.alloc (| Value.Tuple [] |)
+            |) in
           M.alloc (| Value.Tuple [] |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -684,8 +672,8 @@ Module my_mod.
         ltac:(M.monadic
           (M.read (|
             let~ _ : Ty.tuple [] :=
-              let~ _ : Ty.tuple [] :=
-                M.alloc (|
+              M.read (|
+                let~ _ : Ty.tuple [] :=
                   M.call_closure (|
                     Ty.tuple [],
                     M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -715,9 +703,9 @@ Module my_mod.
                         ]
                       |)
                     ]
-                  |)
-                |) in
-              M.alloc (| Value.Tuple [] |) in
+                  |) in
+                M.alloc (| Value.Tuple [] |)
+              |) in
             M.alloc (| Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -739,8 +727,8 @@ Module my_mod.
         ltac:(M.monadic
           (M.read (|
             let~ _ : Ty.tuple [] :=
-              let~ _ : Ty.tuple [] :=
-                M.alloc (|
+              M.read (|
+                let~ _ : Ty.tuple [] :=
                   M.call_closure (|
                     Ty.tuple [],
                     M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -774,9 +762,9 @@ Module my_mod.
                         ]
                       |)
                     ]
-                  |)
-                |) in
-              M.alloc (| Value.Tuple [] |) in
+                  |) in
+                M.alloc (| Value.Tuple [] |)
+              |) in
             M.alloc (| Value.Tuple [] |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -802,8 +790,8 @@ Definition function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
     ltac:(M.monadic
       (M.read (|
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -830,9 +818,9 @@ Definition function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
@@ -888,52 +876,40 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ _ : Ty.tuple [] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.tuple [],
-              M.get_function (| "visibility::function", [], [] |),
-              []
-            |)
+          M.call_closure (|
+            Ty.tuple [],
+            M.get_function (| "visibility::function", [], [] |),
+            []
           |) in
         let~ _ : Ty.tuple [] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.tuple [],
-              M.get_function (| "visibility::my_mod::function", [], [] |),
-              []
-            |)
+          M.call_closure (|
+            Ty.tuple [],
+            M.get_function (| "visibility::my_mod::function", [], [] |),
+            []
           |) in
         let~ _ : Ty.tuple [] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.tuple [],
-              M.get_function (| "visibility::my_mod::indirect_access", [], [] |),
-              []
-            |)
+          M.call_closure (|
+            Ty.tuple [],
+            M.get_function (| "visibility::my_mod::indirect_access", [], [] |),
+            []
           |) in
         let~ _ : Ty.tuple [] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.tuple [],
-              M.get_function (| "visibility::my_mod::nested::function", [], [] |),
-              []
-            |)
+          M.call_closure (|
+            Ty.tuple [],
+            M.get_function (| "visibility::my_mod::nested::function", [], [] |),
+            []
           |) in
         let~ _ : Ty.tuple [] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.tuple [],
-              M.get_function (| "visibility::my_mod::call_public_function_in_my_mod", [], [] |),
-              []
-            |)
+          M.call_closure (|
+            Ty.tuple [],
+            M.get_function (| "visibility::my_mod::call_public_function_in_my_mod", [], [] |),
+            []
           |) in
         let~ _ : Ty.tuple [] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.tuple [],
-              M.get_function (| "visibility::my_mod::public_function_in_crate", [], [] |),
-              []
-            |)
+          M.call_closure (|
+            Ty.tuple [],
+            M.get_function (| "visibility::my_mod::public_function_in_crate", [], [] |),
+            []
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))

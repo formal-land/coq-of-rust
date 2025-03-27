@@ -23,66 +23,62 @@ Module Impl_core_hash_Hash_for_hash_Person.
         let state := M.alloc (| state |) in
         M.read (|
           let~ _ : Ty.tuple [] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.tuple [],
-                M.get_trait_method (|
-                  "core::hash::Hash",
-                  Ty.path "u32",
-                  [],
-                  [],
-                  "hash",
-                  [],
-                  [ __H ]
-                |),
-                [
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "hash::Person",
-                          "id"
-                        |)
+            M.call_closure (|
+              Ty.tuple [],
+              M.get_trait_method (|
+                "core::hash::Hash",
+                Ty.path "u32",
+                [],
+                [],
+                "hash",
+                [],
+                [ __H ]
+              |),
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "hash::Person",
+                        "id"
                       |)
                     |)
-                  |);
-                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
-                ]
-              |)
+                  |)
+                |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+              ]
             |) in
           let~ _ : Ty.tuple [] :=
-            M.alloc (|
-              M.call_closure (|
-                Ty.tuple [],
-                M.get_trait_method (|
-                  "core::hash::Hash",
-                  Ty.path "alloc::string::String",
-                  [],
-                  [],
-                  "hash",
-                  [],
-                  [ __H ]
-                |),
-                [
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "hash::Person",
-                          "name"
-                        |)
+            M.call_closure (|
+              Ty.tuple [],
+              M.get_trait_method (|
+                "core::hash::Hash",
+                Ty.path "alloc::string::String",
+                [],
+                [],
+                "hash",
+                [],
+                [ __H ]
+              |),
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.deref (|
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "hash::Person",
+                        "name"
                       |)
                     |)
-                  |);
-                  M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
-                ]
-              |)
+                  |)
+                |);
+                M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| state |) |) |)
+              ]
             |) in
           M.alloc (|
             M.call_closure (|
@@ -141,39 +137,35 @@ Definition calculate_hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.
       (let t := M.alloc (| t |) in
       M.read (|
         let~ s : Ty.path "std::hash::random::DefaultHasher" :=
-          M.alloc (|
-            M.call_closure (|
+          M.call_closure (|
+            Ty.path "std::hash::random::DefaultHasher",
+            M.get_associated_function (|
               Ty.path "std::hash::random::DefaultHasher",
-              M.get_associated_function (|
-                Ty.path "std::hash::random::DefaultHasher",
-                "new",
-                [],
-                []
-              |),
+              "new",
+              [],
               []
-            |)
+            |),
+            []
           |) in
         let~ _ : Ty.tuple [] :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.tuple [],
-              M.get_trait_method (|
-                "core::hash::Hash",
-                T,
-                [],
-                [],
-                "hash",
-                [],
-                [ Ty.path "std::hash::random::DefaultHasher" ]
-              |),
-              [
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| t |) |) |);
-                M.borrow (|
-                  Pointer.Kind.MutRef,
-                  M.deref (| M.borrow (| Pointer.Kind.MutRef, s |) |)
-                |)
-              ]
-            |)
+          M.call_closure (|
+            Ty.tuple [],
+            M.get_trait_method (|
+              "core::hash::Hash",
+              T,
+              [],
+              [],
+              "hash",
+              [],
+              [ Ty.path "std::hash::random::DefaultHasher" ]
+            |),
+            [
+              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| t |) |) |);
+              M.borrow (|
+                Pointer.Kind.MutRef,
+                M.deref (| M.borrow (| Pointer.Kind.MutRef, s |) |)
+              |)
+            ]
           |) in
         M.alloc (|
           M.call_closure (|
@@ -221,110 +213,108 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ person1 : Ty.path "hash::Person" :=
-          M.alloc (|
-            Value.StructRecord
-              "hash::Person"
-              [
-                ("id", Value.Integer IntegerKind.U32 5);
-                ("name",
-                  M.call_closure (|
-                    Ty.path "alloc::string::String",
-                    M.get_trait_method (|
-                      "alloc::string::ToString",
-                      Ty.path "str",
-                      [],
-                      [],
-                      "to_string",
-                      [],
-                      []
-                    |),
-                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Janet" |) |) |) ]
-                  |));
-                ("phone", Value.Integer IntegerKind.U64 5556667777)
-              ]
-          |) in
-        let~ person2 : Ty.path "hash::Person" :=
-          M.alloc (|
-            Value.StructRecord
-              "hash::Person"
-              [
-                ("id", Value.Integer IntegerKind.U32 5);
-                ("name",
-                  M.call_closure (|
-                    Ty.path "alloc::string::String",
-                    M.get_trait_method (|
-                      "alloc::string::ToString",
-                      Ty.path "str",
-                      [],
-                      [],
-                      "to_string",
-                      [],
-                      []
-                    |),
-                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Bob" |) |) |) ]
-                  |));
-                ("phone", Value.Integer IntegerKind.U64 5556667777)
-              ]
-          |) in
-        let~ _ : Ty.tuple [] :=
-          M.match_operator (|
-            Some (Ty.tuple []),
-            M.alloc (| Value.Tuple [] |),
+          Value.StructRecord
+            "hash::Person"
             [
-              fun γ =>
-                ltac:(M.monadic
-                  (let γ :=
-                    M.use
-                      (M.alloc (|
-                        UnOp.not (|
-                          BinOp.ne (|
-                            M.call_closure (|
-                              Ty.path "u64",
-                              M.get_function (|
-                                "hash::calculate_hash",
-                                [],
-                                [ Ty.path "hash::Person" ]
+              ("id", Value.Integer IntegerKind.U32 5);
+              ("name",
+                M.call_closure (|
+                  Ty.path "alloc::string::String",
+                  M.get_trait_method (|
+                    "alloc::string::ToString",
+                    Ty.path "str",
+                    [],
+                    [],
+                    "to_string",
+                    [],
+                    []
+                  |),
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Janet" |) |) |) ]
+                |));
+              ("phone", Value.Integer IntegerKind.U64 5556667777)
+            ] in
+        let~ person2 : Ty.path "hash::Person" :=
+          Value.StructRecord
+            "hash::Person"
+            [
+              ("id", Value.Integer IntegerKind.U32 5);
+              ("name",
+                M.call_closure (|
+                  Ty.path "alloc::string::String",
+                  M.get_trait_method (|
+                    "alloc::string::ToString",
+                    Ty.path "str",
+                    [],
+                    [],
+                    "to_string",
+                    [],
+                    []
+                  |),
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Bob" |) |) |) ]
+                |));
+              ("phone", Value.Integer IntegerKind.U64 5556667777)
+            ] in
+        let~ _ : Ty.tuple [] :=
+          M.read (|
+            M.match_operator (|
+              Some (Ty.tuple []),
+              M.alloc (| Value.Tuple [] |),
+              [
+                fun γ =>
+                  ltac:(M.monadic
+                    (let γ :=
+                      M.use
+                        (M.alloc (|
+                          UnOp.not (|
+                            BinOp.ne (|
+                              M.call_closure (|
+                                Ty.path "u64",
+                                M.get_function (|
+                                  "hash::calculate_hash",
+                                  [],
+                                  [ Ty.path "hash::Person" ]
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.borrow (| Pointer.Kind.Ref, person1 |) |)
+                                  |)
+                                ]
                               |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (| M.borrow (| Pointer.Kind.Ref, person1 |) |)
-                                |)
-                              ]
-                            |),
-                            M.call_closure (|
-                              Ty.path "u64",
-                              M.get_function (|
-                                "hash::calculate_hash",
-                                [],
-                                [ Ty.path "hash::Person" ]
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (| M.borrow (| Pointer.Kind.Ref, person2 |) |)
-                                |)
-                              ]
+                              M.call_closure (|
+                                Ty.path "u64",
+                                M.get_function (|
+                                  "hash::calculate_hash",
+                                  [],
+                                  [ Ty.path "hash::Person" ]
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.borrow (| Pointer.Kind.Ref, person2 |) |)
+                                  |)
+                                ]
+                              |)
                             |)
                           |)
+                        |)) in
+                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    M.alloc (|
+                      M.never_to_any (|
+                        M.call_closure (|
+                          Ty.path "never",
+                          M.get_function (| "core::panicking::panic", [], [] |),
+                          [
+                            mk_str (|
+                              "assertion failed: calculate_hash(&person1) != calculate_hash(&person2)"
+                            |)
+                          ]
                         |)
-                      |)) in
-                  let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                  M.alloc (|
-                    M.never_to_any (|
-                      M.call_closure (|
-                        Ty.path "never",
-                        M.get_function (| "core::panicking::panic", [], [] |),
-                        [
-                          mk_str (|
-                            "assertion failed: calculate_hash(&person1) != calculate_hash(&person2)"
-                          |)
-                        ]
                       |)
-                    |)
-                  |)));
-              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-            ]
+                    |)));
+                fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+              ]
+            |)
           |) in
         M.alloc (| Value.Tuple [] |)
       |)))

@@ -245,100 +245,92 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ point : Ty.path "box_stack_heap::Point" :=
-          M.alloc (|
-            M.call_closure (|
-              Ty.path "box_stack_heap::Point",
-              M.get_function (| "box_stack_heap::origin", [], [] |),
-              []
-            |)
+          M.call_closure (|
+            Ty.path "box_stack_heap::Point",
+            M.get_function (| "box_stack_heap::origin", [], [] |),
+            []
           |) in
         let~ rectangle : Ty.path "box_stack_heap::Rectangle" :=
-          M.alloc (|
-            Value.StructRecord
-              "box_stack_heap::Rectangle"
-              [
-                ("top_left",
-                  M.call_closure (|
-                    Ty.path "box_stack_heap::Point",
-                    M.get_function (| "box_stack_heap::origin", [], [] |),
-                    []
-                  |));
-                ("bottom_right",
-                  Value.StructRecord
-                    "box_stack_heap::Point"
-                    [ ("x", M.read (| UnsupportedLiteral |)); ("y", M.read (| UnsupportedLiteral |))
-                    ])
-              ]
-          |) in
+          Value.StructRecord
+            "box_stack_heap::Rectangle"
+            [
+              ("top_left",
+                M.call_closure (|
+                  Ty.path "box_stack_heap::Point",
+                  M.get_function (| "box_stack_heap::origin", [], [] |),
+                  []
+                |));
+              ("bottom_right",
+                Value.StructRecord
+                  "box_stack_heap::Point"
+                  [ ("x", M.read (| UnsupportedLiteral |)); ("y", M.read (| UnsupportedLiteral |))
+                  ])
+            ] in
         let~ boxed_rectangle :
             Ty.apply
               (Ty.path "alloc::boxed::Box")
               []
               [ Ty.path "box_stack_heap::Rectangle"; Ty.path "alloc::alloc::Global" ] :=
-          M.alloc (|
-            M.call_closure (|
+          M.call_closure (|
+            Ty.apply
+              (Ty.path "alloc::boxed::Box")
+              []
+              [ Ty.path "box_stack_heap::Rectangle"; Ty.path "alloc::alloc::Global" ],
+            M.get_associated_function (|
               Ty.apply
                 (Ty.path "alloc::boxed::Box")
                 []
                 [ Ty.path "box_stack_heap::Rectangle"; Ty.path "alloc::alloc::Global" ],
-              M.get_associated_function (|
-                Ty.apply
-                  (Ty.path "alloc::boxed::Box")
-                  []
-                  [ Ty.path "box_stack_heap::Rectangle"; Ty.path "alloc::alloc::Global" ],
-                "new",
-                [],
-                []
-              |),
-              [
-                Value.StructRecord
-                  "box_stack_heap::Rectangle"
-                  [
-                    ("top_left",
-                      M.call_closure (|
-                        Ty.path "box_stack_heap::Point",
-                        M.get_function (| "box_stack_heap::origin", [], [] |),
-                        []
-                      |));
-                    ("bottom_right",
-                      Value.StructRecord
-                        "box_stack_heap::Point"
-                        [
-                          ("x", M.read (| UnsupportedLiteral |));
-                          ("y", M.read (| UnsupportedLiteral |))
-                        ])
-                  ]
-              ]
-            |)
+              "new",
+              [],
+              []
+            |),
+            [
+              Value.StructRecord
+                "box_stack_heap::Rectangle"
+                [
+                  ("top_left",
+                    M.call_closure (|
+                      Ty.path "box_stack_heap::Point",
+                      M.get_function (| "box_stack_heap::origin", [], [] |),
+                      []
+                    |));
+                  ("bottom_right",
+                    Value.StructRecord
+                      "box_stack_heap::Point"
+                      [
+                        ("x", M.read (| UnsupportedLiteral |));
+                        ("y", M.read (| UnsupportedLiteral |))
+                      ])
+                ]
+            ]
           |) in
         let~ boxed_point :
             Ty.apply
               (Ty.path "alloc::boxed::Box")
               []
               [ Ty.path "box_stack_heap::Point"; Ty.path "alloc::alloc::Global" ] :=
-          M.alloc (|
-            M.call_closure (|
+          M.call_closure (|
+            Ty.apply
+              (Ty.path "alloc::boxed::Box")
+              []
+              [ Ty.path "box_stack_heap::Point"; Ty.path "alloc::alloc::Global" ],
+            M.get_associated_function (|
               Ty.apply
                 (Ty.path "alloc::boxed::Box")
                 []
                 [ Ty.path "box_stack_heap::Point"; Ty.path "alloc::alloc::Global" ],
-              M.get_associated_function (|
-                Ty.apply
-                  (Ty.path "alloc::boxed::Box")
-                  []
-                  [ Ty.path "box_stack_heap::Point"; Ty.path "alloc::alloc::Global" ],
-                "new",
-                [],
+              "new",
+              [],
+              []
+            |),
+            [
+              M.call_closure (|
+                Ty.path "box_stack_heap::Point",
+                M.get_function (| "box_stack_heap::origin", [], [] |),
                 []
-              |),
-              [
-                M.call_closure (|
-                  Ty.path "box_stack_heap::Point",
-                  M.get_function (| "box_stack_heap::origin", [], [] |),
-                  []
-                |)
-              ]
-            |)
+              |)
+            ]
           |) in
         let~ box_in_a_box :
             Ty.apply
@@ -351,8 +343,18 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   [ Ty.path "box_stack_heap::Point"; Ty.path "alloc::alloc::Global" ];
                 Ty.path "alloc::alloc::Global"
               ] :=
-          M.alloc (|
-            M.call_closure (|
+          M.call_closure (|
+            Ty.apply
+              (Ty.path "alloc::boxed::Box")
+              []
+              [
+                Ty.apply
+                  (Ty.path "alloc::boxed::Box")
+                  []
+                  [ Ty.path "box_stack_heap::Point"; Ty.path "alloc::alloc::Global" ];
+                Ty.path "alloc::alloc::Global"
+              ],
+            M.get_associated_function (|
               Ty.apply
                 (Ty.path "alloc::boxed::Box")
                 []
@@ -363,36 +365,24 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     [ Ty.path "box_stack_heap::Point"; Ty.path "alloc::alloc::Global" ];
                   Ty.path "alloc::alloc::Global"
                 ],
-              M.get_associated_function (|
+              "new",
+              [],
+              []
+            |),
+            [
+              M.call_closure (|
                 Ty.apply
                   (Ty.path "alloc::boxed::Box")
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "alloc::boxed::Box")
-                      []
-                      [ Ty.path "box_stack_heap::Point"; Ty.path "alloc::alloc::Global" ];
-                    Ty.path "alloc::alloc::Global"
-                  ],
-                "new",
-                [],
+                  [ Ty.path "box_stack_heap::Point"; Ty.path "alloc::alloc::Global" ],
+                M.get_function (| "box_stack_heap::boxed_origin", [], [] |),
                 []
-              |),
-              [
-                M.call_closure (|
-                  Ty.apply
-                    (Ty.path "alloc::boxed::Box")
-                    []
-                    [ Ty.path "box_stack_heap::Point"; Ty.path "alloc::alloc::Global" ],
-                  M.get_function (| "box_stack_heap::boxed_origin", [], [] |),
-                  []
-                |)
-              ]
-            |)
+              |)
+            ]
           |) in
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -475,12 +465,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -563,12 +553,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -659,12 +649,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -758,12 +748,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -860,14 +850,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         let~ unboxed_point : Ty.path "box_stack_heap::Point" :=
-          M.copy (| M.deref (| M.read (| boxed_point |) |) |) in
+          M.read (| M.deref (| M.read (| boxed_point |) |) |) in
         let~ _ : Ty.tuple [] :=
-          let~ _ : Ty.tuple [] :=
-            M.alloc (|
+          M.read (|
+            let~ _ : Ty.tuple [] :=
               M.call_closure (|
                 Ty.tuple [],
                 M.get_function (| "std::io::stdio::_print", [], [] |),
@@ -950,9 +940,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     ]
                   |)
                 ]
-              |)
-            |) in
-          M.alloc (| Value.Tuple [] |) in
+              |) in
+            M.alloc (| Value.Tuple [] |)
+          |) in
         M.alloc (| Value.Tuple [] |)
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"

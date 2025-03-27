@@ -286,25 +286,25 @@ Module ops.
             let end_ := M.alloc (| end_ |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.match_operator (|
-                  Some (Ty.tuple []),
-                  M.alloc (| Value.Tuple [] |),
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ :=
-                          M.use
-                            (M.alloc (|
-                              M.call_closure (|
-                                Ty.path "bool",
-                                M.get_function (| "core::intrinsics::ub_checks", [], [] |),
-                                []
-                              |)
-                            |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ _ : Ty.tuple [] :=
-                          M.alloc (|
+                M.read (|
+                  M.match_operator (|
+                    Some (Ty.tuple []),
+                    M.alloc (| Value.Tuple [] |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ :=
+                            M.use
+                              (M.alloc (|
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  M.get_function (| "core::intrinsics::ub_checks", [], [] |),
+                                  []
+                                |)
+                              |)) in
+                          let _ :=
+                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          let~ _ : Ty.tuple [] :=
                             M.call_closure (|
                               Ty.tuple [],
                               M.get_associated_function (|
@@ -314,11 +314,11 @@ Module ops.
                                 []
                               |),
                               [ M.read (| start |); M.read (| end_ |) ]
-                            |)
-                          |) in
-                        M.alloc (| Value.Tuple [] |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                  ]
+                            |) in
+                          M.alloc (| Value.Tuple [] |)));
+                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    ]
+                  |)
                 |) in
               M.alloc (|
                 Value.StructRecord
@@ -459,67 +459,72 @@ Module ops.
             (let self := M.alloc (| self |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.match_operator (|
-                  Some (Ty.tuple []),
-                  M.alloc (| Value.Tuple [] |),
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ _ : Ty.tuple [] :=
-                          M.match_operator (|
-                            Some (Ty.tuple []),
-                            M.alloc (| Value.Tuple [] |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ :=
-                                    M.use
-                                      (M.alloc (|
-                                        UnOp.not (|
-                                          BinOp.lt (|
-                                            M.read (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.deref (| M.read (| self |) |),
-                                                "core::ops::index_range::IndexRange",
-                                                "start"
-                                              |)
-                                            |),
-                                            M.read (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.deref (| M.read (| self |) |),
-                                                "core::ops::index_range::IndexRange",
-                                                "end"
+                M.read (|
+                  M.match_operator (|
+                    Some (Ty.tuple []),
+                    M.alloc (| Value.Tuple [] |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                          let _ :=
+                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          let~ _ : Ty.tuple [] :=
+                            M.read (|
+                              M.match_operator (|
+                                Some (Ty.tuple []),
+                                M.alloc (| Value.Tuple [] |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ :=
+                                        M.use
+                                          (M.alloc (|
+                                            UnOp.not (|
+                                              BinOp.lt (|
+                                                M.read (|
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| self |) |),
+                                                    "core::ops::index_range::IndexRange",
+                                                    "start"
+                                                  |)
+                                                |),
+                                                M.read (|
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| self |) |),
+                                                    "core::ops::index_range::IndexRange",
+                                                    "end"
+                                                  |)
+                                                |)
                                               |)
                                             |)
+                                          |)) in
+                                      let _ :=
+                                        M.is_constant_or_break_match (|
+                                          M.read (| γ |),
+                                          Value.Bool true
+                                        |) in
+                                      M.alloc (|
+                                        M.never_to_any (|
+                                          M.call_closure (|
+                                            Ty.path "never",
+                                            M.get_function (| "core::panicking::panic", [], [] |),
+                                            [ mk_str (| "assertion failed: self.start < self.end" |)
+                                            ]
                                           |)
                                         |)
-                                      |)) in
-                                  let _ :=
-                                    M.is_constant_or_break_match (|
-                                      M.read (| γ |),
-                                      Value.Bool true
-                                    |) in
-                                  M.alloc (|
-                                    M.never_to_any (|
-                                      M.call_closure (|
-                                        Ty.path "never",
-                                        M.get_function (| "core::panicking::panic", [], [] |),
-                                        [ mk_str (| "assertion failed: self.start < self.end" |) ]
-                                      |)
-                                    |)
-                                  |)));
-                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                            ]
-                          |) in
-                        M.alloc (| Value.Tuple [] |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                  ]
+                                      |)));
+                                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                ]
+                              |)
+                            |) in
+                          M.alloc (| Value.Tuple [] |)));
+                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                    ]
+                  |)
                 |) in
               let~ value : Ty.path "usize" :=
-                M.copy (|
+                M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.deref (| M.read (| self |) |),
                     "core::ops::index_range::IndexRange",
@@ -527,18 +532,16 @@ Module ops.
                   |)
                 |) in
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "core::ops::index_range::IndexRange",
-                      "start"
-                    |),
-                    M.call_closure (|
-                      Ty.path "usize",
-                      M.get_associated_function (| Ty.path "usize", "unchecked_add", [], [] |),
-                      [ M.read (| value |); Value.Integer IntegerKind.Usize 1 ]
-                    |)
+                M.write (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::ops::index_range::IndexRange",
+                    "start"
+                  |),
+                  M.call_closure (|
+                    Ty.path "usize",
+                    M.get_associated_function (| Ty.path "usize", "unchecked_add", [], [] |),
+                    [ M.read (| value |); Value.Integer IntegerKind.Usize 1 ]
                   |)
                 |) in
               value
@@ -568,92 +571,93 @@ Module ops.
             (let self := M.alloc (| self |) in
             M.read (|
               let~ _ : Ty.tuple [] :=
-                M.match_operator (|
-                  Some (Ty.tuple []),
-                  M.alloc (| Value.Tuple [] |),
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ _ : Ty.tuple [] :=
-                          M.match_operator (|
-                            Some (Ty.tuple []),
-                            M.alloc (| Value.Tuple [] |),
-                            [
-                              fun γ =>
-                                ltac:(M.monadic
-                                  (let γ :=
-                                    M.use
-                                      (M.alloc (|
-                                        UnOp.not (|
-                                          BinOp.lt (|
-                                            M.read (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.deref (| M.read (| self |) |),
-                                                "core::ops::index_range::IndexRange",
-                                                "start"
-                                              |)
-                                            |),
-                                            M.read (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.deref (| M.read (| self |) |),
-                                                "core::ops::index_range::IndexRange",
-                                                "end"
+                M.read (|
+                  M.match_operator (|
+                    Some (Ty.tuple []),
+                    M.alloc (| Value.Tuple [] |),
+                    [
+                      fun γ =>
+                        ltac:(M.monadic
+                          (let γ := M.use (M.alloc (| Value.Bool true |)) in
+                          let _ :=
+                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          let~ _ : Ty.tuple [] :=
+                            M.read (|
+                              M.match_operator (|
+                                Some (Ty.tuple []),
+                                M.alloc (| Value.Tuple [] |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let γ :=
+                                        M.use
+                                          (M.alloc (|
+                                            UnOp.not (|
+                                              BinOp.lt (|
+                                                M.read (|
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| self |) |),
+                                                    "core::ops::index_range::IndexRange",
+                                                    "start"
+                                                  |)
+                                                |),
+                                                M.read (|
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| self |) |),
+                                                    "core::ops::index_range::IndexRange",
+                                                    "end"
+                                                  |)
+                                                |)
                                               |)
                                             |)
+                                          |)) in
+                                      let _ :=
+                                        M.is_constant_or_break_match (|
+                                          M.read (| γ |),
+                                          Value.Bool true
+                                        |) in
+                                      M.alloc (|
+                                        M.never_to_any (|
+                                          M.call_closure (|
+                                            Ty.path "never",
+                                            M.get_function (| "core::panicking::panic", [], [] |),
+                                            [ mk_str (| "assertion failed: self.start < self.end" |)
+                                            ]
                                           |)
                                         |)
-                                      |)) in
-                                  let _ :=
-                                    M.is_constant_or_break_match (|
-                                      M.read (| γ |),
-                                      Value.Bool true
-                                    |) in
-                                  M.alloc (|
-                                    M.never_to_any (|
-                                      M.call_closure (|
-                                        Ty.path "never",
-                                        M.get_function (| "core::panicking::panic", [], [] |),
-                                        [ mk_str (| "assertion failed: self.start < self.end" |) ]
-                                      |)
-                                    |)
-                                  |)));
-                              fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                            ]
-                          |) in
-                        M.alloc (| Value.Tuple [] |)));
-                    fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
-                  ]
-                |) in
-              let~ value : Ty.path "usize" :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "usize",
-                    M.get_associated_function (| Ty.path "usize", "unchecked_sub", [], [] |),
-                    [
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "core::ops::index_range::IndexRange",
-                          "end"
-                        |)
-                      |);
-                      Value.Integer IntegerKind.Usize 1
+                                      |)));
+                                  fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
+                                ]
+                              |)
+                            |) in
+                          M.alloc (| Value.Tuple [] |)));
+                      fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                     ]
                   |)
                 |) in
+              let~ value : Ty.path "usize" :=
+                M.call_closure (|
+                  Ty.path "usize",
+                  M.get_associated_function (| Ty.path "usize", "unchecked_sub", [], [] |),
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::ops::index_range::IndexRange",
+                        "end"
+                      |)
+                    |);
+                    Value.Integer IntegerKind.Usize 1
+                  ]
+                |) in
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "core::ops::index_range::IndexRange",
-                      "end"
-                    |),
-                    M.read (| value |)
-                  |)
+                M.write (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::ops::index_range::IndexRange",
+                    "end"
+                  |),
+                  M.read (| value |)
                 |) in
               value
             |)))
@@ -688,7 +692,7 @@ Module ops.
             let n := M.alloc (| n |) in
             M.read (|
               let~ mid : Ty.path "usize" :=
-                M.copy (|
+                M.read (|
                   M.match_operator (|
                     Some (Ty.path "usize"),
                     M.alloc (| Value.Tuple [] |),
@@ -751,31 +755,27 @@ Module ops.
                   |)
                 |) in
               let~ prefix : Ty.path "core::ops::index_range::IndexRange" :=
-                M.alloc (|
-                  Value.StructRecord
-                    "core::ops::index_range::IndexRange"
-                    [
-                      ("start",
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "core::ops::index_range::IndexRange",
-                            "start"
-                          |)
-                        |));
-                      ("end_", M.read (| mid |))
-                    ]
-                |) in
+                Value.StructRecord
+                  "core::ops::index_range::IndexRange"
+                  [
+                    ("start",
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::ops::index_range::IndexRange",
+                          "start"
+                        |)
+                      |));
+                    ("end_", M.read (| mid |))
+                  ] in
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "core::ops::index_range::IndexRange",
-                      "start"
-                    |),
-                    M.read (| mid |)
-                  |)
+                M.write (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::ops::index_range::IndexRange",
+                    "start"
+                  |),
+                  M.read (| mid |)
                 |) in
               prefix
             |)))
@@ -810,7 +810,7 @@ Module ops.
             let n := M.alloc (| n |) in
             M.read (|
               let~ mid : Ty.path "usize" :=
-                M.copy (|
+                M.read (|
                   M.match_operator (|
                     Some (Ty.path "usize"),
                     M.alloc (| Value.Tuple [] |),
@@ -873,31 +873,27 @@ Module ops.
                   |)
                 |) in
               let~ suffix : Ty.path "core::ops::index_range::IndexRange" :=
-                M.alloc (|
-                  Value.StructRecord
-                    "core::ops::index_range::IndexRange"
-                    [
-                      ("start", M.read (| mid |));
-                      ("end_",
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "core::ops::index_range::IndexRange",
-                            "end"
-                          |)
-                        |))
-                    ]
-                |) in
+                Value.StructRecord
+                  "core::ops::index_range::IndexRange"
+                  [
+                    ("start", M.read (| mid |));
+                    ("end_",
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::ops::index_range::IndexRange",
+                          "end"
+                        |)
+                      |))
+                  ] in
               let~ _ : Ty.tuple [] :=
-                M.alloc (|
-                  M.write (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "core::ops::index_range::IndexRange",
-                      "end"
-                    |),
-                    M.read (| mid |)
-                  |)
+                M.write (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::ops::index_range::IndexRange",
+                    "end"
+                  |),
+                  M.read (| mid |)
                 |) in
               suffix
             |)))
@@ -1001,17 +997,15 @@ Module ops.
             (let self := M.alloc (| self |) in
             M.read (|
               let~ len : Ty.path "usize" :=
-                M.alloc (|
-                  M.call_closure (|
-                    Ty.path "usize",
-                    M.get_associated_function (|
-                      Ty.path "core::ops::index_range::IndexRange",
-                      "len",
-                      [],
-                      []
-                    |),
-                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                  |)
+                M.call_closure (|
+                  Ty.path "usize",
+                  M.get_associated_function (|
+                    Ty.path "core::ops::index_range::IndexRange",
+                    "len",
+                    [],
+                    []
+                  |),
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                 |) in
               M.alloc (|
                 Value.Tuple
@@ -1038,20 +1032,18 @@ Module ops.
             let n := M.alloc (| n |) in
             M.read (|
               let~ taken : Ty.path "core::ops::index_range::IndexRange" :=
-                M.alloc (|
-                  M.call_closure (|
+                M.call_closure (|
+                  Ty.path "core::ops::index_range::IndexRange",
+                  M.get_associated_function (|
                     Ty.path "core::ops::index_range::IndexRange",
-                    M.get_associated_function (|
-                      Ty.path "core::ops::index_range::IndexRange",
-                      "take_prefix",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
-                      M.read (| n |)
-                    ]
-                  |)
+                    "take_prefix",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                    M.read (| n |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
@@ -1229,20 +1221,18 @@ Module ops.
             let n := M.alloc (| n |) in
             M.read (|
               let~ taken : Ty.path "core::ops::index_range::IndexRange" :=
-                M.alloc (|
-                  M.call_closure (|
+                M.call_closure (|
+                  Ty.path "core::ops::index_range::IndexRange",
+                  M.get_associated_function (|
                     Ty.path "core::ops::index_range::IndexRange",
-                    M.get_associated_function (|
-                      Ty.path "core::ops::index_range::IndexRange",
-                      "take_suffix",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
-                      M.read (| n |)
-                    ]
-                  |)
+                    "take_suffix",
+                    [],
+                    []
+                  |),
+                  [
+                    M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
+                    M.read (| n |)
+                  ]
                 |) in
               M.alloc (|
                 M.call_closure (|
