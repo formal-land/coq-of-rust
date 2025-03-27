@@ -6,8 +6,6 @@ Require Import revm.revm_interpreter.links.gas.
 Require Import revm.revm_interpreter.links.interpreter.
 Require Import revm.revm_interpreter.links.interpreter_types.
 Require Import revm.revm_interpreter.instructions.links.i256.
-(* TODO: see if its necessary to import `option` *)
-(* Require Import core.links.option. *)
 Require Import ruint.links.add.
 Require Import ruint.links.cmp.
 Require Import ruint.links.div.
@@ -35,7 +33,6 @@ Instance run_add
     {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
     {H_types : Host.Types.t} `{Host.Types.AreLinks H_types}
     (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types)
-    (run_Host_for_H : Host.Run H H_types)
     (interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t WIRE WIRE_types))
     (_host : Ref.t Pointer.Kind.MutRef H) :
   Run.Trait
