@@ -117,6 +117,7 @@ Module BlockGetter.
   Definition Run_block (Self : Set) `{Link Self} (types : Types.t) `{Types.AreLinks types} : Set :=
     TraitMethod.C (trait Self) "block" (fun method =>
       forall (self : Ref.t Pointer.Kind.Ref Self),
+      (* Is there something wrong with `Self.Block` here? *)
         Run.Trait method [] [] [ φ self ] (types.(Types.Block))
     ).
 
