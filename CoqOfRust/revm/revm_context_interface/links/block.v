@@ -114,28 +114,19 @@ Module BlockGetter.
   Definition trait (Self : Set) `{Link Self} : TraitMethod.Header.t :=
     ("revm_context_interface::block::BlockGetter", [], [], Φ Self).
 
-  Definition Run_block (Self : Set) `{Link Self} : Set :=
+  Definition Run_block (Self : Set) `{Link Self} (types : Types.t) `{Types.AreLinks types} : Set :=
     TraitMethod.C (trait Self) "block" (fun method =>
       forall (self : Ref.t Pointer.Kind.Ref Self),
-        Run.Trait method [] [] [ φ self ] unit
+        Run.Trait method [] [] [ φ self ] (types.(Types.Block))
     ).
 
-  (* NOTE: Question: since `BlockGetter` "inherhits" several methods from `Block` trait, 
-    do we still need to additionally write instances for these methods? *)
-  (* NOTE: to test on `block_info::block_number` *)
-  Definition Run_number (Self : Set) `{Link Self} : Set :=
-    TraitMethod.C (trait Self) "number" (fun method =>
-      forall (self : Ref.t Pointer.Kind.Ref Self),
-        Run.Trait method [] [] [ φ self ] U64.t
-    ).
-
-  Class Run (Self : Set) `{Link Self} (types : Types.t)  `{Types.AreLinks types} : Set := {
+  Class Run (Self : Set) `{Link Self} (types : Types.t) `{Types.AreLinks types} : Set := {
     Block_IsAssociated : 
       IsTraitAssociatedType
         "revm_context_interface::block::BlockGetter" [] [] (Φ Self)
         "Block" (Φ types.(Types.Block));
     run_Block_for_Block : Block.Run types.(Types.Block);
-    block : Run_block Self;
-    (* number : Run_number Self; *)
+    (* TODO: fix this *)
+    block : Run_block Self types.(Types.Block);
   }.
 End BlockGetter.
