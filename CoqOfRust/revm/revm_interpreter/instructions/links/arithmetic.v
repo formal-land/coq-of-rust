@@ -309,7 +309,7 @@ Proof.
   - calc.gas.calc.exp_cost
   *)
   run_symbolic.
-  Admitted.
+Admitted.
 (* Defined. *)
 
 (*

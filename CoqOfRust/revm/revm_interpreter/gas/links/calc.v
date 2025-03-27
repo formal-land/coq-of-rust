@@ -26,7 +26,6 @@ Proof.
   run_symbolic.
 Defined.
 
-(* NOTE: since we don't have U256 for now, we use Usize instead *)
 (* pub fn exp_cost(spec_id: SpecId, power: U256) -> Option<u64> *)
 Instance run_exp_cost (spec_id : SpecId.t) (power : U256.t) :
   Run.Trait

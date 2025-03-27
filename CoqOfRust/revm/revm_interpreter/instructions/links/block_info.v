@@ -16,10 +16,6 @@ Import Impl_SpecId.
 Import Impl_Gas.
 Import from.Impl_Uint.
 
-(* TODO(progress):
-  - (PRIORITY) refer to `interpreter_types` on `block.v` to see anything missing
-*)
-
 (*
 pub fn chainid<WIRE: InterpreterTypes, H: Host + ?Sized>(
     interpreter: &mut Interpreter<WIRE>,
@@ -80,7 +76,8 @@ Proof.
   constructor.
   cbn.
   eapply Run.Rewrite. {
-    repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
+    progress repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
+    progress repeat erewrite IsTraitAssociatedType_eq by apply run_Host_for_H.
     reflexivity.
   }
   destruct run_InterpreterTypes_for_WIRE.
@@ -121,7 +118,8 @@ Proof.
   constructor.
   cbn.
   eapply Run.Rewrite. {
-    repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
+    progress repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
+    progress repeat erewrite IsTraitAssociatedType_eq by apply run_Host_for_H.
     reflexivity.
   }
   destruct run_InterpreterTypes_for_WIRE.
@@ -161,7 +159,8 @@ Proof.
   constructor.
   cbn.
   eapply Run.Rewrite. {
-    repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
+    progress repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
+    progress repeat erewrite IsTraitAssociatedType_eq by apply run_Host_for_H.
     reflexivity.
   }
   destruct run_InterpreterTypes_for_WIRE.
@@ -198,7 +197,8 @@ Proof.
   constructor.
   cbn.
   eapply Run.Rewrite. {
-    repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
+    progress repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
+    progress repeat erewrite IsTraitAssociatedType_eq by apply run_Host_for_H.
     reflexivity.
   }
   destruct run_InterpreterTypes_for_WIRE.
@@ -235,7 +235,8 @@ Proof.
   constructor.
   cbn.
   eapply Run.Rewrite. {
-    repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
+    progress repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
+    progress repeat erewrite IsTraitAssociatedType_eq by apply run_Host_for_H.
     reflexivity.
   }
   destruct run_InterpreterTypes_for_WIRE.
@@ -260,8 +261,10 @@ pub fn basefee<WIRE: InterpreterTypes, H: Host + ?Sized>(
 Instance basefee
   {WIRE H : Set} `{Link WIRE} `{Link H}
   {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
+  {H_types : Host.Types.t} `{Host.Types.AreLinks H_types}
   (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types)
   (interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t WIRE WIRE_types))
+  (run_Host_for_H : Host.Run H H_types)
   (_host : Ref.t Pointer.Kind.MutRef H) :
   Run.Trait
     instructions.block_info.basefee [] [ Φ WIRE; Φ H ] [ φ interpreter; φ _host ]
@@ -270,7 +273,8 @@ Proof.
   constructor.
   cbn.
   eapply Run.Rewrite. {
-    repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
+    progress repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
+    progress repeat erewrite IsTraitAssociatedType_eq by apply run_Host_for_H.
     reflexivity.
   }
   destruct run_InterpreterTypes_for_WIRE.
@@ -304,7 +308,8 @@ Proof.
   constructor.
   cbn.
   eapply Run.Rewrite. {
-    repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
+    progress repeat erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
+    progress repeat erewrite IsTraitAssociatedType_eq by apply run_Host_for_H.
     reflexivity.
   }
   destruct run_InterpreterTypes_for_WIRE.
