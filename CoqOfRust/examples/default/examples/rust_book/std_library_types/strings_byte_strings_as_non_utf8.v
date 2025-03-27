@@ -73,12 +73,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "A byte string: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "A byte string: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -156,12 +152,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "Some escaped bytes: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "Some escaped bytes: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -238,11 +230,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array
-                                [ M.read (| Value.String "" |); M.read (| Value.String "
-" |) ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "" |); mk_str (| "
+" |) ] |)
                           |)
                         |)
                       |);
@@ -344,8 +333,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       M.alloc (|
                                         Value.Array
                                           [
-                                            M.read (| Value.String "And the same as text: '" |);
-                                            M.read (| Value.String "'
+                                            mk_str (| "And the same as text: '" |);
+                                            mk_str (| "'
 " |)
                                           ]
                                       |)
@@ -451,9 +440,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     Pointer.Kind.Ref,
                                     M.alloc (|
                                       Value.Array
-                                        [
-                                          M.read (| Value.String "Conversion successful: '" |);
-                                          M.read (| Value.String "'
+                                        [ mk_str (| "Conversion successful: '" |); mk_str (| "'
 " |)
                                         ]
                                     |)
@@ -524,11 +511,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     Pointer.Kind.Ref,
                                     M.alloc (|
                                       Value.Array
-                                        [
-                                          M.read (| Value.String "Conversion failed: " |);
-                                          M.read (| Value.String "
-" |)
-                                        ]
+                                        [ mk_str (| "Conversion failed: " |); mk_str (| "
+" |) ]
                                     |)
                                   |)
                                 |)

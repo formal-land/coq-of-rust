@@ -356,7 +356,28 @@ Module Slice.
   Defined.
   Smpl Add apply of_ty : of_ty.
 End Slice.
- 
+
+Module Str.
+  Global Instance IsLink : Link string := {
+    Φ := Ty.path "str";
+    φ x := Value.String x;
+  }.
+
+  Definition of_ty : OfTy.t (Ty.path "str").
+  Proof. eapply OfTy.Make with (A := string); reflexivity. Defined.
+  Smpl Add apply of_ty : of_ty.
+
+  Lemma of_value_with (x : string) :
+    Value.String x = φ x.
+  Proof. reflexivity. Qed.
+  Smpl Add apply of_value_with : of_value.
+
+  Definition of_value (x : string) :
+    OfValue.t (Value.String x).
+  Proof. eapply OfValue.Make with (A := string); smpl of_value. Defined.
+  Smpl Add apply of_value : of_value.
+End Str.
+
 (** A general type for references. Can be used for mutable or non-mutable references, as well as
     for unsafe pointers (we assume that the `unsafe` code is safe). *)
 Module Ref.

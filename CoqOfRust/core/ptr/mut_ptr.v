@@ -2512,9 +2512,8 @@ Module ptr.
                                           M.alloc (|
                                             Value.Array
                                               [
-                                                M.read (|
-                                                  Value.String
-                                                    "align_offset: align is not a power-of-two"
+                                                mk_str (|
+                                                  "align_offset: align is not a power-of-two"
                                                 |)
                                               ]
                                           |)
@@ -2662,9 +2661,8 @@ Module ptr.
                                           M.alloc (|
                                             Value.Array
                                               [
-                                                M.read (|
-                                                  Value.String
-                                                    "is_aligned_to: align is not a power-of-two"
+                                                mk_str (|
+                                                  "is_aligned_to: align is not a power-of-two"
                                                 |)
                                               ]
                                           |)
@@ -2924,7 +2922,7 @@ Module ptr.
                             M.call_closure (|
                               Ty.path "never",
                               M.get_function (| "core::panicking::panic", [], [] |),
-                              [ M.read (| Value.String "assertion failed: mid <= self.len()" |) ]
+                              [ mk_str (| "assertion failed: mid <= self.len()" |) ]
                             |)
                           |)
                         |)));

@@ -2296,9 +2296,8 @@ Module ptr.
                                           M.alloc (|
                                             Value.Array
                                               [
-                                                M.read (|
-                                                  Value.String
-                                                    "align_offset: align is not a power-of-two"
+                                                mk_str (|
+                                                  "align_offset: align is not a power-of-two"
                                                 |)
                                               ]
                                           |)

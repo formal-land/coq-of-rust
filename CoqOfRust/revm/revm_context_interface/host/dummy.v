@@ -351,27 +351,15 @@ Module host.
                         M.alloc (|
                           Value.Array
                             [
-                              M.read (| Value.String "tx" |);
+                              mk_str (| "tx" |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "block" |) |) |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "cfg" |) |) |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "storage" |) |) |);
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "block" |) |)
+                                M.deref (| mk_str (| "transient_storage" |) |)
                               |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "cfg" |) |)
-                              |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "storage" |) |)
-                              |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "transient_storage" |) |)
-                              |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "log" |) |)
-                              |)
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "log" |) |) |)
                             ]
                         |)
                       |)
@@ -500,10 +488,7 @@ Module host.
                   |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (| M.read (| Value.String "DummyHost" |) |)
-                    |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "DummyHost" |) |) |);
                     M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| names |) |) |);
                     M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| values |) |) |)
                   ]

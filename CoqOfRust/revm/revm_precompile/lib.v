@@ -319,8 +319,8 @@ Module Impl_core_fmt_Debug_for_revm_precompile_Precompiles.
           |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Precompiles" |) |) |);
-            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "inner" |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Precompiles" |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "inner" |) |) |);
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -334,7 +334,7 @@ Module Impl_core_fmt_Debug_for_revm_precompile_Precompiles.
                 |)
               |)
             |);
-            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "addresses" |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "addresses" |) |) |);
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -2822,10 +2822,7 @@ Module Impl_core_fmt_Debug_for_revm_precompile_PrecompileWithAddress.
           |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-            M.borrow (|
-              Pointer.Kind.Ref,
-              M.deref (| M.read (| Value.String "PrecompileWithAddress" |) |)
-            |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "PrecompileWithAddress" |) |) |);
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -3154,10 +3151,7 @@ Module Impl_core_fmt_Debug_for_revm_precompile_PrecompileSpecId.
                       let _ :=
                         M.is_struct_tuple (| γ, "revm_precompile::PrecompileSpecId::HOMESTEAD" |) in
                       M.alloc (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "HOMESTEAD" |) |)
-                        |)
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "HOMESTEAD" |) |) |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -3165,10 +3159,7 @@ Module Impl_core_fmt_Debug_for_revm_precompile_PrecompileSpecId.
                       let _ :=
                         M.is_struct_tuple (| γ, "revm_precompile::PrecompileSpecId::BYZANTIUM" |) in
                       M.alloc (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "BYZANTIUM" |) |)
-                        |)
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BYZANTIUM" |) |) |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -3176,10 +3167,7 @@ Module Impl_core_fmt_Debug_for_revm_precompile_PrecompileSpecId.
                       let _ :=
                         M.is_struct_tuple (| γ, "revm_precompile::PrecompileSpecId::ISTANBUL" |) in
                       M.alloc (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "ISTANBUL" |) |)
-                        |)
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ISTANBUL" |) |) |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -3187,10 +3175,7 @@ Module Impl_core_fmt_Debug_for_revm_precompile_PrecompileSpecId.
                       let _ :=
                         M.is_struct_tuple (| γ, "revm_precompile::PrecompileSpecId::BERLIN" |) in
                       M.alloc (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "BERLIN" |) |)
-                        |)
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BERLIN" |) |) |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -3198,10 +3183,7 @@ Module Impl_core_fmt_Debug_for_revm_precompile_PrecompileSpecId.
                       let _ :=
                         M.is_struct_tuple (| γ, "revm_precompile::PrecompileSpecId::CANCUN" |) in
                       M.alloc (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "CANCUN" |) |)
-                        |)
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CANCUN" |) |) |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -3209,10 +3191,7 @@ Module Impl_core_fmt_Debug_for_revm_precompile_PrecompileSpecId.
                       let _ :=
                         M.is_struct_tuple (| γ, "revm_precompile::PrecompileSpecId::PRAGUE" |) in
                       M.alloc (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "PRAGUE" |) |)
-                        |)
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "PRAGUE" |) |) |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -3220,10 +3199,7 @@ Module Impl_core_fmt_Debug_for_revm_precompile_PrecompileSpecId.
                       let _ :=
                         M.is_struct_tuple (| γ, "revm_precompile::PrecompileSpecId::LATEST" |) in
                       M.alloc (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "LATEST" |) |)
-                        |)
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LATEST" |) |) |)
                       |)))
                 ]
               |)

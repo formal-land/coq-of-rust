@@ -177,10 +177,7 @@ Module slice.
                               |),
                               [
                                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "Iter" |) |)
-                                |)
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Iter" |) |) |)
                               ]
                             |)
                           |)
@@ -596,7 +593,7 @@ Module slice.
                                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "IterMut" |) |)
+                                  M.deref (| mk_str (| "IterMut" |) |)
                                 |)
                               ]
                             |)
@@ -1440,16 +1437,13 @@ Module slice.
                                         |);
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.deref (| M.read (| Value.String "Split" |) |)
+                                          M.deref (| mk_str (| "Split" |) |)
                                         |)
                                       ]
                                     |)
                                   |)
                                 |);
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "v" |) |)
-                                |);
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "v" |) |) |);
                                 M.borrow (|
                                   Pointer.Kind.Ref,
                                   M.deref (|
@@ -1467,10 +1461,7 @@ Module slice.
                             |)
                           |)
                         |);
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "finished" |) |)
-                        |);
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "finished" |) |) |);
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.deref (|
@@ -2575,16 +2566,13 @@ Module slice.
                                         |);
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.deref (| M.read (| Value.String "SplitInclusive" |) |)
+                                          M.deref (| mk_str (| "SplitInclusive" |) |)
                                         |)
                                       ]
                                     |)
                                   |)
                                 |);
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "v" |) |)
-                                |);
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "v" |) |) |);
                                 M.borrow (|
                                   Pointer.Kind.Ref,
                                   M.deref (|
@@ -2602,10 +2590,7 @@ Module slice.
                             |)
                           |)
                         |);
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "finished" |) |)
-                        |);
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "finished" |) |) |);
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.deref (|
@@ -3821,16 +3806,13 @@ Module slice.
                                         |);
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.deref (| M.read (| Value.String "SplitMut" |) |)
+                                          M.deref (| mk_str (| "SplitMut" |) |)
                                         |)
                                       ]
                                     |)
                                   |)
                                 |);
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "v" |) |)
-                                |);
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "v" |) |) |);
                                 M.borrow (|
                                   Pointer.Kind.Ref,
                                   M.deref (|
@@ -3848,10 +3830,7 @@ Module slice.
                             |)
                           |)
                         |);
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "finished" |) |)
-                        |);
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "finished" |) |) |);
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.deref (|
@@ -4970,18 +4949,13 @@ Module slice.
                                         |);
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.deref (|
-                                            M.read (| Value.String "SplitInclusiveMut" |)
-                                          |)
+                                          M.deref (| mk_str (| "SplitInclusiveMut" |) |)
                                         |)
                                       ]
                                     |)
                                   |)
                                 |);
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "v" |) |)
-                                |);
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "v" |) |) |);
                                 M.borrow (|
                                   Pointer.Kind.Ref,
                                   M.deref (|
@@ -4999,10 +4973,7 @@ Module slice.
                             |)
                           |)
                         |);
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "finished" |) |)
-                        |);
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "finished" |) |) |);
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.deref (|
@@ -6126,16 +6097,13 @@ Module slice.
                                         |);
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.deref (| M.read (| Value.String "RSplit" |) |)
+                                          M.deref (| mk_str (| "RSplit" |) |)
                                         |)
                                       ]
                                     |)
                                   |)
                                 |);
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "v" |) |)
-                                |);
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "v" |) |) |);
                                 M.borrow (|
                                   Pointer.Kind.Ref,
                                   M.deref (|
@@ -6157,10 +6125,7 @@ Module slice.
                             |)
                           |)
                         |);
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "finished" |) |)
-                        |);
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "finished" |) |) |);
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.deref (|
@@ -6600,16 +6565,13 @@ Module slice.
                                         |);
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.deref (| M.read (| Value.String "RSplitMut" |) |)
+                                          M.deref (| mk_str (| "RSplitMut" |) |)
                                         |)
                                       ]
                                     |)
                                   |)
                                 |);
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "v" |) |)
-                                |);
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "v" |) |) |);
                                 M.borrow (|
                                   Pointer.Kind.Ref,
                                   M.deref (|
@@ -6631,10 +6593,7 @@ Module slice.
                             |)
                           |)
                         |);
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "finished" |) |)
-                        |);
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "finished" |) |) |);
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.deref (|
@@ -6924,11 +6883,8 @@ Module slice.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "GenericSplitN" |) |)
-                |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "iter" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "GenericSplitN" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "iter" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -6942,7 +6898,7 @@ Module slice.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "count" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "count" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -7372,18 +7328,12 @@ Module slice.
                               |),
                               [
                                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "SplitN" |) |)
-                                |)
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "SplitN" |) |) |)
                               ]
                             |)
                           |)
                         |);
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "inner" |) |)
-                        |);
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "inner" |) |) |);
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.deref (|
@@ -7520,16 +7470,13 @@ Module slice.
                                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "RSplitN" |) |)
+                                  M.deref (| mk_str (| "RSplitN" |) |)
                                 |)
                               ]
                             |)
                           |)
                         |);
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "inner" |) |)
-                        |);
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "inner" |) |) |);
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.deref (|
@@ -7666,16 +7613,13 @@ Module slice.
                                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "SplitNMut" |) |)
+                                  M.deref (| mk_str (| "SplitNMut" |) |)
                                 |)
                               ]
                             |)
                           |)
                         |);
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "inner" |) |)
-                        |);
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "inner" |) |) |);
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.deref (|
@@ -7812,16 +7756,13 @@ Module slice.
                                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "RSplitNMut" |) |)
+                                  M.deref (| mk_str (| "RSplitNMut" |) |)
                                 |)
                               ]
                             |)
                           |)
                         |);
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "inner" |) |)
-                        |);
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "inner" |) |) |);
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.deref (|
@@ -7890,8 +7831,8 @@ Module slice.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Windows" |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "v" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Windows" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "v" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -7905,7 +7846,7 @@ Module slice.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "size" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "size" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -9663,8 +9604,8 @@ Module slice.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Chunks" |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "v" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Chunks" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "v" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -9678,10 +9619,7 @@ Module slice.
                     |)
                   |)
                 |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "chunk_size" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "chunk_size" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -11523,11 +11461,8 @@ Module slice.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "ChunksMut" |) |)
-                |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "v" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ChunksMut" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "v" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -11541,10 +11476,7 @@ Module slice.
                     |)
                   |)
                 |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "chunk_size" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "chunk_size" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -11558,7 +11490,7 @@ Module slice.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "_marker" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "_marker" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -13396,11 +13328,8 @@ Module slice.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "ChunksExact" |) |)
-                |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "v" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ChunksExact" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "v" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -13414,7 +13343,7 @@ Module slice.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "rem" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "rem" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -13428,10 +13357,7 @@ Module slice.
                     |)
                   |)
                 |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "chunk_size" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "chunk_size" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -14805,11 +14731,8 @@ Module slice.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "ChunksExactMut" |) |)
-                |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "v" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ChunksExactMut" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "v" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -14823,7 +14746,7 @@ Module slice.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "rem" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "rem" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -14837,10 +14760,7 @@ Module slice.
                     |)
                   |)
                 |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "chunk_size" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "chunk_size" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -14854,7 +14774,7 @@ Module slice.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "_marker" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "_marker" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -16272,14 +16192,8 @@ Module slice.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "ArrayWindows" |) |)
-                |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "slice_head" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ArrayWindows" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "slice_head" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -16293,7 +16207,7 @@ Module slice.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "num" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "num" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -16307,7 +16221,7 @@ Module slice.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "marker" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "marker" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -17511,11 +17425,8 @@ Module slice.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "ArrayChunks" |) |)
-                |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "iter" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ArrayChunks" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "iter" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -17529,7 +17440,7 @@ Module slice.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "rem" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "rem" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -18368,11 +18279,8 @@ Module slice.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "ArrayChunksMut" |) |)
-                |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "iter" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ArrayChunksMut" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "iter" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -18386,7 +18294,7 @@ Module slice.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "rem" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "rem" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -19160,8 +19068,8 @@ Module slice.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "RChunks" |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "v" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "RChunks" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "v" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -19175,10 +19083,7 @@ Module slice.
                     |)
                   |)
                 |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "chunk_size" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "chunk_size" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -20948,11 +20853,8 @@ Module slice.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "RChunksMut" |) |)
-                |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "v" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "RChunksMut" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "v" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -20966,10 +20868,7 @@ Module slice.
                     |)
                   |)
                 |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "chunk_size" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "chunk_size" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -20983,7 +20882,7 @@ Module slice.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "_marker" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "_marker" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -22776,11 +22675,8 @@ Module slice.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "RChunksExact" |) |)
-                |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "v" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "RChunksExact" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "v" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -22794,7 +22690,7 @@ Module slice.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "rem" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "rem" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -22808,10 +22704,7 @@ Module slice.
                     |)
                   |)
                 |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "chunk_size" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "chunk_size" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -24253,11 +24146,8 @@ Module slice.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "RChunksExactMut" |) |)
-                |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "v" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "RChunksExactMut" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "v" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -24271,7 +24161,7 @@ Module slice.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "rem" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "rem" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -24285,10 +24175,7 @@ Module slice.
                     |)
                   |)
                 |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "chunk_size" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "chunk_size" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -26648,16 +26535,13 @@ Module slice.
                                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "ChunkBy" |) |)
+                                  M.deref (| mk_str (| "ChunkBy" |) |)
                                 |)
                               ]
                             |)
                           |)
                         |);
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "slice" |) |)
-                        |);
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "slice" |) |) |);
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.deref (|
@@ -27629,16 +27513,13 @@ Module slice.
                                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "ChunkByMut" |) |)
+                                  M.deref (| mk_str (| "ChunkByMut" |) |)
                                 |)
                               ]
                             |)
                           |)
                         |);
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "slice" |) |)
-                        |);
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "slice" |) |) |);
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.deref (|

@@ -120,7 +120,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ greeting : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
-          M.copy (| Value.String "hello" |) in
+          M.alloc (| mk_str (| "hello" |) |) in
         let~ farewell : Ty.path "alloc::string::String" :=
           M.alloc (|
             M.call_closure (|
@@ -134,7 +134,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 [],
                 []
               |),
-              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "goodbye" |) |) |) ]
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "goodbye" |) |) |) ]
             |)
           |) in
         let~ diary : Ty.function [ Ty.tuple [] ] (Ty.tuple []) :=
@@ -178,9 +178,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                     Pointer.Kind.Ref,
                                                     M.alloc (|
                                                       Value.Array
-                                                        [
-                                                          M.read (| Value.String "I said " |);
-                                                          M.read (| Value.String ".
+                                                        [ mk_str (| "I said " |); mk_str (| ".
 " |)
                                                         ]
                                                     |)
@@ -245,7 +243,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         M.borrow (| Pointer.Kind.MutRef, farewell |);
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.deref (| M.read (| Value.String "!!!" |) |)
+                                          M.deref (| mk_str (| "!!!" |) |)
                                         |)
                                       ]
                                     |)
@@ -277,10 +275,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                     M.alloc (|
                                                       Value.Array
                                                         [
-                                                          M.read (|
-                                                            Value.String "Then I screamed "
-                                                          |);
-                                                          M.read (| Value.String ".
+                                                          mk_str (| "Then I screamed " |);
+                                                          mk_str (| ".
 " |)
                                                         ]
                                                     |)
@@ -349,12 +345,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                     Pointer.Kind.Ref,
                                                     M.alloc (|
                                                       Value.Array
-                                                        [
-                                                          M.read (|
-                                                            Value.String "Now I can sleep. zzzzz
-"
-                                                          |)
-                                                        ]
+                                                        [ mk_str (| "Now I can sleep. zzzzz
+" |) ]
                                                     |)
                                                   |)
                                                 |)
@@ -439,12 +431,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "3 doubled: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "3 doubled: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)

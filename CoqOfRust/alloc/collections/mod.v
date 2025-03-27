@@ -183,11 +183,8 @@ Module collections.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "TryReserveError" |) |)
-              |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "kind" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "TryReserveError" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "kind" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -623,7 +620,7 @@ Module collections.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "CapacityOverflow" |) |)
+                            M.deref (| mk_str (| "CapacityOverflow" |) |)
                           |)
                         ]
                       |)
@@ -659,18 +656,12 @@ Module collections.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "AllocError" |) |)
-                          |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "layout" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "AllocError" |) |) |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "layout" |) |) |);
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "non_exhaustive" |) |)
+                            M.deref (| mk_str (| "non_exhaustive" |) |)
                           |);
                           M.borrow (|
                             Pointer.Kind.Ref,
@@ -828,7 +819,7 @@ Module collections.
                               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| fmt |) |) |);
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "memory allocation failed" |) |)
+                                M.deref (| mk_str (| "memory allocation failed" |) |)
                               |)
                             ]
                           |)
@@ -909,8 +900,11 @@ Module collections.
                                 γ,
                                 "alloc::collections::TryReserveErrorKind::CapacityOverflow"
                               |) in
-                            Value.String
-                              " because the computed capacity exceeded the collection's maximum"));
+                            M.alloc (|
+                              mk_str (|
+                                " because the computed capacity exceeded the collection's maximum"
+                              |)
+                            |)));
                         fun γ =>
                           ltac:(M.monadic
                             (let _ :=
@@ -922,9 +916,7 @@ Module collections.
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.deref (|
-                                  M.read (|
-                                    Value.String " because the memory allocator returned an error"
-                                  |)
+                                  mk_str (| " because the memory allocator returned an error" |)
                                 |)
                               |)
                             |)))

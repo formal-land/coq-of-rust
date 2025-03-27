@@ -223,11 +223,7 @@ Module num.
                                             M.call_closure (|
                                               Ty.path "never",
                                               M.get_function (| "core::panicking::panic", [], [] |),
-                                              [
-                                                M.read (|
-                                                  Value.String "assertion failed: n < 512"
-                                                |)
-                                              ]
+                                              [ mk_str (| "assertion failed: n < 512" |) ]
                                             |)
                                           |)
                                         |)));
@@ -1341,11 +1337,7 @@ Module num.
                                         M.call_closure (|
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
-                                          [
-                                            M.read (|
-                                              Value.String "assertion failed: *x < *scale"
-                                            |)
-                                          ]
+                                          [ mk_str (| "assertion failed: *x < *scale" |) ]
                                         |)
                                       |)
                                     |)));
@@ -1571,7 +1563,7 @@ Module num.
                               M.call_closure (|
                                 Ty.path "never",
                                 M.get_function (| "core::panicking::panic", [], [] |),
-                                [ M.read (| Value.String "assertion failed: d.mant > 0" |) ]
+                                [ mk_str (| "assertion failed: d.mant > 0" |) ]
                               |)
                             |)
                           |)));
@@ -1608,7 +1600,7 @@ Module num.
                               M.call_closure (|
                                 Ty.path "never",
                                 M.get_function (| "core::panicking::panic", [], [] |),
-                                [ M.read (| Value.String "assertion failed: d.minus > 0" |) ]
+                                [ mk_str (| "assertion failed: d.minus > 0" |) ]
                               |)
                             |)
                           |)));
@@ -1645,7 +1637,7 @@ Module num.
                               M.call_closure (|
                                 Ty.path "never",
                                 M.get_function (| "core::panicking::panic", [], [] |),
-                                [ M.read (| Value.String "assertion failed: d.plus > 0" |) ]
+                                [ mk_str (| "assertion failed: d.plus > 0" |) ]
                               |)
                             |)
                           |)));
@@ -1720,9 +1712,8 @@ Module num.
                                 Ty.path "never",
                                 M.get_function (| "core::panicking::panic", [], [] |),
                                 [
-                                  M.read (|
-                                    Value.String
-                                      "assertion failed: d.mant.checked_add(d.plus).is_some()"
+                                  mk_str (|
+                                    "assertion failed: d.mant.checked_add(d.plus).is_some()"
                                   |)
                                 ]
                               |)
@@ -1799,9 +1790,8 @@ Module num.
                                 Ty.path "never",
                                 M.get_function (| "core::panicking::panic", [], [] |),
                                 [
-                                  M.read (|
-                                    Value.String
-                                      "assertion failed: d.mant.checked_sub(d.minus).is_some()"
+                                  mk_str (|
+                                    "assertion failed: d.mant.checked_sub(d.minus).is_some()"
                                   |)
                                 ]
                               |)
@@ -1856,11 +1846,7 @@ Module num.
                               M.call_closure (|
                                 Ty.path "never",
                                 M.get_function (| "core::panicking::panic", [], [] |),
-                                [
-                                  M.read (|
-                                    Value.String "assertion failed: buf.len() >= MAX_SIG_DIGITS"
-                                  |)
-                                ]
+                                [ mk_str (| "assertion failed: buf.len() >= MAX_SIG_DIGITS" |) ]
                               |)
                             |)
                           |)));
@@ -2646,11 +2632,7 @@ Module num.
                                                           [],
                                                           []
                                                         |),
-                                                        [
-                                                          M.read (|
-                                                            Value.String "assertion failed: d < 10"
-                                                          |)
-                                                        ]
+                                                        [ mk_str (| "assertion failed: d < 10" |) ]
                                                       |)
                                                     |)
                                                   |)));
@@ -3437,7 +3419,7 @@ Module num.
                                   M.call_closure (|
                                     Ty.path "never",
                                     M.get_function (| "core::panicking::panic", [], [] |),
-                                    [ M.read (| Value.String "assertion failed: d.mant > 0" |) ]
+                                    [ mk_str (| "assertion failed: d.mant > 0" |) ]
                                   |)
                                 |)
                               |)));
@@ -3477,7 +3459,7 @@ Module num.
                                   M.call_closure (|
                                     Ty.path "never",
                                     M.get_function (| "core::panicking::panic", [], [] |),
-                                    [ M.read (| Value.String "assertion failed: d.minus > 0" |) ]
+                                    [ mk_str (| "assertion failed: d.minus > 0" |) ]
                                   |)
                                 |)
                               |)));
@@ -3517,7 +3499,7 @@ Module num.
                                   M.call_closure (|
                                     Ty.path "never",
                                     M.get_function (| "core::panicking::panic", [], [] |),
-                                    [ M.read (| Value.String "assertion failed: d.plus > 0" |) ]
+                                    [ mk_str (| "assertion failed: d.plus > 0" |) ]
                                   |)
                                 |)
                               |)));
@@ -3595,9 +3577,8 @@ Module num.
                                     Ty.path "never",
                                     M.get_function (| "core::panicking::panic", [], [] |),
                                     [
-                                      M.read (|
-                                        Value.String
-                                          "assertion failed: d.mant.checked_add(d.plus).is_some()"
+                                      mk_str (|
+                                        "assertion failed: d.mant.checked_add(d.plus).is_some()"
                                       |)
                                     ]
                                   |)
@@ -3677,9 +3658,8 @@ Module num.
                                     Ty.path "never",
                                     M.get_function (| "core::panicking::panic", [], [] |),
                                     [
-                                      M.read (|
-                                        Value.String
-                                          "assertion failed: d.mant.checked_sub(d.minus).is_some()"
+                                      mk_str (|
+                                        "assertion failed: d.mant.checked_sub(d.minus).is_some()"
                                       |)
                                     ]
                                   |)
@@ -5355,9 +5335,8 @@ Module num.
                                                                                   []
                                                                                 |),
                                                                                 [
-                                                                                  M.read (|
-                                                                                    Value.String
-                                                                                      "assertion failed: mant < scale"
+                                                                                  mk_str (|
+                                                                                    "assertion failed: mant < scale"
                                                                                   |)
                                                                                 ]
                                                                               |)
@@ -5427,9 +5406,8 @@ Module num.
                                                                                   []
                                                                                 |),
                                                                                 [
-                                                                                  M.read (|
-                                                                                    Value.String
-                                                                                      "assertion failed: d < 10"
+                                                                                  mk_str (|
+                                                                                    "assertion failed: d < 10"
                                                                                   |)
                                                                                 ]
                                                                               |)

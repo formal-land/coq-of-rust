@@ -289,9 +289,9 @@ Module language_storage.
                           |),
                           [
                             M.read (| __serializer |);
-                            M.read (| Value.String "TypeTag" |);
+                            mk_str (| "TypeTag" |);
                             Value.Integer IntegerKind.U32 0;
-                            M.read (| Value.String "bool" |)
+                            mk_str (| "bool" |)
                           ]
                         |)
                       |)));
@@ -322,9 +322,9 @@ Module language_storage.
                           |),
                           [
                             M.read (| __serializer |);
-                            M.read (| Value.String "TypeTag" |);
+                            mk_str (| "TypeTag" |);
                             Value.Integer IntegerKind.U32 1;
-                            M.read (| Value.String "u8" |)
+                            mk_str (| "u8" |)
                           ]
                         |)
                       |)));
@@ -355,9 +355,9 @@ Module language_storage.
                           |),
                           [
                             M.read (| __serializer |);
-                            M.read (| Value.String "TypeTag" |);
+                            mk_str (| "TypeTag" |);
                             Value.Integer IntegerKind.U32 2;
-                            M.read (| Value.String "u64" |)
+                            mk_str (| "u64" |)
                           ]
                         |)
                       |)));
@@ -388,9 +388,9 @@ Module language_storage.
                           |),
                           [
                             M.read (| __serializer |);
-                            M.read (| Value.String "TypeTag" |);
+                            mk_str (| "TypeTag" |);
                             Value.Integer IntegerKind.U32 3;
-                            M.read (| Value.String "u128" |)
+                            mk_str (| "u128" |)
                           ]
                         |)
                       |)));
@@ -421,9 +421,9 @@ Module language_storage.
                           |),
                           [
                             M.read (| __serializer |);
-                            M.read (| Value.String "TypeTag" |);
+                            mk_str (| "TypeTag" |);
                             Value.Integer IntegerKind.U32 4;
-                            M.read (| Value.String "address" |)
+                            mk_str (| "address" |)
                           ]
                         |)
                       |)));
@@ -454,9 +454,9 @@ Module language_storage.
                           |),
                           [
                             M.read (| __serializer |);
-                            M.read (| Value.String "TypeTag" |);
+                            mk_str (| "TypeTag" |);
                             Value.Integer IntegerKind.U32 5;
-                            M.read (| Value.String "signer" |)
+                            mk_str (| "signer" |)
                           ]
                         |)
                       |)));
@@ -497,9 +497,9 @@ Module language_storage.
                           |),
                           [
                             M.read (| __serializer |);
-                            M.read (| Value.String "TypeTag" |);
+                            mk_str (| "TypeTag" |);
                             Value.Integer IntegerKind.U32 6;
-                            M.read (| Value.String "vector" |);
+                            mk_str (| "vector" |);
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                           ]
                         |)
@@ -541,9 +541,9 @@ Module language_storage.
                           |),
                           [
                             M.read (| __serializer |);
-                            M.read (| Value.String "TypeTag" |);
+                            mk_str (| "TypeTag" |);
                             Value.Integer IntegerKind.U32 7;
-                            M.read (| Value.String "struct" |);
+                            mk_str (| "struct" |);
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                           ]
                         |)
@@ -575,9 +575,9 @@ Module language_storage.
                           |),
                           [
                             M.read (| __serializer |);
-                            M.read (| Value.String "TypeTag" |);
+                            mk_str (| "TypeTag" |);
                             Value.Integer IntegerKind.U32 8;
-                            M.read (| Value.String "u16" |)
+                            mk_str (| "u16" |)
                           ]
                         |)
                       |)));
@@ -608,9 +608,9 @@ Module language_storage.
                           |),
                           [
                             M.read (| __serializer |);
-                            M.read (| Value.String "TypeTag" |);
+                            mk_str (| "TypeTag" |);
                             Value.Integer IntegerKind.U32 9;
-                            M.read (| Value.String "u32" |)
+                            mk_str (| "u32" |)
                           ]
                         |)
                       |)));
@@ -641,9 +641,9 @@ Module language_storage.
                           |),
                           [
                             M.read (| __serializer |);
-                            M.read (| Value.String "TypeTag" |);
+                            mk_str (| "TypeTag" |);
                             Value.Integer IntegerKind.U32 10;
-                            M.read (| Value.String "u256" |)
+                            mk_str (| "u256" |)
                           ]
                         |)
                       |)))
@@ -689,7 +689,7 @@ Module language_storage.
               |),
               [
                 M.read (| __deserializer |);
-                M.read (| Value.String "TypeTag" |);
+                mk_str (| "TypeTag" |);
                 M.read (|
                   M.get_constant "move_core_types::language_storage::_'1::deserialize::VARIANTS"
                 |);
@@ -761,7 +761,7 @@ Module language_storage.
                             |),
                             [
                               M.read (| __serializer |);
-                              M.read (| Value.String "StructTag" |);
+                              mk_str (| "StructTag" |);
                               BinOp.Wrap.add (|
                                 BinOp.Wrap.add (|
                                   BinOp.Wrap.add (|
@@ -843,7 +843,7 @@ Module language_storage.
                               Pointer.Kind.MutRef,
                               M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
                             |);
-                            M.read (| Value.String "address" |);
+                            mk_str (| "address" |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (|
@@ -924,7 +924,7 @@ Module language_storage.
                               Pointer.Kind.MutRef,
                               M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
                             |);
-                            M.read (| Value.String "module" |);
+                            mk_str (| "module" |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (|
@@ -1005,7 +1005,7 @@ Module language_storage.
                               Pointer.Kind.MutRef,
                               M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
                             |);
-                            M.read (| Value.String "name" |);
+                            mk_str (| "name" |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (|
@@ -1094,7 +1094,7 @@ Module language_storage.
                               Pointer.Kind.MutRef,
                               M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
                             |);
-                            M.read (| Value.String "type_args" |);
+                            mk_str (| "type_args" |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (|
@@ -1206,7 +1206,7 @@ Module language_storage.
               |),
               [
                 M.read (| __deserializer |);
-                M.read (| Value.String "StructTag" |);
+                mk_str (| "StructTag" |);
                 M.read (|
                   M.get_constant "move_core_types::language_storage::_'3::deserialize::FIELDS"
                 |);
@@ -1278,7 +1278,7 @@ Module language_storage.
                             |),
                             [
                               M.read (| __serializer |);
-                              M.read (| Value.String "ResourceKey" |);
+                              mk_str (| "ResourceKey" |);
                               BinOp.Wrap.add (|
                                 BinOp.Wrap.add (|
                                   M.cast (Ty.path "usize") (Value.Bool false),
@@ -1354,7 +1354,7 @@ Module language_storage.
                               Pointer.Kind.MutRef,
                               M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
                             |);
-                            M.read (| Value.String "address" |);
+                            mk_str (| "address" |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (|
@@ -1435,7 +1435,7 @@ Module language_storage.
                               Pointer.Kind.MutRef,
                               M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
                             |);
-                            M.read (| Value.String "type_" |);
+                            mk_str (| "type_" |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (|
@@ -1547,7 +1547,7 @@ Module language_storage.
               |),
               [
                 M.read (| __deserializer |);
-                M.read (| Value.String "ResourceKey" |);
+                mk_str (| "ResourceKey" |);
                 M.read (|
                   M.get_constant "move_core_types::language_storage::_'5::deserialize::FIELDS"
                 |);
@@ -1619,7 +1619,7 @@ Module language_storage.
                             |),
                             [
                               M.read (| __serializer |);
-                              M.read (| Value.String "ModuleId" |);
+                              mk_str (| "ModuleId" |);
                               BinOp.Wrap.add (|
                                 BinOp.Wrap.add (|
                                   M.cast (Ty.path "usize") (Value.Bool false),
@@ -1695,7 +1695,7 @@ Module language_storage.
                               Pointer.Kind.MutRef,
                               M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
                             |);
-                            M.read (| Value.String "address" |);
+                            mk_str (| "address" |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (|
@@ -1776,7 +1776,7 @@ Module language_storage.
                               Pointer.Kind.MutRef,
                               M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
                             |);
-                            M.read (| Value.String "name" |);
+                            mk_str (| "name" |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (|
@@ -1888,7 +1888,7 @@ Module language_storage.
               |),
               [
                 M.read (| __deserializer |);
-                M.read (| Value.String "ModuleId" |);
+                mk_str (| "ModuleId" |);
                 M.read (|
                   M.get_constant "move_core_types::language_storage::_'7::deserialize::FIELDS"
                 |);
@@ -1955,10 +1955,7 @@ Module language_storage.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Bool" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Bool" |) |) |)
                         ]
                       |)
                     |)));
@@ -1981,10 +1978,7 @@ Module language_storage.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "U8" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "U8" |) |) |)
                         ]
                       |)
                     |)));
@@ -2010,10 +2004,7 @@ Module language_storage.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "U64" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "U64" |) |) |)
                         ]
                       |)
                     |)));
@@ -2039,10 +2030,7 @@ Module language_storage.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "U128" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "U128" |) |) |)
                         ]
                       |)
                     |)));
@@ -2068,10 +2056,7 @@ Module language_storage.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Address" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Address" |) |) |)
                         ]
                       |)
                     |)));
@@ -2097,10 +2082,7 @@ Module language_storage.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Signer" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Signer" |) |) |)
                         ]
                       |)
                     |)));
@@ -2128,10 +2110,7 @@ Module language_storage.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Vector" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Vector" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -2163,10 +2142,7 @@ Module language_storage.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Struct" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Struct" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -2196,10 +2172,7 @@ Module language_storage.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "U16" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "U16" |) |) |)
                         ]
                       |)
                     |)));
@@ -2225,10 +2198,7 @@ Module language_storage.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "U32" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "U32" |) |) |)
                         ]
                       |)
                     |)));
@@ -2254,10 +2224,7 @@ Module language_storage.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "U256" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "U256" |) |) |)
                         ]
                       |)
                     |)))
@@ -3724,8 +3691,8 @@ Module language_storage.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "StructTag" |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "address" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "StructTag" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "address" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -3739,7 +3706,7 @@ Module language_storage.
                   |)
                 |)
               |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "module" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "module" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -3753,7 +3720,7 @@ Module language_storage.
                   |)
                 |)
               |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "name" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "name" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -3767,10 +3734,7 @@ Module language_storage.
                   |)
                 |)
               |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "type_params" |) |)
-              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "type_params" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -5098,7 +5062,7 @@ Module language_storage.
                         |)
                       |)
                     |);
-                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "ascii" |) |) |)
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ascii" |) |) |)
                   ]
                 |)))
             |),
@@ -5161,7 +5125,7 @@ Module language_storage.
                       |)
                     |)
                   |);
-                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "String" |) |) |)
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "String" |) |) |)
                 ]
               |)))
           |)))
@@ -5270,10 +5234,7 @@ Module language_storage.
                         |)
                       |)
                     |);
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (| M.read (| Value.String "string" |) |)
-                    |)
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "string" |) |) |)
                   ]
                 |)))
             |),
@@ -5336,7 +5297,7 @@ Module language_storage.
                       |)
                     |)
                   |);
-                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "String" |) |) |)
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "String" |) |) |)
                 ]
               |)))
           |)))
@@ -6062,11 +6023,8 @@ Module language_storage.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "ResourceKey" |) |)
-              |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "address" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ResourceKey" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "address" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -6080,7 +6038,7 @@ Module language_storage.
                   |)
                 |)
               |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "type_" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "type_" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -6783,8 +6741,8 @@ Module language_storage.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "ModuleId" |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "address" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ModuleId" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "address" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -6798,7 +6756,7 @@ Module language_storage.
                   |)
                 |)
               |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "name" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "name" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -7818,13 +7776,7 @@ Module language_storage.
                               M.deref (|
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (| Value.String "0x" |);
-                                        M.read (| Value.String "::" |)
-                                      ]
-                                  |)
+                                  M.alloc (| Value.Array [ mk_str (| "0x" |); mk_str (| "::" |) ] |)
                                 |)
                               |)
                             |);
@@ -7958,10 +7910,7 @@ Module language_storage.
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
-                      |)
+                      M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Array [ mk_str (| "" |) ] |) |)
                     |)
                   |);
                   M.borrow (|
@@ -8124,9 +8073,9 @@ Module language_storage.
                                         M.alloc (|
                                           Value.Array
                                             [
-                                              M.read (| Value.String "0x" |);
-                                              M.read (| Value.String "::" |);
-                                              M.read (| Value.String "::" |)
+                                              mk_str (| "0x" |);
+                                              mk_str (| "::" |);
+                                              mk_str (| "::" |)
                                             ]
                                         |)
                                       |)
@@ -8446,9 +8395,7 @@ Module language_storage.
                                               M.deref (|
                                                 M.borrow (|
                                                   Pointer.Kind.Ref,
-                                                  M.alloc (|
-                                                    Value.Array [ M.read (| Value.String "<" |) ]
-                                                  |)
+                                                  M.alloc (| Value.Array [ mk_str (| "<" |) ] |)
                                                 |)
                                               |)
                                             |)
@@ -8580,9 +8527,7 @@ Module language_storage.
                                               M.deref (|
                                                 M.borrow (|
                                                   Pointer.Kind.Ref,
-                                                  M.alloc (|
-                                                    Value.Array [ M.read (| Value.String "" |) ]
-                                                  |)
+                                                  M.alloc (| Value.Array [ mk_str (| "" |) ] |)
                                                 |)
                                               |)
                                             |);
@@ -8974,11 +8919,7 @@ Module language_storage.
                                                                             Pointer.Kind.Ref,
                                                                             M.alloc (|
                                                                               Value.Array
-                                                                                [
-                                                                                  M.read (|
-                                                                                    Value.String
-                                                                                      ", "
-                                                                                  |)
+                                                                                [ mk_str (| ", " |)
                                                                                 ]
                                                                             |)
                                                                           |)
@@ -9173,9 +9114,7 @@ Module language_storage.
                                               M.deref (|
                                                 M.borrow (|
                                                   Pointer.Kind.Ref,
-                                                  M.alloc (|
-                                                    Value.Array [ M.read (| Value.String ">" |) ]
-                                                  |)
+                                                  M.alloc (| Value.Array [ mk_str (| ">" |) ] |)
                                                 |)
                                               |)
                                             |)
@@ -9336,7 +9275,7 @@ Module language_storage.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
+                                    M.alloc (| Value.Array [ mk_str (| "" |) ] |)
                                   |)
                                 |)
                               |);
@@ -9427,11 +9366,7 @@ Module language_storage.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "vector<" |);
-                                          M.read (| Value.String ">" |)
-                                        ]
+                                      Value.Array [ mk_str (| "vector<" |); mk_str (| ">" |) ]
                                     |)
                                   |)
                                 |)
@@ -9516,7 +9451,7 @@ Module language_storage.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ M.read (| Value.String "u8" |) ] |)
+                                    M.alloc (| Value.Array [ mk_str (| "u8" |) ] |)
                                   |)
                                 |)
                               |)
@@ -9561,7 +9496,7 @@ Module language_storage.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ M.read (| Value.String "u16" |) ] |)
+                                    M.alloc (| Value.Array [ mk_str (| "u16" |) ] |)
                                   |)
                                 |)
                               |)
@@ -9606,7 +9541,7 @@ Module language_storage.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ M.read (| Value.String "u32" |) ] |)
+                                    M.alloc (| Value.Array [ mk_str (| "u32" |) ] |)
                                   |)
                                 |)
                               |)
@@ -9651,7 +9586,7 @@ Module language_storage.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ M.read (| Value.String "u64" |) ] |)
+                                    M.alloc (| Value.Array [ mk_str (| "u64" |) ] |)
                                   |)
                                 |)
                               |)
@@ -9696,7 +9631,7 @@ Module language_storage.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ M.read (| Value.String "u128" |) ] |)
+                                    M.alloc (| Value.Array [ mk_str (| "u128" |) ] |)
                                   |)
                                 |)
                               |)
@@ -9741,7 +9676,7 @@ Module language_storage.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ M.read (| Value.String "u256" |) ] |)
+                                    M.alloc (| Value.Array [ mk_str (| "u256" |) ] |)
                                   |)
                                 |)
                               |)
@@ -9786,9 +9721,7 @@ Module language_storage.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Value.Array [ M.read (| Value.String "address" |) ]
-                                    |)
+                                    M.alloc (| Value.Array [ mk_str (| "address" |) ] |)
                                   |)
                                 |)
                               |)
@@ -9833,7 +9766,7 @@ Module language_storage.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ M.read (| Value.String "signer" |) ] |)
+                                    M.alloc (| Value.Array [ mk_str (| "signer" |) ] |)
                                   |)
                                 |)
                               |)
@@ -9878,7 +9811,7 @@ Module language_storage.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (| Value.Array [ M.read (| Value.String "bool" |) ] |)
+                                    M.alloc (| Value.Array [ mk_str (| "bool" |) ] |)
                                   |)
                                 |)
                               |)
@@ -9938,10 +9871,7 @@ Module language_storage.
                     M.deref (|
                       M.borrow (|
                         Pointer.Kind.Ref,
-                        M.alloc (|
-                          Value.Array
-                            [ M.read (| Value.String "0x" |); M.read (| Value.String "/" |) ]
-                        |)
+                        M.alloc (| Value.Array [ mk_str (| "0x" |); mk_str (| "/" |) ] |)
                       |)
                     |)
                   |);

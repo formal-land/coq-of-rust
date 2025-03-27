@@ -34,12 +34,8 @@ Definition elided_input (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "`elided_input`: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "`elided_input`: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -121,12 +117,8 @@ Definition annotated_input (ε : list Value.t) (τ : list Ty.t) (α : list Value
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "`annotated_input`: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "`annotated_input`: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -268,12 +260,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "`elided_pass`: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "`elided_pass`: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -354,12 +342,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "`annotated_pass`: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "`annotated_pass`: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)

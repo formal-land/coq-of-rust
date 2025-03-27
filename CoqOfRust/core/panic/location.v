@@ -87,8 +87,8 @@ Module panic.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Location" |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "file" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Location" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "file" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -102,7 +102,7 @@ Module panic.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "line" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "line" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -116,7 +116,7 @@ Module panic.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "col" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "col" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -945,12 +945,7 @@ Module panic.
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.alloc (|
-                            Value.Array
-                              [
-                                M.read (| Value.String "" |);
-                                M.read (| Value.String ":" |);
-                                M.read (| Value.String ":" |)
-                              ]
+                            Value.Array [ mk_str (| "" |); mk_str (| ":" |); mk_str (| ":" |) ]
                           |)
                         |)
                       |)

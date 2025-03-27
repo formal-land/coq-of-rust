@@ -85,12 +85,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                 Pointer.Kind.Ref,
                                                 M.alloc (|
                                                   Value.Array
-                                                    [
-                                                      M.read (|
-                                                        Value.String "Greater than 9, quit!
-"
-                                                      |)
-                                                    ]
+                                                    [ mk_str (| "Greater than 9, quit!
+" |) ]
                                                 |)
                                               |)
                                             |)
@@ -138,8 +134,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                 M.alloc (|
                                                   Value.Array
                                                     [
-                                                      M.read (| Value.String "`i` is `" |);
-                                                      M.read (| Value.String "`. Try again.
+                                                      mk_str (| "`i` is `" |);
+                                                      mk_str (| "`. Try again.
 " |)
                                                     ]
                                                 |)

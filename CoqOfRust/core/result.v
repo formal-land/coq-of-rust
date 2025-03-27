@@ -619,10 +619,7 @@ Module result.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Ok" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Ok" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -650,10 +647,7 @@ Module result.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Err" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Err" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -1995,9 +1989,7 @@ Module result.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (|
-                                M.read (|
-                                  Value.String "called `Result::unwrap()` on an `Err` value"
-                                |)
+                                mk_str (| "called `Result::unwrap()` on an `Err` value" |)
                               |)
                             |);
                             M.borrow (|
@@ -2181,9 +2173,7 @@ Module result.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (|
-                                M.read (|
-                                  Value.String "called `Result::unwrap_err()` on an `Ok` value"
-                                |)
+                                mk_str (| "called `Result::unwrap_err()` on an `Ok` value" |)
                               |)
                             |);
                             M.borrow (|
@@ -3155,9 +3145,7 @@ Module result.
                   M.deref (|
                     M.borrow (|
                       Pointer.Kind.Ref,
-                      M.alloc (|
-                        Value.Array [ M.read (| Value.String "" |); M.read (| Value.String ": " |) ]
-                      |)
+                      M.alloc (| Value.Array [ mk_str (| "" |); mk_str (| ": " |) ] |)
                     |)
                   |)
                 |);
@@ -3628,8 +3616,8 @@ Module result.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Iter" |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "inner" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Iter" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "inner" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -3940,8 +3928,8 @@ Module result.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "IterMut" |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "inner" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "IterMut" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "inner" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -4264,8 +4252,8 @@ Module result.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "IntoIter" |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "inner" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "IntoIter" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "inner" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|

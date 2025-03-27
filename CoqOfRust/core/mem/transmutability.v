@@ -288,11 +288,8 @@ Module mem.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Assume" |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "alignment" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Assume" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "alignment" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -306,10 +303,7 @@ Module mem.
                     |)
                   |)
                 |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "lifetimes" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "lifetimes" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -323,7 +317,7 @@ Module mem.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "safety" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "safety" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -337,7 +331,7 @@ Module mem.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "validity" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "validity" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|

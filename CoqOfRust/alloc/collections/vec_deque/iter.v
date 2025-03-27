@@ -189,7 +189,7 @@ Module collections.
                                           |);
                                           M.borrow (|
                                             Pointer.Kind.Ref,
-                                            M.deref (| M.read (| Value.String "Iter" |) |)
+                                            M.deref (| mk_str (| "Iter" |) |)
                                           |)
                                         ]
                                       |)

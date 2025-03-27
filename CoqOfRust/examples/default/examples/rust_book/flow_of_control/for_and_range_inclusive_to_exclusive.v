@@ -140,12 +140,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                             Pointer.Kind.Ref,
                                                             M.alloc (|
                                                               Value.Array
-                                                                [
-                                                                  M.read (|
-                                                                    Value.String "fizzbuzz
-"
-                                                                  |)
-                                                                ]
+                                                                [ mk_str (| "fizzbuzz
+" |) ]
                                                             |)
                                                           |)
                                                         |)
@@ -208,12 +204,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                     Pointer.Kind.Ref,
                                                                     M.alloc (|
                                                                       Value.Array
-                                                                        [
-                                                                          M.read (|
-                                                                            Value.String "fizz
-"
-                                                                          |)
-                                                                        ]
+                                                                        [ mk_str (| "fizz
+" |) ]
                                                                     |)
                                                                   |)
                                                                 |)
@@ -282,9 +274,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                             M.alloc (|
                                                                               Value.Array
                                                                                 [
-                                                                                  M.read (|
-                                                                                    Value.String
-                                                                                      "buzz
+                                                                                  mk_str (|
+                                                                                    "buzz
 "
                                                                                   |)
                                                                                 ]
@@ -337,13 +328,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                             M.alloc (|
                                                                               Value.Array
                                                                                 [
-                                                                                  M.read (|
-                                                                                    Value.String ""
-                                                                                  |);
-                                                                                  M.read (|
-                                                                                    Value.String "
-"
-                                                                                  |)
+                                                                                  mk_str (| "" |);
+                                                                                  mk_str (| "
+" |)
                                                                                 ]
                                                                             |)
                                                                           |)

@@ -12,7 +12,7 @@ Module sync.
   Global Hint Rewrite Constant_value_MAX_REFCOUNT : constant_rewrites.
   
   Definition value_INTERNAL_OVERFLOW_ERROR : Value.t :=
-    M.run_constant ltac:(M.monadic (Value.String "Arc counter overflow")).
+    M.run_constant ltac:(M.monadic (M.alloc (| mk_str (| "Arc counter overflow" |) |))).
   
   Axiom Constant_value_INTERNAL_OVERFLOW_ERROR :
     (M.get_constant "alloc::sync::INTERNAL_OVERFLOW_ERROR") = value_INTERNAL_OVERFLOW_ERROR.
@@ -4045,9 +4045,8 @@ Module sync.
                                                                               M.alloc (|
                                                                                 Value.Array
                                                                                   [
-                                                                                    M.read (|
-                                                                                      Value.String
-                                                                                        "No prior strong references should exist"
+                                                                                    mk_str (|
+                                                                                      "No prior strong references should exist"
                                                                                     |)
                                                                                   ]
                                                                               |)
@@ -6840,9 +6839,8 @@ Module sync.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.read (|
-                                                                      Value.String
-                                                                        "assertion failed: !is_dangling(this.ptr.as_ptr())"
+                                                                    mk_str (|
+                                                                      "assertion failed: !is_dangling(this.ptr.as_ptr())"
                                                                     |)
                                                                   ]
                                                                 |)
@@ -9209,7 +9207,7 @@ Module sync.
                     M.deref (|
                       M.borrow (|
                         Pointer.Kind.Ref,
-                        M.alloc (| Value.Array [ M.read (| Value.String "(Weak)" |) ] |)
+                        M.alloc (| Value.Array [ mk_str (| "(Weak)" |) ] |)
                       |)
                     |)
                   |)
@@ -12040,9 +12038,8 @@ Module sync.
                                                       M.alloc (|
                                                         Value.Array
                                                           [
-                                                            M.read (|
-                                                              Value.String
-                                                                "Arcs backed by a static should never reach a strong count of 0. Likely decrement_strong_count or from_raw were called too many times."
+                                                            mk_str (|
+                                                              "Arcs backed by a static should never reach a strong count of 0. Likely decrement_strong_count or from_raw were called too many times."
                                                             |)
                                                           ]
                                                       |)
@@ -14333,9 +14330,8 @@ Module sync.
                                                               M.alloc (|
                                                                 Value.Array
                                                                   [
-                                                                    M.read (|
-                                                                      Value.String
-                                                                        "Arc/Weaks backed by a static should never be deallocated. Likely decrement_strong_count or from_raw were called too many times."
+                                                                    mk_str (|
+                                                                      "Arc/Weaks backed by a static should never be deallocated. Likely decrement_strong_count or from_raw were called too many times."
                                                                     |)
                                                                   ]
                                                               |)
@@ -15836,9 +15832,8 @@ Module sync.
                                       Ty.path "never",
                                       M.get_function (| "core::panicking::panic", [], [] |),
                                       [
-                                        M.read (|
-                                          Value.String
-                                            "assertion failed: core::str::from_utf8(&*arc).is_ok()"
+                                        mk_str (|
+                                          "assertion failed: core::str::from_utf8(&*arc).is_ok()"
                                         |)
                                       ]
                                     |)
@@ -18065,9 +18060,8 @@ Module sync.
                                                                                   M.alloc (|
                                                                                     Value.Array
                                                                                       [
-                                                                                        M.read (|
-                                                                                          Value.String
-                                                                                            "TrustedLen iterator's size hint is not exact: "
+                                                                                        mk_str (|
+                                                                                          "TrustedLen iterator's size hint is not exact: "
                                                                                         |)
                                                                                       ]
                                                                                   |)
@@ -18194,8 +18188,7 @@ Module sync.
                                             M.borrow (|
                                               Pointer.Kind.Ref,
                                               M.alloc (|
-                                                Value.Array
-                                                  [ M.read (| Value.String "capacity overflow" |) ]
+                                                Value.Array [ mk_str (| "capacity overflow" |) ]
                                               |)
                                             |)
                                           |)

@@ -1204,8 +1204,7 @@ Module collections.
                                         M.call_closure (|
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
-                                          [ M.read (| Value.String "assertion failed: height > 0" |)
-                                          ]
+                                          [ mk_str (| "assertion failed: height > 0" |) ]
                                         |)
                                       |)
                                     |)));
@@ -1462,8 +1461,7 @@ Module collections.
                                         M.call_closure (|
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
-                                          [ M.read (| Value.String "assertion failed: height > 0" |)
-                                          ]
+                                          [ mk_str (| "assertion failed: height > 0" |) ]
                                         |)
                                       |)
                                     |)));
@@ -2071,9 +2069,8 @@ Module collections.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.read (|
-                                                                      Value.String
-                                                                        "assertion failed: i <= self.len()"
+                                                                    mk_str (|
+                                                                      "assertion failed: i <= self.len()"
                                                                     |)
                                                                   ]
                                                                 |)
@@ -2390,11 +2387,7 @@ Module collections.
                               M.call_closure (|
                                 Ty.path "never",
                                 M.get_function (| "core::panicking::panic", [], [] |),
-                                [
-                                  M.read (|
-                                    Value.String "assertion failed: edge.height == self.height - 1"
-                                  |)
-                                ]
+                                [ mk_str (| "assertion failed: edge.height == self.height - 1" |) ]
                               |)
                             |)
                           |)));
@@ -2464,7 +2457,7 @@ Module collections.
                               M.call_closure (|
                                 Ty.path "never",
                                 M.get_function (| "core::panicking::panic", [], [] |),
-                                [ M.read (| Value.String "assertion failed: idx < CAPACITY" |) ]
+                                [ mk_str (| "assertion failed: idx < CAPACITY" |) ]
                               |)
                             |)
                           |)));
@@ -3648,7 +3641,7 @@ Module collections.
                               M.call_closure (|
                                 Ty.path "never",
                                 M.get_function (| "core::panicking::panic", [], [] |),
-                                [ M.read (| Value.String "assertion failed: len > 0" |) ]
+                                [ mk_str (| "assertion failed: len > 0" |) ]
                               |)
                             |)
                           |)));
@@ -3754,7 +3747,7 @@ Module collections.
                               M.call_closure (|
                                 Ty.path "never",
                                 M.get_function (| "core::panicking::panic", [], [] |),
-                                [ M.read (| Value.String "assertion failed: len > 0" |) ]
+                                [ mk_str (| "assertion failed: len > 0" |) ]
                               |)
                             |)
                           |)));
@@ -5822,11 +5815,7 @@ Module collections.
                                         M.call_closure (|
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
-                                          [
-                                            M.read (|
-                                              Value.String "assertion failed: self.height == 0"
-                                            |)
-                                          ]
+                                          [ mk_str (| "assertion failed: self.height == 0" |) ]
                                         |)
                                       |)
                                     |)));
@@ -5934,11 +5923,7 @@ Module collections.
                                         M.call_closure (|
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
-                                          [
-                                            M.read (|
-                                              Value.String "assertion failed: self.height > 0"
-                                            |)
-                                          ]
+                                          [ mk_str (| "assertion failed: self.height > 0" |) ]
                                         |)
                                       |)
                                     |)));
@@ -6713,9 +6698,8 @@ Module collections.
                                                           M.alloc (|
                                                             Value.Array
                                                               [
-                                                                M.read (|
-                                                                  Value.String
-                                                                    "internal error: entered unreachable code: empty internal node"
+                                                                mk_str (|
+                                                                  "internal error: entered unreachable code: empty internal node"
                                                                 |)
                                                               ]
                                                           |)
@@ -7252,7 +7236,7 @@ Module collections.
                               M.call_closure (|
                                 Ty.path "never",
                                 M.get_function (| "core::panicking::panic", [], [] |),
-                                [ M.read (| Value.String "assertion failed: self.height > 0" |) ]
+                                [ mk_str (| "assertion failed: self.height > 0" |) ]
                               |)
                             |)
                           |)));
@@ -7796,7 +7780,7 @@ Module collections.
                               M.call_closure (|
                                 Ty.path "never",
                                 M.get_function (| "core::panicking::panic", [], [] |),
-                                [ M.read (| Value.String "assertion failed: idx < CAPACITY" |) ]
+                                [ mk_str (| "assertion failed: idx < CAPACITY" |) ]
                               |)
                             |)
                           |)));
@@ -8498,11 +8482,7 @@ Module collections.
                                         M.call_closure (|
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
-                                          [
-                                            M.read (|
-                                              Value.String "assertion failed: idx < node.len()"
-                                            |)
-                                          ]
+                                          [ mk_str (| "assertion failed: idx < node.len()" |) ]
                                         |)
                                       |)
                                     |)));
@@ -9221,11 +9201,7 @@ Module collections.
                                         M.call_closure (|
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
-                                          [
-                                            M.read (|
-                                              Value.String "assertion failed: idx <= node.len()"
-                                            |)
-                                          ]
+                                          [ mk_str (| "assertion failed: idx <= node.len()" |) ]
                                         |)
                                       |)
                                     |)));
@@ -9639,11 +9615,7 @@ Module collections.
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
-                                        [
-                                          M.read (|
-                                            Value.String "assertion failed: edge_idx <= CAPACITY"
-                                          |)
-                                        ]
+                                        [ mk_str (| "assertion failed: edge_idx <= CAPACITY" |) ]
                                       |)
                                     |)
                                   |)));
@@ -9879,9 +9851,8 @@ Module collections.
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
                                           [
-                                            M.read (|
-                                              Value.String
-                                                "assertion failed: self.node.len() < CAPACITY"
+                                            mk_str (|
+                                              "assertion failed: self.node.len() < CAPACITY"
                                             |)
                                           ]
                                         |)
@@ -11956,9 +11927,8 @@ Module collections.
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
                                           [
-                                            M.read (|
-                                              Value.String
-                                                "assertion failed: self.node.len() < CAPACITY"
+                                            mk_str (|
+                                              "assertion failed: self.node.len() < CAPACITY"
                                             |)
                                           ]
                                         |)
@@ -12028,9 +11998,8 @@ Module collections.
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
                                           [
-                                            M.read (|
-                                              Value.String
-                                                "assertion failed: edge.height == self.node.height - 1"
+                                            mk_str (|
+                                              "assertion failed: edge.height == self.node.height - 1"
                                             |)
                                           ]
                                         |)
@@ -12553,9 +12522,8 @@ Module collections.
                                 Ty.path "never",
                                 M.get_function (| "core::panicking::panic", [], [] |),
                                 [
-                                  M.read (|
-                                    Value.String
-                                      "assertion failed: edge.height == self.node.height - 1"
+                                  mk_str (|
+                                    "assertion failed: edge.height == self.node.height - 1"
                                   |)
                                 ]
                               |)
@@ -13553,9 +13521,8 @@ Module collections.
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
                                           [
-                                            M.read (|
-                                              Value.String
-                                                "assertion failed: self.idx < self.node.len()"
+                                            mk_str (|
+                                              "assertion failed: self.idx < self.node.len()"
                                             |)
                                           ]
                                         |)
@@ -13948,9 +13915,8 @@ Module collections.
                                               Ty.path "never",
                                               M.get_function (| "core::panicking::panic", [], [] |),
                                               [
-                                                M.read (|
-                                                  Value.String
-                                                    "assertion failed: self.idx < self.node.len()"
+                                                mk_str (|
+                                                  "assertion failed: self.idx < self.node.len()"
                                                 |)
                                               ]
                                             |)
@@ -14190,9 +14156,8 @@ Module collections.
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
                                           [
-                                            M.read (|
-                                              Value.String
-                                                "assertion failed: self.idx < self.node.len()"
+                                            mk_str (|
+                                              "assertion failed: self.idx < self.node.len()"
                                             |)
                                           ]
                                         |)
@@ -14484,9 +14449,8 @@ Module collections.
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
                                           [
-                                            M.read (|
-                                              Value.String
-                                                "assertion failed: self.idx < self.node.len()"
+                                            mk_str (|
+                                              "assertion failed: self.idx < self.node.len()"
                                             |)
                                           ]
                                         |)
@@ -14868,9 +14832,8 @@ Module collections.
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
                                           [
-                                            M.read (|
-                                              Value.String
-                                                "assertion failed: self.idx < self.node.len()"
+                                            mk_str (|
+                                              "assertion failed: self.idx < self.node.len()"
                                             |)
                                           ]
                                         |)
@@ -15591,9 +15554,8 @@ Module collections.
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
                                           [
-                                            M.read (|
-                                              Value.String
-                                                "assertion failed: self.idx < self.node.len()"
+                                            mk_str (|
+                                              "assertion failed: self.idx < self.node.len()"
                                             |)
                                           ]
                                         |)
@@ -15877,9 +15839,8 @@ Module collections.
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
                                           [
-                                            M.read (|
-                                              Value.String
-                                                "assertion failed: self.idx < self.node.len()"
+                                            mk_str (|
+                                              "assertion failed: self.idx < self.node.len()"
                                             |)
                                           ]
                                         |)
@@ -17854,11 +17815,7 @@ Module collections.
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
-                                        [
-                                          M.read (|
-                                            Value.String
-                                              "assertion failed: new_left_len <= CAPACITY"
-                                          |)
+                                        [ mk_str (| "assertion failed: new_left_len <= CAPACITY" |)
                                         ]
                                       |)
                                     |)
@@ -19771,9 +19728,8 @@ Module collections.
                                 Ty.path "never",
                                 M.get_function (| "core::panicking::panic", [], [] |),
                                 [
-                                  M.read (|
-                                    Value.String
-                                      "assertion failed: match track_edge_idx {
+                                  mk_str (|
+                                    "assertion failed: match track_edge_idx {
     LeftOrRight::Left(idx) => idx <= old_left_len,
     LeftOrRight::Right(idx) => idx <= right_len,
 }"
@@ -20207,7 +20163,7 @@ Module collections.
                               M.call_closure (|
                                 Ty.path "never",
                                 M.get_function (| "core::panicking::panic", [], [] |),
-                                [ M.read (| Value.String "assertion failed: count > 0" |) ]
+                                [ mk_str (| "assertion failed: count > 0" |) ]
                               |)
                             |)
                           |)));
@@ -20335,11 +20291,7 @@ Module collections.
                               M.call_closure (|
                                 Ty.path "never",
                                 M.get_function (| "core::panicking::panic", [], [] |),
-                                [
-                                  M.read (|
-                                    Value.String
-                                      "assertion failed: old_right_len + count <= CAPACITY"
-                                  |)
+                                [ mk_str (| "assertion failed: old_right_len + count <= CAPACITY" |)
                                 ]
                               |)
                             |)
@@ -20368,11 +20320,7 @@ Module collections.
                               M.call_closure (|
                                 Ty.path "never",
                                 M.get_function (| "core::panicking::panic", [], [] |),
-                                [
-                                  M.read (|
-                                    Value.String "assertion failed: old_left_len >= count"
-                                  |)
-                                ]
+                                [ mk_str (| "assertion failed: old_left_len >= count" |) ]
                               |)
                             |)
                           |)));
@@ -21710,8 +21658,7 @@ Module collections.
                             M.call_closure (|
                               Ty.path "never",
                               M.get_function (| "core::panicking::panic", [], [] |),
-                              [ M.read (| Value.String "internal error: entered unreachable code" |)
-                              ]
+                              [ mk_str (| "internal error: entered unreachable code" |) ]
                             |)
                           |)
                         |)))
@@ -21828,7 +21775,7 @@ Module collections.
                               M.call_closure (|
                                 Ty.path "never",
                                 M.get_function (| "core::panicking::panic", [], [] |),
-                                [ M.read (| Value.String "assertion failed: count > 0" |) ]
+                                [ mk_str (| "assertion failed: count > 0" |) ]
                               |)
                             |)
                           |)));
@@ -21956,11 +21903,7 @@ Module collections.
                               M.call_closure (|
                                 Ty.path "never",
                                 M.get_function (| "core::panicking::panic", [], [] |),
-                                [
-                                  M.read (|
-                                    Value.String
-                                      "assertion failed: old_left_len + count <= CAPACITY"
-                                  |)
+                                [ mk_str (| "assertion failed: old_left_len + count <= CAPACITY" |)
                                 ]
                               |)
                             |)
@@ -21989,11 +21932,7 @@ Module collections.
                               M.call_closure (|
                                 Ty.path "never",
                                 M.get_function (| "core::panicking::panic", [], [] |),
-                                [
-                                  M.read (|
-                                    Value.String "assertion failed: old_right_len >= count"
-                                  |)
-                                ]
+                                [ mk_str (| "assertion failed: old_right_len >= count" |) ]
                               |)
                             |)
                           |)));
@@ -23379,8 +23318,7 @@ Module collections.
                             M.call_closure (|
                               Ty.path "never",
                               M.get_function (| "core::panicking::panic", [], [] |),
-                              [ M.read (| Value.String "internal error: entered unreachable code" |)
-                              ]
+                              [ mk_str (| "internal error: entered unreachable code" |) ]
                             |)
                           |)
                         |)))
@@ -24233,11 +24171,7 @@ Module collections.
                               M.call_closure (|
                                 Ty.path "never",
                                 M.get_function (| "core::panicking::panic", [], [] |),
-                                [
-                                  M.read (|
-                                    Value.String "assertion failed: right_node.len() == 0"
-                                  |)
-                                ]
+                                [ mk_str (| "assertion failed: right_node.len() == 0" |) ]
                               |)
                             |)
                           |)));
@@ -24281,9 +24215,8 @@ Module collections.
                                 Ty.path "never",
                                 M.get_function (| "core::panicking::panic", [], [] |),
                                 [
-                                  M.read (|
-                                    Value.String
-                                      "assertion failed: left_node.height == right_node.height"
+                                  mk_str (|
+                                    "assertion failed: left_node.height == right_node.height"
                                   |)
                                 ]
                               |)
@@ -24998,11 +24931,7 @@ Module collections.
                                     M.call_closure (|
                                       Ty.path "never",
                                       M.get_function (| "core::panicking::panic", [], [] |),
-                                      [
-                                        M.read (|
-                                          Value.String "internal error: entered unreachable code"
-                                        |)
-                                      ]
+                                      [ mk_str (| "internal error: entered unreachable code" |) ]
                                     |)
                                   |)
                                 |)))
@@ -25573,7 +25502,7 @@ Module collections.
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
-                                        [ M.read (| Value.String "assertion failed: len > idx" |) ]
+                                        [ mk_str (| "assertion failed: len > idx" |) ]
                                       |)
                                     |)
                                   |)));
@@ -25826,7 +25755,7 @@ Module collections.
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
-                                        [ M.read (| Value.String "assertion failed: idx < len" |) ]
+                                        [ mk_str (| "assertion failed: idx < len" |) ]
                                       |)
                                     |)
                                   |)));
@@ -26238,8 +26167,7 @@ Module collections.
                             M.call_closure (|
                               Ty.path "never",
                               M.get_function (| "core::panicking::panic", [], [] |),
-                              [ M.read (| Value.String "assertion failed: src.len() == dst.len()" |)
-                              ]
+                              [ mk_str (| "assertion failed: src.len() == dst.len()" |) ]
                             |)
                           |)
                         |)));

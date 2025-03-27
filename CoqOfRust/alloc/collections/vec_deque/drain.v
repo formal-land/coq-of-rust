@@ -457,9 +457,7 @@ Module collections.
                                                           |);
                                                           M.borrow (|
                                                             Pointer.Kind.Ref,
-                                                            M.deref (|
-                                                              M.read (| Value.String "Drain" |)
-                                                            |)
+                                                            M.deref (| mk_str (| "Drain" |) |)
                                                           |)
                                                         ]
                                                       |)

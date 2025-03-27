@@ -49,14 +49,8 @@ Module iter.
                 |),
                 [
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (| M.read (| Value.String "Intersperse" |) |)
-                  |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (| M.read (| Value.String "started" |) |)
-                  |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Intersperse" |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "started" |) |) |);
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
@@ -70,10 +64,7 @@ Module iter.
                       |)
                     |)
                   |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (| M.read (| Value.String "separator" |) |)
-                  |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "separator" |) |) |);
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
@@ -87,10 +78,7 @@ Module iter.
                       |)
                     |)
                   |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (| M.read (| Value.String "next_item" |) |)
-                  |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "next_item" |) |) |);
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
@@ -104,7 +92,7 @@ Module iter.
                       |)
                     |)
                   |);
-                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "iter" |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "iter" |) |) |);
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
@@ -1080,9 +1068,7 @@ Module iter.
                                                           M.borrow (|
                                                             Pointer.Kind.Ref,
                                                             M.deref (|
-                                                              M.read (|
-                                                                Value.String "IntersperseWith"
-                                                              |)
+                                                              mk_str (| "IntersperseWith" |)
                                                             |)
                                                           |)
                                                         ]
@@ -1091,9 +1077,7 @@ Module iter.
                                                   |);
                                                   M.borrow (|
                                                     Pointer.Kind.Ref,
-                                                    M.deref (|
-                                                      M.read (| Value.String "started" |)
-                                                    |)
+                                                    M.deref (| mk_str (| "started" |) |)
                                                   |);
                                                   M.borrow (|
                                                     Pointer.Kind.Ref,
@@ -1114,7 +1098,7 @@ Module iter.
                                           |);
                                           M.borrow (|
                                             Pointer.Kind.Ref,
-                                            M.deref (| M.read (| Value.String "separator" |) |)
+                                            M.deref (| mk_str (| "separator" |) |)
                                           |);
                                           M.borrow (|
                                             Pointer.Kind.Ref,
@@ -1135,7 +1119,7 @@ Module iter.
                                   |);
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.deref (| M.read (| Value.String "iter" |) |)
+                                    M.deref (| mk_str (| "iter" |) |)
                                   |);
                                   M.borrow (|
                                     Pointer.Kind.Ref,
@@ -1154,10 +1138,7 @@ Module iter.
                               |)
                             |)
                           |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "next_item" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "next_item" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (|

@@ -64,7 +64,7 @@ Module Impl_core_fmt_Debug_for_tuples_Matrix.
           |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Matrix" |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Matrix" |) |) |);
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -241,11 +241,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             Pointer.Kind.Ref,
                             M.alloc (|
                               Value.Array
-                                [
-                                  M.read (| Value.String "long tuple first value: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                                [ mk_str (| "long tuple first value: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -312,11 +309,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             Pointer.Kind.Ref,
                             M.alloc (|
                               Value.Array
-                                [
-                                  M.read (| Value.String "long tuple second value: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                                [ mk_str (| "long tuple second value: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -402,12 +396,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "tuple of tuples: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "tuple of tuples: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -478,14 +468,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "pair is " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "pair is " |); mk_str (| "
+" |) ] |)
                           |)
                         |)
                       |);
@@ -545,12 +529,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "the reversed pair is " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "the reversed pair is " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -622,12 +602,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "one element tuple: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "one element tuple: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -695,12 +671,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "just an integer: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "just an integer: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -756,7 +728,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             Value.Tuple
               [
                 Value.Integer IntegerKind.I32 1;
-                M.read (| Value.String "hello" |);
+                mk_str (| "hello" |);
                 M.read (| UnsupportedLiteral |);
                 Value.Bool true
               ]
@@ -800,11 +772,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.alloc (|
                                       Value.Array
                                         [
-                                          M.read (| Value.String "" |);
-                                          M.read (| Value.String ", " |);
-                                          M.read (| Value.String ", " |);
-                                          M.read (| Value.String ", " |);
-                                          M.read (| Value.String "
+                                          mk_str (| "" |);
+                                          mk_str (| ", " |);
+                                          mk_str (| ", " |);
+                                          mk_str (| ", " |);
+                                          mk_str (| "
 " |)
                                         ]
                                     |)
@@ -923,14 +895,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "" |);
-                                          M.read (| Value.String "
-" |)
-                                        ]
-                                    |)
+                                    M.alloc (| Value.Array [ mk_str (| "" |); mk_str (| "
+" |) ] |)
                                   |)
                                 |)
                               |);

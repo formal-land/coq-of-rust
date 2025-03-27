@@ -95,11 +95,7 @@ Module str.
                                               Pointer.Kind.Ref,
                                               M.alloc (|
                                                 Value.Array
-                                                  [
-                                                    M.read (|
-                                                      Value.String "failed to slice string"
-                                                    |)
-                                                  ]
+                                                  [ mk_str (| "failed to slice string" |) ]
                                               |)
                                             |)
                                           |)
@@ -224,11 +220,11 @@ Module str.
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      Value.String "[...]"));
+                      M.alloc (| mk_str (| "[...]" |) |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "" |) |) |)
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "" |) |) |)
                       |)))
                 ]
               |)
@@ -332,9 +328,9 @@ Module str.
                                           M.alloc (|
                                             Value.Array
                                               [
-                                                M.read (| Value.String "byte index " |);
-                                                M.read (| Value.String " is out of bounds of `" |);
-                                                M.read (| Value.String "`" |)
+                                                mk_str (| "byte index " |);
+                                                mk_str (| " is out of bounds of `" |);
+                                                mk_str (| "`" |)
                                               ]
                                           |)
                                         |)
@@ -454,10 +450,10 @@ Module str.
                                       M.alloc (|
                                         Value.Array
                                           [
-                                            M.read (| Value.String "begin <= end (" |);
-                                            M.read (| Value.String " <= " |);
-                                            M.read (| Value.String ") when slicing `" |);
-                                            M.read (| Value.String "`" |)
+                                            mk_str (| "begin <= end (" |);
+                                            mk_str (| " <= " |);
+                                            mk_str (| ") when slicing `" |);
+                                            mk_str (| "`" |)
                                           ]
                                       |)
                                     |)
@@ -701,11 +697,11 @@ Module str.
                           M.alloc (|
                             Value.Array
                               [
-                                M.read (| Value.String "byte index " |);
-                                M.read (| Value.String " is not a char boundary; it is inside " |);
-                                M.read (| Value.String " (bytes " |);
-                                M.read (| Value.String ") of `" |);
-                                M.read (| Value.String "`" |)
+                                mk_str (| "byte index " |);
+                                mk_str (| " is not a char boundary; it is inside " |);
+                                mk_str (| " (bytes " |);
+                                mk_str (| ") of `" |);
+                                mk_str (| "`" |)
                               ]
                           |)
                         |)
@@ -6037,8 +6033,7 @@ Module str.
     Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
       | [], [], [] =>
-        ltac:(M.monadic
-          (M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "" |) |) |)))
+        ltac:(M.monadic (M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "" |) |) |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     

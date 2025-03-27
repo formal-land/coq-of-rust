@@ -29,14 +29,13 @@ Definition call (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             fun γ =>
               ltac:(M.monadic
                 (let _ :=
-                  M.is_constant_or_break_match (| M.read (| γ |), Value.String "798-1364" |) in
+                  M.is_constant_or_break_match (| M.read (| γ |), mk_str (| "798-1364" |) |) in
                 M.alloc (|
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
-                      M.read (|
-                        Value.String
-                          "We're sorry, the call cannot be completed as dialed. 
+                      mk_str (|
+                        "We're sorry, the call cannot be completed as dialed. 
             Please hang up and try again."
                       |)
                     |)
@@ -45,14 +44,13 @@ Definition call (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             fun γ =>
               ltac:(M.monadic
                 (let _ :=
-                  M.is_constant_or_break_match (| M.read (| γ |), Value.String "645-7689" |) in
+                  M.is_constant_or_break_match (| M.read (| γ |), mk_str (| "645-7689" |) |) in
                 M.alloc (|
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
-                      M.read (|
-                        Value.String
-                          "Hello, this is Mr. Awesome's Pizza. My name is Fred.
+                      mk_str (|
+                        "Hello, this is Mr. Awesome's Pizza. My name is Fred.
             What can I get for you today?"
                       |)
                     |)
@@ -63,7 +61,7 @@ Definition call (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 (M.alloc (|
                   M.borrow (|
                     Pointer.Kind.Ref,
-                    M.deref (| M.read (| Value.String "Hi! Who is this again?" |) |)
+                    M.deref (| mk_str (| "Hi! Who is this again?" |) |)
                   |)
                 |)))
           ]
@@ -175,8 +173,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, contacts |);
-                M.read (| Value.String "Daniel" |);
-                M.read (| Value.String "798-1364" |)
+                mk_str (| "Daniel" |);
+                mk_str (| "798-1364" |)
               ]
             |)
           |) in
@@ -206,8 +204,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, contacts |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Ashley" |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "645-7689" |) |) |)
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Ashley" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "645-7689" |) |) |)
               ]
             |)
           |) in
@@ -237,8 +235,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, contacts |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Katie" |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "435-8291" |) |) |)
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Katie" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "435-8291" |) |) |)
               ]
             |)
           |) in
@@ -268,8 +266,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, contacts |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Robert" |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "956-1745" |) |) |)
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Robert" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "956-1745" |) |) |)
               ]
             |)
           |) in
@@ -299,7 +297,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.borrow (| Pointer.Kind.Ref, contacts |);
                   M.borrow (|
                     Pointer.Kind.Ref,
-                    M.deref (| M.borrow (| Pointer.Kind.Ref, Value.String "Daniel" |) |)
+                    M.deref (|
+                      M.borrow (| Pointer.Kind.Ref, M.alloc (| mk_str (| "Daniel" |) |) |)
+                    |)
                   |)
                 ]
               |)
@@ -334,11 +334,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     Pointer.Kind.Ref,
                                     M.alloc (|
                                       Value.Array
-                                        [
-                                          M.read (| Value.String "Calling Daniel: " |);
-                                          M.read (| Value.String "
-" |)
-                                        ]
+                                        [ mk_str (| "Calling Daniel: " |); mk_str (| "
+" |) ]
                                     |)
                                   |)
                                 |)
@@ -420,8 +417,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [ M.read (| Value.String "Don't have Daniel's number.
+                                      Value.Array [ mk_str (| "Don't have Daniel's number.
 " |) ]
                                     |)
                                   |)
@@ -461,8 +457,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, contacts |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Daniel" |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "164-6743" |) |) |)
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Daniel" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "164-6743" |) |) |)
               ]
             |)
           |) in
@@ -492,7 +488,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   M.borrow (| Pointer.Kind.Ref, contacts |);
                   M.borrow (|
                     Pointer.Kind.Ref,
-                    M.deref (| M.borrow (| Pointer.Kind.Ref, Value.String "Ashley" |) |)
+                    M.deref (|
+                      M.borrow (| Pointer.Kind.Ref, M.alloc (| mk_str (| "Ashley" |) |) |)
+                    |)
                   |)
                 ]
               |)
@@ -527,11 +525,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     Pointer.Kind.Ref,
                                     M.alloc (|
                                       Value.Array
-                                        [
-                                          M.read (| Value.String "Calling Ashley: " |);
-                                          M.read (| Value.String "
-" |)
-                                        ]
+                                        [ mk_str (| "Calling Ashley: " |); mk_str (| "
+" |) ]
                                     |)
                                   |)
                                 |)
@@ -613,8 +608,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [ M.read (| Value.String "Don't have Ashley's number.
+                                      Value.Array [ mk_str (| "Don't have Ashley's number.
 " |) ]
                                     |)
                                   |)
@@ -656,7 +650,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 M.borrow (| Pointer.Kind.MutRef, contacts |);
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.deref (| M.borrow (| Pointer.Kind.Ref, Value.String "Ashley" |) |)
+                  M.deref (| M.borrow (| Pointer.Kind.Ref, M.alloc (| mk_str (| "Ashley" |) |) |) |)
                 |)
               ]
             |)
@@ -811,9 +805,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                     M.alloc (|
                                                       Value.Array
                                                         [
-                                                          M.read (| Value.String "Calling " |);
-                                                          M.read (| Value.String ": " |);
-                                                          M.read (| Value.String "
+                                                          mk_str (| "Calling " |);
+                                                          mk_str (| ": " |);
+                                                          mk_str (| "
 " |)
                                                         ]
                                                     |)

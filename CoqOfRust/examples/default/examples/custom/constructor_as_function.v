@@ -78,7 +78,7 @@ Module Impl_core_fmt_Debug_for_constructor_as_function_Constructor.
           |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Constructor" |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Constructor" |) |) |);
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -286,11 +286,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array
-                                [ M.read (| Value.String "" |); M.read (| Value.String "
-" |) ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "" |); mk_str (| "
+" |) ] |)
                           |)
                         |)
                       |);

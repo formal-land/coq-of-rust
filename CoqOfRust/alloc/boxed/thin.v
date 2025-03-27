@@ -1384,9 +1384,8 @@ Module boxed.
                                                               []
                                                             |),
                                                             [
-                                                              M.read (|
-                                                                Value.String
-                                                                  "assertion failed: value_offset == 0 && T::IS_ZST && H::IS_ZST"
+                                                              mk_str (|
+                                                                "assertion failed: value_offset == 0 && T::IS_ZST && H::IS_ZST"
                                                               |)
                                                             ]
                                                           |)
@@ -1787,9 +1786,8 @@ Module boxed.
                                                                   []
                                                                 |),
                                                                 [
-                                                                  M.read (|
-                                                                    Value.String
-                                                                      "assertion failed: value_offset == 0 && mem::size_of::<T>() == 0 && mem::size_of::<H>() == 0"
+                                                                  mk_str (|
+                                                                    "assertion failed: value_offset == 0 && mem::size_of::<T>() == 0 && mem::size_of::<H>() == 0"
                                                                   |)
                                                                 ]
                                                               |)
@@ -2081,11 +2079,7 @@ Module boxed.
                             M.call_closure (|
                               Ty.path "never",
                               M.get_function (| "core::panicking::panic", [], [] |),
-                              [
-                                M.read (|
-                                  Value.String "assertion failed: mem::size_of::<T>() == 0"
-                                |)
-                              ]
+                              [ mk_str (| "assertion failed: mem::size_of::<T>() == 0" |) ]
                             |)
                           |)
                         |)));
@@ -2183,11 +2177,7 @@ Module boxed.
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
-                                        [
-                                          M.read (|
-                                            Value.String "assertion failed: value_ptr.is_aligned()"
-                                          |)
-                                        ]
+                                        [ mk_str (| "assertion failed: value_ptr.is_aligned()" |) ]
                                       |)
                                     |)
                                   |)));
@@ -2465,11 +2455,7 @@ Module boxed.
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
-                                        [
-                                          M.read (|
-                                            Value.String "assertion failed: hp.is_aligned()"
-                                          |)
-                                        ]
+                                        [ mk_str (| "assertion failed: hp.is_aligned()" |) ]
                                       |)
                                     |)
                                   |)));

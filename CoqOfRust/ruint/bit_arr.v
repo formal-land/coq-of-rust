@@ -40,7 +40,7 @@ Module bit_arr.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Bits" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Bits" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|

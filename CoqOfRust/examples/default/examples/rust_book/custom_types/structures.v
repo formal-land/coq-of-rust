@@ -29,8 +29,8 @@ Module Impl_core_fmt_Debug_for_structures_Person.
           |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Person" |) |) |);
-            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "name" |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Person" |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "name" |) |) |);
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -44,7 +44,7 @@ Module Impl_core_fmt_Debug_for_structures_Person.
                 |)
               |)
             |);
-            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "age" |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "age" |) |) |);
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -182,7 +182,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 [],
                 []
               |),
-              [ M.read (| Value.String "Peter" |) ]
+              [ mk_str (| "Peter" |) ]
             |)
           |) in
         let~ age : Ty.path "u8" := M.alloc (| Value.Integer IntegerKind.U8 27 |) in
@@ -213,11 +213,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array
-                                [ M.read (| Value.String "" |); M.read (| Value.String "
-" |) ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "" |); mk_str (| "
+" |) ] |)
                           |)
                         |)
                       |);
@@ -285,9 +282,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.alloc (|
                               Value.Array
                                 [
-                                  M.read (| Value.String "point coordinates: (" |);
-                                  M.read (| Value.String ", " |);
-                                  M.read (| Value.String ")
+                                  mk_str (| "point coordinates: (" |);
+                                  mk_str (| ", " |);
+                                  mk_str (| ")
 " |)
                                 ]
                             |)
@@ -389,9 +386,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.alloc (|
                               Value.Array
                                 [
-                                  M.read (| Value.String "second point: (" |);
-                                  M.read (| Value.String ", " |);
-                                  M.read (| Value.String ")
+                                  mk_str (| "second point: (" |);
+                                  mk_str (| ", " |);
+                                  mk_str (| ")
 " |)
                                 ]
                             |)
@@ -522,9 +519,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.alloc (|
                                       Value.Array
                                         [
-                                          M.read (| Value.String "pair contains " |);
-                                          M.read (| Value.String " and " |);
-                                          M.read (| Value.String "
+                                          mk_str (| "pair contains " |);
+                                          mk_str (| " and " |);
+                                          mk_str (| "
 " |)
                                         ]
                                     |)
@@ -637,9 +634,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             M.alloc (|
                                               Value.Array
                                                 [
-                                                  M.read (| Value.String "pair contains " |);
-                                                  M.read (| Value.String " and " |);
-                                                  M.read (| Value.String "
+                                                  mk_str (| "pair contains " |);
+                                                  mk_str (| " and " |);
+                                                  mk_str (| "
 " |)
                                                 ]
                                             |)

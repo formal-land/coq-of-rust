@@ -125,10 +125,7 @@ Module reference_safety.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Reference" |) |)
-                            |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Reference" |) |) |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -160,7 +157,7 @@ Module reference_safety.
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "NonReference" |) |)
+                              M.deref (| mk_str (| "NonReference" |) |)
                             |)
                           ]
                         |)
@@ -678,10 +675,7 @@ Module reference_safety.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Local" |) |)
-                            |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Local" |) |) |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -713,10 +707,7 @@ Module reference_safety.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Global" |) |)
-                            |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Global" |) |) |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -748,10 +739,7 @@ Module reference_safety.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Field" |) |)
-                            |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Field" |) |) |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -1565,9 +1553,7 @@ Module reference_safety.
                                   M.deref (|
                                     M.borrow (|
                                       Pointer.Kind.Ref,
-                                      M.alloc (|
-                                        Value.Array [ M.read (| Value.String "local#" |) ]
-                                      |)
+                                      M.alloc (| Value.Array [ mk_str (| "local#" |) ] |)
                                     |)
                                   |)
                                 |);
@@ -1645,9 +1631,7 @@ Module reference_safety.
                                   M.deref (|
                                     M.borrow (|
                                       Pointer.Kind.Ref,
-                                      M.alloc (|
-                                        Value.Array [ M.read (| Value.String "resource@" |) ]
-                                      |)
+                                      M.alloc (| Value.Array [ mk_str (| "resource@" |) ] |)
                                     |)
                                   |)
                                 |);
@@ -1733,9 +1717,7 @@ Module reference_safety.
                                   M.deref (|
                                     M.borrow (|
                                       Pointer.Kind.Ref,
-                                      M.alloc (|
-                                        Value.Array [ M.read (| Value.String "field#" |) ]
-                                      |)
+                                      M.alloc (| Value.Array [ mk_str (| "field#" |) ] |)
                                     |)
                                   |)
                                 |);
@@ -2100,14 +2082,8 @@ Module reference_safety.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "AbstractState" |) |)
-                |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "current_function" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "AbstractState" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "current_function" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -2121,7 +2097,7 @@ Module reference_safety.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "locals" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "locals" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -2135,10 +2111,7 @@ Module reference_safety.
                     |)
                   |)
                 |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "borrow_graph" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "borrow_graph" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -2152,7 +2125,7 @@ Module reference_safety.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "next_id" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "next_id" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -3070,7 +3043,7 @@ Module reference_safety.
                             M.call_closure (|
                               Ty.path "never",
                               M.get_function (| "core::panicking::panic", [], [] |),
-                              [ M.read (| Value.String "assertion failed: state.is_canonical()" |) ]
+                              [ mk_str (| "assertion failed: state.is_canonical()" |) ]
                             |)
                           |)
                         |)));
@@ -5010,11 +4983,7 @@ Module reference_safety.
                             M.call_closure (|
                               Ty.path "never",
                               M.get_function (| "core::panicking::panic", [], [] |),
-                              [
-                                M.read (|
-                                  Value.String "assertion failed: self.borrow_graph.is_mutable(id)"
-                                |)
-                              ]
+                              [ mk_str (| "assertion failed: self.borrow_graph.is_mutable(id)" |) ]
                             |)
                           |)
                         |)));
@@ -5110,11 +5079,7 @@ Module reference_safety.
                             M.call_closure (|
                               Ty.path "never",
                               M.get_function (| "core::panicking::panic", [], [] |),
-                              [
-                                M.read (|
-                                  Value.String "assertion failed: self.borrow_graph.is_mutable(id)"
-                                |)
-                              ]
+                              [ mk_str (| "assertion failed: self.borrow_graph.is_mutable(id)" |) ]
                             |)
                           |)
                         |)));
@@ -5765,9 +5730,8 @@ Module reference_safety.
                                                             M.alloc (|
                                                               Value.Array
                                                                 [
-                                                                  M.read (|
-                                                                    Value.String
-                                                                      "crates/move-bytecode-verifier/src/reference_safety/abstract_state.rs:305 (none)"
+                                                                  mk_str (|
+                                                                    "crates/move-bytecode-verifier/src/reference_safety/abstract_state.rs:305 (none)"
                                                                   |)
                                                                 ]
                                                             |)
@@ -5858,9 +5822,7 @@ Module reference_safety.
                                                   M.deref (|
                                                     M.borrow (|
                                                       Pointer.Kind.Ref,
-                                                      M.alloc (|
-                                                        Value.Array [ M.read (| Value.String "" |) ]
-                                                      |)
+                                                      M.alloc (| Value.Array [ mk_str (| "" |) ] |)
                                                     |)
                                                   |)
                                                 |);
@@ -6330,9 +6292,8 @@ Module reference_safety.
                                                                             M.alloc (|
                                                                               Value.Array
                                                                                 [
-                                                                                  M.read (|
-                                                                                    Value.String
-                                                                                      "crates/move-bytecode-verifier/src/reference_safety/abstract_state.rs:325 (none)"
+                                                                                  mk_str (|
+                                                                                    "crates/move-bytecode-verifier/src/reference_safety/abstract_state.rs:325 (none)"
                                                                                   |)
                                                                                 ]
                                                                             |)
@@ -6443,11 +6404,7 @@ Module reference_safety.
                                                                               Pointer.Kind.Ref,
                                                                               M.alloc (|
                                                                                 Value.Array
-                                                                                  [
-                                                                                    M.read (|
-                                                                                      Value.String
-                                                                                        ""
-                                                                                    |)
+                                                                                  [ mk_str (| "" |)
                                                                                   ]
                                                                               |)
                                                                             |)
@@ -6878,9 +6835,8 @@ Module reference_safety.
                                                                             M.alloc (|
                                                                               Value.Array
                                                                                 [
-                                                                                  M.read (|
-                                                                                    Value.String
-                                                                                      "crates/move-bytecode-verifier/src/reference_safety/abstract_state.rs:344 (none)"
+                                                                                  mk_str (|
+                                                                                    "crates/move-bytecode-verifier/src/reference_safety/abstract_state.rs:344 (none)"
                                                                                   |)
                                                                                 ]
                                                                             |)
@@ -6991,11 +6947,7 @@ Module reference_safety.
                                                                               Pointer.Kind.Ref,
                                                                               M.alloc (|
                                                                                 Value.Array
-                                                                                  [
-                                                                                    M.read (|
-                                                                                      Value.String
-                                                                                        ""
-                                                                                    |)
+                                                                                  [ mk_str (| "" |)
                                                                                   ]
                                                                               |)
                                                                             |)
@@ -7586,11 +7538,7 @@ Module reference_safety.
                                           M.call_closure (|
                                             Ty.path "never",
                                             M.get_function (| "core::panicking::panic", [], [] |),
-                                            [
-                                              M.read (|
-                                                Value.String "assertion failed: v1.is_value()"
-                                              |)
-                                            ]
+                                            [ mk_str (| "assertion failed: v1.is_value()" |) ]
                                           |)
                                         |)
                                       |)));
@@ -7631,11 +7579,7 @@ Module reference_safety.
                                           M.call_closure (|
                                             Ty.path "never",
                                             M.get_function (| "core::panicking::panic", [], [] |),
-                                            [
-                                              M.read (|
-                                                Value.String "assertion failed: v2.is_value()"
-                                              |)
-                                            ]
+                                            [ mk_str (| "assertion failed: v2.is_value()" |) ]
                                           |)
                                         |)
                                       |)));
@@ -8730,9 +8674,8 @@ Module reference_safety.
                                                               M.alloc (|
                                                                 Value.Array
                                                                   [
-                                                                    M.read (|
-                                                                      Value.String
-                                                                        "crates/move-bytecode-verifier/src/reference_safety/abstract_state.rs:486 (none)"
+                                                                    mk_str (|
+                                                                      "crates/move-bytecode-verifier/src/reference_safety/abstract_state.rs:486 (none)"
                                                                     |)
                                                                   ]
                                                               |)
@@ -8822,8 +8765,7 @@ Module reference_safety.
                                                       M.borrow (|
                                                         Pointer.Kind.Ref,
                                                         M.alloc (|
-                                                          Value.Array
-                                                            [ M.read (| Value.String "" |) ]
+                                                          Value.Array [ mk_str (| "" |) ]
                                                         |)
                                                       |)
                                                     |)
@@ -9114,9 +9056,8 @@ Module reference_safety.
                                                               M.alloc (|
                                                                 Value.Array
                                                                   [
-                                                                    M.read (|
-                                                                      Value.String
-                                                                        "crates/move-bytecode-verifier/src/reference_safety/abstract_state.rs:500 (none)"
+                                                                    mk_str (|
+                                                                      "crates/move-bytecode-verifier/src/reference_safety/abstract_state.rs:500 (none)"
                                                                     |)
                                                                   ]
                                                               |)
@@ -9206,8 +9147,7 @@ Module reference_safety.
                                                       M.borrow (|
                                                         Pointer.Kind.Ref,
                                                         M.alloc (|
-                                                          Value.Array
-                                                            [ M.read (| Value.String "" |) ]
+                                                          Value.Array [ mk_str (| "" |) ]
                                                         |)
                                                       |)
                                                     |)
@@ -12867,11 +12807,7 @@ Module reference_safety.
                             M.call_closure (|
                               Ty.path "never",
                               M.get_function (| "core::panicking::panic", [], [] |),
-                              [
-                                M.read (|
-                                  Value.String "assertion failed: self.locals.len() == locals.len()"
-                                |)
-                              ]
+                              [ mk_str (| "assertion failed: self.locals.len() == locals.len()" |) ]
                             |)
                           |)
                         |)));
@@ -13027,11 +12963,7 @@ Module reference_safety.
                             M.call_closure (|
                               Ty.path "never",
                               M.get_function (| "core::panicking::panic", [], [] |),
-                              [
-                                M.read (|
-                                  Value.String "assertion failed: canonical_state.is_canonical()"
-                                |)
-                              ]
+                              [ mk_str (| "assertion failed: canonical_state.is_canonical()" |) ]
                             |)
                           |)
                         |)));
@@ -13672,9 +13604,8 @@ Module reference_safety.
                               Ty.path "never",
                               M.get_function (| "core::panicking::panic", [], [] |),
                               [
-                                M.read (|
-                                  Value.String
-                                    "assertion failed: self.current_function == other.current_function"
+                                mk_str (|
+                                  "assertion failed: self.current_function == other.current_function"
                                 |)
                               ]
                             |)
@@ -13739,9 +13670,8 @@ Module reference_safety.
                               Ty.path "never",
                               M.get_function (| "core::panicking::panic", [], [] |),
                               [
-                                M.read (|
-                                  Value.String
-                                    "assertion failed: self.is_canonical() && other.is_canonical()"
+                                mk_str (|
+                                  "assertion failed: self.is_canonical() && other.is_canonical()"
                                 |)
                               ]
                             |)
@@ -13786,11 +13716,7 @@ Module reference_safety.
                             M.call_closure (|
                               Ty.path "never",
                               M.get_function (| "core::panicking::panic", [], [] |),
-                              [
-                                M.read (|
-                                  Value.String "assertion failed: self.next_id == other.next_id"
-                                |)
-                              ]
+                              [ mk_str (| "assertion failed: self.next_id == other.next_id" |) ]
                             |)
                           |)
                         |)));
@@ -13872,9 +13798,8 @@ Module reference_safety.
                               Ty.path "never",
                               M.get_function (| "core::panicking::panic", [], [] |),
                               [
-                                M.read (|
-                                  Value.String
-                                    "assertion failed: self.locals.len() == other.locals.len()"
+                                mk_str (|
+                                  "assertion failed: self.locals.len() == other.locals.len()"
                                 |)
                               ]
                             |)
@@ -14525,9 +14450,8 @@ Module reference_safety.
                                                                         []
                                                                       |),
                                                                       [
-                                                                        M.read (|
-                                                                          Value.String
-                                                                            "assertion failed: v1 == v2"
+                                                                        mk_str (|
+                                                                          "assertion failed: v1 == v2"
                                                                         |)
                                                                       ]
                                                                     |)
@@ -14724,11 +14648,7 @@ Module reference_safety.
                                 M.call_closure (|
                                   Ty.path "never",
                                   M.get_function (| "core::panicking::panic", [], [] |),
-                                  [
-                                    M.read (|
-                                      Value.String "assertion failed: joined.is_canonical()"
-                                    |)
-                                  ]
+                                  [ mk_str (| "assertion failed: joined.is_canonical()" |) ]
                                 |)
                               |)
                             |)));
@@ -14810,9 +14730,8 @@ Module reference_safety.
                                   Ty.path "never",
                                   M.get_function (| "core::panicking::panic", [], [] |),
                                   [
-                                    M.read (|
-                                      Value.String
-                                        "assertion failed: self.locals.len() == joined.locals.len()"
+                                    mk_str (|
+                                      "assertion failed: self.locals.len() == joined.locals.len()"
                                     |)
                                   ]
                                 |)

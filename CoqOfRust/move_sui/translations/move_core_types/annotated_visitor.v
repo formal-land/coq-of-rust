@@ -1387,8 +1387,7 @@ Module annotated_visitor.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [ M.read (| Value.String "unexpected end of input" |) ]
+                                      Value.Array [ mk_str (| "unexpected end of input" |) ]
                                     |)
                                   |)
                                 |)
@@ -1440,9 +1439,7 @@ Module annotated_visitor.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Value.Array [ M.read (| Value.String "unexpected byte: " |) ]
-                                    |)
+                                    M.alloc (| Value.Array [ mk_str (| "unexpected byte: " |) ] |)
                                   |)
                                 |)
                               |);
@@ -1546,8 +1543,8 @@ Module annotated_visitor.
                                     M.alloc (|
                                       Value.Array
                                         [
-                                          M.read (| Value.String "trailing " |);
-                                          M.read (| Value.String " byte(s) at the end of input" |)
+                                          mk_str (| "trailing " |);
+                                          mk_str (| " byte(s) at the end of input" |)
                                         ]
                                     |)
                                   |)
@@ -1669,7 +1666,7 @@ Module annotated_visitor.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "UnexpectedEof" |) |)
+                            M.deref (| mk_str (| "UnexpectedEof" |) |)
                           |)
                         ]
                       |)
@@ -1700,7 +1697,7 @@ Module annotated_visitor.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "UnexpectedByte" |) |)
+                            M.deref (| mk_str (| "UnexpectedByte" |) |)
                           |);
                           M.borrow (|
                             Pointer.Kind.Ref,
@@ -1735,7 +1732,7 @@ Module annotated_visitor.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "TrailingBytes" |) |)
+                            M.deref (| mk_str (| "TrailingBytes" |) |)
                           |);
                           M.borrow (|
                             Pointer.Kind.Ref,

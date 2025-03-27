@@ -2,7 +2,7 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Definition value_LANGUAGE : Value.t :=
-  M.run_constant ltac:(M.monadic (M.alloc (| Value.String "Rust" |))).
+  M.run_constant ltac:(M.monadic (M.alloc (| M.alloc (| mk_str (| "Rust" |) |) |))).
 
 Axiom Constant_value_LANGUAGE : (M.get_constant "constants::LANGUAGE") = value_LANGUAGE.
 Global Hint Rewrite Constant_value_LANGUAGE : constant_rewrites.
@@ -73,14 +73,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "This is " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "This is " |); mk_str (| "
+" |) ] |)
                           |)
                         |)
                       |);
@@ -147,12 +141,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "The threshold is " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "The threshold is " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -218,13 +208,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "" |);
-                                  M.read (| Value.String " is " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "" |); mk_str (| " is " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -290,15 +275,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                         M.read (| γ |),
                                                         Value.Bool true
                                                       |) in
-                                                    Value.String "big"));
+                                                    M.alloc (| mk_str (| "big" |) |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
                                                     (M.alloc (|
                                                       M.borrow (|
                                                         Pointer.Kind.Ref,
-                                                        M.deref (|
-                                                          M.read (| Value.String "small" |)
-                                                        |)
+                                                        M.deref (| mk_str (| "small" |) |)
                                                       |)
                                                     |)))
                                               ]

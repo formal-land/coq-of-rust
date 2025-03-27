@@ -251,7 +251,7 @@ Module iter.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "FromCoroutine" |) |)
+                            M.deref (| mk_str (| "FromCoroutine" |) |)
                           |)
                         ]
                       |)

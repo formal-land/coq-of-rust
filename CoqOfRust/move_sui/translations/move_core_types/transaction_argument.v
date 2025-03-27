@@ -1308,9 +1308,9 @@ Module transaction_argument.
                           |),
                           [
                             M.read (| __serializer |);
-                            M.read (| Value.String "TransactionArgument" |);
+                            mk_str (| "TransactionArgument" |);
                             Value.Integer IntegerKind.U32 0;
-                            M.read (| Value.String "U8" |);
+                            mk_str (| "U8" |);
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                           ]
                         |)
@@ -1344,9 +1344,9 @@ Module transaction_argument.
                           |),
                           [
                             M.read (| __serializer |);
-                            M.read (| Value.String "TransactionArgument" |);
+                            mk_str (| "TransactionArgument" |);
                             Value.Integer IntegerKind.U32 1;
-                            M.read (| Value.String "U64" |);
+                            mk_str (| "U64" |);
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                           ]
                         |)
@@ -1380,9 +1380,9 @@ Module transaction_argument.
                           |),
                           [
                             M.read (| __serializer |);
-                            M.read (| Value.String "TransactionArgument" |);
+                            mk_str (| "TransactionArgument" |);
                             Value.Integer IntegerKind.U32 2;
-                            M.read (| Value.String "U128" |);
+                            mk_str (| "U128" |);
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                           ]
                         |)
@@ -1416,9 +1416,9 @@ Module transaction_argument.
                           |),
                           [
                             M.read (| __serializer |);
-                            M.read (| Value.String "TransactionArgument" |);
+                            mk_str (| "TransactionArgument" |);
                             Value.Integer IntegerKind.U32 3;
-                            M.read (| Value.String "Address" |);
+                            mk_str (| "Address" |);
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                           ]
                         |)
@@ -1455,9 +1455,9 @@ Module transaction_argument.
                           |),
                           [
                             M.read (| __serializer |);
-                            M.read (| Value.String "TransactionArgument" |);
+                            mk_str (| "TransactionArgument" |);
                             Value.Integer IntegerKind.U32 4;
-                            M.read (| Value.String "U8Vector" |);
+                            mk_str (| "U8Vector" |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (|
@@ -1514,9 +1514,9 @@ Module transaction_argument.
                           |),
                           [
                             M.read (| __serializer |);
-                            M.read (| Value.String "TransactionArgument" |);
+                            mk_str (| "TransactionArgument" |);
                             Value.Integer IntegerKind.U32 5;
-                            M.read (| Value.String "Bool" |);
+                            mk_str (| "Bool" |);
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                           ]
                         |)
@@ -1550,9 +1550,9 @@ Module transaction_argument.
                           |),
                           [
                             M.read (| __serializer |);
-                            M.read (| Value.String "TransactionArgument" |);
+                            mk_str (| "TransactionArgument" |);
                             Value.Integer IntegerKind.U32 6;
-                            M.read (| Value.String "U16" |);
+                            mk_str (| "U16" |);
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                           ]
                         |)
@@ -1586,9 +1586,9 @@ Module transaction_argument.
                           |),
                           [
                             M.read (| __serializer |);
-                            M.read (| Value.String "TransactionArgument" |);
+                            mk_str (| "TransactionArgument" |);
                             Value.Integer IntegerKind.U32 7;
-                            M.read (| Value.String "U32" |);
+                            mk_str (| "U32" |);
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                           ]
                         |)
@@ -1622,9 +1622,9 @@ Module transaction_argument.
                           |),
                           [
                             M.read (| __serializer |);
-                            M.read (| Value.String "TransactionArgument" |);
+                            mk_str (| "TransactionArgument" |);
                             Value.Integer IntegerKind.U32 8;
-                            M.read (| Value.String "U256" |);
+                            mk_str (| "U256" |);
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                           ]
                         |)
@@ -1672,7 +1672,7 @@ Module transaction_argument.
               |),
               [
                 M.read (| __deserializer |);
-                M.read (| Value.String "TransactionArgument" |);
+                mk_str (| "TransactionArgument" |);
                 M.read (|
                   M.get_constant "move_core_types::transaction_argument::_'1::deserialize::VARIANTS"
                 |);
@@ -1723,7 +1723,7 @@ Module transaction_argument.
               |),
               [
                 M.read (| __deserializer |);
-                M.read (| Value.String "VecBytes" |);
+                mk_str (| "VecBytes" |);
                 Value.StructRecord
                   "move_core_types::transaction_argument::_'2::deserialize::__Visitor"
                   [
@@ -1821,11 +1821,7 @@ Module transaction_argument.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "{U8: " |);
-                                          M.read (| Value.String "}" |)
-                                        ]
+                                      Value.Array [ mk_str (| "{U8: " |); mk_str (| "}" |) ]
                                     |)
                                   |)
                                 |)
@@ -1903,11 +1899,7 @@ Module transaction_argument.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "{U64: " |);
-                                          M.read (| Value.String "}" |)
-                                        ]
+                                      Value.Array [ mk_str (| "{U64: " |); mk_str (| "}" |) ]
                                     |)
                                   |)
                                 |)
@@ -1985,11 +1977,7 @@ Module transaction_argument.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "{U128: " |);
-                                          M.read (| Value.String "}" |)
-                                        ]
+                                      Value.Array [ mk_str (| "{U128: " |); mk_str (| "}" |) ]
                                     |)
                                   |)
                                 |)
@@ -2067,11 +2055,7 @@ Module transaction_argument.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "{BOOL: " |);
-                                          M.read (| Value.String "}" |)
-                                        ]
+                                      Value.Array [ mk_str (| "{BOOL: " |); mk_str (| "}" |) ]
                                     |)
                                   |)
                                 |)
@@ -2151,11 +2135,7 @@ Module transaction_argument.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "{ADDRESS: " |);
-                                          M.read (| Value.String "}" |)
-                                        ]
+                                      Value.Array [ mk_str (| "{ADDRESS: " |); mk_str (| "}" |) ]
                                     |)
                                   |)
                                 |)
@@ -2243,11 +2223,7 @@ Module transaction_argument.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "{U8Vector: 0x" |);
-                                          M.read (| Value.String "}" |)
-                                        ]
+                                      Value.Array [ mk_str (| "{U8Vector: 0x" |); mk_str (| "}" |) ]
                                     |)
                                   |)
                                 |)
@@ -2353,11 +2329,7 @@ Module transaction_argument.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "{U16: " |);
-                                          M.read (| Value.String "}" |)
-                                        ]
+                                      Value.Array [ mk_str (| "{U16: " |); mk_str (| "}" |) ]
                                     |)
                                   |)
                                 |)
@@ -2435,11 +2407,7 @@ Module transaction_argument.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "{U32: " |);
-                                          M.read (| Value.String "}" |)
-                                        ]
+                                      Value.Array [ mk_str (| "{U32: " |); mk_str (| "}" |) ]
                                     |)
                                   |)
                                 |)
@@ -2517,11 +2485,7 @@ Module transaction_argument.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "{U256: " |);
-                                          M.read (| Value.String "}" |)
-                                        ]
+                                      Value.Array [ mk_str (| "{U256: " |); mk_str (| "}" |) ]
                                     |)
                                   |)
                                 |)
@@ -3219,9 +3183,8 @@ Module transaction_argument.
                                                                                                                   M.alloc (|
                                                                                                                     Value.Array
                                                                                                                       [
-                                                                                                                        M.read (|
-                                                                                                                          Value.String
-                                                                                                                            "unexpected value in bytes: "
+                                                                                                                        mk_str (|
+                                                                                                                          "unexpected value in bytes: "
                                                                                                                         |)
                                                                                                                       ]
                                                                                                                   |)
@@ -3453,9 +3416,8 @@ Module transaction_argument.
                                                                               M.alloc (|
                                                                                 Value.Array
                                                                                   [
-                                                                                    M.read (|
-                                                                                      Value.String
-                                                                                        "invalid transaction argument: "
+                                                                                    mk_str (|
+                                                                                      "invalid transaction argument: "
                                                                                     |)
                                                                                   ]
                                                                               |)
@@ -3836,9 +3798,7 @@ Module transaction_argument.
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.deref (|
-                                          M.read (|
-                                            Value.String "transaction arguments must serialize"
-                                          |)
+                                          mk_str (| "transaction arguments must serialize" |)
                                         |)
                                       |)
                                     ]

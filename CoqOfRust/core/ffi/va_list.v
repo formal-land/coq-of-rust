@@ -50,14 +50,8 @@ Module ffi.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "VaListImpl" |) |)
-                |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "gp_offset" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "VaListImpl" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "gp_offset" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -71,10 +65,7 @@ Module ffi.
                     |)
                   |)
                 |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "fp_offset" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "fp_offset" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -88,10 +79,7 @@ Module ffi.
                     |)
                   |)
                 |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "overflow_arg_area" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "overflow_arg_area" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -105,10 +93,7 @@ Module ffi.
                     |)
                   |)
                 |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "reg_save_area" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "reg_save_area" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -122,7 +107,7 @@ Module ffi.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "_marker" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "_marker" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -194,8 +179,8 @@ Module ffi.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "VaList" |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "inner" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "VaList" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "inner" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -209,7 +194,7 @@ Module ffi.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "_marker" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "_marker" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|

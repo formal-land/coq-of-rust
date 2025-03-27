@@ -263,11 +263,7 @@ Module slice.
                         Pointer.Kind.Ref,
                         M.alloc (|
                           Value.Array
-                            [
-                              M.read (|
-                                Value.String "attempted to index slice from after maximum usize"
-                              |)
-                            ]
+                            [ mk_str (| "attempted to index slice from after maximum usize" |) ]
                         |)
                       |)
                     |)
@@ -319,11 +315,7 @@ Module slice.
                         Pointer.Kind.Ref,
                         M.alloc (|
                           Value.Array
-                            [
-                              M.read (|
-                                Value.String "attempted to index slice up to maximum usize"
-                              |)
-                            ]
+                            [ mk_str (| "attempted to index slice up to maximum usize" |) ]
                         |)
                       |)
                     |)

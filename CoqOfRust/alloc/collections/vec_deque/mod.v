@@ -1013,10 +1013,10 @@ Module collections.
                                                     M.alloc (|
                                                       Value.Array
                                                         [
-                                                          M.read (| Value.String "cpy dst=" |);
-                                                          M.read (| Value.String " src=" |);
-                                                          M.read (| Value.String " len=" |);
-                                                          M.read (| Value.String " cap=" |)
+                                                          mk_str (| "cpy dst=" |);
+                                                          mk_str (| " src=" |);
+                                                          mk_str (| " len=" |);
+                                                          mk_str (| " cap=" |)
                                                         ]
                                                     |)
                                                   |)
@@ -1226,10 +1226,10 @@ Module collections.
                                                     M.alloc (|
                                                       Value.Array
                                                         [
-                                                          M.read (| Value.String "cpy dst=" |);
-                                                          M.read (| Value.String " src=" |);
-                                                          M.read (| Value.String " len=" |);
-                                                          M.read (| Value.String " cap=" |)
+                                                          mk_str (| "cpy dst=" |);
+                                                          mk_str (| " src=" |);
+                                                          mk_str (| " len=" |);
+                                                          mk_str (| " cap=" |)
                                                         ]
                                                     |)
                                                   |)
@@ -1550,10 +1550,10 @@ Module collections.
                                                     M.alloc (|
                                                       Value.Array
                                                         [
-                                                          M.read (| Value.String "cno dst=" |);
-                                                          M.read (| Value.String " src=" |);
-                                                          M.read (| Value.String " len=" |);
-                                                          M.read (| Value.String " cap=" |)
+                                                          mk_str (| "cno dst=" |);
+                                                          mk_str (| " src=" |);
+                                                          mk_str (| " len=" |);
+                                                          mk_str (| " cap=" |)
                                                         ]
                                                     |)
                                                   |)
@@ -1763,10 +1763,10 @@ Module collections.
                                                     M.alloc (|
                                                       Value.Array
                                                         [
-                                                          M.read (| Value.String "cno dst=" |);
-                                                          M.read (| Value.String " src=" |);
-                                                          M.read (| Value.String " len=" |);
-                                                          M.read (| Value.String " cap=" |)
+                                                          mk_str (| "cno dst=" |);
+                                                          mk_str (| " src=" |);
+                                                          mk_str (| " len=" |);
+                                                          mk_str (| " cap=" |)
                                                         ]
                                                     |)
                                                   |)
@@ -2250,10 +2250,10 @@ Module collections.
                                                         M.alloc (|
                                                           Value.Array
                                                             [
-                                                              M.read (| Value.String "wrc dst=" |);
-                                                              M.read (| Value.String " src=" |);
-                                                              M.read (| Value.String " len=" |);
-                                                              M.read (| Value.String " cap=" |)
+                                                              mk_str (| "wrc dst=" |);
+                                                              mk_str (| " src=" |);
+                                                              mk_str (| " len=" |);
+                                                              mk_str (| " cap=" |)
                                                             ]
                                                         |)
                                                       |)
@@ -2874,9 +2874,8 @@ Module collections.
                                                       []
                                                     |),
                                                     [
-                                                      M.read (|
-                                                        Value.String
-                                                          "assertion failed: dst_pre_wrap_len > src_pre_wrap_len"
+                                                      mk_str (|
+                                                        "assertion failed: dst_pre_wrap_len > src_pre_wrap_len"
                                                       |)
                                                     ]
                                                   |)
@@ -3031,9 +3030,8 @@ Module collections.
                                                       []
                                                     |),
                                                     [
-                                                      M.read (|
-                                                        Value.String
-                                                          "assertion failed: src_pre_wrap_len > dst_pre_wrap_len"
+                                                      mk_str (|
+                                                        "assertion failed: src_pre_wrap_len > dst_pre_wrap_len"
                                                       |)
                                                     ]
                                                   |)
@@ -3263,9 +3261,8 @@ Module collections.
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
                                         [
-                                          M.read (|
-                                            Value.String
-                                              "assertion failed: src.len() <= self.capacity()"
+                                          mk_str (|
+                                            "assertion failed: src.len() <= self.capacity()"
                                           |)
                                         ]
                                       |)
@@ -4102,9 +4099,8 @@ Module collections.
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
                                         [
-                                          M.read (|
-                                            Value.String
-                                              "assertion failed: new_capacity >= old_capacity"
+                                          mk_str (|
+                                            "assertion failed: new_capacity >= old_capacity"
                                           |)
                                         ]
                                       |)
@@ -4373,9 +4369,8 @@ Module collections.
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
                                         [
-                                          M.read (|
-                                            Value.String
-                                              "assertion failed: self.head < self.capacity() || self.capacity() == 0"
+                                          mk_str (|
+                                            "assertion failed: self.head < self.capacity() || self.capacity() == 0"
                                           |)
                                         ]
                                       |)
@@ -4567,9 +4562,8 @@ Module collections.
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
                                         [
-                                          M.read (|
-                                            Value.String
-                                              "assertion failed: initialized.start <= initialized.end"
+                                          mk_str (|
+                                            "assertion failed: initialized.start <= initialized.end"
                                           |)
                                         ]
                                       |)
@@ -4626,9 +4620,8 @@ Module collections.
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
                                         [
-                                          M.read (|
-                                            Value.String
-                                              "assertion failed: initialized.end <= capacity"
+                                          mk_str (|
+                                            "assertion failed: initialized.end <= capacity"
                                           |)
                                         ]
                                       |)
@@ -5005,7 +4998,7 @@ Module collections.
                             M.call_closure (|
                               Ty.path "never",
                               M.get_function (| "core::panicking::panic", [], [] |),
-                              [ M.read (| Value.String "assertion failed: i < self.len()" |) ]
+                              [ mk_str (| "assertion failed: i < self.len()" |) ]
                             |)
                           |)
                         |)));
@@ -5053,7 +5046,7 @@ Module collections.
                             M.call_closure (|
                               Ty.path "never",
                               M.get_function (| "core::panicking::panic", [], [] |),
-                              [ M.read (| Value.String "assertion failed: j < self.len()" |) ]
+                              [ mk_str (| "assertion failed: j < self.len()" |) ]
                             |)
                           |)
                         |)));
@@ -5269,7 +5262,7 @@ Module collections.
                       |);
                       M.borrow (|
                         Pointer.Kind.Ref,
-                        M.deref (| M.read (| Value.String "capacity overflow" |) |)
+                        M.deref (| mk_str (| "capacity overflow" |) |)
                       |)
                     ]
                   |)
@@ -5412,7 +5405,7 @@ Module collections.
                       |);
                       M.borrow (|
                         Pointer.Kind.Ref,
-                        M.deref (| M.read (| Value.String "capacity overflow" |) |)
+                        M.deref (| mk_str (| "capacity overflow" |) |)
                       |)
                     ]
                   |)
@@ -7039,9 +7032,8 @@ Module collections.
                                             Ty.path "never",
                                             M.get_function (| "core::panicking::panic", [], [] |),
                                             [
-                                              M.read (|
-                                                Value.String
-                                                  "assertion failed: self.head < self.capacity() || self.capacity() == 0"
+                                              mk_str (|
+                                                "assertion failed: self.head < self.capacity() || self.capacity() == 0"
                                               |)
                                             ]
                                           |)
@@ -7116,9 +7108,8 @@ Module collections.
                                             Ty.path "never",
                                             M.get_function (| "core::panicking::panic", [], [] |),
                                             [
-                                              M.read (|
-                                                Value.String
-                                                  "assertion failed: self.len <= self.capacity()"
+                                              mk_str (|
+                                                "assertion failed: self.len <= self.capacity()"
                                               |)
                                             ]
                                           |)
@@ -10313,8 +10304,7 @@ Module collections.
                                         M.borrow (|
                                           Pointer.Kind.Ref,
                                           M.alloc (|
-                                            Value.Array
-                                              [ M.read (| Value.String "index out of bounds" |) ]
+                                            Value.Array [ mk_str (| "index out of bounds" |) ]
                                           |)
                                         |)
                                       |)
@@ -11027,8 +11017,7 @@ Module collections.
                                         M.borrow (|
                                           Pointer.Kind.Ref,
                                           M.alloc (|
-                                            Value.Array
-                                              [ M.read (| Value.String "`at` out of bounds" |) ]
+                                            Value.Array [ mk_str (| "`at` out of bounds" |) ]
                                           |)
                                         |)
                                       |)
@@ -11479,9 +11468,7 @@ Module collections.
                                             |);
                                             M.borrow (|
                                               Pointer.Kind.Ref,
-                                              M.deref (|
-                                                M.read (| Value.String "capacity overflow" |)
-                                              |)
+                                              M.deref (| mk_str (| "capacity overflow" |) |)
                                             |)
                                           ]
                                         |)
@@ -12308,11 +12295,7 @@ Module collections.
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
-                                        [
-                                          M.read (|
-                                            Value.String "assertion failed: self.is_full()"
-                                          |)
-                                        ]
+                                        [ mk_str (| "assertion failed: self.is_full()" |) ]
                                       |)
                                     |)
                                   |)));
@@ -12430,11 +12413,7 @@ Module collections.
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
-                                        [
-                                          M.read (|
-                                            Value.String "assertion failed: !self.is_full()"
-                                          |)
-                                        ]
+                                        [ mk_str (| "assertion failed: !self.is_full()" |) ]
                                       |)
                                     |)
                                   |)));
@@ -13566,7 +13545,7 @@ Module collections.
                             M.call_closure (|
                               Ty.path "never",
                               M.get_function (| "core::panicking::panic", [], [] |),
-                              [ M.read (| Value.String "assertion failed: n <= self.len()" |) ]
+                              [ mk_str (| "assertion failed: n <= self.len()" |) ]
                             |)
                           |)
                         |)));
@@ -13710,7 +13689,7 @@ Module collections.
                             M.call_closure (|
                               Ty.path "never",
                               M.get_function (| "core::panicking::panic", [], [] |),
-                              [ M.read (| Value.String "assertion failed: n <= self.len()" |) ]
+                              [ mk_str (| "assertion failed: n <= self.len()" |) ]
                             |)
                           |)
                         |)));
@@ -13869,11 +13848,7 @@ Module collections.
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
-                                        [
-                                          M.read (|
-                                            Value.String "assertion failed: mid * 2 <= self.len()"
-                                          |)
-                                        ]
+                                        [ mk_str (| "assertion failed: mid * 2 <= self.len()" |) ]
                                       |)
                                     |)
                                   |)));
@@ -14045,11 +14020,7 @@ Module collections.
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
-                                        [
-                                          M.read (|
-                                            Value.String "assertion failed: k * 2 <= self.len()"
-                                          |)
-                                        ]
+                                        [ mk_str (| "assertion failed: k * 2 <= self.len()" |) ]
                                       |)
                                     |)
                                   |)));
@@ -15434,9 +15405,8 @@ Module collections.
                                       Ty.path "never",
                                       M.get_function (| "core::panicking::panic", [], [] |),
                                       [
-                                        M.read (|
-                                          Value.String
-                                            "assertion failed: (logical_index == 0 && capacity == 0) || logical_index < capacity ||
+                                        mk_str (|
+                                          "assertion failed: (logical_index == 0 && capacity == 0) || logical_index < capacity ||
     (logical_index - capacity) < capacity"
                                         |)
                                       ]
@@ -18118,7 +18088,7 @@ Module collections.
                     |);
                     M.borrow (|
                       Pointer.Kind.Ref,
-                      M.deref (| M.read (| Value.String "Out of bounds access" |) |)
+                      M.deref (| mk_str (| "Out of bounds access" |) |)
                     |)
                   ]
                 |)
@@ -18194,7 +18164,7 @@ Module collections.
                         |);
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "Out of bounds access" |) |)
+                          M.deref (| mk_str (| "Out of bounds access" |) |)
                         |)
                       ]
                     |)

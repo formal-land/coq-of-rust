@@ -53,8 +53,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.borrow (|
                                   Pointer.Kind.Ref,
                                   M.alloc (|
-                                    Value.Array
-                                      [ M.read (| Value.String "Entered the outer loop
+                                    Value.Array [ mk_str (| "Entered the outer loop
 " |) ]
                                   |)
                                 |)
@@ -96,12 +95,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                               Pointer.Kind.Ref,
                                               M.alloc (|
                                                 Value.Array
-                                                  [
-                                                    M.read (|
-                                                      Value.String "Entered the inner loop
-"
-                                                    |)
-                                                  ]
+                                                  [ mk_str (| "Entered the inner loop
+" |) ]
                                               |)
                                             |)
                                           |)
@@ -139,13 +134,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.borrow (|
                                   Pointer.Kind.Ref,
                                   M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String "This point will never be reached
-"
-                                        |)
-                                      ]
+                                    Value.Array [ mk_str (| "This point will never be reached
+" |) ]
                                   |)
                                 |)
                               |)
@@ -179,10 +169,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array [ M.read (| Value.String "Exited the outer loop
-" |) ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "Exited the outer loop
+" |) ] |)
                           |)
                         |)
                       |)

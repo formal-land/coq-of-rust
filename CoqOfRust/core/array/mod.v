@@ -423,10 +423,7 @@ Module array.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "TryFromSliceError" |) |)
-              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "TryFromSliceError" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -569,7 +566,7 @@ Module array.
           (let self := M.alloc (| self |) in
           M.borrow (|
             Pointer.Kind.Ref,
-            M.deref (| M.read (| Value.String "could not convert slice to array" |) |)
+            M.deref (| mk_str (| "could not convert slice to array" |) |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -6911,7 +6908,7 @@ Module array.
                         M.call_closure (|
                           Ty.path "never",
                           M.get_function (| "core::panicking::panic", [], [] |),
-                          [ M.read (| Value.String "assertion failed: iter.size_hint().0 >= N" |) ]
+                          [ mk_str (| "assertion failed: iter.size_hint().0 >= N" |) ]
                         |)
                       |)
                     |)));
@@ -7564,9 +7561,8 @@ Module array.
                                       Ty.path "never",
                                       M.get_function (| "core::panicking::panic", [], [] |),
                                       [
-                                        M.read (|
-                                          Value.String
-                                            "assertion failed: self.initialized <= self.array_mut.len()"
+                                        mk_str (|
+                                          "assertion failed: self.initialized <= self.array_mut.len()"
                                         |)
                                       ]
                                     |)

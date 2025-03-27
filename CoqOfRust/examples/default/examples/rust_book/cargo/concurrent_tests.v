@@ -44,7 +44,7 @@ Definition foo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.deref (|
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.alloc (| Value.Array [ M.read (| Value.String "some
+                                  M.alloc (| Value.Array [ mk_str (| "some
 " |) ] |)
                                 |)
                               |)
@@ -78,7 +78,7 @@ Definition foo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.deref (|
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.alloc (| Value.Array [ M.read (| Value.String "nothing
+                                  M.alloc (| Value.Array [ mk_str (| "nothing
 " |) ] |)
                                 |)
                               |)
@@ -196,12 +196,12 @@ Module tests.
                           |)
                         |)
                       |);
-                      M.read (| Value.String "ferris.txt" |)
+                      mk_str (| "ferris.txt" |)
                     ]
                   |);
                   M.borrow (|
                     Pointer.Kind.Ref,
-                    M.deref (| M.read (| Value.String "Failed to open ferris.txt" |) |)
+                    M.deref (| mk_str (| "Failed to open ferris.txt" |) |)
                   |)
                 ]
               |)
@@ -327,10 +327,8 @@ Module tests.
                                                     [
                                                       M.borrow (|
                                                         Pointer.Kind.Ref,
-                                                        M.deref (|
-                                                          M.read (| Value.String "Ferris
-" |)
-                                                        |)
+                                                        M.deref (| mk_str (| "Ferris
+" |) |)
                                                       |)
                                                     ]
                                                   |)
@@ -341,9 +339,7 @@ Module tests.
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.deref (|
-                                              M.read (|
-                                                Value.String "Could not write to ferris.txt"
-                                              |)
+                                              mk_str (| "Could not write to ferris.txt" |)
                                             |)
                                           |)
                                         ]
@@ -461,12 +457,12 @@ Module tests.
                           |)
                         |)
                       |);
-                      M.read (| Value.String "ferris.txt" |)
+                      mk_str (| "ferris.txt" |)
                     ]
                   |);
                   M.borrow (|
                     Pointer.Kind.Ref,
-                    M.deref (| M.read (| Value.String "Failed to open ferris.txt" |) |)
+                    M.deref (| mk_str (| "Failed to open ferris.txt" |) |)
                   |)
                 ]
               |)
@@ -592,10 +588,8 @@ Module tests.
                                                     [
                                                       M.borrow (|
                                                         Pointer.Kind.Ref,
-                                                        M.deref (|
-                                                          M.read (| Value.String "Corro
-" |)
-                                                        |)
+                                                        M.deref (| mk_str (| "Corro
+" |) |)
                                                       |)
                                                     ]
                                                   |)
@@ -606,9 +600,7 @@ Module tests.
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.deref (|
-                                              M.read (|
-                                                Value.String "Could not write to ferris.txt"
-                                              |)
+                                              mk_str (| "Could not write to ferris.txt" |)
                                             |)
                                           |)
                                         ]

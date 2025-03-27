@@ -88,10 +88,7 @@ Module interpreter.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "ReturnDataImpl" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ReturnDataImpl" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|

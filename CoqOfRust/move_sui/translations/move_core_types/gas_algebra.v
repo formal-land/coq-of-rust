@@ -145,7 +145,7 @@ Module gas_algebra.
                             |),
                             [
                               M.read (| __serializer |);
-                              M.read (| Value.String "GasQuantity" |);
+                              mk_str (| "GasQuantity" |);
                               BinOp.Wrap.add (|
                                 BinOp.Wrap.add (|
                                   M.cast (Ty.path "usize") (Value.Bool false),
@@ -221,7 +221,7 @@ Module gas_algebra.
                               Pointer.Kind.MutRef,
                               M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
                             |);
-                            M.read (| Value.String "val" |);
+                            mk_str (| "val" |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (|
@@ -302,7 +302,7 @@ Module gas_algebra.
                               Pointer.Kind.MutRef,
                               M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
                             |);
-                            M.read (| Value.String "phantom" |);
+                            mk_str (| "phantom" |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (|
@@ -422,7 +422,7 @@ Module gas_algebra.
               |),
               [
                 M.read (| __deserializer |);
-                M.read (| Value.String "GasQuantity" |);
+                mk_str (| "GasQuantity" |);
                 M.read (|
                   M.get_constant "move_core_types::gas_algebra::_'1::deserialize::FIELDS"
                 |);
@@ -1650,10 +1650,7 @@ Module gas_algebra.
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
-                      |)
+                      M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Array [ mk_str (| "" |) ] |) |)
                     |)
                   |);
                   M.borrow (|
@@ -1749,12 +1746,7 @@ Module gas_algebra.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "" |);
-                              M.read (| Value.String " (" |);
-                              M.read (| Value.String ")" |)
-                            ]
+                          Value.Array [ mk_str (| "" |); mk_str (| " (" |); mk_str (| ")" |) ]
                         |)
                       |)
                     |)

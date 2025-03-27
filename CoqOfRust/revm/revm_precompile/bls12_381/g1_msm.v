@@ -225,13 +225,10 @@ Module bls12_381.
                                                                       M.alloc (|
                                                                         Value.Array
                                                                           [
-                                                                            M.read (|
-                                                                              Value.String
-                                                                                "G1MSM input length should be multiple of "
+                                                                            mk_str (|
+                                                                              "G1MSM input length should be multiple of "
                                                                             |);
-                                                                            M.read (|
-                                                                              Value.String ", was "
-                                                                            |)
+                                                                            mk_str (| ", was " |)
                                                                           ]
                                                                       |)
                                                                     |)

@@ -3,8 +3,9 @@ Require Import CoqOfRust.CoqOfRust.
 
 Definition value_PANGRAM : Value.t :=
   M.run_constant
-    ltac:(M.monadic (M.alloc (| Value.String "the quick brown fox jumped over the lazy dog
-" |))).
+    ltac:(M.monadic
+      (M.alloc (| M.alloc (| mk_str (| "the quick brown fox jumped over the lazy dog
+" |) |) |))).
 
 Axiom Constant_value_PANGRAM : (M.get_constant "child_processes_pipes::PANGRAM") = value_PANGRAM.
 Global Hint Rewrite Constant_value_PANGRAM : constant_rewrites.
@@ -96,7 +97,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             [],
                                             [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                           |),
-                                          [ M.read (| Value.String "wc" |) ]
+                                          [ mk_str (| "wc" |) ]
                                         |)
                                       |)
                                     |);
@@ -161,8 +162,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
-                                        Value.Array
-                                          [ M.read (| Value.String "couldn't spawn wc: " |) ]
+                                        Value.Array [ mk_str (| "couldn't spawn wc: " |) ]
                                       |)
                                     |)
                                   |)
@@ -310,8 +310,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [ M.read (| Value.String "couldn't write to wc stdin: " |) ]
+                                      Value.Array [ mk_str (| "couldn't write to wc stdin: " |) ]
                                     |)
                                   |)
                                 |)
@@ -374,11 +373,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Value.Array
-                                        [ M.read (| Value.String "sent pangram to wc
-" |) ]
-                                    |)
+                                    M.alloc (| Value.Array [ mk_str (| "sent pangram to wc
+" |) ] |)
                                   |)
                                 |)
                               |)
@@ -477,8 +473,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.borrow (|
                                   Pointer.Kind.Ref,
                                   M.alloc (|
-                                    Value.Array
-                                      [ M.read (| Value.String "couldn't read wc stdout: " |) ]
+                                    Value.Array [ mk_str (| "couldn't read wc stdout: " |) ]
                                   |)
                                 |)
                               |)
@@ -542,10 +537,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.deref (|
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.alloc (|
-                                    Value.Array [ M.read (| Value.String "wc responded with:
-" |) ]
-                                  |)
+                                  M.alloc (| Value.Array [ mk_str (| "wc responded with:
+" |) ] |)
                                 |)
                               |)
                             |);

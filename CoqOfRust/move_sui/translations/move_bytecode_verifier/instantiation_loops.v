@@ -1430,10 +1430,7 @@ Module instantiation_loops.
                                 |)
                               |)
                             |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String ", " |) |)
-                            |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| ", " |) |) |)
                           ]
                         |)
                       |) in
@@ -1682,10 +1679,7 @@ Module instantiation_loops.
                                 |)
                               |)
                             |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String ", " |) |)
-                            |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| ", " |) |) |)
                           ]
                         |)
                       |) in
@@ -1726,11 +1720,9 @@ Module instantiation_loops.
                                                 M.alloc (|
                                                   Value.Array
                                                     [
-                                                      M.read (|
-                                                        Value.String "edges with constructors: ["
-                                                      |);
-                                                      M.read (| Value.String "], nodes: [" |);
-                                                      M.read (| Value.String "]" |)
+                                                      mk_str (| "edges with constructors: [" |);
+                                                      mk_str (| "], nodes: [" |);
+                                                      mk_str (| "]" |)
                                                     ]
                                                 |)
                                               |)
@@ -5635,11 +5627,7 @@ Module instantiation_loops.
                                             M.borrow (|
                                               Pointer.Kind.Ref,
                                               M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.read (| Value.String "f" |);
-                                                    M.read (| Value.String "#" |)
-                                                  ]
+                                                Value.Array [ mk_str (| "f" |); mk_str (| "#" |) ]
                                               |)
                                             |)
                                           |)
@@ -5974,9 +5962,9 @@ Module instantiation_loops.
                                                       M.alloc (|
                                                         Value.Array
                                                           [
-                                                            M.read (| Value.String "" |);
-                                                            M.read (| Value.String " --" |);
-                                                            M.read (| Value.String "--> " |)
+                                                            mk_str (| "" |);
+                                                            mk_str (| " --" |);
+                                                            mk_str (| "--> " |)
                                                           ]
                                                       |)
                                                     |)
@@ -6121,9 +6109,7 @@ Module instantiation_loops.
                                                       Pointer.Kind.Ref,
                                                       M.alloc (|
                                                         Value.Array
-                                                          [
-                                                            M.read (| Value.String "" |);
-                                                            M.read (| Value.String " ----> " |)
+                                                          [ mk_str (| "" |); mk_str (| " ----> " |)
                                                           ]
                                                       |)
                                                     |)

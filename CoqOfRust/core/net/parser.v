@@ -2042,9 +2042,8 @@ Module net.
                                                                             []
                                                                           |),
                                                                           [
-                                                                            M.read (|
-                                                                              Value.String
-                                                                                "assertion failed: max_digits < 10"
+                                                                            mk_str (|
+                                                                              "assertion failed: max_digits < 10"
                                                                             |)
                                                                           ]
                                                                         |)
@@ -7226,30 +7225,21 @@ Module net.
                           (let γ := M.read (| γ |) in
                           let _ := M.is_struct_tuple (| γ, "core::net::parser::AddrKind::Ip" |) in
                           M.alloc (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Ip" |) |)
-                            |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Ip" |) |) |)
                           |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
                           let _ := M.is_struct_tuple (| γ, "core::net::parser::AddrKind::Ipv4" |) in
                           M.alloc (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Ipv4" |) |)
-                            |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Ipv4" |) |) |)
                           |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
                           let _ := M.is_struct_tuple (| γ, "core::net::parser::AddrKind::Ipv6" |) in
                           M.alloc (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Ipv6" |) |)
-                            |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Ipv6" |) |) |)
                           |)));
                       fun γ =>
                         ltac:(M.monadic
@@ -7257,10 +7247,7 @@ Module net.
                           let _ :=
                             M.is_struct_tuple (| γ, "core::net::parser::AddrKind::Socket" |) in
                           M.alloc (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Socket" |) |)
-                            |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Socket" |) |) |)
                           |)));
                       fun γ =>
                         ltac:(M.monadic
@@ -7268,10 +7255,7 @@ Module net.
                           let _ :=
                             M.is_struct_tuple (| γ, "core::net::parser::AddrKind::SocketV4" |) in
                           M.alloc (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "SocketV4" |) |)
-                            |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "SocketV4" |) |) |)
                           |)));
                       fun γ =>
                         ltac:(M.monadic
@@ -7279,10 +7263,7 @@ Module net.
                           let _ :=
                             M.is_struct_tuple (| γ, "core::net::parser::AddrKind::SocketV6" |) in
                           M.alloc (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "SocketV6" |) |)
-                            |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "SocketV6" |) |) |)
                           |)))
                     ]
                   |)
@@ -7479,10 +7460,7 @@ Module net.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "AddrParseError" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "AddrParseError" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -7753,7 +7731,7 @@ Module net.
                       M.alloc (|
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "invalid IP address syntax" |) |)
+                          M.deref (| mk_str (| "invalid IP address syntax" |) |)
                         |)
                       |)));
                   fun γ =>
@@ -7762,7 +7740,7 @@ Module net.
                       M.alloc (|
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "invalid IPv4 address syntax" |) |)
+                          M.deref (| mk_str (| "invalid IPv4 address syntax" |) |)
                         |)
                       |)));
                   fun γ =>
@@ -7771,7 +7749,7 @@ Module net.
                       M.alloc (|
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "invalid IPv6 address syntax" |) |)
+                          M.deref (| mk_str (| "invalid IPv6 address syntax" |) |)
                         |)
                       |)));
                   fun γ =>
@@ -7780,7 +7758,7 @@ Module net.
                       M.alloc (|
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "invalid socket address syntax" |) |)
+                          M.deref (| mk_str (| "invalid socket address syntax" |) |)
                         |)
                       |)));
                   fun γ =>
@@ -7790,9 +7768,7 @@ Module net.
                       M.alloc (|
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.deref (|
-                            M.read (| Value.String "invalid IPv4 socket address syntax" |)
-                          |)
+                          M.deref (| mk_str (| "invalid IPv4 socket address syntax" |) |)
                         |)
                       |)));
                   fun γ =>
@@ -7802,9 +7778,7 @@ Module net.
                       M.alloc (|
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.deref (|
-                            M.read (| Value.String "invalid IPv6 socket address syntax" |)
-                          |)
+                          M.deref (| mk_str (| "invalid IPv6 socket address syntax" |) |)
                         |)
                       |)))
                 ]

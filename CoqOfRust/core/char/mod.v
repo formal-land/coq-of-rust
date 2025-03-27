@@ -256,10 +256,7 @@ Module char.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "EscapeUnicode" |) |)
-              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "EscapeUnicode" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -797,10 +794,7 @@ Module char.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "EscapeDefault" |) |)
-              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "EscapeDefault" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -1414,10 +1408,7 @@ Module char.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "EscapeDebug" |) |)
-              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "EscapeDebug" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -1617,10 +1608,7 @@ Module char.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Bytes" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Bytes" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -1652,10 +1640,7 @@ Module char.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Char" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Char" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -2271,10 +2256,7 @@ Module char.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "ToLowercase" |) |)
-              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ToLowercase" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -2986,10 +2968,7 @@ Module char.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "ToUppercase" |) |)
-              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ToUppercase" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -3707,10 +3686,7 @@ Module char.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "CaseMappingIter" |) |)
-              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CaseMappingIter" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -4830,10 +4806,7 @@ Module char.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "TryFromCharError" |) |)
-              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "TryFromCharError" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -5026,7 +4999,7 @@ Module char.
             [
               M.borrow (|
                 Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "unicode code point out of range" |) |)
+                M.deref (| mk_str (| "unicode code point out of range" |) |)
               |);
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| fmt |) |) |)
             ]

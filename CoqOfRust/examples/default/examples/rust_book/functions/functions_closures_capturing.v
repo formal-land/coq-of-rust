@@ -87,7 +87,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 [],
                 []
               |),
-              [ M.read (| Value.String "green" |) ]
+              [ mk_str (| "green" |) ]
             |)
           |) in
         let~ print : Ty.function [ Ty.tuple [] ] (Ty.tuple []) :=
@@ -130,11 +130,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                   Pointer.Kind.Ref,
                                                   M.alloc (|
                                                     Value.Array
-                                                      [
-                                                        M.read (| Value.String "`color`: " |);
-                                                        M.read (| Value.String "
-" |)
-                                                      ]
+                                                      [ mk_str (| "`color`: " |); mk_str (| "
+" |) ]
                                                   |)
                                                 |)
                                               |)
@@ -272,9 +269,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                     Pointer.Kind.Ref,
                                                     M.alloc (|
                                                       Value.Array
-                                                        [
-                                                          M.read (| Value.String "`count`: " |);
-                                                          M.read (| Value.String "
+                                                        [ mk_str (| "`count`: " |); mk_str (| "
 " |)
                                                         ]
                                                     |)
@@ -426,8 +421,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                     M.alloc (|
                                                       Value.Array
                                                         [
-                                                          M.read (| Value.String "`movable`: " |);
-                                                          M.read (| Value.String "
+                                                          mk_str (| "`movable`: " |);
+                                                          mk_str (| "
 " |)
                                                         ]
                                                     |)

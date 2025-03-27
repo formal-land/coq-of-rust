@@ -100,11 +100,8 @@ Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_move_abstract_stack_Abstra
           |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-            M.borrow (|
-              Pointer.Kind.Ref,
-              M.deref (| M.read (| Value.String "AbstractStack" |) |)
-            |);
-            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "values" |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "AbstractStack" |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "values" |) |) |);
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -118,7 +115,7 @@ Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_move_abstract_stack_Abstra
                 |)
               |)
             |);
-            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "len" |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "len" |) |) |);
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -289,9 +286,8 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                     Ty.path "never",
                                     M.get_function (| "core::panicking::panic", [], [] |),
                                     [
-                                      M.read (|
-                                        Value.String
-                                          "assertion failed: !self.values.is_empty() || self.len == 0"
+                                      mk_str (|
+                                        "assertion failed: !self.values.is_empty() || self.len == 0"
                                       |)
                                     ]
                                   |)
@@ -471,9 +467,8 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                     Ty.path "never",
                                     M.get_function (| "core::panicking::panic", [], [] |),
                                     [
-                                      M.read (|
-                                        Value.String
-                                          "assertion failed: self.values.is_empty() || self.values.last().unwrap().0 <= self.len"
+                                      mk_str (|
+                                        "assertion failed: self.values.is_empty() || self.values.last().unwrap().0 <= self.len"
                                       |)
                                     ]
                                   |)
@@ -609,9 +604,8 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                     Ty.path "never",
                                     M.get_function (| "core::panicking::panic", [], [] |),
                                     [
-                                      M.read (|
-                                        Value.String
-                                          "assertion failed: self.len != 0 || self.values.is_empty()"
+                                      mk_str (|
+                                        "assertion failed: self.len != 0 || self.values.is_empty()"
                                       |)
                                     ]
                                   |)
@@ -808,9 +802,8 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                     Ty.path "never",
                                     M.get_function (| "core::panicking::panic", [], [] |),
                                     [
-                                      M.read (|
-                                        Value.String
-                                          "assertion failed: self.len == 0 ||
+                                      mk_str (|
+                                        "assertion failed: self.len == 0 ||
     (!self.values.is_empty() && self.values.last().unwrap().0 <= self.len)"
                                       |)
                                     ]
@@ -1121,9 +1114,8 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                                             []
                                                           |),
                                                           [
-                                                            M.read (|
-                                                              Value.String
-                                                                "assertion failed: *count > 0"
+                                                            mk_str (|
+                                                              "assertion failed: *count > 0"
                                                             |)
                                                           ]
                                                         |)
@@ -1477,11 +1469,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                                   [],
                                                   []
                                                 |),
-                                                [
-                                                  M.read (|
-                                                    Value.String "assertion failed: *count > 0"
-                                                  |)
-                                                ]
+                                                [ mk_str (| "assertion failed: *count > 0" |) ]
                                               |)
                                             |)
                                           |)));
@@ -1922,9 +1910,8 @@ Module Impl_move_abstract_stack_AbstractStack_T.
                                                                 []
                                                               |),
                                                               [
-                                                                M.read (|
-                                                                  Value.String
-                                                                    "assertion failed: *count > 0"
+                                                                mk_str (|
+                                                                  "assertion failed: *count > 0"
                                                                 |)
                                                               ]
                                                             |)
@@ -2442,7 +2429,7 @@ Module Impl_core_fmt_Debug_for_move_abstract_stack_AbsStackError.
                       M.alloc (|
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "ElementNotEqual" |) |)
+                          M.deref (| mk_str (| "ElementNotEqual" |) |)
                         |)
                       |)));
                   fun γ =>
@@ -2454,10 +2441,7 @@ Module Impl_core_fmt_Debug_for_move_abstract_stack_AbsStackError.
                           "move_abstract_stack::AbsStackError::Underflow"
                         |) in
                       M.alloc (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "Underflow" |) |)
-                        |)
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Underflow" |) |) |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -2465,10 +2449,7 @@ Module Impl_core_fmt_Debug_for_move_abstract_stack_AbsStackError.
                       let _ :=
                         M.is_struct_tuple (| γ, "move_abstract_stack::AbsStackError::Overflow" |) in
                       M.alloc (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "Overflow" |) |)
-                        |)
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Overflow" |) |) |)
                       |)))
                 ]
               |)
@@ -2558,11 +2539,7 @@ Module Impl_core_fmt_Display_for_move_abstract_stack_AbsStackError.
                                   Pointer.Kind.Ref,
                                   M.alloc (|
                                     Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String
-                                            "Popped element is not equal to specified item"
-                                        |)
+                                      [ mk_str (| "Popped element is not equal to specified item" |)
                                       ]
                                   |)
                                 |)
@@ -2608,11 +2585,7 @@ Module Impl_core_fmt_Display_for_move_abstract_stack_AbsStackError.
                                   Pointer.Kind.Ref,
                                   M.alloc (|
                                     Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String "Popped more values than are on the stack"
-                                        |)
-                                      ]
+                                      [ mk_str (| "Popped more values than are on the stack" |) ]
                                   |)
                                 |)
                               |)
@@ -2657,11 +2630,7 @@ Module Impl_core_fmt_Display_for_move_abstract_stack_AbsStackError.
                                   Pointer.Kind.Ref,
                                   M.alloc (|
                                     Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String "Pushed too many elements on the stack"
-                                        |)
-                                      ]
+                                      [ mk_str (| "Pushed too many elements on the stack" |) ]
                                   |)
                                 |)
                               |)

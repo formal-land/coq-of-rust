@@ -4994,9 +4994,8 @@ Module dependencies.
                                                                                     M.alloc (|
                                                                                       Value.Array
                                                                                         [
-                                                                                          M.read (|
-                                                                                            Value.String
-                                                                                              "crates/move-bytecode-verifier/src/dependencies.rs:195 (none)"
+                                                                                          mk_str (|
+                                                                                            "crates/move-bytecode-verifier/src/dependencies.rs:195 (none)"
                                                                                           |)
                                                                                         ]
                                                                                     |)
@@ -5108,11 +5107,7 @@ Module dependencies.
                                                                               Pointer.Kind.Ref,
                                                                               M.alloc (|
                                                                                 Value.Array
-                                                                                  [
-                                                                                    M.read (|
-                                                                                      Value.String
-                                                                                        ""
-                                                                                    |)
+                                                                                  [ mk_str (| "" |)
                                                                                   ]
                                                                               |)
                                                                             |)
@@ -6307,9 +6302,8 @@ Module dependencies.
                                                                                     M.alloc (|
                                                                                       Value.Array
                                                                                         [
-                                                                                          M.read (|
-                                                                                            Value.String
-                                                                                              "crates/move-bytecode-verifier/src/dependencies.rs:238 (none)"
+                                                                                          mk_str (|
+                                                                                            "crates/move-bytecode-verifier/src/dependencies.rs:238 (none)"
                                                                                           |)
                                                                                         ]
                                                                                     |)
@@ -6421,11 +6415,7 @@ Module dependencies.
                                                                               Pointer.Kind.Ref,
                                                                               M.alloc (|
                                                                                 Value.Array
-                                                                                  [
-                                                                                    M.read (|
-                                                                                      Value.String
-                                                                                        ""
-                                                                                    |)
+                                                                                  [ mk_str (| "" |)
                                                                                   ]
                                                                               |)
                                                                             |)
@@ -10706,9 +10696,8 @@ Module dependencies.
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
                                         [
-                                          M.read (|
-                                            Value.String
-                                              "assertion failed: context.module.version() < VERSION_5"
+                                          mk_str (|
+                                            "assertion failed: context.module.version() < VERSION_5"
                                           |)
                                         ]
                                       |)
@@ -11636,9 +11625,8 @@ Module dependencies.
                                                                     M.borrow (|
                                                                       Pointer.Kind.Ref,
                                                                       M.deref (|
-                                                                        M.read (|
-                                                                          Value.String
-                                                                            "script-visible functions can only be called from scripts or other script-visible functions"
+                                                                        mk_str (|
+                                                                          "script-visible functions can only be called from scripts or other script-visible functions"
                                                                         |)
                                                                       |)
                                                                     |)

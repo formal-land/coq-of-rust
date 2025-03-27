@@ -395,9 +395,8 @@ Module num.
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
                                           [
-                                            M.read (|
-                                              Value.String
-                                                "assertion failed: self.num_digits <= Self::MAX_DIGITS"
+                                            mk_str (|
+                                              "assertion failed: self.num_digits <= Self::MAX_DIGITS"
                                             |)
                                           ]
                                         |)

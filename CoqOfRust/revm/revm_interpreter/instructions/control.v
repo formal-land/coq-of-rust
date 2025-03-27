@@ -2759,9 +2759,7 @@ Module instructions.
                                 |);
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.read (| Value.String "Invalid code section index" |)
-                                  |)
+                                  M.deref (| mk_str (| "Invalid code section index" |) |)
                                 |)
                               ]
                             |)
@@ -3440,7 +3438,7 @@ Module instructions.
                         |);
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "Invalid code section index" |) |)
+                          M.deref (| mk_str (| "Invalid code section index" |) |)
                         |)
                       ]
                     |)
@@ -3625,7 +3623,7 @@ Module instructions.
                         |);
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "Invalid code section index" |) |)
+                          M.deref (| mk_str (| "Invalid code section index" |) |)
                         |)
                       ]
                     |)

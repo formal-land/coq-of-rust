@@ -85,8 +85,8 @@ Module iter.
                 |),
                 [
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Cloned" |) |) |);
-                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "it" |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Cloned" |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "it" |) |) |);
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|

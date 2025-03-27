@@ -134,12 +134,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       [],
                       []
                     |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (| M.read (| Value.String "rustacean" |) |)
-                      |)
-                    ]
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "rustacean" |) |) |) ]
                   |));
                 ("age", Value.Integer IntegerKind.U8 28)
               ]
@@ -181,12 +176,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           [],
                           []
                         |),
-                        [
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "rustacean" |) |)
-                          |)
-                        ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "rustacean" |) |) |) ]
                       |)
                     |)
                   |);

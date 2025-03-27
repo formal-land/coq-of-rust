@@ -125,11 +125,7 @@ Module root.
                                             Pointer.Kind.Ref,
                                             M.alloc (|
                                               Value.Array
-                                                [
-                                                  M.read (|
-                                                    Value.String "degree must be greater than zero"
-                                                  |)
-                                                ]
+                                                [ mk_str (| "degree must be greater than zero" |) ]
                                             |)
                                           |)
                                         |)

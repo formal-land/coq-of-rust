@@ -45,12 +45,8 @@ Module Impl_core_ops_drop_Drop_for_drop_Droppable.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "> Dropping " |);
-                                    M.read (| Value.String "
-" |)
-                                  ]
+                                Value.Array [ mk_str (| "> Dropping " |); mk_str (| "
+" |) ]
                               |)
                             |)
                           |)
@@ -149,23 +145,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ _a : Ty.path "drop::Droppable" :=
-          M.alloc (|
-            Value.StructRecord "drop::Droppable" [ ("name", M.read (| Value.String "a" |)) ]
-          |) in
+          M.alloc (| Value.StructRecord "drop::Droppable" [ ("name", mk_str (| "a" |)) ] |) in
         let~ _ : Ty.tuple [] :=
           let~ _b : Ty.path "drop::Droppable" :=
-            M.alloc (|
-              Value.StructRecord "drop::Droppable" [ ("name", M.read (| Value.String "b" |)) ]
-            |) in
+            M.alloc (| Value.StructRecord "drop::Droppable" [ ("name", mk_str (| "b" |)) ] |) in
           let~ _ : Ty.tuple [] :=
             let~ _c : Ty.path "drop::Droppable" :=
-              M.alloc (|
-                Value.StructRecord "drop::Droppable" [ ("name", M.read (| Value.String "c" |)) ]
-              |) in
+              M.alloc (| Value.StructRecord "drop::Droppable" [ ("name", mk_str (| "c" |)) ] |) in
             let~ _d : Ty.path "drop::Droppable" :=
-              M.alloc (|
-                Value.StructRecord "drop::Droppable" [ ("name", M.read (| Value.String "d" |)) ]
-              |) in
+              M.alloc (| Value.StructRecord "drop::Droppable" [ ("name", mk_str (| "d" |)) ] |) in
             let~ _ : Ty.tuple [] :=
               let~ _ : Ty.tuple [] :=
                 M.alloc (|
@@ -187,10 +175,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.deref (|
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.alloc (|
-                                  Value.Array [ M.read (| Value.String "Exiting block B
-" |) ]
-                                |)
+                                M.alloc (| Value.Array [ mk_str (| "Exiting block B
+" |) ] |)
                               |)
                             |)
                           |)
@@ -222,10 +208,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.deref (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.alloc (|
-                                Value.Array [ M.read (| Value.String "Just exited block B
-" |) ]
-                              |)
+                              M.alloc (| Value.Array [ mk_str (| "Just exited block B
+" |) ] |)
                             |)
                           |)
                         |)
@@ -256,10 +240,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.deref (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.alloc (|
-                                Value.Array [ M.read (| Value.String "Exiting block A
-" |) ]
-                              |)
+                              M.alloc (| Value.Array [ mk_str (| "Exiting block A
+" |) ] |)
                             |)
                           |)
                         |)
@@ -291,10 +273,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array [ M.read (| Value.String "Just exited block A
-" |) ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "Just exited block A
+" |) ] |)
                           |)
                         |)
                       |)
@@ -333,10 +313,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array [ M.read (| Value.String "end of the main function
-" |) ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "end of the main function
+" |) ] |)
                           |)
                         |)
                       |)

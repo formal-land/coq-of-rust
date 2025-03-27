@@ -7598,9 +7598,7 @@ Module instructions.
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
                                                 M.deref (|
-                                                  M.read (|
-                                                    Value.String "LogData should have <=4 topics"
-                                                  |)
+                                                  mk_str (| "LogData should have <=4 topics" |)
                                                 |)
                                               |)
                                             ]

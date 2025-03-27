@@ -31,7 +31,7 @@ Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_scoping_rules_lifetimes_bo
           |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Ref" |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Ref" |) |) |);
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -101,12 +101,8 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "`print`: t is " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "`print`: t is " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -191,12 +187,8 @@ Definition print_ref (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "`print_ref`: t is " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "`print_ref`: t is " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)

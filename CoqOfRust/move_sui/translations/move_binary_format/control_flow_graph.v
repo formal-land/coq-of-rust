@@ -118,8 +118,7 @@ Module control_flow_graph.
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.alloc (|
-                                  Value.Array
-                                    [ M.read (| Value.String "+=======================+
+                                  Value.Array [ mk_str (| "+=======================+
 " |) ]
                                 |)
                               |)
@@ -154,11 +153,8 @@ Module control_flow_graph.
                                 Pointer.Kind.Ref,
                                 M.alloc (|
                                   Value.Array
-                                    [
-                                      M.read (| Value.String "| Enter:  " |);
-                                      M.read (| Value.String "            |
-" |)
-                                    ]
+                                    [ mk_str (| "| Enter:  " |); mk_str (| "            |
+" |) ]
                                 |)
                               |)
                             |)
@@ -219,8 +215,7 @@ Module control_flow_graph.
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.alloc (|
-                                  Value.Array
-                                    [ M.read (| Value.String "+-----------------------+
+                                  Value.Array [ mk_str (| "+-----------------------+
 " |) ]
                                 |)
                               |)
@@ -254,12 +249,8 @@ Module control_flow_graph.
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (| Value.String "==> Children: " |);
-                                      M.read (| Value.String "
-" |)
-                                    ]
+                                  Value.Array [ mk_str (| "==> Children: " |); mk_str (| "
+" |) ]
                                 |)
                               |)
                             |)
@@ -334,8 +325,7 @@ Module control_flow_graph.
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.alloc (|
-                                  Value.Array
-                                    [ M.read (| Value.String "+-----------------------+
+                                  Value.Array [ mk_str (| "+-----------------------+
 " |) ]
                                 |)
                               |)
@@ -370,11 +360,8 @@ Module control_flow_graph.
                                 Pointer.Kind.Ref,
                                 M.alloc (|
                                   Value.Array
-                                    [
-                                      M.read (| Value.String "| Exit:   " |);
-                                      M.read (| Value.String "            |
-" |)
-                                    ]
+                                    [ mk_str (| "| Exit:   " |); mk_str (| "            |
+" |) ]
                                 |)
                               |)
                             |)
@@ -444,8 +431,7 @@ Module control_flow_graph.
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.alloc (|
-                                  Value.Array
-                                    [ M.read (| Value.String "+=======================+
+                                  Value.Array [ mk_str (| "+=======================+
 " |) ]
                                 |)
                               |)
@@ -2344,9 +2330,8 @@ Module control_flow_graph.
                                                                         []
                                                                       |),
                                                                       [
-                                                                        M.read (|
-                                                                          Value.String
-                                                                            "assertion failed: window.len() == 2"
+                                                                        mk_str (|
+                                                                          "assertion failed: window.len() == 2"
                                                                         |)
                                                                       ]
                                                                     |)
@@ -2587,12 +2572,8 @@ Module control_flow_graph.
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.alloc (|
-                                  Value.Array
-                                    [
-                                      M.read (| Value.String "Traversal: " |);
-                                      M.read (| Value.String "
-" |)
-                                    ]
+                                  Value.Array [ mk_str (| "Traversal: " |); mk_str (| "
+" |) ]
                                 |)
                               |)
                             |)
@@ -3692,9 +3673,8 @@ Module control_flow_graph.
                                       Ty.path "never",
                                       M.get_function (| "core::panicking::panic", [], [] |),
                                       [
-                                        M.read (|
-                                          Value.String
-                                            "assertion failed: self.blocks.contains_key(&block_id)"
+                                        mk_str (|
+                                          "assertion failed: self.blocks.contains_key(&block_id)"
                                         |)
                                       ]
                                     |)

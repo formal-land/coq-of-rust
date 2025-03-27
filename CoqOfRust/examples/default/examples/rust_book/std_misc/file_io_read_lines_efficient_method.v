@@ -248,7 +248,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         [],
                         [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                       |),
-                      [ M.read (| Value.String "./hosts" |) ]
+                      [ mk_str (| "./hosts" |) ]
                     |)
                   |) in
                 let γ0_0 :=
@@ -399,13 +399,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                     M.alloc (|
                                                                       Value.Array
                                                                         [
-                                                                          M.read (|
-                                                                            Value.String ""
-                                                                          |);
-                                                                          M.read (|
-                                                                            Value.String "
-"
-                                                                          |)
+                                                                          mk_str (| "" |);
+                                                                          mk_str (| "
+" |)
                                                                         ]
                                                                     |)
                                                                   |)

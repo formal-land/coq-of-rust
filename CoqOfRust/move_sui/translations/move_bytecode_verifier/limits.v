@@ -4427,9 +4427,8 @@ Module limits.
                                                                                                                   M.alloc (|
                                                                                                                     Value.Array
                                                                                                                       [
-                                                                                                                        M.read (|
-                                                                                                                          Value.String
-                                                                                                                            "vector size limit is "
+                                                                                                                        mk_str (|
+                                                                                                                          "vector size limit is "
                                                                                                                         |)
                                                                                                                       ]
                                                                                                                   |)

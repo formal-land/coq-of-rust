@@ -75,12 +75,8 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "`print`: " |);
-                                    M.read (| Value.String "
-" |)
-                                  ]
+                                Value.Array [ mk_str (| "`print`: " |); mk_str (| "
+" |) ]
                               |)
                             |)
                           |)

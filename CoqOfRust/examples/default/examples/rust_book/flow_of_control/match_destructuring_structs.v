@@ -94,9 +94,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.alloc (|
                                     Value.Array
                                       [
-                                        M.read (| Value.String "First of x is 1, b = " |);
-                                        M.read (| Value.String ",  y = " |);
-                                        M.read (| Value.String " 
+                                        mk_str (| "First of x is 1, b = " |);
+                                        mk_str (| ",  y = " |);
+                                        mk_str (| " 
 " |)
                                       ]
                                   |)
@@ -194,12 +194,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.borrow (|
                                   Pointer.Kind.Ref,
                                   M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (| Value.String "y is 2, i = " |);
-                                        M.read (| Value.String "
-" |)
-                                      ]
+                                    Value.Array [ mk_str (| "y is 2, i = " |); mk_str (| "
+" |) ]
                                   |)
                                 |)
                               |)
@@ -270,9 +266,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   Pointer.Kind.Ref,
                                   M.alloc (|
                                     Value.Array
-                                      [
-                                        M.read (| Value.String "y = " |);
-                                        M.read (| Value.String ", we don't care about x
+                                      [ mk_str (| "y = " |); mk_str (| ", we don't care about x
 " |)
                                       ]
                                   |)

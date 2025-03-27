@@ -32,7 +32,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                       M.deref (|
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.alloc (| Value.Array [ M.read (| Value.String "Hello!
+                          M.alloc (| Value.Array [ mk_str (| "Hello!
 " |) ] |)
                         |)
                       |)

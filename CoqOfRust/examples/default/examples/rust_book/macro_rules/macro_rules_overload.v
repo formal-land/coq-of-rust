@@ -36,10 +36,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.alloc (|
                               Value.Array
                                 [
-                                  M.read (| Value.String "" |);
-                                  M.read (| Value.String " and " |);
-                                  M.read (| Value.String " is " |);
-                                  M.read (| Value.String "
+                                  mk_str (| "" |);
+                                  mk_str (| " and " |);
+                                  mk_str (| " is " |);
+                                  mk_str (| "
 " |)
                                 ]
                             |)
@@ -68,7 +68,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         M.deref (|
                                           M.borrow (|
                                             Pointer.Kind.Ref,
-                                            Value.String "1i32 + 1 == 2i32"
+                                            M.alloc (| mk_str (| "1i32 + 1 == 2i32" |) |)
                                           |)
                                         |)
                                       |)
@@ -88,7 +88,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         M.deref (|
                                           M.borrow (|
                                             Pointer.Kind.Ref,
-                                            Value.String "2i32 * 2 == 4i32"
+                                            M.alloc (| mk_str (| "2i32 * 2 == 4i32" |) |)
                                           |)
                                         |)
                                       |)
@@ -167,10 +167,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.alloc (|
                               Value.Array
                                 [
-                                  M.read (| Value.String "" |);
-                                  M.read (| Value.String " or " |);
-                                  M.read (| Value.String " is " |);
-                                  M.read (| Value.String "
+                                  mk_str (| "" |);
+                                  mk_str (| " or " |);
+                                  mk_str (| " is " |);
+                                  mk_str (| "
 " |)
                                 ]
                             |)
@@ -197,7 +197,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.deref (|
-                                          M.borrow (| Pointer.Kind.Ref, Value.String "true" |)
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (| mk_str (| "true" |) |)
+                                          |)
                                         |)
                                       |)
                                     ]
@@ -214,7 +217,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.deref (|
-                                          M.borrow (| Pointer.Kind.Ref, Value.String "false" |)
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (| mk_str (| "false" |) |)
+                                          |)
                                         |)
                                       |)
                                     ]

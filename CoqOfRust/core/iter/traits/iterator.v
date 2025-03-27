@@ -5898,9 +5898,8 @@ Module iter.
                               M.alloc (|
                                 Value.Array
                                   [
-                                    M.read (|
-                                      Value.String
-                                        "internal error: entered unreachable code: Always specialized"
+                                    mk_str (|
+                                      "internal error: entered unreachable code: Always specialized"
                                     |)
                                   ]
                               |)

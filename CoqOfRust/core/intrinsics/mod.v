@@ -35,9 +35,8 @@ Module num.
                           M.alloc (|
                             Value.Array
                               [
-                                M.read (|
-                                  Value.String
-                                    "from_str_radix_int: must lie in the range `[2, 36]` - found "
+                                mk_str (|
+                                  "from_str_radix_int: must lie in the range `[2, 36]` - found "
                                 |)
                               ]
                           |)
@@ -126,9 +125,8 @@ Module num.
                                       M.alloc (|
                                         Value.Array
                                           [
-                                            M.read (|
-                                              Value.String
-                                                "from_str_radix_int: must lie in the range `[2, 36]`"
+                                            mk_str (|
+                                              "from_str_radix_int: must lie in the range `[2, 36]`"
                                             |)
                                           ]
                                       |)
@@ -199,7 +197,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -232,7 +230,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -265,7 +263,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -296,7 +294,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -329,7 +327,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -362,7 +360,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -393,7 +391,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -426,7 +424,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -459,7 +457,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -490,7 +488,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -521,7 +519,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -548,7 +546,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -579,7 +577,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -610,7 +608,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -637,7 +635,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -672,7 +670,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -709,7 +707,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -746,7 +744,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -783,7 +781,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -820,7 +818,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -857,7 +855,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -894,7 +892,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -931,7 +929,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -968,7 +966,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1005,7 +1003,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1042,7 +1040,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1075,7 +1073,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1112,7 +1110,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1149,7 +1147,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1182,7 +1180,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1209,7 +1207,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1234,7 +1232,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1259,7 +1257,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1284,7 +1282,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1310,7 +1308,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1336,7 +1334,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1362,7 +1360,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1388,7 +1386,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1414,7 +1412,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1440,7 +1438,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1466,7 +1464,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1492,7 +1490,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1518,7 +1516,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1544,7 +1542,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1570,7 +1568,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1596,7 +1594,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1622,7 +1620,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1648,7 +1646,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1674,7 +1672,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1700,7 +1698,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1726,7 +1724,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1752,7 +1750,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1778,7 +1776,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1804,7 +1802,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1830,7 +1828,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1856,7 +1854,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1882,7 +1880,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1908,7 +1906,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1934,7 +1932,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1960,7 +1958,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -1986,7 +1984,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -2012,7 +2010,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -2038,7 +2036,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -2064,7 +2062,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -2090,7 +2088,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -2116,7 +2114,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -2142,7 +2140,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -2168,7 +2166,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -2194,7 +2192,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -2220,7 +2218,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -2246,7 +2244,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -2272,7 +2270,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -2298,7 +2296,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -2324,7 +2322,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -2350,7 +2348,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -2376,7 +2374,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -2402,7 +2400,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -2428,7 +2426,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -2454,7 +2452,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -2480,7 +2478,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -2506,7 +2504,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -2532,7 +2530,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -2558,7 +2556,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -2584,7 +2582,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -2610,7 +2608,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -2636,7 +2634,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -2662,7 +2660,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -2688,7 +2686,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -2714,7 +2712,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -2740,7 +2738,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -2766,7 +2764,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -2792,7 +2790,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -2818,7 +2816,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -2842,7 +2840,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -2866,7 +2864,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -2890,7 +2888,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -2914,7 +2912,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -2942,7 +2940,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -2972,7 +2970,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -3002,7 +3000,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -3032,7 +3030,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -3060,7 +3058,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -3086,7 +3084,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -3112,7 +3110,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -3138,7 +3136,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -3162,7 +3160,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -3193,7 +3191,7 @@ Module intrinsics.
                   M.call_closure (|
                     Ty.path "never",
                     M.get_function (| "core::panicking::panic", [], [] |),
-                    [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+                    [ mk_str (| "internal error: entered unreachable code" |) ]
                   |)
                 |)))
           ]
@@ -3218,7 +3216,7 @@ Module intrinsics.
         (M.call_closure (|
           Ty.path "never",
           M.get_function (| "core::panicking::panic", [], [] |),
-          [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+          [ mk_str (| "internal error: entered unreachable code" |) ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -3239,7 +3237,7 @@ Module intrinsics.
         (M.call_closure (|
           Ty.path "never",
           M.get_function (| "core::panicking::panic", [], [] |),
-          [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+          [ mk_str (| "internal error: entered unreachable code" |) ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -3441,7 +3439,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -3465,7 +3463,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -3493,7 +3491,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -3519,7 +3517,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -3550,7 +3548,7 @@ Module intrinsics.
                   M.call_closure (|
                     Ty.path "never",
                     M.get_function (| "core::panicking::panic", [], [] |),
-                    [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+                    [ mk_str (| "internal error: entered unreachable code" |) ]
                   |)
                 |)))
           ]
@@ -3576,7 +3574,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -3601,7 +3599,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -3625,7 +3623,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -3651,7 +3649,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -3676,7 +3674,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -3702,7 +3700,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -3733,7 +3731,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -3762,7 +3760,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -3789,7 +3787,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -3814,7 +3812,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -3840,7 +3838,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -3865,7 +3863,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -3891,7 +3889,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -3916,7 +3914,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -3941,7 +3939,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -3966,7 +3964,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -3991,7 +3989,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -4017,7 +4015,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -4043,7 +4041,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -4069,7 +4067,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -4095,7 +4093,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -4120,7 +4118,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -4144,7 +4142,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -4168,7 +4166,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -4192,7 +4190,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -4217,7 +4215,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -4241,7 +4239,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -4265,7 +4263,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -4289,7 +4287,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -4315,7 +4313,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -4340,7 +4338,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -4365,7 +4363,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -4390,7 +4388,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -4415,7 +4413,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -4439,7 +4437,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -4463,7 +4461,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -4487,7 +4485,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -4512,7 +4510,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -4537,7 +4535,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -4562,7 +4560,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -4587,7 +4585,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -4612,7 +4610,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -4636,7 +4634,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -4660,7 +4658,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -4684,7 +4682,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -4709,7 +4707,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -4734,7 +4732,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -4759,7 +4757,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -4784,7 +4782,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -4809,7 +4807,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -4834,7 +4832,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -4859,7 +4857,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -4884,7 +4882,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -4911,7 +4909,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -4937,7 +4935,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -4963,7 +4961,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -4989,7 +4987,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -5016,7 +5014,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -5043,7 +5041,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -5070,7 +5068,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -5097,7 +5095,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -5122,7 +5120,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -5147,7 +5145,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -5172,7 +5170,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -5197,7 +5195,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -5222,7 +5220,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -5247,7 +5245,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -5272,7 +5270,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -5297,7 +5295,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -5322,7 +5320,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -5347,7 +5345,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -5372,7 +5370,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -5397,7 +5395,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -5422,7 +5420,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -5447,7 +5445,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -5472,7 +5470,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -5497,7 +5495,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -5522,7 +5520,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -5547,7 +5545,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -5572,7 +5570,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -5597,7 +5595,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -5622,7 +5620,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -5647,7 +5645,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -5672,7 +5670,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -5697,7 +5695,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -5722,7 +5720,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -5747,7 +5745,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -5772,7 +5770,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -5797,7 +5795,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -5823,7 +5821,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -5849,7 +5847,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -5875,7 +5873,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -5901,7 +5899,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -5927,7 +5925,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -5952,7 +5950,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -5968,370 +5966,871 @@ Module intrinsics.
       unimplemented!()
   }
   *)
-  Parameter fadd_algebraic : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition fadd_algebraic (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T ], [ _a; _b ] =>
+      ltac:(M.monadic
+        (let _a := M.alloc (| _a |) in
+        let _b := M.alloc (| _b |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance Instance_IsFunction_fadd_algebraic :
     M.IsFunction.Trait "core::intrinsics::fadd_algebraic" fadd_algebraic.
   Admitted.
+  Global Typeclasses Opaque fadd_algebraic.
   
   (*
   pub fn fsub_algebraic<T: Copy>(_a: T, _b: T) -> T {
       unimplemented!()
   }
   *)
-  Parameter fsub_algebraic : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition fsub_algebraic (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T ], [ _a; _b ] =>
+      ltac:(M.monadic
+        (let _a := M.alloc (| _a |) in
+        let _b := M.alloc (| _b |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance Instance_IsFunction_fsub_algebraic :
     M.IsFunction.Trait "core::intrinsics::fsub_algebraic" fsub_algebraic.
   Admitted.
+  Global Typeclasses Opaque fsub_algebraic.
   
   (*
   pub fn fmul_algebraic<T: Copy>(_a: T, _b: T) -> T {
       unimplemented!()
   }
   *)
-  Parameter fmul_algebraic : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition fmul_algebraic (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T ], [ _a; _b ] =>
+      ltac:(M.monadic
+        (let _a := M.alloc (| _a |) in
+        let _b := M.alloc (| _b |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance Instance_IsFunction_fmul_algebraic :
     M.IsFunction.Trait "core::intrinsics::fmul_algebraic" fmul_algebraic.
   Admitted.
+  Global Typeclasses Opaque fmul_algebraic.
   
   (*
   pub fn fdiv_algebraic<T: Copy>(_a: T, _b: T) -> T {
       unimplemented!()
   }
   *)
-  Parameter fdiv_algebraic : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition fdiv_algebraic (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T ], [ _a; _b ] =>
+      ltac:(M.monadic
+        (let _a := M.alloc (| _a |) in
+        let _b := M.alloc (| _b |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance Instance_IsFunction_fdiv_algebraic :
     M.IsFunction.Trait "core::intrinsics::fdiv_algebraic" fdiv_algebraic.
   Admitted.
+  Global Typeclasses Opaque fdiv_algebraic.
   
   (*
   pub fn frem_algebraic<T: Copy>(_a: T, _b: T) -> T {
       unimplemented!()
   }
   *)
-  Parameter frem_algebraic : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition frem_algebraic (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T ], [ _a; _b ] =>
+      ltac:(M.monadic
+        (let _a := M.alloc (| _a |) in
+        let _b := M.alloc (| _b |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance Instance_IsFunction_frem_algebraic :
     M.IsFunction.Trait "core::intrinsics::frem_algebraic" frem_algebraic.
   Admitted.
+  Global Typeclasses Opaque frem_algebraic.
   
   (*
   pub const fn ctpop<T: Copy>(_x: T) -> u32 {
       unimplemented!()
   }
   *)
-  Parameter ctpop : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition ctpop (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T ], [ _x ] =>
+      ltac:(M.monadic
+        (let _x := M.alloc (| _x |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance Instance_IsFunction_ctpop : M.IsFunction.Trait "core::intrinsics::ctpop" ctpop.
   Admitted.
+  Global Typeclasses Opaque ctpop.
   
   (*
   pub const fn ctlz<T: Copy>(_x: T) -> u32 {
       unimplemented!()
   }
   *)
-  Parameter ctlz : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition ctlz (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T ], [ _x ] =>
+      ltac:(M.monadic
+        (let _x := M.alloc (| _x |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance Instance_IsFunction_ctlz : M.IsFunction.Trait "core::intrinsics::ctlz" ctlz.
   Admitted.
+  Global Typeclasses Opaque ctlz.
   
   (*
   pub const unsafe fn ctlz_nonzero<T: Copy>(_x: T) -> u32 {
       unimplemented!()
   }
   *)
-  Parameter ctlz_nonzero : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition ctlz_nonzero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T ], [ _x ] =>
+      ltac:(M.monadic
+        (let _x := M.alloc (| _x |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance Instance_IsFunction_ctlz_nonzero :
     M.IsFunction.Trait "core::intrinsics::ctlz_nonzero" ctlz_nonzero.
   Admitted.
+  Global Typeclasses Opaque ctlz_nonzero.
   
   (*
   pub const fn cttz<T: Copy>(_x: T) -> u32 {
       unimplemented!()
   }
   *)
-  Parameter cttz : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition cttz (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T ], [ _x ] =>
+      ltac:(M.monadic
+        (let _x := M.alloc (| _x |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance Instance_IsFunction_cttz : M.IsFunction.Trait "core::intrinsics::cttz" cttz.
   Admitted.
+  Global Typeclasses Opaque cttz.
   
   (*
   pub const unsafe fn cttz_nonzero<T: Copy>(_x: T) -> u32 {
       unimplemented!()
   }
   *)
-  Parameter cttz_nonzero : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition cttz_nonzero (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T ], [ _x ] =>
+      ltac:(M.monadic
+        (let _x := M.alloc (| _x |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance Instance_IsFunction_cttz_nonzero :
     M.IsFunction.Trait "core::intrinsics::cttz_nonzero" cttz_nonzero.
   Admitted.
+  Global Typeclasses Opaque cttz_nonzero.
   
   (*
   pub const fn bswap<T: Copy>(_x: T) -> T {
       unimplemented!()
   }
   *)
-  Parameter bswap : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition bswap (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T ], [ _x ] =>
+      ltac:(M.monadic
+        (let _x := M.alloc (| _x |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance Instance_IsFunction_bswap : M.IsFunction.Trait "core::intrinsics::bswap" bswap.
   Admitted.
+  Global Typeclasses Opaque bswap.
   
   (*
   pub const fn bitreverse<T: Copy>(_x: T) -> T {
       unimplemented!()
   }
   *)
-  Parameter bitreverse : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition bitreverse (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T ], [ _x ] =>
+      ltac:(M.monadic
+        (let _x := M.alloc (| _x |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance Instance_IsFunction_bitreverse :
     M.IsFunction.Trait "core::intrinsics::bitreverse" bitreverse.
   Admitted.
+  Global Typeclasses Opaque bitreverse.
   
   (*
   pub const fn three_way_compare<T: Copy>(_lhs: T, _rhss: T) -> crate::cmp::Ordering {
       unimplemented!()
   }
   *)
-  Parameter three_way_compare : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition three_way_compare (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T ], [ _lhs; _rhss ] =>
+      ltac:(M.monadic
+        (let _lhs := M.alloc (| _lhs |) in
+        let _rhss := M.alloc (| _rhss |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance Instance_IsFunction_three_way_compare :
     M.IsFunction.Trait "core::intrinsics::three_way_compare" three_way_compare.
   Admitted.
+  Global Typeclasses Opaque three_way_compare.
   
   (*
   pub const fn add_with_overflow<T: Copy>(_x: T, _y: T) -> (T, bool) {
       unimplemented!()
   }
   *)
-  Parameter add_with_overflow : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition add_with_overflow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T ], [ _x; _y ] =>
+      ltac:(M.monadic
+        (let _x := M.alloc (| _x |) in
+        let _y := M.alloc (| _y |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance Instance_IsFunction_add_with_overflow :
     M.IsFunction.Trait "core::intrinsics::add_with_overflow" add_with_overflow.
   Admitted.
+  Global Typeclasses Opaque add_with_overflow.
   
   (*
   pub const fn sub_with_overflow<T: Copy>(_x: T, _y: T) -> (T, bool) {
       unimplemented!()
   }
   *)
-  Parameter sub_with_overflow : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition sub_with_overflow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T ], [ _x; _y ] =>
+      ltac:(M.monadic
+        (let _x := M.alloc (| _x |) in
+        let _y := M.alloc (| _y |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance Instance_IsFunction_sub_with_overflow :
     M.IsFunction.Trait "core::intrinsics::sub_with_overflow" sub_with_overflow.
   Admitted.
+  Global Typeclasses Opaque sub_with_overflow.
   
   (*
   pub const fn mul_with_overflow<T: Copy>(_x: T, _y: T) -> (T, bool) {
       unimplemented!()
   }
   *)
-  Parameter mul_with_overflow : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition mul_with_overflow (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T ], [ _x; _y ] =>
+      ltac:(M.monadic
+        (let _x := M.alloc (| _x |) in
+        let _y := M.alloc (| _y |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance Instance_IsFunction_mul_with_overflow :
     M.IsFunction.Trait "core::intrinsics::mul_with_overflow" mul_with_overflow.
   Admitted.
+  Global Typeclasses Opaque mul_with_overflow.
   
   (*
   pub const unsafe fn exact_div<T: Copy>(_x: T, _y: T) -> T {
       unimplemented!()
   }
   *)
-  Parameter exact_div : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition exact_div (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T ], [ _x; _y ] =>
+      ltac:(M.monadic
+        (let _x := M.alloc (| _x |) in
+        let _y := M.alloc (| _y |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance Instance_IsFunction_exact_div :
     M.IsFunction.Trait "core::intrinsics::exact_div" exact_div.
   Admitted.
+  Global Typeclasses Opaque exact_div.
   
   (*
   pub const unsafe fn unchecked_div<T: Copy>(_x: T, _y: T) -> T {
       unimplemented!()
   }
   *)
-  Parameter unchecked_div : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition unchecked_div (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T ], [ _x; _y ] =>
+      ltac:(M.monadic
+        (let _x := M.alloc (| _x |) in
+        let _y := M.alloc (| _y |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance Instance_IsFunction_unchecked_div :
     M.IsFunction.Trait "core::intrinsics::unchecked_div" unchecked_div.
   Admitted.
+  Global Typeclasses Opaque unchecked_div.
   
   (*
   pub const unsafe fn unchecked_rem<T: Copy>(_x: T, _y: T) -> T {
       unimplemented!()
   }
   *)
-  Parameter unchecked_rem : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition unchecked_rem (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T ], [ _x; _y ] =>
+      ltac:(M.monadic
+        (let _x := M.alloc (| _x |) in
+        let _y := M.alloc (| _y |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance Instance_IsFunction_unchecked_rem :
     M.IsFunction.Trait "core::intrinsics::unchecked_rem" unchecked_rem.
   Admitted.
+  Global Typeclasses Opaque unchecked_rem.
   
   (*
   pub const unsafe fn unchecked_shl<T: Copy, U: Copy>(_x: T, _y: U) -> T {
       unimplemented!()
   }
   *)
-  Parameter unchecked_shl : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition unchecked_shl (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T; U ], [ _x; _y ] =>
+      ltac:(M.monadic
+        (let _x := M.alloc (| _x |) in
+        let _y := M.alloc (| _y |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance Instance_IsFunction_unchecked_shl :
     M.IsFunction.Trait "core::intrinsics::unchecked_shl" unchecked_shl.
   Admitted.
+  Global Typeclasses Opaque unchecked_shl.
   
   (*
   pub const unsafe fn unchecked_shr<T: Copy, U: Copy>(_x: T, _y: U) -> T {
       unimplemented!()
   }
   *)
-  Parameter unchecked_shr : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition unchecked_shr (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T; U ], [ _x; _y ] =>
+      ltac:(M.monadic
+        (let _x := M.alloc (| _x |) in
+        let _y := M.alloc (| _y |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance Instance_IsFunction_unchecked_shr :
     M.IsFunction.Trait "core::intrinsics::unchecked_shr" unchecked_shr.
   Admitted.
+  Global Typeclasses Opaque unchecked_shr.
   
   (*
   pub const unsafe fn unchecked_add<T: Copy>(_x: T, _y: T) -> T {
       unimplemented!()
   }
   *)
-  Parameter unchecked_add : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition unchecked_add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T ], [ _x; _y ] =>
+      ltac:(M.monadic
+        (let _x := M.alloc (| _x |) in
+        let _y := M.alloc (| _y |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance Instance_IsFunction_unchecked_add :
     M.IsFunction.Trait "core::intrinsics::unchecked_add" unchecked_add.
   Admitted.
+  Global Typeclasses Opaque unchecked_add.
   
   (*
   pub const unsafe fn unchecked_sub<T: Copy>(_x: T, _y: T) -> T {
       unimplemented!()
   }
   *)
-  Parameter unchecked_sub : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition unchecked_sub (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T ], [ _x; _y ] =>
+      ltac:(M.monadic
+        (let _x := M.alloc (| _x |) in
+        let _y := M.alloc (| _y |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance Instance_IsFunction_unchecked_sub :
     M.IsFunction.Trait "core::intrinsics::unchecked_sub" unchecked_sub.
   Admitted.
+  Global Typeclasses Opaque unchecked_sub.
   
   (*
   pub const unsafe fn unchecked_mul<T: Copy>(_x: T, _y: T) -> T {
       unimplemented!()
   }
   *)
-  Parameter unchecked_mul : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition unchecked_mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T ], [ _x; _y ] =>
+      ltac:(M.monadic
+        (let _x := M.alloc (| _x |) in
+        let _y := M.alloc (| _y |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance Instance_IsFunction_unchecked_mul :
     M.IsFunction.Trait "core::intrinsics::unchecked_mul" unchecked_mul.
   Admitted.
+  Global Typeclasses Opaque unchecked_mul.
   
   (*
   pub const fn rotate_left<T: Copy>(_x: T, _shift: u32) -> T {
       unimplemented!()
   }
   *)
-  Parameter rotate_left : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition rotate_left (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T ], [ _x; _shift ] =>
+      ltac:(M.monadic
+        (let _x := M.alloc (| _x |) in
+        let _shift := M.alloc (| _shift |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance Instance_IsFunction_rotate_left :
     M.IsFunction.Trait "core::intrinsics::rotate_left" rotate_left.
   Admitted.
+  Global Typeclasses Opaque rotate_left.
   
   (*
   pub const fn rotate_right<T: Copy>(_x: T, _shift: u32) -> T {
       unimplemented!()
   }
   *)
-  Parameter rotate_right : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition rotate_right (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T ], [ _x; _shift ] =>
+      ltac:(M.monadic
+        (let _x := M.alloc (| _x |) in
+        let _shift := M.alloc (| _shift |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance Instance_IsFunction_rotate_right :
     M.IsFunction.Trait "core::intrinsics::rotate_right" rotate_right.
   Admitted.
+  Global Typeclasses Opaque rotate_right.
   
   (*
   pub const fn wrapping_add<T: Copy>(_a: T, _b: T) -> T {
       unimplemented!()
   }
   *)
-  Parameter wrapping_add : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition wrapping_add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T ], [ _a; _b ] =>
+      ltac:(M.monadic
+        (let _a := M.alloc (| _a |) in
+        let _b := M.alloc (| _b |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance Instance_IsFunction_wrapping_add :
     M.IsFunction.Trait "core::intrinsics::wrapping_add" wrapping_add.
   Admitted.
+  Global Typeclasses Opaque wrapping_add.
   
   (*
   pub const fn wrapping_sub<T: Copy>(_a: T, _b: T) -> T {
       unimplemented!()
   }
   *)
-  Parameter wrapping_sub : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition wrapping_sub (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T ], [ _a; _b ] =>
+      ltac:(M.monadic
+        (let _a := M.alloc (| _a |) in
+        let _b := M.alloc (| _b |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance Instance_IsFunction_wrapping_sub :
     M.IsFunction.Trait "core::intrinsics::wrapping_sub" wrapping_sub.
   Admitted.
+  Global Typeclasses Opaque wrapping_sub.
   
   (*
   pub const fn wrapping_mul<T: Copy>(_a: T, _b: T) -> T {
       unimplemented!()
   }
   *)
-  Parameter wrapping_mul : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition wrapping_mul (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T ], [ _a; _b ] =>
+      ltac:(M.monadic
+        (let _a := M.alloc (| _a |) in
+        let _b := M.alloc (| _b |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance Instance_IsFunction_wrapping_mul :
     M.IsFunction.Trait "core::intrinsics::wrapping_mul" wrapping_mul.
   Admitted.
+  Global Typeclasses Opaque wrapping_mul.
   
   (*
   pub const fn saturating_add<T: Copy>(_a: T, _b: T) -> T {
       unimplemented!()
   }
   *)
-  Parameter saturating_add : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition saturating_add (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T ], [ _a; _b ] =>
+      ltac:(M.monadic
+        (let _a := M.alloc (| _a |) in
+        let _b := M.alloc (| _b |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance Instance_IsFunction_saturating_add :
     M.IsFunction.Trait "core::intrinsics::saturating_add" saturating_add.
   Admitted.
+  Global Typeclasses Opaque saturating_add.
   
   (*
   pub const fn saturating_sub<T: Copy>(_a: T, _b: T) -> T {
       unimplemented!()
   }
   *)
-  Parameter saturating_sub : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition saturating_sub (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T ], [ _a; _b ] =>
+      ltac:(M.monadic
+        (let _a := M.alloc (| _a |) in
+        let _b := M.alloc (| _b |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance Instance_IsFunction_saturating_sub :
     M.IsFunction.Trait "core::intrinsics::saturating_sub" saturating_sub.
   Admitted.
+  Global Typeclasses Opaque saturating_sub.
   
   (*
   pub const unsafe fn read_via_copy<T>(_ptr: *const T) -> T {
       unimplemented!()
   }
   *)
-  Parameter read_via_copy : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition read_via_copy (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T ], [ _ptr ] =>
+      ltac:(M.monadic
+        (let _ptr := M.alloc (| _ptr |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance Instance_IsFunction_read_via_copy :
     M.IsFunction.Trait "core::intrinsics::read_via_copy" read_via_copy.
   Admitted.
+  Global Typeclasses Opaque read_via_copy.
   
   (*
   pub const unsafe fn write_via_move<T>(_ptr: *mut T, _value: T) {
       unimplemented!()
   }
   *)
-  Parameter write_via_move : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition write_via_move (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T ], [ _ptr; _value ] =>
+      ltac:(M.monadic
+        (let _ptr := M.alloc (| _ptr |) in
+        let _value := M.alloc (| _value |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance Instance_IsFunction_write_via_move :
     M.IsFunction.Trait "core::intrinsics::write_via_move" write_via_move.
   Admitted.
+  Global Typeclasses Opaque write_via_move.
   
   (*
   pub const fn discriminant_value<T>(_v: &T) -> <T as DiscriminantKind>::Discriminant {
       unimplemented!()
   }
   *)
-  Parameter discriminant_value : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition discriminant_value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T ], [ _v ] =>
+      ltac:(M.monadic
+        (let _v := M.alloc (| _v |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance Instance_IsFunction_discriminant_value :
     M.IsFunction.Trait "core::intrinsics::discriminant_value" discriminant_value.
   Admitted.
+  Global Typeclasses Opaque discriminant_value.
   
   Parameter catch_unwind : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
@@ -6350,22 +6849,52 @@ Module intrinsics.
       unimplemented!()
   }
   *)
-  Parameter ptr_offset_from : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition ptr_offset_from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T ], [ _ptr; _base ] =>
+      ltac:(M.monadic
+        (let _ptr := M.alloc (| _ptr |) in
+        let _base := M.alloc (| _base |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance Instance_IsFunction_ptr_offset_from :
     M.IsFunction.Trait "core::intrinsics::ptr_offset_from" ptr_offset_from.
   Admitted.
+  Global Typeclasses Opaque ptr_offset_from.
   
   (*
   pub const unsafe fn ptr_offset_from_unsigned<T>(_ptr: *const T, _base: *const T) -> usize {
       unimplemented!()
   }
   *)
-  Parameter ptr_offset_from_unsigned : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition ptr_offset_from_unsigned (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T ], [ _ptr; _base ] =>
+      ltac:(M.monadic
+        (let _ptr := M.alloc (| _ptr |) in
+        let _base := M.alloc (| _base |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance Instance_IsFunction_ptr_offset_from_unsigned :
     M.IsFunction.Trait "core::intrinsics::ptr_offset_from_unsigned" ptr_offset_from_unsigned.
   Admitted.
+  Global Typeclasses Opaque ptr_offset_from_unsigned.
   
   (*
   pub const fn ptr_guaranteed_cmp<T>(ptr: *const T, other: *const T) -> u8 {
@@ -6392,32 +6921,77 @@ Module intrinsics.
       unimplemented!()
   }
   *)
-  Parameter raw_eq : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition raw_eq (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T ], [ _a; _b ] =>
+      ltac:(M.monadic
+        (let _a := M.alloc (| _a |) in
+        let _b := M.alloc (| _b |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance Instance_IsFunction_raw_eq : M.IsFunction.Trait "core::intrinsics::raw_eq" raw_eq.
   Admitted.
+  Global Typeclasses Opaque raw_eq.
   
   (*
   pub const unsafe fn compare_bytes(_left: *const u8, _right: *const u8, _bytes: usize) -> i32 {
       unimplemented!()
   }
   *)
-  Parameter compare_bytes : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition compare_bytes (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ _left; _right; _bytes ] =>
+      ltac:(M.monadic
+        (let _left := M.alloc (| _left |) in
+        let _right := M.alloc (| _right |) in
+        let _bytes := M.alloc (| _bytes |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance Instance_IsFunction_compare_bytes :
     M.IsFunction.Trait "core::intrinsics::compare_bytes" compare_bytes.
   Admitted.
+  Global Typeclasses Opaque compare_bytes.
   
   (*
   pub const fn black_box<T>(_dummy: T) -> T {
       unimplemented!()
   }
   *)
-  Parameter black_box : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition black_box (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [ T ], [ _dummy ] =>
+      ltac:(M.monadic
+        (let _dummy := M.alloc (| _dummy |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance Instance_IsFunction_black_box :
     M.IsFunction.Trait "core::intrinsics::black_box" black_box.
   Admitted.
+  Global Typeclasses Opaque black_box.
   
   (*
   pub const fn const_eval_select<ARG: Tuple, F, G, RET>(
@@ -6443,7 +7017,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -6582,7 +7156,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -6607,7 +7181,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -6631,7 +7205,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -6655,7 +7229,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -6679,7 +7253,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -6703,7 +7277,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -6728,7 +7302,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -6753,7 +7327,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -6777,7 +7351,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -6801,7 +7375,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -6829,7 +7403,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -6893,7 +7467,7 @@ Module intrinsics.
           M.call_closure (|
             Ty.path "never",
             M.get_function (| "core::panicking::panic", [], [] |),
-            [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+            [ mk_str (| "internal error: entered unreachable code" |) ]
           |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -7033,7 +7607,7 @@ Module intrinsics.
             M.call_closure (|
               Ty.path "never",
               M.get_function (| "core::panicking::panic", [], [] |),
-              [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+              [ mk_str (| "internal error: entered unreachable code" |) ]
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -7164,7 +7738,7 @@ Module intrinsics.
             M.call_closure (|
               Ty.path "never",
               M.get_function (| "core::panicking::panic", [], [] |),
-              [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+              [ mk_str (| "internal error: entered unreachable code" |) ]
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -7292,7 +7866,7 @@ Module intrinsics.
             M.call_closure (|
               Ty.path "never",
               M.get_function (| "core::panicking::panic", [], [] |),
-              [ M.read (| Value.String "internal error: entered unreachable code" |) ]
+              [ mk_str (| "internal error: entered unreachable code" |) ]
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -7309,176 +7883,412 @@ Module intrinsics.
       unimplemented!();
   }
   *)
-  Parameter minnumf16 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition minnumf16 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ _x; _y ] =>
+      ltac:(M.monadic
+        (let _x := M.alloc (| _x |) in
+        let _y := M.alloc (| _y |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance Instance_IsFunction_minnumf16 :
     M.IsFunction.Trait "core::intrinsics::minnumf16" minnumf16.
   Admitted.
+  Global Typeclasses Opaque minnumf16.
   
   (*
   pub const fn minnumf32(_x: f32, _y: f32) -> f32 {
       unimplemented!();
   }
   *)
-  Parameter minnumf32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition minnumf32 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ _x; _y ] =>
+      ltac:(M.monadic
+        (let _x := M.alloc (| _x |) in
+        let _y := M.alloc (| _y |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance Instance_IsFunction_minnumf32 :
     M.IsFunction.Trait "core::intrinsics::minnumf32" minnumf32.
   Admitted.
+  Global Typeclasses Opaque minnumf32.
   
   (*
   pub const fn minnumf64(_x: f64, _y: f64) -> f64 {
       unimplemented!();
   }
   *)
-  Parameter minnumf64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition minnumf64 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ _x; _y ] =>
+      ltac:(M.monadic
+        (let _x := M.alloc (| _x |) in
+        let _y := M.alloc (| _y |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance Instance_IsFunction_minnumf64 :
     M.IsFunction.Trait "core::intrinsics::minnumf64" minnumf64.
   Admitted.
+  Global Typeclasses Opaque minnumf64.
   
   (*
   pub const fn minnumf128(_x: f128, _y: f128) -> f128 {
       unimplemented!();
   }
   *)
-  Parameter minnumf128 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition minnumf128 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ _x; _y ] =>
+      ltac:(M.monadic
+        (let _x := M.alloc (| _x |) in
+        let _y := M.alloc (| _y |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance Instance_IsFunction_minnumf128 :
     M.IsFunction.Trait "core::intrinsics::minnumf128" minnumf128.
   Admitted.
+  Global Typeclasses Opaque minnumf128.
   
   (*
   pub const fn maxnumf16(_x: f16, _y: f16) -> f16 {
       unimplemented!();
   }
   *)
-  Parameter maxnumf16 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition maxnumf16 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ _x; _y ] =>
+      ltac:(M.monadic
+        (let _x := M.alloc (| _x |) in
+        let _y := M.alloc (| _y |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance Instance_IsFunction_maxnumf16 :
     M.IsFunction.Trait "core::intrinsics::maxnumf16" maxnumf16.
   Admitted.
+  Global Typeclasses Opaque maxnumf16.
   
   (*
   pub const fn maxnumf32(_x: f32, _y: f32) -> f32 {
       unimplemented!();
   }
   *)
-  Parameter maxnumf32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition maxnumf32 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ _x; _y ] =>
+      ltac:(M.monadic
+        (let _x := M.alloc (| _x |) in
+        let _y := M.alloc (| _y |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance Instance_IsFunction_maxnumf32 :
     M.IsFunction.Trait "core::intrinsics::maxnumf32" maxnumf32.
   Admitted.
+  Global Typeclasses Opaque maxnumf32.
   
   (*
   pub const fn maxnumf64(_x: f64, _y: f64) -> f64 {
       unimplemented!();
   }
   *)
-  Parameter maxnumf64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition maxnumf64 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ _x; _y ] =>
+      ltac:(M.monadic
+        (let _x := M.alloc (| _x |) in
+        let _y := M.alloc (| _y |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance Instance_IsFunction_maxnumf64 :
     M.IsFunction.Trait "core::intrinsics::maxnumf64" maxnumf64.
   Admitted.
+  Global Typeclasses Opaque maxnumf64.
   
   (*
   pub const fn maxnumf128(_x: f128, _y: f128) -> f128 {
       unimplemented!();
   }
   *)
-  Parameter maxnumf128 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition maxnumf128 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ _x; _y ] =>
+      ltac:(M.monadic
+        (let _x := M.alloc (| _x |) in
+        let _y := M.alloc (| _y |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance Instance_IsFunction_maxnumf128 :
     M.IsFunction.Trait "core::intrinsics::maxnumf128" maxnumf128.
   Admitted.
+  Global Typeclasses Opaque maxnumf128.
   
   (*
   pub const unsafe fn fabsf16(_x: f16) -> f16 {
       unimplemented!();
   }
   *)
-  Parameter fabsf16 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition fabsf16 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ _x ] =>
+      ltac:(M.monadic
+        (let _x := M.alloc (| _x |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance Instance_IsFunction_fabsf16 :
     M.IsFunction.Trait "core::intrinsics::fabsf16" fabsf16.
   Admitted.
+  Global Typeclasses Opaque fabsf16.
   
   (*
   pub const unsafe fn fabsf32(_x: f32) -> f32 {
       unimplemented!();
   }
   *)
-  Parameter fabsf32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition fabsf32 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ _x ] =>
+      ltac:(M.monadic
+        (let _x := M.alloc (| _x |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance Instance_IsFunction_fabsf32 :
     M.IsFunction.Trait "core::intrinsics::fabsf32" fabsf32.
   Admitted.
+  Global Typeclasses Opaque fabsf32.
   
   (*
   pub const unsafe fn fabsf64(_x: f64) -> f64 {
       unimplemented!();
   }
   *)
-  Parameter fabsf64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition fabsf64 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ _x ] =>
+      ltac:(M.monadic
+        (let _x := M.alloc (| _x |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance Instance_IsFunction_fabsf64 :
     M.IsFunction.Trait "core::intrinsics::fabsf64" fabsf64.
   Admitted.
+  Global Typeclasses Opaque fabsf64.
   
   (*
   pub const unsafe fn fabsf128(_x: f128) -> f128 {
       unimplemented!();
   }
   *)
-  Parameter fabsf128 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition fabsf128 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ _x ] =>
+      ltac:(M.monadic
+        (let _x := M.alloc (| _x |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance Instance_IsFunction_fabsf128 :
     M.IsFunction.Trait "core::intrinsics::fabsf128" fabsf128.
   Admitted.
+  Global Typeclasses Opaque fabsf128.
   
   (*
   pub const unsafe fn copysignf16(_x: f16, _y: f16) -> f16 {
       unimplemented!();
   }
   *)
-  Parameter copysignf16 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition copysignf16 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ _x; _y ] =>
+      ltac:(M.monadic
+        (let _x := M.alloc (| _x |) in
+        let _y := M.alloc (| _y |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance Instance_IsFunction_copysignf16 :
     M.IsFunction.Trait "core::intrinsics::copysignf16" copysignf16.
   Admitted.
+  Global Typeclasses Opaque copysignf16.
   
   (*
   pub const unsafe fn copysignf32(_x: f32, _y: f32) -> f32 {
       unimplemented!();
   }
   *)
-  Parameter copysignf32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition copysignf32 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ _x; _y ] =>
+      ltac:(M.monadic
+        (let _x := M.alloc (| _x |) in
+        let _y := M.alloc (| _y |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance Instance_IsFunction_copysignf32 :
     M.IsFunction.Trait "core::intrinsics::copysignf32" copysignf32.
   Admitted.
+  Global Typeclasses Opaque copysignf32.
   
   (*
   pub const unsafe fn copysignf64(_x: f64, _y: f64) -> f64 {
       unimplemented!();
   }
   *)
-  Parameter copysignf64 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition copysignf64 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ _x; _y ] =>
+      ltac:(M.monadic
+        (let _x := M.alloc (| _x |) in
+        let _y := M.alloc (| _y |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance Instance_IsFunction_copysignf64 :
     M.IsFunction.Trait "core::intrinsics::copysignf64" copysignf64.
   Admitted.
+  Global Typeclasses Opaque copysignf64.
   
   (*
   pub const unsafe fn copysignf128(_x: f128, _y: f128) -> f128 {
       unimplemented!();
   }
   *)
-  Parameter copysignf128 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition copysignf128 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ _x; _y ] =>
+      ltac:(M.monadic
+        (let _x := M.alloc (| _x |) in
+        let _y := M.alloc (| _y |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance Instance_IsFunction_copysignf128 :
     M.IsFunction.Trait "core::intrinsics::copysignf128" copysignf128.
   Admitted.
+  Global Typeclasses Opaque copysignf128.
 End intrinsics.
 
 Module ub_checks.
@@ -7811,9 +8621,9 @@ Module char.
                             M.alloc (|
                               Value.Array
                                 [
-                                  M.read (| Value.String "encode_utf8: need " |);
-                                  M.read (| Value.String " bytes to encode U+" |);
-                                  M.read (| Value.String " but buffer has just " |)
+                                  mk_str (| "encode_utf8: need " |);
+                                  mk_str (| " bytes to encode U+" |);
+                                  mk_str (| " but buffer has just " |)
                                 ]
                             |)
                           |)
@@ -8025,9 +8835,8 @@ Module char.
                                                         M.alloc (|
                                                           Value.Array
                                                             [
-                                                              M.read (|
-                                                                Value.String
-                                                                  "encode_utf8: buffer does not have enough bytes to encode code point"
+                                                              mk_str (|
+                                                                "encode_utf8: buffer does not have enough bytes to encode code point"
                                                               |)
                                                             ]
                                                         |)
@@ -8093,9 +8902,9 @@ Module char.
                             M.alloc (|
                               Value.Array
                                 [
-                                  M.read (| Value.String "encode_utf16: need " |);
-                                  M.read (| Value.String " bytes to encode U+" |);
-                                  M.read (| Value.String " but buffer has just " |)
+                                  mk_str (| "encode_utf16: need " |);
+                                  mk_str (| " bytes to encode U+" |);
+                                  mk_str (| " but buffer has just " |)
                                 ]
                             |)
                           |)
@@ -8307,9 +9116,8 @@ Module char.
                                                         M.alloc (|
                                                           Value.Array
                                                             [
-                                                              M.read (|
-                                                                Value.String
-                                                                  "encode_utf16: buffer does not have enough bytes to encode code point"
+                                                              mk_str (|
+                                                                "encode_utf16: buffer does not have enough bytes to encode code point"
                                                               |)
                                                             ]
                                                         |)
@@ -9358,9 +10166,8 @@ Module slice.
                                             Ty.path "never",
                                             M.get_function (| "core::panicking::panic", [], [] |),
                                             [
-                                              M.read (|
-                                                Value.String
-                                                  "assertion failed: offset_to_aligned <= len"
+                                              mk_str (|
+                                                "assertion failed: offset_to_aligned <= len"
                                               |)
                                             ]
                                           |)
@@ -9447,9 +10254,8 @@ Module slice.
                                             Ty.path "never",
                                             M.get_function (| "core::panicking::panic", [], [] |),
                                             [
-                                              M.read (|
-                                                Value.String
-                                                  "assertion failed: word_ptr.is_aligned_to(mem::align_of::<usize>())"
+                                              mk_str (|
+                                                "assertion failed: word_ptr.is_aligned_to(mem::align_of::<usize>())"
                                               |)
                                             ]
                                           |)
@@ -9542,9 +10348,8 @@ Module slice.
                                                             []
                                                           |),
                                                           [
-                                                            M.read (|
-                                                              Value.String
-                                                                "assertion failed: byte_pos + USIZE_SIZE <= len"
+                                                            mk_str (|
+                                                              "assertion failed: byte_pos + USIZE_SIZE <= len"
                                                             |)
                                                           ]
                                                         |)
@@ -9636,9 +10441,8 @@ Module slice.
                                                             []
                                                           |),
                                                           [
-                                                            M.read (|
-                                                              Value.String
-                                                                "assertion failed: word_ptr.cast::<u8>() == start.wrapping_add(byte_pos)"
+                                                            mk_str (|
+                                                              "assertion failed: word_ptr.cast::<u8>() == start.wrapping_add(byte_pos)"
                                                             |)
                                                           ]
                                                         |)
@@ -9796,9 +10600,8 @@ Module slice.
                                             Ty.path "never",
                                             M.get_function (| "core::panicking::panic", [], [] |),
                                             [
-                                              M.read (|
-                                                Value.String
-                                                  "assertion failed: byte_pos <= len && len - byte_pos <= USIZE_SIZE"
+                                              mk_str (|
+                                                "assertion failed: byte_pos <= len && len - byte_pos <= USIZE_SIZE"
                                               |)
                                             ]
                                           |)
@@ -9940,8 +10743,8 @@ Module slice.
                             M.alloc (|
                               Value.Array
                                 [
-                                  M.read (| Value.String "range start index " |);
-                                  M.read (| Value.String " out of range for slice of length " |)
+                                  mk_str (| "range start index " |);
+                                  mk_str (| " out of range for slice of length " |)
                                 ]
                             |)
                           |)
@@ -10053,9 +10856,8 @@ Module slice.
                                                 M.alloc (|
                                                   Value.Array
                                                     [
-                                                      M.read (|
-                                                        Value.String
-                                                          "slice start index is out of range for slice"
+                                                      mk_str (|
+                                                        "slice start index is out of range for slice"
                                                       |)
                                                     ]
                                                 |)
@@ -10118,8 +10920,8 @@ Module slice.
                             M.alloc (|
                               Value.Array
                                 [
-                                  M.read (| Value.String "range end index " |);
-                                  M.read (| Value.String " out of range for slice of length " |)
+                                  mk_str (| "range end index " |);
+                                  mk_str (| " out of range for slice of length " |)
                                 ]
                             |)
                           |)
@@ -10231,9 +11033,8 @@ Module slice.
                                                 M.alloc (|
                                                   Value.Array
                                                     [
-                                                      M.read (|
-                                                        Value.String
-                                                          "slice end index is out of range for slice"
+                                                      mk_str (|
+                                                        "slice end index is out of range for slice"
                                                       |)
                                                     ]
                                                 |)
@@ -10296,8 +11097,8 @@ Module slice.
                             M.alloc (|
                               Value.Array
                                 [
-                                  M.read (| Value.String "slice index starts at " |);
-                                  M.read (| Value.String " but ends at " |)
+                                  mk_str (| "slice index starts at " |);
+                                  mk_str (| " but ends at " |)
                                 ]
                             |)
                           |)
@@ -10409,9 +11210,8 @@ Module slice.
                                                 M.alloc (|
                                                   Value.Array
                                                     [
-                                                      M.read (|
-                                                        Value.String
-                                                          "slice index start is larger than end"
+                                                      mk_str (|
+                                                        "slice index start is larger than end"
                                                       |)
                                                     ]
                                                 |)

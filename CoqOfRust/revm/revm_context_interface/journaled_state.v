@@ -158,10 +158,7 @@ Module journaled_state.
                             "revm_context_interface::journaled_state::TransferError::OutOfFunds"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "OutOfFunds" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "OutOfFunds" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -174,7 +171,7 @@ Module journaled_state.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "OverflowPayment" |) |)
+                            M.deref (| mk_str (| "OverflowPayment" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -188,7 +185,7 @@ Module journaled_state.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "CreateCollision" |) |)
+                            M.deref (| mk_str (| "CreateCollision" |) |)
                           |)
                         |)))
                   ]
@@ -328,11 +325,8 @@ Module journaled_state.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "JournalCheckpoint" |) |)
-              |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "log_i" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "JournalCheckpoint" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "log_i" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -346,7 +340,7 @@ Module journaled_state.
                   |)
                 |)
               |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "journal_i" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "journal_i" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -631,8 +625,8 @@ Module journaled_state.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "StateLoad" |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "data" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "StateLoad" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "data" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -646,7 +640,7 @@ Module journaled_state.
                   |)
                 |)
               |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "is_cold" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "is_cold" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -1166,11 +1160,8 @@ Module journaled_state.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "AccountLoad" |) |)
-              |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "load" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "AccountLoad" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "load" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -1184,7 +1175,7 @@ Module journaled_state.
                   |)
                 |)
               |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "is_empty" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "is_empty" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -1623,11 +1614,8 @@ Module journaled_state.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "Eip7702CodeLoad" |) |)
-              |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "state_load" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Eip7702CodeLoad" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "state_load" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -1643,7 +1631,7 @@ Module journaled_state.
               |);
               M.borrow (|
                 Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "is_delegate_account_cold" |) |)
+                M.deref (| mk_str (| "is_delegate_account_cold" |) |)
               |);
               M.borrow (|
                 Pointer.Kind.Ref,

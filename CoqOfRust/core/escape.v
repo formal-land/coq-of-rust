@@ -993,11 +993,8 @@ Module escape.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "EscapeIterInner" |) |)
-              |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "data" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "EscapeIterInner" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "data" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -1011,7 +1008,7 @@ Module escape.
                   |)
                 |)
               |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "alive" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "alive" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|

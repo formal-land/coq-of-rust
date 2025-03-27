@@ -3130,10 +3130,7 @@ Module eof.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Decode" |) |)
-                            |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Decode" |) |) |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -3167,7 +3164,7 @@ Module eof.
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Validation" |) |)
+                              M.deref (| mk_str (| "Validation" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
@@ -4063,8 +4060,7 @@ Module eof.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
-                                        Value.Array
-                                          [ M.read (| Value.String "Bytecode decode error: " |) ]
+                                        Value.Array [ mk_str (| "Bytecode decode error: " |) ]
                                       |)
                                     |)
                                   |)
@@ -4149,9 +4145,7 @@ Module eof.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
-                                        Value.Array
-                                          [ M.read (| Value.String "Bytecode validation error: " |)
-                                          ]
+                                        Value.Array [ mk_str (| "Bytecode validation error: " |) ]
                                       |)
                                     |)
                                   |)
@@ -4518,7 +4512,7 @@ Module eof.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "FalsePositive" |) |)
+                              M.deref (| mk_str (| "FalsePositive" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -4532,7 +4526,7 @@ Module eof.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "UnknownOpcode" |) |)
+                              M.deref (| mk_str (| "UnknownOpcode" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -4546,7 +4540,7 @@ Module eof.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "OpcodeDisabled" |) |)
+                              M.deref (| mk_str (| "OpcodeDisabled" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -4560,9 +4554,7 @@ Module eof.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (|
-                                M.read (| Value.String "InstructionNotForwardAccessed" |)
-                              |)
+                              M.deref (| mk_str (| "InstructionNotForwardAccessed" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -4576,7 +4568,7 @@ Module eof.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "MissingImmediateBytes" |) |)
+                              M.deref (| mk_str (| "MissingImmediateBytes" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -4590,7 +4582,7 @@ Module eof.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "MissingRJUMPVImmediateBytes" |) |)
+                              M.deref (| mk_str (| "MissingRJUMPVImmediateBytes" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -4604,7 +4596,7 @@ Module eof.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "JumpToImmediateBytes" |) |)
+                              M.deref (| mk_str (| "JumpToImmediateBytes" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -4618,7 +4610,7 @@ Module eof.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "BackwardJumpToImmediateBytes" |) |)
+                              M.deref (| mk_str (| "BackwardJumpToImmediateBytes" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -4632,7 +4624,7 @@ Module eof.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "RJUMPVZeroMaxIndex" |) |)
+                              M.deref (| mk_str (| "RJUMPVZeroMaxIndex" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -4646,7 +4638,7 @@ Module eof.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "JumpZeroOffset" |) |)
+                              M.deref (| mk_str (| "JumpZeroOffset" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -4660,7 +4652,7 @@ Module eof.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "EOFCREATEInvalidIndex" |) |)
+                              M.deref (| mk_str (| "EOFCREATEInvalidIndex" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -4674,7 +4666,7 @@ Module eof.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "CodeSectionOutOfBounds" |) |)
+                              M.deref (| mk_str (| "CodeSectionOutOfBounds" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -4688,7 +4680,7 @@ Module eof.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "CALLFNonReturningFunction" |) |)
+                              M.deref (| mk_str (| "CALLFNonReturningFunction" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -4702,7 +4694,7 @@ Module eof.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "StackOverflow" |) |)
+                              M.deref (| mk_str (| "StackOverflow" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -4716,7 +4708,7 @@ Module eof.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "JUMPFEnoughOutputs" |) |)
+                              M.deref (| mk_str (| "JUMPFEnoughOutputs" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -4730,7 +4722,7 @@ Module eof.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "JUMPFStackHigherThanOutputs" |) |)
+                              M.deref (| mk_str (| "JUMPFStackHigherThanOutputs" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -4744,7 +4736,7 @@ Module eof.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "DataLoadOutOfBounds" |) |)
+                              M.deref (| mk_str (| "DataLoadOutOfBounds" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -4758,9 +4750,7 @@ Module eof.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (|
-                                M.read (| Value.String "RETFBiggestStackNumMoreThenOutputs" |)
-                              |)
+                              M.deref (| mk_str (| "RETFBiggestStackNumMoreThenOutputs" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -4774,7 +4764,7 @@ Module eof.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "StackUnderflow" |) |)
+                              M.deref (| mk_str (| "StackUnderflow" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -4788,7 +4778,7 @@ Module eof.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "TypesStackUnderflow" |) |)
+                              M.deref (| mk_str (| "TypesStackUnderflow" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -4802,7 +4792,7 @@ Module eof.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "JumpUnderflow" |) |)
+                              M.deref (| mk_str (| "JumpUnderflow" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -4816,7 +4806,7 @@ Module eof.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "JumpOverflow" |) |)
+                              M.deref (| mk_str (| "JumpOverflow" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -4830,9 +4820,7 @@ Module eof.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (|
-                                M.read (| Value.String "BackwardJumpBiggestNumMismatch" |)
-                              |)
+                              M.deref (| mk_str (| "BackwardJumpBiggestNumMismatch" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -4846,9 +4834,7 @@ Module eof.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (|
-                                M.read (| Value.String "BackwardJumpSmallestNumMismatch" |)
-                              |)
+                              M.deref (| mk_str (| "BackwardJumpSmallestNumMismatch" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -4862,9 +4848,7 @@ Module eof.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (|
-                                M.read (| Value.String "LastInstructionNotTerminating" |)
-                              |)
+                              M.deref (| mk_str (| "LastInstructionNotTerminating" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -4878,7 +4862,7 @@ Module eof.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "CodeSectionNotAccessed" |) |)
+                              M.deref (| mk_str (| "CodeSectionNotAccessed" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -4892,7 +4876,7 @@ Module eof.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "InvalidTypesSection" |) |)
+                              M.deref (| mk_str (| "InvalidTypesSection" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -4906,7 +4890,7 @@ Module eof.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "InvalidFirstTypesSection" |) |)
+                              M.deref (| mk_str (| "InvalidFirstTypesSection" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -4920,7 +4904,7 @@ Module eof.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "MaxStackMismatch" |) |)
+                              M.deref (| mk_str (| "MaxStackMismatch" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -4934,7 +4918,7 @@ Module eof.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "NoCodeSections" |) |)
+                              M.deref (| mk_str (| "NoCodeSections" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -4948,7 +4932,7 @@ Module eof.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "SubContainerCalledInTwoModes" |) |)
+                              M.deref (| mk_str (| "SubContainerCalledInTwoModes" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -4962,7 +4946,7 @@ Module eof.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "SubContainerNotAccessed" |) |)
+                              M.deref (| mk_str (| "SubContainerNotAccessed" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -4976,7 +4960,7 @@ Module eof.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "DataNotFilled" |) |)
+                              M.deref (| mk_str (| "DataNotFilled" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -4990,9 +4974,7 @@ Module eof.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (|
-                                M.read (| Value.String "NonReturningSectionIsReturning" |)
-                              |)
+                              M.deref (| mk_str (| "NonReturningSectionIsReturning" |) |)
                             |)
                           |)))
                     ]
@@ -5561,13 +5543,10 @@ Module eof.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "AccessTracker" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "AccessTracker" |) |)
-                |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "this_container_code_type" |) |)
+                  M.deref (| mk_str (| "this_container_code_type" |) |)
                 |);
                 M.borrow (|
                   Pointer.Kind.Ref,
@@ -5582,7 +5561,7 @@ Module eof.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "codes" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "codes" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -5596,10 +5575,7 @@ Module eof.
                     |)
                   |)
                 |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "processing_stack" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "processing_stack" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -5613,10 +5589,7 @@ Module eof.
                     |)
                   |)
                 |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "subcontainers" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "subcontainers" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -5985,9 +5958,8 @@ Module eof.
                                           M.alloc (|
                                             Value.Array
                                               [
-                                                M.read (|
-                                                  Value.String
-                                                    "There should be at least one code section"
+                                                mk_str (|
+                                                  "There should be at least one code section"
                                                 |)
                                               ]
                                           |)
@@ -6549,7 +6521,7 @@ Module eof.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "ReturnContract" |) |)
+                              M.deref (| mk_str (| "ReturnContract" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -6563,7 +6535,7 @@ Module eof.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "ReturnOrStop" |) |)
+                              M.deref (| mk_str (| "ReturnOrStop" |) |)
                             |)
                           |)))
                     ]
@@ -6784,7 +6756,7 @@ Module eof.
                               γ,
                               "revm_bytecode::eof::verification::EofValidationError::FalsePositive"
                             |) in
-                          Value.String "False positive"));
+                          M.alloc (| mk_str (| "False positive" |) |)));
                       fun γ =>
                         ltac:(M.monadic
                           (let γ := M.read (| γ |) in
@@ -6796,7 +6768,7 @@ Module eof.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Opcode is not known" |) |)
+                              M.deref (| mk_str (| "Opcode is not known" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -6810,7 +6782,7 @@ Module eof.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Opcode is disabled" |) |)
+                              M.deref (| mk_str (| "Opcode is disabled" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -6824,7 +6796,7 @@ Module eof.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Should have forward jump" |) |)
+                              M.deref (| mk_str (| "Should have forward jump" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -6838,7 +6810,7 @@ Module eof.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Bytecode is missing bytes" |) |)
+                              M.deref (| mk_str (| "Bytecode is missing bytes" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -6853,9 +6825,7 @@ Module eof.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (|
-                                M.read (|
-                                  Value.String "Bytecode is missing bytes after RJUMPV opcode"
-                                |)
+                                mk_str (| "Bytecode is missing bytes after RJUMPV opcode" |)
                               |)
                             |)
                           |)));
@@ -6870,7 +6840,7 @@ Module eof.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Invalid jump" |) |)
+                              M.deref (| mk_str (| "Invalid jump" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -6884,7 +6854,7 @@ Module eof.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Invalid backward jump" |) |)
+                              M.deref (| mk_str (| "Invalid backward jump" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -6898,9 +6868,7 @@ Module eof.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (|
-                                M.read (| Value.String "Used RJUMPV with zero as MaxIndex" |)
-                              |)
+                              M.deref (| mk_str (| "Used RJUMPV with zero as MaxIndex" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -6914,9 +6882,7 @@ Module eof.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (|
-                                M.read (| Value.String "Used JUMP with zero as offset" |)
-                              |)
+                              M.deref (| mk_str (| "Used JUMP with zero as offset" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -6930,9 +6896,7 @@ Module eof.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (|
-                                M.read (| Value.String "EOFCREATE points to out of bound index" |)
-                              |)
+                              M.deref (| mk_str (| "EOFCREATE points to out of bound index" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -6946,7 +6910,7 @@ Module eof.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "CALLF index is out of bounds" |) |)
+                              M.deref (| mk_str (| "CALLF index is out of bounds" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -6960,9 +6924,7 @@ Module eof.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (|
-                                M.read (| Value.String "CALLF was used on non-returning function" |)
-                              |)
+                              M.deref (| mk_str (| "CALLF was used on non-returning function" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -6976,7 +6938,7 @@ Module eof.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "CALLF stack overflow" |) |)
+                              M.deref (| mk_str (| "CALLF stack overflow" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -6990,7 +6952,7 @@ Module eof.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "JUMPF needs more outputs" |) |)
+                              M.deref (| mk_str (| "JUMPF needs more outputs" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -7004,9 +6966,7 @@ Module eof.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (|
-                                M.read (| Value.String "JUMPF stack is too high for outputs" |)
-                              |)
+                              M.deref (| mk_str (| "JUMPF stack is too high for outputs" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -7020,7 +6980,7 @@ Module eof.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "DATALOAD is out of bounds" |) |)
+                              M.deref (| mk_str (| "DATALOAD is out of bounds" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -7035,9 +6995,7 @@ Module eof.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (|
-                                M.read (|
-                                  Value.String "RETF biggest stack num is more than outputs"
-                                |)
+                                mk_str (| "RETF biggest stack num is more than outputs" |)
                               |)
                             |)
                           |)));
@@ -7053,9 +7011,7 @@ Module eof.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (|
-                                M.read (|
-                                  Value.String "Stack requirement is above smallest stack items"
-                                |)
+                                mk_str (| "Stack requirement is above smallest stack items" |)
                               |)
                             |)
                           |)));
@@ -7071,9 +7027,7 @@ Module eof.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (|
-                                M.read (|
-                                  Value.String "Smallest stack items is more than output type"
-                                |)
+                                mk_str (| "Smallest stack items is more than output type" |)
                               |)
                             |)
                           |)));
@@ -7088,7 +7042,7 @@ Module eof.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Jump destination is too low" |) |)
+                              M.deref (| mk_str (| "Jump destination is too low" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -7102,7 +7056,7 @@ Module eof.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Jump destination is too high" |) |)
+                              M.deref (| mk_str (| "Jump destination is too high" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -7117,9 +7071,7 @@ Module eof.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (|
-                                M.read (|
-                                  Value.String "Backward jump has different biggest stack item"
-                                |)
+                                mk_str (| "Backward jump has different biggest stack item" |)
                               |)
                             |)
                           |)));
@@ -7135,9 +7087,7 @@ Module eof.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (|
-                                M.read (|
-                                  Value.String "Backward jump has different smallest stack item"
-                                |)
+                                mk_str (| "Backward jump has different smallest stack item" |)
                               |)
                             |)
                           |)));
@@ -7153,9 +7103,7 @@ Module eof.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (|
-                                M.read (|
-                                  Value.String "Last instruction of bytecode is not terminating"
-                                |)
+                                mk_str (| "Last instruction of bytecode is not terminating" |)
                               |)
                             |)
                           |)));
@@ -7170,9 +7118,7 @@ Module eof.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (|
-                                M.read (| Value.String "Code section was not accessed" |)
-                              |)
+                              M.deref (| mk_str (| "Code section was not accessed" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -7186,7 +7132,7 @@ Module eof.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Invalid types section" |) |)
+                              M.deref (| mk_str (| "Invalid types section" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -7200,7 +7146,7 @@ Module eof.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Invalid first types section" |) |)
+                              M.deref (| mk_str (| "Invalid first types section" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -7214,7 +7160,7 @@ Module eof.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Max stack element mismatches" |) |)
+                              M.deref (| mk_str (| "Max stack element mismatches" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -7228,7 +7174,7 @@ Module eof.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "No code sections" |) |)
+                              M.deref (| mk_str (| "No code sections" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -7242,9 +7188,7 @@ Module eof.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (|
-                                M.read (| Value.String "Sub container called in two modes" |)
-                              |)
+                              M.deref (| mk_str (| "Sub container called in two modes" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -7258,7 +7202,7 @@ Module eof.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Sub container not accessed" |) |)
+                              M.deref (| mk_str (| "Sub container not accessed" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -7272,7 +7216,7 @@ Module eof.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Data not filled" |) |)
+                              M.deref (| mk_str (| "Data not filled" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -7286,9 +7230,7 @@ Module eof.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (|
-                                M.read (| Value.String "Non returning section is returning" |)
-                              |)
+                              M.deref (| mk_str (| "Non returning section is returning" |) |)
                             |)
                           |)))
                     ]
@@ -9461,14 +9403,8 @@ Module eof.
                 |),
                 [
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (| M.read (| Value.String "InstructionInfo" |) |)
-                  |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (| M.read (| Value.String "is_immediate" |) |)
-                  |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "InstructionInfo" |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "is_immediate" |) |) |);
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
@@ -9482,10 +9418,7 @@ Module eof.
                       |)
                     |)
                   |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (| M.read (| Value.String "is_jumpdest" |) |)
-                  |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "is_jumpdest" |) |) |);
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
@@ -9499,10 +9432,7 @@ Module eof.
                       |)
                     |)
                   |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (| M.read (| Value.String "smallest" |) |)
-                  |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "smallest" |) |) |);
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
@@ -9516,10 +9446,7 @@ Module eof.
                       |)
                     |)
                   |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (| M.read (| Value.String "biggest" |) |)
-                  |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "biggest" |) |) |);
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|

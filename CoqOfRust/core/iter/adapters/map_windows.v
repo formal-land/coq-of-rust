@@ -143,9 +143,8 @@ Module iter.
                                             M.alloc (|
                                               Value.Array
                                                 [
-                                                  M.read (|
-                                                    Value.String
-                                                      "array in `Iterator::map_windows` must contain more than 0 elements"
+                                                  mk_str (|
+                                                    "array in `Iterator::map_windows` must contain more than 0 elements"
                                                   |)
                                                 ]
                                             |)
@@ -272,9 +271,8 @@ Module iter.
                                                       M.alloc (|
                                                         Value.Array
                                                           [
-                                                            M.read (|
-                                                              Value.String
-                                                                "array size of `Iterator::map_windows` is too large"
+                                                            mk_str (|
+                                                              "array size of `Iterator::map_windows` is too large"
                                                             |)
                                                           ]
                                                       |)
@@ -1706,11 +1704,7 @@ Module iter.
                                         M.call_closure (|
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
-                                          [
-                                            M.read (|
-                                              Value.String
-                                                "assertion failed: self.start + N <= 2 * N"
-                                            |)
+                                          [ mk_str (| "assertion failed: self.start + N <= 2 * N" |)
                                           ]
                                         |)
                                       |)
@@ -1905,9 +1899,8 @@ Module iter.
                                               Ty.path "never",
                                               M.get_function (| "core::panicking::panic", [], [] |),
                                               [
-                                                M.read (|
-                                                  Value.String
-                                                    "assertion failed: self.start + N <= 2 * N"
+                                                mk_str (|
+                                                  "assertion failed: self.start + N <= 2 * N"
                                                 |)
                                               ]
                                             |)
@@ -2188,11 +2181,7 @@ Module iter.
                                         M.call_closure (|
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
-                                          [
-                                            M.read (|
-                                              Value.String
-                                                "assertion failed: self.start + N <= 2 * N"
-                                            |)
+                                          [ mk_str (| "assertion failed: self.start + N <= 2 * N" |)
                                           ]
                                         |)
                                       |)
@@ -3423,16 +3412,13 @@ Module iter.
                                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.deref (| M.read (| Value.String "MapWindows" |) |)
+                                    M.deref (| mk_str (| "MapWindows" |) |)
                                   |)
                                 ]
                               |)
                             |)
                           |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "iter" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "iter" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (|

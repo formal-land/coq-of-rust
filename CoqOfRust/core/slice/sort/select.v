@@ -107,12 +107,8 @@ Module slice.
                                           M.alloc (|
                                             Value.Array
                                               [
-                                                M.read (|
-                                                  Value.String "partition_at_index index "
-                                                |);
-                                                M.read (|
-                                                  Value.String " greater than length of slice "
-                                                |)
+                                                mk_str (| "partition_at_index index " |);
+                                                mk_str (| " greater than length of slice " |)
                                               ]
                                           |)
                                         |)
@@ -2057,11 +2053,7 @@ Module slice.
                                           M.call_closure (|
                                             Ty.path "never",
                                             M.get_function (| "core::panicking::panic", [], [] |),
-                                            [
-                                              M.read (|
-                                                Value.String "assertion failed: k < v.len()"
-                                              |)
-                                            ]
+                                            [ mk_str (| "assertion failed: k < v.len()" |) ]
                                           |)
                                         |)
                                       |)));
@@ -2111,11 +2103,7 @@ Module slice.
                                           M.call_closure (|
                                             Ty.path "never",
                                             M.get_function (| "core::panicking::panic", [], [] |),
-                                            [
-                                              M.read (|
-                                                Value.String "assertion failed: !T::IS_ZST"
-                                              |)
-                                            ]
+                                            [ mk_str (| "assertion failed: !T::IS_ZST" |) ]
                                           |)
                                         |)
                                       |)));

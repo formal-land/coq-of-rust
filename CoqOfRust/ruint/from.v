@@ -256,7 +256,7 @@ Module from.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "ValueTooLarge" |) |)
+                            M.deref (| mk_str (| "ValueTooLarge" |) |)
                           |);
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
                           M.borrow (|
@@ -299,7 +299,7 @@ Module from.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "ValueNegative" |) |)
+                            M.deref (| mk_str (| "ValueNegative" |) |)
                           |);
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
                           M.borrow (|
@@ -333,10 +333,7 @@ Module from.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "NotANumber" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "NotANumber" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -954,8 +951,8 @@ Module from.
                                     M.alloc (|
                                       Value.Array
                                         [
-                                          M.read (| Value.String "Value is too large for Uint<" |);
-                                          M.read (| Value.String ">" |)
+                                          mk_str (| "Value is too large for Uint<" |);
+                                          mk_str (| ">" |)
                                         ]
                                     |)
                                   |)
@@ -1042,11 +1039,10 @@ Module from.
                                     M.alloc (|
                                       Value.Array
                                         [
-                                          M.read (|
-                                            Value.String
-                                              "Negative values cannot be represented as Uint<"
+                                          mk_str (|
+                                            "Negative values cannot be represented as Uint<"
                                           |);
-                                          M.read (| Value.String ">" |)
+                                          mk_str (| ">" |)
                                         ]
                                     |)
                                   |)
@@ -1127,11 +1123,10 @@ Module from.
                                     M.alloc (|
                                       Value.Array
                                         [
-                                          M.read (|
-                                            Value.String
-                                              "'Not a number' (NaN) cannot be represented as Uint<"
+                                          mk_str (|
+                                            "'Not a number' (NaN) cannot be represented as Uint<"
                                           |);
-                                          M.read (| Value.String ">" |)
+                                          mk_str (| ">" |)
                                         ]
                                     |)
                                   |)
@@ -1375,10 +1370,7 @@ Module from.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Overflow" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Overflow" |) |) |);
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_1 |) |) |);
                           M.borrow (|
@@ -1786,8 +1778,8 @@ Module from.
                                     M.alloc (|
                                       Value.Array
                                         [
-                                          M.read (| Value.String "Uint<" |);
-                                          M.read (| Value.String "> value is too large for " |)
+                                          mk_str (| "Uint<" |);
+                                          mk_str (| "> value is too large for " |)
                                         ]
                                     |)
                                   |)
@@ -1945,7 +1937,7 @@ Module from.
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "NotInField" |) |) |)
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "NotInField" |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -2054,9 +2046,8 @@ Module from.
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (|
-                              M.read (|
-                                Value.String
-                                  "Number is equal or larger than the target field modulus."
+                              mk_str (|
+                                "Number is equal or larger than the target field modulus."
                               |)
                             |)
                           |)
@@ -2167,8 +2158,7 @@ Module from.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
-                                        Value.Array
-                                          [ M.read (| Value.String "Uint conversion error: " |) ]
+                                        Value.Array [ mk_str (| "Uint conversion error: " |) ]
                                       |)
                                     |)
                                   |)
@@ -2532,10 +2522,7 @@ Module from.
                 |),
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
               |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "Uint conversion error" |) |)
-              |)
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Uint conversion error" |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -4363,11 +4350,7 @@ Module from.
                                         M.call_closure (|
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
-                                          [
-                                            M.read (|
-                                              Value.String
-                                                "internal error: entered unreachable code"
-                                            |)
+                                          [ mk_str (| "internal error: entered unreachable code" |)
                                           ]
                                         |)
                                       |)
@@ -4583,11 +4566,7 @@ Module from.
                                         M.call_closure (|
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
-                                          [
-                                            M.read (|
-                                              Value.String
-                                                "internal error: entered unreachable code"
-                                            |)
+                                          [ mk_str (| "internal error: entered unreachable code" |)
                                           ]
                                         |)
                                       |)
@@ -4803,11 +4782,7 @@ Module from.
                                         M.call_closure (|
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
-                                          [
-                                            M.read (|
-                                              Value.String
-                                                "internal error: entered unreachable code"
-                                            |)
+                                          [ mk_str (| "internal error: entered unreachable code" |)
                                           ]
                                         |)
                                       |)
@@ -5023,11 +4998,7 @@ Module from.
                                         M.call_closure (|
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
-                                          [
-                                            M.read (|
-                                              Value.String
-                                                "internal error: entered unreachable code"
-                                            |)
+                                          [ mk_str (| "internal error: entered unreachable code" |)
                                           ]
                                         |)
                                       |)
@@ -5243,11 +5214,7 @@ Module from.
                                         M.call_closure (|
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
-                                          [
-                                            M.read (|
-                                              Value.String
-                                                "internal error: entered unreachable code"
-                                            |)
+                                          [ mk_str (| "internal error: entered unreachable code" |)
                                           ]
                                         |)
                                       |)
@@ -5463,11 +5430,7 @@ Module from.
                                         M.call_closure (|
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
-                                          [
-                                            M.read (|
-                                              Value.String
-                                                "internal error: entered unreachable code"
-                                            |)
+                                          [ mk_str (| "internal error: entered unreachable code" |)
                                           ]
                                         |)
                                       |)
@@ -5990,7 +5953,7 @@ Module from.
                               M.call_closure (|
                                 Ty.path "never",
                                 M.get_function (| "core::panicking::panic", [], [] |),
-                                [ M.read (| Value.String "assertion failed: value.is_normal()" |) ]
+                                [ mk_str (| "assertion failed: value.is_normal()" |) ]
                               |)
                             |)
                           |)));
@@ -6034,7 +5997,7 @@ Module from.
                               M.call_closure (|
                                 Ty.path "never",
                                 M.get_function (| "core::panicking::panic", [], [] |),
-                                [ M.read (| Value.String "assertion failed: sign == 0" |) ]
+                                [ mk_str (| "assertion failed: sign == 0" |) ]
                               |)
                             |)
                           |)));
@@ -6071,11 +6034,7 @@ Module from.
                               M.call_closure (|
                                 Ty.path "never",
                                 M.get_function (| "core::panicking::panic", [], [] |),
-                                [
-                                  M.read (|
-                                    Value.String "assertion failed: biased_exponent >= 1023"
-                                  |)
-                                ]
+                                [ mk_str (| "assertion failed: biased_exponent >= 1023" |) ]
                               |)
                             |)
                           |)));

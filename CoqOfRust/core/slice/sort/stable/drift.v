@@ -1089,9 +1089,7 @@ Module slice.
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
-                                              Value.Array
-                                                [ M.read (| Value.String "Platform not supported" |)
-                                                ]
+                                              Value.Array [ mk_str (| "Platform not supported" |) ]
                                             |)
                                           |)
                                         |)

@@ -3,7 +3,9 @@ Require Import CoqOfRust.links.M.
 Require Import alloc.links.alloc.
 Require Import alloc.vec.links.mod.
 Require Import core.links.array.
+Require Import core.links.hint.
 Require Import core.links.option.
+Require Import core.links.panicking.
 Require Import core.links.result.
 Require Import core.slice.links.index.
 Require Import core.slice.links.mod.
@@ -178,13 +180,31 @@ Module Impl_Stack.
   Defined.
 
   (* pub unsafe fn popn<const N: usize>(&mut self) -> [U256; N] *)
-  Instance run_popn (self : Ref.t Pointer.Kind.MutRef Self) (N : Usize.t) :
+  Instance run_popn (N : Usize.t) (self : Ref.t Pointer.Kind.MutRef Self) :
     Run.Trait
       interpreter.stack.Impl_revm_interpreter_interpreter_stack_Stack.popn [φ N] [] [φ self]
       (array.t U256.t N).
   Proof.
     constructor.
-    run_symbolic.
+    assert (H_N_eq :
+      M.get_constant "revm_interpreter::interpreter::stack::popn::N" =
+      φ (Ref.immediate Pointer.Kind.Raw N)
+    ) by admit.
+    assert (H_ZERO_eq :
+      M.get_constant "ruint::ZERO" =
+      φ (Ref.immediate Pointer.Kind.Raw (
+        Impl_Uint.ZERO {| Integer.value := 256 |} {| Integer.value := 4 |}
+      ))
+    ) by admit.
+    repeat (
+      run_symbolic ||
+      match goal with
+      | [ |- context[M.get_constant "revm_interpreter::interpreter::stack::popn::N"] ] =>
+        eapply Run.Rewrite; [rewrite H_N_eq; reflexivity |]
+      | [ |- context[M.get_constant "ruint::ZERO"] ] =>
+        eapply Run.Rewrite; [rewrite H_ZERO_eq; reflexivity |]
+      end
+    ).
   Admitted.
 
   (* pub unsafe fn popn_top<const POPN: usize>(&mut self) -> ([U256; POPN], &mut U256) *)
@@ -195,7 +215,7 @@ Module Impl_Stack.
   Proof.
     constructor.
     run_symbolic.
-  Admitted.
+  Defined.
 
   (* pub fn push(&mut self, value: U256) -> bool *)
   Instance run_push (self : Ref.t Pointer.Kind.MutRef Self) (value : U256.t) :
@@ -215,6 +235,7 @@ Module Impl_Stack.
       (Result.t U256.t InstructionResult.t).
   Proof.
     constructor.
+    destruct (Impl_Index_for_Vec_T_A.run U256.t Usize.t Global.t U256.t).
     run_symbolic.
   Admitted.
 

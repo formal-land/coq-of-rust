@@ -107,11 +107,7 @@ Module num.
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
-                                        [
-                                          M.read (|
-                                            Value.String "assertion failed: borrow < other"
-                                          |)
-                                        ]
+                                        [ mk_str (| "assertion failed: borrow < other" |) ]
                                       |)
                                     |)
                                   |)));
@@ -258,11 +254,7 @@ Module num.
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
-                                        [
-                                          M.read (|
-                                            Value.String "assertion failed: borrow < other"
-                                          |)
-                                        ]
+                                        [ mk_str (| "assertion failed: borrow < other" |) ]
                                       |)
                                     |)
                                   |)));
@@ -411,11 +403,7 @@ Module num.
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
-                                        [
-                                          M.read (|
-                                            Value.String "assertion failed: borrow < other"
-                                          |)
-                                        ]
+                                        [ mk_str (| "assertion failed: borrow < other" |) ]
                                       |)
                                     |)
                                   |)));
@@ -1954,7 +1942,7 @@ Module num.
                                 M.call_closure (|
                                   Ty.path "never",
                                   M.get_function (| "core::panicking::panic", [], [] |),
-                                  [ M.read (| Value.String "assertion failed: noborrow" |) ]
+                                  [ mk_str (| "assertion failed: noborrow" |) ]
                                 |)
                               |)
                             |)));
@@ -2333,7 +2321,7 @@ Module num.
                                 M.call_closure (|
                                   Ty.path "never",
                                   M.get_function (| "core::panicking::panic", [], [] |),
-                                  [ M.read (| Value.String "assertion failed: digits < 40" |) ]
+                                  [ mk_str (| "assertion failed: digits < 40" |) ]
                                 |)
                               |)
                             |)));
@@ -2522,9 +2510,8 @@ Module num.
                                             Ty.path "never",
                                             M.get_function (| "core::panicking::panic", [], [] |),
                                             [
-                                              M.read (|
-                                                Value.String
-                                                  "assertion failed: self.base[40 - digits..].iter().all(|&v| v == 0)"
+                                              mk_str (|
+                                                "assertion failed: self.base[40 - digits..].iter().all(|&v| v == 0)"
                                               |)
                                             ]
                                           |)
@@ -2603,9 +2590,8 @@ Module num.
                                             Ty.path "never",
                                             M.get_function (| "core::panicking::panic", [], [] |),
                                             [
-                                              M.read (|
-                                                Value.String
-                                                  "assertion failed: bits == 0 || (self.base[40 - digits - 1] >> (digitbits - bits)) == 0"
+                                              mk_str (|
+                                                "assertion failed: bits == 0 || (self.base[40 - digits - 1] >> (digitbits - bits)) == 0"
                                               |)
                                             ]
                                           |)
@@ -3816,7 +3802,7 @@ Module num.
                             M.call_closure (|
                               Ty.path "never",
                               M.get_function (| "core::panicking::panic", [], [] |),
-                              [ M.read (| Value.String "assertion failed: other > 0" |) ]
+                              [ mk_str (| "assertion failed: other > 0" |) ]
                             |)
                           |)
                         |)));
@@ -4134,7 +4120,7 @@ Module num.
                             M.call_closure (|
                               Ty.path "never",
                               M.get_function (| "core::panicking::panic", [], [] |),
-                              [ M.read (| Value.String "assertion failed: !d.is_zero()" |) ]
+                              [ mk_str (| "assertion failed: !d.is_zero()" |) ]
                             |)
                           |)
                         |)));
@@ -4950,9 +4936,8 @@ Module num.
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
                                         [
-                                          M.read (|
-                                            Value.String
-                                              "assertion failed: q.base[q.size..].iter().all(|&d| d == 0)"
+                                          mk_str (|
+                                            "assertion failed: q.base[q.size..].iter().all(|&d| d == 0)"
                                           |)
                                         ]
                                       |)
@@ -5138,9 +5123,8 @@ Module num.
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
                                         [
-                                          M.read (|
-                                            Value.String
-                                              "assertion failed: r.base[r.size..].iter().all(|&d| d == 0)"
+                                          mk_str (|
+                                            "assertion failed: r.base[r.size..].iter().all(|&d| d == 0)"
                                           |)
                                         ]
                                       |)
@@ -5793,7 +5777,7 @@ Module num.
                                       M.deref (|
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
+                                          M.alloc (| Value.Array [ mk_str (| "" |) ] |)
                                         |)
                                       |)
                                     |);
@@ -6187,11 +6171,7 @@ Module num.
                                                                     Pointer.Kind.Ref,
                                                                     M.alloc (|
                                                                       Value.Array
-                                                                        [
-                                                                          M.read (|
-                                                                            Value.String "_"
-                                                                          |)
-                                                                        ]
+                                                                        [ mk_str (| "_" |) ]
                                                                     |)
                                                                   |)
                                                                 |)
@@ -7896,7 +7876,7 @@ Module num.
                                   M.call_closure (|
                                     Ty.path "never",
                                     M.get_function (| "core::panicking::panic", [], [] |),
-                                    [ M.read (| Value.String "assertion failed: noborrow" |) ]
+                                    [ mk_str (| "assertion failed: noborrow" |) ]
                                   |)
                                 |)
                               |)));
@@ -8294,7 +8274,7 @@ Module num.
                                   M.call_closure (|
                                     Ty.path "never",
                                     M.get_function (| "core::panicking::panic", [], [] |),
-                                    [ M.read (| Value.String "assertion failed: digits < 3" |) ]
+                                    [ mk_str (| "assertion failed: digits < 3" |) ]
                                   |)
                                 |)
                               |)));
@@ -8486,9 +8466,8 @@ Module num.
                                               Ty.path "never",
                                               M.get_function (| "core::panicking::panic", [], [] |),
                                               [
-                                                M.read (|
-                                                  Value.String
-                                                    "assertion failed: self.base[3 - digits..].iter().all(|&v| v == 0)"
+                                                mk_str (|
+                                                  "assertion failed: self.base[3 - digits..].iter().all(|&v| v == 0)"
                                                 |)
                                               ]
                                             |)
@@ -8570,9 +8549,8 @@ Module num.
                                               Ty.path "never",
                                               M.get_function (| "core::panicking::panic", [], [] |),
                                               [
-                                                M.read (|
-                                                  Value.String
-                                                    "assertion failed: bits == 0 || (self.base[3 - digits - 1] >> (digitbits - bits)) == 0"
+                                                mk_str (|
+                                                  "assertion failed: bits == 0 || (self.base[3 - digits - 1] >> (digitbits - bits)) == 0"
                                                 |)
                                               ]
                                             |)
@@ -9805,7 +9783,7 @@ Module num.
                               M.call_closure (|
                                 Ty.path "never",
                                 M.get_function (| "core::panicking::panic", [], [] |),
-                                [ M.read (| Value.String "assertion failed: other > 0" |) ]
+                                [ mk_str (| "assertion failed: other > 0" |) ]
                               |)
                             |)
                           |)));
@@ -10134,7 +10112,7 @@ Module num.
                               M.call_closure (|
                                 Ty.path "never",
                                 M.get_function (| "core::panicking::panic", [], [] |),
-                                [ M.read (| Value.String "assertion failed: !d.is_zero()" |) ]
+                                [ mk_str (| "assertion failed: !d.is_zero()" |) ]
                               |)
                             |)
                           |)));
@@ -10982,9 +10960,8 @@ Module num.
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
                                           [
-                                            M.read (|
-                                              Value.String
-                                                "assertion failed: q.base[q.size..].iter().all(|&d| d == 0)"
+                                            mk_str (|
+                                              "assertion failed: q.base[q.size..].iter().all(|&d| d == 0)"
                                             |)
                                           ]
                                         |)
@@ -11174,9 +11151,8 @@ Module num.
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
                                           [
-                                            M.read (|
-                                              Value.String
-                                                "assertion failed: r.base[r.size..].iter().all(|&d| d == 0)"
+                                            mk_str (|
+                                              "assertion failed: r.base[r.size..].iter().all(|&d| d == 0)"
                                             |)
                                           ]
                                         |)
@@ -11836,9 +11812,7 @@ Module num.
                                         M.deref (|
                                           M.borrow (|
                                             Pointer.Kind.Ref,
-                                            M.alloc (|
-                                              Value.Array [ M.read (| Value.String "" |) ]
-                                            |)
+                                            M.alloc (| Value.Array [ mk_str (| "" |) ] |)
                                           |)
                                         |)
                                       |);
@@ -12241,11 +12215,7 @@ Module num.
                                                                       Pointer.Kind.Ref,
                                                                       M.alloc (|
                                                                         Value.Array
-                                                                          [
-                                                                            M.read (|
-                                                                              Value.String "_"
-                                                                            |)
-                                                                          ]
+                                                                          [ mk_str (| "_" |) ]
                                                                       |)
                                                                     |)
                                                                   |)

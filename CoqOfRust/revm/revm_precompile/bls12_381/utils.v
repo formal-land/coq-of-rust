@@ -369,14 +369,10 @@ Module bls12_381.
                                                                   M.alloc (|
                                                                     Value.Array
                                                                       [
-                                                                        M.read (|
-                                                                          Value.String
-                                                                            "Padded input should be "
+                                                                        mk_str (|
+                                                                          "Padded input should be "
                                                                         |);
-                                                                        M.read (|
-                                                                          Value.String
-                                                                            " bytes, was "
-                                                                        |)
+                                                                        mk_str (| " bytes, was " |)
                                                                       ]
                                                                   |)
                                                                 |)
@@ -717,12 +713,9 @@ Module bls12_381.
                                                                           M.alloc (|
                                                                             Value.Array
                                                                               [
-                                                                                M.read (|
-                                                                                  Value.String ""
-                                                                                |);
-                                                                                M.read (|
-                                                                                  Value.String
-                                                                                    " top bytes of input are not zero"
+                                                                                mk_str (| "" |);
+                                                                                mk_str (|
+                                                                                  " top bytes of input are not zero"
                                                                                 |)
                                                                               ]
                                                                           |)
@@ -995,14 +988,10 @@ Module bls12_381.
                                                                   M.alloc (|
                                                                     Value.Array
                                                                       [
-                                                                        M.read (|
-                                                                          Value.String
-                                                                            "Input should be "
+                                                                        mk_str (|
+                                                                          "Input should be "
                                                                         |);
-                                                                        M.read (|
-                                                                          Value.String
-                                                                            " bytes, was "
-                                                                        |)
+                                                                        mk_str (| " bytes, was " |)
                                                                       ]
                                                                   |)
                                                                 |)
@@ -1540,9 +1529,7 @@ Module bls12_381.
                                             [
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
-                                                M.deref (|
-                                                  M.read (| Value.String "non-canonical fp value" |)
-                                                |)
+                                                M.deref (| mk_str (| "non-canonical fp value" |) |)
                                               |)
                                             ]
                                           |)

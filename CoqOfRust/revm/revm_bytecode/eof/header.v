@@ -262,26 +262,26 @@ Module eof.
                         M.alloc (|
                           Value.Array
                             [
-                              M.read (| Value.String "types_size" |);
+                              mk_str (| "types_size" |);
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "code_sizes" |) |)
+                                M.deref (| mk_str (| "code_sizes" |) |)
                               |);
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "container_sizes" |) |)
+                                M.deref (| mk_str (| "container_sizes" |) |)
                               |);
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "data_size" |) |)
+                                M.deref (| mk_str (| "data_size" |) |)
                               |);
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "sum_code_sizes" |) |)
+                                M.deref (| mk_str (| "sum_code_sizes" |) |)
                               |);
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "sum_container_sizes" |) |)
+                                M.deref (| mk_str (| "sum_container_sizes" |) |)
                               |)
                             ]
                         |)
@@ -411,10 +411,7 @@ Module eof.
                   |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (| M.read (| Value.String "EofHeader" |) |)
-                    |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "EofHeader" |) |) |);
                     M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| names |) |) |);
                     M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| values |) |) |)
                   ]

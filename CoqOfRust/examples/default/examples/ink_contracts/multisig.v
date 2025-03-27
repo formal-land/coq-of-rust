@@ -75,72 +75,169 @@ Module Impl_multisig_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter contains : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition contains (K V : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self K V in
+    match ε, τ, α with
+    | [], [], [ self; _key ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _key := M.alloc (| _key |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance AssociatedFunction_contains :
     forall (K V : Ty.t),
     M.IsAssociatedFunction.Trait (Self K V) "contains" (contains K V).
   Admitted.
+  Global Typeclasses Opaque contains.
   
   (*
       fn get(&self, _key: &K) -> Option<V> {
           unimplemented!()
       }
   *)
-  Parameter get : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition get (K V : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self K V in
+    match ε, τ, α with
+    | [], [], [ self; _key ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _key := M.alloc (| _key |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance AssociatedFunction_get :
     forall (K V : Ty.t),
     M.IsAssociatedFunction.Trait (Self K V) "get" (get K V).
   Admitted.
+  Global Typeclasses Opaque get.
   
   (*
       fn insert(&mut self, _key: K, _value: V) -> Option<u32> {
           unimplemented!()
       }
   *)
-  Parameter insert : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition insert (K V : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self K V in
+    match ε, τ, α with
+    | [], [], [ self; _key; _value ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _key := M.alloc (| _key |) in
+        let _value := M.alloc (| _value |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance AssociatedFunction_insert :
     forall (K V : Ty.t),
     M.IsAssociatedFunction.Trait (Self K V) "insert" (insert K V).
   Admitted.
+  Global Typeclasses Opaque insert.
   
   (*
       fn remove(&self, _key: K) {
           unimplemented!()
       }
   *)
-  Parameter remove : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition remove (K V : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self K V in
+    match ε, τ, α with
+    | [], [], [ self; _key ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _key := M.alloc (| _key |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance AssociatedFunction_remove :
     forall (K V : Ty.t),
     M.IsAssociatedFunction.Trait (Self K V) "remove" (remove K V).
   Admitted.
+  Global Typeclasses Opaque remove.
   
   (*
       fn size(&self, _key: K) -> Option<u32> {
           unimplemented!()
       }
   *)
-  Parameter size : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition size (K V : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self K V in
+    match ε, τ, α with
+    | [], [], [ self; _key ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _key := M.alloc (| _key |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance AssociatedFunction_size :
     forall (K V : Ty.t),
     M.IsAssociatedFunction.Trait (Self K V) "size" (size K V).
   Admitted.
+  Global Typeclasses Opaque size.
   
   (*
       fn take(&self, _key: K) -> Option<V> {
           unimplemented!()
       }
   *)
-  Parameter take : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition take (K V : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self K V in
+    match ε, τ, α with
+    | [], [], [ self; _key ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _key := M.alloc (| _key |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance AssociatedFunction_take :
     forall (K V : Ty.t),
     M.IsAssociatedFunction.Trait (Self K V) "take" (take K V).
   Admitted.
+  Global Typeclasses Opaque take.
 End Impl_multisig_Mapping_K_V.
 
 (* StructTuple
@@ -208,7 +305,7 @@ Module Impl_core_fmt_Debug_for_multisig_AccountId.
           |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "AccountId" |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "AccountId" |) |) |);
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -500,7 +597,8 @@ Axiom TransactionId : (Ty.path "multisig::TransactionId") = (Ty.path "u32").
 
 Definition value_WRONG_TRANSACTION_ID : Value.t :=
   M.run_constant
-    ltac:(M.monadic (Value.String "The user specified an invalid transaction id. Abort.")).
+    ltac:(M.monadic
+      (M.alloc (| mk_str (| "The user specified an invalid transaction id. Abort." |) |))).
 
 Axiom Constant_value_WRONG_TRANSACTION_ID :
   (M.get_constant "multisig::WRONG_TRANSACTION_ID") = value_WRONG_TRANSACTION_ID.
@@ -1071,33 +1169,76 @@ Module Impl_multisig_Env.
           unimplemented!()
       }
   *)
-  Parameter emit_event : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition emit_event (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; _event ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _event := M.alloc (| _event |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance AssociatedFunction_emit_event :
     M.IsAssociatedFunction.Trait Self "emit_event" emit_event.
   Admitted.
+  Global Typeclasses Opaque emit_event.
   
   (*
       fn transferred_value(&self) -> Balance {
           unimplemented!()
       }
   *)
-  Parameter transferred_value : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition transferred_value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance AssociatedFunction_transferred_value :
     M.IsAssociatedFunction.Trait Self "transferred_value" transferred_value.
   Admitted.
+  Global Typeclasses Opaque transferred_value.
   
   (*
       fn account_id(&self) -> AccountId {
           unimplemented!()
       }
   *)
-  Parameter account_id : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition account_id (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance AssociatedFunction_account_id :
     M.IsAssociatedFunction.Trait Self "account_id" account_id.
   Admitted.
+  Global Typeclasses Opaque account_id.
 End Impl_multisig_Env.
 
 (* StructRecord
@@ -1324,9 +1465,8 @@ Definition ensure_requirement_is_valid (ε : list Value.t) (τ : list Ty.t) (α 
                         Ty.path "never",
                         M.get_function (| "core::panicking::panic", [], [] |),
                         [
-                          M.read (|
-                            Value.String
-                              "assertion failed: 0 < requirement && requirement <= owners && owners <= MAX_OWNERS"
+                          mk_str (|
+                            "assertion failed: 0 < requirement && requirement <= owners && owners <= MAX_OWNERS"
                           |)
                         ]
                       |)
@@ -1353,11 +1493,24 @@ Module Impl_multisig_Multisig.
           unimplemented!()
       }
   *)
-  Parameter init_env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition init_env (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
+      ltac:(M.monadic
+        (M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance AssociatedFunction_init_env :
     M.IsAssociatedFunction.Trait Self "init_env" init_env.
   Admitted.
+  Global Typeclasses Opaque init_env.
   
   (*
       fn env(&self) -> Env {
@@ -1761,9 +1914,8 @@ Module Impl_multisig_Multisig.
                           Ty.path "never",
                           M.get_function (| "core::panicking::panic", [], [] |),
                           [
-                            M.read (|
-                              Value.String
-                                "assertion failed: self.confirmation_count.get(&trans_id).expect(WRONG_TRANSACTION_ID) >=
+                            mk_str (|
+                              "assertion failed: self.confirmation_count.get(&trans_id).expect(WRONG_TRANSACTION_ID) >=
     self.requirement"
                             |)
                           ]
@@ -1908,11 +2060,7 @@ Module Impl_multisig_Multisig.
                         M.call_closure (|
                           Ty.path "never",
                           M.get_function (| "core::panicking::panic", [], [] |),
-                          [
-                            M.read (|
-                              Value.String "assertion failed: self.is_owner.contains(owner)"
-                            |)
-                          ]
+                          [ mk_str (| "assertion failed: self.is_owner.contains(owner)" |) ]
                         |)
                       |)
                     |)));
@@ -2243,11 +2391,7 @@ Module Impl_multisig_Multisig.
                         M.call_closure (|
                           Ty.path "never",
                           M.get_function (| "core::panicking::panic", [], [] |),
-                          [
-                            M.read (|
-                              Value.String "assertion failed: !self.is_owner.contains(owner)"
-                            |)
-                          ]
+                          [ mk_str (| "assertion failed: !self.is_owner.contains(owner)" |) ]
                         |)
                       |)
                     |)));
@@ -2592,9 +2736,8 @@ Module Impl_multisig_Multisig.
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
-                  M.read (|
-                    Value.String
-                      "This is only called after it was already verified that the id is
+                  mk_str (|
+                    "This is only called after it was already verified that the id is
                actually an owner."
                   |)
                 |)
@@ -3925,7 +4068,7 @@ Module Impl_multisig_Multisig.
                     |);
                     M.borrow (|
                       Pointer.Kind.Ref,
-                      M.deref (| M.read (| Value.String "Transaction ids exhausted." |) |)
+                      M.deref (| mk_str (| "Transaction ids exhausted." |) |)
                     |)
                   ]
                 |)
@@ -4304,9 +4447,8 @@ Module Impl_multisig_Multisig.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (|
-                                M.read (|
-                                  Value.String
-                                    "The transaction exists hence it must also be in the list."
+                                mk_str (|
+                                  "The transaction exists hence it must also be in the list."
                                 |)
                               |)
                             |)
@@ -4962,9 +5104,8 @@ Module Impl_multisig_Multisig.
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (|
-                              M.read (|
-                                Value.String
-                                  "There is a entry in `self.confirmations`. Hence a count must exit."
+                              mk_str (|
+                                "There is a entry in `self.confirmations`. Hence a count must exit."
                               |)
                             |)
                           |)
@@ -5202,9 +5343,8 @@ Module Impl_multisig_Multisig.
                           Ty.path "never",
                           M.get_function (| "core::panicking::panic", [], [] |),
                           [
-                            M.read (|
-                              Value.String
-                                "assertion failed: self.env().transferred_value() == t.transferred_value"
+                            mk_str (|
+                              "assertion failed: self.env().transferred_value() == t.transferred_value"
                             |)
                           ]
                         |)
@@ -5235,7 +5375,7 @@ Module Impl_multisig_Multisig.
                 M.call_closure (|
                   Ty.path "never",
                   M.get_function (| "core::panicking::panic", [], [] |),
-                  [ M.read (| Value.String "not yet implemented" |) ]
+                  [ mk_str (| "not yet implemented" |) ]
                 |)
               |)
             |) in

@@ -32,8 +32,8 @@ Module Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
           |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Rectangle" |) |) |);
-            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "length" |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Rectangle" |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "length" |) |) |);
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -47,7 +47,7 @@ Module Impl_core_fmt_Debug_for_generics_bounds_Rectangle.
                 |)
               |)
             |);
-            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "height" |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "height" |) |) |);
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -161,11 +161,8 @@ Definition print_debug (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array
-                                [ M.read (| Value.String "" |); M.read (| Value.String "
-" |) ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "" |); mk_str (| "
+" |) ] |)
                           |)
                         |)
                       |);
@@ -316,12 +313,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array
-                                [ M.read (| Value.String "Area: " |); M.read (| Value.String "
-" |)
-                                ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "Area: " |); mk_str (| "
+" |) ] |)
                           |)
                         |)
                       |);

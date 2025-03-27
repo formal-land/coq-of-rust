@@ -63,11 +63,8 @@ Module iter.
                 |),
                 [
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (| M.read (| Value.String "ArrayChunks" |) |)
-                  |);
-                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "iter" |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ArrayChunks" |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "iter" |) |) |);
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
@@ -81,10 +78,7 @@ Module iter.
                       |)
                     |)
                   |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (| M.read (| Value.String "remainder" |) |)
-                  |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "remainder" |) |) |);
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
@@ -296,11 +290,7 @@ Module iter.
                                             Pointer.Kind.Ref,
                                             M.alloc (|
                                               Value.Array
-                                                [
-                                                  M.read (|
-                                                    Value.String "chunk size must be non-zero"
-                                                  |)
-                                                ]
+                                                [ mk_str (| "chunk size must be non-zero" |) ]
                                             |)
                                           |)
                                         |)

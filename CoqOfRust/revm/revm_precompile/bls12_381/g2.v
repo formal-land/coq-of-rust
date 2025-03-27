@@ -1131,14 +1131,10 @@ Module bls12_381.
                                                                   M.alloc (|
                                                                     Value.Array
                                                                       [
-                                                                        M.read (|
-                                                                          Value.String
-                                                                            "Input should be "
+                                                                        mk_str (|
+                                                                          "Input should be "
                                                                         |);
-                                                                        M.read (|
-                                                                          Value.String
-                                                                            " bytes, was "
-                                                                        |)
+                                                                        mk_str (| " bytes, was " |)
                                                                       ]
                                                                   |)
                                                                 |)
@@ -1907,9 +1903,7 @@ Module bls12_381.
                                                       M.borrow (|
                                                         Pointer.Kind.Ref,
                                                         M.deref (|
-                                                          M.read (|
-                                                            Value.String "Element not in G2"
-                                                          |)
+                                                          mk_str (| "Element not in G2" |)
                                                         |)
                                                       |)
                                                     ]
@@ -1981,9 +1975,7 @@ Module bls12_381.
                                                       M.borrow (|
                                                         Pointer.Kind.Ref,
                                                         M.deref (|
-                                                          M.read (|
-                                                            Value.String "Element not on G2 curve"
-                                                          |)
+                                                          mk_str (| "Element not on G2 curve" |)
                                                         |)
                                                       |)
                                                     ]

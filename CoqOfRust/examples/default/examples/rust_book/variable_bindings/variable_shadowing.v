@@ -50,11 +50,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               Pointer.Kind.Ref,
                               M.alloc (|
                                 Value.Array
-                                  [
-                                    M.read (| Value.String "before being shadowed: " |);
-                                    M.read (| Value.String "
-" |)
-                                  ]
+                                  [ mk_str (| "before being shadowed: " |); mk_str (| "
+" |) ]
                               |)
                             |)
                           |)
@@ -96,7 +93,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               |) in
             M.alloc (| Value.Tuple [] |) in
           let~ shadowed_binding : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
-            M.copy (| Value.String "abc" |) in
+            M.alloc (| mk_str (| "abc" |) |) in
           let~ _ : Ty.tuple [] :=
             let~ _ : Ty.tuple [] :=
               M.alloc (|
@@ -120,11 +117,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               Pointer.Kind.Ref,
                               M.alloc (|
                                 Value.Array
-                                  [
-                                    M.read (| Value.String "shadowed in inner block: " |);
-                                    M.read (| Value.String "
-" |)
-                                  ]
+                                  [ mk_str (| "shadowed in inner block: " |); mk_str (| "
+" |) ]
                               |)
                             |)
                           |)
@@ -188,12 +182,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "outside inner block: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "outside inner block: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -258,11 +248,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             Pointer.Kind.Ref,
                             M.alloc (|
                               Value.Array
-                                [
-                                  M.read (| Value.String "shadowed in outer block: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                                [ mk_str (| "shadowed in outer block: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)

@@ -1097,14 +1097,8 @@ Module host.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "SStoreResult" |) |)
-              |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "original_value" |) |)
-              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "SStoreResult" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "original_value" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -1118,10 +1112,7 @@ Module host.
                   |)
                 |)
               |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "present_value" |) |)
-              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "present_value" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -1135,7 +1126,7 @@ Module host.
                   |)
                 |)
               |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "new_value" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "new_value" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -1876,11 +1867,8 @@ Module host.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "SelfDestructResult" |) |)
-              |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "had_value" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "SelfDestructResult" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "had_value" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -1894,10 +1882,7 @@ Module host.
                   |)
                 |)
               |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "target_exists" |) |)
-              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "target_exists" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -1911,10 +1896,7 @@ Module host.
                   |)
                 |)
               |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "previously_destroyed" |) |)
-              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "previously_destroyed" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|

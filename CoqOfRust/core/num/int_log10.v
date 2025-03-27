@@ -708,11 +708,7 @@ Module num.
                         Pointer.Kind.Ref,
                         M.alloc (|
                           Value.Array
-                            [
-                              M.read (|
-                                Value.String "argument of integer logarithm must be positive"
-                              |)
-                            ]
+                            [ mk_str (| "argument of integer logarithm must be positive" |) ]
                         |)
                       |)
                     |)

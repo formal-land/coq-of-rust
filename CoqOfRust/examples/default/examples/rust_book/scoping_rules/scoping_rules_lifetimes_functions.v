@@ -34,12 +34,8 @@ Definition print_one (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "`print_one`: x is " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "`print_one`: x is " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -150,9 +146,9 @@ Definition print_multi (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
                             M.alloc (|
                               Value.Array
                                 [
-                                  M.read (| Value.String "`print_multi`: x is " |);
-                                  M.read (| Value.String ", y is " |);
-                                  M.read (| Value.String "
+                                  mk_str (| "`print_multi`: x is " |);
+                                  mk_str (| ", y is " |);
+                                  mk_str (| "
 " |)
                                 ]
                             |)

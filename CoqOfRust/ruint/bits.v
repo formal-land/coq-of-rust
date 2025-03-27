@@ -2505,9 +2505,8 @@ Module bits.
                                                                                                               M.alloc (|
                                                                                                                 Value.Array
                                                                                                                   [
-                                                                                                                    M.read (|
-                                                                                                                      Value.String
-                                                                                                                        "internal error: entered unreachable code: i >= limbs && i - limbs < LIMBS"
+                                                                                                                    mk_str (|
+                                                                                                                      "internal error: entered unreachable code: i >= limbs && i - limbs < LIMBS"
                                                                                                                     |)
                                                                                                                   ]
                                                                                                               |)
@@ -3177,9 +3176,8 @@ Module bits.
                                                                                               M.alloc (|
                                                                                                 Value.Array
                                                                                                   [
-                                                                                                    M.read (|
-                                                                                                      Value.String
-                                                                                                        "internal error: entered unreachable code: i - limbs < LIMBS && i - limbs - 1 < LIMBS"
+                                                                                                    mk_str (|
+                                                                                                      "internal error: entered unreachable code: i - limbs < LIMBS && i - limbs - 1 < LIMBS"
                                                                                                     |)
                                                                                                   ]
                                                                                               |)
@@ -4283,9 +4281,8 @@ Module bits.
                                                                                               M.alloc (|
                                                                                                 Value.Array
                                                                                                   [
-                                                                                                    M.read (|
-                                                                                                      Value.String
-                                                                                                        "internal error: entered unreachable code: i + limbs < LIMBS && i + limbs + 1 < LIMBS"
+                                                                                                    mk_str (|
+                                                                                                      "internal error: entered unreachable code: i + limbs < LIMBS && i + limbs + 1 < LIMBS"
                                                                                                     |)
                                                                                                   ]
                                                                                               |)

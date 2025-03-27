@@ -40,12 +40,8 @@ Module Animal.
                               Pointer.Kind.Ref,
                               M.alloc (|
                                 Value.Array
-                                  [
-                                    M.read (| Value.String "" |);
-                                    M.read (| Value.String " says " |);
-                                    M.read (| Value.String "
-" |)
-                                  ]
+                                  [ mk_str (| "" |); mk_str (| " says " |); mk_str (| "
+" |) ]
                               |)
                             |)
                           |)
@@ -247,11 +243,8 @@ Module Impl_traits_Sheep.
                                       Pointer.Kind.Ref,
                                       M.alloc (|
                                         Value.Array
-                                          [
-                                            M.read (| Value.String "" |);
-                                            M.read (| Value.String " is already naked...
-" |)
-                                          ]
+                                          [ mk_str (| "" |); mk_str (| " is already naked...
+" |) ]
                                       |)
                                     |)
                                   |)
@@ -346,11 +339,8 @@ Module Impl_traits_Sheep.
                                       Pointer.Kind.Ref,
                                       M.alloc (|
                                         Value.Array
-                                          [
-                                            M.read (| Value.String "" |);
-                                            M.read (| Value.String " gets a haircut!
-" |)
-                                          ]
+                                          [ mk_str (| "" |); mk_str (| " gets a haircut!
+" |) ]
                                       |)
                                     |)
                                   |)
@@ -499,8 +489,8 @@ Module Impl_traits_Animal_for_traits_Sheep.
                         |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                  Value.String "baaaaah?"));
-              fun γ => ltac:(M.monadic (Value.String "baaaaah!"))
+                  M.alloc (| mk_str (| "baaaaah?" |) |)));
+              fun γ => ltac:(M.monadic (M.alloc (| mk_str (| "baaaaah!" |) |)))
             ]
           |)
         |)))
@@ -543,9 +533,9 @@ Module Impl_traits_Animal_for_traits_Sheep.
                               M.alloc (|
                                 Value.Array
                                   [
-                                    M.read (| Value.String "" |);
-                                    M.read (| Value.String " pauses briefly... " |);
-                                    M.read (| Value.String "
+                                    mk_str (| "" |);
+                                    mk_str (| " pauses briefly... " |);
+                                    mk_str (| "
 " |)
                                   ]
                               |)
@@ -684,7 +674,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 [],
                 []
               |),
-              [ M.read (| Value.String "Dolly" |) ]
+              [ mk_str (| "Dolly" |) ]
             |)
           |) in
         let~ _ : Ty.tuple [] :=

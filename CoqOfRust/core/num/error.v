@@ -34,10 +34,7 @@ Module num.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "TryFromIntError" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "TryFromIntError" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -277,9 +274,7 @@ Module num.
             (let self := M.alloc (| self |) in
             M.borrow (|
               Pointer.Kind.Ref,
-              M.deref (|
-                M.read (| Value.String "out of range integral type conversion attempted" |)
-              |)
+              M.deref (| mk_str (| "out of range integral type conversion attempted" |) |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -381,11 +376,8 @@ Module num.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "ParseIntError" |) |)
-                |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "kind" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ParseIntError" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "kind" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -639,10 +631,7 @@ Module num.
                           let _ :=
                             M.is_struct_tuple (| γ, "core::num::error::IntErrorKind::Empty" |) in
                           M.alloc (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Empty" |) |)
-                            |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Empty" |) |) |)
                           |)));
                       fun γ =>
                         ltac:(M.monadic
@@ -655,7 +644,7 @@ Module num.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "InvalidDigit" |) |)
+                              M.deref (| mk_str (| "InvalidDigit" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -669,7 +658,7 @@ Module num.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "PosOverflow" |) |)
+                              M.deref (| mk_str (| "PosOverflow" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -683,7 +672,7 @@ Module num.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "NegOverflow" |) |)
+                              M.deref (| mk_str (| "NegOverflow" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -692,10 +681,7 @@ Module num.
                           let _ :=
                             M.is_struct_tuple (| γ, "core::num::error::IntErrorKind::Zero" |) in
                           M.alloc (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Zero" |) |)
-                            |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Zero" |) |) |)
                           |)))
                     ]
                   |)
@@ -989,9 +975,7 @@ Module num.
                       M.alloc (|
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.deref (|
-                            M.read (| Value.String "cannot parse integer from empty string" |)
-                          |)
+                          M.deref (| mk_str (| "cannot parse integer from empty string" |) |)
                         |)
                       |)));
                   fun γ =>
@@ -1001,7 +985,7 @@ Module num.
                       M.alloc (|
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "invalid digit found in string" |) |)
+                          M.deref (| mk_str (| "invalid digit found in string" |) |)
                         |)
                       |)));
                   fun γ =>
@@ -1011,9 +995,7 @@ Module num.
                       M.alloc (|
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.deref (|
-                            M.read (| Value.String "number too large to fit in target type" |)
-                          |)
+                          M.deref (| mk_str (| "number too large to fit in target type" |) |)
                         |)
                       |)));
                   fun γ =>
@@ -1023,9 +1005,7 @@ Module num.
                       M.alloc (|
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.deref (|
-                            M.read (| Value.String "number too small to fit in target type" |)
-                          |)
+                          M.deref (| mk_str (| "number too small to fit in target type" |) |)
                         |)
                       |)));
                   fun γ =>
@@ -1034,9 +1014,7 @@ Module num.
                       M.alloc (|
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.deref (|
-                            M.read (| Value.String "number would be zero for non-zero type" |)
-                          |)
+                          M.deref (| mk_str (| "number would be zero for non-zero type" |) |)
                         |)
                       |)))
                 ]

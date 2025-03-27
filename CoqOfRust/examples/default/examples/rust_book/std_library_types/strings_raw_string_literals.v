@@ -23,7 +23,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ raw_str : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
-          M.copy (| Value.String "Escapes don't work here: \x3F \u{211D}" |) in
+          M.alloc (| mk_str (| "Escapes don't work here: \x3F \u{211D}" |) |) in
         let~ _ : Ty.tuple [] :=
           let~ _ : Ty.tuple [] :=
             M.alloc (|
@@ -45,11 +45,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array
-                                [ M.read (| Value.String "" |); M.read (| Value.String "
-" |) ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "" |); mk_str (| "
+" |) ] |)
                           |)
                         |)
                       |);
@@ -88,7 +85,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             |) in
           M.alloc (| Value.Tuple [] |) in
         let~ quotes : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
-          M.copy (| Value.String "And then I said: ""There is no escape!""" |) in
+          M.alloc (| mk_str (| "And then I said: ""There is no escape!""" |) |) in
         let~ _ : Ty.tuple [] :=
           let~ _ : Ty.tuple [] :=
             M.alloc (|
@@ -110,11 +107,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array
-                                [ M.read (| Value.String "" |); M.read (| Value.String "
-" |) ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "" |); mk_str (| "
+" |) ] |)
                           |)
                         |)
                       |);
@@ -153,7 +147,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             |) in
           M.alloc (| Value.Tuple [] |) in
         let~ longer_delimiter : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
-          M.copy (| Value.String "A string with ""# in it. And even ""##!" |) in
+          M.alloc (| mk_str (| "A string with ""# in it. And even ""##!" |) |) in
         let~ _ : Ty.tuple [] :=
           let~ _ : Ty.tuple [] :=
             M.alloc (|
@@ -175,11 +169,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array
-                                [ M.read (| Value.String "" |); M.read (| Value.String "
-" |) ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "" |); mk_str (| "
+" |) ] |)
                           |)
                         |)
                       |);

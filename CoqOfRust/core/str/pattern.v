@@ -476,9 +476,8 @@ Module str.
                                                                             M.alloc (|
                                                                               Value.Array
                                                                                 [
-                                                                                  M.read (|
-                                                                                    Value.String
-                                                                                      "The first search step from Searcher must include the first character"
+                                                                                  mk_str (|
+                                                                                    "The first search step from Searcher must include the first character"
                                                                                   |)
                                                                                 ]
                                                                             |)
@@ -777,9 +776,8 @@ Module str.
                                                                             M.alloc (|
                                                                               Value.Array
                                                                                 [
-                                                                                  M.read (|
-                                                                                    Value.String
-                                                                                      "The first search step from ReverseSearcher must include the last character"
+                                                                                  mk_str (|
+                                                                                    "The first search step from ReverseSearcher must include the last character"
                                                                                   |)
                                                                                 ]
                                                                             |)
@@ -1207,7 +1205,7 @@ Module str.
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "StringPattern" |) |)
+                              M.deref (| mk_str (| "StringPattern" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
@@ -1242,7 +1240,7 @@ Module str.
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "CharPattern" |) |)
+                              M.deref (| mk_str (| "CharPattern" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
@@ -1636,10 +1634,7 @@ Module str.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Match" |) |)
-                            |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Match" |) |) |);
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
                             M.borrow (|
                               Pointer.Kind.Ref,
@@ -1679,10 +1674,7 @@ Module str.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Reject" |) |)
-                            |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Reject" |) |) |);
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
                             M.borrow (|
                               Pointer.Kind.Ref,
@@ -1709,10 +1701,7 @@ Module str.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Done" |) |)
-                            |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Done" |) |) |)
                           ]
                         |)
                       |)))
@@ -2368,26 +2357,20 @@ Module str.
                         M.alloc (|
                           Value.Array
                             [
-                              M.read (| Value.String "haystack" |);
+                              mk_str (| "haystack" |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "finger" |) |) |);
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "finger" |) |)
+                                M.deref (| mk_str (| "finger_back" |) |)
+                              |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "needle" |) |) |);
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.deref (| mk_str (| "utf8_size" |) |)
                               |);
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "finger_back" |) |)
-                              |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "needle" |) |)
-                              |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "utf8_size" |) |)
-                              |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "utf8_encoded" |) |)
+                                M.deref (| mk_str (| "utf8_encoded" |) |)
                               |)
                             ]
                         |)
@@ -2517,10 +2500,7 @@ Module str.
                   |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (| M.read (| Value.String "CharSearcher" |) |)
-                    |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CharSearcher" |) |) |);
                     M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| names |) |) |);
                     M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| values |) |) |)
                   ]
@@ -4694,7 +4674,7 @@ Module str.
                       |);
                       M.borrow (|
                         Pointer.Kind.Ref,
-                        M.deref (| M.read (| Value.String "char len should be less than 255" |) |)
+                        M.deref (| mk_str (| "char len should be less than 255" |) |)
                       |)
                     ]
                   |)
@@ -5582,11 +5562,8 @@ Module str.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "MultiCharEqSearcher" |) |)
-                |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "char_eq" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "MultiCharEqSearcher" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "char_eq" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -5600,7 +5577,7 @@ Module str.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "haystack" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "haystack" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -5614,10 +5591,7 @@ Module str.
                     |)
                   |)
                 |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "char_indices" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "char_indices" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -6334,10 +6308,7 @@ Module str.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "CharArraySearcher" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CharArraySearcher" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -6487,10 +6458,7 @@ Module str.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "CharArrayRefSearcher" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CharArrayRefSearcher" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -7999,10 +7967,7 @@ Module str.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "CharSliceSearcher" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CharSliceSearcher" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -8778,9 +8743,7 @@ Module str.
                                         |);
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.deref (|
-                                            M.read (| Value.String "CharPredicateSearcher" |)
-                                          |)
+                                          M.deref (| mk_str (| "CharPredicateSearcher" |) |)
                                         |)
                                       ]
                                     |)
@@ -8788,7 +8751,7 @@ Module str.
                                 |);
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "haystack" |) |)
+                                  M.deref (| mk_str (| "haystack" |) |)
                                 |);
                                 M.borrow (|
                                   Pointer.Kind.Ref,
@@ -8811,10 +8774,7 @@ Module str.
                             |)
                           |)
                         |);
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "char_indices" |) |)
-                        |);
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "char_indices" |) |) |);
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.deref (|
@@ -11172,11 +11132,8 @@ Module str.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "StrSearcher" |) |)
-                |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "haystack" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "StrSearcher" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "haystack" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -11190,7 +11147,7 @@ Module str.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "needle" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "needle" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -11204,7 +11161,7 @@ Module str.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "searcher" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "searcher" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -11393,10 +11350,7 @@ Module str.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Empty" |) |)
-                            |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Empty" |) |) |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -11428,10 +11382,7 @@ Module str.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "TwoWay" |) |)
-                            |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "TwoWay" |) |) |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -11657,11 +11608,8 @@ Module str.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "EmptyNeedle" |) |)
-                |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "position" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "EmptyNeedle" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "position" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -11675,7 +11623,7 @@ Module str.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "end" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "end" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -11689,10 +11637,7 @@ Module str.
                     |)
                   |)
                 |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "is_match_fw" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "is_match_fw" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -11706,10 +11651,7 @@ Module str.
                     |)
                   |)
                 |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "is_match_bw" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "is_match_bw" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -11723,10 +11665,7 @@ Module str.
                     |)
                   |)
                 |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "is_finished" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "is_finished" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -14184,34 +14123,22 @@ Module str.
                         M.alloc (|
                           Value.Array
                             [
-                              M.read (| Value.String "crit_pos" |);
+                              mk_str (| "crit_pos" |);
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "crit_pos_back" |) |)
+                                M.deref (| mk_str (| "crit_pos_back" |) |)
                               |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "period" |) |) |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "byteset" |) |) |);
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "period" |) |)
+                                M.deref (| mk_str (| "position" |) |)
                               |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "end" |) |) |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "memory" |) |) |);
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "byteset" |) |)
-                              |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "position" |) |)
-                              |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "end" |) |)
-                              |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "memory" |) |)
-                              |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "memory_back" |) |)
+                                M.deref (| mk_str (| "memory_back" |) |)
                               |)
                             ]
                         |)
@@ -14367,10 +14294,7 @@ Module str.
                   |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (| M.read (| Value.String "TwoWaySearcher" |) |)
-                    |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "TwoWaySearcher" |) |) |);
                     M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| names |) |) |);
                     M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| values |) |) |)
                   ]
@@ -18173,11 +18097,7 @@ Module str.
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
-                                        [
-                                          M.read (|
-                                            Value.String "assertion failed: period <= known_period"
-                                          |)
-                                        ]
+                                        [ mk_str (| "assertion failed: period <= known_period" |) ]
                                       |)
                                     |)
                                   |)));
@@ -18557,11 +18477,7 @@ Module str.
                                         M.call_closure (|
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
-                                          [
-                                            M.read (|
-                                              Value.String "assertion failed: needle.len() > 1"
-                                            |)
-                                          ]
+                                          [ mk_str (| "assertion failed: needle.len() > 1" |) ]
                                         |)
                                       |)
                                     |)));

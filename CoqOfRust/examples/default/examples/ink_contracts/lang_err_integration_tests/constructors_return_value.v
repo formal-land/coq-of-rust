@@ -94,7 +94,20 @@ Module Impl_core_convert_From_array_Usize_32_u8_for_constructors_return_value_Ac
           unimplemented!()
       }
   *)
-  Parameter from : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition from (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ _value ] =>
+      ltac:(M.monadic
+        (let _value := M.alloc (| _value |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Axiom Implements :
     M.IsTraitInstance
@@ -165,10 +178,7 @@ Module Impl_core_fmt_Debug_for_constructors_return_value_ConstructorError.
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-            M.borrow (|
-              Pointer.Kind.Ref,
-              M.deref (| M.read (| Value.String "ConstructorError" |) |)
-            |)
+            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ConstructorError" |) |) |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -199,11 +209,25 @@ Module Impl_constructors_return_value_ReturnFlags.
           unimplemented!()
       }
   *)
-  Parameter new_with_reverted : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition new_with_reverted (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ has_reverted ] =>
+      ltac:(M.monadic
+        (let has_reverted := M.alloc (| has_reverted |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance AssociatedFunction_new_with_reverted :
     M.IsAssociatedFunction.Trait Self "new_with_reverted" new_with_reverted.
   Admitted.
+  Global Typeclasses Opaque new_with_reverted.
 End Impl_constructors_return_value_ReturnFlags.
 
 (*
@@ -220,7 +244,7 @@ Definition return_value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
       M.call_closure (|
         Ty.path "never",
         M.get_function (| "core::panicking::panic", [], [] |),
-        [ M.read (| Value.String "not implemented" |) ]
+        [ mk_str (| "not implemented" |) ]
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.

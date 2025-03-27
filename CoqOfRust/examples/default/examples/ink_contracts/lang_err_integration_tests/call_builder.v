@@ -132,10 +132,24 @@ Module Impl_call_builder_Selector.
           unimplemented!()
       }
   *)
-  Parameter new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition new (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ bytes ] =>
+      ltac:(M.monadic
+        (let bytes := M.alloc (| bytes |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
   Admitted.
+  Global Typeclasses Opaque new.
 End Impl_call_builder_Selector.
 
 (* StructTuple
@@ -234,7 +248,7 @@ Module Impl_call_builder_CallBuilderTest.
                 M.call_closure (|
                   Ty.path "never",
                   M.get_function (| "core::panicking::panic", [], [] |),
-                  [ M.read (| Value.String "not yet implemented" |) ]
+                  [ mk_str (| "not yet implemented" |) ]
                 |)
               |)
             |) in
@@ -284,9 +298,8 @@ Module Impl_call_builder_CallBuilderTest.
                                     M.alloc (|
                                       Value.Array
                                         [
-                                          M.read (|
-                                            Value.String
-                                              "not implemented: No other `LangError` variants exist at the moment."
+                                          mk_str (|
+                                            "not implemented: No other `LangError` variants exist at the moment."
                                           |)
                                         ]
                                     |)

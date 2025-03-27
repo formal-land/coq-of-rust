@@ -1553,9 +1553,8 @@ Module mul.
                                                   []
                                                 |),
                                                 [
-                                                  M.read (|
-                                                    Value.String
-                                                      "assertion failed: result.limbs[LIMBS_RES - 1] <= Uint::<BITS_RES, LIMBS_RES>::MASK"
+                                                  mk_str (|
+                                                    "assertion failed: result.limbs[LIMBS_RES - 1] <= Uint::<BITS_RES, LIMBS_RES>::MASK"
                                                   |)
                                                 ]
                                               |)

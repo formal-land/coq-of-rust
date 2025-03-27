@@ -391,8 +391,7 @@ Module vec.
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
-                                              Value.Array
-                                                [ M.read (| Value.String "capacity overflow" |) ]
+                                              Value.Array [ mk_str (| "capacity overflow" |) ]
                                             |)
                                           |)
                                         |)

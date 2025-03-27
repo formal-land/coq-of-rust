@@ -246,9 +246,8 @@ Module num.
                                                   M.alloc (|
                                                     Value.Array
                                                       [
-                                                        M.read (|
-                                                          Value.String
-                                                            "Negative input inside `isqrt`."
+                                                        mk_str (|
+                                                          "Negative input inside `isqrt`."
                                                         |)
                                                       ]
                                                   |)
@@ -351,9 +350,8 @@ Module num.
                                                   M.alloc (|
                                                     Value.Array
                                                       [
-                                                        M.read (|
-                                                          Value.String
-                                                            "Negative input inside `isqrt`."
+                                                        mk_str (|
+                                                          "Negative input inside `isqrt`."
                                                         |)
                                                       ]
                                                   |)
@@ -456,9 +454,8 @@ Module num.
                                                   M.alloc (|
                                                     Value.Array
                                                       [
-                                                        M.read (|
-                                                          Value.String
-                                                            "Negative input inside `isqrt`."
+                                                        mk_str (|
+                                                          "Negative input inside `isqrt`."
                                                         |)
                                                       ]
                                                   |)
@@ -561,9 +558,8 @@ Module num.
                                                   M.alloc (|
                                                     Value.Array
                                                       [
-                                                        M.read (|
-                                                          Value.String
-                                                            "Negative input inside `isqrt`."
+                                                        mk_str (|
+                                                          "Negative input inside `isqrt`."
                                                         |)
                                                       ]
                                                   |)
@@ -666,9 +662,8 @@ Module num.
                                                   M.alloc (|
                                                     Value.Array
                                                       [
-                                                        M.read (|
-                                                          Value.String
-                                                            "Negative input inside `isqrt`."
+                                                        mk_str (|
+                                                          "Negative input inside `isqrt`."
                                                         |)
                                                       ]
                                                   |)
@@ -774,9 +769,8 @@ Module num.
                                                     M.alloc (|
                                                       Value.Array
                                                         [
-                                                          M.read (|
-                                                            Value.String
-                                                              "`$n` is  zero in `first_stage!`."
+                                                          mk_str (|
+                                                            "`$n` is  zero in `first_stage!`."
                                                           |)
                                                         ]
                                                     |)
@@ -896,9 +890,8 @@ Module num.
                                                           M.alloc (|
                                                             Value.Array
                                                               [
-                                                                M.read (|
-                                                                  Value.String
-                                                                    "`$s` is  zero in `last_stage!`."
+                                                                mk_str (|
+                                                                  "`$s` is  zero in `last_stage!`."
                                                                 |)
                                                               ]
                                                           |)
@@ -1165,9 +1158,8 @@ Module num.
                                                     M.alloc (|
                                                       Value.Array
                                                         [
-                                                          M.read (|
-                                                            Value.String
-                                                              "`$n` is  zero in `first_stage!`."
+                                                          mk_str (|
+                                                            "`$n` is  zero in `first_stage!`."
                                                           |)
                                                         ]
                                                     |)
@@ -1289,9 +1281,8 @@ Module num.
                                                             M.alloc (|
                                                               Value.Array
                                                                 [
-                                                                  M.read (|
-                                                                    Value.String
-                                                                      "`$s` is  zero in `middle_stage!`."
+                                                                  mk_str (|
+                                                                    "`$s` is  zero in `middle_stage!`."
                                                                   |)
                                                                 ]
                                                             |)
@@ -1545,9 +1536,8 @@ Module num.
                                                                   M.alloc (|
                                                                     Value.Array
                                                                       [
-                                                                        M.read (|
-                                                                          Value.String
-                                                                            "`$s` is  zero in `last_stage!`."
+                                                                        mk_str (|
+                                                                          "`$s` is  zero in `last_stage!`."
                                                                         |)
                                                                       ]
                                                                   |)
@@ -1907,9 +1897,8 @@ Module num.
                                                     M.alloc (|
                                                       Value.Array
                                                         [
-                                                          M.read (|
-                                                            Value.String
-                                                              "`$n` is  zero in `first_stage!`."
+                                                          mk_str (|
+                                                            "`$n` is  zero in `first_stage!`."
                                                           |)
                                                         ]
                                                     |)
@@ -2031,9 +2020,8 @@ Module num.
                                                             M.alloc (|
                                                               Value.Array
                                                                 [
-                                                                  M.read (|
-                                                                    Value.String
-                                                                      "`$s` is  zero in `middle_stage!`."
+                                                                  mk_str (|
+                                                                    "`$s` is  zero in `middle_stage!`."
                                                                   |)
                                                                 ]
                                                             |)
@@ -2289,9 +2277,8 @@ Module num.
                                                                     M.alloc (|
                                                                       Value.Array
                                                                         [
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              "`$s` is  zero in `middle_stage!`."
+                                                                          mk_str (|
+                                                                            "`$s` is  zero in `middle_stage!`."
                                                                           |)
                                                                         ]
                                                                     |)
@@ -2569,9 +2556,8 @@ Module num.
                                                                           M.alloc (|
                                                                             Value.Array
                                                                               [
-                                                                                M.read (|
-                                                                                  Value.String
-                                                                                    "`$s` is  zero in `last_stage!`."
+                                                                                mk_str (|
+                                                                                  "`$s` is  zero in `last_stage!`."
                                                                                 |)
                                                                               ]
                                                                           |)
@@ -3015,9 +3001,8 @@ Module num.
                                                     M.alloc (|
                                                       Value.Array
                                                         [
-                                                          M.read (|
-                                                            Value.String
-                                                              "`$n` is  zero in `first_stage!`."
+                                                          mk_str (|
+                                                            "`$n` is  zero in `first_stage!`."
                                                           |)
                                                         ]
                                                     |)
@@ -3139,9 +3124,8 @@ Module num.
                                                             M.alloc (|
                                                               Value.Array
                                                                 [
-                                                                  M.read (|
-                                                                    Value.String
-                                                                      "`$s` is  zero in `middle_stage!`."
+                                                                  mk_str (|
+                                                                    "`$s` is  zero in `middle_stage!`."
                                                                   |)
                                                                 ]
                                                             |)
@@ -3397,9 +3381,8 @@ Module num.
                                                                     M.alloc (|
                                                                       Value.Array
                                                                         [
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              "`$s` is  zero in `middle_stage!`."
+                                                                          mk_str (|
+                                                                            "`$s` is  zero in `middle_stage!`."
                                                                           |)
                                                                         ]
                                                                     |)
@@ -3680,9 +3663,8 @@ Module num.
                                                                             M.alloc (|
                                                                               Value.Array
                                                                                 [
-                                                                                  M.read (|
-                                                                                    Value.String
-                                                                                      "`$s` is  zero in `middle_stage!`."
+                                                                                  mk_str (|
+                                                                                    "`$s` is  zero in `middle_stage!`."
                                                                                   |)
                                                                                 ]
                                                                             |)
@@ -3974,9 +3956,8 @@ Module num.
                                                                                   M.alloc (|
                                                                                     Value.Array
                                                                                       [
-                                                                                        M.read (|
-                                                                                          Value.String
-                                                                                            "`$s` is  zero in `last_stage!`."
+                                                                                        mk_str (|
+                                                                                          "`$s` is  zero in `last_stage!`."
                                                                                         |)
                                                                                       ]
                                                                                   |)
@@ -5018,11 +4999,7 @@ Module num.
                         Pointer.Kind.Ref,
                         M.alloc (|
                           Value.Array
-                            [
-                              M.read (|
-                                Value.String "argument of integer square root cannot be negative"
-                              |)
-                            ]
+                            [ mk_str (| "argument of integer square root cannot be negative" |) ]
                         |)
                       |)
                     |)

@@ -361,43 +361,31 @@ Module interpreter_action.
                         M.alloc (|
                           Value.Array
                             [
-                              M.read (| Value.String "input" |);
+                              mk_str (| "input" |);
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "return_memory_offset" |) |)
+                                M.deref (| mk_str (| "return_memory_offset" |) |)
                               |);
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "gas_limit" |) |)
+                                M.deref (| mk_str (| "gas_limit" |) |)
                               |);
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "bytecode_address" |) |)
+                                M.deref (| mk_str (| "bytecode_address" |) |)
                               |);
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "target_address" |) |)
+                                M.deref (| mk_str (| "target_address" |) |)
                               |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "caller" |) |) |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "value" |) |) |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "scheme" |) |) |);
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "caller" |) |)
+                                M.deref (| mk_str (| "is_static" |) |)
                               |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "value" |) |)
-                              |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "scheme" |) |)
-                              |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "is_static" |) |)
-                              |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "is_eof" |) |)
-                              |)
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "is_eof" |) |) |)
                             ]
                         |)
                       |)
@@ -578,10 +566,7 @@ Module interpreter_action.
                   |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (| M.read (| Value.String "CallInputs" |) |)
-                    |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CallInputs" |) |) |);
                     M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| names |) |) |);
                     M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| values |) |) |)
                   ]
@@ -1807,10 +1792,7 @@ Module interpreter_action.
                               "revm_interpreter::interpreter_action::call_inputs::CallScheme::Call"
                             |) in
                           M.alloc (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Call" |) |)
-                            |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Call" |) |) |)
                           |)));
                       fun γ =>
                         ltac:(M.monadic
@@ -1821,10 +1803,7 @@ Module interpreter_action.
                               "revm_interpreter::interpreter_action::call_inputs::CallScheme::CallCode"
                             |) in
                           M.alloc (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "CallCode" |) |)
-                            |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CallCode" |) |) |)
                           |)));
                       fun γ =>
                         ltac:(M.monadic
@@ -1837,7 +1816,7 @@ Module interpreter_action.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "DelegateCall" |) |)
+                              M.deref (| mk_str (| "DelegateCall" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -1849,10 +1828,7 @@ Module interpreter_action.
                               "revm_interpreter::interpreter_action::call_inputs::CallScheme::StaticCall"
                             |) in
                           M.alloc (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "StaticCall" |) |)
-                            |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "StaticCall" |) |) |)
                           |)));
                       fun γ =>
                         ltac:(M.monadic
@@ -1863,10 +1839,7 @@ Module interpreter_action.
                               "revm_interpreter::interpreter_action::call_inputs::CallScheme::ExtCall"
                             |) in
                           M.alloc (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "ExtCall" |) |)
-                            |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ExtCall" |) |) |)
                           |)));
                       fun γ =>
                         ltac:(M.monadic
@@ -1879,7 +1852,7 @@ Module interpreter_action.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "ExtStaticCall" |) |)
+                              M.deref (| mk_str (| "ExtStaticCall" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -1893,7 +1866,7 @@ Module interpreter_action.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "ExtDelegateCall" |) |)
+                              M.deref (| mk_str (| "ExtDelegateCall" |) |)
                             |)
                           |)))
                     ]
@@ -2369,10 +2342,7 @@ Module interpreter_action.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Transfer" |) |)
-                            |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Transfer" |) |) |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -2404,10 +2374,7 @@ Module interpreter_action.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Apparent" |) |)
-                            |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Apparent" |) |) |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)

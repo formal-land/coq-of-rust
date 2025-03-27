@@ -323,7 +323,7 @@ Module log.
                               M.call_closure (|
                                 Ty.path "never",
                                 M.get_function (| "core::panicking::panic", [], [] |),
-                                [ M.read (| Value.String "assertion failed: self != Self::ZERO" |) ]
+                                [ mk_str (| "assertion failed: self != Self::ZERO" |) ]
                               |)
                             |)
                           |)));
@@ -380,11 +380,7 @@ Module log.
                               M.call_closure (|
                                 Ty.path "never",
                                 M.get_function (| "core::panicking::panic", [], [] |),
-                                [
-                                  M.read (|
-                                    Value.String "assertion failed: base >= Self::from(2)"
-                                  |)
-                                ]
+                                [ mk_str (| "assertion failed: base >= Self::from(2)" |) ]
                               |)
                             |)
                           |)));
@@ -550,7 +546,7 @@ Module log.
                               M.call_closure (|
                                 Ty.path "never",
                                 M.get_function (| "core::panicking::panic", [], [] |),
-                                [ M.read (| Value.String "assertion failed: result.is_normal()" |) ]
+                                [ mk_str (| "assertion failed: result.is_normal()" |) ]
                               |)
                             |)
                           |)));
@@ -736,9 +732,8 @@ Module log.
                                                                 []
                                                               |),
                                                               [
-                                                                M.read (|
-                                                                  Value.String
-                                                                    "assertion failed: result != Self::ZERO"
+                                                                mk_str (|
+                                                                  "assertion failed: result != Self::ZERO"
                                                                 |)
                                                               ]
                                                             |)

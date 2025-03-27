@@ -163,11 +163,8 @@ Module iter.
                 |),
                 [
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (| M.read (| Value.String "Peekable" |) |)
-                  |);
-                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "iter" |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Peekable" |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "iter" |) |) |);
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
@@ -181,7 +178,7 @@ Module iter.
                       |)
                     |)
                   |);
-                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "peeked" |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "peeked" |) |) |);
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
@@ -812,11 +809,7 @@ Module iter.
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
-                                        [
-                                          M.read (|
-                                            Value.String "assertion failed: self.peeked.is_none()"
-                                          |)
-                                        ]
+                                        [ mk_str (| "assertion failed: self.peeked.is_none()" |) ]
                                       |)
                                     |)
                                   |)));

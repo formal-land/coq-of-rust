@@ -34,14 +34,8 @@ Definition compare_prints (ε : list Value.t) (τ : list Ty.t) (α : list Value.
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "Debug: `" |);
-                                  M.read (| Value.String "`
-" |)
-                                ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "Debug: `" |); mk_str (| "`
+" |) ] |)
                           |)
                         |)
                       |);
@@ -101,12 +95,8 @@ Definition compare_prints (ε : list Value.t) (τ : list Ty.t) (α : list Value.
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "Display: `" |);
-                                  M.read (| Value.String "`
-" |)
-                                ]
+                              Value.Array [ mk_str (| "Display: `" |); mk_str (| "`
+" |) ]
                             |)
                           |)
                         |)
@@ -189,11 +179,8 @@ Definition compare_types (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array
-                                [ M.read (| Value.String "t: `" |); M.read (| Value.String "`
-" |) ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "t: `" |); mk_str (| "`
+" |) ] |)
                           |)
                         |)
                       |);
@@ -252,11 +239,8 @@ Definition compare_types (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array
-                                [ M.read (| Value.String "u: `" |); M.read (| Value.String "`
-" |) ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "u: `" |); mk_str (| "`
+" |) ] |)
                           |)
                         |)
                       |);
@@ -323,7 +307,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
     ltac:(M.monadic
       (M.read (|
         let~ string : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
-          M.copy (| Value.String "words" |) in
+          M.alloc (| mk_str (| "words" |) |) in
         let~ array :
             Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 3 ] [ Ty.path "i32" ] :=
           M.alloc (|

@@ -95,10 +95,7 @@ Module absint.
                             "move_bytecode_verifier::absint::JoinResult::Changed"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Changed" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Changed" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -109,10 +106,7 @@ Module absint.
                             "move_bytecode_verifier::absint::JoinResult::Unchanged"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Unchanged" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Unchanged" |) |) |)
                         |)))
                   ]
                 |)

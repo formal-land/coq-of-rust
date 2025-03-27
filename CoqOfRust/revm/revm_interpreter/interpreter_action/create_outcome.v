@@ -43,11 +43,8 @@ Module interpreter_action.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "CreateOutcome" |) |)
-                |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "result" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CreateOutcome" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "result" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -61,7 +58,7 @@ Module interpreter_action.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "address" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "address" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|

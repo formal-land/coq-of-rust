@@ -307,12 +307,8 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "Username: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "Username: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -373,12 +369,8 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "Password: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "Password: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -438,10 +430,8 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array [ M.read (| Value.String "Attempting logon...
-" |) ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "Attempting logon...
+" |) ] |)
                           |)
                         |)
                       |)
@@ -522,10 +512,8 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Value.Array [ M.read (| Value.String "Successful logon!
-" |) ]
-                                    |)
+                                    M.alloc (| Value.Array [ mk_str (| "Successful logon!
+" |) ] |)
                                   |)
                                 |)
                               |)
@@ -558,12 +546,8 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "Name: " |);
-                                          M.read (| Value.String "
-" |)
-                                        ]
+                                      Value.Array [ mk_str (| "Name: " |); mk_str (| "
+" |) ]
                                     |)
                                   |)
                                 |)
@@ -634,12 +618,8 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "Email: " |);
-                                          M.read (| Value.String "
-" |)
-                                        ]
+                                      Value.Array [ mk_str (| "Email: " |); mk_str (| "
+" |) ]
                                     |)
                                   |)
                                 |)
@@ -710,10 +690,8 @@ Definition try_logon (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                               M.deref (|
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.alloc (|
-                                    Value.Array [ M.read (| Value.String "Login failed!
-" |) ]
-                                  |)
+                                  M.alloc (| Value.Array [ mk_str (| "Login failed!
+" |) ] |)
                                 |)
                               |)
                             |)
@@ -801,15 +779,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               "hash_map_alternate_or_custom_key_types::Account"
               [
                 ("username",
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (| M.read (| Value.String "j.everyman" |) |)
-                  |));
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "j.everyman" |) |) |));
                 ("password",
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (| M.read (| Value.String "password123" |) |)
-                  |))
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "password123" |) |) |))
               ]
           |) in
         let~ account_info : Ty.path "hash_map_alternate_or_custom_key_types::AccountInfo" :=
@@ -818,14 +790,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               "hash_map_alternate_or_custom_key_types::AccountInfo"
               [
                 ("name",
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (| M.read (| Value.String "John Everyman" |) |)
-                  |));
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "John Everyman" |) |) |));
                 ("email",
                   M.borrow (|
                     Pointer.Kind.Ref,
-                    M.deref (| M.read (| Value.String "j.everyman@email.com" |) |)
+                    M.deref (| mk_str (| "j.everyman@email.com" |) |)
                   |))
               ]
           |) in
@@ -870,14 +839,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   Pointer.Kind.Ref,
                   M.deref (| M.borrow (| Pointer.Kind.Ref, accounts |) |)
                 |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "j.everyman" |) |)
-                |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "psasword123" |) |)
-                |)
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "j.everyman" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "psasword123" |) |) |)
               ]
             |)
           |) in
@@ -891,14 +854,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   Pointer.Kind.Ref,
                   M.deref (| M.borrow (| Pointer.Kind.Ref, accounts |) |)
                 |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "j.everyman" |) |)
-                |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "password123" |) |)
-                |)
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "j.everyman" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "password123" |) |) |)
               ]
             |)
           |) in

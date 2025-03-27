@@ -221,13 +221,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                                       M.alloc (|
                                                                                         Value.Array
                                                                                           [
-                                                                                            M.read (|
-                                                                                              Value.String
-                                                                                                "this is thread number "
+                                                                                            mk_str (|
+                                                                                              "this is thread number "
                                                                                             |);
-                                                                                            M.read (|
-                                                                                              Value.String
-                                                                                                "
+                                                                                            mk_str (|
+                                                                                              "
 "
                                                                                             |)
                                                                                           ]

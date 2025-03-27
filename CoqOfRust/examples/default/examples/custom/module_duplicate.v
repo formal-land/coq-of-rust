@@ -34,10 +34,8 @@ Module foo.
                             M.deref (|
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.alloc (|
-                                  Value.Array [ M.read (| Value.String "foo::gre::bar
-" |) ]
-                                |)
+                                M.alloc (| Value.Array [ mk_str (| "foo::gre::bar
+" |) ] |)
                               |)
                             |)
                           |)
@@ -90,7 +88,7 @@ Module foo.
                           M.deref (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.alloc (| Value.Array [ M.read (| Value.String "foo::bar
+                              M.alloc (| Value.Array [ mk_str (| "foo::bar
 " |) ] |)
                             |)
                           |)

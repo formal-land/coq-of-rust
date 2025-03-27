@@ -736,9 +736,8 @@ Module collections.
                                                                 M.alloc (|
                                                                   Value.Array
                                                                     [
-                                                                      M.read (|
-                                                                        Value.String
-                                                                          "range start and end are equal and excluded in BTreeSet"
+                                                                      mk_str (|
+                                                                        "range start and end are equal and excluded in BTreeSet"
                                                                       |)
                                                                     ]
                                                                 |)
@@ -780,9 +779,8 @@ Module collections.
                                                                 M.alloc (|
                                                                   Value.Array
                                                                     [
-                                                                      M.read (|
-                                                                        Value.String
-                                                                          "range start and end are equal and excluded in BTreeMap"
+                                                                      mk_str (|
+                                                                        "range start and end are equal and excluded in BTreeMap"
                                                                       |)
                                                                     ]
                                                                 |)
@@ -940,9 +938,8 @@ Module collections.
                                                                                     M.alloc (|
                                                                                       Value.Array
                                                                                         [
-                                                                                          M.read (|
-                                                                                            Value.String
-                                                                                              "range start is greater than range end in BTreeSet"
+                                                                                          mk_str (|
+                                                                                            "range start is greater than range end in BTreeSet"
                                                                                           |)
                                                                                         ]
                                                                                     |)
@@ -990,9 +987,8 @@ Module collections.
                                                                                     M.alloc (|
                                                                                       Value.Array
                                                                                         [
-                                                                                          M.read (|
-                                                                                            Value.String
-                                                                                              "range start is greater than range end in BTreeMap"
+                                                                                          mk_str (|
+                                                                                            "range start is greater than range end in BTreeMap"
                                                                                           |)
                                                                                         ]
                                                                                     |)
@@ -2215,9 +2211,8 @@ Module collections.
                                               Ty.path "never",
                                               M.get_function (| "core::panicking::panic", [], [] |),
                                               [
-                                                M.read (|
-                                                  Value.String
-                                                    "assertion failed: start_index <= keys.len()"
+                                                mk_str (|
+                                                  "assertion failed: start_index <= keys.len()"
                                                 |)
                                               ]
                                             |)

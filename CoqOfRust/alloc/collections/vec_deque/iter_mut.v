@@ -339,7 +339,7 @@ Module collections.
                                           |);
                                           M.borrow (|
                                             Pointer.Kind.Ref,
-                                            M.deref (| M.read (| Value.String "IterMut" |) |)
+                                            M.deref (| mk_str (| "IterMut" |) |)
                                           |)
                                         ]
                                       |)

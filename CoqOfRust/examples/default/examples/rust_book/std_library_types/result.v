@@ -63,7 +63,7 @@ Module checked.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "DivisionByZero" |) |)
+                            M.deref (| mk_str (| "DivisionByZero" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -77,7 +77,7 @@ Module checked.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "NonPositiveLogarithm" |) |)
+                            M.deref (| mk_str (| "NonPositiveLogarithm" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -91,7 +91,7 @@ Module checked.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "NegativeSquareRoot" |) |)
+                            M.deref (| mk_str (| "NegativeSquareRoot" |) |)
                           |)
                         |)))
                   ]
@@ -355,7 +355,7 @@ Definition op (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.deref (|
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
+                                  M.alloc (| Value.Array [ mk_str (| "" |) ] |)
                                 |)
                               |)
                             |);
@@ -443,7 +443,7 @@ Definition op (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       M.deref (|
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
+                                          M.alloc (| Value.Array [ mk_str (| "" |) ] |)
                                         |)
                                       |)
                                     |);
@@ -537,9 +537,7 @@ Definition op (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                               M.deref (|
                                                 M.borrow (|
                                                   Pointer.Kind.Ref,
-                                                  M.alloc (|
-                                                    Value.Array [ M.read (| Value.String "" |) ]
-                                                  |)
+                                                  M.alloc (| Value.Array [ mk_str (| "" |) ] |)
                                                 |)
                                               |)
                                             |);
@@ -635,11 +633,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array
-                                [ M.read (| Value.String "" |); M.read (| Value.String "
-" |) ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "" |); mk_str (| "
+" |) ] |)
                           |)
                         |)
                       |);

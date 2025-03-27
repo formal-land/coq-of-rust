@@ -435,9 +435,9 @@ Module Impl_associated_functions_and_methods_Pair.
                                       M.alloc (|
                                         Value.Array
                                           [
-                                            M.read (| Value.String "Destroying Pair(" |);
-                                            M.read (| Value.String ", " |);
-                                            M.read (| Value.String ")
+                                            mk_str (| "Destroying Pair(" |);
+                                            mk_str (| ", " |);
+                                            mk_str (| ")
 " |)
                                           ]
                                       |)
@@ -613,12 +613,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "Rectangle perimeter: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "Rectangle perimeter: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -696,12 +692,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "Rectangle area: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "Rectangle area: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)

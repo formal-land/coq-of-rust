@@ -29,8 +29,8 @@ Module Impl_core_fmt_Debug_for_box_stack_heap_Point.
           |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Point" |) |) |);
-            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "x" |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Point" |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "x" |) |) |);
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -44,7 +44,7 @@ Module Impl_core_fmt_Debug_for_box_stack_heap_Point.
                 |)
               |)
             |);
-            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "y" |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "y" |) |) |);
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -414,8 +414,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.alloc (|
                               Value.Array
                                 [
-                                  M.read (| Value.String "Point occupies " |);
-                                  M.read (| Value.String " bytes on the stack
+                                  mk_str (| "Point occupies " |);
+                                  mk_str (| " bytes on the stack
 " |)
                                 ]
                             |)
@@ -502,8 +502,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.alloc (|
                               Value.Array
                                 [
-                                  M.read (| Value.String "Rectangle occupies " |);
-                                  M.read (| Value.String " bytes on the stack
+                                  mk_str (| "Rectangle occupies " |);
+                                  mk_str (| " bytes on the stack
 " |)
                                 ]
                             |)
@@ -590,8 +590,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.alloc (|
                               Value.Array
                                 [
-                                  M.read (| Value.String "Boxed point occupies " |);
-                                  M.read (| Value.String " bytes on the stack
+                                  mk_str (| "Boxed point occupies " |);
+                                  mk_str (| " bytes on the stack
 " |)
                                 ]
                             |)
@@ -686,8 +686,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.alloc (|
                               Value.Array
                                 [
-                                  M.read (| Value.String "Boxed rectangle occupies " |);
-                                  M.read (| Value.String " bytes on the stack
+                                  mk_str (| "Boxed rectangle occupies " |);
+                                  mk_str (| " bytes on the stack
 " |)
                                 ]
                             |)
@@ -785,8 +785,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.alloc (|
                               Value.Array
                                 [
-                                  M.read (| Value.String "Boxed box occupies " |);
-                                  M.read (| Value.String " bytes on the stack
+                                  mk_str (| "Boxed box occupies " |);
+                                  mk_str (| " bytes on the stack
 " |)
                                 ]
                             |)
@@ -889,8 +889,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.alloc (|
                               Value.Array
                                 [
-                                  M.read (| Value.String "Unboxed point occupies " |);
-                                  M.read (| Value.String " bytes on the stack
+                                  mk_str (| "Unboxed point occupies " |);
+                                  mk_str (| " bytes on the stack
 " |)
                                 ]
                             |)

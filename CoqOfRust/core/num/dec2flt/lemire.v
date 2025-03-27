@@ -889,9 +889,8 @@ Module num.
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
                                         [
-                                          M.read (|
-                                            Value.String
-                                              "assertion failed: q >= SMALLEST_POWER_OF_FIVE as i64"
+                                          mk_str (|
+                                            "assertion failed: q >= SMALLEST_POWER_OF_FIVE as i64"
                                           |)
                                         ]
                                       |)
@@ -947,9 +946,8 @@ Module num.
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
                                         [
-                                          M.read (|
-                                            Value.String
-                                              "assertion failed: q <= LARGEST_POWER_OF_FIVE as i64"
+                                          mk_str (|
+                                            "assertion failed: q <= LARGEST_POWER_OF_FIVE as i64"
                                           |)
                                         ]
                                       |)
@@ -999,11 +997,7 @@ Module num.
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
-                                        [
-                                          M.read (|
-                                            Value.String "assertion failed: precision <= 64"
-                                          |)
-                                        ]
+                                        [ mk_str (| "assertion failed: precision <= 64" |) ]
                                       |)
                                     |)
                                   |)));

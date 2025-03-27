@@ -501,7 +501,7 @@ Module range.
                                     M.deref (|
                                       M.borrow (|
                                         Pointer.Kind.Ref,
-                                        M.alloc (| Value.Array [ M.read (| Value.String ".." |) ] |)
+                                        M.alloc (| Value.Array [ mk_str (| ".." |) ] |)
                                       |)
                                     |)
                                   |)
@@ -1535,9 +1535,7 @@ Module range.
                                     M.deref (|
                                       M.borrow (|
                                         Pointer.Kind.Ref,
-                                        M.alloc (|
-                                          Value.Array [ M.read (| Value.String "..=" |) ]
-                                        |)
+                                        M.alloc (| Value.Array [ mk_str (| "..=" |) ] |)
                                       |)
                                     |)
                                   |)
@@ -2187,9 +2185,8 @@ Module range.
                                         M.alloc (|
                                           Value.Array
                                             [
-                                              M.read (|
-                                                Value.String
-                                                  "attempted to convert from an exhausted `legacy::RangeInclusive` (unspecified behavior)"
+                                              mk_str (|
+                                                "attempted to convert from an exhausted `legacy::RangeInclusive` (unspecified behavior)"
                                               |)
                                             ]
                                         |)
@@ -2636,7 +2633,7 @@ Module range.
                                     M.deref (|
                                       M.borrow (|
                                         Pointer.Kind.Ref,
-                                        M.alloc (| Value.Array [ M.read (| Value.String ".." |) ] |)
+                                        M.alloc (| Value.Array [ mk_str (| ".." |) ] |)
                                       |)
                                     |)
                                   |)

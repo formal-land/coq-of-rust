@@ -1579,9 +1579,8 @@ Module collections.
                                                             M.alloc (|
                                                               Value.Array
                                                                 [
-                                                                  M.read (|
-                                                                    Value.String
-                                                                      "new value is not equal"
+                                                                  mk_str (|
+                                                                    "new value is not equal"
                                                                   |)
                                                                 ]
                                                             |)
@@ -17378,7 +17377,7 @@ Module collections.
                                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.deref (| M.read (| Value.String "ExtractIf" |) |)
+                                    M.deref (| mk_str (| "ExtractIf" |) |)
                                   |)
                                 ]
                               |)
@@ -22573,7 +22572,7 @@ Module collections.
                       |);
                       M.borrow (|
                         Pointer.Kind.Ref,
-                        M.deref (| M.read (| Value.String "no entry found for key" |) |)
+                        M.deref (| mk_str (| "no entry found for key" |) |)
                       |)
                     ]
                   |)
@@ -22953,7 +22952,7 @@ Module collections.
                 M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
                 [
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Cursor" |) |) |)
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Cursor" |) |) |)
                 ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -23005,10 +23004,7 @@ Module collections.
                 M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
                 [
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (| M.read (| Value.String "CursorMut" |) |)
-                  |)
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CursorMut" |) |) |)
                 ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -23101,10 +23097,7 @@ Module collections.
                 M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
                 [
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (| M.read (| Value.String "CursorMutKey" |) |)
-                  |)
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CursorMutKey" |) |) |)
                 ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -28658,9 +28651,8 @@ Module collections.
                                                                   []
                                                                 |),
                                                                 [
-                                                                  M.read (|
-                                                                    Value.String
-                                                                      "assertion failed: root.is_none()"
+                                                                  mk_str (|
+                                                                    "assertion failed: root.is_none()"
                                                                   |)
                                                                 ]
                                                               |)
@@ -33718,10 +33710,7 @@ Module collections.
                 M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
                 [
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (| M.read (| Value.String "UnorderedKeyError" |) |)
-                  |)
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "UnorderedKeyError" |) |) |)
                 ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -33774,11 +33763,7 @@ Module collections.
                             Pointer.Kind.Ref,
                             M.alloc (|
                               Value.Array
-                                [
-                                  M.read (|
-                                    Value.String "key is not properly ordered relative to neighbors"
-                                  |)
-                                ]
+                                [ mk_str (| "key is not properly ordered relative to neighbors" |) ]
                             |)
                           |)
                         |)

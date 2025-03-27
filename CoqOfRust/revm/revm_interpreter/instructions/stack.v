@@ -1295,7 +1295,7 @@ Module instructions.
                               M.call_closure (|
                                 Ty.path "never",
                                 M.get_function (| "core::panicking::panic", [], [] |),
-                                [ M.read (| Value.String "assertion failed: N != 0" |) ]
+                                [ mk_str (| "assertion failed: N != 0" |) ]
                               |)
                             |)
                           |)));

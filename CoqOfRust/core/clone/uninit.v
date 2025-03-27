@@ -222,9 +222,8 @@ Module clone.
                                                                     M.alloc (|
                                                                       Value.Array
                                                                         [
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              "clone_to_uninit() source and destination must have equal lengths"
+                                                                          mk_str (|
+                                                                            "clone_to_uninit() source and destination must have equal lengths"
                                                                           |)
                                                                         ]
                                                                     |)
@@ -645,9 +644,8 @@ Module clone.
                                                                     M.alloc (|
                                                                       Value.Array
                                                                         [
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              "clone_to_uninit() source and destination must have equal lengths"
+                                                                          mk_str (|
+                                                                            "clone_to_uninit() source and destination must have equal lengths"
                                                                           |)
                                                                         ]
                                                                     |)

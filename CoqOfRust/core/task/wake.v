@@ -121,8 +121,8 @@ Module task.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "RawWaker" |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "data" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "RawWaker" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "data" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -136,7 +136,7 @@ Module task.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "vtable" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "vtable" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -456,11 +456,8 @@ Module task.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "RawWakerVTable" |) |)
-                |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "clone" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "RawWakerVTable" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "clone" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -474,7 +471,7 @@ Module task.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "wake" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "wake" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -488,10 +485,7 @@ Module task.
                     |)
                   |)
                 |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "wake_by_ref" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "wake_by_ref" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -505,7 +499,7 @@ Module task.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "drop" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "drop" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -642,10 +636,7 @@ Module task.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Some" |) |)
-                            |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Some" |) |) |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -677,10 +668,7 @@ Module task.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "None" |) |)
-                            |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "None" |) |) |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -985,16 +973,13 @@ Module task.
                                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "Context" |) |)
+                                  M.deref (| mk_str (| "Context" |) |)
                                 |)
                               ]
                             |)
                           |)
                         |);
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "waker" |) |)
-                        |);
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "waker" |) |) |);
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.deref (|
@@ -1076,11 +1061,8 @@ Module task.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "ContextBuilder" |) |)
-                |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "waker" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ContextBuilder" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "waker" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -1094,10 +1076,7 @@ Module task.
                     |)
                   |)
                 |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "local_waker" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "local_waker" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -1111,7 +1090,7 @@ Module task.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "ext" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ext" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -1125,7 +1104,7 @@ Module task.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "_marker" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "_marker" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -1139,7 +1118,7 @@ Module task.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "_marker2" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "_marker2" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -2251,7 +2230,7 @@ Module task.
                                             |);
                                             M.borrow (|
                                               Pointer.Kind.Ref,
-                                              M.deref (| M.read (| Value.String "Waker" |) |)
+                                              M.deref (| mk_str (| "Waker" |) |)
                                             |)
                                           ]
                                         |)
@@ -2259,7 +2238,7 @@ Module task.
                                     |);
                                     M.borrow (|
                                       Pointer.Kind.Ref,
-                                      M.deref (| M.read (| Value.String "data" |) |)
+                                      M.deref (| mk_str (| "data" |) |)
                                     |);
                                     M.borrow (|
                                       Pointer.Kind.Ref,
@@ -2282,10 +2261,7 @@ Module task.
                                 |)
                               |)
                             |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "vtable" |) |)
-                            |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "vtable" |) |) |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (| M.borrow (| Pointer.Kind.Ref, vtable_ptr |) |)
@@ -3083,7 +3059,7 @@ Module task.
                                             |);
                                             M.borrow (|
                                               Pointer.Kind.Ref,
-                                              M.deref (| M.read (| Value.String "LocalWaker" |) |)
+                                              M.deref (| mk_str (| "LocalWaker" |) |)
                                             |)
                                           ]
                                         |)
@@ -3091,7 +3067,7 @@ Module task.
                                     |);
                                     M.borrow (|
                                       Pointer.Kind.Ref,
-                                      M.deref (| M.read (| Value.String "data" |) |)
+                                      M.deref (| mk_str (| "data" |) |)
                                     |);
                                     M.borrow (|
                                       Pointer.Kind.Ref,
@@ -3114,10 +3090,7 @@ Module task.
                                 |)
                               |)
                             |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "vtable" |) |)
-                            |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "vtable" |) |) |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (| M.borrow (| Pointer.Kind.Ref, vtable_ptr |) |)

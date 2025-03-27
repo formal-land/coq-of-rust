@@ -40,11 +40,8 @@ Module Impl_generics_where_clauses_PrintInOption_where_core_fmt_Debug_core_optio
                           M.deref (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.alloc (|
-                                Value.Array
-                                  [ M.read (| Value.String "" |); M.read (| Value.String "
-" |) ]
-                              |)
+                              M.alloc (| Value.Array [ mk_str (| "" |); mk_str (| "
+" |) ] |)
                             |)
                           |)
                         |);

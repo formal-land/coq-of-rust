@@ -61,10 +61,7 @@ Module u256.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "U256FromStrError" |) |)
-              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "U256FromStrError" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -173,7 +170,7 @@ Module u256.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "TooLargeForU8" |) |)
+                            M.deref (| mk_str (| "TooLargeForU8" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -187,7 +184,7 @@ Module u256.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "TooLargeForU16" |) |)
+                            M.deref (| mk_str (| "TooLargeForU16" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -201,7 +198,7 @@ Module u256.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "TooLargeForU32" |) |)
+                            M.deref (| mk_str (| "TooLargeForU32" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -215,7 +212,7 @@ Module u256.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "TooLargeForU64" |) |)
+                            M.deref (| mk_str (| "TooLargeForU64" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -229,7 +226,7 @@ Module u256.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "TooLargeForU128" |) |)
+                            M.deref (| mk_str (| "TooLargeForU128" |) |)
                           |)
                         |)))
                   ]
@@ -463,11 +460,8 @@ Module u256.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "U256CastError" |) |)
-              |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "kind" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "U256CastError" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "kind" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -481,7 +475,7 @@ Module u256.
                   |)
                 |)
               |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "val" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "val" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -610,7 +604,7 @@ Module u256.
                             γ,
                             "move_core_types::u256::U256CastErrorKind::TooLargeForU8"
                           |) in
-                        Value.String "u8"));
+                        M.alloc (| mk_str (| "u8" |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let _ :=
@@ -619,10 +613,7 @@ Module u256.
                             "move_core_types::u256::U256CastErrorKind::TooLargeForU16"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "u16" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "u16" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -632,10 +623,7 @@ Module u256.
                             "move_core_types::u256::U256CastErrorKind::TooLargeForU32"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "u32" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "u32" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -645,10 +633,7 @@ Module u256.
                             "move_core_types::u256::U256CastErrorKind::TooLargeForU64"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "u64" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "u64" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -658,10 +643,7 @@ Module u256.
                             "move_core_types::u256::U256CastErrorKind::TooLargeForU128"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "u128" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "u128" |) |) |)
                         |)))
                   ]
                 |)
@@ -703,9 +685,9 @@ Module u256.
                                         M.alloc (|
                                           Value.Array
                                             [
-                                              M.read (| Value.String "Cast failed. " |);
-                                              M.read (| Value.String " too large for " |);
-                                              M.read (| Value.String "." |)
+                                              mk_str (| "Cast failed. " |);
+                                              mk_str (| " too large for " |);
+                                              mk_str (| "." |)
                                             ]
                                         |)
                                       |)
@@ -798,7 +780,7 @@ Module u256.
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
+                            M.alloc (| Value.Array [ mk_str (| "" |) ] |)
                           |)
                         |)
                       |);
@@ -932,10 +914,7 @@ Module u256.
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
-                      |)
+                      M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Array [ mk_str (| "" |) ] |) |)
                     |)
                   |);
                   M.borrow (|
@@ -1050,7 +1029,7 @@ Module u256.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "U256" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "U256" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -3957,8 +3936,7 @@ Module u256.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
-                                        Value.Array
-                                          [ M.read (| Value.String "Fatal! Downcast failed" |) ]
+                                        Value.Array [ mk_str (| "Fatal! Downcast failed" |) ]
                                       |)
                                     |)
                                   |)
@@ -4947,7 +4925,7 @@ Module u256.
                                     M.deref (|
                                       M.borrow (|
                                         Pointer.Kind.Ref,
-                                        M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
+                                        M.alloc (| Value.Array [ mk_str (| "" |) ] |)
                                       |)
                                     |)
                                   |);
@@ -5051,7 +5029,7 @@ Module u256.
                   |);
                   M.borrow (|
                     Pointer.Kind.Ref,
-                    M.deref (| M.read (| Value.String "Cannot convert to U256" |) |)
+                    M.deref (| mk_str (| "Cannot convert to U256" |) |)
                   |)
                 ]
               |)
@@ -5760,11 +5738,8 @@ Module u256.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "UniformU256" |) |)
-              |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "low" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "UniformU256" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "low" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -5778,7 +5753,7 @@ Module u256.
                   |)
                 |)
               |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "range" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "range" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -5792,7 +5767,7 @@ Module u256.
                   |)
                 |)
               |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "z" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "z" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -6116,11 +6091,7 @@ Module u256.
                                         Pointer.Kind.Ref,
                                         M.alloc (|
                                           Value.Array
-                                            [
-                                              M.read (|
-                                                Value.String
-                                                  "Uniform::new called with `low >= high`"
-                                              |)
+                                            [ mk_str (| "Uniform::new called with `low >= high`" |)
                                             ]
                                         |)
                                       |)
@@ -6306,9 +6277,8 @@ Module u256.
                                         M.alloc (|
                                           Value.Array
                                             [
-                                              M.read (|
-                                                Value.String
-                                                  "Uniform::new_inclusive called with `low > high`"
+                                              mk_str (|
+                                                "Uniform::new_inclusive called with `low > high`"
                                               |)
                                             ]
                                         |)
@@ -6869,9 +6839,8 @@ Module u256.
                                         M.alloc (|
                                           Value.Array
                                             [
-                                              M.read (|
-                                                Value.String
-                                                  "UniformSampler::sample_single: low >= high"
+                                              mk_str (|
+                                                "UniformSampler::sample_single: low >= high"
                                               |)
                                             ]
                                         |)
@@ -7070,9 +7039,8 @@ Module u256.
                                             M.alloc (|
                                               Value.Array
                                                 [
-                                                  M.read (|
-                                                    Value.String
-                                                      "UniformSampler::sample_single_inclusive: low > high"
+                                                  mk_str (|
+                                                    "UniformSampler::sample_single_inclusive: low > high"
                                                   |)
                                                 ]
                                             |)

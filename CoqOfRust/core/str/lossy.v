@@ -161,11 +161,8 @@ Module str.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "Utf8Chunk" |) |)
-                |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "valid" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Utf8Chunk" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "valid" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -179,7 +176,7 @@ Module str.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "invalid" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "invalid" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -1788,9 +1785,8 @@ Module str.
                                                                                             M.alloc (|
                                                                                               Value.Array
                                                                                                 [
-                                                                                                  M.read (|
-                                                                                                    Value.String
-                                                                                                      "\x"
+                                                                                                  mk_str (|
+                                                                                                    "\x"
                                                                                                   |)
                                                                                                 ]
                                                                                             |)
@@ -3209,16 +3205,13 @@ Module str.
                                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "Utf8Chunks" |) |)
+                                  M.deref (| mk_str (| "Utf8Chunks" |) |)
                                 |)
                               ]
                             |)
                           |)
                         |);
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "source" |) |)
-                        |);
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "source" |) |) |);
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.deref (|

@@ -1148,9 +1148,8 @@ Module script_signature.
                                                           M.borrow (|
                                                             Pointer.Kind.Ref,
                                                             M.deref (|
-                                                              M.read (|
-                                                                Value.String
-                                                                  "function not found in verify_module_script_function"
+                                                              mk_str (|
+                                                                "function not found in verify_module_script_function"
                                                               |)
                                                             |)
                                                           |)

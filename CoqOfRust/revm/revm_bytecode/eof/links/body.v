@@ -233,12 +233,11 @@ Module Impl_EofBody.
     Run.Trait body.eof.body.Impl_revm_bytecode_eof_body_EofBody.code [] [] [φ self; φ index] (option alloy_primitives.links.bytes_.Bytes.t).
   Proof.
     constructor.
-    destruct (vec.links.mod.Impl_Index_for_Vec_T_A.run (T := Usize.t) (I := Usize.t) (A := Global.t)) as [index' [H_index' run_index']].
+    destruct (vec.links.mod.Impl_Index_for_Vec_T_A.run Usize.t Usize.t Global.t Usize.t).
     destruct (vec.links.mod.Impl_Deref_for_Vec.run (T := Usize.t) (A := Global.t)).
     run_symbolic.
   Admitted.
 
-  
   (*
     pub fn encode(&self, buffer: &mut Vec<u8>)
   *)

@@ -187,14 +187,8 @@ Module eip7702.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "Eip7702Bytecode" |) |)
-              |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "delegated_address" |) |)
-              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Eip7702Bytecode" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "delegated_address" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -208,7 +202,7 @@ Module eip7702.
                   |)
                 |)
               |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "version" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "version" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -222,7 +216,7 @@ Module eip7702.
                   |)
                 |)
               |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "raw" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "raw" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -1722,7 +1716,7 @@ Module eip7702.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "InvalidLength" |) |)
+                            M.deref (| mk_str (| "InvalidLength" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -1734,10 +1728,7 @@ Module eip7702.
                             "revm_bytecode::eip7702::Eip7702DecodeError::InvalidMagic"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "InvalidMagic" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "InvalidMagic" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -1750,7 +1741,7 @@ Module eip7702.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "UnsupportedVersion" |) |)
+                            M.deref (| mk_str (| "UnsupportedVersion" |) |)
                           |)
                         |)))
                   ]
@@ -2085,7 +2076,7 @@ Module eip7702.
                             γ,
                             "revm_bytecode::eip7702::Eip7702DecodeError::InvalidLength"
                           |) in
-                        Value.String "Eip7702 is not 23 bytes long"));
+                        M.alloc (| mk_str (| "Eip7702 is not 23 bytes long" |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
@@ -2097,9 +2088,7 @@ Module eip7702.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (|
-                              M.read (| Value.String "Bytecode is not starting with 0xEF01" |)
-                            |)
+                            M.deref (| mk_str (| "Bytecode is not starting with 0xEF01" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2113,7 +2102,7 @@ Module eip7702.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Unsupported Eip7702 version." |) |)
+                            M.deref (| mk_str (| "Unsupported Eip7702 version." |) |)
                           |)
                         |)))
                   ]

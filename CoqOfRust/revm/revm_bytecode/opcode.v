@@ -73,7 +73,7 @@ Module opcode.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "OpCode" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "OpCode" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -502,11 +502,7 @@ Module opcode.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "UNKNOWN(0x" |);
-                                          M.read (| Value.String ")" |)
-                                        ]
+                                      Value.Array [ mk_str (| "UNKNOWN(0x" |); mk_str (| ")" |) ]
                                     |)
                                   |)
                                 |)
@@ -1038,7 +1034,7 @@ Module opcode.
                         [ M.read (| opcode |) ]
                       |)
                     |)));
-                fun γ => ltac:(M.monadic (Value.String "Unknown"))
+                fun γ => ltac:(M.monadic (M.alloc (| mk_str (| "Unknown" |) |)))
               ]
             |)
           |)))
@@ -1349,9 +1345,7 @@ Module opcode.
                                   M.deref (|
                                     M.borrow (|
                                       Pointer.Kind.Ref,
-                                      M.alloc (|
-                                        Value.Array [ M.read (| Value.String "opcode not found" |) ]
-                                      |)
+                                      M.alloc (| Value.Array [ mk_str (| "opcode not found" |) ] |)
                                     |)
                                   |)
                                 |)
@@ -3083,10 +3077,7 @@ Module opcode.
                                                                       M.borrow (|
                                                                         Pointer.Kind.Ref,
                                                                         M.deref (|
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              "OpCodeInfo"
-                                                                          |)
+                                                                          mk_str (| "OpCodeInfo" |)
                                                                         |)
                                                                       |)
                                                                     ]
@@ -3095,9 +3086,7 @@ Module opcode.
                                                               |);
                                                               M.borrow (|
                                                                 Pointer.Kind.Ref,
-                                                                M.deref (|
-                                                                  M.read (| Value.String "name" |)
-                                                                |)
+                                                                M.deref (| mk_str (| "name" |) |)
                                                               |);
                                                               M.borrow (|
                                                                 Pointer.Kind.Ref,
@@ -3136,9 +3125,7 @@ Module opcode.
                                                       |);
                                                       M.borrow (|
                                                         Pointer.Kind.Ref,
-                                                        M.deref (|
-                                                          M.read (| Value.String "inputs" |)
-                                                        |)
+                                                        M.deref (| mk_str (| "inputs" |) |)
                                                       |);
                                                       M.borrow (|
                                                         Pointer.Kind.Ref,
@@ -3172,7 +3159,7 @@ Module opcode.
                                               |);
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
-                                                M.deref (| M.read (| Value.String "outputs" |) |)
+                                                M.deref (| mk_str (| "outputs" |) |)
                                               |);
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
@@ -3206,7 +3193,7 @@ Module opcode.
                                       |);
                                       M.borrow (|
                                         Pointer.Kind.Ref,
-                                        M.deref (| M.read (| Value.String "not_eof" |) |)
+                                        M.deref (| mk_str (| "not_eof" |) |)
                                       |);
                                       M.borrow (|
                                         Pointer.Kind.Ref,
@@ -3239,7 +3226,7 @@ Module opcode.
                               |);
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "terminating" |) |)
+                                M.deref (| mk_str (| "terminating" |) |)
                               |);
                               M.borrow (|
                                 Pointer.Kind.Ref,
@@ -3270,10 +3257,7 @@ Module opcode.
                           |)
                         |)
                       |);
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (| M.read (| Value.String "immediate_size" |) |)
-                      |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "immediate_size" |) |) |);
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.deref (|
@@ -3379,8 +3363,7 @@ Module opcode.
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.alloc (|
-                                          Value.Array
-                                            [ M.read (| Value.String "opcode name is too long" |) ]
+                                          Value.Array [ mk_str (| "opcode name is too long" |) ]
                                         |)
                                       |)
                                     |)
@@ -3914,11 +3897,7 @@ Module opcode.
                                     Pointer.Kind.Ref,
                                     M.alloc (|
                                       Value.Array
-                                        [
-                                          M.read (|
-                                            Value.String "opcodes must be sorted in ascending order"
-                                          |)
-                                        ]
+                                        [ mk_str (| "opcodes must be sorted in ascending order" |) ]
                                     |)
                                   |)
                                 |)
@@ -3943,7 +3922,7 @@ Module opcode.
                 [],
                 []
               |),
-              [ M.read (| Value.String "STOP" |) ]
+              [ mk_str (| "STOP" |) ]
             |)
           |) in
         let~ info : Ty.path "revm_bytecode::opcode::OpCodeInfo" :=
@@ -4010,11 +3989,7 @@ Module opcode.
                                     Pointer.Kind.Ref,
                                     M.alloc (|
                                       Value.Array
-                                        [
-                                          M.read (|
-                                            Value.String "opcodes must be sorted in ascending order"
-                                          |)
-                                        ]
+                                        [ mk_str (| "opcodes must be sorted in ascending order" |) ]
                                     |)
                                   |)
                                 |)
@@ -4039,7 +4014,7 @@ Module opcode.
                 [],
                 []
               |),
-              [ M.read (| Value.String "ADD" |) ]
+              [ mk_str (| "ADD" |) ]
             |)
           |) in
         let~ info : Ty.path "revm_bytecode::opcode::OpCodeInfo" :=
@@ -4098,11 +4073,7 @@ Module opcode.
                                     Pointer.Kind.Ref,
                                     M.alloc (|
                                       Value.Array
-                                        [
-                                          M.read (|
-                                            Value.String "opcodes must be sorted in ascending order"
-                                          |)
-                                        ]
+                                        [ mk_str (| "opcodes must be sorted in ascending order" |) ]
                                     |)
                                   |)
                                 |)
@@ -4127,7 +4098,7 @@ Module opcode.
                 [],
                 []
               |),
-              [ M.read (| Value.String "BALANCE" |) ]
+              [ mk_str (| "BALANCE" |) ]
             |)
           |) in
         let~ info : Ty.path "revm_bytecode::opcode::OpCodeInfo" :=
@@ -4189,23 +4160,20 @@ Module opcode.
                                 [
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.deref (| M.read (| Value.String "STOP" |) |)
+                                    M.deref (| mk_str (| "STOP" |) |)
                                   |);
                                   M.read (| M.get_constant "revm_bytecode::opcode::STOP" |)
                                 ];
                               Value.Tuple
                                 [
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (| M.read (| Value.String "ADD" |) |)
-                                  |);
+                                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ADD" |) |) |);
                                   M.read (| M.get_constant "revm_bytecode::opcode::ADD" |)
                                 ];
                               Value.Tuple
                                 [
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.deref (| M.read (| Value.String "BALANCE" |) |)
+                                    M.deref (| mk_str (| "BALANCE" |) |)
                                   |);
                                   M.read (| M.get_constant "revm_bytecode::opcode::BALANCE" |)
                                 ]

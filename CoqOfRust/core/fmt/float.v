@@ -1703,7 +1703,7 @@ Module fmt.
                       M.deref (|
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
+                          M.alloc (| Value.Array [ mk_str (| "" |) ] |)
                         |)
                       |)
                     |);
@@ -1845,7 +1845,7 @@ Module fmt.
                       M.deref (|
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
+                          M.alloc (| Value.Array [ mk_str (| "" |) ] |)
                         |)
                       |)
                     |);

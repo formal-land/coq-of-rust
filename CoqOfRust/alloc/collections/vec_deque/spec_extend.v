@@ -548,9 +548,8 @@ Module collections.
                                                                                       M.alloc (|
                                                                                         Value.Array
                                                                                           [
-                                                                                            M.read (|
-                                                                                              Value.String
-                                                                                                "TrustedLen iterator's size hint is not exact: "
+                                                                                            mk_str (|
+                                                                                              "TrustedLen iterator's size hint is not exact: "
                                                                                             |)
                                                                                           ]
                                                                                       |)
@@ -843,9 +842,8 @@ Module collections.
                                                                                       M.alloc (|
                                                                                         Value.Array
                                                                                           [
-                                                                                            M.read (|
-                                                                                              Value.String
-                                                                                                "The number of items written to VecDeque doesn't match the TrustedLen size hint"
+                                                                                            mk_str (|
+                                                                                              "The number of items written to VecDeque doesn't match the TrustedLen size hint"
                                                                                             |)
                                                                                           ]
                                                                                       |)
@@ -896,12 +894,7 @@ Module collections.
                                                 M.borrow (|
                                                   Pointer.Kind.Ref,
                                                   M.alloc (|
-                                                    Value.Array
-                                                      [
-                                                        M.read (|
-                                                          Value.String "capacity overflow"
-                                                        |)
-                                                      ]
+                                                    Value.Array [ mk_str (| "capacity overflow" |) ]
                                                   |)
                                                 |)
                                               |)

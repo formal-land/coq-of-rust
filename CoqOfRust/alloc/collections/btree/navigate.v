@@ -5428,11 +5428,7 @@ Module collections.
                                         M.call_closure (|
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
-                                          [
-                                            M.read (|
-                                              Value.String "assertion failed: self.front.is_some()"
-                                            |)
-                                          ]
+                                          [ mk_str (| "assertion failed: self.front.is_some()" |) ]
                                         |)
                                       |)
                                     |)));
@@ -5702,11 +5698,7 @@ Module collections.
                                         M.call_closure (|
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
-                                          [
-                                            M.read (|
-                                              Value.String "assertion failed: self.back.is_some()"
-                                            |)
-                                          ]
+                                          [ mk_str (| "assertion failed: self.back.is_some()" |) ]
                                         |)
                                       |)
                                     |)));
@@ -6811,9 +6803,8 @@ Module collections.
                                                                 M.alloc (|
                                                                   Value.Array
                                                                     [
-                                                                      M.read (|
-                                                                        Value.String
-                                                                          "internal error: entered unreachable code: BTreeMap has different depths"
+                                                                      mk_str (|
+                                                                        "internal error: entered unreachable code: BTreeMap has different depths"
                                                                       |)
                                                                     ]
                                                                 |)

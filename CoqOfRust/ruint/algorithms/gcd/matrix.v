@@ -250,7 +250,7 @@ Module algorithms.
                 |),
                 [
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Matrix" |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Matrix" |) |) |);
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
@@ -1338,7 +1338,7 @@ Module algorithms.
                               M.call_closure (|
                                 Ty.path "never",
                                 M.get_function (| "core::panicking::panic", [], [] |),
-                                [ M.read (| Value.String "assertion failed: a >= b" |) ]
+                                [ mk_str (| "assertion failed: a >= b" |) ]
                               |)
                             |)
                           |)));
@@ -1816,11 +1816,7 @@ Module algorithms.
                                             M.call_closure (|
                                               Ty.path "never",
                                               M.get_function (| "core::panicking::panic", [], [] |),
-                                              [
-                                                M.read (|
-                                                  Value.String "assertion failed: r0 >= r1"
-                                                |)
-                                              ]
+                                              [ mk_str (| "assertion failed: r0 >= r1" |) ]
                                             |)
                                           |)
                                         |)));
@@ -2213,11 +2209,7 @@ Module algorithms.
                                             M.call_closure (|
                                               Ty.path "never",
                                               M.get_function (| "core::panicking::panic", [], [] |),
-                                              [
-                                                M.read (|
-                                                  Value.String "assertion failed: a0 >= 1_u64 << 63"
-                                                |)
-                                              ]
+                                              [ mk_str (| "assertion failed: a0 >= 1_u64 << 63" |) ]
                                             |)
                                           |)
                                         |)));
@@ -2265,11 +2257,7 @@ Module algorithms.
                                             M.call_closure (|
                                               Ty.path "never",
                                               M.get_function (| "core::panicking::panic", [], [] |),
-                                              [
-                                                M.read (|
-                                                  Value.String "assertion failed: a0 >= a1"
-                                                |)
-                                              ]
+                                              [ mk_str (| "assertion failed: a0 >= a1" |) ]
                                             |)
                                           |)
                                         |)));
@@ -2545,9 +2533,8 @@ Module algorithms.
                                                               []
                                                             |),
                                                             [
-                                                              M.read (|
-                                                                Value.String
-                                                                  "assertion failed: a2 < a3"
+                                                              mk_str (|
+                                                                "assertion failed: a2 < a3"
                                                               |)
                                                             ]
                                                           |)
@@ -2606,9 +2593,8 @@ Module algorithms.
                                                               []
                                                             |),
                                                             [
-                                                              M.read (|
-                                                                Value.String
-                                                                  "assertion failed: a2 > 0"
+                                                              mk_str (|
+                                                                "assertion failed: a2 > 0"
                                                               |)
                                                             ]
                                                           |)
@@ -2744,9 +2730,8 @@ Module algorithms.
                                                               []
                                                             |),
                                                             [
-                                                              M.read (|
-                                                                Value.String
-                                                                  "assertion failed: a2 < a3"
+                                                              mk_str (|
+                                                                "assertion failed: a2 < a3"
                                                               |)
                                                             ]
                                                           |)
@@ -2805,9 +2790,8 @@ Module algorithms.
                                                               []
                                                             |),
                                                             [
-                                                              M.read (|
-                                                                Value.String
-                                                                  "assertion failed: a2 > 0"
+                                                              mk_str (|
+                                                                "assertion failed: a2 > 0"
                                                               |)
                                                             ]
                                                           |)
@@ -2959,11 +2943,7 @@ Module algorithms.
                                             M.call_closure (|
                                               Ty.path "never",
                                               M.get_function (| "core::panicking::panic", [], [] |),
-                                              [
-                                                M.read (|
-                                                  Value.String "assertion failed: a2 >= LIMIT"
-                                                |)
-                                              ]
+                                              [ mk_str (| "assertion failed: a2 >= LIMIT" |) ]
                                             |)
                                           |)
                                         |)));
@@ -3017,11 +2997,7 @@ Module algorithms.
                                             M.call_closure (|
                                               Ty.path "never",
                                               M.get_function (| "core::panicking::panic", [], [] |),
-                                              [
-                                                M.read (|
-                                                  Value.String "assertion failed: a3 < LIMIT"
-                                                |)
-                                              ]
+                                              [ mk_str (| "assertion failed: a3 < LIMIT" |) ]
                                             |)
                                           |)
                                         |)));
@@ -3085,11 +3061,7 @@ Module algorithms.
                                                         [],
                                                         []
                                                       |),
-                                                      [
-                                                        M.read (|
-                                                          Value.String "assertion failed: a2 >= v2"
-                                                        |)
-                                                      ]
+                                                      [ mk_str (| "assertion failed: a2 >= v2" |) ]
                                                     |)
                                                   |)
                                                 |)));
@@ -3235,11 +3207,7 @@ Module algorithms.
                                                         [],
                                                         []
                                                       |),
-                                                      [
-                                                        M.read (|
-                                                          Value.String "assertion failed: a2 >= u2"
-                                                        |)
-                                                      ]
+                                                      [ mk_str (| "assertion failed: a2 >= u2" |) ]
                                                     |)
                                                   |)
                                                 |)));
@@ -3424,11 +3392,7 @@ Module algorithms.
                                             M.call_closure (|
                                               Ty.path "never",
                                               M.get_function (| "core::panicking::panic", [], [] |),
-                                              [
-                                                M.read (|
-                                                  Value.String "assertion failed: r0 >= r1"
-                                                |)
-                                              ]
+                                              [ mk_str (| "assertion failed: r0 >= r1" |) ]
                                             |)
                                           |)
                                         |)));

@@ -111,10 +111,7 @@ Module option.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "None" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "None" |) |) |)
                         ]
                       |)
                     |)));
@@ -142,10 +139,7 @@ Module option.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Some" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Some" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -3481,7 +3475,7 @@ Module option.
         (M.call_closure (|
           Ty.path "never",
           M.get_function (| "core::panicking::panic", [], [] |),
-          [ M.read (| Value.String "called `Option::unwrap()` on a `None` value" |) ]
+          [ mk_str (| "called `Option::unwrap()` on a `None` value" |) ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -4401,8 +4395,8 @@ Module option.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Item" |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "opt" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Item" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "opt" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -4682,8 +4676,8 @@ Module option.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Iter" |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "inner" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Iter" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "inner" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -4989,8 +4983,8 @@ Module option.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "IterMut" |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "inner" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "IterMut" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "inner" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -5293,8 +5287,8 @@ Module option.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "IntoIter" |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "inner" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "IntoIter" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "inner" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|

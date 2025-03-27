@@ -40,7 +40,7 @@ Definition drink (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           |),
                           [
                             M.borrow (| Pointer.Kind.Ref, beverage |);
-                            M.borrow (| Pointer.Kind.Ref, Value.String "lemonade" |)
+                            M.borrow (| Pointer.Kind.Ref, M.alloc (| mk_str (| "lemonade" |) |) |)
                           ]
                         |)
                       |)) in
@@ -54,7 +54,7 @@ Definition drink (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           [],
                           [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                         |),
-                        [ M.read (| Value.String "AAAaaaaa!!!!" |) ]
+                        [ mk_str (| "AAAaaaaa!!!!" |) ]
                       |)
                     |)
                   |)));
@@ -84,11 +84,8 @@ Definition drink (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             Pointer.Kind.Ref,
                             M.alloc (|
                               Value.Array
-                                [
-                                  M.read (| Value.String "Some refreshing " |);
-                                  M.read (| Value.String " is all I need.
-" |)
-                                ]
+                                [ mk_str (| "Some refreshing " |); mk_str (| " is all I need.
+" |) ]
                             |)
                           |)
                         |)
@@ -152,7 +149,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             M.call_closure (|
               Ty.tuple [],
               M.get_function (| "panic::drink", [], [] |),
-              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "water" |) |) |) ]
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "water" |) |) |) ]
             |)
           |) in
         let~ _ : Ty.tuple [] :=
@@ -160,8 +157,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             M.call_closure (|
               Ty.tuple [],
               M.get_function (| "panic::drink", [], [] |),
-              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "lemonade" |) |) |)
-              ]
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "lemonade" |) |) |) ]
             |)
           |) in
         M.alloc (| Value.Tuple [] |)

@@ -206,10 +206,7 @@ Module hardfork.
                             "revm_specification::hardfork::SpecId::FRONTIER"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "FRONTIER" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "FRONTIER" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -222,7 +219,7 @@ Module hardfork.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "FRONTIER_THAWING" |) |)
+                            M.deref (| mk_str (| "FRONTIER_THAWING" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -234,10 +231,7 @@ Module hardfork.
                             "revm_specification::hardfork::SpecId::HOMESTEAD"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "HOMESTEAD" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "HOMESTEAD" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -248,10 +242,7 @@ Module hardfork.
                             "revm_specification::hardfork::SpecId::DAO_FORK"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "DAO_FORK" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "DAO_FORK" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -262,10 +253,7 @@ Module hardfork.
                             "revm_specification::hardfork::SpecId::TANGERINE"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "TANGERINE" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "TANGERINE" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -278,7 +266,7 @@ Module hardfork.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "SPURIOUS_DRAGON" |) |)
+                            M.deref (| mk_str (| "SPURIOUS_DRAGON" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -290,10 +278,7 @@ Module hardfork.
                             "revm_specification::hardfork::SpecId::BYZANTIUM"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "BYZANTIUM" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BYZANTIUM" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -306,7 +291,7 @@ Module hardfork.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "CONSTANTINOPLE" |) |)
+                            M.deref (| mk_str (| "CONSTANTINOPLE" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -318,10 +303,7 @@ Module hardfork.
                             "revm_specification::hardfork::SpecId::PETERSBURG"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "PETERSBURG" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "PETERSBURG" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -332,10 +314,7 @@ Module hardfork.
                             "revm_specification::hardfork::SpecId::ISTANBUL"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "ISTANBUL" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ISTANBUL" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -346,10 +325,7 @@ Module hardfork.
                             "revm_specification::hardfork::SpecId::MUIR_GLACIER"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "MUIR_GLACIER" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "MUIR_GLACIER" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -360,10 +336,7 @@ Module hardfork.
                             "revm_specification::hardfork::SpecId::BERLIN"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "BERLIN" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BERLIN" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -374,10 +347,7 @@ Module hardfork.
                             "revm_specification::hardfork::SpecId::LONDON"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "LONDON" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LONDON" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -390,7 +360,7 @@ Module hardfork.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "ARROW_GLACIER" |) |)
+                            M.deref (| mk_str (| "ARROW_GLACIER" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -402,10 +372,7 @@ Module hardfork.
                             "revm_specification::hardfork::SpecId::GRAY_GLACIER"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "GRAY_GLACIER" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "GRAY_GLACIER" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -416,10 +383,7 @@ Module hardfork.
                             "revm_specification::hardfork::SpecId::MERGE"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "MERGE" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "MERGE" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -430,10 +394,7 @@ Module hardfork.
                             "revm_specification::hardfork::SpecId::SHANGHAI"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "SHANGHAI" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "SHANGHAI" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -444,10 +405,7 @@ Module hardfork.
                             "revm_specification::hardfork::SpecId::CANCUN"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "CANCUN" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CANCUN" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -458,10 +416,7 @@ Module hardfork.
                             "revm_specification::hardfork::SpecId::PRAGUE"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "PRAGUE" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "PRAGUE" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -472,10 +427,7 @@ Module hardfork.
                             "revm_specification::hardfork::SpecId::OSAKA"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "OSAKA" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "OSAKA" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -486,10 +438,7 @@ Module hardfork.
                             "revm_specification::hardfork::SpecId::LATEST"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "LATEST" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LATEST" |) |) |)
                         |)))
                   ]
                 |)
@@ -1163,14 +1112,14 @@ Module hardfork.
   
   Module name.
     Definition value_FRONTIER : Value.t :=
-      M.run_constant ltac:(M.monadic (Value.String "Frontier")).
+      M.run_constant ltac:(M.monadic (M.alloc (| mk_str (| "Frontier" |) |))).
     
     Axiom Constant_value_FRONTIER :
       (M.get_constant "revm_specification::hardfork::name::FRONTIER") = value_FRONTIER.
     Global Hint Rewrite Constant_value_FRONTIER : constant_rewrites.
     
     Definition value_FRONTIER_THAWING : Value.t :=
-      M.run_constant ltac:(M.monadic (Value.String "Frontier Thawing")).
+      M.run_constant ltac:(M.monadic (M.alloc (| mk_str (| "Frontier Thawing" |) |))).
     
     Axiom Constant_value_FRONTIER_THAWING :
       (M.get_constant "revm_specification::hardfork::name::FRONTIER_THAWING") =
@@ -1178,28 +1127,28 @@ Module hardfork.
     Global Hint Rewrite Constant_value_FRONTIER_THAWING : constant_rewrites.
     
     Definition value_HOMESTEAD : Value.t :=
-      M.run_constant ltac:(M.monadic (Value.String "Homestead")).
+      M.run_constant ltac:(M.monadic (M.alloc (| mk_str (| "Homestead" |) |))).
     
     Axiom Constant_value_HOMESTEAD :
       (M.get_constant "revm_specification::hardfork::name::HOMESTEAD") = value_HOMESTEAD.
     Global Hint Rewrite Constant_value_HOMESTEAD : constant_rewrites.
     
     Definition value_DAO_FORK : Value.t :=
-      M.run_constant ltac:(M.monadic (Value.String "DAO Fork")).
+      M.run_constant ltac:(M.monadic (M.alloc (| mk_str (| "DAO Fork" |) |))).
     
     Axiom Constant_value_DAO_FORK :
       (M.get_constant "revm_specification::hardfork::name::DAO_FORK") = value_DAO_FORK.
     Global Hint Rewrite Constant_value_DAO_FORK : constant_rewrites.
     
     Definition value_TANGERINE : Value.t :=
-      M.run_constant ltac:(M.monadic (Value.String "Tangerine")).
+      M.run_constant ltac:(M.monadic (M.alloc (| mk_str (| "Tangerine" |) |))).
     
     Axiom Constant_value_TANGERINE :
       (M.get_constant "revm_specification::hardfork::name::TANGERINE") = value_TANGERINE.
     Global Hint Rewrite Constant_value_TANGERINE : constant_rewrites.
     
     Definition value_SPURIOUS_DRAGON : Value.t :=
-      M.run_constant ltac:(M.monadic (Value.String "Spurious")).
+      M.run_constant ltac:(M.monadic (M.alloc (| mk_str (| "Spurious" |) |))).
     
     Axiom Constant_value_SPURIOUS_DRAGON :
       (M.get_constant "revm_specification::hardfork::name::SPURIOUS_DRAGON") =
@@ -1207,98 +1156,105 @@ Module hardfork.
     Global Hint Rewrite Constant_value_SPURIOUS_DRAGON : constant_rewrites.
     
     Definition value_BYZANTIUM : Value.t :=
-      M.run_constant ltac:(M.monadic (Value.String "Byzantium")).
+      M.run_constant ltac:(M.monadic (M.alloc (| mk_str (| "Byzantium" |) |))).
     
     Axiom Constant_value_BYZANTIUM :
       (M.get_constant "revm_specification::hardfork::name::BYZANTIUM") = value_BYZANTIUM.
     Global Hint Rewrite Constant_value_BYZANTIUM : constant_rewrites.
     
     Definition value_CONSTANTINOPLE : Value.t :=
-      M.run_constant ltac:(M.monadic (Value.String "Constantinople")).
+      M.run_constant ltac:(M.monadic (M.alloc (| mk_str (| "Constantinople" |) |))).
     
     Axiom Constant_value_CONSTANTINOPLE :
       (M.get_constant "revm_specification::hardfork::name::CONSTANTINOPLE") = value_CONSTANTINOPLE.
     Global Hint Rewrite Constant_value_CONSTANTINOPLE : constant_rewrites.
     
     Definition value_PETERSBURG : Value.t :=
-      M.run_constant ltac:(M.monadic (Value.String "Petersburg")).
+      M.run_constant ltac:(M.monadic (M.alloc (| mk_str (| "Petersburg" |) |))).
     
     Axiom Constant_value_PETERSBURG :
       (M.get_constant "revm_specification::hardfork::name::PETERSBURG") = value_PETERSBURG.
     Global Hint Rewrite Constant_value_PETERSBURG : constant_rewrites.
     
     Definition value_ISTANBUL : Value.t :=
-      M.run_constant ltac:(M.monadic (Value.String "Istanbul")).
+      M.run_constant ltac:(M.monadic (M.alloc (| mk_str (| "Istanbul" |) |))).
     
     Axiom Constant_value_ISTANBUL :
       (M.get_constant "revm_specification::hardfork::name::ISTANBUL") = value_ISTANBUL.
     Global Hint Rewrite Constant_value_ISTANBUL : constant_rewrites.
     
     Definition value_MUIR_GLACIER : Value.t :=
-      M.run_constant ltac:(M.monadic (Value.String "MuirGlacier")).
+      M.run_constant ltac:(M.monadic (M.alloc (| mk_str (| "MuirGlacier" |) |))).
     
     Axiom Constant_value_MUIR_GLACIER :
       (M.get_constant "revm_specification::hardfork::name::MUIR_GLACIER") = value_MUIR_GLACIER.
     Global Hint Rewrite Constant_value_MUIR_GLACIER : constant_rewrites.
     
-    Definition value_BERLIN : Value.t := M.run_constant ltac:(M.monadic (Value.String "Berlin")).
+    Definition value_BERLIN : Value.t :=
+      M.run_constant ltac:(M.monadic (M.alloc (| mk_str (| "Berlin" |) |))).
     
     Axiom Constant_value_BERLIN :
       (M.get_constant "revm_specification::hardfork::name::BERLIN") = value_BERLIN.
     Global Hint Rewrite Constant_value_BERLIN : constant_rewrites.
     
-    Definition value_LONDON : Value.t := M.run_constant ltac:(M.monadic (Value.String "London")).
+    Definition value_LONDON : Value.t :=
+      M.run_constant ltac:(M.monadic (M.alloc (| mk_str (| "London" |) |))).
     
     Axiom Constant_value_LONDON :
       (M.get_constant "revm_specification::hardfork::name::LONDON") = value_LONDON.
     Global Hint Rewrite Constant_value_LONDON : constant_rewrites.
     
     Definition value_ARROW_GLACIER : Value.t :=
-      M.run_constant ltac:(M.monadic (Value.String "Arrow Glacier")).
+      M.run_constant ltac:(M.monadic (M.alloc (| mk_str (| "Arrow Glacier" |) |))).
     
     Axiom Constant_value_ARROW_GLACIER :
       (M.get_constant "revm_specification::hardfork::name::ARROW_GLACIER") = value_ARROW_GLACIER.
     Global Hint Rewrite Constant_value_ARROW_GLACIER : constant_rewrites.
     
     Definition value_GRAY_GLACIER : Value.t :=
-      M.run_constant ltac:(M.monadic (Value.String "Gray Glacier")).
+      M.run_constant ltac:(M.monadic (M.alloc (| mk_str (| "Gray Glacier" |) |))).
     
     Axiom Constant_value_GRAY_GLACIER :
       (M.get_constant "revm_specification::hardfork::name::GRAY_GLACIER") = value_GRAY_GLACIER.
     Global Hint Rewrite Constant_value_GRAY_GLACIER : constant_rewrites.
     
-    Definition value_MERGE : Value.t := M.run_constant ltac:(M.monadic (Value.String "Merge")).
+    Definition value_MERGE : Value.t :=
+      M.run_constant ltac:(M.monadic (M.alloc (| mk_str (| "Merge" |) |))).
     
     Axiom Constant_value_MERGE :
       (M.get_constant "revm_specification::hardfork::name::MERGE") = value_MERGE.
     Global Hint Rewrite Constant_value_MERGE : constant_rewrites.
     
     Definition value_SHANGHAI : Value.t :=
-      M.run_constant ltac:(M.monadic (Value.String "Shanghai")).
+      M.run_constant ltac:(M.monadic (M.alloc (| mk_str (| "Shanghai" |) |))).
     
     Axiom Constant_value_SHANGHAI :
       (M.get_constant "revm_specification::hardfork::name::SHANGHAI") = value_SHANGHAI.
     Global Hint Rewrite Constant_value_SHANGHAI : constant_rewrites.
     
-    Definition value_CANCUN : Value.t := M.run_constant ltac:(M.monadic (Value.String "Cancun")).
+    Definition value_CANCUN : Value.t :=
+      M.run_constant ltac:(M.monadic (M.alloc (| mk_str (| "Cancun" |) |))).
     
     Axiom Constant_value_CANCUN :
       (M.get_constant "revm_specification::hardfork::name::CANCUN") = value_CANCUN.
     Global Hint Rewrite Constant_value_CANCUN : constant_rewrites.
     
-    Definition value_PRAGUE : Value.t := M.run_constant ltac:(M.monadic (Value.String "Prague")).
+    Definition value_PRAGUE : Value.t :=
+      M.run_constant ltac:(M.monadic (M.alloc (| mk_str (| "Prague" |) |))).
     
     Axiom Constant_value_PRAGUE :
       (M.get_constant "revm_specification::hardfork::name::PRAGUE") = value_PRAGUE.
     Global Hint Rewrite Constant_value_PRAGUE : constant_rewrites.
     
-    Definition value_OSAKA : Value.t := M.run_constant ltac:(M.monadic (Value.String "PragueEOF")).
+    Definition value_OSAKA : Value.t :=
+      M.run_constant ltac:(M.monadic (M.alloc (| mk_str (| "PragueEOF" |) |))).
     
     Axiom Constant_value_OSAKA :
       (M.get_constant "revm_specification::hardfork::name::OSAKA") = value_OSAKA.
     Global Hint Rewrite Constant_value_OSAKA : constant_rewrites.
     
-    Definition value_LATEST : Value.t := M.run_constant ltac:(M.monadic (Value.String "Latest")).
+    Definition value_LATEST : Value.t :=
+      M.run_constant ltac:(M.monadic (M.alloc (| mk_str (| "Latest" |) |))).
     
     Axiom Constant_value_LATEST :
       (M.get_constant "revm_specification::hardfork::name::LATEST") = value_LATEST.
@@ -1349,7 +1305,7 @@ Module hardfork.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.String "Frontier" |) in
+                      M.is_constant_or_break_match (| M.read (| γ |), mk_str (| "Frontier" |) |) in
                     M.alloc (|
                       Value.StructTuple "revm_specification::hardfork::SpecId::FRONTIER" []
                     |)));
@@ -1358,7 +1314,7 @@ Module hardfork.
                     (let _ :=
                       M.is_constant_or_break_match (|
                         M.read (| γ |),
-                        Value.String "Frontier Thawing"
+                        mk_str (| "Frontier Thawing" |)
                       |) in
                     M.alloc (|
                       Value.StructTuple "revm_specification::hardfork::SpecId::FRONTIER_THAWING" []
@@ -1366,35 +1322,35 @@ Module hardfork.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.String "Homestead" |) in
+                      M.is_constant_or_break_match (| M.read (| γ |), mk_str (| "Homestead" |) |) in
                     M.alloc (|
                       Value.StructTuple "revm_specification::hardfork::SpecId::HOMESTEAD" []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.String "DAO Fork" |) in
+                      M.is_constant_or_break_match (| M.read (| γ |), mk_str (| "DAO Fork" |) |) in
                     M.alloc (|
                       Value.StructTuple "revm_specification::hardfork::SpecId::DAO_FORK" []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.String "Tangerine" |) in
+                      M.is_constant_or_break_match (| M.read (| γ |), mk_str (| "Tangerine" |) |) in
                     M.alloc (|
                       Value.StructTuple "revm_specification::hardfork::SpecId::TANGERINE" []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.String "Spurious" |) in
+                      M.is_constant_or_break_match (| M.read (| γ |), mk_str (| "Spurious" |) |) in
                     M.alloc (|
                       Value.StructTuple "revm_specification::hardfork::SpecId::SPURIOUS_DRAGON" []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.String "Byzantium" |) in
+                      M.is_constant_or_break_match (| M.read (| γ |), mk_str (| "Byzantium" |) |) in
                     M.alloc (|
                       Value.StructTuple "revm_specification::hardfork::SpecId::BYZANTIUM" []
                     |)));
@@ -1403,7 +1359,7 @@ Module hardfork.
                     (let _ :=
                       M.is_constant_or_break_match (|
                         M.read (| γ |),
-                        Value.String "Constantinople"
+                        mk_str (| "Constantinople" |)
                       |) in
                     M.alloc (|
                       Value.StructTuple "revm_specification::hardfork::SpecId::CONSTANTINOPLE" []
@@ -1413,7 +1369,7 @@ Module hardfork.
                     (let _ :=
                       M.is_constant_or_break_match (|
                         M.read (| γ |),
-                        Value.String "Petersburg"
+                        mk_str (| "Petersburg" |)
                       |) in
                     M.alloc (|
                       Value.StructTuple "revm_specification::hardfork::SpecId::PETERSBURG" []
@@ -1421,7 +1377,7 @@ Module hardfork.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.String "Istanbul" |) in
+                      M.is_constant_or_break_match (| M.read (| γ |), mk_str (| "Istanbul" |) |) in
                     M.alloc (|
                       Value.StructTuple "revm_specification::hardfork::SpecId::ISTANBUL" []
                     |)));
@@ -1430,7 +1386,7 @@ Module hardfork.
                     (let _ :=
                       M.is_constant_or_break_match (|
                         M.read (| γ |),
-                        Value.String "MuirGlacier"
+                        mk_str (| "MuirGlacier" |)
                       |) in
                     M.alloc (|
                       Value.StructTuple "revm_specification::hardfork::SpecId::MUIR_GLACIER" []
@@ -1438,14 +1394,14 @@ Module hardfork.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.String "Berlin" |) in
+                      M.is_constant_or_break_match (| M.read (| γ |), mk_str (| "Berlin" |) |) in
                     M.alloc (|
                       Value.StructTuple "revm_specification::hardfork::SpecId::BERLIN" []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.String "London" |) in
+                      M.is_constant_or_break_match (| M.read (| γ |), mk_str (| "London" |) |) in
                     M.alloc (|
                       Value.StructTuple "revm_specification::hardfork::SpecId::LONDON" []
                     |)));
@@ -1454,7 +1410,7 @@ Module hardfork.
                     (let _ :=
                       M.is_constant_or_break_match (|
                         M.read (| γ |),
-                        Value.String "Arrow Glacier"
+                        mk_str (| "Arrow Glacier" |)
                       |) in
                     M.alloc (|
                       Value.StructTuple "revm_specification::hardfork::SpecId::ARROW_GLACIER" []
@@ -1464,7 +1420,7 @@ Module hardfork.
                     (let _ :=
                       M.is_constant_or_break_match (|
                         M.read (| γ |),
-                        Value.String "Gray Glacier"
+                        mk_str (| "Gray Glacier" |)
                       |) in
                     M.alloc (|
                       Value.StructTuple "revm_specification::hardfork::SpecId::GRAY_GLACIER" []
@@ -1472,42 +1428,42 @@ Module hardfork.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.String "Merge" |) in
+                      M.is_constant_or_break_match (| M.read (| γ |), mk_str (| "Merge" |) |) in
                     M.alloc (|
                       Value.StructTuple "revm_specification::hardfork::SpecId::MERGE" []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.String "Shanghai" |) in
+                      M.is_constant_or_break_match (| M.read (| γ |), mk_str (| "Shanghai" |) |) in
                     M.alloc (|
                       Value.StructTuple "revm_specification::hardfork::SpecId::SHANGHAI" []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.String "Cancun" |) in
+                      M.is_constant_or_break_match (| M.read (| γ |), mk_str (| "Cancun" |) |) in
                     M.alloc (|
                       Value.StructTuple "revm_specification::hardfork::SpecId::CANCUN" []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.String "Prague" |) in
+                      M.is_constant_or_break_match (| M.read (| γ |), mk_str (| "Prague" |) |) in
                     M.alloc (|
                       Value.StructTuple "revm_specification::hardfork::SpecId::PRAGUE" []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.String "PragueEOF" |) in
+                      M.is_constant_or_break_match (| M.read (| γ |), mk_str (| "PragueEOF" |) |) in
                     M.alloc (|
                       Value.StructTuple "revm_specification::hardfork::SpecId::OSAKA" []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), Value.String "Latest" |) in
+                      M.is_constant_or_break_match (| M.read (| γ |), mk_str (| "Latest" |) |) in
                     M.alloc (|
                       Value.StructTuple "revm_specification::hardfork::SpecId::LATEST" []
                     |)));
@@ -1755,10 +1711,7 @@ Module hardfork.
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
-                      |)
+                      M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Array [ mk_str (| "" |) ] |) |)
                     |)
                   |);
                   M.borrow (|

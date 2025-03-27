@@ -5,14 +5,17 @@ Definition value_LOREM_IPSUM : Value.t :=
   M.run_constant
     ltac:(M.monadic
       (M.alloc (|
-        Value.String
-          "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+        M.alloc (|
+          mk_str (|
+            "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
 tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
 quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
 consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
 cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
 proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 "
+          |)
+        |)
       |))).
 
 Axiom Constant_value_LOREM_IPSUM :
@@ -52,12 +55,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 [],
                 [ Ty.path "str" ]
               |),
-              [
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "lorem_ipsum.txt" |) |)
-                |)
-              ]
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "lorem_ipsum.txt" |) |) |) ]
             |)
           |) in
         let~ display : Ty.path "std::path::Display" :=
@@ -123,10 +121,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       Pointer.Kind.Ref,
                                       M.alloc (|
                                         Value.Array
-                                          [
-                                            M.read (| Value.String "couldn't create " |);
-                                            M.read (| Value.String ": " |)
-                                          ]
+                                          [ mk_str (| "couldn't create " |); mk_str (| ": " |) ]
                                       |)
                                     |)
                                   |)
@@ -263,10 +258,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   Pointer.Kind.Ref,
                                   M.alloc (|
                                     Value.Array
-                                      [
-                                        M.read (| Value.String "couldn't write to " |);
-                                        M.read (| Value.String ": " |)
-                                      ]
+                                      [ mk_str (| "couldn't write to " |); mk_str (| ": " |) ]
                                   |)
                                 |)
                               |)
@@ -347,11 +339,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   Pointer.Kind.Ref,
                                   M.alloc (|
                                     Value.Array
-                                      [
-                                        M.read (| Value.String "successfully wrote to " |);
-                                        M.read (| Value.String "
-" |)
-                                      ]
+                                      [ mk_str (| "successfully wrote to " |); mk_str (| "
+" |) ]
                                   |)
                                 |)
                               |)

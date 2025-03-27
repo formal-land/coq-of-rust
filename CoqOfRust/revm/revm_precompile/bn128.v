@@ -3718,9 +3718,8 @@ Module bn128.
                                                                                                         []
                                                                                                       |),
                                                                                                       [
-                                                                                                        M.read (|
-                                                                                                          Value.String
-                                                                                                            "assertion failed: n < PAIR_ELEMENT_LEN / 32"
+                                                                                                        mk_str (|
+                                                                                                          "assertion failed: n < PAIR_ELEMENT_LEN / 32"
                                                                                                         |)
                                                                                                       ]
                                                                                                     |)

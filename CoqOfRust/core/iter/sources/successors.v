@@ -444,16 +444,13 @@ Module iter.
                                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.deref (| M.read (| Value.String "Successors" |) |)
+                                    M.deref (| mk_str (| "Successors" |) |)
                                   |)
                                 ]
                               |)
                             |)
                           |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "next" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "next" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (|

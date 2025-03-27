@@ -637,9 +637,8 @@ Module mem.
                                       M.alloc (|
                                         Value.Array
                                           [
-                                            M.read (|
-                                              Value.String
-                                                "cannot transmute_copy if Dst is larger than Src"
+                                            mk_str (|
+                                              "cannot transmute_copy if Dst is larger than Src"
                                             |)
                                           ]
                                       |)
@@ -960,7 +959,7 @@ Module mem.
                               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| fmt |) |) |);
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "Discriminant" |) |)
+                                M.deref (| mk_str (| "Discriminant" |) |)
                               |)
                             ]
                           |)

@@ -99,10 +99,7 @@ Module instructions.
                               "revm_interpreter::instructions::i256::Sign::Minus"
                             |) in
                           M.alloc (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Minus" |) |)
-                            |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Minus" |) |) |)
                           |)));
                       fun γ =>
                         ltac:(M.monadic
@@ -113,10 +110,7 @@ Module instructions.
                               "revm_interpreter::instructions::i256::Sign::Zero"
                             |) in
                           M.alloc (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Zero" |) |)
-                            |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Zero" |) |) |)
                           |)));
                       fun γ =>
                         ltac:(M.monadic
@@ -127,10 +121,7 @@ Module instructions.
                               "revm_interpreter::instructions::i256::Sign::Plus"
                             |) in
                           M.alloc (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Plus" |) |)
-                            |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Plus" |) |) |)
                           |)))
                     ]
                   |)

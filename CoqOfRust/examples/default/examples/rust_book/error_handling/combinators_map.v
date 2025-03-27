@@ -53,30 +53,21 @@ Module Impl_core_fmt_Debug_for_combinators_map_Food.
                       (let γ := M.read (| γ |) in
                       let _ := M.is_struct_tuple (| γ, "combinators_map::Food::Apple" |) in
                       M.alloc (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "Apple" |) |)
-                        |)
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Apple" |) |) |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let _ := M.is_struct_tuple (| γ, "combinators_map::Food::Carrot" |) in
                       M.alloc (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "Carrot" |) |)
-                        |)
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Carrot" |) |) |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.read (| γ |) in
                       let _ := M.is_struct_tuple (| γ, "combinators_map::Food::Potato" |) in
                       M.alloc (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "Potato" |) |)
-                        |)
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Potato" |) |) |)
                       |)))
                 ]
               |)
@@ -123,7 +114,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Peeled.
           |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Peeled" |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Peeled" |) |) |);
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -184,7 +175,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Chopped.
           |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Chopped" |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Chopped" |) |) |);
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -245,7 +236,7 @@ Module Impl_core_fmt_Debug_for_combinators_map_Cooked.
           |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Cooked" |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Cooked" |) |) |);
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -614,12 +605,8 @@ Definition eat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.borrow (|
                                   Pointer.Kind.Ref,
                                   M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (| Value.String "Mmm. I love " |);
-                                        M.read (| Value.String "
-" |)
-                                      ]
+                                    Value.Array [ mk_str (| "Mmm. I love " |); mk_str (| "
+" |) ]
                                   |)
                                 |)
                               |)
@@ -682,8 +669,7 @@ Definition eat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.borrow (|
                                   Pointer.Kind.Ref,
                                   M.alloc (|
-                                    Value.Array
-                                      [ M.read (| Value.String "Oh no! It wasn't edible.
+                                    Value.Array [ mk_str (| "Oh no! It wasn't edible.
 " |) ]
                                   |)
                                 |)

@@ -105,8 +105,8 @@ Module iter.
                 |),
                 [
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Cycle" |) |) |);
-                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "orig" |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Cycle" |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "orig" |) |) |);
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
@@ -120,7 +120,7 @@ Module iter.
                       |)
                     |)
                   |);
-                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "iter" |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "iter" |) |) |);
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|

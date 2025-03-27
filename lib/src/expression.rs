@@ -381,7 +381,8 @@ fn string_pieces_to_coq(pieces: &[StringPiece]) -> Rc<coq::Expression> {
             if rest.is_empty() {
                 head
             } else {
-                head.apply_many(&[coq::Expression::just_name("++"), string_pieces_to_coq(rest)])
+                coq::Expression::just_name("String.append")
+                    .apply_many(&[head, string_pieces_to_coq(rest)])
             }
         }
         [StringPiece::UnicodeChar(c), rest @ ..] => coq::Expression::just_name("String.String")
@@ -394,7 +395,7 @@ fn string_pieces_to_coq(pieces: &[StringPiece]) -> Rc<coq::Expression> {
 
 fn string_to_coq(message: &str) -> Rc<coq::Expression> {
     let pieces = cut_string_in_pieces_for_coq(message);
-    coq::Expression::just_name("Value.String").apply(string_pieces_to_coq(&pieces))
+    coq::Expression::just_name("mk_str").monadic_apply(string_pieces_to_coq(&pieces))
 }
 
 impl LoopControlFlow {

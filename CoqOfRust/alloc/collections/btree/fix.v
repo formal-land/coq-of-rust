@@ -1722,9 +1722,8 @@ Module collections.
                                                         []
                                                       |),
                                                       [
-                                                        M.read (|
-                                                          Value.String
-                                                            "assertion failed: last_kv.left_child_len() >= MIN_LEN * 2"
+                                                        mk_str (|
+                                                          "assertion failed: last_kv.left_child_len() >= MIN_LEN * 2"
                                                         |)
                                                       ]
                                                     |)
@@ -2244,9 +2243,8 @@ Module collections.
                                                         []
                                                       |),
                                                       [
-                                                        M.read (|
-                                                          Value.String
-                                                            "assertion failed: self.reborrow().into_node().len() > MIN_LEN"
+                                                        mk_str (|
+                                                          "assertion failed: self.reborrow().into_node().len() > MIN_LEN"
                                                         |)
                                                       ]
                                                     |)
@@ -2649,9 +2647,8 @@ Module collections.
                                                         []
                                                       |),
                                                       [
-                                                        M.read (|
-                                                          Value.String
-                                                            "assertion failed: self.reborrow().into_node().len() > MIN_LEN"
+                                                        mk_str (|
+                                                          "assertion failed: self.reborrow().into_node().len() > MIN_LEN"
                                                         |)
                                                       ]
                                                     |)
@@ -2848,9 +2845,8 @@ Module collections.
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
                                           [
-                                            M.read (|
-                                              Value.String
-                                                "assertion failed: internal_kv.right_child_len() >= MIN_LEN"
+                                            mk_str (|
+                                              "assertion failed: internal_kv.right_child_len() >= MIN_LEN"
                                             |)
                                           ]
                                         |)
@@ -3159,9 +3155,8 @@ Module collections.
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
                                           [
-                                            M.read (|
-                                              Value.String
-                                                "assertion failed: internal_kv.left_child_len() >= MIN_LEN"
+                                            mk_str (|
+                                              "assertion failed: internal_kv.left_child_len() >= MIN_LEN"
                                             |)
                                           ]
                                         |)

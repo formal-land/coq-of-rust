@@ -57,10 +57,10 @@ Definition comp_sci_student_greeting (ε : list Value.t) (τ : list Ty.t) (α : 
                               M.alloc (|
                                 Value.Array
                                   [
-                                    M.read (| Value.String "My name is " |);
-                                    M.read (| Value.String " and I attend " |);
-                                    M.read (| Value.String ". My favorite language is " |);
-                                    M.read (| Value.String ". My Git username is " |)
+                                    mk_str (| "My name is " |);
+                                    mk_str (| " and I attend " |);
+                                    mk_str (| ". My favorite language is " |);
+                                    mk_str (| ". My Git username is " |)
                                   ]
                               |)
                             |)

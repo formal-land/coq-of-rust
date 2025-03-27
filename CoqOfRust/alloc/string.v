@@ -296,11 +296,8 @@ Module string.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "FromUtf8Error" |) |)
-              |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "bytes" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "FromUtf8Error" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "bytes" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -314,7 +311,7 @@ Module string.
                   |)
                 |)
               |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "error" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "error" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -611,10 +608,7 @@ Module string.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "FromUtf16Error" |) |)
-              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "FromUtf16Error" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -1361,7 +1355,7 @@ Module string.
                                       [
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.deref (| M.read (| Value.String "" |) |)
+                                          M.deref (| mk_str (| "" |) |)
                                         |)
                                       ]
                                   |)
@@ -2835,7 +2829,7 @@ Module string.
                           |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String (String.String "253" "") |) |)
+                            M.deref (| mk_str (| String.String "253" "" |) |)
                           |)
                         ]
                       |)
@@ -3394,7 +3388,7 @@ Module string.
                                   M.read (| string |);
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.deref (| M.read (| Value.String (String.String "253" "") |) |)
+                                    M.deref (| mk_str (| String.String "253" "" |) |)
                                   |)
                                 ]
                               |)
@@ -3979,7 +3973,7 @@ Module string.
                           |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String (String.String "253" "") |) |)
+                            M.deref (| mk_str (| String.String "253" "" |) |)
                           |)
                         ]
                       |)
@@ -4538,7 +4532,7 @@ Module string.
                                   M.read (| string |);
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.deref (| M.read (| Value.String (String.String "253" "") |) |)
+                                    M.deref (| mk_str (| String.String "253" "" |) |)
                                   |)
                                 ]
                               |)
@@ -4977,11 +4971,7 @@ Module string.
                                   M.call_closure (|
                                     Ty.path "never",
                                     M.get_function (| "core::panicking::panic", [], [] |),
-                                    [
-                                      M.read (|
-                                        Value.String
-                                          "assertion failed: self.is_char_boundary(start)"
-                                      |)
+                                    [ mk_str (| "assertion failed: self.is_char_boundary(start)" |)
                                     ]
                                   |)
                                 |)
@@ -5047,11 +5037,7 @@ Module string.
                                   M.call_closure (|
                                     Ty.path "never",
                                     M.get_function (| "core::panicking::panic", [], [] |),
-                                    [
-                                      M.read (|
-                                        Value.String "assertion failed: self.is_char_boundary(end)"
-                                      |)
-                                    ]
+                                    [ mk_str (| "assertion failed: self.is_char_boundary(end)" |) ]
                                   |)
                                 |)
                               |)));
@@ -5673,9 +5659,8 @@ Module string.
                                     Ty.path "never",
                                     M.get_function (| "core::panicking::panic", [], [] |),
                                     [
-                                      M.read (|
-                                        Value.String
-                                          "assertion failed: self.is_char_boundary(new_len)"
+                                      mk_str (|
+                                        "assertion failed: self.is_char_boundary(new_len)"
                                       |)
                                     ]
                                   |)
@@ -6076,9 +6061,8 @@ Module string.
                                           M.alloc (|
                                             Value.Array
                                               [
-                                                M.read (|
-                                                  Value.String
-                                                    "cannot remove a char from the end of a string"
+                                                mk_str (|
+                                                  "cannot remove a char from the end of a string"
                                                 |)
                                               ]
                                           |)
@@ -7543,11 +7527,7 @@ Module string.
                           M.call_closure (|
                             Ty.path "never",
                             M.get_function (| "core::panicking::panic", [], [] |),
-                            [
-                              M.read (|
-                                Value.String "assertion failed: self.is_char_boundary(idx)"
-                              |)
-                            ]
+                            [ mk_str (| "assertion failed: self.is_char_boundary(idx)" |) ]
                           |)
                         |)
                       |)));
@@ -7922,11 +7902,7 @@ Module string.
                           M.call_closure (|
                             Ty.path "never",
                             M.get_function (| "core::panicking::panic", [], [] |),
-                            [
-                              M.read (|
-                                Value.String "assertion failed: self.is_char_boundary(idx)"
-                              |)
-                            ]
+                            [ mk_str (| "assertion failed: self.is_char_boundary(idx)" |) ]
                           |)
                         |)
                       |)));
@@ -8141,11 +8117,7 @@ Module string.
                           M.call_closure (|
                             Ty.path "never",
                             M.get_function (| "core::panicking::panic", [], [] |),
-                            [
-                              M.read (|
-                                Value.String "assertion failed: self.is_char_boundary(at)"
-                              |)
-                            ]
+                            [ mk_str (| "assertion failed: self.is_char_boundary(at)" |) ]
                           |)
                         |)
                       |)));
@@ -8377,11 +8349,7 @@ Module string.
                                   M.call_closure (|
                                     Ty.path "never",
                                     M.get_function (| "core::panicking::panic", [], [] |),
-                                    [
-                                      M.read (|
-                                        Value.String
-                                          "assertion failed: self.is_char_boundary(start)"
-                                      |)
+                                    [ mk_str (| "assertion failed: self.is_char_boundary(start)" |)
                                     ]
                                   |)
                                 |)
@@ -8447,11 +8415,7 @@ Module string.
                                   M.call_closure (|
                                     Ty.path "never",
                                     M.get_function (| "core::panicking::panic", [], [] |),
-                                    [
-                                      M.read (|
-                                        Value.String "assertion failed: self.is_char_boundary(end)"
-                                      |)
-                                    ]
+                                    [ mk_str (| "assertion failed: self.is_char_boundary(end)" |) ]
                                   |)
                                 |)
                               |)));
@@ -8676,11 +8640,7 @@ Module string.
                                   M.call_closure (|
                                     Ty.path "never",
                                     M.get_function (| "core::panicking::panic", [], [] |),
-                                    [
-                                      M.read (|
-                                        Value.String "assertion failed: self.is_char_boundary(n)"
-                                      |)
-                                    ]
+                                    [ mk_str (| "assertion failed: self.is_char_boundary(n)" |) ]
                                   |)
                                 |)
                               |)));
@@ -8757,11 +8717,7 @@ Module string.
                                   M.call_closure (|
                                     Ty.path "never",
                                     M.get_function (| "core::panicking::panic", [], [] |),
-                                    [
-                                      M.read (|
-                                        Value.String
-                                          "assertion failed: self.is_char_boundary(n + 1)"
-                                      |)
+                                    [ mk_str (| "assertion failed: self.is_char_boundary(n + 1)" |)
                                     ]
                                   |)
                                 |)
@@ -8873,11 +8829,7 @@ Module string.
                                   M.call_closure (|
                                     Ty.path "never",
                                     M.get_function (| "core::panicking::panic", [], [] |),
-                                    [
-                                      M.read (|
-                                        Value.String
-                                          "assertion failed: self.is_char_boundary(n + 1)"
-                                      |)
+                                    [ mk_str (| "assertion failed: self.is_char_boundary(n + 1)" |)
                                     ]
                                   |)
                                 |)
@@ -8952,11 +8904,7 @@ Module string.
                                   M.call_closure (|
                                     Ty.path "never",
                                     M.get_function (| "core::panicking::panic", [], [] |),
-                                    [
-                                      M.read (|
-                                        Value.String "assertion failed: self.is_char_boundary(n)"
-                                      |)
-                                    ]
+                                    [ mk_str (| "assertion failed: self.is_char_boundary(n)" |) ]
                                   |)
                                 |)
                               |)));
@@ -9831,7 +9779,7 @@ Module string.
             [
               M.borrow (|
                 Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "invalid utf-16: lone surrogate found" |) |)
+                M.deref (| mk_str (| "invalid utf-16: lone surrogate found" |) |)
               |);
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
             ]
@@ -9861,7 +9809,7 @@ Module string.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "invalid utf-8" |) |) |)))
+          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "invalid utf-8" |) |) |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -9887,10 +9835,7 @@ Module string.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.borrow (|
-            Pointer.Kind.Ref,
-            M.deref (| M.read (| Value.String "invalid utf-16" |) |)
-          |)))
+          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "invalid utf-16" |) |) |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -14627,9 +14572,7 @@ Module string.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.deref (|
-                        M.read (|
-                          Value.String "a Display implementation returned an error unexpectedly"
-                        |)
+                        mk_str (| "a Display implementation returned an error unexpectedly" |)
                       |)
                     |)
                   ]
@@ -14799,14 +14742,11 @@ Module string.
                         (let γ := M.use (M.deref (| M.read (| self |) |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        Value.String "true"));
+                        M.alloc (| mk_str (| "true" |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "false" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "false" |) |) |)
                         |)))
                   ]
                 |)
@@ -17159,10 +17099,7 @@ Module string.
                             |),
                             [
                               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "Drain" |) |)
-                              |)
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Drain" |) |) |)
                             ]
                           |)
                         |)

@@ -294,9 +294,8 @@ Module Impl_ruint_Uint_BITS_LIMBS.
                                     M.alloc (|
                                       Value.Array
                                         [
-                                          M.read (|
-                                            Value.String
-                                              "Can not construct Uint<BITS, LIMBS> with incorrect LIMBS"
+                                          mk_str (|
+                                            "Can not construct Uint<BITS, LIMBS> with incorrect LIMBS"
                                           |)
                                         ]
                                     |)
@@ -665,11 +664,7 @@ Module Impl_ruint_Uint_BITS_LIMBS.
                                                 Pointer.Kind.Ref,
                                                 M.alloc (|
                                                   Value.Array
-                                                    [
-                                                      M.read (|
-                                                        Value.String "Value too large for this Uint"
-                                                      |)
-                                                    ]
+                                                    [ mk_str (| "Value too large for this Uint" |) ]
                                                 |)
                                               |)
                                             |)
@@ -766,9 +761,7 @@ Module Impl_ruint_Uint_BITS_LIMBS.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [ M.read (| Value.String "Value too large for this Uint" |)
-                                        ]
+                                      Value.Array [ mk_str (| "Value too large for this Uint" |) ]
                                     |)
                                   |)
                                 |)

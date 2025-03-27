@@ -49,7 +49,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.deref (|
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.alloc (| Value.Array [ M.read (| Value.String "Zero
+                                  M.alloc (| Value.Array [ mk_str (| "Zero
 " |) ] |)
                                 |)
                               |)
@@ -86,10 +86,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.deref (|
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.alloc (|
-                                    Value.Array [ M.read (| Value.String "Greater than zero
-" |) ]
-                                  |)
+                                  M.alloc (| Value.Array [ mk_str (| "Greater than zero
+" |) ] |)
                                 |)
                               |)
                             |)
@@ -114,7 +112,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.deref (|
-                            M.borrow (| Pointer.Kind.Ref, Value.String "Should never happen." |)
+                            M.borrow (|
+                              Pointer.Kind.Ref,
+                              M.alloc (| mk_str (| "Should never happen." |) |)
+                            |)
                           |)
                         |)
                       ]

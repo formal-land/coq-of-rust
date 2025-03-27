@@ -40,7 +40,7 @@ Module Impl_core_fmt_Debug_for_operator_overloading_FooBar.
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "FooBar" |) |) |)
+            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "FooBar" |) |) |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -78,7 +78,7 @@ Module Impl_core_fmt_Debug_for_operator_overloading_BarFoo.
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "BarFoo" |) |) |)
+            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BarFoo" |) |) |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -135,8 +135,7 @@ Module Impl_core_ops_arith_Add_operator_overloading_Bar_for_operator_overloading
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
-                                Value.Array
-                                  [ M.read (| Value.String "> Foo.add(Bar) was called
+                                Value.Array [ mk_str (| "> Foo.add(Bar) was called
 " |) ]
                               |)
                             |)
@@ -204,8 +203,7 @@ Module Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
-                                Value.Array
-                                  [ M.read (| Value.String "> Bar.add(Foo) was called
+                                Value.Array [ mk_str (| "> Bar.add(Foo) was called
 " |) ]
                               |)
                             |)
@@ -264,12 +262,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "Foo + Bar = " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "Foo + Bar = " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -352,12 +346,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "Bar + Foo = " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "Bar + Foo = " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)

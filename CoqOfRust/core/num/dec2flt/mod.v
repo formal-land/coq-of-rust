@@ -108,11 +108,8 @@ Module num.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "ParseFloatError" |) |)
-                |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "kind" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ParseFloatError" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "kind" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -351,10 +348,7 @@ Module num.
                               "core::num::dec2flt::FloatErrorKind::Empty"
                             |) in
                           M.alloc (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Empty" |) |)
-                            |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Empty" |) |) |)
                           |)));
                       fun γ =>
                         ltac:(M.monadic
@@ -365,10 +359,7 @@ Module num.
                               "core::num::dec2flt::FloatErrorKind::Invalid"
                             |) in
                           M.alloc (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Invalid" |) |)
-                            |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Invalid" |) |) |)
                           |)))
                     ]
                   |)
@@ -552,9 +543,7 @@ Module num.
                       M.alloc (|
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.deref (|
-                            M.read (| Value.String "cannot parse float from empty string" |)
-                          |)
+                          M.deref (| mk_str (| "cannot parse float from empty string" |) |)
                         |)
                       |)));
                   fun γ =>
@@ -564,7 +553,7 @@ Module num.
                       M.alloc (|
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "invalid float literal" |) |)
+                          M.deref (| mk_str (| "invalid float literal" |) |)
                         |)
                       |)))
                 ]

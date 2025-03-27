@@ -55,10 +55,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.alloc (|
                               Value.Array
                                 [
-                                  M.read (|
-                                    Value.String "Sum of odd numbers up to 9 (excluding): "
-                                  |);
-                                  M.read (| Value.String "
+                                  mk_str (| "Sum of odd numbers up to 9 (excluding): " |);
+                                  mk_str (| "
 " |)
                                 ]
                             |)

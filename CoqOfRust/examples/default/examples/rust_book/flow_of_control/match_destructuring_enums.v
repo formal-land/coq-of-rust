@@ -112,10 +112,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array [ M.read (| Value.String "What color is it?
-" |) ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "What color is it?
+" |) ] |)
                           |)
                         |)
                       |)
@@ -152,10 +150,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.deref (|
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.alloc (|
-                                    Value.Array [ M.read (| Value.String "The color is Red!
-" |) ]
-                                  |)
+                                  M.alloc (| Value.Array [ mk_str (| "The color is Red!
+" |) ] |)
                                 |)
                               |)
                             |)
@@ -188,10 +184,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.deref (|
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.alloc (|
-                                    Value.Array [ M.read (| Value.String "The color is Blue!
-" |) ]
-                                  |)
+                                  M.alloc (| Value.Array [ mk_str (| "The color is Blue!
+" |) ] |)
                                 |)
                               |)
                             |)
@@ -224,10 +218,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.deref (|
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.alloc (|
-                                    Value.Array [ M.read (| Value.String "The color is Green!
-" |) ]
-                                  |)
+                                  M.alloc (| Value.Array [ mk_str (| "The color is Green!
+" |) ] |)
                                 |)
                               |)
                             |)
@@ -284,10 +276,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.alloc (|
                                     Value.Array
                                       [
-                                        M.read (| Value.String "Red: " |);
-                                        M.read (| Value.String ", green: " |);
-                                        M.read (| Value.String ", and blue: " |);
-                                        M.read (| Value.String "!
+                                        mk_str (| "Red: " |);
+                                        mk_str (| ", green: " |);
+                                        mk_str (| ", and blue: " |);
+                                        mk_str (| "!
 " |)
                                       ]
                                   |)
@@ -405,10 +397,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.alloc (|
                                     Value.Array
                                       [
-                                        M.read (| Value.String "Hue: " |);
-                                        M.read (| Value.String ", saturation: " |);
-                                        M.read (| Value.String ", value: " |);
-                                        M.read (| Value.String "!
+                                        mk_str (| "Hue: " |);
+                                        mk_str (| ", saturation: " |);
+                                        mk_str (| ", value: " |);
+                                        mk_str (| "!
 " |)
                                       ]
                                   |)
@@ -526,10 +518,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.alloc (|
                                     Value.Array
                                       [
-                                        M.read (| Value.String "Hue: " |);
-                                        M.read (| Value.String ", saturation: " |);
-                                        M.read (| Value.String ", lightness: " |);
-                                        M.read (| Value.String "!
+                                        mk_str (| "Hue: " |);
+                                        mk_str (| ", saturation: " |);
+                                        mk_str (| ", lightness: " |);
+                                        mk_str (| "!
 " |)
                                       ]
                                   |)
@@ -647,10 +639,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.alloc (|
                                     Value.Array
                                       [
-                                        M.read (| Value.String "Cyan: " |);
-                                        M.read (| Value.String ", magenta: " |);
-                                        M.read (| Value.String ", yellow: " |);
-                                        M.read (| Value.String "!
+                                        mk_str (| "Cyan: " |);
+                                        mk_str (| ", magenta: " |);
+                                        mk_str (| ", yellow: " |);
+                                        mk_str (| "!
 " |)
                                       ]
                                   |)
@@ -775,11 +767,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.alloc (|
                                     Value.Array
                                       [
-                                        M.read (| Value.String "Cyan: " |);
-                                        M.read (| Value.String ", magenta: " |);
-                                        M.read (| Value.String ", yellow: " |);
-                                        M.read (| Value.String ", key (black): " |);
-                                        M.read (| Value.String "!
+                                        mk_str (| "Cyan: " |);
+                                        mk_str (| ", magenta: " |);
+                                        mk_str (| ", yellow: " |);
+                                        mk_str (| ", key (black): " |);
+                                        mk_str (| "!
 " |)
                                       ]
                                   |)

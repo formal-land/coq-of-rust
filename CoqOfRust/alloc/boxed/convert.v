@@ -1510,11 +1510,7 @@ Module boxed.
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
-                                        [
-                                          M.read (|
-                                            Value.String "assertion failed: self.is::<T>()"
-                                          |)
-                                        ]
+                                        [ mk_str (| "assertion failed: self.is::<T>()" |) ]
                                       |)
                                     |)
                                   |)));
@@ -1754,11 +1750,7 @@ Module boxed.
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
-                                        [
-                                          M.read (|
-                                            Value.String "assertion failed: self.is::<T>()"
-                                          |)
-                                        ]
+                                        [ mk_str (| "assertion failed: self.is::<T>()" |) ]
                                       |)
                                     |)
                                   |)));
@@ -2027,11 +2019,7 @@ Module boxed.
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
-                                        [
-                                          M.read (|
-                                            Value.String "assertion failed: self.is::<T>()"
-                                          |)
-                                        ]
+                                        [ mk_str (| "assertion failed: self.is::<T>()" |) ]
                                       |)
                                     |)
                                   |)));

@@ -56,12 +56,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 [],
                 []
               |),
-              [
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "Rc examples" |) |)
-                |)
-              ]
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Rc examples" |) |) |) ]
             |)
           |) in
         let~ _ : Ty.tuple [] :=
@@ -85,10 +80,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array [ M.read (| Value.String "--- rc_a is created ---
-" |) ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "--- rc_a is created ---
+" |) ] |)
                           |)
                         |)
                       |)
@@ -144,11 +137,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             Pointer.Kind.Ref,
                             M.alloc (|
                               Value.Array
-                                [
-                                  M.read (| Value.String "Reference Count of rc_a: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                                [ mk_str (| "Reference Count of rc_a: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -239,8 +229,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
-                                Value.Array
-                                  [ M.read (| Value.String "--- rc_a is cloned to rc_b ---
+                                Value.Array [ mk_str (| "--- rc_a is cloned to rc_b ---
 " |) ]
                               |)
                             |)
@@ -306,11 +295,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               Pointer.Kind.Ref,
                               M.alloc (|
                                 Value.Array
-                                  [
-                                    M.read (| Value.String "Reference Count of rc_b: " |);
-                                    M.read (| Value.String "
-" |)
-                                  ]
+                                  [ mk_str (| "Reference Count of rc_b: " |); mk_str (| "
+" |) ]
                               |)
                             |)
                           |)
@@ -401,11 +387,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               Pointer.Kind.Ref,
                               M.alloc (|
                                 Value.Array
-                                  [
-                                    M.read (| Value.String "Reference Count of rc_a: " |);
-                                    M.read (| Value.String "
-" |)
-                                  ]
+                                  [ mk_str (| "Reference Count of rc_a: " |); mk_str (| "
+" |) ]
                               |)
                             |)
                           |)
@@ -496,11 +479,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               Pointer.Kind.Ref,
                               M.alloc (|
                                 Value.Array
-                                  [
-                                    M.read (| Value.String "rc_a and rc_b are equal: " |);
-                                    M.read (| Value.String "
-" |)
-                                  ]
+                                  [ mk_str (| "rc_a and rc_b are equal: " |); mk_str (| "
+" |) ]
                               |)
                             |)
                           |)
@@ -604,8 +584,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                               M.alloc (|
                                 Value.Array
                                   [
-                                    M.read (| Value.String "Length of the value inside rc_a: " |);
-                                    M.read (| Value.String "
+                                    mk_str (| "Length of the value inside rc_a: " |);
+                                    mk_str (| "
 " |)
                                   ]
                               |)
@@ -712,12 +692,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "Value of rc_b: " |);
-                                    M.read (| Value.String "
-" |)
-                                  ]
+                                Value.Array [ mk_str (| "Value of rc_b: " |); mk_str (| "
+" |) ]
                               |)
                             |)
                           |)
@@ -786,13 +762,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (|
-                                      Value.String "--- rc_b is dropped out of scope ---
-"
-                                    |)
-                                  ]
+                                Value.Array [ mk_str (| "--- rc_b is dropped out of scope ---
+" |) ]
                               |)
                             |)
                           |)
@@ -827,11 +798,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             Pointer.Kind.Ref,
                             M.alloc (|
                               Value.Array
-                                [
-                                  M.read (| Value.String "Reference Count of rc_a: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                                [ mk_str (| "Reference Count of rc_a: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -921,10 +889,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [ M.read (| Value.String "--- rc_a is dropped out of scope ---
-" |)
-                                ]
+                              Value.Array [ mk_str (| "--- rc_a is dropped out of scope ---
+" |) ]
                             |)
                           |)
                         |)

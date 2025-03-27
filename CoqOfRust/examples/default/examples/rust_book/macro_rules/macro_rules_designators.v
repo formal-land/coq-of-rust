@@ -34,12 +34,8 @@ Definition foo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "You called " |);
-                                  M.read (| Value.String "()
-" |)
-                                ]
+                              Value.Array [ mk_str (| "You called " |); mk_str (| "()
+" |) ]
                             |)
                           |)
                         |)
@@ -64,7 +60,10 @@ Definition foo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.deref (|
-                                          M.borrow (| Pointer.Kind.Ref, Value.String "foo" |)
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (| mk_str (| "foo" |) |)
+                                          |)
                                         |)
                                       |)
                                     ]
@@ -122,12 +121,8 @@ Definition bar (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "You called " |);
-                                  M.read (| Value.String "()
-" |)
-                                ]
+                              Value.Array [ mk_str (| "You called " |); mk_str (| "()
+" |) ]
                             |)
                           |)
                         |)
@@ -152,7 +147,10 @@ Definition bar (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.deref (|
-                                          M.borrow (| Pointer.Kind.Ref, Value.String "bar" |)
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (| mk_str (| "bar" |) |)
+                                          |)
                                         |)
                                       |)
                                     ]
@@ -235,13 +233,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "" |);
-                                  M.read (| Value.String " = " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "" |); mk_str (| " = " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -266,7 +259,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.deref (|
-                                          M.borrow (| Pointer.Kind.Ref, Value.String "1u32 + 1" |)
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.alloc (| mk_str (| "1u32 + 1" |) |)
+                                          |)
                                         |)
                                       |)
                                     ]
@@ -329,13 +325,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "" |);
-                                  M.read (| Value.String " = " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "" |); mk_str (| " = " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -362,7 +353,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         M.deref (|
                                           M.borrow (|
                                             Pointer.Kind.Ref,
-                                            Value.String "{ let x = 1u32; x * x + 2 * x - 1 }"
+                                            M.alloc (|
+                                              mk_str (| "{ let x = 1u32; x * x + 2 * x - 1 }" |)
+                                            |)
                                           |)
                                         |)
                                       |)

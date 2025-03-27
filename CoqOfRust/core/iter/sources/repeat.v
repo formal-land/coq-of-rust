@@ -106,11 +106,8 @@ Module iter.
                 |),
                 [
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Repeat" |) |) |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (| M.read (| Value.String "element" |) |)
-                  |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Repeat" |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "element" |) |) |);
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|

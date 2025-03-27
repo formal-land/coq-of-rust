@@ -100,12 +100,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "closure_annotated: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "closure_annotated: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -193,12 +189,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "closure_inferred: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "closure_inferred: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -300,11 +292,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             Pointer.Kind.Ref,
                             M.alloc (|
                               Value.Array
-                                [
-                                  M.read (| Value.String "closure returning one: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                                [ mk_str (| "closure returning one: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)

@@ -82,8 +82,8 @@ Module num.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Fp" |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "f" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Fp" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "f" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -97,7 +97,7 @@ Module num.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "e" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "e" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -635,11 +635,7 @@ Module num.
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
-                                        [
-                                          M.read (|
-                                            Value.String "assertion failed: f >= (1 << 63)"
-                                          |)
-                                        ]
+                                        [ mk_str (| "assertion failed: f >= (1 << 63)" |) ]
                                       |)
                                     |)
                                   |)));
@@ -714,7 +710,7 @@ Module num.
                             M.call_closure (|
                               Ty.path "never",
                               M.get_function (| "core::panicking::panic", [], [] |),
-                              [ M.read (| Value.String "assertion failed: edelta >= 0" |) ]
+                              [ mk_str (| "assertion failed: edelta >= 0" |) ]
                             |)
                           |)
                         |)));

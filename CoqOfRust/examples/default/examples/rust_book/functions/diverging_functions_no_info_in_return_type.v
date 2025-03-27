@@ -58,12 +58,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           Pointer.Kind.Ref,
                           M.alloc (|
                             Value.Array
-                              [
-                                M.read (|
-                                  Value.String "This function returns and you can see this line.
-"
-                                |)
-                              ]
+                              [ mk_str (| "This function returns and you can see this line.
+" |) ]
                           |)
                         |)
                       |)

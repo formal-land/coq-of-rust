@@ -54,8 +54,8 @@ Module interpreter.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Stack" |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "data" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Stack" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "data" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -329,10 +329,7 @@ Module interpreter.
                               |),
                               [
                                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "[" |) |)
-                                |)
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "[" |) |) |)
                               ]
                             |)
                           ]
@@ -745,9 +742,7 @@ Module interpreter.
                                                                     M.borrow (|
                                                                       Pointer.Kind.Ref,
                                                                       M.deref (|
-                                                                        M.read (|
-                                                                          Value.String ", "
-                                                                        |)
+                                                                        mk_str (| ", " |)
                                                                       |)
                                                                     |)
                                                                   ]
@@ -898,11 +893,7 @@ Module interpreter.
                                                                     Pointer.Kind.Ref,
                                                                     M.alloc (|
                                                                       Value.Array
-                                                                        [
-                                                                          M.read (|
-                                                                            Value.String ""
-                                                                          |)
-                                                                        ]
+                                                                        [ mk_str (| "" |) ]
                                                                     |)
                                                                   |)
                                                                 |)
@@ -1053,7 +1044,7 @@ Module interpreter.
                       |),
                       [
                         M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                        M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "]" |) |) |)
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "]" |) |) |)
                       ]
                     |)
                   |)
@@ -2644,9 +2635,8 @@ Module interpreter.
                                                               M.alloc (|
                                                                 Value.Array
                                                                   [
-                                                                    M.read (|
-                                                                      Value.String
-                                                                        "internal error: entered unreachable code: self.data.capacity() == STACK_LIMIT"
+                                                                    mk_str (|
+                                                                      "internal error: entered unreachable code: self.data.capacity() == STACK_LIMIT"
                                                                     |)
                                                                   ]
                                                               |)
@@ -3093,9 +3083,8 @@ Module interpreter.
                                                           M.alloc (|
                                                             Value.Array
                                                               [
-                                                                M.read (|
-                                                                  Value.String
-                                                                    "internal error: entered unreachable code: attempted to dup 0"
+                                                                mk_str (|
+                                                                  "internal error: entered unreachable code: attempted to dup 0"
                                                                 |)
                                                               ]
                                                           |)
@@ -3548,9 +3537,8 @@ Module interpreter.
                                                               M.alloc (|
                                                                 Value.Array
                                                                   [
-                                                                    M.read (|
-                                                                      Value.String
-                                                                        "internal error: entered unreachable code: overlapping exchange"
+                                                                    mk_str (|
+                                                                      "internal error: entered unreachable code: overlapping exchange"
                                                                     |)
                                                                   ]
                                                               |)
@@ -5292,9 +5280,8 @@ Module interpreter.
                                                                           M.alloc (|
                                                                             Value.Array
                                                                               [
-                                                                                M.read (|
-                                                                                  Value.String
-                                                                                    "wrote too much"
+                                                                                mk_str (|
+                                                                                  "wrote too much"
                                                                                 |)
                                                                               ]
                                                                           |)

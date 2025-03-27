@@ -126,7 +126,7 @@ Module collections.
                                                 |);
                                                 M.borrow (|
                                                   Pointer.Kind.Ref,
-                                                  M.deref (| M.read (| Value.String "Entry" |) |)
+                                                  M.deref (| mk_str (| "Entry" |) |)
                                                 |)
                                               ]
                                             |)
@@ -198,7 +198,7 @@ Module collections.
                                                 |);
                                                 M.borrow (|
                                                   Pointer.Kind.Ref,
-                                                  M.deref (| M.read (| Value.String "Entry" |) |)
+                                                  M.deref (| mk_str (| "Entry" |) |)
                                                 |)
                                               ]
                                             |)
@@ -307,16 +307,13 @@ Module collections.
                                     |);
                                     M.borrow (|
                                       Pointer.Kind.Ref,
-                                      M.deref (| M.read (| Value.String "OccupiedEntry" |) |)
+                                      M.deref (| mk_str (| "OccupiedEntry" |) |)
                                     |)
                                   ]
                                 |)
                               |)
                             |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "value" |) |)
-                            |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "value" |) |) |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (|
@@ -432,7 +429,7 @@ Module collections.
                                     |);
                                     M.borrow (|
                                       Pointer.Kind.Ref,
-                                      M.deref (| M.read (| Value.String "VacantEntry" |) |)
+                                      M.deref (| mk_str (| "VacantEntry" |) |)
                                     |)
                                   ]
                                 |)

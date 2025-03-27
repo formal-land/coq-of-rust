@@ -72,11 +72,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     [],
                                     [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                   |),
-                                  [ M.read (| Value.String "rustc" |) ]
+                                  [ mk_str (| "rustc" |) ]
                                 |)
                               |)
                             |);
-                            M.read (| Value.String "--version" |)
+                            mk_str (| "--version" |)
                           ]
                         |)
                       |)
@@ -123,11 +123,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                   Pointer.Kind.Ref,
                                                   M.alloc (|
                                                     Value.Array
-                                                      [
-                                                        M.read (|
-                                                          Value.String "failed to execute process: "
-                                                        |)
-                                                      ]
+                                                      [ mk_str (| "failed to execute process: " |) ]
                                                   |)
                                                 |)
                                               |)
@@ -280,12 +276,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     Pointer.Kind.Ref,
                                     M.alloc (|
                                       Value.Array
-                                        [
-                                          M.read (|
-                                            Value.String "rustc succeeded and stdout was:
-"
-                                          |)
-                                        ]
+                                        [ mk_str (| "rustc succeeded and stdout was:
+" |) ]
                                     |)
                                   |)
                                 |)
@@ -407,10 +399,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [ M.read (| Value.String "rustc failed and stderr was:
-" |)
-                                        ]
+                                      Value.Array [ mk_str (| "rustc failed and stderr was:
+" |) ]
                                     |)
                                   |)
                                 |)

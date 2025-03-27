@@ -59,8 +59,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [ M.read (| Value.String "Tell me what type of person you are
+                              Value.Array [ mk_str (| "Tell me what type of person you are
 " |) ]
                             |)
                           |)
@@ -111,12 +110,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   Pointer.Kind.Ref,
                                   M.alloc (|
                                     Value.Array
-                                      [
-                                        M.read (|
-                                          Value.String "I haven't celebrated my first birthday yet
-"
-                                        |)
-                                      ]
+                                      [ mk_str (| "I haven't celebrated my first birthday yet
+" |) ]
                                   |)
                                 |)
                               |)
@@ -153,11 +148,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   Pointer.Kind.Ref,
                                   M.alloc (|
                                     Value.Array
-                                      [
-                                        M.read (| Value.String "I'm a child of age " |);
-                                        M.read (| Value.String "
-" |)
-                                      ]
+                                      [ mk_str (| "I'm a child of age " |); mk_str (| "
+" |) ]
                                   |)
                                 |)
                               |)
@@ -222,11 +214,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   Pointer.Kind.Ref,
                                   M.alloc (|
                                     Value.Array
-                                      [
-                                        M.read (| Value.String "I'm a teen of age " |);
-                                        M.read (| Value.String "
-" |)
-                                      ]
+                                      [ mk_str (| "I'm a teen of age " |); mk_str (| "
+" |) ]
                                   |)
                                 |)
                               |)
@@ -291,11 +280,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   Pointer.Kind.Ref,
                                   M.alloc (|
                                     Value.Array
-                                      [
-                                        M.read (| Value.String "I'm an old person of age " |);
-                                        M.read (| Value.String "
-" |)
-                                      ]
+                                      [ mk_str (| "I'm an old person of age " |); mk_str (| "
+" |) ]
                                   |)
                                 |)
                               |)

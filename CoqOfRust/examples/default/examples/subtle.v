@@ -69,7 +69,7 @@ Module Impl_core_fmt_Debug_for_subtle_Choice.
           |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Choice" |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Choice" |) |) |);
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -200,9 +200,8 @@ Module Impl_core_convert_From_subtle_Choice_for_bool.
                                     Ty.path "never",
                                     M.get_function (| "core::panicking::panic", [], [] |),
                                     [
-                                      M.read (|
-                                        Value.String
-                                          "assertion failed: (source.0 == 0u8) | (source.0 == 1u8)"
+                                      mk_str (|
+                                        "assertion failed: (source.0 == 0u8) | (source.0 == 1u8)"
                                       |)
                                     ]
                                   |)
@@ -627,11 +626,7 @@ Definition black_box (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                                 M.call_closure (|
                                   Ty.path "never",
                                   M.get_function (| "core::panicking::panic", [], [] |),
-                                  [
-                                    M.read (|
-                                      Value.String
-                                        "assertion failed: (input == 0u8) | (input == 1u8)"
-                                    |)
+                                  [ mk_str (| "assertion failed: (input == 0u8) | (input == 1u8)" |)
                                   ]
                                 |)
                               |)
@@ -3774,8 +3769,8 @@ Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_subtle_CtOption_T.
           |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "CtOption" |) |) |);
-            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "value" |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CtOption" |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "value" |) |) |);
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -3789,7 +3784,7 @@ Module Impl_core_fmt_Debug_where_core_fmt_Debug_T_for_subtle_CtOption_T.
                 |)
               |)
             |);
-            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "is_some" |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "is_some" |) |) |);
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -4071,9 +4066,7 @@ Module Impl_subtle_CtOption_T.
                                                   M.deref (|
                                                     M.borrow (|
                                                       Pointer.Kind.Ref,
-                                                      M.alloc (|
-                                                        Value.Array [ M.read (| Value.String "" |) ]
-                                                      |)
+                                                      M.alloc (| Value.Array [ mk_str (| "" |) ] |)
                                                     |)
                                                   |)
                                                 |);

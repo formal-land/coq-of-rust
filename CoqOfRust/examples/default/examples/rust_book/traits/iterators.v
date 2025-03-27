@@ -186,10 +186,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [ M.read (| Value.String "Four consecutive `next` calls on 0..3
-" |)
-                                ]
+                              Value.Array [ mk_str (| "Four consecutive `next` calls on 0..3
+" |) ]
                             |)
                           |)
                         |)
@@ -221,11 +219,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array
-                                [ M.read (| Value.String "> " |); M.read (| Value.String "
-" |) ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "> " |); mk_str (| "
+" |) ] |)
                           |)
                         |)
                       |);
@@ -314,11 +309,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array
-                                [ M.read (| Value.String "> " |); M.read (| Value.String "
-" |) ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "> " |); mk_str (| "
+" |) ] |)
                           |)
                         |)
                       |);
@@ -407,11 +399,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array
-                                [ M.read (| Value.String "> " |); M.read (| Value.String "
-" |) ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "> " |); mk_str (| "
+" |) ] |)
                           |)
                         |)
                       |);
@@ -500,11 +489,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array
-                                [ M.read (| Value.String "> " |); M.read (| Value.String "
-" |) ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "> " |); mk_str (| "
+" |) ] |)
                           |)
                         |)
                       |);
@@ -594,8 +580,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [ M.read (| Value.String "Iterate through 0..3 using `for`
+                              Value.Array [ mk_str (| "Iterate through 0..3 using `for`
 " |) ]
                             |)
                           |)
@@ -704,11 +689,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                       Pointer.Kind.Ref,
                                                       M.alloc (|
                                                         Value.Array
-                                                          [
-                                                            M.read (| Value.String "> " |);
-                                                            M.read (| Value.String "
-" |)
-                                                          ]
+                                                          [ mk_str (| "> " |); mk_str (| "
+" |) ]
                                                       |)
                                                     |)
                                                   |)
@@ -783,9 +765,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.alloc (|
                               Value.Array
                                 [
-                                  M.read (|
-                                    Value.String
-                                      "The first four terms of the Fibonacci sequence are: 
+                                  mk_str (|
+                                    "The first four terms of the Fibonacci sequence are: 
 "
                                   |)
                                 ]
@@ -922,11 +903,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                       Pointer.Kind.Ref,
                                                       M.alloc (|
                                                         Value.Array
-                                                          [
-                                                            M.read (| Value.String "> " |);
-                                                            M.read (| Value.String "
-" |)
-                                                          ]
+                                                          [ mk_str (| "> " |); mk_str (| "
+" |) ]
                                                       |)
                                                     |)
                                                   |)
@@ -1001,9 +979,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.alloc (|
                               Value.Array
                                 [
-                                  M.read (|
-                                    Value.String
-                                      "The next four terms of the Fibonacci sequence are: 
+                                  mk_str (|
+                                    "The next four terms of the Fibonacci sequence are: 
 "
                                   |)
                                 ]
@@ -1181,11 +1158,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                       Pointer.Kind.Ref,
                                                       M.alloc (|
                                                         Value.Array
-                                                          [
-                                                            M.read (| Value.String "> " |);
-                                                            M.read (| Value.String "
-" |)
-                                                          ]
+                                                          [ mk_str (| "> " |); mk_str (| "
+" |) ]
                                                       |)
                                                     |)
                                                   |)
@@ -1270,11 +1244,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             Pointer.Kind.Ref,
                             M.alloc (|
                               Value.Array
-                                [
-                                  M.read (| Value.String "Iterate the following array " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                                [ mk_str (| "Iterate the following array " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -1430,11 +1401,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                     Pointer.Kind.Ref,
                                                     M.alloc (|
                                                       Value.Array
-                                                        [
-                                                          M.read (| Value.String "> " |);
-                                                          M.read (| Value.String "
-" |)
-                                                        ]
+                                                        [ mk_str (| "> " |); mk_str (| "
+" |) ]
                                                     |)
                                                   |)
                                                 |)

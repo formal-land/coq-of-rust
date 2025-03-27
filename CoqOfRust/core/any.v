@@ -76,7 +76,7 @@ Module any.
                     |),
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Any" |) |) |)
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Any" |) |) |)
                     ]
                   |)
                 |)
@@ -135,7 +135,7 @@ Module any.
                     |),
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Any" |) |) |)
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Any" |) |) |)
                     ]
                   |)
                 |)
@@ -199,7 +199,7 @@ Module any.
                     |),
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Any" |) |) |)
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Any" |) |) |)
                     ]
                   |)
                 |)
@@ -502,8 +502,7 @@ Module any.
                                     M.call_closure (|
                                       Ty.path "never",
                                       M.get_function (| "core::panicking::panic", [], [] |),
-                                      [ M.read (| Value.String "assertion failed: self.is::<T>()" |)
-                                      ]
+                                      [ mk_str (| "assertion failed: self.is::<T>()" |) ]
                                     |)
                                   |)
                                 |)));
@@ -610,11 +609,7 @@ Module any.
                                         M.call_closure (|
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
-                                          [
-                                            M.read (|
-                                              Value.String "assertion failed: self.is::<T>()"
-                                            |)
-                                          ]
+                                          [ mk_str (| "assertion failed: self.is::<T>()" |) ]
                                         |)
                                       |)
                                     |)));
@@ -1477,10 +1472,7 @@ Module any.
                     M.deref (|
                       M.borrow (|
                         Pointer.Kind.Ref,
-                        M.alloc (|
-                          Value.Array
-                            [ M.read (| Value.String "TypeId(" |); M.read (| Value.String ")" |) ]
-                        |)
+                        M.alloc (| Value.Array [ mk_str (| "TypeId(" |); mk_str (| ")" |) ] |)
                       |)
                     |)
                   |);
