@@ -285,6 +285,7 @@ Proof.
   destruct run_StackTrait_for_Stack.
   (* TODO: 
   - Runtimeflag::spec_id
+  NOTE: is there an issue with translation of blob_gasprice's `option`?
   - BlockGetter::blob_gasprice
   *)
   run_symbolic.

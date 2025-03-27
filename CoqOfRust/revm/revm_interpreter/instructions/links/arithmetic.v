@@ -1,17 +1,20 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
+Require Import revm.revm_interpreter.instructions.arithmetic.
 Require Import revm.revm_context_interface.links.host.
 Require Import revm.revm_interpreter.links.gas.
 Require Import revm.revm_interpreter.links.interpreter.
 Require Import revm.revm_interpreter.links.interpreter_types.
 Require Import revm.revm_interpreter.instructions.links.i256.
-Require Import revm.revm_interpreter.instructions.arithmetic.
-Require Import revm.revm_interpreter.instructions.i256.
+(* TODO: see if its necessary to import `option` *)
+(* Require Import core.links.option. *)
 Require Import ruint.links.add.
 Require Import ruint.links.cmp.
 Require Import ruint.links.div.
 Require Import ruint.links.mul.
 Require Import ruint.links.modular.
+Require Import ruint.links.pow.
+Require Import core.links.cmp.
 
 Import Impl_Gas.
 Import add.Impl_Uint.
@@ -19,6 +22,7 @@ Import cmp.Impl_Uint.
 Import div.Impl_Uint.
 Import mul.Impl_Uint.
 Import modular.Impl_Uint.
+Import pow.Impl_Uint.
 
 (*
 pub fn add<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -247,23 +251,6 @@ Proof.
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
-  (* TODO: Uint::add_mod *)
-  (* 
-  Trait
-    (add.add.Impl_ruint_Uint_BITS_LIMBS.wrapping_add
-      (Integer.IsLink.(φ) {| Integer.value := 256 |})
-      (Integer.IsLink.(φ) {| Integer.value := 4 |})) [] []
-    [lib.Uint.IsLink.(φ) value; lib.Uint.IsLink.(φ) value1]
-    (lib.Uint.t {| Integer.value := 256 |} {| Integer.value := 4 |})
-  --------
-  Trait
-    (modular.modular.Impl_ruint_Uint_BITS_LIMBS.add_mod
-      (Integer.IsLink.(φ) {| Integer.value := 256 |})
-      (Integer.IsLink.(φ) {| Integer.value := 4 |})) [] []
-    [lib.Uint.IsLink.(φ) value; lib.Uint.IsLink.(φ) value0;
-    lib.Uint.IsLink.(φ) value2]
-    (lib.Uint.t {| Integer.value := 256 |} {| Integer.value := 4 |})
-  *)
   run_symbolic.
 Defined.
 
@@ -292,7 +279,6 @@ Proof.
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
-  (* TODO: Uint::mul_mod *)
   run_symbolic.
 Defined.
 
@@ -324,7 +310,6 @@ Proof.
   destruct run_RuntimeFlag_for_RuntimeFlag.
   (* TODO:
   - calc.gas.calc.exp_cost
-  - Uint::pow
   *)
   run_symbolic.
   Admitted.
