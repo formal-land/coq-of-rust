@@ -11,10 +11,12 @@ Require Import revm.revm_specification.links.hardfork.
 Require Import revm.revm_context_interface.links.cfg.
 Require Import ruint.links.from.
 Require Import core.convert.links.mod.
+Require Import core.links.option.
 
 Import Impl_SpecId.
 Import Impl_Gas.
 Import from.Impl_Uint.
+Import Impl_Option.
 
 (*
 pub fn chainid<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -55,6 +57,18 @@ Proof.
   run_symbolic.
 Defined.
 
+(* Instance run_coinbase
+  {WIRE H : Set} `{Link WIRE} `{Link H}
+  {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
+  {H_types : Host.Types.t} `{Host.Types.AreLinks H_types}
+  (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types)
+  (run_Host_for_H : Host.Run H H_types)
+  (interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t WIRE WIRE_types))
+  (_host : Ref.t Pointer.Kind.MutRef H) :
+  Trait block.(TraitMethod.method) [] []
+    [Ref.IsLink.(φ) (Ref.cast_to Pointer.Kind.Ref _host)]
+    (Ref.t Pointer.Kind.Ref H_types.(Host.Types.Block)). *)
+
 (*
 pub fn coinbase<WIRE: InterpreterTypes, H: Host + ?Sized>(
     interpreter: &mut Interpreter<WIRE>,
@@ -87,9 +101,9 @@ Proof.
   destruct run_BlockGetter.
   destruct run_Block_for_Block.
   destruct alloy_primitives.bits.links.fixed.Impl_Into_U256_for_FixedBytes.run.
-  (* TODO:
-  - BlockGetter::beneficiary
-  - BlockGetter::block
+  (* TODO: resolve axiomatization for:
+  - Impl_Address::into_word(?)
+  - FixedBytes::into()
   *)
   run_symbolic.
 Admitted.
@@ -128,12 +142,8 @@ Proof.
   destruct run_Host_for_H.
   destruct run_BlockGetter.
   destruct run_Block_for_Block.
-  (* TODO: 
-  - BlockGetter::timestamp
-  - BlockGetter::block
-  *)
   run_symbolic.
-Admitted.
+Defined.
 
 (*
 pub fn block_number<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -169,12 +179,8 @@ Proof.
   destruct run_Host_for_H.
   destruct run_BlockGetter.
   destruct run_Block_for_Block.
-  (* TODO: 
-  - BlockGetter::number
-  - BlockGetter::block
-  *)
   run_symbolic.
-Admitted.
+Defined.
 
 (* 
 pub fn difficulty<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -208,6 +214,7 @@ Proof.
   destruct run_Host_for_H.
   destruct run_BlockGetter.
   destruct run_Block_for_Block.
+  destruct alloy_primitives.bits.links.fixed.Impl_Into_U256_for_FixedBytes.run.
   (* TODO: 
   - revm_interpreter::instructions::utility::IntoU256::into_u256
   *)
@@ -245,12 +252,8 @@ Proof.
   destruct run_Host_for_H.
   destruct run_BlockGetter.
   destruct run_Block_for_Block.
-  (* TODO:
-  - BlockGetter::gas_limit
-  - BlockGetter::block
-  *)
   run_symbolic.
-Admitted.
+Defined.
 
 (* 
 pub fn basefee<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -281,11 +284,11 @@ Proof.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
   destruct run_RuntimeFlag_for_RuntimeFlag.
-  (* TODO: 
-  - BlockGetter::base_fee
-  *)
+  destruct run_Host_for_H.
+  destruct run_BlockGetter.
+  destruct run_Block_for_Block.
   run_symbolic.
-Admitted.
+Defined.
 
 (* 
 pub fn blob_basefee<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -319,9 +322,5 @@ Proof.
   destruct run_Host_for_H.
   destruct run_BlockGetter.
   destruct run_Block_for_Block.
-  (* TODO: 
-  - BlockGetter::block
-  - BlockGetter::blob_gasprice
-  *)
   run_symbolic.
-Admitted.
+Defined.

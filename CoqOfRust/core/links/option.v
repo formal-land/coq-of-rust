@@ -100,4 +100,12 @@ Module Impl_Option.
       (option.Impl_core_option_Option_T.unwrap_unchecked (Φ T)) [] [] [ φ self ]
       T.
   Admitted.
+
+  (* pub fn unwrap_or_default(self) -> T *)
+  Instance run_unwrap_or_default {T : Set} `{Link T}
+      (self : Self T) :
+    Run.Trait
+      (option.Impl_core_option_Option_T.unwrap_or_default (Φ T)) [] [] [ φ self ]
+      T.
+  Admitted.
 End Impl_Option.
