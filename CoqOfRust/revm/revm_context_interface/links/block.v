@@ -126,7 +126,6 @@ Module BlockGetter.
         "revm_context_interface::block::BlockGetter" [] [] (Φ Self)
         "Block" (Φ types.(Types.Block));
     run_Block_for_Block : Block.Run types.(Types.Block);
-    (* TODO: fix this *)
-    block : Run_block Self types.(Types.Block);
+    block : Run_block Self types;
   }.
 End BlockGetter.

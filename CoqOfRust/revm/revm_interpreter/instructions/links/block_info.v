@@ -56,10 +56,6 @@ Proof.
   destruct run_Host_for_H.
   destruct run_CfgGetter.
   destruct run_Cfg_for_Cfg.
-  (* TODO:
-  - BlockGetter::beneficiary
-  - BlockGetter::block
-  *)
   run_symbolic.
 Defined.
 
@@ -175,7 +171,7 @@ Proof.
   destruct run_BlockGetter.
   destruct run_Block_for_Block.
   (* TODO: 
-  - BlockGetter::number (what's still missing here?)
+  - BlockGetter::number
   - BlockGetter::block
   *)
   run_symbolic.
