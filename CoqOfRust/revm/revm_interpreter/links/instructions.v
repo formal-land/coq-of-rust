@@ -21,7 +21,6 @@ Instance run_instruction_table
     {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
     {H_types : Host.Types.t} `{Host.Types.AreLinks H_types}
     (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types) 
-    (run_Host_for_H : Host.Run H H_types)
     :
   Run.Trait
     instructions.instruction_table [] [ Φ WIRE; Φ H ] []
@@ -42,7 +41,7 @@ Proof.
     run_symbolic.
   }
   { (* add *)
-    set (f := Function2.of_run (run_add run_InterpreterTypes_for_WIRE run_Host_for_H)).
+    set (f := Function2.of_run (run_add run_InterpreterTypes_for_WIRE)).
     change (Value.Closure _) with (φ f).
     run_symbolic.
   }
@@ -71,8 +70,4 @@ Instance run_instruction
 Proof.
   constructor.
   run_symbolic.
-(* TODO: resolve the incomplete run in future PRs 
-  In this file our major change results from adding `H` parameters in the `run_add` function
-*)
-Admitted.
-(* Defined. *)
+Defined.

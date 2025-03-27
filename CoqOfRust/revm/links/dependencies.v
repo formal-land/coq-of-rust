@@ -7,13 +7,10 @@ Require Import core.links.clone.
 Require Import core.links.default.
 Require Import ruint.links.lib.
 
-(* 
-TODO: 
-- Start link with beneficiary's Address return type
-- In `beneficiary`, link it to Address type(?)
-- Link Addesss::into_word
-- Link Uint::into
-*)
+Module U256.
+  Definition t : Set :=
+    Uint.t {| Integer.value := 256 |} {| Integer.value := 4 |}.
+End U256.
 
 Module alloy_primitives.
   Module bits.
@@ -60,11 +57,11 @@ Module alloy_primitives.
             forall (N : Usize.t),
             core.convert.links.mod.From.Run (Self N) (T := array.t U8.t N).
         End Impl_From_for_FixedBytes.
-        
-        Module Impl_Into_for_FixedBytes.
+
+        Module Impl_Into_array_for_FixedBytes.
           Definition Self (N : Usize.t) : Set :=
             FixedBytes.t N.
-                  
+
           (* fn into(self) -> Uint *)
           Parameter into : forall (N : Usize.t), PolymorphicFunction.t.
 
@@ -77,7 +74,22 @@ Module alloy_primitives.
           Parameter run :
             forall (N : Usize.t),
             core.convert.links.mod.Into.Run (Self N) (array.t U8.t N).
-        End Impl_Into_for_FixedBytes.
+        End Impl_Into_array_for_FixedBytes.
+
+        Module Impl_Into_U256_for_FixedBytes.
+          Definition Self : Set :=
+            FixedBytes.t {| Integer.value := 32 |}.
+
+          Parameter into : PolymorphicFunction.t.
+
+          Axiom Implements :
+            M.IsTraitInstance
+              "core::convert::Into" [] [ Φ U256.t ] (Φ Self)
+              [ ("into", InstanceField.Method into) ].
+
+          Parameter run :
+            core.convert.links.mod.Into.Run Self U256.t.
+        End Impl_Into_U256_for_FixedBytes.
       End fixed.
 
       Module address.
@@ -228,18 +240,9 @@ Module FixedBytes.
     Φ := Ty.path "alloy_primitives::bits::fixed::FixedBytes";
     φ := to_value;
   }.
-
-  (* TODO: 
-  - (alloy_primitives::FixedBytes) fn into(self) -> Uint
-  *)
 End FixedBytes.
 
 (** ** Here we define some aliases that are convenient *)
-
-Module U256.
-  Definition t : Set :=
-    Uint.t {| Integer.value := 256 |} {| Integer.value := 4 |}.
-End U256.
 
 Module B256.
   Definition t : Set :=
