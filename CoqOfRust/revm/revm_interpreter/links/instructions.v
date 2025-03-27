@@ -52,13 +52,6 @@ Proof.
   }
 Defined.
 
-(* 
-+    {H_types : Host.Types.t} `{Host.Types.AreLinks H_types}
-.    (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types) 
-+    (run_Host_for_H : Host.Run H H_types)
-+    :
-*)
-
 (*
 pub const fn instruction<WIRE: InterpreterTypes, H: Host + ?Sized>(
     opcode: u8,
@@ -77,8 +70,4 @@ Instance run_instruction
 Proof.
   constructor.
   run_symbolic.
-(* TODO: resolve the incomplete run in future PRs 
-  In this file our major change results from adding `H` parameters in the `run_add` function
-*)
-(* Admitted. *)
 Defined.
