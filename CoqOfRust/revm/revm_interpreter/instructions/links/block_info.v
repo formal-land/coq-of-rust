@@ -18,8 +18,6 @@ Import from.Impl_Uint.
 
 (* TODO(progress):
   - (PRIORITY) refer to `interpreter_types` on `block.v` to see anything missing
-  - check revm_interpreter::gas::Gas::record_cost
-  - check revm_interpreter::interpreter_types::LoopControl::gas 
 *)
 
 (*
@@ -129,8 +127,8 @@ Proof.
   destruct run_BlockGetter.
   destruct run_Block_for_Block.
   (* TODO: 
-  - check revm_interpreter::gas::Gas::record_cost
-  - check revm_interpreter::interpreter_types::LoopControl::gas
+  - BlockGetter::timestamp
+  - BlockGetter::block
   *)
   run_symbolic.
 Admitted.
@@ -148,6 +146,8 @@ Instance block_number
   {WIRE H : Set} `{Link WIRE} `{Link H}
   {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
   (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types)
+  {H_types : Host.Types.t} `{Host.Types.AreLinks H_types}
+  (run_Host_for_H : Host.Run H H_types)
   (interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t WIRE WIRE_types))
   (_host : Ref.t Pointer.Kind.MutRef H) :
   Run.Trait
@@ -163,6 +163,13 @@ Proof.
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
+  destruct run_Host_for_H.
+  destruct run_BlockGetter.
+  destruct run_Block_for_Block.
+  (* TODO: 
+  - BlockGetter::number (what's still missing here?)
+  - BlockGetter::block
+  *)
   run_symbolic.
 Admitted.
 
@@ -175,6 +182,8 @@ pub fn difficulty<WIRE: InterpreterTypes, H: Host + ?Sized>(
 Instance difficulty
   {WIRE H : Set} `{Link WIRE} `{Link H}
   {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
+  {H_types : Host.Types.t} `{Host.Types.AreLinks H_types}
+  (run_Host_for_H : Host.Run H H_types)
   (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types)
   (interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t WIRE WIRE_types))
   (_host : Ref.t Pointer.Kind.MutRef H) :
@@ -192,8 +201,11 @@ Proof.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
   destruct run_RuntimeFlag_for_RuntimeFlag.
+  destruct run_Host_for_H.
+  destruct run_BlockGetter.
+  destruct run_Block_for_Block.
   (* TODO: 
-  - BlockGetter::difficulty
+  - revm_interpreter::instructions::utility::IntoU256::into_u256
   *)
   run_symbolic.
 Admitted.
@@ -207,7 +219,9 @@ pub fn gaslimit<WIRE: InterpreterTypes, H: Host + ?Sized>(
 Instance gaslimit
   {WIRE H : Set} `{Link WIRE} `{Link H}
   {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
+  {H_types : Host.Types.t} `{Host.Types.AreLinks H_types}
   (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types)
+  (run_Host_for_H : Host.Run H H_types)
   (interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t WIRE WIRE_types))
   (_host : Ref.t Pointer.Kind.MutRef H) :
   Run.Trait
@@ -223,6 +237,13 @@ Proof.
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
+  destruct run_Host_for_H.
+  destruct run_BlockGetter.
+  destruct run_Block_for_Block.
+  (* TODO:
+  - BlockGetter::gas_limit
+  - BlockGetter::block
+  *)
   run_symbolic.
 Admitted.
 
@@ -267,7 +288,9 @@ pub fn blob_basefee<WIRE: InterpreterTypes, H: Host + ?Sized>(
 Instance blob_basefee
   {WIRE H : Set} `{Link WIRE} `{Link H}
   {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
+  {H_types : Host.Types.t} `{Host.Types.AreLinks H_types}
   (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types)
+  (run_Host_for_H : Host.Run H H_types)
   (interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t WIRE WIRE_types))
   (_host : Ref.t Pointer.Kind.MutRef H) :
   Run.Trait
@@ -283,9 +306,12 @@ Proof.
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_LoopControl_for_Control.
   destruct run_StackTrait_for_Stack.
+  destruct run_RuntimeFlag_for_RuntimeFlag.
+  destruct run_Host_for_H.
+  destruct run_BlockGetter.
+  destruct run_Block_for_Block.
   (* TODO: 
-  - Runtimeflag::spec_id
-  NOTE: is there an issue with translation of blob_gasprice's `option`?
+  - BlockGetter::block
   - BlockGetter::blob_gasprice
   *)
   run_symbolic.
