@@ -18,3 +18,15 @@ Module Uint.
   Proof. intros. eapply OfTy.Make with (A := t BITS LIMBS). now subst. Defined.
   Smpl Add eapply of_ty : of_ty.
 End Uint.
+
+Module Impl_Uint.
+  Parameter ZERO : forall (BITS LIMBS : Usize.t), Uint.t BITS LIMBS.
+
+  (* pub const ZERO: Self *)
+  Lemma ZERO_eq (BITS LIMBS : Usize.t) :
+    M.get_constant "ruint::ZERO" =
+    φ (Ref.immediate Pointer.Kind.Raw (ZERO BITS LIMBS)).
+  Proof.
+  Admitted.
+  Global Hint Rewrite ZERO_eq : run_constant.
+End Impl_Uint.

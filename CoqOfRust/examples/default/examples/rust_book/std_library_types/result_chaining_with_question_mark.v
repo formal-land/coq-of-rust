@@ -68,7 +68,7 @@ Module checked.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "DivisionByZero" |) |)
+                            M.deref (| mk_str (| "DivisionByZero" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -82,7 +82,7 @@ Module checked.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "NonPositiveLogarithm" |) |)
+                            M.deref (| mk_str (| "NonPositiveLogarithm" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -96,7 +96,7 @@ Module checked.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "NegativeSquareRoot" |) |)
+                            M.deref (| mk_str (| "NegativeSquareRoot" |) |)
                           |)
                         |)))
                   ]
@@ -663,7 +663,9 @@ Module checked.
                                             γ,
                                             "result_chaining_with_question_mark::checked::MathError::NonPositiveLogarithm"
                                           |) in
-                                        Value.String "logarithm of non-positive number"));
+                                        M.alloc (|
+                                          mk_str (| "logarithm of non-positive number" |)
+                                        |)));
                                     fun γ =>
                                       ltac:(M.monadic
                                         (let _ :=
@@ -674,9 +676,7 @@ Module checked.
                                         M.alloc (|
                                           M.borrow (|
                                             Pointer.Kind.Ref,
-                                            M.deref (|
-                                              M.read (| Value.String "division by zero" |)
-                                            |)
+                                            M.deref (| mk_str (| "division by zero" |) |)
                                           |)
                                         |)));
                                     fun γ =>
@@ -690,9 +690,7 @@ Module checked.
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.deref (|
-                                              M.read (|
-                                                Value.String "square root of negative number"
-                                              |)
+                                              mk_str (| "square root of negative number" |)
                                             |)
                                           |)
                                         |)))
@@ -731,14 +729,8 @@ Module checked.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "" |);
-                                          M.read (| Value.String "
-" |)
-                                        ]
-                                    |)
+                                    M.alloc (| Value.Array [ mk_str (| "" |); mk_str (| "
+" |) ] |)
                                   |)
                                 |)
                               |);

@@ -103,10 +103,7 @@ Module state.
                             "move_core_types::state::VMState::DESERIALIZER"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "DESERIALIZER" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "DESERIALIZER" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -114,10 +111,7 @@ Module state.
                         let _ :=
                           M.is_struct_tuple (| γ, "move_core_types::state::VMState::VERIFIER" |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "VERIFIER" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "VERIFIER" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -125,10 +119,7 @@ Module state.
                         let _ :=
                           M.is_struct_tuple (| γ, "move_core_types::state::VMState::RUNTIME" |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "RUNTIME" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "RUNTIME" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -136,10 +127,7 @@ Module state.
                         let _ :=
                           M.is_struct_tuple (| γ, "move_core_types::state::VMState::OTHER" |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "OTHER" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "OTHER" |) |) |)
                         |)))
                   ]
                 |)

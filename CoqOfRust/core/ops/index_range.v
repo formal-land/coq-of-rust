@@ -115,11 +115,8 @@ Module ops.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "IndexRange" |) |)
-                |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "start" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "IndexRange" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "start" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -133,7 +130,7 @@ Module ops.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "end" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "end" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -510,11 +507,7 @@ Module ops.
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
-                                        [
-                                          M.read (|
-                                            Value.String "assertion failed: self.start < self.end"
-                                          |)
-                                        ]
+                                        [ mk_str (| "assertion failed: self.start < self.end" |) ]
                                       |)
                                     |)
                                   |)));
@@ -623,11 +616,7 @@ Module ops.
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
-                                        [
-                                          M.read (|
-                                            Value.String "assertion failed: self.start < self.end"
-                                          |)
-                                        ]
+                                        [ mk_str (| "assertion failed: self.start < self.end" |) ]
                                       |)
                                     |)
                                   |)));

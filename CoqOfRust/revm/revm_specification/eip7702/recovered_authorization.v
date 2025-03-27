@@ -45,9 +45,9 @@ Module eip7702.
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "RecoveredAuthorization" |) |)
+                  M.deref (| mk_str (| "RecoveredAuthorization" |) |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "inner" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "inner" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -61,10 +61,7 @@ Module eip7702.
                     |)
                   |)
                 |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "authority" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "authority" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|

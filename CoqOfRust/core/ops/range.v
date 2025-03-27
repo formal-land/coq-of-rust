@@ -185,7 +185,7 @@ Module ops.
                       M.deref (|
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.alloc (| Value.Array [ M.read (| Value.String ".." |) ] |)
+                          M.alloc (| Value.Array [ mk_str (| ".." |) ] |)
                         |)
                       |)
                     |)
@@ -723,9 +723,7 @@ Module ops.
                                       M.deref (|
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.alloc (|
-                                            Value.Array [ M.read (| Value.String ".." |) ]
-                                          |)
+                                          M.alloc (| Value.Array [ mk_str (| ".." |) ] |)
                                         |)
                                       |)
                                     |)
@@ -1404,9 +1402,7 @@ Module ops.
                                       M.deref (|
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.alloc (|
-                                            Value.Array [ M.read (| Value.String ".." |) ]
-                                          |)
+                                          M.alloc (| Value.Array [ mk_str (| ".." |) ] |)
                                         |)
                                       |)
                                     |)
@@ -1827,9 +1823,7 @@ Module ops.
                                       M.deref (|
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.alloc (|
-                                            Value.Array [ M.read (| Value.String ".." |) ]
-                                          |)
+                                          M.alloc (| Value.Array [ mk_str (| ".." |) ] |)
                                         |)
                                       |)
                                     |)
@@ -2945,9 +2939,7 @@ Module ops.
                                       M.deref (|
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.alloc (|
-                                            Value.Array [ M.read (| Value.String "..=" |) ]
-                                          |)
+                                          M.alloc (| Value.Array [ mk_str (| "..=" |) ] |)
                                         |)
                                       |)
                                     |)
@@ -3207,8 +3199,7 @@ Module ops.
                                                   M.borrow (|
                                                     Pointer.Kind.Ref,
                                                     M.alloc (|
-                                                      Value.Array
-                                                        [ M.read (| Value.String " (exhausted)" |) ]
+                                                      Value.Array [ mk_str (| " (exhausted)" |) ]
                                                     |)
                                                   |)
                                                 |)
@@ -3589,9 +3580,7 @@ Module ops.
                                       M.deref (|
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.alloc (|
-                                            Value.Array [ M.read (| Value.String "..=" |) ]
-                                          |)
+                                          M.alloc (| Value.Array [ mk_str (| "..=" |) ] |)
                                         |)
                                       |)
                                     |)
@@ -4015,10 +4004,7 @@ Module ops.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Included" |) |)
-                            |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Included" |) |) |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -4050,10 +4036,7 @@ Module ops.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Excluded" |) |)
-                            |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Excluded" |) |) |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -4079,10 +4062,7 @@ Module ops.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Unbounded" |) |)
-                            |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Unbounded" |) |) |)
                           ]
                         |)
                       |)))

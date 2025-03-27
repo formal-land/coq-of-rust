@@ -800,9 +800,8 @@ Module cell.
                                             M.alloc (|
                                               Value.Array
                                                 [
-                                                  M.read (|
-                                                    Value.String
-                                                      "`Cell::swap` on overlapping non-identical `Cell`s"
+                                                  mk_str (|
+                                                    "`Cell::swap` on overlapping non-identical `Cell`s"
                                                   |)
                                                 ]
                                             |)
@@ -1476,10 +1475,7 @@ Module cell.
                   |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (| M.read (| Value.String "BorrowError" |) |)
-                    |)
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BorrowError" |) |) |)
                   ]
                 |)
               |) in
@@ -1534,7 +1530,7 @@ Module cell.
             [
               M.borrow (|
                 Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "already mutably borrowed" |) |)
+                M.deref (| mk_str (| "already mutably borrowed" |) |)
               |);
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
             ]
@@ -1591,10 +1587,7 @@ Module cell.
                   |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (| M.read (| Value.String "BorrowMutError" |) |)
-                    |)
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BorrowMutError" |) |) |)
                   ]
                 |)
               |) in
@@ -1647,10 +1640,7 @@ Module cell.
               [ Ty.tuple []; Ty.path "core::fmt::Error" ],
             M.get_trait_method (| "core::fmt::Display", Ty.path "str", [], [], "fmt", [], [] |),
             [
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "already borrowed" |) |)
-              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "already borrowed" |) |) |);
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
             ]
           |)))
@@ -1694,7 +1684,7 @@ Module cell.
                   M.deref (|
                     M.borrow (|
                       Pointer.Kind.Ref,
-                      M.alloc (| Value.Array [ M.read (| Value.String "already borrowed: " |) ] |)
+                      M.alloc (| Value.Array [ mk_str (| "already borrowed: " |) ] |)
                     |)
                   |)
                 |);
@@ -1770,9 +1760,7 @@ Module cell.
                   M.deref (|
                     M.borrow (|
                       Pointer.Kind.Ref,
-                      M.alloc (|
-                        Value.Array [ M.read (| Value.String "already mutably borrowed: " |) ]
-                      |)
+                      M.alloc (| Value.Array [ mk_str (| "already mutably borrowed: " |) ] |)
                     |)
                   |)
                 |);
@@ -4131,11 +4119,7 @@ Module cell.
                                     M.call_closure (|
                                       Ty.path "never",
                                       M.get_function (| "core::panicking::panic", [], [] |),
-                                      [
-                                        M.read (|
-                                          Value.String "assertion failed: is_reading(borrow)"
-                                        |)
-                                      ]
+                                      [ mk_str (| "assertion failed: is_reading(borrow)" |) ]
                                     |)
                                   |)
                                 |)));
@@ -4272,11 +4256,7 @@ Module cell.
                                     M.call_closure (|
                                       Ty.path "never",
                                       M.get_function (| "core::panicking::panic", [], [] |),
-                                      [
-                                        M.read (|
-                                          Value.String "assertion failed: is_reading(borrow)"
-                                        |)
-                                      ]
+                                      [ mk_str (| "assertion failed: is_reading(borrow)" |) ]
                                     |)
                                   |)
                                 |)));
@@ -4310,11 +4290,7 @@ Module cell.
                           M.call_closure (|
                             Ty.path "never",
                             M.get_function (| "core::panicking::panic", [], [] |),
-                            [
-                              M.read (|
-                                Value.String "assertion failed: borrow != BorrowFlag::MAX"
-                              |)
-                            ]
+                            [ mk_str (| "assertion failed: borrow != BorrowFlag::MAX" |) ]
                           |)
                         |)
                       |)));
@@ -5619,11 +5595,7 @@ Module cell.
                                     M.call_closure (|
                                       Ty.path "never",
                                       M.get_function (| "core::panicking::panic", [], [] |),
-                                      [
-                                        M.read (|
-                                          Value.String "assertion failed: is_writing(borrow)"
-                                        |)
-                                      ]
+                                      [ mk_str (| "assertion failed: is_writing(borrow)" |) ]
                                     |)
                                   |)
                                 |)));
@@ -5847,11 +5819,7 @@ Module cell.
                                     M.call_closure (|
                                       Ty.path "never",
                                       M.get_function (| "core::panicking::panic", [], [] |),
-                                      [
-                                        M.read (|
-                                          Value.String "assertion failed: is_writing(borrow)"
-                                        |)
-                                      ]
+                                      [ mk_str (| "assertion failed: is_writing(borrow)" |) ]
                                     |)
                                   |)
                                 |)));
@@ -5885,11 +5853,7 @@ Module cell.
                           M.call_closure (|
                             Ty.path "never",
                             M.get_function (| "core::panicking::panic", [], [] |),
-                            [
-                              M.read (|
-                                Value.String "assertion failed: borrow != BorrowFlag::MIN"
-                              |)
-                            ]
+                            [ mk_str (| "assertion failed: borrow != BorrowFlag::MIN" |) ]
                           |)
                         |)
                       |)));

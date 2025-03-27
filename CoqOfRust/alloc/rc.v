@@ -3964,9 +3964,8 @@ Module rc.
                                                                               M.alloc (|
                                                                                 Value.Array
                                                                                   [
-                                                                                    M.read (|
-                                                                                      Value.String
-                                                                                        "No prior strong references should exist"
+                                                                                    mk_str (|
+                                                                                      "No prior strong references should exist"
                                                                                     |)
                                                                                   ]
                                                                               |)
@@ -6030,9 +6029,8 @@ Module rc.
                                       Ty.path "never",
                                       M.get_function (| "core::panicking::panic", [], [] |),
                                       [
-                                        M.read (|
-                                          Value.String
-                                            "assertion failed: !is_dangling(this.ptr.as_ptr())"
+                                        mk_str (|
+                                          "assertion failed: !is_dangling(this.ptr.as_ptr())"
                                         |)
                                       ]
                                     |)
@@ -10752,7 +10750,7 @@ Module rc.
               [],
               []
             |),
-            [ M.read (| Value.String "" |) ]
+            [ mk_str (| "" |) ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -13192,9 +13190,8 @@ Module rc.
                                                                                   M.alloc (|
                                                                                     Value.Array
                                                                                       [
-                                                                                        M.read (|
-                                                                                          Value.String
-                                                                                            "TrustedLen iterator's size hint is not exact: "
+                                                                                        mk_str (|
+                                                                                          "TrustedLen iterator's size hint is not exact: "
                                                                                         |)
                                                                                       ]
                                                                                   |)
@@ -13321,8 +13318,7 @@ Module rc.
                                             M.borrow (|
                                               Pointer.Kind.Ref,
                                               M.alloc (|
-                                                Value.Array
-                                                  [ M.read (| Value.String "capacity overflow" |) ]
+                                                Value.Array [ mk_str (| "capacity overflow" |) ]
                                               |)
                                             |)
                                           |)
@@ -15128,7 +15124,7 @@ Module rc.
                     M.deref (|
                       M.borrow (|
                         Pointer.Kind.Ref,
-                        M.alloc (| Value.Array [ M.read (| Value.String "(Weak)" |) ] |)
+                        M.alloc (| Value.Array [ mk_str (| "(Weak)" |) ] |)
                       |)
                     |)
                   |)
@@ -15991,8 +15987,8 @@ Module rc.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "UniqueRc" |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "ptr" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "UniqueRc" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ptr" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -16006,7 +16002,7 @@ Module rc.
                   |)
                 |)
               |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "phantom" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "phantom" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -16020,7 +16016,7 @@ Module rc.
                   |)
                 |)
               |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "alloc" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "alloc" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|

@@ -203,9 +203,8 @@ Module vec.
                                             M.alloc (|
                                               Value.Array
                                                 [
-                                                  M.read (|
-                                                    Value.String
-                                                      "in_place_collectible() prevents this"
+                                                  mk_str (|
+                                                    "in_place_collectible() prevents this"
                                                   |)
                                                 ]
                                             |)
@@ -1252,9 +1251,8 @@ Module vec.
                                                                     M.alloc (|
                                                                       Value.Array
                                                                         [
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              "InPlaceIterable contract violation, write pointer advanced beyond read pointer"
+                                                                          mk_str (|
+                                                                            "InPlaceIterable contract violation, write pointer advanced beyond read pointer"
                                                                           |)
                                                                         ]
                                                                     |)
@@ -2217,9 +2215,8 @@ Module vec.
                                                                               M.alloc (|
                                                                                 Value.Array
                                                                                   [
-                                                                                    M.read (|
-                                                                                      Value.String
-                                                                                        "InPlaceIterable contract violation"
+                                                                                    mk_str (|
+                                                                                      "InPlaceIterable contract violation"
                                                                                     |)
                                                                                   ]
                                                                               |)
@@ -2735,9 +2732,8 @@ Module vec.
                                                                               M.alloc (|
                                                                                 Value.Array
                                                                                   [
-                                                                                    M.read (|
-                                                                                      Value.String
-                                                                                        "InPlaceIterable contract violation"
+                                                                                    mk_str (|
+                                                                                      "InPlaceIterable contract violation"
                                                                                     |)
                                                                                   ]
                                                                               |)

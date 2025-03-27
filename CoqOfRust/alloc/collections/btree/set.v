@@ -503,10 +503,7 @@ Module collections.
                                 |),
                                 [
                                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (| M.read (| Value.String "Iter" |) |)
-                                  |)
+                                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Iter" |) |) |)
                                 ]
                               |)
                             |)
@@ -610,11 +607,8 @@ Module collections.
                 |),
                 [
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (| M.read (| Value.String "IntoIter" |) |)
-                  |);
-                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "iter" |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "IntoIter" |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "iter" |) |) |);
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
@@ -688,8 +682,8 @@ Module collections.
                 |),
                 [
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Range" |) |) |);
-                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "iter" |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Range" |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "iter" |) |) |);
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
@@ -902,9 +896,7 @@ Module collections.
                                                       |);
                                                       M.borrow (|
                                                         Pointer.Kind.Ref,
-                                                        M.deref (|
-                                                          M.read (| Value.String "Stitch" |)
-                                                        |)
+                                                        M.deref (| mk_str (| "Stitch" |) |)
                                                       |)
                                                     ]
                                                   |)
@@ -912,7 +904,7 @@ Module collections.
                                               |);
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
-                                                M.deref (| M.read (| Value.String "self_iter" |) |)
+                                                M.deref (| mk_str (| "self_iter" |) |)
                                               |);
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
@@ -924,7 +916,7 @@ Module collections.
                                       |);
                                       M.borrow (|
                                         Pointer.Kind.Ref,
-                                        M.deref (| M.read (| Value.String "other_iter" |) |)
+                                        M.deref (| mk_str (| "other_iter" |) |)
                                       |);
                                       M.borrow (|
                                         Pointer.Kind.Ref,
@@ -1015,9 +1007,7 @@ Module collections.
                                                       |);
                                                       M.borrow (|
                                                         Pointer.Kind.Ref,
-                                                        M.deref (|
-                                                          M.read (| Value.String "Search" |)
-                                                        |)
+                                                        M.deref (| mk_str (| "Search" |) |)
                                                       |)
                                                     ]
                                                   |)
@@ -1025,7 +1015,7 @@ Module collections.
                                               |);
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
-                                                M.deref (| M.read (| Value.String "self_iter" |) |)
+                                                M.deref (| mk_str (| "self_iter" |) |)
                                               |);
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
@@ -1037,7 +1027,7 @@ Module collections.
                                       |);
                                       M.borrow (|
                                         Pointer.Kind.Ref,
-                                        M.deref (| M.read (| Value.String "other_iter" |) |)
+                                        M.deref (| mk_str (| "other_iter" |) |)
                                       |);
                                       M.borrow (|
                                         Pointer.Kind.Ref,
@@ -1106,7 +1096,7 @@ Module collections.
                                               |);
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
-                                                M.deref (| M.read (| Value.String "Iterate" |) |)
+                                                M.deref (| mk_str (| "Iterate" |) |)
                                               |)
                                             ]
                                           |)
@@ -1191,7 +1181,7 @@ Module collections.
                                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.deref (| M.read (| Value.String "Difference" |) |)
+                                    M.deref (| mk_str (| "Difference" |) |)
                                   |)
                                 ]
                               |)
@@ -1298,7 +1288,7 @@ Module collections.
                                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.deref (| M.read (| Value.String "SymmetricDifference" |) |)
+                                    M.deref (| mk_str (| "SymmetricDifference" |) |)
                                   |)
                                 ]
                               |)
@@ -1510,9 +1500,7 @@ Module collections.
                                                       |);
                                                       M.borrow (|
                                                         Pointer.Kind.Ref,
-                                                        M.deref (|
-                                                          M.read (| Value.String "Stitch" |)
-                                                        |)
+                                                        M.deref (| mk_str (| "Stitch" |) |)
                                                       |)
                                                     ]
                                                   |)
@@ -1520,7 +1508,7 @@ Module collections.
                                               |);
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
-                                                M.deref (| M.read (| Value.String "a" |) |)
+                                                M.deref (| mk_str (| "a" |) |)
                                               |);
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
@@ -1532,7 +1520,7 @@ Module collections.
                                       |);
                                       M.borrow (|
                                         Pointer.Kind.Ref,
-                                        M.deref (| M.read (| Value.String "b" |) |)
+                                        M.deref (| mk_str (| "b" |) |)
                                       |);
                                       M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| b |) |) |)
                                     ]
@@ -1620,9 +1608,7 @@ Module collections.
                                                       |);
                                                       M.borrow (|
                                                         Pointer.Kind.Ref,
-                                                        M.deref (|
-                                                          M.read (| Value.String "Search" |)
-                                                        |)
+                                                        M.deref (| mk_str (| "Search" |) |)
                                                       |)
                                                     ]
                                                   |)
@@ -1630,7 +1616,7 @@ Module collections.
                                               |);
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
-                                                M.deref (| M.read (| Value.String "small_iter" |) |)
+                                                M.deref (| mk_str (| "small_iter" |) |)
                                               |);
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
@@ -1642,7 +1628,7 @@ Module collections.
                                       |);
                                       M.borrow (|
                                         Pointer.Kind.Ref,
-                                        M.deref (| M.read (| Value.String "large_set" |) |)
+                                        M.deref (| mk_str (| "large_set" |) |)
                                       |);
                                       M.borrow (|
                                         Pointer.Kind.Ref,
@@ -1711,7 +1697,7 @@ Module collections.
                                               |);
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
-                                                M.deref (| M.read (| Value.String "Answer" |) |)
+                                                M.deref (| mk_str (| "Answer" |) |)
                                               |)
                                             ]
                                           |)
@@ -1796,7 +1782,7 @@ Module collections.
                                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.deref (| M.read (| Value.String "Intersection" |) |)
+                                    M.deref (| mk_str (| "Intersection" |) |)
                                   |)
                                 ]
                               |)
@@ -1903,7 +1889,7 @@ Module collections.
                                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.deref (| M.read (| Value.String "Union" |) |)
+                                    M.deref (| mk_str (| "Union" |) |)
                                   |)
                                 ]
                               |)
@@ -7877,7 +7863,7 @@ Module collections.
                                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.deref (| M.read (| Value.String "ExtractIf" |) |)
+                                    M.deref (| mk_str (| "ExtractIf" |) |)
                                   |)
                                 ]
                               |)
@@ -14288,7 +14274,7 @@ Module collections.
                 M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
                 [
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Cursor" |) |) |)
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Cursor" |) |) |)
                 ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -14343,10 +14329,7 @@ Module collections.
                 M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
                 [
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (| M.read (| Value.String "CursorMut" |) |)
-                  |)
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CursorMut" |) |) |)
                 ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -14401,10 +14384,7 @@ Module collections.
                 M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
                 [
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (| M.read (| Value.String "CursorMutKey" |) |)
-                  |)
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CursorMutKey" |) |) |)
                 ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"

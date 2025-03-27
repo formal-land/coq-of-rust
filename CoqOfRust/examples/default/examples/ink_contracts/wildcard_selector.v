@@ -6,11 +6,24 @@ fn decode_input<T>() -> Result<T, ()> {
     unimplemented!()
 }
 *)
-Parameter decode_input : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+Definition decode_input (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [ T ], [] =>
+    ltac:(M.monadic
+      (M.never_to_any (|
+        M.call_closure (|
+          Ty.path "never",
+          M.get_function (| "core::panicking::panic", [], [] |),
+          [ mk_str (| "not implemented" |) ]
+        |)
+      |)))
+  | _, _, _ => M.impossible "wrong number of arguments"
+  end.
 
 Global Instance Instance_IsFunction_decode_input :
   M.IsFunction.Trait "wildcard_selector::decode_input" decode_input.
 Admitted.
+Global Typeclasses Opaque decode_input.
 
 (* StructTuple
   {
@@ -150,9 +163,9 @@ Module Impl_wildcard_selector_WildcardSelector.
                                       M.alloc (|
                                         Value.Array
                                           [
-                                            M.read (| Value.String "Wildcard selector: " |);
-                                            M.read (| Value.String ", message: " |);
-                                            M.read (| Value.String "
+                                            mk_str (| "Wildcard selector: " |);
+                                            mk_str (| ", message: " |);
+                                            mk_str (| "
 " |)
                                           ]
                                       |)
@@ -264,11 +277,8 @@ Module Impl_wildcard_selector_WildcardSelector.
                               Pointer.Kind.Ref,
                               M.alloc (|
                                 Value.Array
-                                  [
-                                    M.read (| Value.String "Wildcard complement message: " |);
-                                    M.read (| Value.String "
-" |)
-                                  ]
+                                  [ mk_str (| "Wildcard complement message: " |); mk_str (| "
+" |) ]
                               |)
                             |)
                           |)

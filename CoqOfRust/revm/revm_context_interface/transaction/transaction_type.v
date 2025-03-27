@@ -132,10 +132,7 @@ Module transaction.
                               "revm_context_interface::transaction::transaction_type::TransactionType::Legacy"
                             |) in
                           M.alloc (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Legacy" |) |)
-                            |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Legacy" |) |) |)
                           |)));
                       fun γ =>
                         ltac:(M.monadic
@@ -146,10 +143,7 @@ Module transaction.
                               "revm_context_interface::transaction::transaction_type::TransactionType::Eip2930"
                             |) in
                           M.alloc (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Eip2930" |) |)
-                            |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Eip2930" |) |) |)
                           |)));
                       fun γ =>
                         ltac:(M.monadic
@@ -160,10 +154,7 @@ Module transaction.
                               "revm_context_interface::transaction::transaction_type::TransactionType::Eip1559"
                             |) in
                           M.alloc (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Eip1559" |) |)
-                            |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Eip1559" |) |) |)
                           |)));
                       fun γ =>
                         ltac:(M.monadic
@@ -174,10 +165,7 @@ Module transaction.
                               "revm_context_interface::transaction::transaction_type::TransactionType::Eip4844"
                             |) in
                           M.alloc (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Eip4844" |) |)
-                            |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Eip4844" |) |) |)
                           |)));
                       fun γ =>
                         ltac:(M.monadic
@@ -188,10 +176,7 @@ Module transaction.
                               "revm_context_interface::transaction::transaction_type::TransactionType::Eip7702"
                             |) in
                           M.alloc (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Eip7702" |) |)
-                            |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Eip7702" |) |) |)
                           |)));
                       fun γ =>
                         ltac:(M.monadic
@@ -202,10 +187,7 @@ Module transaction.
                               "revm_context_interface::transaction::transaction_type::TransactionType::Custom"
                             |) in
                           M.alloc (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Custom" |) |)
-                            |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Custom" |) |) |)
                           |)))
                     ]
                   |)

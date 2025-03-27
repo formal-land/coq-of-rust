@@ -214,7 +214,7 @@ Module iter.
                                           |);
                                           M.borrow (|
                                             Pointer.Kind.Ref,
-                                            M.deref (| M.read (| Value.String "TakeWhile" |) |)
+                                            M.deref (| mk_str (| "TakeWhile" |) |)
                                           |)
                                         ]
                                       |)
@@ -222,7 +222,7 @@ Module iter.
                                   |);
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.deref (| M.read (| Value.String "iter" |) |)
+                                    M.deref (| mk_str (| "iter" |) |)
                                   |);
                                   M.borrow (|
                                     Pointer.Kind.Ref,
@@ -241,10 +241,7 @@ Module iter.
                               |)
                             |)
                           |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "flag" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "flag" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (|

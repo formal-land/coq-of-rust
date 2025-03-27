@@ -57,8 +57,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [ M.read (| Value.String "Let's count until infinity!
+                              Value.Array [ mk_str (| "Let's count until infinity!
 " |) ]
                             |)
                           |)
@@ -118,10 +117,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             M.deref (|
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
-                                                M.alloc (|
-                                                  Value.Array [ M.read (| Value.String "three
-" |) ]
-                                                |)
+                                                M.alloc (| Value.Array [ mk_str (| "three
+" |) ] |)
                                               |)
                                             |)
                                           |)
@@ -159,11 +156,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.deref (|
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.alloc (|
-                                  Value.Array
-                                    [ M.read (| Value.String "" |); M.read (| Value.String "
-" |) ]
-                                |)
+                                M.alloc (| Value.Array [ mk_str (| "" |); mk_str (| "
+" |) ] |)
                               |)
                             |)
                           |);
@@ -238,8 +232,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             M.borrow (|
                                               Pointer.Kind.Ref,
                                               M.alloc (|
-                                                Value.Array
-                                                  [ M.read (| Value.String "OK, that's enough
+                                                Value.Array [ mk_str (| "OK, that's enough
 " |) ]
                                               |)
                                             |)

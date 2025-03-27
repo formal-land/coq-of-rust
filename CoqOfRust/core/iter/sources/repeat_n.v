@@ -511,7 +511,7 @@ Module iter.
                                           |);
                                           M.borrow (|
                                             Pointer.Kind.Ref,
-                                            M.deref (| M.read (| Value.String "RepeatN" |) |)
+                                            M.deref (| mk_str (| "RepeatN" |) |)
                                           |)
                                         ]
                                       |)
@@ -519,7 +519,7 @@ Module iter.
                                   |);
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.deref (| M.read (| Value.String "count" |) |)
+                                    M.deref (| mk_str (| "count" |) |)
                                   |);
                                   M.borrow (|
                                     Pointer.Kind.Ref,
@@ -538,10 +538,7 @@ Module iter.
                               |)
                             |)
                           |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "element" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "element" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (|

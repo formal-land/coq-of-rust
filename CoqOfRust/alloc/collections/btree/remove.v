@@ -803,9 +803,8 @@ Module collections.
                                                                           []
                                                                         |),
                                                                         [
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              "assertion failed: left_parent_kv.right_child_len() == MIN_LEN - 1"
+                                                                          mk_str (|
+                                                                            "assertion failed: left_parent_kv.right_child_len() == MIN_LEN - 1"
                                                                           |)
                                                                         ]
                                                                       |)
@@ -1007,9 +1006,8 @@ Module collections.
                                                                                   []
                                                                                 |),
                                                                                 [
-                                                                                  M.read (|
-                                                                                    Value.String
-                                                                                      "assertion failed: left_parent_kv.left_child_len() > MIN_LEN"
+                                                                                  mk_str (|
+                                                                                    "assertion failed: left_parent_kv.left_child_len() > MIN_LEN"
                                                                                   |)
                                                                                 ]
                                                                               |)
@@ -1155,9 +1153,8 @@ Module collections.
                                                                           []
                                                                         |),
                                                                         [
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              "assertion failed: right_parent_kv.left_child_len() == MIN_LEN - 1"
+                                                                          mk_str (|
+                                                                            "assertion failed: right_parent_kv.left_child_len() == MIN_LEN - 1"
                                                                           |)
                                                                         ]
                                                                       |)
@@ -1359,9 +1356,8 @@ Module collections.
                                                                                   []
                                                                                 |),
                                                                                 [
-                                                                                  M.read (|
-                                                                                    Value.String
-                                                                                      "assertion failed: right_parent_kv.right_child_len() > MIN_LEN"
+                                                                                  mk_str (|
+                                                                                    "assertion failed: right_parent_kv.right_child_len() > MIN_LEN"
                                                                                   |)
                                                                                 ]
                                                                               |)

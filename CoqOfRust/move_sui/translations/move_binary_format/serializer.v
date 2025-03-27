@@ -124,14 +124,11 @@ Module serializer.
                                                                 M.alloc (|
                                                                   Value.Array
                                                                     [
-                                                                      M.read (|
-                                                                        Value.String "value ("
+                                                                      mk_str (| "value (" |);
+                                                                      mk_str (|
+                                                                        ") cannot exceed ("
                                                                       |);
-                                                                      M.read (|
-                                                                        Value.String
-                                                                          ") cannot exceed ("
-                                                                      |);
-                                                                      M.read (| Value.String ")" |)
+                                                                      mk_str (| ")" |)
                                                                     ]
                                                                 |)
                                                               |)
@@ -1493,20 +1490,14 @@ Module serializer.
                                                               M.alloc (|
                                                                 Value.Array
                                                                   [
-                                                                    M.read (|
-                                                                      Value.String
-                                                                        "The requested bytecode version "
+                                                                    mk_str (|
+                                                                      "The requested bytecode version "
                                                                     |);
-                                                                    M.read (|
-                                                                      Value.String
-                                                                        " is not supported. Only "
+                                                                    mk_str (|
+                                                                      " is not supported. Only "
                                                                     |);
-                                                                    M.read (|
-                                                                      Value.String " to "
-                                                                    |);
-                                                                    M.read (|
-                                                                      Value.String " are."
-                                                                    |)
+                                                                    mk_str (| " to " |);
+                                                                    mk_str (| " are." |)
                                                                   ]
                                                               |)
                                                             |)
@@ -2087,17 +2078,13 @@ Module serializer.
                                                                   M.alloc (|
                                                                     Value.Array
                                                                       [
-                                                                        M.read (|
-                                                                          Value.String
-                                                                            "table content size ("
+                                                                        mk_str (|
+                                                                          "table content size ("
                                                                         |);
-                                                                        M.read (|
-                                                                          Value.String
-                                                                            ") cannot exceed ("
+                                                                        mk_str (|
+                                                                          ") cannot exceed ("
                                                                         |);
-                                                                        M.read (|
-                                                                          Value.String ")"
-                                                                        |)
+                                                                        mk_str (| ")" |)
                                                                       ]
                                                                   |)
                                                                 |)
@@ -2751,47 +2738,44 @@ Module serializer.
                       M.alloc (|
                         Value.Array
                           [
-                            M.read (| Value.String "major_version" |);
+                            mk_str (| "major_version" |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "table_count" |) |)
+                              M.deref (| mk_str (| "table_count" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "module_handles" |) |)
+                              M.deref (| mk_str (| "module_handles" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "struct_handles" |) |)
+                              M.deref (| mk_str (| "struct_handles" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "function_handles" |) |)
+                              M.deref (| mk_str (| "function_handles" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "function_instantiations" |) |)
+                              M.deref (| mk_str (| "function_instantiations" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "signatures" |) |)
+                              M.deref (| mk_str (| "signatures" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "identifiers" |) |)
+                              M.deref (| mk_str (| "identifiers" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "address_identifiers" |) |)
+                              M.deref (| mk_str (| "address_identifiers" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "constant_pool" |) |)
+                              M.deref (| mk_str (| "constant_pool" |) |)
                             |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "metadata" |) |)
-                            |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "metadata" |) |) |)
                           ]
                       |)
                     |)
@@ -2985,10 +2969,7 @@ Module serializer.
                 |),
                 [
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (| M.read (| Value.String "CommonSerializer" |) |)
-                  |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CommonSerializer" |) |) |);
                   M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| names |) |) |);
                   M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| values |) |) |)
                 ]
@@ -3054,30 +3035,30 @@ Module serializer.
                       M.alloc (|
                         Value.Array
                           [
-                            M.read (| Value.String "common" |);
+                            mk_str (| "common" |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "struct_defs" |) |)
+                              M.deref (| mk_str (| "struct_defs" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "struct_def_instantiations" |) |)
+                              M.deref (| mk_str (| "struct_def_instantiations" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "function_defs" |) |)
+                              M.deref (| mk_str (| "function_defs" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "field_handles" |) |)
+                              M.deref (| mk_str (| "field_handles" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "field_instantiations" |) |)
+                              M.deref (| mk_str (| "field_instantiations" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "friend_decls" |) |)
+                              M.deref (| mk_str (| "friend_decls" |) |)
                             |)
                           ]
                       |)
@@ -3220,10 +3201,7 @@ Module serializer.
                 |),
                 [
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (| M.read (| Value.String "ModuleSerializer" |) |)
-                  |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ModuleSerializer" |) |) |);
                   M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| names |) |) |);
                   M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| values |) |) |)
                 ]
@@ -3345,13 +3323,11 @@ Module serializer.
                                                                 M.alloc (|
                                                                   Value.Array
                                                                     [
-                                                                      M.read (|
-                                                                        Value.String
-                                                                          "Compilation unit too big ("
+                                                                      mk_str (|
+                                                                        "Compilation unit too big ("
                                                                       |);
-                                                                      M.read (|
-                                                                        Value.String
-                                                                          ") cannot exceed "
+                                                                      mk_str (|
+                                                                        ") cannot exceed "
                                                                       |)
                                                                     ]
                                                                 |)
@@ -13201,9 +13177,8 @@ Module serializer.
                                                                                   M.alloc (|
                                                                                     Value.Array
                                                                                       [
-                                                                                        M.read (|
-                                                                                          Value.String
-                                                                                            "max recursion depth reached"
+                                                                                        mk_str (|
+                                                                                          "max recursion depth reached"
                                                                                         |)
                                                                                       ]
                                                                                   |)
@@ -14468,9 +14443,8 @@ Module serializer.
                                                                           M.alloc (|
                                                                             Value.Array
                                                                               [
-                                                                                M.read (|
-                                                                                  Value.String
-                                                                                    "Loading or casting u16, u32, u256 integers not supported in bytecode version "
+                                                                                mk_str (|
+                                                                                  "Loading or casting u16, u32, u256 integers not supported in bytecode version "
                                                                                 |)
                                                                               ]
                                                                           |)
@@ -22997,11 +22971,7 @@ Module serializer.
                                           Pointer.Kind.Ref,
                                           M.alloc (|
                                             Value.Array
-                                              [
-                                                M.read (|
-                                                  Value.String "table start must be before end"
-                                                |)
-                                              ]
+                                              [ mk_str (| "table start must be before end" |) ]
                                           |)
                                         |)
                                       |)
@@ -24754,11 +24724,7 @@ Module serializer.
                                         M.call_closure (|
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
-                                          [
-                                            M.read (|
-                                              Value.String "assertion failed: self.table_count == 0"
-                                            |)
-                                          ]
+                                          [ mk_str (| "assertion failed: self.table_count == 0" |) ]
                                         |)
                                       |)
                                     |)));
@@ -25222,11 +25188,7 @@ Module serializer.
                                         M.call_closure (|
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
-                                          [
-                                            M.read (|
-                                              Value.String "assertion failed: self.table_count < 6"
-                                            |)
-                                          ]
+                                          [ mk_str (| "assertion failed: self.table_count < 6" |) ]
                                         |)
                                       |)
                                     |)));

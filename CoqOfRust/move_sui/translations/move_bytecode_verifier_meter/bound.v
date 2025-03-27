@@ -416,25 +416,20 @@ Module bound.
                                                                             M.alloc (|
                                                                               Value.Array
                                                                                 [
-                                                                                  M.read (|
-                                                                                    Value.String
-                                                                                      "program too complex (in `"
+                                                                                  mk_str (|
+                                                                                    "program too complex (in `"
                                                                                   |);
-                                                                                  M.read (|
-                                                                                    Value.String
-                                                                                      "` with `"
+                                                                                  mk_str (|
+                                                                                    "` with `"
                                                                                   |);
-                                                                                  M.read (|
-                                                                                    Value.String
-                                                                                      " current + "
+                                                                                  mk_str (|
+                                                                                    " current + "
                                                                                   |);
-                                                                                  M.read (|
-                                                                                    Value.String
-                                                                                      " new > "
+                                                                                  mk_str (|
+                                                                                    " new > "
                                                                                   |);
-                                                                                  M.read (|
-                                                                                    Value.String
-                                                                                      " max`)"
+                                                                                  mk_str (|
+                                                                                    " max`)"
                                                                                   |)
                                                                                 ]
                                                                             |)
@@ -663,12 +658,7 @@ Module bound.
                           [],
                           []
                         |),
-                        [
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "<unknown>" |) |)
-                          |)
-                        ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "<unknown>" |) |) |) ]
                       |));
                     ("units", Value.Integer IntegerKind.U128 0);
                     ("max",
@@ -696,12 +686,7 @@ Module bound.
                           [],
                           []
                         |),
-                        [
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "<unknown>" |) |)
-                          |)
-                        ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "<unknown>" |) |) |) ]
                       |));
                     ("units", Value.Integer IntegerKind.U128 0);
                     ("max",
@@ -729,12 +714,7 @@ Module bound.
                           [],
                           []
                         |),
-                        [
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "<unknown>" |) |)
-                          |)
-                        ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "<unknown>" |) |) |) ]
                       |));
                     ("units", Value.Integer IntegerKind.U128 0);
                     ("max",
@@ -880,11 +860,7 @@ Module bound.
                                               Pointer.Kind.Ref,
                                               M.alloc (|
                                                 Value.Array
-                                                  [
-                                                    M.read (|
-                                                      Value.String "transaction scope unsupported."
-                                                    |)
-                                                  ]
+                                                  [ mk_str (| "transaction scope unsupported." |) ]
                                               |)
                                             |)
                                           |)
@@ -1033,11 +1009,7 @@ Module bound.
                                           Pointer.Kind.Ref,
                                           M.alloc (|
                                             Value.Array
-                                              [
-                                                M.read (|
-                                                  Value.String "transaction scope unsupported."
-                                                |)
-                                              ]
+                                              [ mk_str (| "transaction scope unsupported." |) ]
                                           |)
                                         |)
                                       |)

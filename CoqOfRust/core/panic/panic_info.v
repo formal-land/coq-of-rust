@@ -40,11 +40,8 @@ Module panic.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "PanicInfo" |) |)
-                |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "message" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "PanicInfo" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "message" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -58,7 +55,7 @@ Module panic.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "location" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "location" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -72,10 +69,7 @@ Module panic.
                     |)
                   |)
                 |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "can_unwind" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "can_unwind" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -89,10 +83,7 @@ Module panic.
                     |)
                   |)
                 |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "force_no_backtrace" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "force_no_backtrace" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -398,7 +389,7 @@ Module panic.
                                 |);
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "panicked at " |) |)
+                                  M.deref (| mk_str (| "panicked at " |) |)
                                 |)
                               ]
                             |)
@@ -627,11 +618,8 @@ Module panic.
                                   Pointer.Kind.MutRef,
                                   M.deref (| M.read (| formatter |) |)
                                 |);
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String ":
-" |) |)
-                                |)
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| ":
+" |) |) |)
                               ]
                             |)
                           ]

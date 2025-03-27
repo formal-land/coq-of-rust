@@ -35,11 +35,8 @@ Module interpreter.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "SubRoutineReturnFrame" |) |)
-                |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "idx" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "SubRoutineReturnFrame" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "idx" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -53,7 +50,7 @@ Module interpreter.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "pc" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "pc" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -538,14 +535,8 @@ Module interpreter.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "SubRoutineImpl" |) |)
-                |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "return_stack" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "SubRoutineImpl" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "return_stack" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -559,10 +550,7 @@ Module interpreter.
                     |)
                   |)
                 |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "current_code_idx" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "current_code_idx" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|

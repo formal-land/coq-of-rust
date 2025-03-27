@@ -86,7 +86,7 @@ Module collections.
                                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "PeekMut" |) |)
+                                  M.deref (| mk_str (| "PeekMut" |) |)
                                 |)
                               ]
                             |)
@@ -371,11 +371,7 @@ Module collections.
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
-                                        [
-                                          M.read (|
-                                            Value.String "assertion failed: !self.heap.is_empty()"
-                                          |)
-                                        ]
+                                        [ mk_str (| "assertion failed: !self.heap.is_empty()" |) ]
                                       |)
                                     |)
                                   |)));
@@ -559,11 +555,7 @@ Module collections.
                                           M.call_closure (|
                                             Ty.path "never",
                                             M.get_function (| "core::panicking::panic", [], [] |),
-                                            [
-                                              M.read (|
-                                                Value.String
-                                                  "assertion failed: !self.heap.is_empty()"
-                                              |)
+                                            [ mk_str (| "assertion failed: !self.heap.is_empty()" |)
                                             ]
                                           |)
                                         |)
@@ -4951,11 +4943,7 @@ Module collections.
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
-                                        [
-                                          M.read (|
-                                            Value.String "assertion failed: pos < data.len()"
-                                          |)
-                                        ]
+                                        [ mk_str (| "assertion failed: pos < data.len()" |) ]
                                       |)
                                     |)
                                   |)));
@@ -5159,11 +5147,7 @@ Module collections.
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
-                                        [
-                                          M.read (|
-                                            Value.String "assertion failed: index != self.pos"
-                                          |)
-                                        ]
+                                        [ mk_str (| "assertion failed: index != self.pos" |) ]
                                       |)
                                     |)
                                   |)));
@@ -5233,11 +5217,7 @@ Module collections.
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
-                                        [
-                                          M.read (|
-                                            Value.String "assertion failed: index < self.data.len()"
-                                          |)
-                                        ]
+                                        [ mk_str (| "assertion failed: index < self.data.len()" |) ]
                                       |)
                                     |)
                                   |)));
@@ -5353,11 +5333,7 @@ Module collections.
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
-                                        [
-                                          M.read (|
-                                            Value.String "assertion failed: index != self.pos"
-                                          |)
-                                        ]
+                                        [ mk_str (| "assertion failed: index != self.pos" |) ]
                                       |)
                                     |)
                                   |)));
@@ -5427,11 +5403,7 @@ Module collections.
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
-                                        [
-                                          M.read (|
-                                            Value.String "assertion failed: index < self.data.len()"
-                                          |)
-                                        ]
+                                        [ mk_str (| "assertion failed: index < self.data.len()" |) ]
                                       |)
                                     |)
                                   |)));
@@ -5765,10 +5737,7 @@ Module collections.
                               |),
                               [
                                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "Iter" |) |)
-                                |)
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Iter" |) |) |)
                               ]
                             |)
                           |)
@@ -6290,7 +6259,7 @@ Module collections.
                                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "IntoIter" |) |)
+                                  M.deref (| mk_str (| "IntoIter" |) |)
                                 |)
                               ]
                             |)
@@ -6885,11 +6854,8 @@ Module collections.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "IntoIterSorted" |) |)
-                |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "inner" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "IntoIterSorted" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "inner" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -7148,8 +7114,8 @@ Module collections.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Drain" |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "iter" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Drain" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "iter" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -7482,11 +7448,8 @@ Module collections.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "DrainSorted" |) |)
-                |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "inner" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "DrainSorted" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "inner" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|

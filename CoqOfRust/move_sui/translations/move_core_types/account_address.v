@@ -811,12 +811,7 @@ Module account_address.
                           [],
                           []
                         |),
-                        [
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "0" |) |)
-                          |)
-                        ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "0" |) |) |) ]
                       |)
                     |)));
                 fun γ => ltac:(M.monadic hex_str)
@@ -948,7 +943,7 @@ Module account_address.
                                         Pointer.Kind.Ref,
                                         M.deref (| M.read (| literal |) |)
                                       |);
-                                      M.read (| Value.String "0x" |)
+                                      mk_str (| "0x" |)
                                     ]
                                   |)
                                 |)
@@ -1326,7 +1321,7 @@ Module account_address.
                               M.deref (|
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.alloc (| Value.Array [ M.read (| Value.String "0x" |) ] |)
+                                  M.alloc (| Value.Array [ mk_str (| "0x" |) ] |)
                                 |)
                               |)
                             |);
@@ -1576,7 +1571,7 @@ Module account_address.
                               M.deref (|
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
+                                  M.alloc (| Value.Array [ mk_str (| "" |) ] |)
                                 |)
                               |)
                             |);
@@ -1960,10 +1955,7 @@ Module account_address.
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
-                      |)
+                      M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Array [ mk_str (| "" |) ] |) |)
                     |)
                   |);
                   M.borrow (|
@@ -2049,10 +2041,7 @@ Module account_address.
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
-                      |)
+                      M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Array [ mk_str (| "" |) ] |) |)
                     |)
                   |);
                   M.borrow (|
@@ -2213,9 +2202,7 @@ Module account_address.
                                               M.deref (|
                                                 M.borrow (|
                                                   Pointer.Kind.Ref,
-                                                  M.alloc (|
-                                                    Value.Array [ M.read (| Value.String "0x" |) ]
-                                                  |)
+                                                  M.alloc (| Value.Array [ mk_str (| "0x" |) ] |)
                                                 |)
                                               |)
                                             |)
@@ -2441,9 +2428,7 @@ Module account_address.
                                                                 M.borrow (|
                                                                   Pointer.Kind.Ref,
                                                                   M.alloc (|
-                                                                    Value.Array
-                                                                      [ M.read (| Value.String "" |)
-                                                                      ]
+                                                                    Value.Array [ mk_str (| "" |) ]
                                                                   |)
                                                                 |)
                                                               |)
@@ -2746,9 +2731,7 @@ Module account_address.
                                               M.deref (|
                                                 M.borrow (|
                                                   Pointer.Kind.Ref,
-                                                  M.alloc (|
-                                                    Value.Array [ M.read (| Value.String "0x" |) ]
-                                                  |)
+                                                  M.alloc (| Value.Array [ mk_str (| "0x" |) ] |)
                                                 |)
                                               |)
                                             |)
@@ -2974,9 +2957,7 @@ Module account_address.
                                                                 M.borrow (|
                                                                   Pointer.Kind.Ref,
                                                                   M.alloc (|
-                                                                    Value.Array
-                                                                      [ M.read (| Value.String "" |)
-                                                                      ]
+                                                                    Value.Array [ mk_str (| "" |) ]
                                                                   |)
                                                                 |)
                                                               |)
@@ -4296,7 +4277,7 @@ Module account_address.
                         |),
                         [
                           M.read (| serializer |);
-                          M.read (| Value.String "AccountAddress" |);
+                          mk_str (| "AccountAddress" |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (|
@@ -4388,10 +4369,7 @@ Module account_address.
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "AccountAddressParseError" |) |)
-              |)
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "AccountAddressParseError" |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -4449,11 +4427,10 @@ Module account_address.
                         M.alloc (|
                           Value.Array
                             [
-                              M.read (|
-                                Value.String
-                                  "Unable to parse AccountAddress (must be hex string of length "
+                              mk_str (|
+                                "Unable to parse AccountAddress (must be hex string of length "
                               |);
-                              M.read (| Value.String ")" |)
+                              mk_str (| ")" |)
                             ]
                         |)
                       |)

@@ -30,9 +30,7 @@ Module num.
                     M.deref (|
                       M.borrow (|
                         Pointer.Kind.Ref,
-                        M.alloc (|
-                          Value.Array [ M.read (| Value.String "attempt to add with overflow" |) ]
-                        |)
+                        M.alloc (| Value.Array [ mk_str (| "attempt to add with overflow" |) ] |)
                       |)
                     |)
                   |)
@@ -76,8 +74,7 @@ Module num.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
-                          Value.Array
-                            [ M.read (| Value.String "attempt to subtract with overflow" |) ]
+                          Value.Array [ mk_str (| "attempt to subtract with overflow" |) ]
                         |)
                       |)
                     |)
@@ -122,8 +119,7 @@ Module num.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
-                          Value.Array
-                            [ M.read (| Value.String "attempt to multiply with overflow" |) ]
+                          Value.Array [ mk_str (| "attempt to multiply with overflow" |) ]
                         |)
                       |)
                     |)
@@ -167,10 +163,7 @@ Module num.
                     M.deref (|
                       M.borrow (|
                         Pointer.Kind.Ref,
-                        M.alloc (|
-                          Value.Array
-                            [ M.read (| Value.String "attempt to divide with overflow" |) ]
-                        |)
+                        M.alloc (| Value.Array [ mk_str (| "attempt to divide with overflow" |) ] |)
                       |)
                     |)
                   |)
@@ -215,11 +208,7 @@ Module num.
                         Pointer.Kind.Ref,
                         M.alloc (|
                           Value.Array
-                            [
-                              M.read (|
-                                Value.String "attempt to calculate the remainder with overflow"
-                              |)
-                            ]
+                            [ mk_str (| "attempt to calculate the remainder with overflow" |) ]
                         |)
                       |)
                     |)
@@ -263,10 +252,7 @@ Module num.
                     M.deref (|
                       M.borrow (|
                         Pointer.Kind.Ref,
-                        M.alloc (|
-                          Value.Array
-                            [ M.read (| Value.String "attempt to negate with overflow" |) ]
-                        |)
+                        M.alloc (| Value.Array [ mk_str (| "attempt to negate with overflow" |) ] |)
                       |)
                     |)
                   |)
@@ -310,8 +296,7 @@ Module num.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
-                          Value.Array
-                            [ M.read (| Value.String "attempt to shift right with overflow" |) ]
+                          Value.Array [ mk_str (| "attempt to shift right with overflow" |) ]
                         |)
                       |)
                     |)
@@ -356,8 +341,7 @@ Module num.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
-                          Value.Array
-                            [ M.read (| Value.String "attempt to shift left with overflow" |) ]
+                          Value.Array [ mk_str (| "attempt to shift left with overflow" |) ]
                         |)
                       |)
                     |)

@@ -65,11 +65,7 @@ Definition red (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [ T ], [ β0 ] =>
     ltac:(M.monadic
       (let β0 := M.alloc (| β0 |) in
-      M.match_operator (|
-        None,
-        β0,
-        [ fun γ => ltac:(M.monadic (M.read (| Value.String "red" |))) ]
-      |)))
+      M.match_operator (| None, β0, [ fun γ => ltac:(M.monadic (mk_str (| "red" |))) ] |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
@@ -88,11 +84,7 @@ Definition blue (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | [], [ T ], [ β0 ] =>
     ltac:(M.monadic
       (let β0 := M.alloc (| β0 |) in
-      M.match_operator (|
-        None,
-        β0,
-        [ fun γ => ltac:(M.monadic (M.read (| Value.String "blue" |))) ]
-      |)))
+      M.match_operator (| None, β0, [ fun γ => ltac:(M.monadic (mk_str (| "blue" |))) ] |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
@@ -148,12 +140,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "A cardinal is " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "A cardinal is " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -239,12 +227,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "A blue jay is " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "A blue jay is " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)

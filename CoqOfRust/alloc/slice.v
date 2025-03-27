@@ -2554,7 +2554,7 @@ Module slice.
                         |);
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "capacity overflow" |) |)
+                          M.deref (| mk_str (| "capacity overflow" |) |)
                         |)
                       ]
                     |)

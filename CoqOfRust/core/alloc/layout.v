@@ -113,8 +113,8 @@ Module alloc.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Layout" |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "size" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Layout" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "size" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -128,7 +128,7 @@ Module alloc.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "align" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "align" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -2036,10 +2036,7 @@ Module alloc.
               M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "LayoutError" |) |)
-                |)
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LayoutError" |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -2090,9 +2087,7 @@ Module alloc.
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.deref (|
-                    M.read (| Value.String "invalid parameters to Layout::from_size_align" |)
-                  |)
+                  M.deref (| mk_str (| "invalid parameters to Layout::from_size_align" |) |)
                 |)
               ]
             |)))

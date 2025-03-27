@@ -1184,8 +1184,7 @@ Module cell.
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
-                                              Value.Array
-                                                [ M.read (| Value.String "reentrant init" |) ]
+                                              Value.Array [ mk_str (| "reentrant init" |) ]
                                             |)
                                           |)
                                         |)
@@ -1362,10 +1361,7 @@ Module cell.
                     |),
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (| M.read (| Value.String "OnceCell" |) |)
-                      |)
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "OnceCell" |) |) |)
                     ]
                   |)
                 |) in
@@ -1456,8 +1452,7 @@ Module cell.
                                                   M.borrow (|
                                                     Pointer.Kind.Ref,
                                                     M.alloc (|
-                                                      Value.Array
-                                                        [ M.read (| Value.String "<uninit>" |) ]
+                                                      Value.Array [ mk_str (| "<uninit>" |) ]
                                                     |)
                                                   |)
                                                 |)
@@ -1626,11 +1621,7 @@ Module cell.
                                     M.call_closure (|
                                       Ty.path "never",
                                       M.get_function (| "core::panicking::panic", [], [] |),
-                                      [
-                                        M.read (|
-                                          Value.String "internal error: entered unreachable code"
-                                        |)
-                                      ]
+                                      [ mk_str (| "internal error: entered unreachable code" |) ]
                                     |)
                                   |)
                                 |)))

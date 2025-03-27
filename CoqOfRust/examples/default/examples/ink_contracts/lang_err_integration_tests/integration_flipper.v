@@ -32,7 +32,7 @@ Module Impl_core_fmt_Debug_for_integration_flipper_FlipperError.
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "FlipperError" |) |) |)
+            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "FlipperError" |) |) |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"

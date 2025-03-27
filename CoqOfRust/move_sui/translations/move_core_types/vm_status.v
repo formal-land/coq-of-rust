@@ -355,10 +355,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusType::Validation"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Validation" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Validation" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -369,10 +366,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusType::Verification"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Verification" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Verification" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -385,7 +379,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "InvariantViolation" |) |)
+                            M.deref (| mk_str (| "InvariantViolation" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -399,7 +393,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Deserialization" |) |)
+                            M.deref (| mk_str (| "Deserialization" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -411,10 +405,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusType::Execution"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Execution" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Execution" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -425,10 +416,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusType::Unknown"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Unknown" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Unknown" |) |) |)
                         |)))
                   ]
                 |)
@@ -1894,7 +1882,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "UNKNOWN_VALIDATION_STATUS" |) |)
+                            M.deref (| mk_str (| "UNKNOWN_VALIDATION_STATUS" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -1908,7 +1896,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "INVALID_SIGNATURE" |) |)
+                            M.deref (| mk_str (| "INVALID_SIGNATURE" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -1922,7 +1910,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "INVALID_AUTH_KEY" |) |)
+                            M.deref (| mk_str (| "INVALID_AUTH_KEY" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -1936,7 +1924,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "SEQUENCE_NUMBER_TOO_OLD" |) |)
+                            M.deref (| mk_str (| "SEQUENCE_NUMBER_TOO_OLD" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -1950,7 +1938,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "SEQUENCE_NUMBER_TOO_NEW" |) |)
+                            M.deref (| mk_str (| "SEQUENCE_NUMBER_TOO_NEW" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -1964,9 +1952,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (|
-                              M.read (| Value.String "INSUFFICIENT_BALANCE_FOR_TRANSACTION_FEE" |)
-                            |)
+                            M.deref (| mk_str (| "INSUFFICIENT_BALANCE_FOR_TRANSACTION_FEE" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -1980,7 +1966,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "TRANSACTION_EXPIRED" |) |)
+                            M.deref (| mk_str (| "TRANSACTION_EXPIRED" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -1994,7 +1980,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "SENDING_ACCOUNT_DOES_NOT_EXIST" |) |)
+                            M.deref (| mk_str (| "SENDING_ACCOUNT_DOES_NOT_EXIST" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2008,7 +1994,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "REJECTED_WRITE_SET" |) |)
+                            M.deref (| mk_str (| "REJECTED_WRITE_SET" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2022,7 +2008,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "INVALID_WRITE_SET" |) |)
+                            M.deref (| mk_str (| "INVALID_WRITE_SET" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2036,7 +2022,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "EXCEEDED_MAX_TRANSACTION_SIZE" |) |)
+                            M.deref (| mk_str (| "EXCEEDED_MAX_TRANSACTION_SIZE" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2050,7 +2036,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "UNKNOWN_SCRIPT" |) |)
+                            M.deref (| mk_str (| "UNKNOWN_SCRIPT" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2064,7 +2050,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "UNKNOWN_MODULE" |) |)
+                            M.deref (| mk_str (| "UNKNOWN_MODULE" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2078,9 +2064,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (|
-                              M.read (| Value.String "MAX_GAS_UNITS_EXCEEDS_MAX_GAS_UNITS_BOUND" |)
-                            |)
+                            M.deref (| mk_str (| "MAX_GAS_UNITS_EXCEEDS_MAX_GAS_UNITS_BOUND" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2095,9 +2079,7 @@ Module vm_status.
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (|
-                              M.read (|
-                                Value.String "MAX_GAS_UNITS_BELOW_MIN_TRANSACTION_GAS_UNITS"
-                              |)
+                              mk_str (| "MAX_GAS_UNITS_BELOW_MIN_TRANSACTION_GAS_UNITS" |)
                             |)
                           |)
                         |)));
@@ -2112,7 +2094,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "GAS_UNIT_PRICE_BELOW_MIN_BOUND" |) |)
+                            M.deref (| mk_str (| "GAS_UNIT_PRICE_BELOW_MIN_BOUND" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2126,7 +2108,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "GAS_UNIT_PRICE_ABOVE_MAX_BOUND" |) |)
+                            M.deref (| mk_str (| "GAS_UNIT_PRICE_ABOVE_MAX_BOUND" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2140,7 +2122,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "INVALID_GAS_SPECIFIER" |) |)
+                            M.deref (| mk_str (| "INVALID_GAS_SPECIFIER" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2154,7 +2136,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "SENDING_ACCOUNT_FROZEN" |) |)
+                            M.deref (| mk_str (| "SENDING_ACCOUNT_FROZEN" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2168,7 +2150,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "UNABLE_TO_DESERIALIZE_ACCOUNT" |) |)
+                            M.deref (| mk_str (| "UNABLE_TO_DESERIALIZE_ACCOUNT" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2182,7 +2164,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "CURRENCY_INFO_DOES_NOT_EXIST" |) |)
+                            M.deref (| mk_str (| "CURRENCY_INFO_DOES_NOT_EXIST" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2196,7 +2178,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "INVALID_MODULE_PUBLISHER" |) |)
+                            M.deref (| mk_str (| "INVALID_MODULE_PUBLISHER" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2210,7 +2192,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "NO_ACCOUNT_ROLE" |) |)
+                            M.deref (| mk_str (| "NO_ACCOUNT_ROLE" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2222,10 +2204,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::BAD_CHAIN_ID"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "BAD_CHAIN_ID" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BAD_CHAIN_ID" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -2238,7 +2217,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "SEQUENCE_NUMBER_TOO_BIG" |) |)
+                            M.deref (| mk_str (| "SEQUENCE_NUMBER_TOO_BIG" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2252,7 +2231,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "BAD_TRANSACTION_FEE_CURRENCY" |) |)
+                            M.deref (| mk_str (| "BAD_TRANSACTION_FEE_CURRENCY" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2266,7 +2245,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "FEATURE_UNDER_GATING" |) |)
+                            M.deref (| mk_str (| "FEATURE_UNDER_GATING" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2280,9 +2259,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (|
-                              M.read (| Value.String "SECONDARY_KEYS_ADDRESSES_COUNT_MISMATCH" |)
-                            |)
+                            M.deref (| mk_str (| "SECONDARY_KEYS_ADDRESSES_COUNT_MISMATCH" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2296,7 +2273,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "SIGNERS_CONTAIN_DUPLICATES" |) |)
+                            M.deref (| mk_str (| "SIGNERS_CONTAIN_DUPLICATES" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2310,7 +2287,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "SEQUENCE_NONCE_INVALID" |) |)
+                            M.deref (| mk_str (| "SEQUENCE_NONCE_INVALID" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2324,9 +2301,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (|
-                              M.read (| Value.String "CHAIN_ACCOUNT_INFO_DOES_NOT_EXIST" |)
-                            |)
+                            M.deref (| mk_str (| "CHAIN_ACCOUNT_INFO_DOES_NOT_EXIST" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2340,7 +2315,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "UNKNOWN_VERIFICATION_ERROR" |) |)
+                            M.deref (| mk_str (| "UNKNOWN_VERIFICATION_ERROR" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2354,7 +2329,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "INDEX_OUT_OF_BOUNDS" |) |)
+                            M.deref (| mk_str (| "INDEX_OUT_OF_BOUNDS" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2368,7 +2343,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "INVALID_SIGNATURE_TOKEN" |) |)
+                            M.deref (| mk_str (| "INVALID_SIGNATURE_TOKEN" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2382,7 +2357,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "RECURSIVE_STRUCT_DEFINITION" |) |)
+                            M.deref (| mk_str (| "RECURSIVE_STRUCT_DEFINITION" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2396,7 +2371,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "FIELD_MISSING_TYPE_ABILITY" |) |)
+                            M.deref (| mk_str (| "FIELD_MISSING_TYPE_ABILITY" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2410,7 +2385,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "INVALID_FALL_THROUGH" |) |)
+                            M.deref (| mk_str (| "INVALID_FALL_THROUGH" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2424,9 +2399,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (|
-                              M.read (| Value.String "NEGATIVE_STACK_SIZE_WITHIN_BLOCK" |)
-                            |)
+                            M.deref (| mk_str (| "NEGATIVE_STACK_SIZE_WITHIN_BLOCK" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2440,9 +2413,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (|
-                              M.read (| Value.String "INVALID_MAIN_FUNCTION_SIGNATURE" |)
-                            |)
+                            M.deref (| mk_str (| "INVALID_MAIN_FUNCTION_SIGNATURE" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2456,7 +2427,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "DUPLICATE_ELEMENT" |) |)
+                            M.deref (| mk_str (| "DUPLICATE_ELEMENT" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2470,7 +2441,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "INVALID_MODULE_HANDLE" |) |)
+                            M.deref (| mk_str (| "INVALID_MODULE_HANDLE" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2484,7 +2455,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "UNIMPLEMENTED_HANDLE" |) |)
+                            M.deref (| mk_str (| "UNIMPLEMENTED_HANDLE" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2498,7 +2469,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "LOOKUP_FAILED" |) |)
+                            M.deref (| mk_str (| "LOOKUP_FAILED" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2512,7 +2483,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "TYPE_MISMATCH" |) |)
+                            M.deref (| mk_str (| "TYPE_MISMATCH" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2526,7 +2497,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "MISSING_DEPENDENCY" |) |)
+                            M.deref (| mk_str (| "MISSING_DEPENDENCY" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2540,7 +2511,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "POP_WITHOUT_DROP_ABILITY" |) |)
+                            M.deref (| mk_str (| "POP_WITHOUT_DROP_ABILITY" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2554,7 +2525,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "BR_TYPE_MISMATCH_ERROR" |) |)
+                            M.deref (| mk_str (| "BR_TYPE_MISMATCH_ERROR" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2568,7 +2539,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "ABORT_TYPE_MISMATCH_ERROR" |) |)
+                            M.deref (| mk_str (| "ABORT_TYPE_MISMATCH_ERROR" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2582,7 +2553,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "STLOC_TYPE_MISMATCH_ERROR" |) |)
+                            M.deref (| mk_str (| "STLOC_TYPE_MISMATCH_ERROR" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2596,7 +2567,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "STLOC_UNSAFE_TO_DESTROY_ERROR" |) |)
+                            M.deref (| mk_str (| "STLOC_UNSAFE_TO_DESTROY_ERROR" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2610,11 +2581,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (|
-                              M.read (|
-                                Value.String "UNSAFE_RET_LOCAL_OR_RESOURCE_STILL_BORROWED"
-                              |)
-                            |)
+                            M.deref (| mk_str (| "UNSAFE_RET_LOCAL_OR_RESOURCE_STILL_BORROWED" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2628,7 +2595,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "RET_TYPE_MISMATCH_ERROR" |) |)
+                            M.deref (| mk_str (| "RET_TYPE_MISMATCH_ERROR" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2642,9 +2609,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (|
-                              M.read (| Value.String "RET_BORROWED_MUTABLE_REFERENCE_ERROR" |)
-                            |)
+                            M.deref (| mk_str (| "RET_BORROWED_MUTABLE_REFERENCE_ERROR" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2658,7 +2623,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "FREEZEREF_TYPE_MISMATCH_ERROR" |) |)
+                            M.deref (| mk_str (| "FREEZEREF_TYPE_MISMATCH_ERROR" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2672,9 +2637,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (|
-                              M.read (| Value.String "FREEZEREF_EXISTS_MUTABLE_BORROW_ERROR" |)
-                            |)
+                            M.deref (| mk_str (| "FREEZEREF_EXISTS_MUTABLE_BORROW_ERROR" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2688,9 +2651,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (|
-                              M.read (| Value.String "BORROWFIELD_TYPE_MISMATCH_ERROR" |)
-                            |)
+                            M.deref (| mk_str (| "BORROWFIELD_TYPE_MISMATCH_ERROR" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2704,7 +2665,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "BORROWFIELD_BAD_FIELD_ERROR" |) |)
+                            M.deref (| mk_str (| "BORROWFIELD_BAD_FIELD_ERROR" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2718,9 +2679,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (|
-                              M.read (| Value.String "BORROWFIELD_EXISTS_MUTABLE_BORROW_ERROR" |)
-                            |)
+                            M.deref (| mk_str (| "BORROWFIELD_EXISTS_MUTABLE_BORROW_ERROR" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2734,7 +2693,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "COPYLOC_UNAVAILABLE_ERROR" |) |)
+                            M.deref (| mk_str (| "COPYLOC_UNAVAILABLE_ERROR" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2748,7 +2707,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "COPYLOC_WITHOUT_COPY_ABILITY" |) |)
+                            M.deref (| mk_str (| "COPYLOC_WITHOUT_COPY_ABILITY" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2762,7 +2721,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "COPYLOC_EXISTS_BORROW_ERROR" |) |)
+                            M.deref (| mk_str (| "COPYLOC_EXISTS_BORROW_ERROR" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2776,7 +2735,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "MOVELOC_UNAVAILABLE_ERROR" |) |)
+                            M.deref (| mk_str (| "MOVELOC_UNAVAILABLE_ERROR" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2790,7 +2749,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "MOVELOC_EXISTS_BORROW_ERROR" |) |)
+                            M.deref (| mk_str (| "MOVELOC_EXISTS_BORROW_ERROR" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2804,7 +2763,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "BORROWLOC_REFERENCE_ERROR" |) |)
+                            M.deref (| mk_str (| "BORROWLOC_REFERENCE_ERROR" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2818,7 +2777,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "BORROWLOC_UNAVAILABLE_ERROR" |) |)
+                            M.deref (| mk_str (| "BORROWLOC_UNAVAILABLE_ERROR" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2832,7 +2791,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "BORROWLOC_EXISTS_BORROW_ERROR" |) |)
+                            M.deref (| mk_str (| "BORROWLOC_EXISTS_BORROW_ERROR" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2846,7 +2805,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "CALL_TYPE_MISMATCH_ERROR" |) |)
+                            M.deref (| mk_str (| "CALL_TYPE_MISMATCH_ERROR" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2860,9 +2819,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (|
-                              M.read (| Value.String "CALL_BORROWED_MUTABLE_REFERENCE_ERROR" |)
-                            |)
+                            M.deref (| mk_str (| "CALL_BORROWED_MUTABLE_REFERENCE_ERROR" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2876,7 +2833,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "PACK_TYPE_MISMATCH_ERROR" |) |)
+                            M.deref (| mk_str (| "PACK_TYPE_MISMATCH_ERROR" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2890,7 +2847,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "UNPACK_TYPE_MISMATCH_ERROR" |) |)
+                            M.deref (| mk_str (| "UNPACK_TYPE_MISMATCH_ERROR" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2904,7 +2861,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "READREF_TYPE_MISMATCH_ERROR" |) |)
+                            M.deref (| mk_str (| "READREF_TYPE_MISMATCH_ERROR" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2918,7 +2875,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "READREF_WITHOUT_COPY_ABILITY" |) |)
+                            M.deref (| mk_str (| "READREF_WITHOUT_COPY_ABILITY" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2932,9 +2889,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (|
-                              M.read (| Value.String "READREF_EXISTS_MUTABLE_BORROW_ERROR" |)
-                            |)
+                            M.deref (| mk_str (| "READREF_EXISTS_MUTABLE_BORROW_ERROR" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2948,7 +2903,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "WRITEREF_TYPE_MISMATCH_ERROR" |) |)
+                            M.deref (| mk_str (| "WRITEREF_TYPE_MISMATCH_ERROR" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2962,7 +2917,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "WRITEREF_WITHOUT_DROP_ABILITY" |) |)
+                            M.deref (| mk_str (| "WRITEREF_WITHOUT_DROP_ABILITY" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2976,7 +2931,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "WRITEREF_EXISTS_BORROW_ERROR" |) |)
+                            M.deref (| mk_str (| "WRITEREF_EXISTS_BORROW_ERROR" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2990,9 +2945,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (|
-                              M.read (| Value.String "WRITEREF_NO_MUTABLE_REFERENCE_ERROR" |)
-                            |)
+                            M.deref (| mk_str (| "WRITEREF_NO_MUTABLE_REFERENCE_ERROR" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3006,7 +2959,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "INTEGER_OP_TYPE_MISMATCH_ERROR" |) |)
+                            M.deref (| mk_str (| "INTEGER_OP_TYPE_MISMATCH_ERROR" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3020,7 +2973,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "BOOLEAN_OP_TYPE_MISMATCH_ERROR" |) |)
+                            M.deref (| mk_str (| "BOOLEAN_OP_TYPE_MISMATCH_ERROR" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3034,9 +2987,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (|
-                              M.read (| Value.String "EQUALITY_OP_TYPE_MISMATCH_ERROR" |)
-                            |)
+                            M.deref (| mk_str (| "EQUALITY_OP_TYPE_MISMATCH_ERROR" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3050,9 +3001,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (|
-                              M.read (| Value.String "EXISTS_WITHOUT_KEY_ABILITY_OR_BAD_ARGUMENT" |)
-                            |)
+                            M.deref (| mk_str (| "EXISTS_WITHOUT_KEY_ABILITY_OR_BAD_ARGUMENT" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3066,9 +3015,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (|
-                              M.read (| Value.String "BORROWGLOBAL_TYPE_MISMATCH_ERROR" |)
-                            |)
+                            M.deref (| mk_str (| "BORROWGLOBAL_TYPE_MISMATCH_ERROR" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3082,9 +3029,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (|
-                              M.read (| Value.String "BORROWGLOBAL_WITHOUT_KEY_ABILITY" |)
-                            |)
+                            M.deref (| mk_str (| "BORROWGLOBAL_WITHOUT_KEY_ABILITY" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3098,7 +3043,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "MOVEFROM_TYPE_MISMATCH_ERROR" |) |)
+                            M.deref (| mk_str (| "MOVEFROM_TYPE_MISMATCH_ERROR" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3112,7 +3057,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "MOVEFROM_WITHOUT_KEY_ABILITY" |) |)
+                            M.deref (| mk_str (| "MOVEFROM_WITHOUT_KEY_ABILITY" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3126,7 +3071,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "MOVETO_TYPE_MISMATCH_ERROR" |) |)
+                            M.deref (| mk_str (| "MOVETO_TYPE_MISMATCH_ERROR" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3140,7 +3085,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "MOVETO_WITHOUT_KEY_ABILITY" |) |)
+                            M.deref (| mk_str (| "MOVETO_WITHOUT_KEY_ABILITY" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3154,9 +3099,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (|
-                              M.read (| Value.String "MODULE_ADDRESS_DOES_NOT_MATCH_SENDER" |)
-                            |)
+                            M.deref (| mk_str (| "MODULE_ADDRESS_DOES_NOT_MATCH_SENDER" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3170,7 +3113,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "NO_MODULE_HANDLES" |) |)
+                            M.deref (| mk_str (| "NO_MODULE_HANDLES" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3184,9 +3127,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (|
-                              M.read (| Value.String "POSITIVE_STACK_SIZE_AT_BLOCK_END" |)
-                            |)
+                            M.deref (| mk_str (| "POSITIVE_STACK_SIZE_AT_BLOCK_END" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3200,7 +3141,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "MISSING_ACQUIRES_ANNOTATION" |) |)
+                            M.deref (| mk_str (| "MISSING_ACQUIRES_ANNOTATION" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3214,7 +3155,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "EXTRANEOUS_ACQUIRES_ANNOTATION" |) |)
+                            M.deref (| mk_str (| "EXTRANEOUS_ACQUIRES_ANNOTATION" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3228,7 +3169,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "DUPLICATE_ACQUIRES_ANNOTATION" |) |)
+                            M.deref (| mk_str (| "DUPLICATE_ACQUIRES_ANNOTATION" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3242,7 +3183,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "INVALID_ACQUIRES_ANNOTATION" |) |)
+                            M.deref (| mk_str (| "INVALID_ACQUIRES_ANNOTATION" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3256,7 +3197,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "GLOBAL_REFERENCE_ERROR" |) |)
+                            M.deref (| mk_str (| "GLOBAL_REFERENCE_ERROR" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3270,7 +3211,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "CONSTRAINT_NOT_SATISFIED" |) |)
+                            M.deref (| mk_str (| "CONSTRAINT_NOT_SATISFIED" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3284,9 +3225,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (|
-                              M.read (| Value.String "NUMBER_OF_TYPE_ARGUMENTS_MISMATCH" |)
-                            |)
+                            M.deref (| mk_str (| "NUMBER_OF_TYPE_ARGUMENTS_MISMATCH" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3300,7 +3239,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "LOOP_IN_INSTANTIATION_GRAPH" |) |)
+                            M.deref (| mk_str (| "LOOP_IN_INSTANTIATION_GRAPH" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3314,7 +3253,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "ZERO_SIZED_STRUCT" |) |)
+                            M.deref (| mk_str (| "ZERO_SIZED_STRUCT" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3326,10 +3265,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::LINKER_ERROR"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "LINKER_ERROR" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LINKER_ERROR" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -3342,7 +3278,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "INVALID_CONSTANT_TYPE" |) |)
+                            M.deref (| mk_str (| "INVALID_CONSTANT_TYPE" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3356,7 +3292,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "MALFORMED_CONSTANT_DATA" |) |)
+                            M.deref (| mk_str (| "MALFORMED_CONSTANT_DATA" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3370,7 +3306,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "EMPTY_CODE_UNIT" |) |)
+                            M.deref (| mk_str (| "EMPTY_CODE_UNIT" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3384,7 +3320,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "INVALID_LOOP_SPLIT" |) |)
+                            M.deref (| mk_str (| "INVALID_LOOP_SPLIT" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3398,7 +3334,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "INVALID_LOOP_BREAK" |) |)
+                            M.deref (| mk_str (| "INVALID_LOOP_BREAK" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3412,7 +3348,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "INVALID_LOOP_CONTINUE" |) |)
+                            M.deref (| mk_str (| "INVALID_LOOP_CONTINUE" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3426,9 +3362,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (|
-                              M.read (| Value.String "UNSAFE_RET_UNUSED_VALUES_WITHOUT_DROP" |)
-                            |)
+                            M.deref (| mk_str (| "UNSAFE_RET_UNUSED_VALUES_WITHOUT_DROP" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3442,7 +3376,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "TOO_MANY_LOCALS" |) |)
+                            M.deref (| mk_str (| "TOO_MANY_LOCALS" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3456,7 +3390,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "GENERIC_MEMBER_OPCODE_MISMATCH" |) |)
+                            M.deref (| mk_str (| "GENERIC_MEMBER_OPCODE_MISMATCH" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3470,7 +3404,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "FUNCTION_RESOLUTION_FAILURE" |) |)
+                            M.deref (| mk_str (| "FUNCTION_RESOLUTION_FAILURE" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3484,7 +3418,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "INVALID_OPERATION_IN_SCRIPT" |) |)
+                            M.deref (| mk_str (| "INVALID_OPERATION_IN_SCRIPT" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3498,7 +3432,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "DUPLICATE_MODULE_NAME" |) |)
+                            M.deref (| mk_str (| "DUPLICATE_MODULE_NAME" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3512,9 +3446,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (|
-                              M.read (| Value.String "BACKWARD_INCOMPATIBLE_MODULE_UPDATE" |)
-                            |)
+                            M.deref (| mk_str (| "BACKWARD_INCOMPATIBLE_MODULE_UPDATE" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3528,7 +3460,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "CYCLIC_MODULE_DEPENDENCY" |) |)
+                            M.deref (| mk_str (| "CYCLIC_MODULE_DEPENDENCY" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3542,7 +3474,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "NUMBER_OF_ARGUMENTS_MISMATCH" |) |)
+                            M.deref (| mk_str (| "NUMBER_OF_ARGUMENTS_MISMATCH" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3556,9 +3488,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (|
-                              M.read (| Value.String "INVALID_PARAM_TYPE_FOR_DESERIALIZATION" |)
-                            |)
+                            M.deref (| mk_str (| "INVALID_PARAM_TYPE_FOR_DESERIALIZATION" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3572,7 +3502,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "FAILED_TO_DESERIALIZE_ARGUMENT" |) |)
+                            M.deref (| mk_str (| "FAILED_TO_DESERIALIZE_ARGUMENT" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3586,9 +3516,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (|
-                              M.read (| Value.String "NUMBER_OF_SIGNER_ARGUMENTS_MISMATCH" |)
-                            |)
+                            M.deref (| mk_str (| "NUMBER_OF_SIGNER_ARGUMENTS_MISMATCH" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3603,9 +3531,7 @@ Module vm_status.
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (|
-                              M.read (|
-                                Value.String "CALLED_SCRIPT_VISIBLE_FROM_NON_SCRIPT_VISIBLE"
-                              |)
+                              mk_str (| "CALLED_SCRIPT_VISIBLE_FROM_NON_SCRIPT_VISIBLE" |)
                             |)
                           |)
                         |)));
@@ -3621,9 +3547,7 @@ Module vm_status.
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (|
-                              M.read (|
-                                Value.String "EXECUTE_ENTRY_FUNCTION_CALLED_ON_NON_ENTRY_FUNCTION"
-                              |)
+                              mk_str (| "EXECUTE_ENTRY_FUNCTION_CALLED_ON_NON_ENTRY_FUNCTION" |)
                             |)
                           |)
                         |)));
@@ -3638,7 +3562,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "INVALID_FRIEND_DECL_WITH_SELF" |) |)
+                            M.deref (| mk_str (| "INVALID_FRIEND_DECL_WITH_SELF" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3653,9 +3577,8 @@ Module vm_status.
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (|
-                              M.read (|
-                                Value.String
-                                  "INVALID_FRIEND_DECL_WITH_MODULES_OUTSIDE_ACCOUNT_ADDRESS"
+                              mk_str (|
+                                "INVALID_FRIEND_DECL_WITH_MODULES_OUTSIDE_ACCOUNT_ADDRESS"
                               |)
                             |)
                           |)
@@ -3672,9 +3595,7 @@ Module vm_status.
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (|
-                              M.read (|
-                                Value.String "INVALID_FRIEND_DECL_WITH_MODULES_IN_DEPENDENCIES"
-                              |)
+                              mk_str (| "INVALID_FRIEND_DECL_WITH_MODULES_IN_DEPENDENCIES" |)
                             |)
                           |)
                         |)));
@@ -3689,7 +3610,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "CYCLIC_MODULE_FRIENDSHIP" |) |)
+                            M.deref (| mk_str (| "CYCLIC_MODULE_FRIENDSHIP" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3703,9 +3624,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (|
-                              M.read (| Value.String "INVALID_PHANTOM_TYPE_PARAM_POSITION" |)
-                            |)
+                            M.deref (| mk_str (| "INVALID_PHANTOM_TYPE_PARAM_POSITION" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3719,9 +3638,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (|
-                              M.read (| Value.String "VEC_UPDATE_EXISTS_MUTABLE_BORROW_ERROR" |)
-                            |)
+                            M.deref (| mk_str (| "VEC_UPDATE_EXISTS_MUTABLE_BORROW_ERROR" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3736,9 +3653,7 @@ Module vm_status.
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (|
-                              M.read (|
-                                Value.String "VEC_BORROW_ELEMENT_EXISTS_MUTABLE_BORROW_ERROR"
-                              |)
+                              mk_str (| "VEC_BORROW_ELEMENT_EXISTS_MUTABLE_BORROW_ERROR" |)
                             |)
                           |)
                         |)));
@@ -3753,7 +3668,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "LOOP_MAX_DEPTH_REACHED" |) |)
+                            M.deref (| mk_str (| "LOOP_MAX_DEPTH_REACHED" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3767,7 +3682,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "TOO_MANY_TYPE_PARAMETERS" |) |)
+                            M.deref (| mk_str (| "TOO_MANY_TYPE_PARAMETERS" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3781,7 +3696,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "TOO_MANY_PARAMETERS" |) |)
+                            M.deref (| mk_str (| "TOO_MANY_PARAMETERS" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3795,7 +3710,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "TOO_MANY_BASIC_BLOCKS" |) |)
+                            M.deref (| mk_str (| "TOO_MANY_BASIC_BLOCKS" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3809,7 +3724,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "VALUE_STACK_OVERFLOW" |) |)
+                            M.deref (| mk_str (| "VALUE_STACK_OVERFLOW" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3823,7 +3738,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "TOO_MANY_TYPE_NODES" |) |)
+                            M.deref (| mk_str (| "TOO_MANY_TYPE_NODES" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3837,7 +3752,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "VALUE_STACK_PUSH_OVERFLOW" |) |)
+                            M.deref (| mk_str (| "VALUE_STACK_PUSH_OVERFLOW" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3851,7 +3766,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "MAX_DEPENDENCY_DEPTH_REACHED" |) |)
+                            M.deref (| mk_str (| "MAX_DEPENDENCY_DEPTH_REACHED" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3865,9 +3780,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (|
-                              M.read (| Value.String "MAX_FUNCTION_DEFINITIONS_REACHED" |)
-                            |)
+                            M.deref (| mk_str (| "MAX_FUNCTION_DEFINITIONS_REACHED" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3881,7 +3794,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "MAX_STRUCT_DEFINITIONS_REACHED" |) |)
+                            M.deref (| mk_str (| "MAX_STRUCT_DEFINITIONS_REACHED" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3895,7 +3808,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "MAX_FIELD_DEFINITIONS_REACHED" |) |)
+                            M.deref (| mk_str (| "MAX_FIELD_DEFINITIONS_REACHED" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3909,7 +3822,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "TOO_MANY_BACK_EDGES" |) |)
+                            M.deref (| mk_str (| "TOO_MANY_BACK_EDGES" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3923,7 +3836,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "RESERVED_VERIFICATION_ERROR_1" |) |)
+                            M.deref (| mk_str (| "RESERVED_VERIFICATION_ERROR_1" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3937,7 +3850,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "RESERVED_VERIFICATION_ERROR_2" |) |)
+                            M.deref (| mk_str (| "RESERVED_VERIFICATION_ERROR_2" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3951,7 +3864,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "RESERVED_VERIFICATION_ERROR_3" |) |)
+                            M.deref (| mk_str (| "RESERVED_VERIFICATION_ERROR_3" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3965,7 +3878,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "RESERVED_VERIFICATION_ERROR_4" |) |)
+                            M.deref (| mk_str (| "RESERVED_VERIFICATION_ERROR_4" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3979,7 +3892,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "RESERVED_VERIFICATION_ERROR_5" |) |)
+                            M.deref (| mk_str (| "RESERVED_VERIFICATION_ERROR_5" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -3993,7 +3906,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "TOO_MANY_VECTOR_ELEMENTS" |) |)
+                            M.deref (| mk_str (| "TOO_MANY_VECTOR_ELEMENTS" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -4007,7 +3920,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "IDENTIFIER_TOO_LONG" |) |)
+                            M.deref (| mk_str (| "IDENTIFIER_TOO_LONG" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -4021,7 +3934,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "PROGRAM_TOO_COMPLEX" |) |)
+                            M.deref (| mk_str (| "PROGRAM_TOO_COMPLEX" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -4035,9 +3948,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (|
-                              M.read (| Value.String "UNKNOWN_INVARIANT_VIOLATION_ERROR" |)
-                            |)
+                            M.deref (| mk_str (| "UNKNOWN_INVARIANT_VIOLATION_ERROR" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -4051,7 +3962,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "EMPTY_VALUE_STACK" |) |)
+                            M.deref (| mk_str (| "EMPTY_VALUE_STACK" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -4063,10 +3974,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::PC_OVERFLOW"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "PC_OVERFLOW" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "PC_OVERFLOW" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -4079,7 +3987,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "VERIFICATION_ERROR" |) |)
+                            M.deref (| mk_str (| "VERIFICATION_ERROR" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -4093,7 +4001,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "STORAGE_ERROR" |) |)
+                            M.deref (| mk_str (| "STORAGE_ERROR" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -4107,7 +4015,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "INTERNAL_TYPE_ERROR" |) |)
+                            M.deref (| mk_str (| "INTERNAL_TYPE_ERROR" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -4121,7 +4029,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "EVENT_KEY_MISMATCH" |) |)
+                            M.deref (| mk_str (| "EVENT_KEY_MISMATCH" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -4133,10 +4041,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::UNREACHABLE"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "UNREACHABLE" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "UNREACHABLE" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -4149,7 +4054,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "VM_STARTUP_FAILURE" |) |)
+                            M.deref (| mk_str (| "VM_STARTUP_FAILURE" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -4163,9 +4068,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (|
-                              M.read (| Value.String "UNEXPECTED_ERROR_FROM_KNOWN_MOVE_FUNCTION" |)
-                            |)
+                            M.deref (| mk_str (| "UNEXPECTED_ERROR_FROM_KNOWN_MOVE_FUNCTION" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -4179,7 +4082,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "VERIFIER_INVARIANT_VIOLATION" |) |)
+                            M.deref (| mk_str (| "VERIFIER_INVARIANT_VIOLATION" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -4193,7 +4096,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "UNEXPECTED_VERIFIER_ERROR" |) |)
+                            M.deref (| mk_str (| "UNEXPECTED_VERIFIER_ERROR" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -4207,9 +4110,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (|
-                              M.read (| Value.String "UNEXPECTED_DESERIALIZATION_ERROR" |)
-                            |)
+                            M.deref (| mk_str (| "UNEXPECTED_DESERIALIZATION_ERROR" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -4223,9 +4124,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (|
-                              M.read (| Value.String "FAILED_TO_SERIALIZE_WRITE_SET_CHANGES" |)
-                            |)
+                            M.deref (| mk_str (| "FAILED_TO_SERIALIZE_WRITE_SET_CHANGES" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -4239,7 +4138,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "FAILED_TO_DESERIALIZE_RESOURCE" |) |)
+                            M.deref (| mk_str (| "FAILED_TO_DESERIALIZE_RESOURCE" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -4253,7 +4152,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "TYPE_RESOLUTION_FAILURE" |) |)
+                            M.deref (| mk_str (| "TYPE_RESOLUTION_FAILURE" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -4267,7 +4166,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "DUPLICATE_NATIVE_FUNCTION" |) |)
+                            M.deref (| mk_str (| "DUPLICATE_NATIVE_FUNCTION" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -4281,7 +4180,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "ARITHMETIC_OVERFLOW" |) |)
+                            M.deref (| mk_str (| "ARITHMETIC_OVERFLOW" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -4295,7 +4194,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "UNKNOWN_BINARY_ERROR" |) |)
+                            M.deref (| mk_str (| "UNKNOWN_BINARY_ERROR" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -4307,10 +4206,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::MALFORMED"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "MALFORMED" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "MALFORMED" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -4321,10 +4217,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::BAD_MAGIC"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "BAD_MAGIC" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BAD_MAGIC" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -4337,7 +4230,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "UNKNOWN_VERSION" |) |)
+                            M.deref (| mk_str (| "UNKNOWN_VERSION" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -4351,7 +4244,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "UNKNOWN_TABLE_TYPE" |) |)
+                            M.deref (| mk_str (| "UNKNOWN_TABLE_TYPE" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -4365,7 +4258,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "UNKNOWN_SIGNATURE_TYPE" |) |)
+                            M.deref (| mk_str (| "UNKNOWN_SIGNATURE_TYPE" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -4379,7 +4272,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "UNKNOWN_SERIALIZED_TYPE" |) |)
+                            M.deref (| mk_str (| "UNKNOWN_SERIALIZED_TYPE" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -4393,7 +4286,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "UNKNOWN_OPCODE" |) |)
+                            M.deref (| mk_str (| "UNKNOWN_OPCODE" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -4407,7 +4300,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "BAD_HEADER_TABLE" |) |)
+                            M.deref (| mk_str (| "BAD_HEADER_TABLE" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -4421,7 +4314,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "UNEXPECTED_SIGNATURE_TYPE" |) |)
+                            M.deref (| mk_str (| "UNEXPECTED_SIGNATURE_TYPE" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -4435,7 +4328,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "DUPLICATE_TABLE" |) |)
+                            M.deref (| mk_str (| "DUPLICATE_TABLE" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -4449,7 +4342,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "UNKNOWN_ABILITY" |) |)
+                            M.deref (| mk_str (| "UNKNOWN_ABILITY" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -4463,7 +4356,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "UNKNOWN_NATIVE_STRUCT_FLAG" |) |)
+                            M.deref (| mk_str (| "UNKNOWN_NATIVE_STRUCT_FLAG" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -4475,10 +4368,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::BAD_U16"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "BAD_U16" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BAD_U16" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -4489,10 +4379,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::BAD_U32"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "BAD_U32" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BAD_U32" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -4503,10 +4390,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::BAD_U64"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "BAD_U64" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BAD_U64" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -4517,10 +4401,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::BAD_U128"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "BAD_U128" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BAD_U128" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -4531,10 +4412,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::BAD_U256"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "BAD_U256" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BAD_U256" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -4547,7 +4425,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "VALUE_SERIALIZATION_ERROR" |) |)
+                            M.deref (| mk_str (| "VALUE_SERIALIZATION_ERROR" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -4561,7 +4439,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "VALUE_DESERIALIZATION_ERROR" |) |)
+                            M.deref (| mk_str (| "VALUE_DESERIALIZATION_ERROR" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -4575,7 +4453,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "CODE_DESERIALIZATION_ERROR" |) |)
+                            M.deref (| mk_str (| "CODE_DESERIALIZATION_ERROR" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -4589,7 +4467,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "INVALID_FLAG_BITS" |) |)
+                            M.deref (| mk_str (| "INVALID_FLAG_BITS" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -4603,7 +4481,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "TRAILING_BYTES" |) |)
+                            M.deref (| mk_str (| "TRAILING_BYTES" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -4617,7 +4495,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "UNKNOWN_RUNTIME_STATUS" |) |)
+                            M.deref (| mk_str (| "UNKNOWN_RUNTIME_STATUS" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -4629,10 +4507,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::EXECUTED"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "EXECUTED" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "EXECUTED" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -4643,10 +4518,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::OUT_OF_GAS"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "OUT_OF_GAS" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "OUT_OF_GAS" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -4659,7 +4531,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "RESOURCE_DOES_NOT_EXIST" |) |)
+                            M.deref (| mk_str (| "RESOURCE_DOES_NOT_EXIST" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -4673,7 +4545,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "RESOURCE_ALREADY_EXISTS" |) |)
+                            M.deref (| mk_str (| "RESOURCE_ALREADY_EXISTS" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -4685,10 +4557,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::MISSING_DATA"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "MISSING_DATA" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "MISSING_DATA" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -4701,7 +4570,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "DATA_FORMAT_ERROR" |) |)
+                            M.deref (| mk_str (| "DATA_FORMAT_ERROR" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -4713,10 +4582,7 @@ Module vm_status.
                             "move_core_types::vm_status::StatusCode::ABORTED"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "ABORTED" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ABORTED" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -4729,7 +4595,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "ARITHMETIC_ERROR" |) |)
+                            M.deref (| mk_str (| "ARITHMETIC_ERROR" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -4743,7 +4609,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "VECTOR_OPERATION_ERROR" |) |)
+                            M.deref (| mk_str (| "VECTOR_OPERATION_ERROR" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -4757,7 +4623,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "EXECUTION_STACK_OVERFLOW" |) |)
+                            M.deref (| mk_str (| "EXECUTION_STACK_OVERFLOW" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -4771,7 +4637,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "CALL_STACK_OVERFLOW" |) |)
+                            M.deref (| mk_str (| "CALL_STACK_OVERFLOW" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -4785,7 +4651,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "VM_MAX_TYPE_DEPTH_REACHED" |) |)
+                            M.deref (| mk_str (| "VM_MAX_TYPE_DEPTH_REACHED" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -4799,7 +4665,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "VM_MAX_VALUE_DEPTH_REACHED" |) |)
+                            M.deref (| mk_str (| "VM_MAX_VALUE_DEPTH_REACHED" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -4813,7 +4679,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "VM_EXTENSION_ERROR" |) |)
+                            M.deref (| mk_str (| "VM_EXTENSION_ERROR" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -4827,7 +4693,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "STORAGE_WRITE_LIMIT_REACHED" |) |)
+                            M.deref (| mk_str (| "STORAGE_WRITE_LIMIT_REACHED" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -4841,7 +4707,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "MEMORY_LIMIT_EXCEEDED" |) |)
+                            M.deref (| mk_str (| "MEMORY_LIMIT_EXCEEDED" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -4855,7 +4721,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "VM_MAX_TYPE_NODES_REACHED" |) |)
+                            M.deref (| mk_str (| "VM_MAX_TYPE_NODES_REACHED" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -4869,7 +4735,7 @@ Module vm_status.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "UNKNOWN_STATUS" |) |)
+                            M.deref (| mk_str (| "UNKNOWN_STATUS" |) |)
                           |)
                         |)))
                   ]
@@ -8478,7 +8344,7 @@ Module vm_status.
                         [
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "invalid StatusCode" |) |)
+                            M.deref (| mk_str (| "invalid StatusCode" |) |)
                           |)
                         ]
                     |)))

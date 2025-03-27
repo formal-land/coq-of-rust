@@ -173,7 +173,7 @@ Module Impl_core_fmt_Debug_where_core_fmt_Debug_Unit_for_generics_phantom_type_t
           |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Length" |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Length" |) |) |);
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -499,11 +499,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             Pointer.Kind.Ref,
                             M.alloc (|
                               Value.Array
-                                [
-                                  M.read (| Value.String "one foot + one_foot = " |);
-                                  M.read (| Value.String " in
-" |)
-                                ]
+                                [ mk_str (| "one foot + one_foot = " |); mk_str (| " in
+" |) ]
                             |)
                           |)
                         |)
@@ -574,11 +571,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             Pointer.Kind.Ref,
                             M.alloc (|
                               Value.Array
-                                [
-                                  M.read (| Value.String "one meter + one_meter = " |);
-                                  M.read (| Value.String " mm
-" |)
-                                ]
+                                [ mk_str (| "one meter + one_meter = " |); mk_str (| " mm
+" |) ]
                             |)
                           |)
                         |)

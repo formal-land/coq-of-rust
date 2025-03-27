@@ -3509,11 +3509,7 @@ Module net.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
-                                        Value.Array
-                                          [
-                                            M.read (| Value.String "" |);
-                                            M.read (| Value.String ":" |)
-                                          ]
+                                        Value.Array [ mk_str (| "" |); mk_str (| ":" |) ]
                                       |)
                                     |)
                                   |)
@@ -3695,11 +3691,7 @@ Module net.
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.read (| Value.String "" |);
-                                                  M.read (| Value.String ":" |)
-                                                ]
+                                              Value.Array [ mk_str (| "" |); mk_str (| ":" |) ]
                                             |)
                                           |)
                                         |)
@@ -4089,11 +4081,7 @@ Module net.
                                             M.borrow (|
                                               Pointer.Kind.Ref,
                                               M.alloc (|
-                                                Value.Array
-                                                  [
-                                                    M.read (| Value.String "[" |);
-                                                    M.read (| Value.String "]:" |)
-                                                  ]
+                                                Value.Array [ mk_str (| "[" |); mk_str (| "]:" |) ]
                                               |)
                                             |)
                                           |)
@@ -4246,9 +4234,9 @@ Module net.
                                               M.alloc (|
                                                 Value.Array
                                                   [
-                                                    M.read (| Value.String "[" |);
-                                                    M.read (| Value.String "%" |);
-                                                    M.read (| Value.String "]:" |)
+                                                    mk_str (| "[" |);
+                                                    mk_str (| "%" |);
+                                                    mk_str (| "]:" |)
                                                   ]
                                               |)
                                             |)
@@ -4494,10 +4482,7 @@ Module net.
                                                         Pointer.Kind.Ref,
                                                         M.alloc (|
                                                           Value.Array
-                                                            [
-                                                              M.read (| Value.String "[" |);
-                                                              M.read (| Value.String "]:" |)
-                                                            ]
+                                                            [ mk_str (| "[" |); mk_str (| "]:" |) ]
                                                         |)
                                                       |)
                                                     |)
@@ -4655,9 +4640,9 @@ Module net.
                                                         M.alloc (|
                                                           Value.Array
                                                             [
-                                                              M.read (| Value.String "[" |);
-                                                              M.read (| Value.String "%" |);
-                                                              M.read (| Value.String "]:" |)
+                                                              mk_str (| "[" |);
+                                                              mk_str (| "%" |);
+                                                              mk_str (| "]:" |)
                                                             ]
                                                         |)
                                                       |)

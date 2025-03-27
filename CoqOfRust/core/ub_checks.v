@@ -31,9 +31,8 @@ Module hint.
                           Ty.path "never",
                           M.get_function (| "core::panicking::panic_nounwind", [], [] |),
                           [
-                            M.read (|
-                              Value.String
-                                "unsafe precondition(s) violated: hint::unreachable_unchecked must never be reached"
+                            mk_str (|
+                              "unsafe precondition(s) violated: hint::unreachable_unchecked must never be reached"
                             |)
                           ]
                         |)
@@ -82,9 +81,8 @@ Module hint.
                           Ty.path "never",
                           M.get_function (| "core::panicking::panic_nounwind", [], [] |),
                           [
-                            M.read (|
-                              Value.String
-                                "unsafe precondition(s) violated: hint::assert_unchecked must never be called when the condition is false"
+                            mk_str (|
+                              "unsafe precondition(s) violated: hint::assert_unchecked must never be called when the condition is false"
                             |)
                           ]
                         |)
@@ -207,9 +205,8 @@ Module intrinsics.
                           Ty.path "never",
                           M.get_function (| "core::panicking::panic_nounwind", [], [] |),
                           [
-                            M.read (|
-                              Value.String
-                                "unsafe precondition(s) violated: ptr::copy_nonoverlapping requires that both pointer arguments are aligned and non-null and the specified memory ranges do not overlap"
+                            mk_str (|
+                              "unsafe precondition(s) violated: ptr::copy_nonoverlapping requires that both pointer arguments are aligned and non-null and the specified memory ranges do not overlap"
                             |)
                           ]
                         |)
@@ -293,9 +290,8 @@ Module intrinsics.
                           Ty.path "never",
                           M.get_function (| "core::panicking::panic_nounwind", [], [] |),
                           [
-                            M.read (|
-                              Value.String
-                                "unsafe precondition(s) violated: ptr::copy requires that both pointer arguments are aligned and non-null"
+                            mk_str (|
+                              "unsafe precondition(s) violated: ptr::copy requires that both pointer arguments are aligned and non-null"
                             |)
                           ]
                         |)
@@ -360,9 +356,8 @@ Module intrinsics.
                           Ty.path "never",
                           M.get_function (| "core::panicking::panic_nounwind", [], [] |),
                           [
-                            M.read (|
-                              Value.String
-                                "unsafe precondition(s) violated: ptr::write_bytes requires that the destination pointer is aligned and non-null"
+                            mk_str (|
+                              "unsafe precondition(s) violated: ptr::write_bytes requires that the destination pointer is aligned and non-null"
                             |)
                           ]
                         |)
@@ -487,9 +482,8 @@ Module ptr.
                           Ty.path "never",
                           M.get_function (| "core::panicking::panic_nounwind", [], [] |),
                           [
-                            M.read (|
-                              Value.String
-                                "unsafe precondition(s) violated: ptr::swap_nonoverlapping requires that both pointer arguments are aligned and non-null and the specified memory ranges do not overlap"
+                            mk_str (|
+                              "unsafe precondition(s) violated: ptr::swap_nonoverlapping requires that both pointer arguments are aligned and non-null and the specified memory ranges do not overlap"
                             |)
                           ]
                         |)
@@ -554,9 +548,8 @@ Module ptr.
                           Ty.path "never",
                           M.get_function (| "core::panicking::panic_nounwind", [], [] |),
                           [
-                            M.read (|
-                              Value.String
-                                "unsafe precondition(s) violated: ptr::replace requires that the pointer argument is aligned and non-null"
+                            mk_str (|
+                              "unsafe precondition(s) violated: ptr::replace requires that the pointer argument is aligned and non-null"
                             |)
                           ]
                         |)
@@ -621,9 +614,8 @@ Module ptr.
                           Ty.path "never",
                           M.get_function (| "core::panicking::panic_nounwind", [], [] |),
                           [
-                            M.read (|
-                              Value.String
-                                "unsafe precondition(s) violated: ptr::read requires that the pointer argument is aligned and non-null"
+                            mk_str (|
+                              "unsafe precondition(s) violated: ptr::read requires that the pointer argument is aligned and non-null"
                             |)
                           ]
                         |)
@@ -692,9 +684,8 @@ Module ptr.
                           Ty.path "never",
                           M.get_function (| "core::panicking::panic_nounwind", [], [] |),
                           [
-                            M.read (|
-                              Value.String
-                                "unsafe precondition(s) violated: ptr::write requires that the pointer argument is aligned and non-null"
+                            mk_str (|
+                              "unsafe precondition(s) violated: ptr::write requires that the pointer argument is aligned and non-null"
                             |)
                           ]
                         |)
@@ -759,9 +750,8 @@ Module ptr.
                           Ty.path "never",
                           M.get_function (| "core::panicking::panic_nounwind", [], [] |),
                           [
-                            M.read (|
-                              Value.String
-                                "unsafe precondition(s) violated: ptr::read_volatile requires that the pointer argument is aligned and non-null"
+                            mk_str (|
+                              "unsafe precondition(s) violated: ptr::read_volatile requires that the pointer argument is aligned and non-null"
                             |)
                           ]
                         |)
@@ -830,9 +820,8 @@ Module ptr.
                           Ty.path "never",
                           M.get_function (| "core::panicking::panic_nounwind", [], [] |),
                           [
-                            M.read (|
-                              Value.String
-                                "unsafe precondition(s) violated: ptr::write_volatile requires that the pointer argument is aligned and non-null"
+                            mk_str (|
+                              "unsafe precondition(s) violated: ptr::write_volatile requires that the pointer argument is aligned and non-null"
                             |)
                           ]
                         |)
@@ -1179,9 +1168,8 @@ Module char.
                             Ty.path "never",
                             M.get_function (| "core::panicking::panic_nounwind", [], [] |),
                             [
-                              M.read (|
-                                Value.String
-                                  "unsafe precondition(s) violated: invalid value for `char`"
+                              mk_str (|
+                                "unsafe precondition(s) violated: invalid value for `char`"
                               |)
                             ]
                           |)
@@ -1269,9 +1257,8 @@ Module slice.
                             Ty.path "never",
                             M.get_function (| "core::panicking::panic_nounwind", [], [] |),
                             [
-                              M.read (|
-                                Value.String
-                                  "unsafe precondition(s) violated: slice::from_raw_parts requires the pointer to be aligned and non-null, and the total size of the slice not to exceed `isize::MAX`"
+                              mk_str (|
+                                "unsafe precondition(s) violated: slice::from_raw_parts requires the pointer to be aligned and non-null, and the total size of the slice not to exceed `isize::MAX`"
                               |)
                             ]
                           |)
@@ -1355,9 +1342,8 @@ Module slice.
                             Ty.path "never",
                             M.get_function (| "core::panicking::panic_nounwind", [], [] |),
                             [
-                              M.read (|
-                                Value.String
-                                  "unsafe precondition(s) violated: slice::from_raw_parts_mut requires the pointer to be aligned and non-null, and the total size of the slice not to exceed `isize::MAX`"
+                              mk_str (|
+                                "unsafe precondition(s) violated: slice::from_raw_parts_mut requires the pointer to be aligned and non-null, and the total size of the slice not to exceed `isize::MAX`"
                               |)
                             ]
                           |)

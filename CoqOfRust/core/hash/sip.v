@@ -41,11 +41,8 @@ Module hash.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "SipHasher13" |) |)
-                |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "hasher" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "SipHasher13" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "hasher" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -219,11 +216,8 @@ Module hash.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "SipHasher24" |) |)
-                |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "hasher" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "SipHasher24" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "hasher" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -390,10 +384,7 @@ Module hash.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "SipHasher" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "SipHasher" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -563,31 +554,13 @@ Module hash.
                         M.alloc (|
                           Value.Array
                             [
-                              M.read (| Value.String "k0" |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "k1" |) |)
-                              |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "length" |) |)
-                              |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "state" |) |)
-                              |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "tail" |) |)
-                              |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "ntail" |) |)
-                              |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "_marker" |) |)
-                              |)
+                              mk_str (| "k0" |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "k1" |) |) |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "length" |) |) |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "state" |) |) |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "tail" |) |) |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ntail" |) |) |);
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "_marker" |) |) |)
                             ]
                         |)
                       |)
@@ -729,10 +702,7 @@ Module hash.
                   |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (| M.read (| Value.String "Hasher" |) |)
-                    |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Hasher" |) |) |);
                     M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| names |) |) |);
                     M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| values |) |) |)
                   ]
@@ -789,8 +759,8 @@ Module hash.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "State" |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "v0" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "State" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "v0" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -804,7 +774,7 @@ Module hash.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "v2" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "v2" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -818,7 +788,7 @@ Module hash.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "v1" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "v1" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -832,7 +802,7 @@ Module hash.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "v3" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "v3" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -975,7 +945,7 @@ Module hash.
                                     M.call_closure (|
                                       Ty.path "never",
                                       M.get_function (| "core::panicking::panic", [], [] |),
-                                      [ M.read (| Value.String "assertion failed: len < 8" |) ]
+                                      [ mk_str (| "assertion failed: len < 8" |) ]
                                     |)
                                   |)
                                 |)));
@@ -1090,9 +1060,8 @@ Module hash.
                                                             []
                                                           |),
                                                           [
-                                                            M.read (|
-                                                              Value.String
-                                                                "assertion failed: start + i + mem::size_of::<u32>() <= buf.len()"
+                                                            mk_str (|
+                                                              "assertion failed: start + i + mem::size_of::<u32>() <= buf.len()"
                                                             |)
                                                           ]
                                                         |)
@@ -1302,9 +1271,8 @@ Module hash.
                                                                 []
                                                               |),
                                                               [
-                                                                M.read (|
-                                                                  Value.String
-                                                                    "assertion failed: start + i + mem::size_of::<u16>() <= buf.len()"
+                                                                mk_str (|
+                                                                  "assertion failed: start + i + mem::size_of::<u16>() <= buf.len()"
                                                                 |)
                                                               ]
                                                             |)
@@ -1508,7 +1476,7 @@ Module hash.
                                     M.call_closure (|
                                       Ty.path "never",
                                       M.get_function (| "core::panicking::panic", [], [] |),
-                                      [ M.read (| Value.String "assertion failed: i == len" |) ]
+                                      [ mk_str (| "assertion failed: i == len" |) ]
                                     |)
                                   |)
                                 |)));
@@ -2602,9 +2570,8 @@ Module hash.
                                                                 []
                                                               |),
                                                               [
-                                                                M.read (|
-                                                                  Value.String
-                                                                    "assertion failed: i + mem::size_of::<u64>() <= msg.len()"
+                                                                mk_str (|
+                                                                  "assertion failed: i + mem::size_of::<u64>() <= msg.len()"
                                                                 |)
                                                               ]
                                                             |)
@@ -3220,10 +3187,7 @@ Module hash.
               M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "Sip13Rounds" |) |)
-                |)
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Sip13Rounds" |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -4753,10 +4717,7 @@ Module hash.
               M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "Sip24Rounds" |) |)
-                |)
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Sip24Rounds" |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"

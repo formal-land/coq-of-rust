@@ -108,9 +108,9 @@ Definition borrow_book (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
                             M.alloc (|
                               Value.Array
                                 [
-                                  M.read (| Value.String "I immutably borrowed " |);
-                                  M.read (| Value.String " - " |);
-                                  M.read (| Value.String " edition
+                                  mk_str (| "I immutably borrowed " |);
+                                  mk_str (| " - " |);
+                                  mk_str (| " edition
 " |)
                                 ]
                             |)
@@ -241,9 +241,9 @@ Definition new_edition (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
                             M.alloc (|
                               Value.Array
                                 [
-                                  M.read (| Value.String "I mutably borrowed " |);
-                                  M.read (| Value.String " - " |);
-                                  M.read (| Value.String " edition
+                                  mk_str (| "I mutably borrowed " |);
+                                  mk_str (| " - " |);
+                                  mk_str (| " edition
 " |)
                                 ]
                             |)
@@ -364,9 +364,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
             Value.StructRecord
               "scoping_rules_borrowing_mutablity::Book"
               [
-                ("author", M.read (| Value.String "Douglas Hofstadter" |));
-                ("title",
-                  M.read (| Value.String ("G" ++ (String.String "246" "del, Escher, Bach")) |));
+                ("author", mk_str (| "Douglas Hofstadter" |));
+                ("title", mk_str (| String.append "G" (String.String "246" "del, Escher, Bach") |));
                 ("year", Value.Integer IntegerKind.U32 1979)
               ]
           |) in

@@ -1287,9 +1287,8 @@ Module locals_safety.
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
                                         [
-                                          M.read (|
-                                            Value.String
-                                              "assertion failed: local_states.len() == all_local_abilities.len()"
+                                          mk_str (|
+                                            "assertion failed: local_states.len() == all_local_abilities.len()"
                                           |)
                                         ]
                                       |)

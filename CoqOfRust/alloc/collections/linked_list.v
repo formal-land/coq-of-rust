@@ -199,7 +199,7 @@ Module collections.
                                         |);
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.deref (| M.read (| Value.String "Iter" |) |)
+                                          M.deref (| mk_str (| "Iter" |) |)
                                         |)
                                       ]
                                     |)
@@ -507,7 +507,7 @@ Module collections.
                                         |);
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.deref (| M.read (| Value.String "IterMut" |) |)
+                                          M.deref (| mk_str (| "IterMut" |) |)
                                         |)
                                       ]
                                     |)
@@ -784,7 +784,7 @@ Module collections.
                                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "IntoIter" |) |)
+                                  M.deref (| mk_str (| "IntoIter" |) |)
                                 |)
                               ]
                             |)
@@ -5497,9 +5497,8 @@ Module collections.
                                               M.alloc (|
                                                 Value.Array
                                                   [
-                                                    M.read (|
-                                                      Value.String
-                                                        "Cannot split off at a nonexistent index"
+                                                    mk_str (|
+                                                      "Cannot split off at a nonexistent index"
                                                     |)
                                                   ]
                                               |)
@@ -6187,9 +6186,8 @@ Module collections.
                                           M.alloc (|
                                             Value.Array
                                               [
-                                                M.read (|
-                                                  Value.String
-                                                    "Cannot remove at an index outside of the list bounds"
+                                                mk_str (|
+                                                  "Cannot remove at an index outside of the list bounds"
                                                 |)
                                               ]
                                           |)
@@ -8990,7 +8988,7 @@ Module collections.
                                         |);
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.deref (| M.read (| Value.String "Cursor" |) |)
+                                          M.deref (| mk_str (| "Cursor" |) |)
                                         |)
                                       ]
                                     |)
@@ -9155,7 +9153,7 @@ Module collections.
                                         |);
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.deref (| M.read (| Value.String "CursorMut" |) |)
+                                          M.deref (| mk_str (| "CursorMut" |) |)
                                         |)
                                       ]
                                     |)
@@ -15525,7 +15523,7 @@ Module collections.
                                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "ExtractIf" |) |)
+                                  M.deref (| mk_str (| "ExtractIf" |) |)
                                 |)
                               ]
                             |)

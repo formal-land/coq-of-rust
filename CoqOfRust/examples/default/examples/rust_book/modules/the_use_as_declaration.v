@@ -32,10 +32,8 @@ Definition function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array [ M.read (| Value.String "called `function()`
-" |) ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "called `function()`
+" |) ] |)
                           |)
                         |)
                       |)
@@ -90,12 +88,8 @@ Module deeply.
                                 Pointer.Kind.Ref,
                                 M.alloc (|
                                   Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "called `deeply::nested::function()`
-"
-                                      |)
-                                    ]
+                                    [ mk_str (| "called `deeply::nested::function()`
+" |) ]
                                 |)
                               |)
                             |)
@@ -173,10 +167,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array [ M.read (| Value.String "Entering block
-" |) ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "Entering block
+" |) ] |)
                           |)
                         |)
                       |)
@@ -216,10 +208,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.deref (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.alloc (|
-                                Value.Array [ M.read (| Value.String "Leaving block
-" |) ]
-                              |)
+                              M.alloc (| Value.Array [ mk_str (| "Leaving block
+" |) ] |)
                             |)
                           |)
                         |)

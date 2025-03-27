@@ -6885,9 +6885,8 @@ Module signature.
                                                                                                                   M.alloc (|
                                                                                                                     Value.Array
                                                                                                                       [
-                                                                                                                        M.read (|
-                                                                                                                          Value.String
-                                                                                                                            "expected 1 type token for vector operations, got "
+                                                                                                                        mk_str (|
+                                                                                                                          "expected 1 type token for vector operations, got "
                                                                                                                         |)
                                                                                                                       ]
                                                                                                                   |)
@@ -7806,13 +7805,11 @@ Module signature.
                                                                                                     M.alloc (|
                                                                                                       Value.Array
                                                                                                         [
-                                                                                                          M.read (|
-                                                                                                            Value.String
-                                                                                                              "at offset "
+                                                                                                          mk_str (|
+                                                                                                            "at offset "
                                                                                                           |);
-                                                                                                          M.read (|
-                                                                                                            Value.String
-                                                                                                              " "
+                                                                                                          mk_str (|
+                                                                                                            " "
                                                                                                           |)
                                                                                                         ]
                                                                                                     |)
@@ -8771,9 +8768,8 @@ Module signature.
                                                       M.borrow (|
                                                         Pointer.Kind.Ref,
                                                         M.deref (|
-                                                          M.read (|
-                                                            Value.String
-                                                              "phantom type parameter cannot be used in non-phantom position"
+                                                          mk_str (|
+                                                            "phantom type parameter cannot be used in non-phantom position"
                                                           |)
                                                         |)
                                                       |)
@@ -9924,9 +9920,7 @@ Module signature.
                                           [
                                             M.borrow (|
                                               Pointer.Kind.Ref,
-                                              M.deref (|
-                                                M.read (| Value.String "reference not allowed" |)
-                                              |)
+                                              M.deref (| mk_str (| "reference not allowed" |) |)
                                             |)
                                           ]
                                         |)
@@ -11594,12 +11588,9 @@ Module signature.
                                                                   M.alloc (|
                                                                     Value.Array
                                                                       [
-                                                                        M.read (|
-                                                                          Value.String "expected "
-                                                                        |);
-                                                                        M.read (|
-                                                                          Value.String
-                                                                            " type argument(s), got "
+                                                                        mk_str (| "expected " |);
+                                                                        mk_str (|
+                                                                          " type argument(s), got "
                                                                         |)
                                                                       ]
                                                                   |)
@@ -12171,17 +12162,14 @@ Module signature.
                                                                                           M.alloc (|
                                                                                             Value.Array
                                                                                               [
-                                                                                                M.read (|
-                                                                                                  Value.String
-                                                                                                    "expected type with abilities "
+                                                                                                mk_str (|
+                                                                                                  "expected type with abilities "
                                                                                                 |);
-                                                                                                M.read (|
-                                                                                                  Value.String
-                                                                                                    " got type actual "
+                                                                                                mk_str (|
+                                                                                                  " got type actual "
                                                                                                 |);
-                                                                                                M.read (|
-                                                                                                  Value.String
-                                                                                                    " with incompatible abilities "
+                                                                                                mk_str (|
+                                                                                                  " with incompatible abilities "
                                                                                                 |)
                                                                                               ]
                                                                                           |)

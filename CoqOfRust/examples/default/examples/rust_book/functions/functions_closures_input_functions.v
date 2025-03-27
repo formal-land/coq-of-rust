@@ -69,10 +69,8 @@ Definition function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array [ M.read (| Value.String "I'm a function!
-" |) ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "I'm a function!
+" |) ] |)
                           |)
                         |)
                       |)
@@ -142,10 +140,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                 M.borrow (|
                                                   Pointer.Kind.Ref,
                                                   M.alloc (|
-                                                    Value.Array
-                                                      [ M.read (| Value.String "I'm a closure!
-" |)
-                                                      ]
+                                                    Value.Array [ mk_str (| "I'm a closure!
+" |) ]
                                                   |)
                                                 |)
                                               |)

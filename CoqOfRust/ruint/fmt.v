@@ -33,7 +33,7 @@ Module fmt.
       
       (*         const PREFIX: &'static str = "0b"; *)
       (* Ty.apply (Ty.path "&") [] [ Ty.path "str" ] *)
-      Definition value_PREFIX : Value.t := M.run ltac:(M.monadic (Value.String "0b")).
+      Definition value_PREFIX : Value.t := M.run ltac:(M.monadic (M.alloc (| mk_str (| "0b" |) |))).
       
       Axiom Implements :
         M.IsTraitInstance
@@ -76,7 +76,7 @@ Module fmt.
       
       (*         const PREFIX: &'static str = "0o"; *)
       (* Ty.apply (Ty.path "&") [] [ Ty.path "str" ] *)
-      Definition value_PREFIX : Value.t := M.run ltac:(M.monadic (Value.String "0o")).
+      Definition value_PREFIX : Value.t := M.run ltac:(M.monadic (M.alloc (| mk_str (| "0o" |) |))).
       
       Axiom Implements :
         M.IsTraitInstance
@@ -115,7 +115,7 @@ Module fmt.
       
       (*         const PREFIX: &'static str = ""; *)
       (* Ty.apply (Ty.path "&") [] [ Ty.path "str" ] *)
-      Definition value_PREFIX : Value.t := M.run ltac:(M.monadic (Value.String "")).
+      Definition value_PREFIX : Value.t := M.run ltac:(M.monadic (M.alloc (| mk_str (| "" |) |))).
       
       Axiom Implements :
         M.IsTraitInstance
@@ -158,7 +158,7 @@ Module fmt.
       
       (*         const PREFIX: &'static str = "0x"; *)
       (* Ty.apply (Ty.path "&") [] [ Ty.path "str" ] *)
-      Definition value_PREFIX : Value.t := M.run ltac:(M.monadic (Value.String "0x")).
+      Definition value_PREFIX : Value.t := M.run ltac:(M.monadic (M.alloc (| mk_str (| "0x" |) |))).
       
       Axiom Implements :
         M.IsTraitInstance
@@ -266,7 +266,7 @@ Module fmt.
                                         |);
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.deref (| M.read (| Value.String "0" |) |)
+                                          M.deref (| mk_str (| "0" |) |)
                                         |)
                                       ]
                                     |)
@@ -458,9 +458,7 @@ Module fmt.
                                                                 M.borrow (|
                                                                   Pointer.Kind.Ref,
                                                                   M.alloc (|
-                                                                    Value.Array
-                                                                      [ M.read (| Value.String "" |)
-                                                                      ]
+                                                                    Value.Array [ mk_str (| "" |) ]
                                                                   |)
                                                                 |)
                                                               |)
@@ -829,7 +827,7 @@ Module fmt.
                                         |);
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.deref (| M.read (| Value.String "0" |) |)
+                                          M.deref (| mk_str (| "0" |) |)
                                         |)
                                       ]
                                     |)
@@ -1021,9 +1019,7 @@ Module fmt.
                                                                 M.borrow (|
                                                                   Pointer.Kind.Ref,
                                                                   M.alloc (|
-                                                                    Value.Array
-                                                                      [ M.read (| Value.String "" |)
-                                                                      ]
+                                                                    Value.Array [ mk_str (| "" |) ]
                                                                   |)
                                                                 |)
                                                               |)
@@ -1339,7 +1335,7 @@ Module fmt.
                                         |);
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.deref (| M.read (| Value.String "0" |) |)
+                                          M.deref (| mk_str (| "0" |) |)
                                         |)
                                       ]
                                     |)
@@ -1531,9 +1527,7 @@ Module fmt.
                                                                 M.borrow (|
                                                                   Pointer.Kind.Ref,
                                                                   M.alloc (|
-                                                                    Value.Array
-                                                                      [ M.read (| Value.String "" |)
-                                                                      ]
+                                                                    Value.Array [ mk_str (| "" |) ]
                                                                   |)
                                                                 |)
                                                               |)
@@ -1849,7 +1843,7 @@ Module fmt.
                                         |);
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.deref (| M.read (| Value.String "0" |) |)
+                                          M.deref (| mk_str (| "0" |) |)
                                         |)
                                       ]
                                     |)
@@ -2041,9 +2035,7 @@ Module fmt.
                                                                 M.borrow (|
                                                                   Pointer.Kind.Ref,
                                                                   M.alloc (|
-                                                                    Value.Array
-                                                                      [ M.read (| Value.String "" |)
-                                                                      ]
+                                                                    Value.Array [ mk_str (| "" |) ]
                                                                   |)
                                                                 |)
                                                               |)
@@ -2359,7 +2351,7 @@ Module fmt.
                                         |);
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.deref (| M.read (| Value.String "0" |) |)
+                                          M.deref (| mk_str (| "0" |) |)
                                         |)
                                       ]
                                     |)
@@ -2551,9 +2543,7 @@ Module fmt.
                                                                 M.borrow (|
                                                                   Pointer.Kind.Ref,
                                                                   M.alloc (|
-                                                                    Value.Array
-                                                                      [ M.read (| Value.String "" |)
-                                                                      ]
+                                                                    Value.Array [ mk_str (| "" |) ]
                                                                   |)
                                                                 |)
                                                               |)

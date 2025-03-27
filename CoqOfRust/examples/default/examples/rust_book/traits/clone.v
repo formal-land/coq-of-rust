@@ -24,7 +24,7 @@ Module Impl_core_fmt_Debug_for_clone_Unit.
           M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Unit" |) |) |)
+            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Unit" |) |) |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
@@ -196,7 +196,7 @@ Module Impl_core_fmt_Debug_for_clone_Pair.
           |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Pair" |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Pair" |) |) |);
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -307,12 +307,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "original: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "original: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -372,12 +368,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array
-                                [ M.read (| Value.String "copy: " |); M.read (| Value.String "
-" |)
-                                ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "copy: " |); mk_str (| "
+" |) ] |)
                           |)
                         |)
                       |);
@@ -476,12 +468,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "original: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "original: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -542,12 +530,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array
-                                [ M.read (| Value.String "moved: " |); M.read (| Value.String "
-" |)
-                                ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "moved: " |); mk_str (| "
+" |) ] |)
                           |)
                         |)
                       |);
@@ -630,12 +614,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array
-                                [ M.read (| Value.String "clone: " |); M.read (| Value.String "
-" |)
-                                ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "clone: " |); mk_str (| "
+" |) ] |)
                           |)
                         |)
                       |);

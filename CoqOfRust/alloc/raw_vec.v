@@ -29,7 +29,7 @@ Module raw_vec.
                   M.deref (|
                     M.borrow (|
                       Pointer.Kind.Ref,
-                      M.alloc (| Value.Array [ M.read (| Value.String "capacity overflow" |) ] |)
+                      M.alloc (| Value.Array [ mk_str (| "capacity overflow" |) ] |)
                     |)
                   |)
                 |)
@@ -785,9 +785,8 @@ Module raw_vec.
                                                   M.alloc (|
                                                     Value.Array
                                                       [
-                                                        M.read (|
-                                                          Value.String
-                                                            "`len` must be smaller than or equal to `self.capacity()`"
+                                                        mk_str (|
+                                                          "`len` must be smaller than or equal to `self.capacity()`"
                                                         |)
                                                       ]
                                                   |)
@@ -3818,11 +3817,7 @@ Module raw_vec.
                                         M.call_closure (|
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
-                                          [
-                                            M.read (|
-                                              Value.String "assertion failed: additional > 0"
-                                            |)
-                                          ]
+                                          [ mk_str (| "assertion failed: additional > 0" |) ]
                                         |)
                                       |)
                                     |)));
@@ -4991,11 +4986,7 @@ Module raw_vec.
                                         Pointer.Kind.Ref,
                                         M.alloc (|
                                           Value.Array
-                                            [
-                                              M.read (|
-                                                Value.String "Tried to shrink to a larger capacity"
-                                              |)
-                                            ]
+                                            [ mk_str (| "Tried to shrink to a larger capacity" |) ]
                                         |)
                                       |)
                                     |)

@@ -473,58 +473,58 @@ Module binary_config.
                       M.alloc (|
                         Value.Array
                           [
-                            M.read (| Value.String "module_handles" |);
+                            mk_str (| "module_handles" |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "struct_handles" |) |)
+                              M.deref (| mk_str (| "struct_handles" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "function_handles" |) |)
+                              M.deref (| mk_str (| "function_handles" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "function_instantiations" |) |)
+                              M.deref (| mk_str (| "function_instantiations" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "signatures" |) |)
+                              M.deref (| mk_str (| "signatures" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "constant_pool" |) |)
+                              M.deref (| mk_str (| "constant_pool" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "identifiers" |) |)
+                              M.deref (| mk_str (| "identifiers" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "address_identifiers" |) |)
+                              M.deref (| mk_str (| "address_identifiers" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "struct_defs" |) |)
+                              M.deref (| mk_str (| "struct_defs" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "struct_def_instantiations" |) |)
+                              M.deref (| mk_str (| "struct_def_instantiations" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "function_defs" |) |)
+                              M.deref (| mk_str (| "function_defs" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "field_handles" |) |)
+                              M.deref (| mk_str (| "field_handles" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "field_instantiations" |) |)
+                              M.deref (| mk_str (| "field_instantiations" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "friend_decls" |) |)
+                              M.deref (| mk_str (| "friend_decls" |) |)
                             |)
                           ]
                       |)
@@ -758,10 +758,7 @@ Module binary_config.
                 |),
                 [
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (| M.read (| Value.String "TableConfig" |) |)
-                  |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "TableConfig" |) |) |);
                   M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| names |) |) |);
                   M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| values |) |) |)
                 ]
@@ -978,13 +975,10 @@ Module binary_config.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BinaryConfig" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "BinaryConfig" |) |)
-              |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "max_binary_format_version" |) |)
+                M.deref (| mk_str (| "max_binary_format_version" |) |)
               |);
               M.borrow (|
                 Pointer.Kind.Ref,
@@ -1001,7 +995,7 @@ Module binary_config.
               |);
               M.borrow (|
                 Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "check_no_extraneous_bytes" |) |)
+                M.deref (| mk_str (| "check_no_extraneous_bytes" |) |)
               |);
               M.borrow (|
                 Pointer.Kind.Ref,
@@ -1016,10 +1010,7 @@ Module binary_config.
                   |)
                 |)
               |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "table_config" |) |)
-              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "table_config" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|

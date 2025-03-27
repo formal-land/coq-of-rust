@@ -164,16 +164,13 @@ Module iter.
                                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.deref (| M.read (| Value.String "FilterMap" |) |)
+                                    M.deref (| mk_str (| "FilterMap" |) |)
                                   |)
                                 ]
                               |)
                             |)
                           |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "iter" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "iter" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (|

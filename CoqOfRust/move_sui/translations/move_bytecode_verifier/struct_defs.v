@@ -2618,9 +2618,8 @@ Module struct_defs.
                                                         M.borrow (|
                                                           Pointer.Kind.Ref,
                                                           M.deref (|
-                                                            M.read (|
-                                                              Value.String
-                                                                "Reference field when checking recursive structs"
+                                                            mk_str (|
+                                                              "Reference field when checking recursive structs"
                                                             |)
                                                           |)
                                                         |)

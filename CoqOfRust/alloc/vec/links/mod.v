@@ -97,25 +97,37 @@ Module Impl_Vec_T_A.
   (*
     pub const fn len(&self) -> usize
   *)
-  Instance run_len {T A : Set} `{Link T} `{Link A} (self : Ref.t Pointer.Kind.Ref (Self T A)) : 
+  Instance run_len {T A : Set} `{Link T} `{Link A} (self : Ref.t Pointer.Kind.Ref (Self T A)) :
     Run.Trait (vec.Impl_alloc_vec_Vec_T_A.len (Φ T) (Φ A)) [] [] [φ self] Usize.t.
   Admitted.
 
   (* pub const fn is_empty(&self) -> bool *)
-  Instance run_is_empty {T A : Set} `{Link T} `{Link A} (self : Ref.t Pointer.Kind.Ref (Self T A)) : 
+  Instance run_is_empty {T A : Set} `{Link T} `{Link A} (self : Ref.t Pointer.Kind.Ref (Self T A)) :
     Run.Trait (vec.Impl_alloc_vec_Vec_T_A.is_empty (Φ T) (Φ A)) [] [] [φ self] bool.
   Admitted.
 
   (* pub fn pop(&mut self) -> Option<T> *)
-  Instance run_pop {T A : Set} `{Link T} `{Link A} (self : Ref.t Pointer.Kind.MutRef (Self T A)) : 
+  Instance run_pop {T A : Set} `{Link T} `{Link A} (self : Ref.t Pointer.Kind.MutRef (Self T A)) :
     Run.Trait (vec.Impl_alloc_vec_Vec_T_A.pop (Φ T) (Φ A)) [] [] [φ self] (option T).
+  Admitted.
+
+  (* pub const fn capacity(&self) -> usize *)
+  Instance run_capacity {T A : Set} `{Link T} `{Link A} (self : Ref.t Pointer.Kind.Ref (Self T A)) :
+    Run.Trait (vec.Impl_alloc_vec_Vec_T_A.capacity (Φ T) (Φ A)) [] [] [φ self] Usize.t.
+  Admitted.
+
+  (* pub fn push(&mut self, value: T) *)
+  Instance run_push {T A : Set} `{Link T} `{Link A}
+      (self : Ref.t Pointer.Kind.MutRef (Self T A))
+      (value : T) :
+    Run.Trait (vec.Impl_alloc_vec_Vec_T_A.push (Φ T) (Φ A)) [] [] [φ self; φ value] unit.
   Admitted.
 End Impl_Vec_T_A.
 
 Module Impl_Index_for_Vec_T_A.
   Definition Self := Vec.t.
   
-  Instance run {T I A Output : Set} `{Link T} `{Link I} `{Link A} `{Link Output} :
+  Instance run (T I A Output : Set) `{Link T} `{Link I} `{Link A} `{Link Output} :
     index.Index.Run (Self T A) I Output.
   Admitted.
 End Impl_Index_for_Vec_T_A.

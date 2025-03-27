@@ -260,13 +260,11 @@ Module bls12_381.
                                                                       M.alloc (|
                                                                         Value.Array
                                                                           [
-                                                                            M.read (|
-                                                                              Value.String
-                                                                                "G2MUL input should be "
+                                                                            mk_str (|
+                                                                              "G2MUL input should be "
                                                                             |);
-                                                                            M.read (|
-                                                                              Value.String
-                                                                                " bytes, was "
+                                                                            mk_str (|
+                                                                              " bytes, was "
                                                                             |)
                                                                           ]
                                                                       |)

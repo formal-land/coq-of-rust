@@ -92,9 +92,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.alloc (|
                               Value.Array
                                 [
-                                  M.read (| Value.String "the square root of " |);
-                                  M.read (| Value.String " is " |);
-                                  M.read (| Value.String "
+                                  mk_str (| "the square root of " |);
+                                  mk_str (| " is " |);
+                                  mk_str (| "
 " |)
                                 ]
                             |)
@@ -173,12 +173,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             Pointer.Kind.Ref,
                             M.alloc (|
                               Value.Array
-                                [
-                                  M.read (| Value.String "cos(" |);
-                                  M.read (| Value.String ") = " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                                [ mk_str (| "cos(" |); mk_str (| ") = " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -380,11 +376,7 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
                                   Pointer.Kind.Ref,
                                   M.alloc (|
                                     Value.Array
-                                      [
-                                        M.read (| Value.String "" |);
-                                        M.read (| Value.String "-" |);
-                                        M.read (| Value.String "i" |)
-                                      ]
+                                      [ mk_str (| "" |); mk_str (| "-" |); mk_str (| "i" |) ]
                                   |)
                                 |)
                               |)
@@ -494,11 +486,7 @@ Module Impl_core_fmt_Debug_for_foreign_function_interface_Complex.
                                   Pointer.Kind.Ref,
                                   M.alloc (|
                                     Value.Array
-                                      [
-                                        M.read (| Value.String "" |);
-                                        M.read (| Value.String "+" |);
-                                        M.read (| Value.String "i" |)
-                                      ]
+                                      [ mk_str (| "" |); mk_str (| "+" |); mk_str (| "i" |) ]
                                   |)
                                 |)
                               |)

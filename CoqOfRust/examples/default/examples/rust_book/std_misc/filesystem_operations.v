@@ -550,7 +550,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (| Value.Array [ M.read (| Value.String "`mkdir a`
+                            M.alloc (| Value.Array [ mk_str (| "`mkdir a`
 " |) ] |)
                           |)
                         |)
@@ -575,7 +575,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   [],
                   [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                 |),
-                [ M.read (| Value.String "a" |) ]
+                [ mk_str (| "a" |) ]
               |)
             |),
             [
@@ -606,12 +606,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "! " |);
-                                          M.read (| Value.String "
-" |)
-                                        ]
+                                      Value.Array [ mk_str (| "! " |); mk_str (| "
+" |) ]
                                     |)
                                   |)
                                 |)
@@ -694,10 +690,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array [ M.read (| Value.String "`echo hello > a/b.txt`
-" |) ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "`echo hello > a/b.txt`
+" |) ] |)
                           |)
                         |)
                       |)
@@ -728,10 +722,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     [ Ty.tuple []; Ty.path "std::io::error::Error" ],
                   M.get_function (| "filesystem_operations::echo", [], [] |),
                   [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (| M.read (| Value.String "hello" |) |)
-                    |);
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "hello" |) |) |);
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.deref (|
@@ -751,7 +742,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   [
                                     M.borrow (|
                                       Pointer.Kind.Ref,
-                                      M.deref (| M.read (| Value.String "a/b.txt" |) |)
+                                      M.deref (| mk_str (| "a/b.txt" |) |)
                                     |)
                                   ]
                                 |)
@@ -806,11 +797,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                         Pointer.Kind.Ref,
                                                         M.alloc (|
                                                           Value.Array
-                                                            [
-                                                              M.read (| Value.String "! " |);
-                                                              M.read (| Value.String "
-" |)
-                                                            ]
+                                                            [ mk_str (| "! " |); mk_str (| "
+" |) ]
                                                         |)
                                                       |)
                                                     |)
@@ -905,10 +893,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array [ M.read (| Value.String "`mkdir -p a/c/d`
-" |) ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "`mkdir -p a/c/d`
+" |) ] |)
                           |)
                         |)
                       |)
@@ -942,7 +928,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     [],
                     [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                   |),
-                  [ M.read (| Value.String "a/c/d" |) ]
+                  [ mk_str (| "a/c/d" |) ]
                 |);
                 M.closure
                   (fun γ =>
@@ -987,11 +973,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                         Pointer.Kind.Ref,
                                                         M.alloc (|
                                                           Value.Array
-                                                            [
-                                                              M.read (| Value.String "! " |);
-                                                              M.read (| Value.String "
-" |)
-                                                            ]
+                                                            [ mk_str (| "! " |); mk_str (| "
+" |) ]
                                                         |)
                                                       |)
                                                     |)
@@ -1086,10 +1069,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array [ M.read (| Value.String "`touch a/c/e.txt`
-" |) ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "`touch a/c/e.txt`
+" |) ] |)
                           |)
                         |)
                       |)
@@ -1139,7 +1120,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   [
                                     M.borrow (|
                                       Pointer.Kind.Ref,
-                                      M.deref (| M.read (| Value.String "a/c/e.txt" |) |)
+                                      M.deref (| mk_str (| "a/c/e.txt" |) |)
                                     |)
                                   ]
                                 |)
@@ -1194,11 +1175,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                         Pointer.Kind.Ref,
                                                         M.alloc (|
                                                           Value.Array
-                                                            [
-                                                              M.read (| Value.String "! " |);
-                                                              M.read (| Value.String "
-" |)
-                                                            ]
+                                                            [ mk_str (| "! " |); mk_str (| "
+" |) ]
                                                         |)
                                                       |)
                                                     |)
@@ -1293,11 +1271,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array
-                                [ M.read (| Value.String "`ln -s ../b.txt a/c/b.txt`
-" |) ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "`ln -s ../b.txt a/c/b.txt`
+" |) ] |)
                           |)
                         |)
                       |)
@@ -1347,10 +1322,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
                               ]
                             |),
-                            [
-                              M.read (| Value.String "../b.txt" |);
-                              M.read (| Value.String "a/c/b.txt" |)
-                            ]
+                            [ mk_str (| "../b.txt" |); mk_str (| "a/c/b.txt" |) ]
                           |);
                           M.closure
                             (fun γ =>
@@ -1400,13 +1372,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                   M.alloc (|
                                                                     Value.Array
                                                                       [
-                                                                        M.read (|
-                                                                          Value.String "! "
-                                                                        |);
-                                                                        M.read (|
-                                                                          Value.String "
-"
-                                                                        |)
+                                                                        mk_str (| "! " |);
+                                                                        mk_str (| "
+" |)
                                                                       ]
                                                                   |)
                                                                 |)
@@ -1508,10 +1476,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array [ M.read (| Value.String "`cat a/c/b.txt`
-" |) ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "`cat a/c/b.txt`
+" |) ] |)
                           |)
                         |)
                       |)
@@ -1551,7 +1517,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 [
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.deref (| M.read (| Value.String "a/c/b.txt" |) |)
+                                    M.deref (| mk_str (| "a/c/b.txt" |) |)
                                   |)
                                 ]
                               |)
@@ -1592,12 +1558,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "! " |);
-                                          M.read (| Value.String "
-" |)
-                                        ]
+                                      Value.Array [ mk_str (| "! " |); mk_str (| "
+" |) ]
                                     |)
                                   |)
                                 |)
@@ -1679,12 +1641,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "> " |);
-                                          M.read (| Value.String "
-" |)
-                                        ]
+                                      Value.Array [ mk_str (| "> " |); mk_str (| "
+" |) ]
                                     |)
                                   |)
                                 |)
@@ -1746,7 +1704,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (| Value.Array [ M.read (| Value.String "`ls a`
+                            M.alloc (| Value.Array [ mk_str (| "`ls a`
 " |) ] |)
                           |)
                         |)
@@ -1771,7 +1729,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                   [],
                   [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                 |),
-                [ M.read (| Value.String "a" |) ]
+                [ mk_str (| "a" |) ]
               |)
             |),
             [
@@ -1802,12 +1760,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "! " |);
-                                          M.read (| Value.String "
-" |)
-                                        ]
+                                      Value.Array [ mk_str (| "! " |); mk_str (| "
+" |) ]
                                     |)
                                   |)
                                 |)
@@ -1977,8 +1931,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                               M.alloc (|
                                                                 Value.Array
                                                                   [
-                                                                    M.read (| Value.String "> " |);
-                                                                    M.read (| Value.String "
+                                                                    mk_str (| "> " |);
+                                                                    mk_str (| "
 " |)
                                                                   ]
                                                               |)
@@ -2102,10 +2056,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array [ M.read (| Value.String "`rm a/c/e.txt`
-" |) ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "`rm a/c/e.txt`
+" |) ] |)
                           |)
                         |)
                       |)
@@ -2139,7 +2091,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     [],
                     [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                   |),
-                  [ M.read (| Value.String "a/c/e.txt" |) ]
+                  [ mk_str (| "a/c/e.txt" |) ]
                 |);
                 M.closure
                   (fun γ =>
@@ -2184,11 +2136,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                         Pointer.Kind.Ref,
                                                         M.alloc (|
                                                           Value.Array
-                                                            [
-                                                              M.read (| Value.String "! " |);
-                                                              M.read (| Value.String "
-" |)
-                                                            ]
+                                                            [ mk_str (| "! " |); mk_str (| "
+" |) ]
                                                         |)
                                                       |)
                                                     |)
@@ -2283,7 +2232,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (| Value.Array [ M.read (| Value.String "`rmdir a/c/d`
+                            M.alloc (| Value.Array [ mk_str (| "`rmdir a/c/d`
 " |) ] |)
                           |)
                         |)
@@ -2318,7 +2267,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                     [],
                     [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                   |),
-                  [ M.read (| Value.String "a/c/d" |) ]
+                  [ mk_str (| "a/c/d" |) ]
                 |);
                 M.closure
                   (fun γ =>
@@ -2363,11 +2312,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                         Pointer.Kind.Ref,
                                                         M.alloc (|
                                                           Value.Array
-                                                            [
-                                                              M.read (| Value.String "! " |);
-                                                              M.read (| Value.String "
-" |)
-                                                            ]
+                                                            [ mk_str (| "! " |); mk_str (| "
+" |) ]
                                                         |)
                                                       |)
                                                     |)

@@ -588,9 +588,8 @@ Module borrow.
                                                             []
                                                           |),
                                                           [
-                                                            M.read (|
-                                                              Value.String
-                                                                "internal error: entered unreachable code"
+                                                            mk_str (|
+                                                              "internal error: entered unreachable code"
                                                             |)
                                                           ]
                                                         |)

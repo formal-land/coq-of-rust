@@ -252,10 +252,7 @@ Module sync.
                           let _ :=
                             M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Relaxed" |) in
                           M.alloc (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Relaxed" |) |)
-                            |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Relaxed" |) |) |)
                           |)));
                       fun γ =>
                         ltac:(M.monadic
@@ -263,10 +260,7 @@ Module sync.
                           let _ :=
                             M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Release" |) in
                           M.alloc (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Release" |) |)
-                            |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Release" |) |) |)
                           |)));
                       fun γ =>
                         ltac:(M.monadic
@@ -274,10 +268,7 @@ Module sync.
                           let _ :=
                             M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::Acquire" |) in
                           M.alloc (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Acquire" |) |)
-                            |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Acquire" |) |) |)
                           |)));
                       fun γ =>
                         ltac:(M.monadic
@@ -285,10 +276,7 @@ Module sync.
                           let _ :=
                             M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::AcqRel" |) in
                           M.alloc (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "AcqRel" |) |)
-                            |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "AcqRel" |) |) |)
                           |)));
                       fun γ =>
                         ltac:(M.monadic
@@ -296,10 +284,7 @@ Module sync.
                           let _ :=
                             M.is_struct_tuple (| γ, "core::sync::atomic::Ordering::SeqCst" |) in
                           M.alloc (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "SeqCst" |) |)
-                            |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "SeqCst" |) |) |)
                           |)))
                     ]
                   |)
@@ -1273,9 +1258,8 @@ Module sync.
                                                     M.alloc (|
                                                       Value.Array
                                                         [
-                                                          M.read (|
-                                                            Value.String
-                                                              "there is no such thing as an acquire-release failure ordering"
+                                                          mk_str (|
+                                                            "there is no such thing as an acquire-release failure ordering"
                                                           |)
                                                         ]
                                                     |)
@@ -1378,9 +1362,8 @@ Module sync.
                                                     M.alloc (|
                                                       Value.Array
                                                         [
-                                                          M.read (|
-                                                            Value.String
-                                                              "there is no such thing as a release failure ordering"
+                                                          mk_str (|
+                                                            "there is no such thing as a release failure ordering"
                                                           |)
                                                         ]
                                                     |)
@@ -18408,9 +18391,8 @@ Module sync.
                                       M.alloc (|
                                         Value.Array
                                           [
-                                            M.read (|
-                                              Value.String
-                                                "there is no such thing as an acquire store"
+                                            mk_str (|
+                                              "there is no such thing as an acquire store"
                                             |)
                                           ]
                                       |)
@@ -18449,9 +18431,8 @@ Module sync.
                                       M.alloc (|
                                         Value.Array
                                           [
-                                            M.read (|
-                                              Value.String
-                                                "there is no such thing as an acquire-release store"
+                                            mk_str (|
+                                              "there is no such thing as an acquire-release store"
                                             |)
                                           ]
                                       |)
@@ -18555,11 +18536,7 @@ Module sync.
                                       Pointer.Kind.Ref,
                                       M.alloc (|
                                         Value.Array
-                                          [
-                                            M.read (|
-                                              Value.String
-                                                "there is no such thing as a release load"
-                                            |)
+                                          [ mk_str (| "there is no such thing as a release load" |)
                                           ]
                                       |)
                                     |)
@@ -18597,9 +18574,8 @@ Module sync.
                                       M.alloc (|
                                         Value.Array
                                           [
-                                            M.read (|
-                                              Value.String
-                                                "there is no such thing as an acquire-release load"
+                                            mk_str (|
+                                              "there is no such thing as an acquire-release load"
                                             |)
                                           ]
                                       |)
@@ -19247,9 +19223,8 @@ Module sync.
                                         M.alloc (|
                                           Value.Array
                                             [
-                                              M.read (|
-                                                Value.String
-                                                  "there is no such thing as an acquire-release failure ordering"
+                                              mk_str (|
+                                                "there is no such thing as an acquire-release failure ordering"
                                               |)
                                             ]
                                         |)
@@ -19291,9 +19266,8 @@ Module sync.
                                         M.alloc (|
                                           Value.Array
                                             [
-                                              M.read (|
-                                                Value.String
-                                                  "there is no such thing as a release failure ordering"
+                                              mk_str (|
+                                                "there is no such thing as a release failure ordering"
                                               |)
                                             ]
                                         |)
@@ -19712,9 +19686,8 @@ Module sync.
                                         M.alloc (|
                                           Value.Array
                                             [
-                                              M.read (|
-                                                Value.String
-                                                  "there is no such thing as an acquire-release failure ordering"
+                                              mk_str (|
+                                                "there is no such thing as an acquire-release failure ordering"
                                               |)
                                             ]
                                         |)
@@ -19756,9 +19729,8 @@ Module sync.
                                         M.alloc (|
                                           Value.Array
                                             [
-                                              M.read (|
-                                                Value.String
-                                                  "there is no such thing as a release failure ordering"
+                                              mk_str (|
+                                                "there is no such thing as a release failure ordering"
                                               |)
                                             ]
                                         |)
@@ -20597,11 +20569,7 @@ Module sync.
                                       Pointer.Kind.Ref,
                                       M.alloc (|
                                         Value.Array
-                                          [
-                                            M.read (|
-                                              Value.String
-                                                "there is no such thing as a relaxed fence"
-                                            |)
+                                          [ mk_str (| "there is no such thing as a relaxed fence" |)
                                           ]
                                       |)
                                     |)
@@ -20730,9 +20698,8 @@ Module sync.
                                       M.alloc (|
                                         Value.Array
                                           [
-                                            M.read (|
-                                              Value.String
-                                                "there is no such thing as a relaxed compiler fence"
+                                            mk_str (|
+                                              "there is no such thing as a relaxed compiler fence"
                                             |)
                                           ]
                                       |)

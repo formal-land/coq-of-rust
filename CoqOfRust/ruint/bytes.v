@@ -463,9 +463,8 @@ Module bytes.
                                               M.alloc (|
                                                 Value.Array
                                                   [
-                                                    M.read (|
-                                                      Value.String
-                                                        "BYTES must be equal to Self::BYTES"
+                                                    mk_str (|
+                                                      "BYTES must be equal to Self::BYTES"
                                                     |)
                                                   ]
                                               |)
@@ -1049,11 +1048,7 @@ Module bytes.
                                         Pointer.Kind.Ref,
                                         M.alloc (|
                                           Value.Array
-                                            [
-                                              M.read (|
-                                                Value.String "BYTES must be equal to Self::BYTES"
-                                              |)
-                                            ]
+                                            [ mk_str (| "BYTES must be equal to Self::BYTES" |) ]
                                         |)
                                       |)
                                     |)
@@ -1166,8 +1161,7 @@ Module bytes.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
-                                        Value.Array
-                                          [ M.read (| Value.String "Value too large for Uint" |) ]
+                                        Value.Array [ mk_str (| "Value too large for Uint" |) ]
                                       |)
                                     |)
                                   |)
@@ -1777,11 +1771,7 @@ Module bytes.
                                         Pointer.Kind.Ref,
                                         M.alloc (|
                                           Value.Array
-                                            [
-                                              M.read (|
-                                                Value.String "BYTES must be equal to Self::BYTES"
-                                              |)
-                                            ]
+                                            [ mk_str (| "BYTES must be equal to Self::BYTES" |) ]
                                         |)
                                       |)
                                     |)
@@ -1894,8 +1884,7 @@ Module bytes.
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
-                                        Value.Array
-                                          [ M.read (| Value.String "Value too large for Uint" |) ]
+                                        Value.Array [ mk_str (| "Value too large for Uint" |) ]
                                       |)
                                     |)
                                   |)

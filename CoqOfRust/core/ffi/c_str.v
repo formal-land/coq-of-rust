@@ -339,11 +339,8 @@ Module ffi.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "FromBytesWithNulError" |) |)
-                |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "kind" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "FromBytesWithNulError" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "kind" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -663,7 +660,7 @@ Module ffi.
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "InteriorNul" |) |)
+                              M.deref (| mk_str (| "InteriorNul" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
@@ -696,7 +693,7 @@ Module ffi.
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "NotNulTerminated" |) |)
+                              M.deref (| mk_str (| "NotNulTerminated" |) |)
                             |)
                           ]
                         |)
@@ -808,9 +805,7 @@ Module ffi.
                       M.alloc (|
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.deref (|
-                            M.read (| Value.String "data provided contains an interior nul byte" |)
-                          |)
+                          M.deref (| mk_str (| "data provided contains an interior nul byte" |) |)
                         |)
                       |)));
                   fun γ =>
@@ -823,9 +818,7 @@ Module ffi.
                       M.alloc (|
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.deref (|
-                            M.read (| Value.String "data provided is not nul terminated" |)
-                          |)
+                          M.deref (| mk_str (| "data provided is not nul terminated" |) |)
                         |)
                       |)))
                 ]
@@ -1025,7 +1018,7 @@ Module ffi.
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "FromBytesUntilNulError" |) |)
+                  M.deref (| mk_str (| "FromBytesUntilNulError" |) |)
                 |);
                 M.borrow (|
                   Pointer.Kind.Ref,
@@ -1096,8 +1089,7 @@ Module ffi.
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.alloc (|
-                            Value.Array
-                              [ M.read (| Value.String "data provided does not contain a nul" |) ]
+                            Value.Array [ mk_str (| "data provided does not contain a nul" |) ]
                           |)
                         |)
                       |)
@@ -1154,10 +1146,7 @@ Module ffi.
                       M.deref (|
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.alloc (|
-                            Value.Array
-                              [ M.read (| Value.String """" |); M.read (| Value.String """" |) ]
-                          |)
+                          M.alloc (| Value.Array [ mk_str (| """" |); mk_str (| """" |) ] |)
                         |)
                       |)
                     |);
@@ -1541,9 +1530,7 @@ Module ffi.
                                                   M.borrow (|
                                                     Pointer.Kind.Ref,
                                                     M.alloc (|
-                                                      Value.Array
-                                                        [ M.read (| Value.String " at byte pos " |)
-                                                        ]
+                                                      Value.Array [ mk_str (| " at byte pos " |) ]
                                                     |)
                                                   |)
                                                 |)
@@ -2867,10 +2854,8 @@ Module ffi.
                                         M.alloc (|
                                           Value.Array
                                             [
-                                              M.read (|
-                                                Value.String "index out of bounds: the len is "
-                                              |);
-                                              M.read (| Value.String " but the index is " |)
+                                              mk_str (| "index out of bounds: the len is " |);
+                                              mk_str (| " but the index is " |)
                                             ]
                                         |)
                                       |)
@@ -3199,8 +3184,8 @@ Module ffi.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Bytes" |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "ptr" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Bytes" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ptr" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -3214,7 +3199,7 @@ Module ffi.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "phantom" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "phantom" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|

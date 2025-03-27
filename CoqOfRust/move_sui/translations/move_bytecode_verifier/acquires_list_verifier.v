@@ -766,9 +766,8 @@ Module acquires_list_verifier.
                                                                                             M.alloc (|
                                                                                               Value.Array
                                                                                                 [
-                                                                                                  M.read (|
-                                                                                                    Value.String
-                                                                                                      "crates/move-bytecode-verifier/src/acquires_list_verifier.rs:59 (none)"
+                                                                                                  mk_str (|
+                                                                                                    "crates/move-bytecode-verifier/src/acquires_list_verifier.rs:59 (none)"
                                                                                                   |)
                                                                                                 ]
                                                                                             |)
@@ -878,9 +877,8 @@ Module acquires_list_verifier.
                                                                                       M.alloc (|
                                                                                         Value.Array
                                                                                           [
-                                                                                            M.read (|
-                                                                                              Value.String
-                                                                                                ""
+                                                                                            mk_str (|
+                                                                                              ""
                                                                                             |)
                                                                                           ]
                                                                                       |)
@@ -1558,9 +1556,8 @@ Module acquires_list_verifier.
                                                                                       M.alloc (|
                                                                                         Value.Array
                                                                                           [
-                                                                                            M.read (|
-                                                                                              Value.String
-                                                                                                "crates/move-bytecode-verifier/src/acquires_list_verifier.rs:74 (none)"
+                                                                                            mk_str (|
+                                                                                              "crates/move-bytecode-verifier/src/acquires_list_verifier.rs:74 (none)"
                                                                                             |)
                                                                                           ]
                                                                                       |)
@@ -1668,9 +1665,8 @@ Module acquires_list_verifier.
                                                                                 M.alloc (|
                                                                                   Value.Array
                                                                                     [
-                                                                                      M.read (|
-                                                                                        Value.String
-                                                                                          ""
+                                                                                      mk_str (|
+                                                                                        ""
                                                                                       |)
                                                                                     ]
                                                                                 |)

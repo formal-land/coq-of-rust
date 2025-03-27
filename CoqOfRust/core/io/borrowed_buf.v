@@ -116,9 +116,7 @@ Module io.
                                                 |);
                                                 M.borrow (|
                                                   Pointer.Kind.Ref,
-                                                  M.deref (|
-                                                    M.read (| Value.String "BorrowedBuf" |)
-                                                  |)
+                                                  M.deref (| mk_str (| "BorrowedBuf" |) |)
                                                 |)
                                               ]
                                             |)
@@ -126,7 +124,7 @@ Module io.
                                         |);
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.deref (| M.read (| Value.String "init" |) |)
+                                          M.deref (| mk_str (| "init" |) |)
                                         |);
                                         M.borrow (|
                                           Pointer.Kind.Ref,
@@ -147,7 +145,7 @@ Module io.
                                 |);
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "filled" |) |)
+                                  M.deref (| mk_str (| "filled" |) |)
                                 |);
                                 M.borrow (|
                                   Pointer.Kind.Ref,
@@ -166,10 +164,7 @@ Module io.
                             |)
                           |)
                         |);
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "capacity" |) |)
-                        |);
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "capacity" |) |) |);
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.deref (|
@@ -1195,11 +1190,8 @@ Module io.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "BorrowedCursor" |) |)
-                |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "buf" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BorrowedCursor" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "buf" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -1213,7 +1205,7 @@ Module io.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "start" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "start" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -2048,11 +2040,7 @@ Module io.
                                 M.call_closure (|
                                   Ty.path "never",
                                   M.get_function (| "core::panicking::panic", [], [] |),
-                                  [
-                                    M.read (|
-                                      Value.String "assertion failed: filled <= self.buf.init"
-                                    |)
-                                  ]
+                                  [ mk_str (| "assertion failed: filled <= self.buf.init" |) ]
                                 |)
                               |)
                             |)));
@@ -2536,11 +2524,7 @@ Module io.
                             M.call_closure (|
                               Ty.path "never",
                               M.get_function (| "core::panicking::panic", [], [] |),
-                              [
-                                M.read (|
-                                  Value.String "assertion failed: self.capacity() >= buf.len()"
-                                |)
-                              ]
+                              [ mk_str (| "assertion failed: self.capacity() >= buf.len()" |) ]
                             |)
                           |)
                         |)));

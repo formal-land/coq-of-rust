@@ -248,9 +248,8 @@ Module eof.
                                                                             M.alloc (|
                                                                               Value.Array
                                                                                 [
-                                                                                  M.read (|
-                                                                                    Value.String
-                                                                                      "Malformed code: immediate out of bounds
+                                                                                  mk_str (|
+                                                                                    "Malformed code: immediate out of bounds
 "
                                                                                   |)
                                                                                 ]
@@ -299,9 +298,7 @@ Module eof.
                                                 M.deref (|
                                                   M.borrow (|
                                                     Pointer.Kind.Ref,
-                                                    M.alloc (|
-                                                      Value.Array [ M.read (| Value.String "" |) ]
-                                                    |)
+                                                    M.alloc (| Value.Array [ mk_str (| "" |) ] |)
                                                   |)
                                                 |)
                                               |);
@@ -517,12 +514,7 @@ Module eof.
                                                             M.borrow (|
                                                               Pointer.Kind.Ref,
                                                               M.alloc (|
-                                                                Value.Array
-                                                                  [
-                                                                    M.read (|
-                                                                      Value.String " : 0x"
-                                                                    |)
-                                                                  ]
+                                                                Value.Array [ mk_str (| " : 0x" |) ]
                                                               |)
                                                             |)
                                                           |)
@@ -666,12 +658,8 @@ Module eof.
                                                                       M.alloc (|
                                                                         Value.Array
                                                                           [
-                                                                            M.read (|
-                                                                              Value.String " ("
-                                                                            |);
-                                                                            M.read (|
-                                                                              Value.String ")"
-                                                                            |)
+                                                                            mk_str (| " (" |);
+                                                                            mk_str (| ")" |)
                                                                           ]
                                                                       |)
                                                                     |)
@@ -869,10 +857,8 @@ Module eof.
                                                 M.deref (|
                                                   M.borrow (|
                                                     Pointer.Kind.Ref,
-                                                    M.alloc (|
-                                                      Value.Array [ M.read (| Value.String "
-" |) ]
-                                                    |)
+                                                    M.alloc (| Value.Array [ mk_str (| "
+" |) ] |)
                                                   |)
                                                 |)
                                               |)

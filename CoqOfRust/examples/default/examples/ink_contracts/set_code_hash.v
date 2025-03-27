@@ -16,11 +16,25 @@ fn set_code_hash<E>(code_hash: &E) -> Result<(), Error> {
     unimplemented!()
 }
 *)
-Parameter set_code_hash : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+Definition set_code_hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+  match ε, τ, α with
+  | [], [ E ], [ code_hash ] =>
+    ltac:(M.monadic
+      (let code_hash := M.alloc (| code_hash |) in
+      M.never_to_any (|
+        M.call_closure (|
+          Ty.path "never",
+          M.get_function (| "core::panicking::panic", [], [] |),
+          [ mk_str (| "not implemented" |) ]
+        |)
+      |)))
+  | _, _, _ => M.impossible "wrong number of arguments"
+  end.
 
 Global Instance Instance_IsFunction_set_code_hash :
   M.IsFunction.Trait "set_code_hash::set_code_hash" set_code_hash.
 Admitted.
+Global Typeclasses Opaque set_code_hash.
 
 (* StructRecord
   {
@@ -149,10 +163,9 @@ Module Impl_set_code_hash_Incrementer.
                               M.alloc (|
                                 Value.Array
                                   [
-                                    M.read (| Value.String "The new count is " |);
-                                    M.read (|
-                                      Value.String
-                                        ", it was modified using the original contract code.
+                                    mk_str (| "The new count is " |);
+                                    mk_str (|
+                                      ", it was modified using the original contract code.
 "
                                     |)
                                   ]
@@ -312,9 +325,8 @@ Module Impl_set_code_hash_Incrementer.
                                           [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                                         |),
                                         [
-                                          M.read (|
-                                            Value.String
-                                              "Failed to `set_code_hash` to {code_hash:?} due to {err:?}"
+                                          mk_str (|
+                                            "Failed to `set_code_hash` to {code_hash:?} due to {err:?}"
                                           |)
                                         ]
                                       |)
@@ -349,11 +361,8 @@ Module Impl_set_code_hash_Incrementer.
                               Pointer.Kind.Ref,
                               M.alloc (|
                                 Value.Array
-                                  [
-                                    M.read (| Value.String "Switched code hash to " |);
-                                    M.read (| Value.String ".
-" |)
-                                  ]
+                                  [ mk_str (| "Switched code hash to " |); mk_str (| ".
+" |) ]
                               |)
                             |)
                           |)

@@ -1469,7 +1469,7 @@ Module net.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "InterfaceLocal" |) |)
+                              M.deref (| mk_str (| "InterfaceLocal" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -1481,10 +1481,7 @@ Module net.
                               "core::net::ip_addr::Ipv6MulticastScope::LinkLocal"
                             |) in
                           M.alloc (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "LinkLocal" |) |)
-                            |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LinkLocal" |) |) |)
                           |)));
                       fun γ =>
                         ltac:(M.monadic
@@ -1495,10 +1492,7 @@ Module net.
                               "core::net::ip_addr::Ipv6MulticastScope::RealmLocal"
                             |) in
                           M.alloc (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "RealmLocal" |) |)
-                            |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "RealmLocal" |) |) |)
                           |)));
                       fun γ =>
                         ltac:(M.monadic
@@ -1509,10 +1503,7 @@ Module net.
                               "core::net::ip_addr::Ipv6MulticastScope::AdminLocal"
                             |) in
                           M.alloc (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "AdminLocal" |) |)
-                            |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "AdminLocal" |) |) |)
                           |)));
                       fun γ =>
                         ltac:(M.monadic
@@ -1523,10 +1514,7 @@ Module net.
                               "core::net::ip_addr::Ipv6MulticastScope::SiteLocal"
                             |) in
                           M.alloc (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "SiteLocal" |) |)
-                            |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "SiteLocal" |) |) |)
                           |)));
                       fun γ =>
                         ltac:(M.monadic
@@ -1539,7 +1527,7 @@ Module net.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "OrganizationLocal" |) |)
+                              M.deref (| mk_str (| "OrganizationLocal" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -1551,10 +1539,7 @@ Module net.
                               "core::net::ip_addr::Ipv6MulticastScope::Global"
                             |) in
                           M.alloc (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Global" |) |)
-                            |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Global" |) |) |)
                           |)))
                     ]
                   |)
@@ -3904,10 +3889,10 @@ Module net.
                                       M.alloc (|
                                         Value.Array
                                           [
-                                            M.read (| Value.String "" |);
-                                            M.read (| Value.String "." |);
-                                            M.read (| Value.String "." |);
-                                            M.read (| Value.String "." |)
+                                            mk_str (| "" |);
+                                            mk_str (| "." |);
+                                            mk_str (| "." |);
+                                            mk_str (| "." |)
                                           ]
                                       |)
                                     |)
@@ -4101,10 +4086,10 @@ Module net.
                                             M.alloc (|
                                               Value.Array
                                                 [
-                                                  M.read (| Value.String "" |);
-                                                  M.read (| Value.String "." |);
-                                                  M.read (| Value.String "." |);
-                                                  M.read (| Value.String "." |)
+                                                  mk_str (| "" |);
+                                                  mk_str (| "." |);
+                                                  mk_str (| "." |);
+                                                  mk_str (| "." |)
                                                 ]
                                             |)
                                           |)
@@ -7629,8 +7614,7 @@ Module net.
                                                 M.borrow (|
                                                   Pointer.Kind.Ref,
                                                   M.alloc (|
-                                                    Value.Array
-                                                      [ M.read (| Value.String "::ffff:" |) ]
+                                                    Value.Array [ mk_str (| "::ffff:" |) ]
                                                   |)
                                                 |)
                                               |)
@@ -8324,9 +8308,7 @@ Module net.
                                                         |);
                                                         M.borrow (|
                                                           Pointer.Kind.Ref,
-                                                          M.deref (|
-                                                            M.read (| Value.String "::" |)
-                                                          |)
+                                                          M.deref (| mk_str (| "::" |) |)
                                                         |)
                                                       ]
                                                     |)
@@ -8590,9 +8572,7 @@ Module net.
                                             M.deref (|
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
-                                                M.alloc (|
-                                                  Value.Array [ M.read (| Value.String "" |) ]
-                                                |)
+                                                M.alloc (| Value.Array [ mk_str (| "" |) ] |)
                                               |)
                                             |)
                                           |);

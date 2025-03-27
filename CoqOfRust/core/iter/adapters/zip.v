@@ -1821,8 +1821,7 @@ Module iter.
                             M.call_closure (|
                               Ty.path "never",
                               M.get_function (| "core::panicking::panic", [], [] |),
-                              [ M.read (| Value.String "internal error: entered unreachable code" |)
-                              ]
+                              [ mk_str (| "internal error: entered unreachable code" |) ]
                             |)
                           |)
                         |)))
@@ -2111,9 +2110,8 @@ Module iter.
                               M.alloc (|
                                 Value.Array
                                   [
-                                    M.read (|
-                                      Value.String
-                                        "internal error: entered unreachable code: Always specialized"
+                                    mk_str (|
+                                      "internal error: entered unreachable code: Always specialized"
                                     |)
                                   ]
                               |)
@@ -3221,8 +3219,7 @@ Module iter.
                             M.call_closure (|
                               Ty.path "never",
                               M.get_function (| "core::panicking::panic", [], [] |),
-                              [ M.read (| Value.String "internal error: entered unreachable code" |)
-                              ]
+                              [ mk_str (| "internal error: entered unreachable code" |) ]
                             |)
                           |)
                         |)))
@@ -5743,16 +5740,13 @@ Module iter.
                                           |);
                                           M.borrow (|
                                             Pointer.Kind.Ref,
-                                            M.deref (| M.read (| Value.String "Zip" |) |)
+                                            M.deref (| mk_str (| "Zip" |) |)
                                           |)
                                         ]
                                       |)
                                     |)
                                   |);
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (| M.read (| Value.String "a" |) |)
-                                  |);
+                                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "a" |) |) |);
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.deref (|
@@ -5770,10 +5764,7 @@ Module iter.
                               |)
                             |)
                           |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "b" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "b" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (|
@@ -5849,10 +5840,7 @@ Module iter.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Zip" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Zip" |) |) |)
                         ]
                       |)
                     |)
@@ -6002,9 +5990,8 @@ Module iter.
                                       M.alloc (|
                                         Value.Array
                                           [
-                                            M.read (|
-                                              Value.String
-                                                "Should only be called on TrustedRandomAccess iterators"
+                                            mk_str (|
+                                              "Should only be called on TrustedRandomAccess iterators"
                                             |)
                                           ]
                                       |)

@@ -579,7 +579,7 @@ Module interpreter.
                                         |);
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.deref (| M.read (| Value.String "SharedMemory" |) |)
+                                          M.deref (| mk_str (| "SharedMemory" |) |)
                                         |)
                                       ]
                                     |)
@@ -587,7 +587,7 @@ Module interpreter.
                                 |);
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "current_len" |) |)
+                                  M.deref (| mk_str (| "current_len" |) |)
                                 |);
                                 M.borrow (|
                                   Pointer.Kind.Ref,
@@ -621,7 +621,7 @@ Module interpreter.
                         |);
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "context_memory" |) |)
+                          M.deref (| mk_str (| "context_memory" |) |)
                         |);
                         M.borrow (|
                           Pointer.Kind.Ref,
@@ -2287,12 +2287,11 @@ Module interpreter.
                                                         M.alloc (|
                                                           Value.Array
                                                             [
-                                                              M.read (|
-                                                                Value.String
-                                                                  "internal error: entered unreachable code: slice OOB: "
+                                                              mk_str (|
+                                                                "internal error: entered unreachable code: slice OOB: "
                                                               |);
-                                                              M.read (| Value.String ".." |);
-                                                              M.read (| Value.String "; len: " |)
+                                                              mk_str (| ".." |);
+                                                              mk_str (| "; len: " |)
                                                             ]
                                                         |)
                                                       |)
@@ -2628,11 +2627,10 @@ Module interpreter.
                                                             M.alloc (|
                                                               Value.Array
                                                                 [
-                                                                  M.read (|
-                                                                    Value.String
-                                                                      "internal error: entered unreachable code: slice OOB: "
+                                                                  mk_str (|
+                                                                    "internal error: entered unreachable code: slice OOB: "
                                                                   |);
-                                                                  M.read (| Value.String ".." |)
+                                                                  mk_str (| ".." |)
                                                                 ]
                                                             |)
                                                           |)
@@ -3446,9 +3444,8 @@ Module interpreter.
                                             Ty.path "never",
                                             M.get_function (| "core::panicking::panic", [], [] |),
                                             [
-                                              M.read (|
-                                                Value.String
-                                                  "assertion failed: data_offset < data.len() && data_end <= data.len()"
+                                              mk_str (|
+                                                "assertion failed: data_offset < data.len() && data_end <= data.len()"
                                               |)
                                             ]
                                           |)

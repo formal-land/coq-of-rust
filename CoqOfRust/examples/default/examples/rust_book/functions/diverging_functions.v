@@ -35,7 +35,7 @@ Module main.
             [],
             [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
           |),
-          [ M.read (| Value.String "This call never returns." |) ]
+          [ mk_str (| "This call never returns." |) ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.

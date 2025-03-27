@@ -55,7 +55,7 @@ Definition assign (target : Value.t) (source : Value.t) : M :=
 (** A value with an address of type `ref str`. *)
 Definition mk_str (s : string) : M :=
   let* pointer := M.alloc (Value.String s) in
-  M.alloc pointer.
+  M.borrow Pointer.Kind.Ref pointer.
 
 Module Integer.
   Definition min (kind : IntegerKind.t) : Z :=

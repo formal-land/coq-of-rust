@@ -1042,10 +1042,7 @@ Module cell.
                     |),
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (| M.read (| Value.String "LazyCell" |) |)
-                      |)
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "LazyCell" |) |) |)
                     ]
                   |)
                 |) in
@@ -1136,8 +1133,7 @@ Module cell.
                                                   M.borrow (|
                                                     Pointer.Kind.Ref,
                                                     M.alloc (|
-                                                      Value.Array
-                                                        [ M.read (| Value.String "<uninit>" |) ]
+                                                      Value.Array [ mk_str (| "<uninit>" |) ]
                                                     |)
                                                   |)
                                                 |)
@@ -1213,11 +1209,7 @@ Module cell.
                         Pointer.Kind.Ref,
                         M.alloc (|
                           Value.Array
-                            [
-                              M.read (|
-                                Value.String "LazyCell instance has previously been poisoned"
-                              |)
-                            ]
+                            [ mk_str (| "LazyCell instance has previously been poisoned" |) ]
                         |)
                       |)
                     |)

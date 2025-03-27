@@ -241,11 +241,7 @@ Module Impl_enums_testcase_linked_list_List.
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.read (| Value.String "" |);
-                                                  M.read (| Value.String ", " |)
-                                                ]
+                                              Value.Array [ mk_str (| "" |); mk_str (| ", " |) ]
                                             |)
                                           |)
                                         |)
@@ -366,9 +362,7 @@ Module Impl_enums_testcase_linked_list_List.
                                         M.deref (|
                                           M.borrow (|
                                             Pointer.Kind.Ref,
-                                            M.alloc (|
-                                              Value.Array [ M.read (| Value.String "Nil" |) ]
-                                            |)
+                                            M.alloc (| Value.Array [ mk_str (| "Nil" |) ] |)
                                           |)
                                         |)
                                       |)
@@ -498,11 +492,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             Pointer.Kind.Ref,
                             M.alloc (|
                               Value.Array
-                                [
-                                  M.read (| Value.String "linked list has length: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                                [ mk_str (| "linked list has length: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -578,11 +569,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array
-                                [ M.read (| Value.String "" |); M.read (| Value.String "
-" |) ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "" |); mk_str (| "
+" |) ] |)
                           |)
                         |)
                       |);

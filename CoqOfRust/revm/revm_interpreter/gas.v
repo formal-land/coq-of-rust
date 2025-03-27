@@ -95,8 +95,8 @@ Module gas.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Gas" |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "limit" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Gas" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "limit" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -110,7 +110,7 @@ Module gas.
                   |)
                 |)
               |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "remaining" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "remaining" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -124,7 +124,7 @@ Module gas.
                   |)
                 |)
               |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "refunded" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "refunded" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -138,7 +138,7 @@ Module gas.
                   |)
                 |)
               |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "memory" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "memory" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -1400,8 +1400,8 @@ Module gas.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "MemoryGas" |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "words_num" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "MemoryGas" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "words_num" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -1415,10 +1415,7 @@ Module gas.
                   |)
                 |)
               |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "expansion_cost" |) |)
-              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "expansion_cost" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|

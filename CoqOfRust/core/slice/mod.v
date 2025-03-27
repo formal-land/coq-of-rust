@@ -379,11 +379,7 @@ Module slice.
                               M.call_closure (|
                                 Ty.path "never",
                                 M.get_function (| "core::panicking::panic", [], [] |),
-                                [
-                                  M.read (|
-                                    Value.String "internal error: entered unreachable code"
-                                  |)
-                                ]
+                                [ mk_str (| "internal error: entered unreachable code" |) ]
                               |)
                             |)
                           |)))
@@ -3242,7 +3238,7 @@ Module slice.
                     |);
                     M.borrow (|
                       Pointer.Kind.Ref,
-                      M.deref (| M.read (| Value.String "window size must be non-zero" |) |)
+                      M.deref (| mk_str (| "window size must be non-zero" |) |)
                     |)
                   ]
                 |)
@@ -3325,12 +3321,7 @@ Module slice.
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.read (|
-                                                Value.String "chunk size must be non-zero"
-                                              |)
-                                            ]
+                                          Value.Array [ mk_str (| "chunk size must be non-zero" |) ]
                                         |)
                                       |)
                                     |)
@@ -3422,12 +3413,7 @@ Module slice.
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.read (|
-                                                Value.String "chunk size must be non-zero"
-                                              |)
-                                            ]
+                                          Value.Array [ mk_str (| "chunk size must be non-zero" |) ]
                                         |)
                                       |)
                                     |)
@@ -3519,12 +3505,7 @@ Module slice.
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.read (|
-                                                Value.String "chunk size must be non-zero"
-                                              |)
-                                            ]
+                                          Value.Array [ mk_str (| "chunk size must be non-zero" |) ]
                                         |)
                                       |)
                                     |)
@@ -3621,12 +3602,7 @@ Module slice.
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.read (|
-                                                Value.String "chunk size must be non-zero"
-                                              |)
-                                            ]
+                                          Value.Array [ mk_str (| "chunk size must be non-zero" |) ]
                                         |)
                                       |)
                                     |)
@@ -3868,12 +3844,7 @@ Module slice.
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.read (|
-                                                Value.String "chunk size must be non-zero"
-                                              |)
-                                            ]
+                                          Value.Array [ mk_str (| "chunk size must be non-zero" |) ]
                                         |)
                                       |)
                                     |)
@@ -4041,12 +4012,7 @@ Module slice.
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.read (|
-                                                Value.String "chunk size must be non-zero"
-                                              |)
-                                            ]
+                                          Value.Array [ mk_str (| "chunk size must be non-zero" |) ]
                                         |)
                                       |)
                                     |)
@@ -4221,12 +4187,7 @@ Module slice.
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.read (|
-                                                Value.String "chunk size must be non-zero"
-                                              |)
-                                            ]
+                                          Value.Array [ mk_str (| "chunk size must be non-zero" |) ]
                                         |)
                                       |)
                                     |)
@@ -4496,12 +4457,7 @@ Module slice.
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.read (|
-                                                Value.String "chunk size must be non-zero"
-                                              |)
-                                            ]
+                                          Value.Array [ mk_str (| "chunk size must be non-zero" |) ]
                                         |)
                                       |)
                                     |)
@@ -4682,12 +4638,7 @@ Module slice.
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.read (|
-                                                Value.String "chunk size must be non-zero"
-                                              |)
-                                            ]
+                                          Value.Array [ mk_str (| "chunk size must be non-zero" |) ]
                                         |)
                                       |)
                                     |)
@@ -4872,12 +4823,7 @@ Module slice.
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.read (|
-                                                Value.String "chunk size must be non-zero"
-                                              |)
-                                            ]
+                                          Value.Array [ mk_str (| "chunk size must be non-zero" |) ]
                                         |)
                                       |)
                                     |)
@@ -4966,11 +4912,7 @@ Module slice.
                                         Pointer.Kind.Ref,
                                         M.alloc (|
                                           Value.Array
-                                            [
-                                              M.read (|
-                                                Value.String "window size must be non-zero"
-                                              |)
-                                            ]
+                                            [ mk_str (| "window size must be non-zero" |) ]
                                         |)
                                       |)
                                     |)
@@ -5059,12 +5001,7 @@ Module slice.
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.read (|
-                                                Value.String "chunk size must be non-zero"
-                                              |)
-                                            ]
+                                          Value.Array [ mk_str (| "chunk size must be non-zero" |) ]
                                         |)
                                       |)
                                     |)
@@ -5156,12 +5093,7 @@ Module slice.
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.read (|
-                                                Value.String "chunk size must be non-zero"
-                                              |)
-                                            ]
+                                          Value.Array [ mk_str (| "chunk size must be non-zero" |) ]
                                         |)
                                       |)
                                     |)
@@ -5253,12 +5185,7 @@ Module slice.
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.read (|
-                                                Value.String "chunk size must be non-zero"
-                                              |)
-                                            ]
+                                          Value.Array [ mk_str (| "chunk size must be non-zero" |) ]
                                         |)
                                       |)
                                     |)
@@ -5355,12 +5282,7 @@ Module slice.
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.alloc (|
-                                          Value.Array
-                                            [
-                                              M.read (|
-                                                Value.String "chunk size must be non-zero"
-                                              |)
-                                            ]
+                                          Value.Array [ mk_str (| "chunk size must be non-zero" |) ]
                                         |)
                                       |)
                                     |)
@@ -5549,9 +5471,7 @@ Module slice.
                                   M.deref (|
                                     M.borrow (|
                                       Pointer.Kind.Ref,
-                                      M.alloc (|
-                                        Value.Array [ M.read (| Value.String "mid > len" |) ]
-                                      |)
+                                      M.alloc (| Value.Array [ mk_str (| "mid > len" |) ] |)
                                     |)
                                   |)
                                 |)
@@ -5654,9 +5574,7 @@ Module slice.
                                   M.deref (|
                                     M.borrow (|
                                       Pointer.Kind.Ref,
-                                      M.alloc (|
-                                        Value.Array [ M.read (| Value.String "mid > len" |) ]
-                                      |)
+                                      M.alloc (| Value.Array [ mk_str (| "mid > len" |) ] |)
                                     |)
                                   |)
                                 |)
@@ -10036,7 +9954,7 @@ Module slice.
                           M.call_closure (|
                             Ty.path "never",
                             M.get_function (| "core::panicking::panic", [], [] |),
-                            [ M.read (| Value.String "assertion failed: mid <= self.len()" |) ]
+                            [ mk_str (| "assertion failed: mid <= self.len()" |) ]
                           |)
                         |)
                       |)));
@@ -10158,7 +10076,7 @@ Module slice.
                           M.call_closure (|
                             Ty.path "never",
                             M.get_function (| "core::panicking::panic", [], [] |),
-                            [ M.read (| Value.String "assertion failed: k <= self.len()" |) ]
+                            [ mk_str (| "assertion failed: k <= self.len()" |) ]
                           |)
                         |)
                       |)));
@@ -10746,11 +10664,7 @@ Module slice.
                                                 Pointer.Kind.Ref,
                                                 M.alloc (|
                                                   Value.Array
-                                                    [
-                                                      M.read (|
-                                                        Value.String "dest is out of bounds"
-                                                      |)
-                                                    ]
+                                                    [ mk_str (| "dest is out of bounds" |) ]
                                                 |)
                                               |)
                                             |)
@@ -10917,9 +10831,8 @@ Module slice.
                                         M.alloc (|
                                           Value.Array
                                             [
-                                              M.read (|
-                                                Value.String
-                                                  "destination and source slices have different lengths"
+                                              mk_str (|
+                                                "destination and source slices have different lengths"
                                               |)
                                             ]
                                         |)
@@ -15280,12 +15193,7 @@ Module slice.
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.read (|
-                                                    Value.String "elements are zero-sized"
-                                                  |)
-                                                ]
+                                              Value.Array [ mk_str (| "elements are zero-sized" |) ]
                                             |)
                                           |)
                                         |)
@@ -15508,12 +15416,7 @@ Module slice.
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
-                                              Value.Array
-                                                [
-                                                  M.read (|
-                                                    Value.String "elements are zero-sized"
-                                                  |)
-                                                ]
+                                              Value.Array [ mk_str (| "elements are zero-sized" |) ]
                                             |)
                                           |)
                                         |)
@@ -15812,7 +15715,7 @@ Module slice.
                               |);
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "slice len overflow" |) |)
+                                M.deref (| mk_str (| "slice len overflow" |) |)
                               |)
                             ]
                           |)
@@ -15986,7 +15889,7 @@ Module slice.
                                   |);
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.deref (| M.read (| Value.String "slice len overflow" |) |)
+                                    M.deref (| mk_str (| "slice len overflow" |) |)
                                   |)
                                 ]
                               |)
@@ -16284,9 +16187,8 @@ Module slice.
                                         M.alloc (|
                                           Value.Array
                                             [
-                                              M.read (|
-                                                Value.String
-                                                  "destination and source slices have different lengths"
+                                              mk_str (|
+                                                "destination and source slices have different lengths"
                                               |)
                                             ]
                                         |)
@@ -17209,10 +17111,7 @@ Module slice.
                     |),
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (| M.read (| Value.String "GetManyMutError" |) |)
-                      |)
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "GetManyMutError" |) |) |)
                     ]
                   |)
                 |)
@@ -17258,9 +17157,7 @@ Module slice.
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
-                  M.read (|
-                    Value.String "an index is out of bounds or appeared multiple times in the array"
-                  |)
+                  mk_str (| "an index is out of bounds or appeared multiple times in the array" |)
                 |)
               |);
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)

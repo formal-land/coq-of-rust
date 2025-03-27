@@ -74,11 +74,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
-                                        Value.Array
-                                          [
-                                            M.read (| Value.String "" |);
-                                            M.read (| Value.String " is negative" |)
-                                          ]
+                                        Value.Array [ mk_str (| "" |); mk_str (| " is negative" |) ]
                                       |)
                                     |)
                                   |)
@@ -159,10 +155,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                               Pointer.Kind.Ref,
                                               M.alloc (|
                                                 Value.Array
-                                                  [
-                                                    M.read (| Value.String "" |);
-                                                    M.read (| Value.String " is positive" |)
-                                                  ]
+                                                  [ mk_str (| "" |); mk_str (| " is positive" |) ]
                                               |)
                                             |)
                                           |)
@@ -232,10 +225,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                               Pointer.Kind.Ref,
                                               M.alloc (|
                                                 Value.Array
-                                                  [
-                                                    M.read (| Value.String "" |);
-                                                    M.read (| Value.String " is zero" |)
-                                                  ]
+                                                  [ mk_str (| "" |); mk_str (| " is zero" |) ]
                                               |)
                                             |)
                                           |)
@@ -323,9 +313,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         M.alloc (|
                                           Value.Array
                                             [
-                                              M.read (|
-                                                Value.String
-                                                  ", and is a small number, increase ten-fold
+                                              mk_str (|
+                                                ", and is a small number, increase ten-fold
 "
                                               |)
                                             ]
@@ -368,9 +357,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                         M.alloc (|
                                           Value.Array
                                             [
-                                              M.read (|
-                                                Value.String
-                                                  ", and is a big number, halve the number
+                                              mk_str (|
+                                                ", and is a big number, halve the number
 "
                                               |)
                                             ]
@@ -412,13 +400,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "" |);
-                                  M.read (| Value.String " -> " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "" |); mk_str (| " -> " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)

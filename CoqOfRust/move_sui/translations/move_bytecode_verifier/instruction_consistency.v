@@ -4533,9 +4533,8 @@ Module instruction_consistency.
                                                                                         M.borrow (|
                                                                                           Pointer.Kind.Ref,
                                                                                           M.deref (|
-                                                                                            M.read (|
-                                                                                              Value.String
-                                                                                                "VecPack/VecUnpack argument out of range"
+                                                                                            mk_str (|
+                                                                                              "VecPack/VecUnpack argument out of range"
                                                                                             |)
                                                                                           |)
                                                                                         |)

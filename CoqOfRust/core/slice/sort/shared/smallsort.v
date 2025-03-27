@@ -6688,9 +6688,8 @@ Module slice.
                             M.alloc (|
                               Value.Array
                                 [
-                                  M.read (|
-                                    Value.String
-                                      "user-provided comparison function does not correctly implement a total order"
+                                  mk_str (|
+                                    "user-provided comparison function does not correctly implement a total order"
                                   |)
                                 ]
                             |)

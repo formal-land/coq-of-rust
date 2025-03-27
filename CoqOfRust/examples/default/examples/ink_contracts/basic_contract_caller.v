@@ -230,7 +230,7 @@ Module Impl_basic_contract_caller_BasicContractCaller.
                 M.call_closure (|
                   Ty.path "never",
                   M.get_function (| "core::panicking::panic", [], [] |),
-                  [ M.read (| Value.String "not yet implemented" |) ]
+                  [ mk_str (| "not yet implemented" |) ]
                 |)
               |)
             |) in

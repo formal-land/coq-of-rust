@@ -58,7 +58,7 @@ Definition div (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           [],
                           [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                         |),
-                        [ M.read (| Value.String "Divide-by-zero error" |) ]
+                        [ mk_str (| "Divide-by-zero error" |) ]
                       |)
                     |)
                   |)));

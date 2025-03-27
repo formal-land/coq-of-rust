@@ -33,7 +33,7 @@ Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Sheep
     | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.read (| Value.String "baaaaah!" |)))
+        mk_str (| "baaaaah!" |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
@@ -59,7 +59,7 @@ Module Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
     | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        M.read (| Value.String "moooooo!" |)))
+        mk_str (| "moooooo!" |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
@@ -219,10 +219,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.alloc (|
                               Value.Array
                                 [
-                                  M.read (|
-                                    Value.String "You've randomly chosen an animal, and it says "
-                                  |);
-                                  M.read (| Value.String "
+                                  mk_str (| "You've randomly chosen an animal, and it says " |);
+                                  mk_str (| "
 " |)
                                 ]
                             |)

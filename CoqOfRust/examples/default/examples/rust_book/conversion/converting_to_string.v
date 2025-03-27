@@ -42,7 +42,7 @@ Module Impl_core_fmt_Display_for_converting_to_string_Circle.
                   M.deref (|
                     M.borrow (|
                       Pointer.Kind.Ref,
-                      M.alloc (| Value.Array [ M.read (| Value.String "Circle of radius " |) ] |)
+                      M.alloc (| Value.Array [ mk_str (| "Circle of radius " |) ] |)
                     |)
                   |)
                 |);

@@ -125,8 +125,8 @@ Module iter.
                 |),
                 [
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Chain" |) |) |);
-                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "a" |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Chain" |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "a" |) |) |);
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
@@ -140,7 +140,7 @@ Module iter.
                       |)
                     |)
                   |);
-                  M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "b" |) |) |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "b" |) |) |);
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|

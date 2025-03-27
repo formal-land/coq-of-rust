@@ -112,10 +112,8 @@ Definition fizzbuzz (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Value.Array [ M.read (| Value.String "fizzbuzz
-" |) ]
-                                    |)
+                                    M.alloc (| Value.Array [ mk_str (| "fizzbuzz
+" |) ] |)
                                   |)
                                 |)
                               |)
@@ -166,10 +164,8 @@ Definition fizzbuzz (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                         M.deref (|
                                           M.borrow (|
                                             Pointer.Kind.Ref,
-                                            M.alloc (|
-                                              Value.Array [ M.read (| Value.String "fizz
-" |) ]
-                                            |)
+                                            M.alloc (| Value.Array [ mk_str (| "fizz
+" |) ] |)
                                           |)
                                         |)
                                       |)
@@ -224,8 +220,7 @@ Definition fizzbuzz (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                                   M.borrow (|
                                                     Pointer.Kind.Ref,
                                                     M.alloc (|
-                                                      Value.Array
-                                                        [ M.read (| Value.String "buzz
+                                                      Value.Array [ mk_str (| "buzz
 " |) ]
                                                     |)
                                                   |)
@@ -266,11 +261,8 @@ Definition fizzbuzz (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                                                     Pointer.Kind.Ref,
                                                     M.alloc (|
                                                       Value.Array
-                                                        [
-                                                          M.read (| Value.String "" |);
-                                                          M.read (| Value.String "
-" |)
-                                                        ]
+                                                        [ mk_str (| "" |); mk_str (| "
+" |) ]
                                                     |)
                                                   |)
                                                 |)

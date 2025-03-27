@@ -162,9 +162,8 @@ Module fmt.
                     M.borrow (|
                       Pointer.Kind.Ref,
                       M.deref (|
-                        M.read (|
-                          Value.String
-                            "a formatting trait implementation returned an error when the underlying stream did not"
+                        mk_str (|
+                          "a formatting trait implementation returned an error when the underlying stream did not"
                         |)
                       |)
                     |)

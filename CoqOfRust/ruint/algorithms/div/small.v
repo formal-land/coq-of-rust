@@ -67,11 +67,7 @@ Module algorithms.
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
-                                        [
-                                          M.read (|
-                                            Value.String "assertion failed: d >= (1 << 63)"
-                                          |)
-                                        ]
+                                        [ mk_str (| "assertion failed: d >= (1 << 63)" |) ]
                                       |)
                                     |)
                                   |)));
@@ -366,11 +362,7 @@ Module algorithms.
                                           M.call_closure (|
                                             Ty.path "never",
                                             M.get_function (| "core::panicking::panic", [], [] |),
-                                            [
-                                              M.read (|
-                                                Value.String "assertion failed: divisor != 0"
-                                              |)
-                                            ]
+                                            [ mk_str (| "assertion failed: divisor != 0" |) ]
                                           |)
                                         |)
                                       |)));
@@ -431,11 +423,7 @@ Module algorithms.
                                           M.call_closure (|
                                             Ty.path "never",
                                             M.get_function (| "core::panicking::panic", [], [] |),
-                                            [
-                                              M.read (|
-                                                Value.String "assertion failed: !limbs.is_empty()"
-                                              |)
-                                            ]
+                                            [ mk_str (| "assertion failed: !limbs.is_empty()" |) ]
                                           |)
                                         |)
                                       |)));
@@ -532,9 +520,8 @@ Module algorithms.
                                             Ty.path "never",
                                             M.get_function (| "core::panicking::panic", [], [] |),
                                             [
-                                              M.read (|
-                                                Value.String
-                                                  "assertion failed: *limbs.last().unwrap() != 0"
+                                              mk_str (|
+                                                "assertion failed: *limbs.last().unwrap() != 0"
                                               |)
                                             ]
                                           |)
@@ -1099,11 +1086,7 @@ Module algorithms.
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
-                                        [
-                                          M.read (|
-                                            Value.String "assertion failed: d >= (1 << 127)"
-                                          |)
-                                        ]
+                                        [ mk_str (| "assertion failed: d >= (1 << 127)" |) ]
                                       |)
                                     |)
                                   |)));
@@ -1387,11 +1370,7 @@ Module algorithms.
                                           M.call_closure (|
                                             Ty.path "never",
                                             M.get_function (| "core::panicking::panic", [], [] |),
-                                            [
-                                              M.read (|
-                                                Value.String "assertion failed: divisor >= 1 << 64"
-                                              |)
-                                            ]
+                                            [ mk_str (| "assertion failed: divisor >= 1 << 64" |) ]
                                           |)
                                         |)
                                       |)));
@@ -1452,11 +1431,7 @@ Module algorithms.
                                           M.call_closure (|
                                             Ty.path "never",
                                             M.get_function (| "core::panicking::panic", [], [] |),
-                                            [
-                                              M.read (|
-                                                Value.String "assertion failed: !limbs.is_empty()"
-                                              |)
-                                            ]
+                                            [ mk_str (| "assertion failed: !limbs.is_empty()" |) ]
                                           |)
                                         |)
                                       |)));
@@ -1553,9 +1528,8 @@ Module algorithms.
                                             Ty.path "never",
                                             M.get_function (| "core::panicking::panic", [], [] |),
                                             [
-                                              M.read (|
-                                                Value.String
-                                                  "assertion failed: *limbs.last().unwrap() != 0"
+                                              mk_str (|
+                                                "assertion failed: *limbs.last().unwrap() != 0"
                                               |)
                                             ]
                                           |)
@@ -2117,11 +2091,7 @@ Module algorithms.
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
-                                        [
-                                          M.read (|
-                                            Value.String "assertion failed: d >= (1 << 63)"
-                                          |)
-                                        ]
+                                        [ mk_str (| "assertion failed: d >= (1 << 63)" |) ]
                                       |)
                                     |)
                                   |)));
@@ -2184,11 +2154,7 @@ Module algorithms.
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
-                                        [
-                                          M.read (|
-                                            Value.String
-                                              "assertion failed: (u >> 64) < u128::from(d)"
-                                          |)
+                                        [ mk_str (| "assertion failed: (u >> 64) < u128::from(d)" |)
                                         ]
                                       |)
                                     |)
@@ -2305,11 +2271,7 @@ Module algorithms.
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
-                                        [
-                                          M.read (|
-                                            Value.String "assertion failed: d >= (1 << 63)"
-                                          |)
-                                        ]
+                                        [ mk_str (| "assertion failed: d >= (1 << 63)" |) ]
                                       |)
                                     |)
                                   |)));
@@ -2372,11 +2334,7 @@ Module algorithms.
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
-                                        [
-                                          M.read (|
-                                            Value.String
-                                              "assertion failed: (u >> 64) < u128::from(d)"
-                                          |)
+                                        [ mk_str (| "assertion failed: (u >> 64) < u128::from(d)" |)
                                         ]
                                       |)
                                     |)
@@ -2780,11 +2738,7 @@ Module algorithms.
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
-                                        [
-                                          M.read (|
-                                            Value.String "assertion failed: d >= (1 << 127)"
-                                          |)
-                                        ]
+                                        [ mk_str (| "assertion failed: d >= (1 << 127)" |) ]
                                       |)
                                     |)
                                   |)));
@@ -2829,7 +2783,7 @@ Module algorithms.
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
-                                        [ M.read (| Value.String "assertion failed: n21 < d" |) ]
+                                        [ mk_str (| "assertion failed: n21 < d" |) ]
                                       |)
                                     |)
                                   |)));
@@ -2915,11 +2869,7 @@ Module algorithms.
                                                   [],
                                                   []
                                                 |),
-                                                [
-                                                  M.read (|
-                                                    Value.String "assertion failed: n1 < d0"
-                                                  |)
-                                                ]
+                                                [ mk_str (| "assertion failed: n1 < d0" |) ]
                                               |)
                                             |)
                                           |)));
@@ -3345,11 +3295,7 @@ Module algorithms.
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
-                                        [
-                                          M.read (|
-                                            Value.String "assertion failed: d >= (1 << 127)"
-                                          |)
-                                        ]
+                                        [ mk_str (| "assertion failed: d >= (1 << 127)" |) ]
                                       |)
                                     |)
                                   |)));
@@ -3394,7 +3340,7 @@ Module algorithms.
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
-                                        [ M.read (| Value.String "assertion failed: u21 < d" |) ]
+                                        [ mk_str (| "assertion failed: u21 < d" |) ]
                                       |)
                                     |)
                                   |)));

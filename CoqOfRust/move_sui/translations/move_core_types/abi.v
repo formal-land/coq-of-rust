@@ -158,7 +158,7 @@ Module abi.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "TransactionScript" |) |)
+                            M.deref (| mk_str (| "TransactionScript" |) |)
                           |);
                           M.borrow (|
                             Pointer.Kind.Ref,
@@ -193,7 +193,7 @@ Module abi.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "ScriptFunction" |) |)
+                            M.deref (| mk_str (| "ScriptFunction" |) |)
                           |);
                           M.borrow (|
                             Pointer.Kind.Ref,
@@ -607,9 +607,9 @@ Module abi.
                           |),
                           [
                             M.read (| __serializer |);
-                            M.read (| Value.String "ScriptABI" |);
+                            mk_str (| "ScriptABI" |);
                             Value.Integer IntegerKind.U32 0;
-                            M.read (| Value.String "TransactionScript" |);
+                            mk_str (| "TransactionScript" |);
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                           ]
                         |)
@@ -643,9 +643,9 @@ Module abi.
                           |),
                           [
                             M.read (| __serializer |);
-                            M.read (| Value.String "ScriptABI" |);
+                            mk_str (| "ScriptABI" |);
                             Value.Integer IntegerKind.U32 1;
-                            M.read (| Value.String "ScriptFunction" |);
+                            mk_str (| "ScriptFunction" |);
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __field0 |) |) |)
                           ]
                         |)
@@ -692,7 +692,7 @@ Module abi.
               |),
               [
                 M.read (| __deserializer |);
-                M.read (| Value.String "ScriptABI" |);
+                mk_str (| "ScriptABI" |);
                 M.read (| M.get_constant "move_core_types::abi::_'1::deserialize::VARIANTS" |);
                 Value.StructRecord
                   "move_core_types::abi::_'1::deserialize::__Visitor"
@@ -762,7 +762,7 @@ Module abi.
                             |),
                             [
                               M.read (| __serializer |);
-                              M.read (| Value.String "ScriptFunctionABI" |);
+                              mk_str (| "ScriptFunctionABI" |);
                               BinOp.Wrap.add (|
                                 BinOp.Wrap.add (|
                                   BinOp.Wrap.add (|
@@ -847,7 +847,7 @@ Module abi.
                               Pointer.Kind.MutRef,
                               M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
                             |);
-                            M.read (| Value.String "name" |);
+                            mk_str (| "name" |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (|
@@ -928,7 +928,7 @@ Module abi.
                               Pointer.Kind.MutRef,
                               M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
                             |);
-                            M.read (| Value.String "module_name" |);
+                            mk_str (| "module_name" |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (|
@@ -1009,7 +1009,7 @@ Module abi.
                               Pointer.Kind.MutRef,
                               M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
                             |);
-                            M.read (| Value.String "doc" |);
+                            mk_str (| "doc" |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (|
@@ -1098,7 +1098,7 @@ Module abi.
                               Pointer.Kind.MutRef,
                               M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
                             |);
-                            M.read (| Value.String "ty_args" |);
+                            mk_str (| "ty_args" |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (|
@@ -1187,7 +1187,7 @@ Module abi.
                               Pointer.Kind.MutRef,
                               M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
                             |);
-                            M.read (| Value.String "args" |);
+                            mk_str (| "args" |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (|
@@ -1299,7 +1299,7 @@ Module abi.
               |),
               [
                 M.read (| __deserializer |);
-                M.read (| Value.String "ScriptFunctionABI" |);
+                mk_str (| "ScriptFunctionABI" |);
                 M.read (| M.get_constant "move_core_types::abi::_'3::deserialize::FIELDS" |);
                 Value.StructRecord
                   "move_core_types::abi::_'3::deserialize::__Visitor"
@@ -1369,7 +1369,7 @@ Module abi.
                             |),
                             [
                               M.read (| __serializer |);
-                              M.read (| Value.String "TransactionScriptABI" |);
+                              mk_str (| "TransactionScriptABI" |);
                               BinOp.Wrap.add (|
                                 BinOp.Wrap.add (|
                                   BinOp.Wrap.add (|
@@ -1454,7 +1454,7 @@ Module abi.
                               Pointer.Kind.MutRef,
                               M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
                             |);
-                            M.read (| Value.String "name" |);
+                            mk_str (| "name" |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (|
@@ -1535,7 +1535,7 @@ Module abi.
                               Pointer.Kind.MutRef,
                               M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
                             |);
-                            M.read (| Value.String "doc" |);
+                            mk_str (| "doc" |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (|
@@ -1616,7 +1616,7 @@ Module abi.
                               Pointer.Kind.MutRef,
                               M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
                             |);
-                            M.read (| Value.String "code" |);
+                            mk_str (| "code" |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (|
@@ -1725,7 +1725,7 @@ Module abi.
                               Pointer.Kind.MutRef,
                               M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
                             |);
-                            M.read (| Value.String "ty_args" |);
+                            mk_str (| "ty_args" |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (|
@@ -1814,7 +1814,7 @@ Module abi.
                               Pointer.Kind.MutRef,
                               M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
                             |);
-                            M.read (| Value.String "args" |);
+                            mk_str (| "args" |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (|
@@ -1926,7 +1926,7 @@ Module abi.
               |),
               [
                 M.read (| __deserializer |);
-                M.read (| Value.String "TransactionScriptABI" |);
+                mk_str (| "TransactionScriptABI" |);
                 M.read (| M.get_constant "move_core_types::abi::_'5::deserialize::FIELDS" |);
                 Value.StructRecord
                   "move_core_types::abi::_'5::deserialize::__Visitor"
@@ -1996,7 +1996,7 @@ Module abi.
                             |),
                             [
                               M.read (| __serializer |);
-                              M.read (| Value.String "ArgumentABI" |);
+                              mk_str (| "ArgumentABI" |);
                               BinOp.Wrap.add (|
                                 BinOp.Wrap.add (|
                                   M.cast (Ty.path "usize") (Value.Bool false),
@@ -2072,7 +2072,7 @@ Module abi.
                               Pointer.Kind.MutRef,
                               M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
                             |);
-                            M.read (| Value.String "name" |);
+                            mk_str (| "name" |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (|
@@ -2153,7 +2153,7 @@ Module abi.
                               Pointer.Kind.MutRef,
                               M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
                             |);
-                            M.read (| Value.String "type_tag" |);
+                            mk_str (| "type_tag" |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (|
@@ -2265,7 +2265,7 @@ Module abi.
               |),
               [
                 M.read (| __deserializer |);
-                M.read (| Value.String "ArgumentABI" |);
+                mk_str (| "ArgumentABI" |);
                 M.read (| M.get_constant "move_core_types::abi::_'7::deserialize::FIELDS" |);
                 Value.StructRecord
                   "move_core_types::abi::_'7::deserialize::__Visitor"
@@ -2335,7 +2335,7 @@ Module abi.
                             |),
                             [
                               M.read (| __serializer |);
-                              M.read (| Value.String "TypeArgumentABI" |);
+                              mk_str (| "TypeArgumentABI" |);
                               BinOp.Wrap.add (|
                                 M.cast (Ty.path "usize") (Value.Bool false),
                                 Value.Integer IntegerKind.Usize 1
@@ -2408,7 +2408,7 @@ Module abi.
                               Pointer.Kind.MutRef,
                               M.deref (| M.borrow (| Pointer.Kind.MutRef, __serde_state |) |)
                             |);
-                            M.read (| Value.String "name" |);
+                            mk_str (| "name" |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (|
@@ -2520,7 +2520,7 @@ Module abi.
               |),
               [
                 M.read (| __deserializer |);
-                M.read (| Value.String "TypeArgumentABI" |);
+                mk_str (| "TypeArgumentABI" |);
                 M.read (| M.get_constant "move_core_types::abi::_'9::deserialize::FIELDS" |);
                 Value.StructRecord
                   "move_core_types::abi::_'9::deserialize::__Visitor"
@@ -2774,11 +2774,8 @@ Module abi.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "ScriptFunctionABI" |) |)
-              |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "name" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ScriptFunctionABI" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "name" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -2792,10 +2789,7 @@ Module abi.
                   |)
                 |)
               |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "module_name" |) |)
-              |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "module_name" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -2809,7 +2803,7 @@ Module abi.
                   |)
                 |)
               |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "doc" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "doc" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -2823,7 +2817,7 @@ Module abi.
                   |)
                 |)
               |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "ty_args" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ty_args" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -2837,7 +2831,7 @@ Module abi.
                   |)
                 |)
               |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "args" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "args" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -3575,11 +3569,8 @@ Module abi.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "TransactionScriptABI" |) |)
-              |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "name" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "TransactionScriptABI" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "name" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -3593,7 +3584,7 @@ Module abi.
                   |)
                 |)
               |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "doc" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "doc" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -3607,7 +3598,7 @@ Module abi.
                   |)
                 |)
               |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "code" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "code" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -3621,7 +3612,7 @@ Module abi.
                   |)
                 |)
               |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "ty_args" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ty_args" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -3635,7 +3626,7 @@ Module abi.
                   |)
                 |)
               |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "args" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "args" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -4260,11 +4251,8 @@ Module abi.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "ArgumentABI" |) |)
-              |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "name" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ArgumentABI" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "name" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -4278,7 +4266,7 @@ Module abi.
                   |)
                 |)
               |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "type_tag" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "type_tag" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -4620,11 +4608,8 @@ Module abi.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "TypeArgumentABI" |) |)
-              |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "name" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "TypeArgumentABI" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "name" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|

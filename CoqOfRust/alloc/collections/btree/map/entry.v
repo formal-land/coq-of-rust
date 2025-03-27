@@ -126,7 +126,7 @@ Module collections.
                                                 |);
                                                 M.borrow (|
                                                   Pointer.Kind.Ref,
-                                                  M.deref (| M.read (| Value.String "Entry" |) |)
+                                                  M.deref (| mk_str (| "Entry" |) |)
                                                 |)
                                               ]
                                             |)
@@ -198,7 +198,7 @@ Module collections.
                                                 |);
                                                 M.borrow (|
                                                   Pointer.Kind.Ref,
-                                                  M.deref (| M.read (| Value.String "Entry" |) |)
+                                                  M.deref (| mk_str (| "Entry" |) |)
                                                 |)
                                               ]
                                             |)
@@ -336,7 +336,7 @@ Module collections.
                                     |);
                                     M.borrow (|
                                       Pointer.Kind.Ref,
-                                      M.deref (| M.read (| Value.String "VacantEntry" |) |)
+                                      M.deref (| mk_str (| "VacantEntry" |) |)
                                     |)
                                   ]
                                 |)
@@ -497,9 +497,7 @@ Module collections.
                                             |);
                                             M.borrow (|
                                               Pointer.Kind.Ref,
-                                              M.deref (|
-                                                M.read (| Value.String "OccupiedEntry" |)
-                                              |)
+                                              M.deref (| mk_str (| "OccupiedEntry" |) |)
                                             |)
                                           ]
                                         |)
@@ -507,7 +505,7 @@ Module collections.
                                     |);
                                     M.borrow (|
                                       Pointer.Kind.Ref,
-                                      M.deref (| M.read (| Value.String "key" |) |)
+                                      M.deref (| mk_str (| "key" |) |)
                                     |);
                                     M.borrow (|
                                       Pointer.Kind.Ref,
@@ -537,10 +535,7 @@ Module collections.
                                 |)
                               |)
                             |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "value" |) |)
-                            |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "value" |) |) |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (|
@@ -694,9 +689,7 @@ Module collections.
                                                     |);
                                                     M.borrow (|
                                                       Pointer.Kind.Ref,
-                                                      M.deref (|
-                                                        M.read (| Value.String "OccupiedError" |)
-                                                      |)
+                                                      M.deref (| mk_str (| "OccupiedError" |) |)
                                                     |)
                                                   ]
                                                 |)
@@ -704,7 +697,7 @@ Module collections.
                                             |);
                                             M.borrow (|
                                               Pointer.Kind.Ref,
-                                              M.deref (| M.read (| Value.String "key" |) |)
+                                              M.deref (| mk_str (| "key" |) |)
                                             |);
                                             M.borrow (|
                                               Pointer.Kind.Ref,
@@ -740,7 +733,7 @@ Module collections.
                                     |);
                                     M.borrow (|
                                       Pointer.Kind.Ref,
-                                      M.deref (| M.read (| Value.String "old_value" |) |)
+                                      M.deref (| mk_str (| "old_value" |) |)
                                     |);
                                     M.borrow (|
                                       Pointer.Kind.Ref,
@@ -774,10 +767,7 @@ Module collections.
                                 |)
                               |)
                             |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "new_value" |) |)
-                            |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "new_value" |) |) |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (|
@@ -865,9 +855,9 @@ Module collections.
                               M.alloc (|
                                 Value.Array
                                   [
-                                    M.read (| Value.String "failed to insert " |);
-                                    M.read (| Value.String ", key " |);
-                                    M.read (| Value.String " already exists with value " |)
+                                    mk_str (| "failed to insert " |);
+                                    mk_str (| ", key " |);
+                                    mk_str (| " already exists with value " |)
                                   ]
                               |)
                             |)
@@ -1038,10 +1028,7 @@ Module collections.
             | [], [], [ self ] =>
               ltac:(M.monadic
                 (let self := M.alloc (| self |) in
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "key already exists" |) |)
-                |)))
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "key already exists" |) |) |)))
             | _, _, _ => M.impossible "wrong number of arguments"
             end.
           

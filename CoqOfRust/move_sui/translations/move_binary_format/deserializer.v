@@ -539,8 +539,8 @@ Module deserializer.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Table" |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "kind" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Table" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "kind" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -554,7 +554,7 @@ Module deserializer.
                   |)
                 |)
               |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "offset" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "offset" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -568,7 +568,7 @@ Module deserializer.
                   |)
                 |)
               |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "count" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "count" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -1929,9 +1929,7 @@ Module deserializer.
                                                       [
                                                         M.borrow (|
                                                           Pointer.Kind.Ref,
-                                                          M.deref (|
-                                                            M.read (| Value.String "Bad Uleb" |)
-                                                          |)
+                                                          M.deref (| mk_str (| "Bad Uleb" |) |)
                                                         |)
                                                       ]
                                                     |)
@@ -2060,9 +2058,7 @@ Module deserializer.
                                             M.borrow (|
                                               Pointer.Kind.Ref,
                                               M.deref (|
-                                                M.read (|
-                                                  Value.String "Uleb greater than max requested"
-                                                |)
+                                                mk_str (| "Uleb greater than max requested" |)
                                               |)
                                             |)
                                           ]
@@ -2183,9 +2179,8 @@ Module deserializer.
                                                 M.borrow (|
                                                   Pointer.Kind.Ref,
                                                   M.deref (|
-                                                    M.read (|
-                                                      Value.String
-                                                        "Failed to convert u64 to target integer type. This should not happen. Is the maximum value correct?"
+                                                    mk_str (|
+                                                      "Failed to convert u64 to target integer type. This should not happen. Is the maximum value correct?"
                                                     |)
                                                   |)
                                                 |)
@@ -5586,9 +5581,7 @@ Module deserializer.
                                             [
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
-                                                M.deref (|
-                                                  M.read (| Value.String "Error reading table" |)
-                                                |)
+                                                M.deref (| mk_str (| "Error reading table" |) |)
                                               |)
                                             ]
                                           |)
@@ -7909,17 +7902,14 @@ Module deserializer.
                                                                                                           M.alloc (|
                                                                                                             Value.Array
                                                                                                               [
-                                                                                                                M.read (|
-                                                                                                                  Value.String
-                                                                                                                    "Exceeded size ("
+                                                                                                                mk_str (|
+                                                                                                                  "Exceeded size ("
                                                                                                                 |);
-                                                                                                                M.read (|
-                                                                                                                  Value.String
-                                                                                                                    " > "
+                                                                                                                mk_str (|
+                                                                                                                  " > "
                                                                                                                 |);
-                                                                                                                M.read (|
-                                                                                                                  Value.String
-                                                                                                                    ")  in "
+                                                                                                                mk_str (|
+                                                                                                                  ")  in "
                                                                                                                 |)
                                                                                                               ]
                                                                                                           |)
@@ -8424,17 +8414,14 @@ Module deserializer.
                                                                                                           M.alloc (|
                                                                                                             Value.Array
                                                                                                               [
-                                                                                                                M.read (|
-                                                                                                                  Value.String
-                                                                                                                    "Exceeded size ("
+                                                                                                                mk_str (|
+                                                                                                                  "Exceeded size ("
                                                                                                                 |);
-                                                                                                                M.read (|
-                                                                                                                  Value.String
-                                                                                                                    " > "
+                                                                                                                mk_str (|
+                                                                                                                  " > "
                                                                                                                 |);
-                                                                                                                M.read (|
-                                                                                                                  Value.String
-                                                                                                                    ")  in "
+                                                                                                                mk_str (|
+                                                                                                                  ")  in "
                                                                                                                 |)
                                                                                                               ]
                                                                                                           |)
@@ -8939,17 +8926,14 @@ Module deserializer.
                                                                                                           M.alloc (|
                                                                                                             Value.Array
                                                                                                               [
-                                                                                                                M.read (|
-                                                                                                                  Value.String
-                                                                                                                    "Exceeded size ("
+                                                                                                                mk_str (|
+                                                                                                                  "Exceeded size ("
                                                                                                                 |);
-                                                                                                                M.read (|
-                                                                                                                  Value.String
-                                                                                                                    " > "
+                                                                                                                mk_str (|
+                                                                                                                  " > "
                                                                                                                 |);
-                                                                                                                M.read (|
-                                                                                                                  Value.String
-                                                                                                                    ")  in "
+                                                                                                                mk_str (|
+                                                                                                                  ")  in "
                                                                                                                 |)
                                                                                                               ]
                                                                                                           |)
@@ -9454,17 +9438,14 @@ Module deserializer.
                                                                                                           M.alloc (|
                                                                                                             Value.Array
                                                                                                               [
-                                                                                                                M.read (|
-                                                                                                                  Value.String
-                                                                                                                    "Exceeded size ("
+                                                                                                                mk_str (|
+                                                                                                                  "Exceeded size ("
                                                                                                                 |);
-                                                                                                                M.read (|
-                                                                                                                  Value.String
-                                                                                                                    " > "
+                                                                                                                mk_str (|
+                                                                                                                  " > "
                                                                                                                 |);
-                                                                                                                M.read (|
-                                                                                                                  Value.String
-                                                                                                                    ")  in "
+                                                                                                                mk_str (|
+                                                                                                                  ")  in "
                                                                                                                 |)
                                                                                                               ]
                                                                                                           |)
@@ -9967,17 +9948,14 @@ Module deserializer.
                                                                                                           M.alloc (|
                                                                                                             Value.Array
                                                                                                               [
-                                                                                                                M.read (|
-                                                                                                                  Value.String
-                                                                                                                    "Exceeded size ("
+                                                                                                                mk_str (|
+                                                                                                                  "Exceeded size ("
                                                                                                                 |);
-                                                                                                                M.read (|
-                                                                                                                  Value.String
-                                                                                                                    " > "
+                                                                                                                mk_str (|
+                                                                                                                  " > "
                                                                                                                 |);
-                                                                                                                M.read (|
-                                                                                                                  Value.String
-                                                                                                                    ")  in "
+                                                                                                                mk_str (|
+                                                                                                                  ")  in "
                                                                                                                 |)
                                                                                                               ]
                                                                                                           |)
@@ -10480,17 +10458,14 @@ Module deserializer.
                                                                                                           M.alloc (|
                                                                                                             Value.Array
                                                                                                               [
-                                                                                                                M.read (|
-                                                                                                                  Value.String
-                                                                                                                    "Exceeded size ("
+                                                                                                                mk_str (|
+                                                                                                                  "Exceeded size ("
                                                                                                                 |);
-                                                                                                                M.read (|
-                                                                                                                  Value.String
-                                                                                                                    " > "
+                                                                                                                mk_str (|
+                                                                                                                  " > "
                                                                                                                 |);
-                                                                                                                M.read (|
-                                                                                                                  Value.String
-                                                                                                                    ")  in "
+                                                                                                                mk_str (|
+                                                                                                                  ")  in "
                                                                                                                 |)
                                                                                                               ]
                                                                                                           |)
@@ -10807,9 +10782,8 @@ Module deserializer.
                                                                                                           M.alloc (|
                                                                                                             Value.Array
                                                                                                               [
-                                                                                                                M.read (|
-                                                                                                                  Value.String
-                                                                                                                    "metadata declarations not applicable in bytecode version "
+                                                                                                                mk_str (|
+                                                                                                                  "metadata declarations not applicable in bytecode version "
                                                                                                                 |)
                                                                                                               ]
                                                                                                           |)
@@ -11427,17 +11401,14 @@ Module deserializer.
                                                                                                           M.alloc (|
                                                                                                             Value.Array
                                                                                                               [
-                                                                                                                M.read (|
-                                                                                                                  Value.String
-                                                                                                                    "Exceeded size ("
+                                                                                                                mk_str (|
+                                                                                                                  "Exceeded size ("
                                                                                                                 |);
-                                                                                                                M.read (|
-                                                                                                                  Value.String
-                                                                                                                    " > "
+                                                                                                                mk_str (|
+                                                                                                                  " > "
                                                                                                                 |);
-                                                                                                                M.read (|
-                                                                                                                  Value.String
-                                                                                                                    ")  in "
+                                                                                                                mk_str (|
+                                                                                                                  ")  in "
                                                                                                                 |)
                                                                                                               ]
                                                                                                           |)
@@ -11942,17 +11913,14 @@ Module deserializer.
                                                                                                           M.alloc (|
                                                                                                             Value.Array
                                                                                                               [
-                                                                                                                M.read (|
-                                                                                                                  Value.String
-                                                                                                                    "Exceeded size ("
+                                                                                                                mk_str (|
+                                                                                                                  "Exceeded size ("
                                                                                                                 |);
-                                                                                                                M.read (|
-                                                                                                                  Value.String
-                                                                                                                    " > "
+                                                                                                                mk_str (|
+                                                                                                                  " > "
                                                                                                                 |);
-                                                                                                                M.read (|
-                                                                                                                  Value.String
-                                                                                                                    ")  in "
+                                                                                                                mk_str (|
+                                                                                                                  ")  in "
                                                                                                                 |)
                                                                                                               ]
                                                                                                           |)
@@ -12264,9 +12232,8 @@ Module deserializer.
                                                                                     M.borrow (|
                                                                                       Pointer.Kind.Ref,
                                                                                       M.deref (|
-                                                                                        M.read (|
-                                                                                          Value.String
-                                                                                            "Friend declarations not applicable in bytecode version 1"
+                                                                                        mk_str (|
+                                                                                          "Friend declarations not applicable in bytecode version 1"
                                                                                         |)
                                                                                       |)
                                                                                     |)
@@ -12937,17 +12904,14 @@ Module deserializer.
                                                                                                           M.alloc (|
                                                                                                             Value.Array
                                                                                                               [
-                                                                                                                M.read (|
-                                                                                                                  Value.String
-                                                                                                                    "Exceeded size ("
+                                                                                                                mk_str (|
+                                                                                                                  "Exceeded size ("
                                                                                                                 |);
-                                                                                                                M.read (|
-                                                                                                                  Value.String
-                                                                                                                    " > "
+                                                                                                                mk_str (|
+                                                                                                                  " > "
                                                                                                                 |);
-                                                                                                                M.read (|
-                                                                                                                  Value.String
-                                                                                                                    ")  in "
+                                                                                                                mk_str (|
+                                                                                                                  ")  in "
                                                                                                                 |)
                                                                                                               ]
                                                                                                           |)
@@ -13431,17 +13395,14 @@ Module deserializer.
                                                                                                           M.alloc (|
                                                                                                             Value.Array
                                                                                                               [
-                                                                                                                M.read (|
-                                                                                                                  Value.String
-                                                                                                                    "Exceeded size ("
+                                                                                                                mk_str (|
+                                                                                                                  "Exceeded size ("
                                                                                                                 |);
-                                                                                                                M.read (|
-                                                                                                                  Value.String
-                                                                                                                    " > "
+                                                                                                                mk_str (|
+                                                                                                                  " > "
                                                                                                                 |);
-                                                                                                                M.read (|
-                                                                                                                  Value.String
-                                                                                                                    ")  in "
+                                                                                                                mk_str (|
+                                                                                                                  ")  in "
                                                                                                                 |)
                                                                                                               ]
                                                                                                           |)
@@ -13925,17 +13886,14 @@ Module deserializer.
                                                                                                           M.alloc (|
                                                                                                             Value.Array
                                                                                                               [
-                                                                                                                M.read (|
-                                                                                                                  Value.String
-                                                                                                                    "Exceeded size ("
+                                                                                                                mk_str (|
+                                                                                                                  "Exceeded size ("
                                                                                                                 |);
-                                                                                                                M.read (|
-                                                                                                                  Value.String
-                                                                                                                    " > "
+                                                                                                                mk_str (|
+                                                                                                                  " > "
                                                                                                                 |);
-                                                                                                                M.read (|
-                                                                                                                  Value.String
-                                                                                                                    ")  in "
+                                                                                                                mk_str (|
+                                                                                                                  ")  in "
                                                                                                                 |)
                                                                                                               ]
                                                                                                           |)
@@ -14419,17 +14377,14 @@ Module deserializer.
                                                                                                           M.alloc (|
                                                                                                             Value.Array
                                                                                                               [
-                                                                                                                M.read (|
-                                                                                                                  Value.String
-                                                                                                                    "Exceeded size ("
+                                                                                                                mk_str (|
+                                                                                                                  "Exceeded size ("
                                                                                                                 |);
-                                                                                                                M.read (|
-                                                                                                                  Value.String
-                                                                                                                    " > "
+                                                                                                                mk_str (|
+                                                                                                                  " > "
                                                                                                                 |);
-                                                                                                                M.read (|
-                                                                                                                  Value.String
-                                                                                                                    ")  in "
+                                                                                                                mk_str (|
+                                                                                                                  ")  in "
                                                                                                                 |)
                                                                                                               ]
                                                                                                           |)
@@ -14913,17 +14868,14 @@ Module deserializer.
                                                                                                           M.alloc (|
                                                                                                             Value.Array
                                                                                                               [
-                                                                                                                M.read (|
-                                                                                                                  Value.String
-                                                                                                                    "Exceeded size ("
+                                                                                                                mk_str (|
+                                                                                                                  "Exceeded size ("
                                                                                                                 |);
-                                                                                                                M.read (|
-                                                                                                                  Value.String
-                                                                                                                    " > "
+                                                                                                                mk_str (|
+                                                                                                                  " > "
                                                                                                                 |);
-                                                                                                                M.read (|
-                                                                                                                  Value.String
-                                                                                                                    ")  in "
+                                                                                                                mk_str (|
+                                                                                                                  ")  in "
                                                                                                                 |)
                                                                                                               ]
                                                                                                           |)
@@ -15407,17 +15359,14 @@ Module deserializer.
                                                                                                           M.alloc (|
                                                                                                             Value.Array
                                                                                                               [
-                                                                                                                M.read (|
-                                                                                                                  Value.String
-                                                                                                                    "Exceeded size ("
+                                                                                                                mk_str (|
+                                                                                                                  "Exceeded size ("
                                                                                                                 |);
-                                                                                                                M.read (|
-                                                                                                                  Value.String
-                                                                                                                    " > "
+                                                                                                                mk_str (|
+                                                                                                                  " > "
                                                                                                                 |);
-                                                                                                                M.read (|
-                                                                                                                  Value.String
-                                                                                                                    ")  in "
+                                                                                                                mk_str (|
+                                                                                                                  ")  in "
                                                                                                                 |)
                                                                                                               ]
                                                                                                           |)
@@ -19003,9 +18952,8 @@ Module deserializer.
                                                                   M.borrow (|
                                                                     Pointer.Kind.Ref,
                                                                     M.deref (|
-                                                                      M.read (|
-                                                                        Value.String
-                                                                          "Bad Identifier pool size"
+                                                                      mk_str (|
+                                                                        "Bad Identifier pool size"
                                                                       |)
                                                                     |)
                                                                   |)
@@ -19170,9 +19118,8 @@ Module deserializer.
                                                                               M.borrow (|
                                                                                 Pointer.Kind.Ref,
                                                                                 M.deref (|
-                                                                                  M.read (|
-                                                                                    Value.String
-                                                                                      "Invalid Identifier"
+                                                                                  mk_str (|
+                                                                                    "Invalid Identifier"
                                                                                   |)
                                                                                 |)
                                                                               |)
@@ -19434,9 +19381,7 @@ Module deserializer.
                                             M.borrow (|
                                               Pointer.Kind.Ref,
                                               M.deref (|
-                                                M.read (|
-                                                  Value.String "Bad Address Identifier pool size"
-                                                |)
+                                                mk_str (| "Bad Address Identifier pool size" |)
                                               |)
                                             |)
                                           ]
@@ -19710,9 +19655,8 @@ Module deserializer.
                                                                       M.borrow (|
                                                                         Pointer.Kind.Ref,
                                                                         M.deref (|
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              "Invalid Address format"
+                                                                          mk_str (|
+                                                                            "Invalid Address format"
                                                                           |)
                                                                         |)
                                                                       |)
@@ -21394,9 +21338,7 @@ Module deserializer.
                                                         M.borrow (|
                                                           Pointer.Kind.Ref,
                                                           M.deref (|
-                                                            M.read (|
-                                                              Value.String "Unexpected end of table"
-                                                            |)
+                                                            mk_str (| "Unexpected end of table" |)
                                                           |)
                                                         |)
                                                       ]
@@ -21538,9 +21480,7 @@ Module deserializer.
                                           [
                                             M.borrow (|
                                               Pointer.Kind.Ref,
-                                              M.deref (|
-                                                M.read (| Value.String "Bad byte blob size" |)
-                                              |)
+                                              M.deref (| mk_str (| "Bad byte blob size" |) |)
                                             |)
                                           ]
                                         |)
@@ -22883,9 +22823,8 @@ Module deserializer.
                                                                                                           M.alloc (|
                                                                                                             Value.Array
                                                                                                               [
-                                                                                                                M.read (|
-                                                                                                                  Value.String
-                                                                                                                    "u16, u32, u256 integers not supported in bytecode version "
+                                                                                                                mk_str (|
+                                                                                                                  "u16, u32, u256 integers not supported in bytecode version "
                                                                                                                 |)
                                                                                                               ]
                                                                                                           |)
@@ -23860,9 +23799,8 @@ Module deserializer.
                                                                                             M.borrow (|
                                                                                               Pointer.Kind.Ref,
                                                                                               M.deref (|
-                                                                                                M.read (|
-                                                                                                  Value.String
-                                                                                                    "Struct inst with arity 0"
+                                                                                                mk_str (|
+                                                                                                  "Struct inst with arity 0"
                                                                                                 |)
                                                                                               |)
                                                                                             |)
@@ -24137,9 +24075,7 @@ Module deserializer.
                                                             M.borrow (|
                                                               Pointer.Kind.Ref,
                                                               M.deref (|
-                                                                M.read (|
-                                                                  Value.String "Unexpected EOF"
-                                                                |)
+                                                                mk_str (| "Unexpected EOF" |)
                                                               |)
                                                             |)
                                                           ]
@@ -24489,9 +24425,8 @@ Module deserializer.
                                                       M.borrow (|
                                                         Pointer.Kind.Ref,
                                                         M.deref (|
-                                                          M.read (|
-                                                            Value.String
-                                                              "Maximum recursion depth reached"
+                                                          mk_str (|
+                                                            "Maximum recursion depth reached"
                                                           |)
                                                         |)
                                                       |)
@@ -25372,9 +25307,8 @@ Module deserializer.
                                         M.alloc (|
                                           Value.Array
                                             [
-                                              M.read (|
-                                                Value.String
-                                                  "internal error: entered unreachable code: invalid type constructor application"
+                                              mk_str (|
+                                                "internal error: entered unreachable code: invalid type constructor application"
                                               |)
                                             ]
                                         |)
@@ -25513,9 +25447,8 @@ Module deserializer.
                                         M.alloc (|
                                           Value.Array
                                             [
-                                              M.read (|
-                                                Value.String
-                                                  "internal error: entered unreachable code: cannot unwrap unsaturated type constructor"
+                                              mk_str (|
+                                                "internal error: entered unreachable code: cannot unwrap unsaturated type constructor"
                                               |)
                                             ]
                                         |)
@@ -25827,9 +25760,7 @@ Module deserializer.
                                                     [
                                                       M.borrow (|
                                                         Pointer.Kind.Ref,
-                                                        M.deref (|
-                                                          M.read (| Value.String "Unexpected EOF" |)
-                                                        |)
+                                                        M.deref (| mk_str (| "Unexpected EOF" |) |)
                                                       |)
                                                     ]
                                                   |)
@@ -26440,9 +26371,8 @@ Module deserializer.
                                                                 []
                                                               |),
                                                               [
-                                                                M.read (|
-                                                                  Value.String
-                                                                    "internal error: entered unreachable code"
+                                                                mk_str (|
+                                                                  "internal error: entered unreachable code"
                                                                 |)
                                                               ]
                                                             |)
@@ -28468,9 +28398,8 @@ Module deserializer.
                                                             M.borrow (|
                                                               Pointer.Kind.Ref,
                                                               M.deref (|
-                                                                M.read (|
-                                                                  Value.String
-                                                                    "Invalid field info in struct"
+                                                                mk_str (|
+                                                                  "Invalid field info in struct"
                                                                 |)
                                                               |)
                                                             |)
@@ -30966,9 +30895,7 @@ Module deserializer.
                                                         M.borrow (|
                                                           Pointer.Kind.Ref,
                                                           M.deref (|
-                                                            M.read (|
-                                                              Value.String "Unexpected EOF"
-                                                            |)
+                                                            mk_str (| "Unexpected EOF" |)
                                                           |)
                                                         |)
                                                       ]
@@ -31390,9 +31317,8 @@ Module deserializer.
                                                                                     M.borrow (|
                                                                                       Pointer.Kind.Ref,
                                                                                       M.deref (|
-                                                                                        M.read (|
-                                                                                          Value.String
-                                                                                            "Invalid visibility byte"
+                                                                                        mk_str (|
+                                                                                          "Invalid visibility byte"
                                                                                         |)
                                                                                       |)
                                                                                     |)
@@ -31642,9 +31568,8 @@ Module deserializer.
                                                                                   M.borrow (|
                                                                                     Pointer.Kind.Ref,
                                                                                     M.deref (|
-                                                                                      M.read (|
-                                                                                        Value.String
-                                                                                          "Unexpected EOF"
+                                                                                      mk_str (|
+                                                                                        "Unexpected EOF"
                                                                                       |)
                                                                                     |)
                                                                                   |)
@@ -31895,9 +31820,8 @@ Module deserializer.
                                                                           M.borrow (|
                                                                             Pointer.Kind.Ref,
                                                                             M.deref (|
-                                                                              M.read (|
-                                                                                Value.String
-                                                                                  "Invalid visibility byte"
+                                                                              mk_str (|
+                                                                                "Invalid visibility byte"
                                                                               |)
                                                                             |)
                                                                           |)
@@ -32127,9 +32051,8 @@ Module deserializer.
                                                                           M.borrow (|
                                                                             Pointer.Kind.Ref,
                                                                             M.deref (|
-                                                                              M.read (|
-                                                                                Value.String
-                                                                                  "Unexpected EOF"
+                                                                              mk_str (|
+                                                                                "Unexpected EOF"
                                                                               |)
                                                                             |)
                                                                           |)
@@ -33956,9 +33879,8 @@ Module deserializer.
                                                                       M.borrow (|
                                                                         Pointer.Kind.Ref,
                                                                         M.deref (|
-                                                                          M.read (|
-                                                                            Value.String
-                                                                              "Unexpected EOF"
+                                                                          mk_str (|
+                                                                            "Unexpected EOF"
                                                                           |)
                                                                         |)
                                                                       |)
@@ -34372,9 +34294,8 @@ Module deserializer.
                                                                                                 M.alloc (|
                                                                                                   Value.Array
                                                                                                     [
-                                                                                                      M.read (|
-                                                                                                        Value.String
-                                                                                                          "Vector operations not available before bytecode version "
+                                                                                                      mk_str (|
+                                                                                                        "Vector operations not available before bytecode version "
                                                                                                       |)
                                                                                                     ]
                                                                                                 |)
@@ -34626,9 +34547,8 @@ Module deserializer.
                                                                                         M.alloc (|
                                                                                           Value.Array
                                                                                             [
-                                                                                              M.read (|
-                                                                                                Value.String
-                                                                                                  "Loading or casting u16, u32, u256 integers not supported in bytecode version "
+                                                                                              mk_str (|
+                                                                                                "Loading or casting u16, u32, u256 integers not supported in bytecode version "
                                                                                               |)
                                                                                             ]
                                                                                         |)
@@ -35334,9 +35254,8 @@ Module deserializer.
                                                                                   M.borrow (|
                                                                                     Pointer.Kind.Ref,
                                                                                     M.deref (|
-                                                                                      M.read (|
-                                                                                        Value.String
-                                                                                          "Unexpected EOF"
+                                                                                      mk_str (|
+                                                                                        "Unexpected EOF"
                                                                                       |)
                                                                                     |)
                                                                                   |)
@@ -42647,7 +42566,7 @@ Module deserializer.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "NOMINAL_RESOURCE" |) |)
+                            M.deref (| mk_str (| "NOMINAL_RESOURCE" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -42661,7 +42580,7 @@ Module deserializer.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "NORMAL_STRUCT" |) |)
+                            M.deref (| mk_str (| "NORMAL_STRUCT" |) |)
                           |)
                         |)))
                   ]
@@ -44423,30 +44342,21 @@ Module deserializer.
                       M.alloc (|
                         Value.Array
                           [
-                            M.read (| Value.String "binary_config" |);
+                            mk_str (| "binary_config" |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "binary" |) |) |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "version" |) |) |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "tables" |) |) |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "binary" |) |)
+                              M.deref (| mk_str (| "module_idx" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "version" |) |)
+                              M.deref (| mk_str (| "data_offset" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "tables" |) |)
-                            |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "module_idx" |) |)
-                            |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "data_offset" |) |)
-                            |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "binary_end_offset" |) |)
+                              M.deref (| mk_str (| "binary_end_offset" |) |)
                             |)
                           ]
                       |)
@@ -44589,10 +44499,7 @@ Module deserializer.
                 |),
                 [
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (| M.read (| Value.String "VersionedBinary" |) |)
-                  |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "VersionedBinary" |) |) |);
                   M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| names |) |) |);
                   M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| values |) |) |)
                 ]
@@ -44650,11 +44557,8 @@ Module deserializer.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "VersionedCursor" |) |)
-              |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "version" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "VersionedCursor" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "version" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -44668,7 +44572,7 @@ Module deserializer.
                   |)
                 |)
               |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "cursor" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "cursor" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -45011,9 +44915,7 @@ Module deserializer.
                                             [
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
-                                                M.deref (|
-                                                  M.read (| Value.String "Bad binary header" |)
-                                                |)
+                                                M.deref (| mk_str (| "Bad binary header" |) |)
                                               |)
                                             ]
                                           |)
@@ -45113,9 +45015,7 @@ Module deserializer.
                                               [
                                                 M.borrow (|
                                                   Pointer.Kind.Ref,
-                                                  M.deref (|
-                                                    M.read (| Value.String "Bad binary header" |)
-                                                  |)
+                                                  M.deref (| mk_str (| "Bad binary header" |) |)
                                                 |)
                                               ]
                                             |)
@@ -45681,9 +45581,7 @@ Module deserializer.
                                             [
                                               M.borrow (|
                                                 Pointer.Kind.Ref,
-                                                M.deref (|
-                                                  M.read (| Value.String "Table size too big" |)
-                                                |)
+                                                M.deref (| mk_str (| "Table size too big" |) |)
                                               |)
                                             ]
                                           |)

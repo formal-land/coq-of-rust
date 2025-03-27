@@ -75,24 +75,57 @@ Module Impl_mother_Mapping_K_V.
           unimplemented!()
       }
   *)
-  Parameter get : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition get (K V : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self K V in
+    match ε, τ, α with
+    | [], [], [ self; _key ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _key := M.alloc (| _key |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance AssociatedFunction_get :
     forall (K V : Ty.t),
     M.IsAssociatedFunction.Trait (Self K V) "get" (get K V).
   Admitted.
+  Global Typeclasses Opaque get.
   
   (*
       fn insert(&mut self, _key: K, _value: V) {
           unimplemented!()
       }
   *)
-  Parameter insert : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition insert (K V : Ty.t) (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    let Self : Ty.t := Self K V in
+    match ε, τ, α with
+    | [], [], [ self; _key; _value ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _key := M.alloc (| _key |) in
+        let _value := M.alloc (| _value |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance AssociatedFunction_insert :
     forall (K V : Ty.t),
     M.IsAssociatedFunction.Trait (Self K V) "insert" (insert K V).
   Admitted.
+  Global Typeclasses Opaque insert.
 End Impl_mother_Mapping_K_V.
 
 (* StructTuple
@@ -2083,11 +2116,26 @@ Module Impl_mother_Env.
           unimplemented!()
       }
   *)
-  Parameter emit_event : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition emit_event (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; _event ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _event := M.alloc (| _event |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance AssociatedFunction_emit_event :
     M.IsAssociatedFunction.Trait Self "emit_event" emit_event.
   Admitted.
+  Global Typeclasses Opaque emit_event.
 End Impl_mother_Env.
 
 (* StructRecord
@@ -2169,11 +2217,24 @@ Module Impl_mother_Mother.
           unimplemented!()
       }
   *)
-  Parameter init_env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition init_env (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
+      ltac:(M.monadic
+        (M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance AssociatedFunction_init_env :
     M.IsAssociatedFunction.Trait Self "init_env" init_env.
   Admitted.
+  Global Typeclasses Opaque init_env.
   
   (*
       fn env(&self) -> Env {
@@ -2320,7 +2381,7 @@ Module Impl_mother_Mother.
                               [
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "Reverting instantiation" |) |)
+                                  M.deref (| mk_str (| "Reverting instantiation" |) |)
                                 |)
                               ]
                             |)
@@ -2480,9 +2541,7 @@ Module Impl_mother_Mother.
                               [
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.read (| Value.String "Reverting on user demand!" |)
-                                  |)
+                                  M.deref (| mk_str (| "Reverting on user demand!" |) |)
                                 |)
                               ]
                             |)
@@ -2503,7 +2562,7 @@ Module Impl_mother_Mother.
                           [],
                           [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                         |),
-                        [ M.read (| Value.String "Trapping on user demand!" |) ]
+                        [ mk_str (| "Trapping on user demand!" |) ]
                       |)
                     |)
                   |)));
@@ -2556,12 +2615,8 @@ Module Impl_mother_Mother.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "debug_log: " |);
-                                    M.read (| Value.String "
-" |)
-                                  ]
+                                Value.Array [ mk_str (| "debug_log: " |); mk_str (| "
+" |) ]
                               |)
                             |)
                           |)

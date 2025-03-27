@@ -248,28 +248,26 @@ Module compatibility.
                       M.alloc (|
                         Value.Array
                           [
-                            M.read (| Value.String "check_struct_and_pub_function_linking" |);
+                            mk_str (| "check_struct_and_pub_function_linking" |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "check_struct_layout" |) |)
+                              M.deref (| mk_str (| "check_struct_layout" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "check_friend_linking" |) |)
+                              M.deref (| mk_str (| "check_friend_linking" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "check_private_entry_linking" |) |)
+                              M.deref (| mk_str (| "check_private_entry_linking" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "disallowed_new_abilities" |) |)
+                              M.deref (| mk_str (| "disallowed_new_abilities" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (|
-                                M.read (| Value.String "disallow_change_struct_type_params" |)
-                              |)
+                              M.deref (| mk_str (| "disallow_change_struct_type_params" |) |)
                             |)
                           ]
                       |)
@@ -399,10 +397,7 @@ Module compatibility.
                 |),
                 [
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (| M.read (| Value.String "Compatibility" |) |)
-                  |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Compatibility" |) |) |);
                   M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| names |) |) |);
                   M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| values |) |) |)
                 ]
@@ -3643,10 +3638,7 @@ Module compatibility.
                             "move_binary_format::compatibility::InclusionCheck::Subset"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Subset" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Subset" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -3657,10 +3649,7 @@ Module compatibility.
                             "move_binary_format::compatibility::InclusionCheck::Equal"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Equal" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Equal" |) |) |)
                         |)))
                   ]
                 |)

@@ -35,7 +35,7 @@ Module future.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Ready" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Ready" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -212,7 +212,7 @@ Module future.
                     |);
                     M.borrow (|
                       Pointer.Kind.Ref,
-                      M.deref (| M.read (| Value.String "`Ready` polled after completion" |) |)
+                      M.deref (| mk_str (| "`Ready` polled after completion" |) |)
                     |)
                   ]
                 |)
@@ -259,9 +259,7 @@ Module future.
                 |);
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.deref (|
-                    M.read (| Value.String "Called `into_inner()` on `Ready` after completion" |)
-                  |)
+                  M.deref (| mk_str (| "Called `into_inner()` on `Ready` after completion" |) |)
                 |)
               ]
             |)))

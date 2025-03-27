@@ -126,11 +126,26 @@ Module Impl_contract_terminate_Env.
           unimplemented!()
       }
   *)
-  Parameter terminate_contract : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition terminate_contract (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [ self; _account ] =>
+      ltac:(M.monadic
+        (let self := M.alloc (| self |) in
+        let _account := M.alloc (| _account |) in
+        M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance AssociatedFunction_terminate_contract :
     M.IsAssociatedFunction.Trait Self "terminate_contract" terminate_contract.
   Admitted.
+  Global Typeclasses Opaque terminate_contract.
 End Impl_contract_terminate_Env.
 
 (* StructTuple
@@ -149,11 +164,24 @@ Module Impl_contract_terminate_JustTerminate.
           unimplemented!()
       }
   *)
-  Parameter init_env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
+  Definition init_env (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    match ε, τ, α with
+    | [], [], [] =>
+      ltac:(M.monadic
+        (M.never_to_any (|
+          M.call_closure (|
+            Ty.path "never",
+            M.get_function (| "core::panicking::panic", [], [] |),
+            [ mk_str (| "not implemented" |) ]
+          |)
+        |)))
+    | _, _, _ => M.impossible "wrong number of arguments"
+    end.
   
   Global Instance AssociatedFunction_init_env :
     M.IsAssociatedFunction.Trait Self "init_env" init_env.
   Admitted.
+  Global Typeclasses Opaque init_env.
   
   (*
       fn env(&self) -> Env {

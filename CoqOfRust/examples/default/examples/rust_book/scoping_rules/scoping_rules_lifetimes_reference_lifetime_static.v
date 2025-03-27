@@ -80,7 +80,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       (M.read (|
         let~ _ : Ty.tuple [] :=
           let~ static_string : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
-            M.copy (| Value.String "I'm in read-only memory" |) in
+            M.alloc (| mk_str (| "I'm in read-only memory" |) |) in
           let~ _ : Ty.tuple [] :=
             let~ _ : Ty.tuple [] :=
               M.alloc (|
@@ -103,12 +103,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "static_string: " |);
-                                    M.read (| Value.String "
-" |)
-                                  ]
+                                Value.Array [ mk_str (| "static_string: " |); mk_str (| "
+" |) ]
                               |)
                             |)
                           |)
@@ -191,12 +187,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "coerced_static: " |);
-                                    M.read (| Value.String "
-" |)
-                                  ]
+                                Value.Array [ mk_str (| "coerced_static: " |); mk_str (| "
+" |) ]
                               |)
                             |)
                           |)
@@ -261,11 +253,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             Pointer.Kind.Ref,
                             M.alloc (|
                               Value.Array
-                                [
-                                  M.read (| Value.String "NUM: " |);
-                                  M.read (| Value.String " stays accessible!
-" |)
-                                ]
+                                [ mk_str (| "NUM: " |); mk_str (| " stays accessible!
+" |) ]
                             |)
                           |)
                         |)

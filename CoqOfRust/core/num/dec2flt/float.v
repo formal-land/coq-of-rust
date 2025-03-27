@@ -139,9 +139,8 @@ Module num.
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
                                           [
-                                            M.read (|
-                                              Value.String
-                                                "assertion failed: v <= Self::MAX_MANTISSA_FAST_PATH"
+                                            mk_str (|
+                                              "assertion failed: v <= Self::MAX_MANTISSA_FAST_PATH"
                                             |)
                                           ]
                                         |)
@@ -511,9 +510,8 @@ Module num.
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
                                           [
-                                            M.read (|
-                                              Value.String
-                                                "assertion failed: v <= Self::MAX_MANTISSA_FAST_PATH"
+                                            mk_str (|
+                                              "assertion failed: v <= Self::MAX_MANTISSA_FAST_PATH"
                                             |)
                                           ]
                                         |)

@@ -1144,7 +1144,7 @@ Module time.
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "overflow in Duration::new" |) |)
+                              M.deref (| mk_str (| "overflow in Duration::new" |) |)
                             |)
                           ]
                         |)
@@ -1429,11 +1429,7 @@ Module time.
                                         Pointer.Kind.Ref,
                                         M.alloc (|
                                           Value.Array
-                                            [
-                                              M.read (|
-                                                Value.String "overflow in Duration::from_weeks"
-                                              |)
-                                            ]
+                                            [ mk_str (| "overflow in Duration::from_weeks" |) ]
                                         |)
                                       |)
                                     |)
@@ -1539,11 +1535,7 @@ Module time.
                                         Pointer.Kind.Ref,
                                         M.alloc (|
                                           Value.Array
-                                            [
-                                              M.read (|
-                                                Value.String "overflow in Duration::from_days"
-                                              |)
-                                            ]
+                                            [ mk_str (| "overflow in Duration::from_days" |) ]
                                         |)
                                       |)
                                     |)
@@ -1643,11 +1635,7 @@ Module time.
                                         Pointer.Kind.Ref,
                                         M.alloc (|
                                           Value.Array
-                                            [
-                                              M.read (|
-                                                Value.String "overflow in Duration::from_hours"
-                                              |)
-                                            ]
+                                            [ mk_str (| "overflow in Duration::from_hours" |) ]
                                         |)
                                       |)
                                     |)
@@ -1741,11 +1729,7 @@ Module time.
                                         Pointer.Kind.Ref,
                                         M.alloc (|
                                           Value.Array
-                                            [
-                                              M.read (|
-                                                Value.String "overflow in Duration::from_mins"
-                                              |)
-                                            ]
+                                            [ mk_str (| "overflow in Duration::from_mins" |) ]
                                         |)
                                       |)
                                     |)
@@ -2392,9 +2376,8 @@ Module time.
                                                     []
                                                   |),
                                                   [
-                                                    M.read (|
-                                                      Value.String
-                                                        "assertion failed: nanos < NANOS_PER_SEC"
+                                                    mk_str (|
+                                                      "assertion failed: nanos < NANOS_PER_SEC"
                                                     |)
                                                   ]
                                                 |)
@@ -2761,9 +2744,8 @@ Module time.
                                                     []
                                                   |),
                                                   [
-                                                    M.read (|
-                                                      Value.String
-                                                        "assertion failed: nanos < NANOS_PER_SEC"
+                                                    mk_str (|
+                                                      "assertion failed: nanos < NANOS_PER_SEC"
                                                     |)
                                                   ]
                                                 |)
@@ -3042,9 +3024,8 @@ Module time.
                                                                     []
                                                                   |),
                                                                   [
-                                                                    M.read (|
-                                                                      Value.String
-                                                                        "assertion failed: nanos < NANOS_PER_SEC"
+                                                                    mk_str (|
+                                                                      "assertion failed: nanos < NANOS_PER_SEC"
                                                                     |)
                                                                   ]
                                                                 |)
@@ -3335,9 +3316,8 @@ Module time.
                                                                 []
                                                               |),
                                                               [
-                                                                M.read (|
-                                                                  Value.String
-                                                                    "assertion failed: nanos < NANOS_PER_SEC"
+                                                                mk_str (|
+                                                                  "assertion failed: nanos < NANOS_PER_SEC"
                                                                 |)
                                                               ]
                                                             |)
@@ -5399,7 +5379,7 @@ Module time.
               |);
               M.borrow (|
                 Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "overflow when adding durations" |) |)
+                M.deref (| mk_str (| "overflow when adding durations" |) |)
               |)
             ]
           |)))
@@ -5501,7 +5481,7 @@ Module time.
               |);
               M.borrow (|
                 Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "overflow when subtracting durations" |) |)
+                M.deref (| mk_str (| "overflow when subtracting durations" |) |)
               |)
             ]
           |)))
@@ -5603,9 +5583,7 @@ Module time.
               |);
               M.borrow (|
                 Pointer.Kind.Ref,
-                M.deref (|
-                  M.read (| Value.String "overflow when multiplying duration by scalar" |)
-                |)
+                M.deref (| mk_str (| "overflow when multiplying duration by scalar" |) |)
               |)
             ]
           |)))
@@ -5749,9 +5727,7 @@ Module time.
               |);
               M.borrow (|
                 Pointer.Kind.Ref,
-                M.deref (|
-                  M.read (| Value.String "divide by zero error when dividing duration by scalar" |)
-                |)
+                M.deref (| mk_str (| "divide by zero error when dividing duration by scalar" |) |)
               |)
             ]
           |)))
@@ -5941,9 +5917,8 @@ Module time.
                                                 M.borrow (|
                                                   Pointer.Kind.Ref,
                                                   M.deref (|
-                                                    M.read (|
-                                                      Value.String
-                                                        "overflow in iter::sum over durations"
+                                                    mk_str (|
+                                                      "overflow in iter::sum over durations"
                                                     |)
                                                   |)
                                                 |)
@@ -6049,9 +6024,8 @@ Module time.
                                                                 M.borrow (|
                                                                   Pointer.Kind.Ref,
                                                                   M.deref (|
-                                                                    M.read (|
-                                                                      Value.String
-                                                                        "overflow in iter::sum over durations"
+                                                                    mk_str (|
+                                                                      "overflow in iter::sum over durations"
                                                                     |)
                                                                   |)
                                                                 |)
@@ -6125,9 +6099,7 @@ Module time.
                       |);
                       M.borrow (|
                         Pointer.Kind.Ref,
-                        M.deref (|
-                          M.read (| Value.String "overflow in iter::sum over durations" |)
-                        |)
+                        M.deref (| mk_str (| "overflow in iter::sum over durations" |) |)
                       |)
                     ]
                   |)
@@ -6290,9 +6262,8 @@ Module time.
                                                 M.borrow (|
                                                   Pointer.Kind.Ref,
                                                   M.deref (|
-                                                    M.read (|
-                                                      Value.String
-                                                        "overflow in iter::sum over durations"
+                                                    mk_str (|
+                                                      "overflow in iter::sum over durations"
                                                     |)
                                                   |)
                                                 |)
@@ -6398,9 +6369,8 @@ Module time.
                                                                 M.borrow (|
                                                                   Pointer.Kind.Ref,
                                                                   M.deref (|
-                                                                    M.read (|
-                                                                      Value.String
-                                                                        "overflow in iter::sum over durations"
+                                                                    mk_str (|
+                                                                      "overflow in iter::sum over durations"
                                                                     |)
                                                                   |)
                                                                 |)
@@ -6474,9 +6444,7 @@ Module time.
                       |);
                       M.borrow (|
                         Pointer.Kind.Ref,
-                        M.deref (|
-                          M.read (| Value.String "overflow in iter::sum over durations" |)
-                        |)
+                        M.deref (| mk_str (| "overflow in iter::sum over durations" |) |)
                       |)
                     ]
                   |)
@@ -6736,14 +6704,11 @@ Module time.
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        Value.String "+"));
+                        M.alloc (| mk_str (| "+" |) |)));
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "" |) |) |)
                         |)))
                   ]
                 |)
@@ -6805,10 +6770,7 @@ Module time.
                             Value.Integer IntegerKind.U32 10
                           |);
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| prefix |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "s" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "s" |) |) |)
                         ]
                       |)
                     |)));
@@ -6891,10 +6853,7 @@ Module time.
                                     Pointer.Kind.Ref,
                                     M.deref (| M.read (| prefix |) |)
                                   |);
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (| M.read (| Value.String "ms" |) |)
-                                  |)
+                                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ms" |) |) |)
                                 ]
                               |)
                             |)));
@@ -6998,9 +6957,7 @@ Module time.
                                           |);
                                           M.borrow (|
                                             Pointer.Kind.Ref,
-                                            M.deref (|
-                                              M.read (| Value.String (String.String "181" "s") |)
-                                            |)
+                                            M.deref (| mk_str (| String.String "181" "s" |) |)
                                           |)
                                         ]
                                       |)
@@ -7045,7 +7002,7 @@ Module time.
                                           |);
                                           M.borrow (|
                                             Pointer.Kind.Ref,
-                                            M.deref (| M.read (| Value.String "ns" |) |)
+                                            M.deref (| mk_str (| "ns" |) |)
                                           |)
                                         ]
                                       |)
@@ -7100,11 +7057,8 @@ Module time.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "TryFromFloatSecsError" |) |)
-              |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "kind" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "TryFromFloatSecsError" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "kind" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -7323,7 +7277,9 @@ Module time.
                         γ,
                         "core::time::TryFromFloatSecsErrorKind::Negative"
                       |) in
-                    Value.String "cannot convert float seconds to Duration: value is negative"));
+                    M.alloc (|
+                      mk_str (| "cannot convert float seconds to Duration: value is negative" |)
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
@@ -7331,8 +7287,11 @@ Module time.
                         γ,
                         "core::time::TryFromFloatSecsErrorKind::OverflowOrNan"
                       |) in
-                    Value.String
-                      "cannot convert float seconds to Duration: value is either too big or NaN"))
+                    M.alloc (|
+                      mk_str (|
+                        "cannot convert float seconds to Duration: value is either too big or NaN"
+                      |)
+                    |)))
               ]
             |)
           |)))
@@ -7452,10 +7411,7 @@ Module time.
                             "core::time::TryFromFloatSecsErrorKind::Negative"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Negative" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Negative" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -7468,7 +7424,7 @@ Module time.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "OverflowOrNan" |) |)
+                            M.deref (| mk_str (| "OverflowOrNan" |) |)
                           |)
                         |)))
                   ]

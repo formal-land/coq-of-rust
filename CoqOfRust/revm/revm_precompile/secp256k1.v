@@ -83,7 +83,7 @@ Module secp256k1.
                         |);
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "recovery ID is valid" |) |)
+                          M.deref (| mk_str (| "recovery ID is valid" |) |)
                         |)
                       ]
                     |)

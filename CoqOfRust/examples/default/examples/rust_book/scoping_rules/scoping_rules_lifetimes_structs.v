@@ -29,7 +29,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Borrowed.
           |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Borrowed" |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Borrowed" |) |) |);
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -94,11 +94,8 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
           |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-            M.borrow (|
-              Pointer.Kind.Ref,
-              M.deref (| M.read (| Value.String "NamedBorrowed" |) |)
-            |);
-            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "x" |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "NamedBorrowed" |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "x" |) |) |);
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -112,7 +109,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_NamedBorrowed.
                 |)
               |)
             |);
-            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "y" |) |) |);
+            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "y" |) |) |);
             M.borrow (|
               Pointer.Kind.Ref,
               M.deref (|
@@ -210,10 +207,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
                       |),
                       [
                         M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "Num" |) |)
-                        |);
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Num" |) |) |);
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -245,10 +239,7 @@ Module Impl_core_fmt_Debug_for_scoping_rules_lifetimes_structs_Either.
                       |),
                       [
                         M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "Ref" |) |)
-                        |);
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Ref" |) |) |);
                         M.borrow (|
                           Pointer.Kind.Ref,
                           M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -346,12 +337,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "x is borrowed in " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "x is borrowed in " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -413,11 +400,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             Pointer.Kind.Ref,
                             M.alloc (|
                               Value.Array
-                                [
-                                  M.read (| Value.String "x and y are borrowed in " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                                [ mk_str (| "x and y are borrowed in " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -478,12 +462,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "x is borrowed in " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "x is borrowed in " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -545,11 +525,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             Pointer.Kind.Ref,
                             M.alloc (|
                               Value.Array
-                                [
-                                  M.read (| Value.String "y is *not* borrowed in " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                                [ mk_str (| "y is *not* borrowed in " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)

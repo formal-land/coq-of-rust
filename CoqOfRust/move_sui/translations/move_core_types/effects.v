@@ -73,10 +73,7 @@ Module effects.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "New" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "New" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -108,10 +105,7 @@ Module effects.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Modify" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Modify" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -137,10 +131,7 @@ Module effects.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Delete" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Delete" |) |) |)
                         ]
                       |)
                     |)))
@@ -1086,11 +1077,8 @@ Module effects.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "AccountChangeSet" |) |)
-              |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "modules" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "AccountChangeSet" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "modules" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -1104,7 +1092,7 @@ Module effects.
                   |)
                 |)
               |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "resources" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "resources" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -2279,9 +2267,8 @@ Module effects.
                                                                                                   M.alloc (|
                                                                                                     Value.Array
                                                                                                       [
-                                                                                                        M.read (|
-                                                                                                          Value.String
-                                                                                                            "The given change sets cannot be squashed"
+                                                                                                        mk_str (|
+                                                                                                          "The given change sets cannot be squashed"
                                                                                                         |)
                                                                                                       ]
                                                                                                   |)
@@ -2812,12 +2799,9 @@ Module effects.
                                                                   M.alloc (|
                                                                     Value.Array
                                                                       [
-                                                                        M.read (|
-                                                                          Value.String "Module "
-                                                                        |);
-                                                                        M.read (|
-                                                                          Value.String
-                                                                            " already exists"
+                                                                        mk_str (| "Module " |);
+                                                                        mk_str (|
+                                                                          " already exists"
                                                                         |)
                                                                       ]
                                                                   |)
@@ -3153,12 +3137,9 @@ Module effects.
                                                                   M.alloc (|
                                                                     Value.Array
                                                                       [
-                                                                        M.read (|
-                                                                          Value.String "Resource "
-                                                                        |);
-                                                                        M.read (|
-                                                                          Value.String
-                                                                            " already exists"
+                                                                        mk_str (| "Resource " |);
+                                                                        mk_str (|
+                                                                          " already exists"
                                                                         |)
                                                                       ]
                                                                   |)
@@ -3826,8 +3807,8 @@ Module effects.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "ChangeSet" |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "accounts" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ChangeSet" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "accounts" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -4403,13 +4384,11 @@ Module effects.
                                                                   M.alloc (|
                                                                     Value.Array
                                                                       [
-                                                                        M.read (|
-                                                                          Value.String
-                                                                            "Failed to add account change set. Account "
+                                                                        mk_str (|
+                                                                          "Failed to add account change set. Account "
                                                                         |);
-                                                                        M.read (|
-                                                                          Value.String
-                                                                            " already exists."
+                                                                        mk_str (|
+                                                                          " already exists."
                                                                         |)
                                                                       ]
                                                                   |)

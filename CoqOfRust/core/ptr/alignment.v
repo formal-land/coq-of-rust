@@ -625,11 +625,7 @@ Module ptr.
                           Pointer.Kind.Ref,
                           M.alloc (|
                             Value.Array
-                              [
-                                M.read (| Value.String "" |);
-                                M.read (| Value.String " (1 << " |);
-                                M.read (| Value.String ")" |)
-                              ]
+                              [ mk_str (| "" |); mk_str (| " (1 << " |); mk_str (| ")" |) ]
                           |)
                         |)
                       |)

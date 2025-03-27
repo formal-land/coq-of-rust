@@ -77,7 +77,7 @@ Module string.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "InvalidDigit" |) |)
+                            M.deref (| mk_str (| "InvalidDigit" |) |)
                           |);
                           M.borrow (|
                             Pointer.Kind.Ref,
@@ -112,7 +112,7 @@ Module string.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "InvalidRadix" |) |)
+                            M.deref (| mk_str (| "InvalidRadix" |) |)
                           |);
                           M.borrow (|
                             Pointer.Kind.Ref,
@@ -147,7 +147,7 @@ Module string.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "BaseConvertError" |) |)
+                            M.deref (| mk_str (| "BaseConvertError" |) |)
                           |);
                           M.borrow (|
                             Pointer.Kind.Ref,
@@ -663,9 +663,7 @@ Module string.
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Value.Array [ M.read (| Value.String "invalid digit: " |) ]
-                                    |)
+                                    M.alloc (| Value.Array [ mk_str (| "invalid digit: " |) ] |)
                                   |)
                                 |)
                               |);
@@ -744,8 +742,8 @@ Module string.
                                     M.alloc (|
                                       Value.Array
                                         [
-                                          M.read (| Value.String "invalid radix " |);
-                                          M.read (| Value.String ", up to 64 is supported" |)
+                                          mk_str (| "invalid radix " |);
+                                          mk_str (| ", up to 64 is supported" |)
                                         ]
                                     |)
                                   |)
@@ -1751,7 +1749,7 @@ Module string.
                                               (let _ :=
                                                 M.is_constant_or_break_match (|
                                                   M.read (| γ |),
-                                                  Value.String "0x"
+                                                  mk_str (| "0x" |)
                                                 |) in
                                               Value.Tuple []));
                                           fun γ =>
@@ -1759,7 +1757,7 @@ Module string.
                                               (let _ :=
                                                 M.is_constant_or_break_match (|
                                                   M.read (| γ |),
-                                                  Value.String "0X"
+                                                  mk_str (| "0X" |)
                                                 |) in
                                               Value.Tuple []))
                                         ],
@@ -1788,7 +1786,7 @@ Module string.
                                               (let _ :=
                                                 M.is_constant_or_break_match (|
                                                   M.read (| γ |),
-                                                  Value.String "0o"
+                                                  mk_str (| "0o" |)
                                                 |) in
                                               Value.Tuple []));
                                           fun γ =>
@@ -1796,7 +1794,7 @@ Module string.
                                               (let _ :=
                                                 M.is_constant_or_break_match (|
                                                   M.read (| γ |),
-                                                  Value.String "0O"
+                                                  mk_str (| "0O" |)
                                                 |) in
                                               Value.Tuple []))
                                         ],
@@ -1825,7 +1823,7 @@ Module string.
                                               (let _ :=
                                                 M.is_constant_or_break_match (|
                                                   M.read (| γ |),
-                                                  Value.String "0b"
+                                                  mk_str (| "0b" |)
                                                 |) in
                                               Value.Tuple []));
                                           fun γ =>
@@ -1833,7 +1831,7 @@ Module string.
                                               (let _ :=
                                                 M.is_constant_or_break_match (|
                                                   M.read (| γ |),
-                                                  Value.String "0B"
+                                                  mk_str (| "0B" |)
                                                 |) in
                                               Value.Tuple []))
                                         ],

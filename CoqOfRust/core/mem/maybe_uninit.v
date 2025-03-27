@@ -127,7 +127,7 @@ Module mem.
                             |),
                             [
                               M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| full_name |) |) |);
-                              M.read (| Value.String "mem::maybe_uninit::" |)
+                              mk_str (| "mem::maybe_uninit::" |)
                             ]
                           |)
                         ]
@@ -1310,9 +1310,8 @@ Module mem.
                                                               M.alloc (|
                                                                 Value.Array
                                                                   [
-                                                                    M.read (|
-                                                                      Value.String
-                                                                        "destination and source slices have different lengths"
+                                                                    mk_str (|
+                                                                      "destination and source slices have different lengths"
                                                                     |)
                                                                   ]
                                                               |)

@@ -32,10 +32,8 @@ Definition function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array [ M.read (| Value.String "called `function()`
-" |) ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "called `function()`
+" |) ] |)
                           |)
                         |)
                       |)
@@ -88,8 +86,7 @@ Module cool.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
-                                Value.Array
-                                  [ M.read (| Value.String "called `cool::function()`
+                                Value.Array [ mk_str (| "called `cool::function()`
 " |) ]
                               |)
                             |)
@@ -144,10 +141,8 @@ Module my.
                           M.deref (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.alloc (|
-                                Value.Array [ M.read (| Value.String "called `my::function()`
-" |) ]
-                              |)
+                              M.alloc (| Value.Array [ mk_str (| "called `my::function()`
+" |) ] |)
                             |)
                           |)
                         |)
@@ -200,8 +195,7 @@ Module my.
                               M.borrow (|
                                 Pointer.Kind.Ref,
                                 M.alloc (|
-                                  Value.Array
-                                    [ M.read (| Value.String "called `my::cool::function()`
+                                  Value.Array [ mk_str (| "called `my::cool::function()`
 " |) ]
                                 |)
                               |)
@@ -276,13 +270,8 @@ Module my.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (|
-                                      Value.String "called `my::indirect_call()`, that
-> "
-                                    |)
-                                  ]
+                                Value.Array [ mk_str (| "called `my::indirect_call()`, that
+> " |) ]
                               |)
                             |)
                           |)

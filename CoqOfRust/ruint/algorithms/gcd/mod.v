@@ -183,11 +183,7 @@ Module algorithms.
                                                       [],
                                                       []
                                                     |),
-                                                    [
-                                                      M.read (|
-                                                        Value.String "assertion failed: a >= b"
-                                                      |)
-                                                    ]
+                                                    [ mk_str (| "assertion failed: a >= b" |) ]
                                                   |)
                                                 |)
                                               |)));
@@ -626,11 +622,7 @@ Module algorithms.
                                                           [],
                                                           []
                                                         |),
-                                                        [
-                                                          M.read (|
-                                                            Value.String "assertion failed: a >= b"
-                                                          |)
-                                                        ]
+                                                        [ mk_str (| "assertion failed: a >= b" |) ]
                                                       |)
                                                     |)
                                                   |)));
@@ -1429,11 +1421,7 @@ Module algorithms.
                                                           [],
                                                           []
                                                         |),
-                                                        [
-                                                          M.read (|
-                                                            Value.String "assertion failed: a >= b"
-                                                          |)
-                                                        ]
+                                                        [ mk_str (| "assertion failed: a >= b" |) ]
                                                       |)
                                                     |)
                                                   |)));

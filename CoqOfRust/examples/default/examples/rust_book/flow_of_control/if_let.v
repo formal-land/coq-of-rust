@@ -86,12 +86,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
-                                        Value.Array
-                                          [
-                                            M.read (| Value.String "Matched " |);
-                                            M.read (| Value.String "!
-" |)
-                                          ]
+                                        Value.Array [ mk_str (| "Matched " |); mk_str (| "!
+" |) ]
                                       |)
                                     |)
                                   |)
@@ -170,12 +166,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.borrow (|
                                       Pointer.Kind.Ref,
                                       M.alloc (|
-                                        Value.Array
-                                          [
-                                            M.read (| Value.String "Matched " |);
-                                            M.read (| Value.String "!
-" |)
-                                          ]
+                                        Value.Array [ mk_str (| "Matched " |); mk_str (| "!
+" |) ]
                                       |)
                                     |)
                                   |)
@@ -241,9 +233,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       M.alloc (|
                                         Value.Array
                                           [
-                                            M.read (|
-                                              Value.String
-                                                "Didn't match a number. Let's go with a letter!
+                                            mk_str (|
+                                              "Didn't match a number. Let's go with a letter!
 "
                                             |)
                                           ]
@@ -294,12 +285,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "Matched " |);
-                                          M.read (| Value.String "!
-" |)
-                                        ]
+                                      Value.Array [ mk_str (| "Matched " |); mk_str (| "!
+" |) ]
                                     |)
                                   |)
                                 |)
@@ -374,9 +361,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             M.alloc (|
                                               Value.Array
                                                 [
-                                                  M.read (|
-                                                    Value.String
-                                                      "Didn't match a number. Let's go with a letter!
+                                                  mk_str (|
+                                                    "Didn't match a number. Let's go with a letter!
 "
                                                   |)
                                                 ]
@@ -417,9 +403,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             M.alloc (|
                                               Value.Array
                                                 [
-                                                  M.read (|
-                                                    Value.String
-                                                      "I don't like letters. Let's go with an emoticon :)!
+                                                  mk_str (|
+                                                    "I don't like letters. Let's go with an emoticon :)!
 "
                                                   |)
                                                 ]

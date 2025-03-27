@@ -49,7 +49,7 @@ Module error.
           (let self := M.alloc (| self |) in
           M.borrow (|
             Pointer.Kind.Ref,
-            M.deref (| M.read (| Value.String "description() is deprecated; use Display" |) |)
+            M.deref (| mk_str (| "description() is deprecated; use Display" |) |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -113,7 +113,7 @@ Module error.
               M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Internal" |) |) |)
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Internal" |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1377,10 +1377,7 @@ Module error.
                     |),
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (| M.read (| Value.String "Request" |) |)
-                      |)
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Request" |) |) |)
                     ]
                   |)
                 |)
@@ -1455,7 +1452,7 @@ Module error.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Value" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Value" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -1538,10 +1535,7 @@ Module error.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "MaybeSizedValue" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "MaybeSizedValue" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -1624,7 +1618,7 @@ Module error.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Ref" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Ref" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -2235,8 +2229,8 @@ Module error.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Source" |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "current" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Source" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "current" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -2642,7 +2636,7 @@ Module error.
           (let self := M.alloc (| self |) in
           M.borrow (|
             Pointer.Kind.Ref,
-            M.deref (| M.read (| Value.String "an error occurred when formatting an argument" |) |)
+            M.deref (| mk_str (| "an error occurred when formatting an argument" |) |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -2669,10 +2663,7 @@ Module error.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.borrow (|
-            Pointer.Kind.Ref,
-            M.deref (| M.read (| Value.String "already mutably borrowed" |) |)
-          |)))
+          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "already mutably borrowed" |) |) |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -2698,10 +2689,7 @@ Module error.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.borrow (|
-            Pointer.Kind.Ref,
-            M.deref (| M.read (| Value.String "already borrowed" |) |)
-          |)))
+          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "already borrowed" |) |) |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -2729,7 +2717,7 @@ Module error.
           (let self := M.alloc (| self |) in
           M.borrow (|
             Pointer.Kind.Ref,
-            M.deref (| M.read (| Value.String "converted integer out of range for `char`" |) |)
+            M.deref (| mk_str (| "converted integer out of range for `char`" |) |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.

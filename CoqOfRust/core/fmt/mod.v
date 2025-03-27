@@ -91,30 +91,21 @@ Module fmt.
                         (let γ := M.read (| γ |) in
                         let _ := M.is_struct_tuple (| γ, "core::fmt::Alignment::Left" |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Left" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Left" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
                         let _ := M.is_struct_tuple (| γ, "core::fmt::Alignment::Right" |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Right" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Right" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
                         let _ := M.is_struct_tuple (| γ, "core::fmt::Alignment::Center" |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Center" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Center" |) |) |)
                         |)))
                   ]
                 |)
@@ -285,7 +276,7 @@ Module fmt.
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Error" |) |) |)
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Error" |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3743,7 +3734,7 @@ Module fmt.
                                           "core::num::fmt::Formatted",
                                           "sign"
                                         |),
-                                        M.read (| Value.String "" |)
+                                        mk_str (| "" |)
                                       |)
                                     |) in
                                   let~ _ : Ty.tuple [] :=
@@ -8722,12 +8713,7 @@ Module fmt.
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
-                        [
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "" |) |)
-                          |)
-                        ]
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "" |) |) |) ]
                     |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -10625,11 +10611,7 @@ Module fmt.
                                   M.call_closure (|
                                     Ty.path "never",
                                     M.get_function (| "core::panicking::panic", [], [] |),
-                                    [
-                                      M.read (|
-                                        Value.String "assertion failed: arg.position < args.len()"
-                                      |)
-                                    ]
+                                    [ mk_str (| "assertion failed: arg.position < args.len()" |) ]
                                   |)
                                 |)
                               |)));
@@ -10777,11 +10759,7 @@ Module fmt.
                                           M.call_closure (|
                                             Ty.path "never",
                                             M.get_function (| "core::panicking::panic", [], [] |),
-                                            [
-                                              M.read (|
-                                                Value.String "assertion failed: i < args.len()"
-                                              |)
-                                            ]
+                                            [ mk_str (| "assertion failed: i < args.len()" |) ]
                                           |)
                                         |)
                                       |)));
@@ -11364,9 +11342,7 @@ Module fmt.
             [
               M.borrow (|
                 Pointer.Kind.Ref,
-                M.deref (|
-                  M.read (| Value.String "an error occurred when formatting an argument" |)
-                |)
+                M.deref (| mk_str (| "an error occurred when formatting an argument" |) |)
               |);
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
             ]
@@ -12208,18 +12184,12 @@ Module fmt.
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "true" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "true" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "false" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "false" |) |) |)
                         |)))
                   ]
                 |)
@@ -14482,7 +14452,7 @@ Module fmt.
                   |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "" |) |) |)
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "" |) |) |)
                   ]
                 |)
               |) in
@@ -14899,7 +14869,7 @@ Module fmt.
                   |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "" |) |) |)
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "" |) |) |)
                   ]
                 |)
               |) in
@@ -15288,7 +15258,7 @@ Module fmt.
                   |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "" |) |) |)
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "" |) |) |)
                   ]
                 |)
               |) in
@@ -15648,7 +15618,7 @@ Module fmt.
                   |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "" |) |) |)
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "" |) |) |)
                   ]
                 |)
               |) in
@@ -15980,7 +15950,7 @@ Module fmt.
                   |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "" |) |) |)
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "" |) |) |)
                   ]
                 |)
               |) in
@@ -16284,7 +16254,7 @@ Module fmt.
                   |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "" |) |) |)
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "" |) |) |)
                   ]
                 |)
               |) in
@@ -16555,7 +16525,7 @@ Module fmt.
                   |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "" |) |) |)
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "" |) |) |)
                   ]
                 |)
               |) in
@@ -16798,7 +16768,7 @@ Module fmt.
                   |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "" |) |) |)
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "" |) |) |)
                   ]
                 |)
               |) in
@@ -17013,7 +16983,7 @@ Module fmt.
                   |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "" |) |) |)
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "" |) |) |)
                   ]
                 |)
               |) in
@@ -17200,7 +17170,7 @@ Module fmt.
                   |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "" |) |) |)
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "" |) |) |)
                   ]
                 |)
               |) in
@@ -17359,7 +17329,7 @@ Module fmt.
                   |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "" |) |) |)
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "" |) |) |)
                   ]
                 |)
               |) in
@@ -17490,7 +17460,7 @@ Module fmt.
                   |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                    M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "" |) |) |)
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "" |) |) |)
                   ]
                 |)
               |) in
@@ -17667,7 +17637,7 @@ Module fmt.
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "pad", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "()" |) |) |)
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "()" |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -17719,13 +17689,7 @@ Module fmt.
                     M.deref (|
                       M.borrow (|
                         Pointer.Kind.Ref,
-                        M.alloc (|
-                          Value.Array
-                            [
-                              M.read (| Value.String "PhantomData<" |);
-                              M.read (| Value.String ">" |)
-                            ]
-                        |)
+                        M.alloc (| Value.Array [ mk_str (| "PhantomData<" |); mk_str (| ">" |) ] |)
                       |)
                     |)
                   |);
@@ -17837,18 +17801,12 @@ Module fmt.
                             |),
                             [
                               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "Cell" |) |)
-                              |)
+                              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Cell" |) |) |)
                             ]
                           |)
                         |)
                       |);
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (| M.read (| Value.String "value" |) |)
-                      |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "value" |) |) |);
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.deref (|
@@ -17921,10 +17879,7 @@ Module fmt.
                   |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (| M.read (| Value.String "RefCell" |) |)
-                    |)
+                    M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "RefCell" |) |) |)
                   ]
                 |)
               |) in
@@ -17973,10 +17928,7 @@ Module fmt.
                           |),
                           [
                             M.borrow (| Pointer.Kind.MutRef, d |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "value" |) |)
-                            |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "value" |) |) |);
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.deref (| M.borrow (| Pointer.Kind.Ref, borrow |) |)
@@ -18009,10 +17961,7 @@ Module fmt.
                               |),
                               [
                                 M.borrow (| Pointer.Kind.MutRef, d |);
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "value" |) |)
-                                |);
+                                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "value" |) |) |);
                                 M.borrow (|
                                   Pointer.Kind.Ref,
                                   M.deref (|
@@ -18034,8 +17983,7 @@ Module fmt.
                                                 M.borrow (|
                                                   Pointer.Kind.Ref,
                                                   M.alloc (|
-                                                    Value.Array
-                                                      [ M.read (| Value.String "<borrowed>" |) ]
+                                                    Value.Array [ mk_str (| "<borrowed>" |) ]
                                                   |)
                                                 |)
                                               |)
@@ -18244,10 +18192,7 @@ Module fmt.
                     |),
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (| M.read (| Value.String "UnsafeCell" |) |)
-                      |)
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "UnsafeCell" |) |) |)
                     ]
                   |)
                 |)
@@ -18307,10 +18252,7 @@ Module fmt.
                     |),
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.deref (| M.read (| Value.String "SyncUnsafeCell" |) |)
-                      |)
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "SyncUnsafeCell" |) |) |)
                     ]
                   |)
                 |)

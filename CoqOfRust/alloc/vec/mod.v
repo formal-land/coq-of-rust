@@ -2215,11 +2215,7 @@ Module vec.
                                     M.call_closure (|
                                       Ty.path "never",
                                       M.get_function (| "core::panicking::panic", [], [] |),
-                                      [
-                                        M.read (|
-                                          Value.String
-                                            "assertion failed: new_len <= self.capacity()"
-                                        |)
+                                      [ mk_str (| "assertion failed: new_len <= self.capacity()" |)
                                       ]
                                     |)
                                   |)
@@ -7252,9 +7248,8 @@ Module vec.
                                                                                   M.alloc (|
                                                                                     Value.Array
                                                                                       [
-                                                                                        M.read (|
-                                                                                          Value.String
-                                                                                            "TrustedLen iterator's size hint is not exact: "
+                                                                                        mk_str (|
+                                                                                          "TrustedLen iterator's size hint is not exact: "
                                                                                         |)
                                                                                       ]
                                                                                   |)
@@ -7534,8 +7529,7 @@ Module vec.
                                             M.borrow (|
                                               Pointer.Kind.Ref,
                                               M.alloc (|
-                                                Value.Array
-                                                  [ M.read (| Value.String "capacity overflow" |) ]
+                                                Value.Array [ mk_str (| "capacity overflow" |) ]
                                               |)
                                             |)
                                           |)
@@ -7821,7 +7815,7 @@ Module vec.
                                         |);
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.deref (| M.read (| Value.String "vec len overflow" |) |)
+                                          M.deref (| mk_str (| "vec len overflow" |) |)
                                         |)
                                       ]
                                     |);

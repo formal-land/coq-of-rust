@@ -449,7 +449,7 @@ Module identifier.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Identifier" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Identifier" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -810,7 +810,7 @@ Module identifier.
               |),
               [
                 M.read (| __serializer |);
-                M.read (| Value.String "Identifier" |);
+                mk_str (| "Identifier" |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -865,7 +865,7 @@ Module identifier.
               |),
               [
                 M.read (| __deserializer |);
-                M.read (| Value.String "Identifier" |);
+                mk_str (| "Identifier" |);
                 Value.StructRecord
                   "move_core_types::identifier::_'2::deserialize::__Visitor"
                   [
@@ -1040,11 +1040,10 @@ Module identifier.
                                                                 M.alloc (|
                                                                   Value.Array
                                                                     [
-                                                                      M.read (|
-                                                                        Value.String
-                                                                          "Invalid identifier '"
+                                                                      mk_str (|
+                                                                        "Invalid identifier '"
                                                                       |);
-                                                                      M.read (| Value.String "'" |)
+                                                                      mk_str (| "'" |)
                                                                     ]
                                                                 |)
                                                               |)
@@ -1203,7 +1202,7 @@ Module identifier.
                   |)
                 |)
               |);
-              M.borrow (| Pointer.Kind.Ref, Value.String "<SELF>" |)
+              M.borrow (| Pointer.Kind.Ref, M.alloc (| mk_str (| "<SELF>" |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1713,10 +1712,7 @@ Module identifier.
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
-                      |)
+                      M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Array [ mk_str (| "" |) ] |) |)
                     |)
                   |);
                   M.borrow (|
@@ -1818,7 +1814,7 @@ Module identifier.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "IdentStr" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "IdentStr" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -2130,7 +2126,7 @@ Module identifier.
                       [ Ty.path "move_core_types::identifier::IdentStr"; Ty.path "str" ]
                     |),
                     [
-                      M.read (| Value.String "IdentStr" |);
+                      mk_str (| "IdentStr" |);
                       M.read (| M.get_constant "ref_cast::layout::LayoutUnsized::SIZE" |);
                       M.read (| M.get_constant "ref_cast::layout::LayoutUnsized::SIZE" |);
                       M.read (| M.get_constant "ref_cast::layout::LayoutUnsized::ALIGN" |);
@@ -2190,7 +2186,7 @@ Module identifier.
                           [ Ty.path "move_core_types::identifier::IdentStr"; Ty.path "str" ]
                         |),
                         [
-                          M.read (| Value.String "IdentStr" |);
+                          mk_str (| "IdentStr" |);
                           M.read (| M.get_constant "ref_cast::layout::LayoutUnsized::SIZE" |);
                           M.read (| M.get_constant "ref_cast::layout::LayoutUnsized::SIZE" |);
                           M.read (| M.get_constant "ref_cast::layout::LayoutUnsized::ALIGN" |);
@@ -2387,11 +2383,10 @@ Module identifier.
                                                                 M.alloc (|
                                                                   Value.Array
                                                                     [
-                                                                      M.read (|
-                                                                        Value.String
-                                                                          "Invalid identifier '"
+                                                                      mk_str (|
+                                                                        "Invalid identifier '"
                                                                       |);
-                                                                      M.read (| Value.String "'" |)
+                                                                      mk_str (| "'" |)
                                                                     ]
                                                                 |)
                                                               |)
@@ -2831,10 +2826,7 @@ Module identifier.
                   M.borrow (|
                     Pointer.Kind.Ref,
                     M.deref (|
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (| Value.Array [ M.read (| Value.String "" |) ] |)
-                      |)
+                      M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Array [ mk_str (| "" |) ] |) |)
                     |)
                   |);
                   M.borrow (|

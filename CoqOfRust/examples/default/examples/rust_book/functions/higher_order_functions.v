@@ -84,9 +84,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             M.alloc (|
                               Value.Array
                                 [
-                                  M.read (|
-                                    Value.String
-                                      "Find the sum of all the squared odd numbers under 1000
+                                  mk_str (|
+                                    "Find the sum of all the squared odd numbers under 1000
 "
                                   |)
                                 ]
@@ -271,12 +270,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "imperative style: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "imperative style: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -570,12 +565,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "functional style: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "functional style: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)

@@ -158,12 +158,8 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.borrow (|
                                   Pointer.Kind.Ref,
                                   M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (| Value.String "n is " |);
-                                        M.read (| Value.String "
-" |)
-                                      ]
+                                    Value.Array [ mk_str (| "n is " |); mk_str (| "
+" |) ]
                                   |)
                                 |)
                               |)
@@ -229,12 +225,8 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.borrow (|
                                   Pointer.Kind.Ref,
                                   M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (| Value.String "Error: " |);
-                                        M.read (| Value.String "
-" |)
-                                      ]
+                                    Value.Array [ mk_str (| "Error: " |); mk_str (| "
+" |) ]
                                   |)
                                 |)
                               |)
@@ -313,8 +305,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
               M.get_function (| "map_in_result_via_match::multiply", [], [] |),
               [
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "10" |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "2" |) |) |)
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "10" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "2" |) |) |)
               ]
             |)
           |) in
@@ -339,8 +331,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
               M.get_function (| "map_in_result_via_match::multiply", [], [] |),
               [
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "t" |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "2" |) |) |)
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "t" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "2" |) |) |)
               ]
             |)
           |) in

@@ -958,7 +958,7 @@ pub(crate) fn compile_expr<'a>(
         }
         thir::ExprKind::Literal { lit, neg } => match lit.node {
             rustc_ast::LitKind::Str(symbol, _) => {
-                Rc::new(Expr::Literal(Rc::new(Literal::String(symbol.to_string()))))
+                Rc::new(Expr::Literal(Rc::new(Literal::String(symbol.to_string())))).alloc()
             }
             rustc_ast::LitKind::Char(c) => {
                 Rc::new(Expr::Literal(Rc::new(Literal::Char(c)))).alloc()

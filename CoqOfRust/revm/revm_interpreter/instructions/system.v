@@ -2874,9 +2874,8 @@ Module instructions.
                                                               []
                                                             |),
                                                             [
-                                                              M.read (|
-                                                                Value.String
-                                                                  "assertion failed: count <= 32 && offset + count <= input_len"
+                                                              mk_str (|
+                                                                "assertion failed: count <= 32 && offset + count <= input_len"
                                                               |)
                                                             ]
                                                           |)

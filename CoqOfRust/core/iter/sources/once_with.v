@@ -161,7 +161,7 @@ Module iter.
                               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "OnceWith(Some(_))" |) |)
+                                M.deref (| mk_str (| "OnceWith(Some(_))" |) |)
                               |)
                             ]
                           |)
@@ -184,7 +184,7 @@ Module iter.
                               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.deref (| M.read (| Value.String "OnceWith(None)" |) |)
+                                M.deref (| mk_str (| "OnceWith(None)" |) |)
                               |)
                             ]
                           |)

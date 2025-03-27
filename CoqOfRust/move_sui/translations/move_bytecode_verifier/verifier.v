@@ -219,11 +219,11 @@ Module verifier.
                               M.alloc (|
                                 Value.Array
                                   [
-                                    M.read (| Value.String "--> " |);
-                                    M.read (| Value.String ": verification time: " |);
-                                    M.read (| Value.String "ms, result: " |);
-                                    M.read (| Value.String ", size: " |);
-                                    M.read (| Value.String "kb
+                                    mk_str (| "--> " |);
+                                    mk_str (| ": verification time: " |);
+                                    mk_str (| "ms, result: " |);
+                                    mk_str (| ", size: " |);
+                                    mk_str (| "kb
 " |)
                                   ]
                               |)
@@ -385,9 +385,8 @@ Module verifier.
                                                                                 M.alloc (|
                                                                                   Value.Array
                                                                                     [
-                                                                                      M.read (|
-                                                                                        Value.String
-                                                                                          ""
+                                                                                      mk_str (|
+                                                                                        ""
                                                                                       |)
                                                                                     ]
                                                                                 |)
@@ -481,9 +480,7 @@ Module verifier.
                                                           [
                                                             M.borrow (|
                                                               Pointer.Kind.Ref,
-                                                              M.deref (|
-                                                                M.read (| Value.String "Ok" |)
-                                                              |)
+                                                              M.deref (| mk_str (| "Ok" |) |)
                                                             |)
                                                           ]
                                                         |)
@@ -698,11 +695,9 @@ Module verifier.
                                       M.alloc (|
                                         Value.Array
                                           [
-                                            M.read (|
-                                              Value.String "test module exceeds size limit "
-                                            |);
-                                            M.read (| Value.String " (given size " |);
-                                            M.read (| Value.String ")" |)
+                                            mk_str (| "test module exceeds size limit " |);
+                                            mk_str (| " (given size " |);
+                                            mk_str (| ")" |)
                                           ]
                                       |)
                                     |)

@@ -75,14 +75,8 @@ Module main.
                           M.deref (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.alloc (|
-                                Value.Array
-                                  [
-                                    M.read (| Value.String "arg = " |);
-                                    M.read (| Value.String "
-" |)
-                                  ]
-                              |)
+                              M.alloc (| Value.Array [ mk_str (| "arg = " |); mk_str (| "
+" |) ] |)
                             |)
                           |)
                         |);

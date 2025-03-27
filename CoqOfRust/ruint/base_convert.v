@@ -113,10 +113,7 @@ Module base_convert.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Overflow" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Overflow" |) |) |)
                         ]
                       |)
                     |)));
@@ -144,10 +141,7 @@ Module base_convert.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "InvalidBase" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "InvalidBase" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -188,7 +182,7 @@ Module base_convert.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "InvalidDigit" |) |)
+                            M.deref (| mk_str (| "InvalidDigit" |) |)
                           |);
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| __self_0 |) |) |);
                           M.borrow (|
@@ -498,9 +492,7 @@ Module base_convert.
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (|
-                              M.read (|
-                                Value.String "the value is too large to fit the target type"
-                              |)
+                              mk_str (| "the value is too large to fit the target type" |)
                             |)
                           |)
                         ]
@@ -548,8 +540,8 @@ Module base_convert.
                                     M.alloc (|
                                       Value.Array
                                         [
-                                          M.read (| Value.String "the requested number base " |);
-                                          M.read (| Value.String " is less than two" |)
+                                          mk_str (| "the requested number base " |);
+                                          mk_str (| " is less than two" |)
                                         ]
                                     |)
                                   |)
@@ -637,8 +629,8 @@ Module base_convert.
                                     M.alloc (|
                                       Value.Array
                                         [
-                                          M.read (| Value.String "digit " |);
-                                          M.read (| Value.String " is out of range for base " |)
+                                          mk_str (| "digit " |);
+                                          mk_str (| " is out of range for base " |)
                                         ]
                                     |)
                                   |)
@@ -753,7 +745,7 @@ Module base_convert.
                           M.call_closure (|
                             Ty.path "never",
                             M.get_function (| "core::panicking::panic", [], [] |),
-                            [ M.read (| Value.String "assertion failed: base > 1" |) ]
+                            [ mk_str (| "assertion failed: base > 1" |) ]
                           |)
                         |)
                       |)));
@@ -839,7 +831,7 @@ Module base_convert.
                           M.call_closure (|
                             Ty.path "never",
                             M.get_function (| "core::panicking::panic", [], [] |),
-                            [ M.read (| Value.String "assertion failed: base > 1" |) ]
+                            [ mk_str (| "assertion failed: base > 1" |) ]
                           |)
                         |)
                       |)));

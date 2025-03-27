@@ -634,7 +634,7 @@ Module ffi.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "NulError" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "NulError" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -967,7 +967,7 @@ Module ffi.
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "InteriorNul" |) |)
+                              M.deref (| mk_str (| "InteriorNul" |) |)
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
@@ -1000,7 +1000,7 @@ Module ffi.
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "NotNulTerminated" |) |)
+                              M.deref (| mk_str (| "NotNulTerminated" |) |)
                             |)
                           ]
                         |)
@@ -1292,14 +1292,8 @@ Module ffi.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "FromVecWithNulError" |) |)
-                |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "error_kind" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "FromVecWithNulError" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "error_kind" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -1313,7 +1307,7 @@ Module ffi.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "bytes" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "bytes" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -1683,11 +1677,8 @@ Module ffi.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "IntoStringError" |) |)
-                |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "inner" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "IntoStringError" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "inner" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -1701,7 +1692,7 @@ Module ffi.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "error" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "error" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -1942,9 +1933,8 @@ Module ffi.
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
                                         [
-                                          M.read (|
-                                            Value.String
-                                              "assertion failed: memchr::memchr(0, &v).is_none()"
+                                          mk_str (|
+                                            "assertion failed: memchr::memchr(0, &v).is_none()"
                                           |)
                                         ]
                                       |)
@@ -3067,9 +3057,8 @@ Module ffi.
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
                                         [
-                                          M.read (|
-                                            Value.String
-                                              "assertion failed: memchr::memchr(0, &v).unwrap() + 1 == v.len()"
+                                          mk_str (|
+                                            "assertion failed: memchr::memchr(0, &v).unwrap() + 1 == v.len()"
                                           |)
                                         ]
                                       |)
@@ -5353,11 +5342,7 @@ Module ffi.
                           Pointer.Kind.Ref,
                           M.alloc (|
                             Value.Array
-                              [
-                                M.read (|
-                                  Value.String "nul byte found in provided data at position: "
-                                |)
-                              ]
+                              [ mk_str (| "nul byte found in provided data at position: " |) ]
                           |)
                         |)
                       |)
@@ -5492,9 +5477,8 @@ Module ffi.
                                       M.alloc (|
                                         Value.Array
                                           [
-                                            M.read (|
-                                              Value.String
-                                                "data provided contains an interior nul byte at pos "
+                                            mk_str (|
+                                              "data provided contains an interior nul byte at pos "
                                             |)
                                           ]
                                       |)
@@ -5571,11 +5555,7 @@ Module ffi.
                                       Pointer.Kind.Ref,
                                       M.alloc (|
                                         Value.Array
-                                          [
-                                            M.read (|
-                                              Value.String "data provided is not nul terminated"
-                                            |)
-                                          ]
+                                          [ mk_str (| "data provided is not nul terminated" |) ]
                                       |)
                                     |)
                                   |)
@@ -5664,7 +5644,7 @@ Module ffi.
             (let self := M.alloc (| self |) in
             M.borrow (|
               Pointer.Kind.Ref,
-              M.deref (| M.read (| Value.String "C string contained non-utf8 bytes" |) |)
+              M.deref (| mk_str (| "C string contained non-utf8 bytes" |) |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -6182,10 +6162,7 @@ Module ffi.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.borrow (|
-              Pointer.Kind.Ref,
-              M.deref (| M.read (| Value.String "nul byte found in data" |) |)
-            |)))
+            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "nul byte found in data" |) |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -6225,7 +6202,7 @@ Module ffi.
             (let self := M.alloc (| self |) in
             M.borrow (|
               Pointer.Kind.Ref,
-              M.deref (| M.read (| Value.String "C string contained non-utf8 bytes" |) |)
+              M.deref (| mk_str (| "C string contained non-utf8 bytes" |) |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

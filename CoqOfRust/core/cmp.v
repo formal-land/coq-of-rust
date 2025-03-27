@@ -369,30 +369,21 @@ Module cmp.
                         (let γ := M.read (| γ |) in
                         let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Less" |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Less" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Less" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
                         let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Equal" |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Equal" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Equal" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.read (| γ |) in
                         let _ := M.is_struct_tuple (| γ, "core::cmp::Ordering::Greater" |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Greater" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Greater" |) |) |)
                         |)))
                   ]
                 |)
@@ -910,7 +901,7 @@ Module cmp.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Reverse" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Reverse" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -1489,7 +1480,7 @@ Module cmp.
                           M.call_closure (|
                             Ty.path "never",
                             M.get_function (| "core::panicking::panic", [], [] |),
-                            [ M.read (| Value.String "assertion failed: min <= max" |) ]
+                            [ mk_str (| "assertion failed: min <= max" |) ]
                           |)
                         |)
                       |)));
@@ -4438,7 +4429,7 @@ Module cmp.
                             M.call_closure (|
                               Ty.path "never",
                               M.get_function (| "core::panicking::panic", [], [] |),
-                              [ M.read (| Value.String "assertion failed: min <= max" |) ]
+                              [ mk_str (| "assertion failed: min <= max" |) ]
                             |)
                           |)
                         |)));

@@ -45,8 +45,8 @@ Module vec.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Splice" |) |) |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "drain" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Splice" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "drain" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -60,10 +60,7 @@ Module vec.
                     |)
                   |)
                 |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "replace_with" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "replace_with" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -1188,9 +1185,8 @@ Module vec.
                                                               []
                                                             |),
                                                             [
-                                                              M.read (|
-                                                                Value.String
-                                                                  "assertion failed: filled"
+                                                              mk_str (|
+                                                                "assertion failed: filled"
                                                               |)
                                                             ]
                                                           |)

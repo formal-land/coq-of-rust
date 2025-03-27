@@ -1249,7 +1249,7 @@ Module kzg_point_evaluation.
             |);
             M.borrow (|
               Pointer.Kind.Ref,
-              M.deref (| M.read (| Value.String "slice with incorrect length" |) |)
+              M.deref (| mk_str (| "slice with incorrect length" |) |)
             |)
           ]
         |)))

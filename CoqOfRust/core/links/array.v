@@ -20,6 +20,24 @@ Definition of_ty (length' : Value.t) (length : Usize.t) (A' : Ty.t):
 Proof. intros ? [A]. eapply OfTy.Make with (A := t A length). now subst. Defined.
 Smpl Add eapply of_ty : of_ty.
 
+Lemma of_value_with_1 {A : Set} `{Link A}
+    (value1' : Value.t) (value1 : A) :
+  value1' = φ value1 ->
+  Value.Array [value1'] =
+  φ ({| value := [value1] |} : t A {| Integer.value := 1 |}).
+Proof. now intros; subst. Qed.
+Smpl Add apply of_value_with_1 : of_value.
+
+Definition of_value_1 (value1' : Value.t) :
+  OfValue.t value1' ->
+  OfValue.t (Value.Array [value1']).
+Proof.
+  intros [A].
+  eapply OfValue.Make with (A := t A {| Integer.value := 1 |}).
+  apply of_value_with_1; eassumption.
+Defined.
+Smpl Add apply of_value_1 : of_value.
+
 Module SubPointer.
   Definition get_index (A : Set) `{Link A} (length : Usize.t) (index : Z) :
     SubPointer.Runner.t (t A length) (Pointer.Index.Array index) :=

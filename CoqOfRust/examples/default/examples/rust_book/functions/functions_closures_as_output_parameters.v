@@ -26,7 +26,7 @@ Definition create_fn (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                 [],
                 []
               |),
-              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Fn" |) |) |) ]
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Fn" |) |) |) ]
             |)
           |) in
         M.alloc (|
@@ -68,11 +68,8 @@ Definition create_fn (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
                                                 Pointer.Kind.Ref,
                                                 M.alloc (|
                                                   Value.Array
-                                                    [
-                                                      M.read (| Value.String "This is a: " |);
-                                                      M.read (| Value.String "
-" |)
-                                                    ]
+                                                    [ mk_str (| "This is a: " |); mk_str (| "
+" |) ]
                                                 |)
                                               |)
                                             |)
@@ -153,7 +150,7 @@ Definition create_fnmut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                 [],
                 []
               |),
-              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "FnMut" |) |) |) ]
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "FnMut" |) |) |) ]
             |)
           |) in
         M.alloc (|
@@ -195,11 +192,8 @@ Definition create_fnmut (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                                                 Pointer.Kind.Ref,
                                                 M.alloc (|
                                                   Value.Array
-                                                    [
-                                                      M.read (| Value.String "This is a: " |);
-                                                      M.read (| Value.String "
-" |)
-                                                    ]
+                                                    [ mk_str (| "This is a: " |); mk_str (| "
+" |) ]
                                                 |)
                                               |)
                                             |)
@@ -280,7 +274,7 @@ Definition create_fnonce (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                 [],
                 []
               |),
-              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "FnOnce" |) |) |) ]
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "FnOnce" |) |) |) ]
             |)
           |) in
         M.alloc (|
@@ -322,11 +316,8 @@ Definition create_fnonce (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                                                 Pointer.Kind.Ref,
                                                 M.alloc (|
                                                   Value.Array
-                                                    [
-                                                      M.read (| Value.String "This is a: " |);
-                                                      M.read (| Value.String "
-" |)
-                                                    ]
+                                                    [ mk_str (| "This is a: " |); mk_str (| "
+" |) ]
                                                 |)
                                               |)
                                             |)

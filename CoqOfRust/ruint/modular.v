@@ -430,9 +430,8 @@ Module modular.
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
                                           [
-                                            M.read (|
-                                              Value.String
-                                                "assertion failed: 2 * LIMBS >= product_len"
+                                            mk_str (|
+                                              "assertion failed: 2 * LIMBS >= product_len"
                                             |)
                                           ]
                                         |)
@@ -594,8 +593,7 @@ Module modular.
                                         M.call_closure (|
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
-                                          [ M.read (| Value.String "assertion failed: !overflow" |)
-                                          ]
+                                          [ mk_str (| "assertion failed: !overflow" |) ]
                                         |)
                                       |)
                                     |)));
@@ -1260,11 +1258,7 @@ Module modular.
                                         M.call_closure (|
                                           Ty.path "never",
                                           M.get_function (| "core::panicking::panic", [], [] |),
-                                          [
-                                            M.read (|
-                                              Value.String "assertion failed: result < modulus"
-                                            |)
-                                          ]
+                                          [ mk_str (| "assertion failed: result < modulus" |) ]
                                         |)
                                       |)
                                     |)));

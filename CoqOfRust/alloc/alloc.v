@@ -112,7 +112,7 @@ Module alloc.
             M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "Global" |) |) |)
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Global" |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -831,9 +831,8 @@ Module alloc.
                                                       M.alloc (|
                                                         Value.Array
                                                           [
-                                                            M.read (|
-                                                              Value.String
-                                                                "`new_layout.size()` must be greater than or equal to `old_layout.size()`"
+                                                            mk_str (|
+                                                              "`new_layout.size()` must be greater than or equal to `old_layout.size()`"
                                                             |)
                                                           ]
                                                       |)
@@ -1822,9 +1821,8 @@ Module alloc.
                                                       M.alloc (|
                                                         Value.Array
                                                           [
-                                                            M.read (|
-                                                              Value.String
-                                                                "`new_layout.size()` must be smaller than or equal to `old_layout.size()`"
+                                                            mk_str (|
+                                                              "`new_layout.size()` must be smaller than or equal to `old_layout.size()`"
                                                             |)
                                                           ]
                                                       |)
@@ -2654,9 +2652,7 @@ Module alloc.
                             M.deref (|
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.alloc (|
-                                  Value.Array [ M.read (| Value.String "allocation failed" |) ]
-                                |)
+                                M.alloc (| Value.Array [ mk_str (| "allocation failed" |) ] |)
                               |)
                             |)
                           |)
@@ -2792,8 +2788,8 @@ Module alloc.
                                     M.alloc (|
                                       Value.Array
                                         [
-                                          M.read (| Value.String "memory allocation of " |);
-                                          M.read (| Value.String " bytes failed" |)
+                                          mk_str (| "memory allocation of " |);
+                                          mk_str (| " bytes failed" |)
                                         ]
                                     |)
                                   |)
@@ -2857,8 +2853,8 @@ Module alloc.
                                     M.alloc (|
                                       Value.Array
                                         [
-                                          M.read (| Value.String "memory allocation of " |);
-                                          M.read (| Value.String " bytes failed" |)
+                                          mk_str (| "memory allocation of " |);
+                                          mk_str (| " bytes failed" |)
                                         ]
                                     |)
                                   |)

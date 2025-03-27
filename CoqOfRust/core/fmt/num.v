@@ -1610,7 +1610,7 @@ Module fmt.
       
       (*             const PREFIX: &'static str = $prefix; *)
       (* Ty.apply (Ty.path "&") [] [ Ty.path "str" ] *)
-      Definition value_PREFIX : Value.t := M.run ltac:(M.monadic (Value.String "0b")).
+      Definition value_PREFIX : Value.t := M.run ltac:(M.monadic (M.alloc (| mk_str (| "0b" |) |))).
       
       (*
                   fn digit(x: u8) -> u8 {
@@ -1665,10 +1665,8 @@ Module fmt.
                                         M.alloc (|
                                           Value.Array
                                             [
-                                              M.read (|
-                                                Value.String "number not in the range 0..="
-                                              |);
-                                              M.read (| Value.String ": " |)
+                                              mk_str (| "number not in the range 0..=" |);
+                                              mk_str (| ": " |)
                                             ]
                                         |)
                                       |)
@@ -1766,7 +1764,7 @@ Module fmt.
       
       (*             const PREFIX: &'static str = $prefix; *)
       (* Ty.apply (Ty.path "&") [] [ Ty.path "str" ] *)
-      Definition value_PREFIX : Value.t := M.run ltac:(M.monadic (Value.String "0o")).
+      Definition value_PREFIX : Value.t := M.run ltac:(M.monadic (M.alloc (| mk_str (| "0o" |) |))).
       
       (*
                   fn digit(x: u8) -> u8 {
@@ -1821,10 +1819,8 @@ Module fmt.
                                         M.alloc (|
                                           Value.Array
                                             [
-                                              M.read (|
-                                                Value.String "number not in the range 0..="
-                                              |);
-                                              M.read (| Value.String ": " |)
+                                              mk_str (| "number not in the range 0..=" |);
+                                              mk_str (| ": " |)
                                             ]
                                         |)
                                       |)
@@ -1922,7 +1918,7 @@ Module fmt.
       
       (*             const PREFIX: &'static str = $prefix; *)
       (* Ty.apply (Ty.path "&") [] [ Ty.path "str" ] *)
-      Definition value_PREFIX : Value.t := M.run ltac:(M.monadic (Value.String "0x")).
+      Definition value_PREFIX : Value.t := M.run ltac:(M.monadic (M.alloc (| mk_str (| "0x" |) |))).
       
       (*
                   fn digit(x: u8) -> u8 {
@@ -1986,10 +1982,8 @@ Module fmt.
                                         M.alloc (|
                                           Value.Array
                                             [
-                                              M.read (|
-                                                Value.String "number not in the range 0..="
-                                              |);
-                                              M.read (| Value.String ": " |)
+                                              mk_str (| "number not in the range 0..=" |);
+                                              mk_str (| ": " |)
                                             ]
                                         |)
                                       |)
@@ -2087,7 +2081,7 @@ Module fmt.
       
       (*             const PREFIX: &'static str = $prefix; *)
       (* Ty.apply (Ty.path "&") [] [ Ty.path "str" ] *)
-      Definition value_PREFIX : Value.t := M.run ltac:(M.monadic (Value.String "0x")).
+      Definition value_PREFIX : Value.t := M.run ltac:(M.monadic (M.alloc (| mk_str (| "0x" |) |))).
       
       (*
                   fn digit(x: u8) -> u8 {
@@ -2151,10 +2145,8 @@ Module fmt.
                                         M.alloc (|
                                           Value.Array
                                             [
-                                              M.read (|
-                                                Value.String "number not in the range 0..="
-                                              |);
-                                              M.read (| Value.String ": " |)
+                                              mk_str (| "number not in the range 0..=" |);
+                                              mk_str (| ": " |)
                                             ]
                                         |)
                                       |)
@@ -7363,7 +7355,7 @@ Module fmt.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.read (| is_nonnegative |);
-                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "" |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "" |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| buf_slice |) |) |)
                     ]
                   |)
@@ -8098,7 +8090,7 @@ Module fmt.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.read (| is_nonnegative |);
-                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "" |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "" |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| buf_slice |) |) |)
                     ]
                   |)
@@ -8833,7 +8825,7 @@ Module fmt.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.read (| is_nonnegative |);
-                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "" |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "" |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| buf_slice |) |) |)
                     ]
                   |)
@@ -9568,7 +9560,7 @@ Module fmt.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.read (| is_nonnegative |);
-                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "" |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "" |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| buf_slice |) |) |)
                     ]
                   |)
@@ -10308,7 +10300,7 @@ Module fmt.
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                       M.read (| is_nonnegative |);
-                      M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "" |) |) |);
+                      M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "" |) |) |);
                       M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| buf_slice |) |) |)
                     ]
                   |)
@@ -11708,7 +11700,7 @@ Module fmt.
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
-                                  Value.String "-"));
+                                  M.alloc (| mk_str (| "-" |) |)));
                               fun γ =>
                                 ltac:(M.monadic
                                   (M.alloc (|
@@ -11746,13 +11738,13 @@ Module fmt.
                                                       M.read (| γ |),
                                                       Value.Bool true
                                                     |) in
-                                                  Value.String "+"));
+                                                  M.alloc (| mk_str (| "+" |) |)));
                                               fun γ =>
                                                 ltac:(M.monadic
                                                   (M.alloc (|
                                                     M.borrow (|
                                                       Pointer.Kind.Ref,
-                                                      M.deref (| M.read (| Value.String "" |) |)
+                                                      M.deref (| mk_str (| "" |) |)
                                                     |)
                                                   |)))
                                             ]
@@ -15620,7 +15612,7 @@ Module fmt.
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
-                                Value.String "-"));
+                                M.alloc (| mk_str (| "-" |) |)));
                             fun γ =>
                               ltac:(M.monadic
                                 (M.alloc (|
@@ -15658,13 +15650,13 @@ Module fmt.
                                                     M.read (| γ |),
                                                     Value.Bool true
                                                   |) in
-                                                Value.String "+"));
+                                                M.alloc (| mk_str (| "+" |) |)));
                                             fun γ =>
                                               ltac:(M.monadic
                                                 (M.alloc (|
                                                   M.borrow (|
                                                     Pointer.Kind.Ref,
-                                                    M.deref (| M.read (| Value.String "" |) |)
+                                                    M.deref (| mk_str (| "" |) |)
                                                   |)
                                                 |)))
                                           ]
@@ -16360,7 +16352,7 @@ Module fmt.
                           M.call_closure (|
                             Ty.path "never",
                             M.get_function (| "core::panicking::panic", [], [] |),
-                            [ M.read (| Value.String "assertion failed: *curr > 19" |) ]
+                            [ mk_str (| "assertion failed: *curr > 19" |) ]
                           |)
                         |)
                       |)));
@@ -18100,10 +18092,7 @@ Module fmt.
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.read (| is_nonnegative |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "" |) |) |);
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| buf_slice |) |) |)
                         ]
                       |)

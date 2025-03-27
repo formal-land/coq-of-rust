@@ -118,11 +118,7 @@ Module algorithms.
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
-                                        [
-                                          M.read (|
-                                            Value.String "assertion failed: divisor.len() >= 2"
-                                          |)
-                                        ]
+                                        [ mk_str (| "assertion failed: divisor.len() >= 2" |) ]
                                       |)
                                     |)
                                   |)));
@@ -199,9 +195,8 @@ Module algorithms.
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
                                         [
-                                          M.read (|
-                                            Value.String
-                                              "assertion failed: numerator.len() >= divisor.len()"
+                                          mk_str (|
+                                            "assertion failed: numerator.len() >= divisor.len()"
                                           |)
                                         ]
                                       |)
@@ -299,9 +294,8 @@ Module algorithms.
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
                                         [
-                                          M.read (|
-                                            Value.String
-                                              "assertion failed: *divisor.last().unwrap() >= (1 << 63)"
+                                          mk_str (|
+                                            "assertion failed: *divisor.last().unwrap() >= (1 << 63)"
                                           |)
                                         ]
                                       |)
@@ -614,9 +608,8 @@ Module algorithms.
                                                                   []
                                                                 |),
                                                                 [
-                                                                  M.read (|
-                                                                    Value.String
-                                                                      "assertion failed: n21 <= d"
+                                                                  mk_str (|
+                                                                    "assertion failed: n21 <= d"
                                                                   |)
                                                                 ]
                                                               |)
@@ -1611,11 +1604,7 @@ Module algorithms.
                                       M.call_closure (|
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
-                                        [
-                                          M.read (|
-                                            Value.String "assertion failed: divisor.len() >= 3"
-                                          |)
-                                        ]
+                                        [ mk_str (| "assertion failed: divisor.len() >= 3" |) ]
                                       |)
                                     |)
                                   |)));
@@ -1692,9 +1681,8 @@ Module algorithms.
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
                                         [
-                                          M.read (|
-                                            Value.String
-                                              "assertion failed: numerator.len() >= divisor.len()"
+                                          mk_str (|
+                                            "assertion failed: numerator.len() >= divisor.len()"
                                           |)
                                         ]
                                       |)
@@ -1789,9 +1777,8 @@ Module algorithms.
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
                                         [
-                                          M.read (|
-                                            Value.String
-                                              "assertion failed: *divisor.last().unwrap() >= 1"
+                                          mk_str (|
+                                            "assertion failed: *divisor.last().unwrap() >= 1"
                                           |)
                                         ]
                                       |)
@@ -2005,11 +1992,7 @@ Module algorithms.
                                                   [],
                                                   []
                                                 |),
-                                                [
-                                                  M.read (|
-                                                    Value.String "assertion failed: d >= 1 << 127"
-                                                  |)
-                                                ]
+                                                [ mk_str (| "assertion failed: d >= 1 << 127" |) ]
                                               |)
                                             |)
                                           |)));
@@ -2440,9 +2423,8 @@ Module algorithms.
                                                                                     []
                                                                                   |),
                                                                                   [
-                                                                                    M.read (|
-                                                                                      Value.String
-                                                                                        "assertion failed: n21 <= d"
+                                                                                    mk_str (|
+                                                                                      "assertion failed: n21 <= d"
                                                                                     |)
                                                                                   ]
                                                                                 |)

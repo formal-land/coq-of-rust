@@ -256,13 +256,11 @@ Module bls12_381.
                                                                       M.alloc (|
                                                                         Value.Array
                                                                           [
-                                                                            M.read (|
-                                                                              Value.String
-                                                                                "MAP_FP2_TO_G2 input should be "
+                                                                            mk_str (|
+                                                                              "MAP_FP2_TO_G2 input should be "
                                                                             |);
-                                                                            M.read (|
-                                                                              Value.String
-                                                                                " bytes, was "
+                                                                            mk_str (|
+                                                                              " bytes, was "
                                                                             |)
                                                                           ]
                                                                       |)

@@ -38,8 +38,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 [],
                 [ Ty.path "str" ]
               |),
-              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "hello.txt" |) |) |)
-              ]
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "hello.txt" |) |) |) ]
             |)
           |) in
         let~ display : Ty.path "std::path::Display" :=
@@ -105,10 +104,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       Pointer.Kind.Ref,
                                       M.alloc (|
                                         Value.Array
-                                          [
-                                            M.read (| Value.String "couldn't open " |);
-                                            M.read (| Value.String ": " |)
-                                          ]
+                                          [ mk_str (| "couldn't open " |); mk_str (| ": " |) ]
                                       |)
                                     |)
                                   |)
@@ -235,11 +231,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.borrow (|
                                   Pointer.Kind.Ref,
                                   M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (| Value.String "couldn't read " |);
-                                        M.read (| Value.String ": " |)
-                                      ]
+                                    Value.Array [ mk_str (| "couldn't read " |); mk_str (| ": " |) ]
                                   |)
                                 |)
                               |)
@@ -319,12 +311,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.borrow (|
                                   Pointer.Kind.Ref,
                                   M.alloc (|
-                                    Value.Array
-                                      [
-                                        M.read (| Value.String "" |);
-                                        M.read (| Value.String " contains:
-" |)
-                                      ]
+                                    Value.Array [ mk_str (| "" |); mk_str (| " contains:
+" |) ]
                                   |)
                                 |)
                               |)

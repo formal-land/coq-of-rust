@@ -360,10 +360,7 @@ Module instruction_result.
                             "revm_interpreter::instruction_result::InstructionResult::Continue"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Continue" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Continue" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -374,10 +371,7 @@ Module instruction_result.
                             "revm_interpreter::instruction_result::InstructionResult::Stop"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Stop" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Stop" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -388,10 +382,7 @@ Module instruction_result.
                             "revm_interpreter::instruction_result::InstructionResult::Return"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Return" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Return" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -402,10 +393,7 @@ Module instruction_result.
                             "revm_interpreter::instruction_result::InstructionResult::SelfDestruct"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "SelfDestruct" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "SelfDestruct" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -418,7 +406,7 @@ Module instruction_result.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "ReturnContract" |) |)
+                            M.deref (| mk_str (| "ReturnContract" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -430,10 +418,7 @@ Module instruction_result.
                             "revm_interpreter::instruction_result::InstructionResult::Revert"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Revert" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Revert" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -444,10 +429,7 @@ Module instruction_result.
                             "revm_interpreter::instruction_result::InstructionResult::CallTooDeep"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "CallTooDeep" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CallTooDeep" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -458,10 +440,7 @@ Module instruction_result.
                             "revm_interpreter::instruction_result::InstructionResult::OutOfFunds"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "OutOfFunds" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "OutOfFunds" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -474,7 +453,7 @@ Module instruction_result.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "CreateInitCodeStartingEF00" |) |)
+                            M.deref (| mk_str (| "CreateInitCodeStartingEF00" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -488,7 +467,7 @@ Module instruction_result.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "InvalidEOFInitCode" |) |)
+                            M.deref (| mk_str (| "InvalidEOFInitCode" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -502,7 +481,7 @@ Module instruction_result.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "InvalidExtDelegateCallTarget" |) |)
+                            M.deref (| mk_str (| "InvalidExtDelegateCallTarget" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -514,10 +493,7 @@ Module instruction_result.
                             "revm_interpreter::instruction_result::InstructionResult::CallOrCreate"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "CallOrCreate" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CallOrCreate" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -528,10 +504,7 @@ Module instruction_result.
                             "revm_interpreter::instruction_result::InstructionResult::OutOfGas"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "OutOfGas" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "OutOfGas" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -542,10 +515,7 @@ Module instruction_result.
                             "revm_interpreter::instruction_result::InstructionResult::MemoryOOG"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "MemoryOOG" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "MemoryOOG" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -558,7 +528,7 @@ Module instruction_result.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "MemoryLimitOOG" |) |)
+                            M.deref (| mk_str (| "MemoryLimitOOG" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -572,7 +542,7 @@ Module instruction_result.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "PrecompileOOG" |) |)
+                            M.deref (| mk_str (| "PrecompileOOG" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -586,7 +556,7 @@ Module instruction_result.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "InvalidOperandOOG" |) |)
+                            M.deref (| mk_str (| "InvalidOperandOOG" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -600,7 +570,7 @@ Module instruction_result.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "ReentrancySentryOOG" |) |)
+                            M.deref (| mk_str (| "ReentrancySentryOOG" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -614,7 +584,7 @@ Module instruction_result.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "OpcodeNotFound" |) |)
+                            M.deref (| mk_str (| "OpcodeNotFound" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -628,7 +598,7 @@ Module instruction_result.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "CallNotAllowedInsideStatic" |) |)
+                            M.deref (| mk_str (| "CallNotAllowedInsideStatic" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -642,7 +612,7 @@ Module instruction_result.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "StateChangeDuringStaticCall" |) |)
+                            M.deref (| mk_str (| "StateChangeDuringStaticCall" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -656,7 +626,7 @@ Module instruction_result.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "InvalidFEOpcode" |) |)
+                            M.deref (| mk_str (| "InvalidFEOpcode" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -668,10 +638,7 @@ Module instruction_result.
                             "revm_interpreter::instruction_result::InstructionResult::InvalidJump"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "InvalidJump" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "InvalidJump" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -682,10 +649,7 @@ Module instruction_result.
                             "revm_interpreter::instruction_result::InstructionResult::NotActivated"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "NotActivated" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "NotActivated" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -698,7 +662,7 @@ Module instruction_result.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "StackUnderflow" |) |)
+                            M.deref (| mk_str (| "StackUnderflow" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -712,7 +676,7 @@ Module instruction_result.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "StackOverflow" |) |)
+                            M.deref (| mk_str (| "StackOverflow" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -724,10 +688,7 @@ Module instruction_result.
                             "revm_interpreter::instruction_result::InstructionResult::OutOfOffset"
                           |) in
                         M.alloc (|
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "OutOfOffset" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "OutOfOffset" |) |) |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -740,7 +701,7 @@ Module instruction_result.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "CreateCollision" |) |)
+                            M.deref (| mk_str (| "CreateCollision" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -754,7 +715,7 @@ Module instruction_result.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "OverflowPayment" |) |)
+                            M.deref (| mk_str (| "OverflowPayment" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -768,7 +729,7 @@ Module instruction_result.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "PrecompileError" |) |)
+                            M.deref (| mk_str (| "PrecompileError" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -782,7 +743,7 @@ Module instruction_result.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "NonceOverflow" |) |)
+                            M.deref (| mk_str (| "NonceOverflow" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -796,7 +757,7 @@ Module instruction_result.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "CreateContractSizeLimit" |) |)
+                            M.deref (| mk_str (| "CreateContractSizeLimit" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -810,7 +771,7 @@ Module instruction_result.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "CreateContractStartingWithEF" |) |)
+                            M.deref (| mk_str (| "CreateContractStartingWithEF" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -824,7 +785,7 @@ Module instruction_result.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "CreateInitCodeSizeLimit" |) |)
+                            M.deref (| mk_str (| "CreateInitCodeSizeLimit" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -838,7 +799,7 @@ Module instruction_result.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "FatalExternalError" |) |)
+                            M.deref (| mk_str (| "FatalExternalError" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -852,7 +813,7 @@ Module instruction_result.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "ReturnContractInNotInitEOF" |) |)
+                            M.deref (| mk_str (| "ReturnContractInNotInitEOF" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -866,7 +827,7 @@ Module instruction_result.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "EOFOpcodeDisabledInLegacy" |) |)
+                            M.deref (| mk_str (| "EOFOpcodeDisabledInLegacy" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -880,7 +841,7 @@ Module instruction_result.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "SubRoutineStackOverflow" |) |)
+                            M.deref (| mk_str (| "SubRoutineStackOverflow" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -894,7 +855,7 @@ Module instruction_result.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "EofAuxDataOverflow" |) |)
+                            M.deref (| mk_str (| "EofAuxDataOverflow" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -908,7 +869,7 @@ Module instruction_result.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "EofAuxDataTooSmall" |) |)
+                            M.deref (| mk_str (| "EofAuxDataTooSmall" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -922,7 +883,7 @@ Module instruction_result.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "InvalidEXTCALLTarget" |) |)
+                            M.deref (| mk_str (| "InvalidEXTCALLTarget" |) |)
                           |)
                         |)))
                   ]
@@ -2392,7 +2353,7 @@ Module instruction_result.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "InternalContinue" |) |)
+                            M.deref (| mk_str (| "InternalContinue" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2406,7 +2367,7 @@ Module instruction_result.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "InternalCallOrCreate" |) |)
+                            M.deref (| mk_str (| "InternalCallOrCreate" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2420,7 +2381,7 @@ Module instruction_result.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "CreateInitCodeStartingEF00" |) |)
+                            M.deref (| mk_str (| "CreateInitCodeStartingEF00" |) |)
                           |)
                         |)));
                     fun γ =>
@@ -2434,7 +2395,7 @@ Module instruction_result.
                         M.alloc (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "InvalidExtDelegateCallTarget" |) |)
+                            M.deref (| mk_str (| "InvalidExtDelegateCallTarget" |) |)
                           |)
                         |)))
                   ]
@@ -2889,10 +2850,7 @@ Module instruction_result.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Success" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Success" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -2922,10 +2880,7 @@ Module instruction_result.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Revert" |) |)
-                          |)
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Revert" |) |) |)
                         ]
                       |)
                     |)));
@@ -2953,10 +2908,7 @@ Module instruction_result.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Halt" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Halt" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)
@@ -2988,7 +2940,7 @@ Module instruction_result.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "FatalExternalError" |) |)
+                            M.deref (| mk_str (| "FatalExternalError" |) |)
                           |)
                         ]
                       |)
@@ -3017,10 +2969,7 @@ Module instruction_result.
                         |),
                         [
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                          M.borrow (|
-                            Pointer.Kind.Ref,
-                            M.deref (| M.read (| Value.String "Internal" |) |)
-                          |);
+                          M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Internal" |) |) |);
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.deref (| M.borrow (| Pointer.Kind.Ref, __self_0 |) |)

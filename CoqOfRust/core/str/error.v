@@ -210,14 +210,8 @@ Module str.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "Utf8Error" |) |)
-                |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "valid_up_to" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Utf8Error" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "valid_up_to" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -231,10 +225,7 @@ Module str.
                     |)
                   |)
                 |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "error_len" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "error_len" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -428,8 +419,8 @@ Module str.
                                       M.alloc (|
                                         Value.Array
                                           [
-                                            M.read (| Value.String "invalid utf-8 sequence of " |);
-                                            M.read (| Value.String " bytes from index " |)
+                                            mk_str (| "invalid utf-8 sequence of " |);
+                                            mk_str (| " bytes from index " |)
                                           ]
                                       |)
                                     |)
@@ -530,9 +521,8 @@ Module str.
                                       M.alloc (|
                                         Value.Array
                                           [
-                                            M.read (|
-                                              Value.String
-                                                "incomplete utf-8 byte sequence from index "
+                                            mk_str (|
+                                              "incomplete utf-8 byte sequence from index "
                                             |)
                                           ]
                                       |)
@@ -611,7 +601,7 @@ Module str.
             (let self := M.alloc (| self |) in
             M.borrow (|
               Pointer.Kind.Ref,
-              M.deref (| M.read (| Value.String "invalid utf-8: corrupt contents" |) |)
+              M.deref (| mk_str (| "invalid utf-8: corrupt contents" |) |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -651,10 +641,7 @@ Module str.
               M.get_associated_function (| Ty.path "core::fmt::Formatter", "write_str", [], [] |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "ParseBoolError" |) |)
-                |)
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "ParseBoolError" |) |) |)
               ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -776,9 +763,7 @@ Module str.
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.deref (|
-                    M.read (| Value.String "provided string was not `true` or `false`" |)
-                  |)
+                  M.deref (| mk_str (| "provided string was not `true` or `false`" |) |)
                 |);
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |)
               ]
@@ -808,10 +793,7 @@ Module str.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            M.borrow (|
-              Pointer.Kind.Ref,
-              M.deref (| M.read (| Value.String "failed to parse bool" |) |)
-            |)))
+            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "failed to parse bool" |) |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       

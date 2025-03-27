@@ -150,9 +150,9 @@ Module legacy.
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "LegacyAnalyzedBytecode" |) |)
+                  M.deref (| mk_str (| "LegacyAnalyzedBytecode" |) |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "bytecode" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "bytecode" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -166,10 +166,7 @@ Module legacy.
                     |)
                   |)
                 |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "original_len" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "original_len" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -183,10 +180,7 @@ Module legacy.
                     |)
                   |)
                 |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "jump_table" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "jump_table" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|

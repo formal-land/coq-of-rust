@@ -85,7 +85,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
           M.alloc (|
             Value.StructRecord
               "struct_visibility::my::OpenBox"
-              [ ("contents", M.read (| Value.String "public information" |)) ]
+              [ ("contents", mk_str (| "public information" |)) ]
           |) in
         let~ _ : Ty.tuple [] :=
           let~ _ : Ty.tuple [] :=
@@ -110,11 +110,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             Pointer.Kind.Ref,
                             M.alloc (|
                               Value.Array
-                                [
-                                  M.read (| Value.String "The open box contains: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                                [ mk_str (| "The open box contains: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -182,7 +179,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                 [],
                 []
               |),
-              [ M.read (| Value.String "classified information" |) ]
+              [ mk_str (| "classified information" |) ]
             |)
           |) in
         M.alloc (| Value.Tuple [] |)

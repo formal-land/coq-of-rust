@@ -35,11 +35,8 @@ Definition eat_box_i32 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
                             Pointer.Kind.Ref,
                             M.alloc (|
                               Value.Array
-                                [
-                                  M.read (| Value.String "Destroying box that contains " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                                [ mk_str (| "Destroying box that contains " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -126,12 +123,8 @@ Definition borrow_i32 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "This int is: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "This int is: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)

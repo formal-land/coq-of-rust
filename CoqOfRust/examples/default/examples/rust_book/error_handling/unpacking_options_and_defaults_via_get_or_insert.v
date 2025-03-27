@@ -72,10 +72,7 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_
                           "unpacking_options_and_defaults_via_get_or_insert::Fruit::Apple"
                         |) in
                       M.alloc (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "Apple" |) |)
-                        |)
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Apple" |) |) |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -86,10 +83,7 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_
                           "unpacking_options_and_defaults_via_get_or_insert::Fruit::Orange"
                         |) in
                       M.alloc (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "Orange" |) |)
-                        |)
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Orange" |) |) |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -100,10 +94,7 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_
                           "unpacking_options_and_defaults_via_get_or_insert::Fruit::Banana"
                         |) in
                       M.alloc (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "Banana" |) |)
-                        |)
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Banana" |) |) |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -114,10 +105,7 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_
                           "unpacking_options_and_defaults_via_get_or_insert::Fruit::Kiwi"
                         |) in
                       M.alloc (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "Kiwi" |) |)
-                        |)
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Kiwi" |) |) |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -128,10 +116,7 @@ Module Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_
                           "unpacking_options_and_defaults_via_get_or_insert::Fruit::Lemon"
                         |) in
                       M.alloc (|
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "Lemon" |) |)
-                        |)
+                        M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Lemon" |) |) |)
                       |)))
                 ]
               |)
@@ -223,12 +208,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [
-                                  M.read (| Value.String "my_fruit is: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                              Value.Array [ mk_str (| "my_fruit is: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)
@@ -300,11 +281,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                             Pointer.Kind.Ref,
                             M.alloc (|
                               Value.Array
-                                [
-                                  M.read (| Value.String "first_available_fruit is: " |);
-                                  M.read (| Value.String "
-" |)
-                                ]
+                                [ mk_str (| "first_available_fruit is: " |); mk_str (| "
+" |) ]
                             |)
                           |)
                         |)

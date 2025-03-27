@@ -2897,9 +2897,8 @@ Module control_flow_v5.
                                                                                                     M.alloc (|
                                                                                                       Value.Array
                                                                                                         [
-                                                                                                          M.read (|
-                                                                                                            Value.String
-                                                                                                              "crates/move-bytecode-verifier/src/control_flow_v5.rs:150 (none)"
+                                                                                                          mk_str (|
+                                                                                                            "crates/move-bytecode-verifier/src/control_flow_v5.rs:150 (none)"
                                                                                                           |)
                                                                                                         ]
                                                                                                     |)
@@ -3012,9 +3011,8 @@ Module control_flow_v5.
                                                                                               M.alloc (|
                                                                                                 Value.Array
                                                                                                   [
-                                                                                                    M.read (|
-                                                                                                      Value.String
-                                                                                                        ""
+                                                                                                    mk_str (|
+                                                                                                      ""
                                                                                                     |)
                                                                                                   ]
                                                                                               |)
@@ -3720,9 +3718,8 @@ Module control_flow_v5.
                                                                                                             M.alloc (|
                                                                                                               Value.Array
                                                                                                                 [
-                                                                                                                  M.read (|
-                                                                                                                    Value.String
-                                                                                                                      "crates/move-bytecode-verifier/src/control_flow_v5.rs:173 (none)"
+                                                                                                                  mk_str (|
+                                                                                                                    "crates/move-bytecode-verifier/src/control_flow_v5.rs:173 (none)"
                                                                                                                   |)
                                                                                                                 ]
                                                                                                             |)
@@ -3844,9 +3841,8 @@ Module control_flow_v5.
                                                                                                       M.alloc (|
                                                                                                         Value.Array
                                                                                                           [
-                                                                                                            M.read (|
-                                                                                                              Value.String
-                                                                                                                ""
+                                                                                                            mk_str (|
+                                                                                                              ""
                                                                                                             |)
                                                                                                           ]
                                                                                                       |)

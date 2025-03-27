@@ -34,10 +34,8 @@ Module my_mod.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
-                                Value.Array
-                                  [ M.read (| Value.String "called `my_mod::private_function()`
-" |)
-                                  ]
+                                Value.Array [ mk_str (| "called `my_mod::private_function()`
+" |) ]
                               |)
                             |)
                           |)
@@ -90,8 +88,7 @@ Module my_mod.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
-                                Value.Array
-                                  [ M.read (| Value.String "called `my_mod::function()`
+                                Value.Array [ mk_str (| "called `my_mod::function()`
 " |) ]
                               |)
                             |)
@@ -147,12 +144,8 @@ Module my_mod.
                               Pointer.Kind.Ref,
                               M.alloc (|
                                 Value.Array
-                                  [
-                                    M.read (|
-                                      Value.String "called `my_mod::indirect_access()`, that
-> "
-                                    |)
-                                  ]
+                                  [ mk_str (| "called `my_mod::indirect_access()`, that
+> " |) ]
                               |)
                             |)
                           |)
@@ -215,12 +208,8 @@ Module my_mod.
                                 Pointer.Kind.Ref,
                                 M.alloc (|
                                   Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "called `my_mod::nested::function()`
-"
-                                      |)
-                                    ]
+                                    [ mk_str (| "called `my_mod::nested::function()`
+" |) ]
                                 |)
                               |)
                             |)
@@ -274,12 +263,8 @@ Module my_mod.
                                 Pointer.Kind.Ref,
                                 M.alloc (|
                                   Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "called `my_mod::nested::private_function()`
-"
-                                      |)
-                                    ]
+                                    [ mk_str (| "called `my_mod::nested::private_function()`
+" |) ]
                                 |)
                               |)
                             |)
@@ -339,9 +324,8 @@ Module my_mod.
                                 M.alloc (|
                                   Value.Array
                                     [
-                                      M.read (|
-                                        Value.String
-                                          "called `my_mod::nested::public_function_in_my_mod()`, that
+                                      mk_str (|
+                                        "called `my_mod::nested::public_function_in_my_mod()`, that
 > "
                                       |)
                                     ]
@@ -417,9 +401,8 @@ Module my_mod.
                                 M.alloc (|
                                   Value.Array
                                     [
-                                      M.read (|
-                                        Value.String
-                                          "called `my_mod::nested::public_function_in_nested()`
+                                      mk_str (|
+                                        "called `my_mod::nested::public_function_in_nested()`
 "
                                       |)
                                     ]
@@ -483,9 +466,8 @@ Module my_mod.
                                 M.alloc (|
                                   Value.Array
                                     [
-                                      M.read (|
-                                        Value.String
-                                          "called `my_mod::nested::public_function_in_super_mod()`
+                                      mk_str (|
+                                        "called `my_mod::nested::public_function_in_super_mod()`
 "
                                       |)
                                     ]
@@ -553,9 +535,8 @@ Module my_mod.
                               M.alloc (|
                                 Value.Array
                                   [
-                                    M.read (|
-                                      Value.String
-                                        "called `my_mod::call_public_function_in_my_mod()`, that
+                                    mk_str (|
+                                      "called `my_mod::call_public_function_in_my_mod()`, that
 > "
                                     |)
                                   ]
@@ -602,7 +583,7 @@ Module my_mod.
                           M.deref (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.alloc (| Value.Array [ M.read (| Value.String "> " |) ] |)
+                              M.alloc (| Value.Array [ mk_str (| "> " |) ] |)
                             |)
                           |)
                         |)
@@ -669,12 +650,8 @@ Module my_mod.
                               Pointer.Kind.Ref,
                               M.alloc (|
                                 Value.Array
-                                  [
-                                    M.read (|
-                                      Value.String "called `my_mod::public_function_in_crate()`
-"
-                                    |)
-                                  ]
+                                  [ mk_str (| "called `my_mod::public_function_in_crate()`
+" |) ]
                               |)
                             |)
                           |)
@@ -729,12 +706,8 @@ Module my_mod.
                                 Pointer.Kind.Ref,
                                 M.alloc (|
                                   Value.Array
-                                    [
-                                      M.read (|
-                                        Value.String "called `my_mod::private_nested::function()`
-"
-                                      |)
-                                    ]
+                                    [ mk_str (| "called `my_mod::private_nested::function()`
+" |) ]
                                 |)
                               |)
                             |)
@@ -789,9 +762,8 @@ Module my_mod.
                                 M.alloc (|
                                   Value.Array
                                     [
-                                      M.read (|
-                                        Value.String
-                                          "called `my_mod::private_nested::restricted_function()`
+                                      mk_str (|
+                                        "called `my_mod::private_nested::restricted_function()`
 "
                                       |)
                                     ]
@@ -850,10 +822,8 @@ Definition function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                         M.deref (|
                           M.borrow (|
                             Pointer.Kind.Ref,
-                            M.alloc (|
-                              Value.Array [ M.read (| Value.String "called `function()`
-" |) ]
-                            |)
+                            M.alloc (| Value.Array [ mk_str (| "called `function()`
+" |) ] |)
                           |)
                         |)
                       |)

@@ -145,11 +145,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     Pointer.Kind.Ref,
                                     M.alloc (|
                                       Value.Array
-                                        [
-                                          M.read (| Value.String "ref_c1 equals ref_c2: " |);
-                                          M.read (| Value.String "
-" |)
-                                        ]
+                                        [ mk_str (| "ref_c1 equals ref_c2: " |); mk_str (| "
+" |) ]
                                     |)
                                   |)
                                 |)
@@ -293,9 +290,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.alloc (|
                                       Value.Array
                                         [
-                                          M.read (| Value.String "point is (" |);
-                                          M.read (| Value.String ", " |);
-                                          M.read (| Value.String ")
+                                          mk_str (| "point is (" |);
+                                          mk_str (| ", " |);
+                                          mk_str (| ")
 " |)
                                         ]
                                     |)
@@ -394,9 +391,9 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                     M.alloc (|
                                       Value.Array
                                         [
-                                          M.read (| Value.String "mutable_point is (" |);
-                                          M.read (| Value.String ", " |);
-                                          M.read (| Value.String ")
+                                          mk_str (| "mutable_point is (" |);
+                                          mk_str (| ", " |);
+                                          mk_str (| ")
 " |)
                                         ]
                                     |)
@@ -544,12 +541,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "tuple is " |);
-                                          M.read (| Value.String "
-" |)
-                                        ]
+                                      Value.Array [ mk_str (| "tuple is " |); mk_str (| "
+" |) ]
                                     |)
                                   |)
                                 |)

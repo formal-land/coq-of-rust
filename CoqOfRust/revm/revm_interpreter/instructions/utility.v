@@ -159,8 +159,7 @@ Module instructions.
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
-                                              Value.Array
-                                                [ M.read (| Value.String "slice too long" |) ]
+                                              Value.Array [ mk_str (| "slice too long" |) ]
                                             |)
                                           |)
                                         |)
@@ -1215,9 +1214,8 @@ Module instructions.
                                                                       M.alloc (|
                                                                         Value.Array
                                                                           [
-                                                                            M.read (|
-                                                                              Value.String
-                                                                                "wrote too much"
+                                                                            mk_str (|
+                                                                              "wrote too much"
                                                                             |)
                                                                           ]
                                                                       |)

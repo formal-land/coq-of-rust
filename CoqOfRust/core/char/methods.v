@@ -266,9 +266,8 @@ Module char.
                                           M.alloc (|
                                             Value.Array
                                               [
-                                                M.read (|
-                                                  Value.String
-                                                    "to_digit: invalid radix -- radix must be in the range 2 to 36 inclusive"
+                                                mk_str (|
+                                                  "to_digit: invalid radix -- radix must be in the range 2 to 36 inclusive"
                                                 |)
                                               ]
                                           |)

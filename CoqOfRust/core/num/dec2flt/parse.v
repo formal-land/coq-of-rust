@@ -1117,11 +1117,7 @@ Module num.
                                           M.call_closure (|
                                             Ty.path "never",
                                             M.get_function (| "core::panicking::panic", [], [] |),
-                                            [
-                                              M.read (|
-                                                Value.String "assertion failed: !s.is_empty()"
-                                              |)
-                                            ]
+                                            [ mk_str (| "assertion failed: !s.is_empty()" |) ]
                                           |)
                                         |)
                                       |)));

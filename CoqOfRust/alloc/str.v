@@ -32,7 +32,7 @@ Module str.
             |),
             [
               M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "" |) |) |)
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "" |) |) |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -569,9 +569,7 @@ Module str.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.deref (|
-                          M.read (|
-                            Value.String "attempt to join into collection with len > usize::MAX"
-                          |)
+                          mk_str (| "attempt to join into collection with len > usize::MAX" |)
                         |)
                       |)
                     ]
@@ -641,9 +639,8 @@ Module str.
                                         Ty.path "never",
                                         M.get_function (| "core::panicking::panic", [], [] |),
                                         [
-                                          M.read (|
-                                            Value.String
-                                              "assertion failed: result.capacity() >= reserved_len"
+                                          mk_str (|
+                                            "assertion failed: result.capacity() >= reserved_len"
                                           |)
                                         ]
                                       |)

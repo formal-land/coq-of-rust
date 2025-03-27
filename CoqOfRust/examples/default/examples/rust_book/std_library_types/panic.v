@@ -39,7 +39,7 @@ Definition division (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                         [],
                         [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
                       |),
-                      [ M.read (| Value.String "division by zero" |) ]
+                      [ mk_str (| "division by zero" |) ]
                     |)
                   |)
                 |)));
@@ -127,8 +127,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           M.borrow (|
                             Pointer.Kind.Ref,
                             M.alloc (|
-                              Value.Array
-                                [ M.read (| Value.String "This point won't be reached!
+                              Value.Array [ mk_str (| "This point won't be reached!
 " |) ]
                             |)
                           |)

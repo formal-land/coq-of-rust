@@ -523,7 +523,7 @@ Module instructions.
                                         |);
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.deref (| M.read (| Value.String "valid container" |) |)
+                                          M.deref (| mk_str (| "valid container" |) |)
                                         |)
                                       ]
                                     |)
@@ -789,9 +789,7 @@ Module instructions.
                                         |);
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.deref (|
-                                            M.read (| Value.String "Subcontainer is verified" |)
-                                          |)
+                                          M.deref (| mk_str (| "Subcontainer is verified" |) |)
                                         |)
                                       ]
                                     |)
@@ -852,9 +850,8 @@ Module instructions.
                                                             M.alloc (|
                                                               Value.Array
                                                                 [
-                                                                  M.read (|
-                                                                    Value.String
-                                                                      "Panic if data section is not full"
+                                                                  mk_str (|
+                                                                    "Panic if data section is not full"
                                                                   |)
                                                                 ]
                                                             |)
@@ -1991,7 +1988,7 @@ Module instructions.
                                         |);
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.deref (| M.read (| Value.String "valid container" |) |)
+                                          M.deref (| mk_str (| "valid container" |) |)
                                         |)
                                       ]
                                     |)
@@ -2108,7 +2105,7 @@ Module instructions.
                                 |);
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.deref (| M.read (| Value.String "valid EOF header" |) |)
+                                  M.deref (| mk_str (| "valid EOF header" |) |)
                                 |)
                               ]
                             |)

@@ -352,13 +352,11 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                                           M.alloc (|
                                                                                             Value.Array
                                                                                               [
-                                                                                                M.read (|
-                                                                                                  Value.String
-                                                                                                    "thread "
+                                                                                                mk_str (|
+                                                                                                  "thread "
                                                                                                 |);
-                                                                                                M.read (|
-                                                                                                  Value.String
-                                                                                                    " finished
+                                                                                                mk_str (|
+                                                                                                  " finished
 "
                                                                                                 |)
                                                                                               ]
@@ -796,10 +794,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                   M.borrow (|
                                                     Pointer.Kind.Ref,
                                                     M.deref (|
-                                                      M.read (|
-                                                        Value.String
-                                                          "oops! the child thread panicked"
-                                                      |)
+                                                      mk_str (| "oops! the child thread panicked" |)
                                                     |)
                                                   |)
                                                 ]
@@ -834,14 +829,8 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 M.deref (|
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.alloc (|
-                                      Value.Array
-                                        [
-                                          M.read (| Value.String "" |);
-                                          M.read (| Value.String "
-" |)
-                                        ]
-                                    |)
+                                    M.alloc (| Value.Array [ mk_str (| "" |); mk_str (| "
+" |) ] |)
                                   |)
                                 |)
                               |);

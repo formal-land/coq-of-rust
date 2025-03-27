@@ -17367,13 +17367,11 @@ Module check_bounds.
                                                                                                           M.alloc (|
                                                                                                             Value.Array
                                                                                                               [
-                                                                                                                M.read (|
-                                                                                                                  Value.String
-                                                                                                                    "expected "
+                                                                                                                mk_str (|
+                                                                                                                  "expected "
                                                                                                                 |);
-                                                                                                                M.read (|
-                                                                                                                  Value.String
-                                                                                                                    " type parameters got 0 (Struct)"
+                                                                                                                mk_str (|
+                                                                                                                  " type parameters got 0 (Struct)"
                                                                                                                 |)
                                                                                                               ]
                                                                                                           |)
@@ -17981,13 +17979,11 @@ Module check_bounds.
                                                                                                                   M.alloc (|
                                                                                                                     Value.Array
                                                                                                                       [
-                                                                                                                        M.read (|
-                                                                                                                          Value.String
-                                                                                                                            "expected "
+                                                                                                                        mk_str (|
+                                                                                                                          "expected "
                                                                                                                         |);
-                                                                                                                        M.read (|
-                                                                                                                          Value.String
-                                                                                                                            " type parameters got "
+                                                                                                                        mk_str (|
+                                                                                                                          " type parameters got "
                                                                                                                         |)
                                                                                                                       ]
                                                                                                                   |)
@@ -19055,12 +19051,9 @@ Module check_bounds.
                                                 M.alloc (|
                                                   Value.Array
                                                     [
-                                                      M.read (|
-                                                        Value.String "Indexing into bytecode "
-                                                      |);
-                                                      M.read (|
-                                                        Value.String
-                                                          " during bounds checking but 'current_function' was not set"
+                                                      mk_str (| "Indexing into bytecode " |);
+                                                      mk_str (|
+                                                        " during bounds checking but 'current_function' was not set"
                                                       |)
                                                     ]
                                                 |)

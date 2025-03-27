@@ -528,7 +528,7 @@ Module num.
                           M.call_closure (|
                             Ty.path "never",
                             M.get_function (| "core::panicking::panic", [], [] |),
-                            [ M.read (| Value.String "assertion failed: !buf.is_empty()" |) ]
+                            [ mk_str (| "assertion failed: !buf.is_empty()" |) ]
                           |)
                         |)
                       |)));
@@ -563,7 +563,7 @@ Module num.
                           M.call_closure (|
                             Ty.path "never",
                             M.get_function (| "core::panicking::panic", [], [] |),
-                            [ M.read (| Value.String "assertion failed: buf[0] > b'0'" |) ]
+                            [ mk_str (| "assertion failed: buf[0] > b'0'" |) ]
                           |)
                         |)
                       |)));
@@ -615,7 +615,7 @@ Module num.
                           M.call_closure (|
                             Ty.path "never",
                             M.get_function (| "core::panicking::panic", [], [] |),
-                            [ M.read (| Value.String "assertion failed: parts.len() >= 4" |) ]
+                            [ mk_str (| "assertion failed: parts.len() >= 4" |) ]
                           |)
                         |)
                       |)));
@@ -1984,7 +1984,7 @@ Module num.
                           M.call_closure (|
                             Ty.path "never",
                             M.get_function (| "core::panicking::panic", [], [] |),
-                            [ M.read (| Value.String "assertion failed: !buf.is_empty()" |) ]
+                            [ mk_str (| "assertion failed: !buf.is_empty()" |) ]
                           |)
                         |)
                       |)));
@@ -2019,7 +2019,7 @@ Module num.
                           M.call_closure (|
                             Ty.path "never",
                             M.get_function (| "core::panicking::panic", [], [] |),
-                            [ M.read (| Value.String "assertion failed: buf[0] > b'0'" |) ]
+                            [ mk_str (| "assertion failed: buf[0] > b'0'" |) ]
                           |)
                         |)
                       |)));
@@ -2071,7 +2071,7 @@ Module num.
                           M.call_closure (|
                             Ty.path "never",
                             M.get_function (| "core::panicking::panic", [], [] |),
-                            [ M.read (| Value.String "assertion failed: parts.len() >= 6" |) ]
+                            [ mk_str (| "assertion failed: parts.len() >= 6" |) ]
                           |)
                         |)
                       |)));
@@ -2876,10 +2876,7 @@ Module num.
                           (let γ := M.read (| γ |) in
                           let _ := M.is_struct_tuple (| γ, "core::num::flt2dec::Sign::Minus" |) in
                           M.alloc (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Minus" |) |)
-                            |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Minus" |) |) |)
                           |)));
                       fun γ =>
                         ltac:(M.monadic
@@ -2887,10 +2884,7 @@ Module num.
                           let _ :=
                             M.is_struct_tuple (| γ, "core::num::flt2dec::Sign::MinusPlus" |) in
                           M.alloc (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "MinusPlus" |) |)
-                            |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "MinusPlus" |) |) |)
                           |)))
                     ]
                   |)
@@ -2953,7 +2947,7 @@ Module num.
                         γ0_0,
                         "core::num::flt2dec::decoder::FullDecoded::Nan"
                       |) in
-                    Value.String ""));
+                    M.alloc (| mk_str (| "" |) |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
@@ -2968,8 +2962,8 @@ Module num.
                             (let γ := M.use negative in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            Value.String "-"));
-                        fun γ => ltac:(M.monadic (Value.String ""))
+                            M.alloc (| mk_str (| "-" |) |)));
+                        fun γ => ltac:(M.monadic (M.alloc (| mk_str (| "" |) |)))
                       ]
                     |)));
                 fun γ =>
@@ -2986,8 +2980,8 @@ Module num.
                             (let γ := M.use negative in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            Value.String "-"));
-                        fun γ => ltac:(M.monadic (Value.String "+"))
+                            M.alloc (| mk_str (| "-" |) |)));
+                        fun γ => ltac:(M.monadic (M.alloc (| mk_str (| "+" |) |)))
                       ]
                     |)))
               ]
@@ -3112,7 +3106,7 @@ Module num.
                           M.call_closure (|
                             Ty.path "never",
                             M.get_function (| "core::panicking::panic", [], [] |),
-                            [ M.read (| Value.String "assertion failed: parts.len() >= 4" |) ]
+                            [ mk_str (| "assertion failed: parts.len() >= 4" |) ]
                           |)
                         |)
                       |)));
@@ -3160,11 +3154,7 @@ Module num.
                           M.call_closure (|
                             Ty.path "never",
                             M.get_function (| "core::panicking::panic", [], [] |),
-                            [
-                              M.read (|
-                                Value.String "assertion failed: buf.len() >= MAX_SIG_DIGITS"
-                              |)
-                            ]
+                            [ mk_str (| "assertion failed: buf.len() >= MAX_SIG_DIGITS" |) ]
                           |)
                         |)
                       |)));
@@ -4084,7 +4074,7 @@ Module num.
                           M.call_closure (|
                             Ty.path "never",
                             M.get_function (| "core::panicking::panic", [], [] |),
-                            [ M.read (| Value.String "assertion failed: parts.len() >= 6" |) ]
+                            [ mk_str (| "assertion failed: parts.len() >= 6" |) ]
                           |)
                         |)
                       |)));
@@ -4132,11 +4122,7 @@ Module num.
                           M.call_closure (|
                             Ty.path "never",
                             M.get_function (| "core::panicking::panic", [], [] |),
-                            [
-                              M.read (|
-                                Value.String "assertion failed: buf.len() >= MAX_SIG_DIGITS"
-                              |)
-                            ]
+                            [ mk_str (| "assertion failed: buf.len() >= MAX_SIG_DIGITS" |) ]
                           |)
                         |)
                       |)));
@@ -4166,11 +4152,7 @@ Module num.
                           M.call_closure (|
                             Ty.path "never",
                             M.get_function (| "core::panicking::panic", [], [] |),
-                            [
-                              M.read (|
-                                Value.String "assertion failed: dec_bounds.0 <= dec_bounds.1"
-                              |)
-                            ]
+                            [ mk_str (| "assertion failed: dec_bounds.0 <= dec_bounds.1" |) ]
                           |)
                         |)
                       |)));
@@ -5168,7 +5150,7 @@ Module num.
                           M.call_closure (|
                             Ty.path "never",
                             M.get_function (| "core::panicking::panic", [], [] |),
-                            [ M.read (| Value.String "assertion failed: parts.len() >= 6" |) ]
+                            [ mk_str (| "assertion failed: parts.len() >= 6" |) ]
                           |)
                         |)
                       |)));
@@ -5195,7 +5177,7 @@ Module num.
                           M.call_closure (|
                             Ty.path "never",
                             M.get_function (| "core::panicking::panic", [], [] |),
-                            [ M.read (| Value.String "assertion failed: ndigits > 0" |) ]
+                            [ mk_str (| "assertion failed: ndigits > 0" |) ]
                           |)
                         |)
                       |)));
@@ -6097,9 +6079,8 @@ Module num.
                                             Ty.path "never",
                                             M.get_function (| "core::panicking::panic", [], [] |),
                                             [
-                                              M.read (|
-                                                Value.String
-                                                  "assertion failed: buf.len() >= ndigits || buf.len() >= maxlen"
+                                              mk_str (|
+                                                "assertion failed: buf.len() >= ndigits || buf.len() >= maxlen"
                                               |)
                                             ]
                                           |)
@@ -6459,7 +6440,7 @@ Module num.
                           M.call_closure (|
                             Ty.path "never",
                             M.get_function (| "core::panicking::panic", [], [] |),
-                            [ M.read (| Value.String "assertion failed: parts.len() >= 4" |) ]
+                            [ mk_str (| "assertion failed: parts.len() >= 4" |) ]
                           |)
                         |)
                       |)));
@@ -7213,11 +7194,7 @@ Module num.
                                           M.call_closure (|
                                             Ty.path "never",
                                             M.get_function (| "core::panicking::panic", [], [] |),
-                                            [
-                                              M.read (|
-                                                Value.String "assertion failed: buf.len() >= maxlen"
-                                              |)
-                                            ]
+                                            [ mk_str (| "assertion failed: buf.len() >= maxlen" |) ]
                                           |)
                                         |)
                                       |)));

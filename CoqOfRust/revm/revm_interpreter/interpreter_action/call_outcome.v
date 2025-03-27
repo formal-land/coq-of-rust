@@ -121,11 +121,8 @@ Module interpreter_action.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "CallOutcome" |) |)
-                |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "result" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "CallOutcome" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "result" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -139,10 +136,7 @@ Module interpreter_action.
                     |)
                   |)
                 |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "memory_offset" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "memory_offset" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|

@@ -227,7 +227,7 @@ Module iter.
                 |);
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "overflow in `Step::forward`" |) |)
+                  M.deref (| mk_str (| "overflow in `Step::forward`" |) |)
                 |)
               ]
             |)))
@@ -286,7 +286,7 @@ Module iter.
                 |);
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "overflow in `Step::backward`" |) |)
+                  M.deref (| mk_str (| "overflow in `Step::backward`" |) |)
                 |)
               ]
             |)))
@@ -8541,9 +8541,7 @@ Module iter.
                               |);
                               M.borrow (|
                                 Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.read (| Value.String "`Step` invariants not upheld" |)
-                                |)
+                                M.deref (| mk_str (| "`Step` invariants not upheld" |) |)
                               |)
                             ]
                           |)
@@ -8757,10 +8755,7 @@ Module iter.
                                                     M.borrow (|
                                                       Pointer.Kind.Ref,
                                                       M.deref (|
-                                                        M.read (|
-                                                          Value.String
-                                                            "`Step` invariants not upheld"
-                                                        |)
+                                                        mk_str (| "`Step` invariants not upheld" |)
                                                       |)
                                                     |)
                                                   ]
@@ -8977,7 +8972,7 @@ Module iter.
                         |);
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "`Step` invariants not upheld" |) |)
+                          M.deref (| mk_str (| "`Step` invariants not upheld" |) |)
                         |)
                       ]
                     |)
@@ -9161,9 +9156,7 @@ Module iter.
                                 |);
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.read (| Value.String "`Step` invariants not upheld" |)
-                                  |)
+                                  M.deref (| mk_str (| "`Step` invariants not upheld" |) |)
                                 |)
                               ]
                             |)
@@ -9372,10 +9365,7 @@ Module iter.
                                                     M.borrow (|
                                                       Pointer.Kind.Ref,
                                                       M.deref (|
-                                                        M.read (|
-                                                          Value.String
-                                                            "`Step` invariants not upheld"
-                                                        |)
+                                                        mk_str (| "`Step` invariants not upheld" |)
                                                       |)
                                                     |)
                                                   ]
@@ -9615,7 +9605,7 @@ Module iter.
                         |);
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "`Step` invariants not upheld" |) |)
+                          M.deref (| mk_str (| "`Step` invariants not upheld" |) |)
                         |)
                       ]
                     |)
@@ -10971,7 +10961,7 @@ Module iter.
                             |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "count overflowed usize" |) |)
+                              M.deref (| mk_str (| "count overflowed usize" |) |)
                             |)
                           ]
                         |)
@@ -12220,9 +12210,7 @@ Module iter.
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.deref (|
-                                              M.read (|
-                                                Value.String "`Step` invariants not upheld"
-                                              |)
+                                              mk_str (| "`Step` invariants not upheld" |)
                                             |)
                                           |)
                                         ]
@@ -12497,9 +12485,7 @@ Module iter.
                                         |);
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.deref (|
-                                            M.read (| Value.String "`Step` invariants not upheld" |)
-                                          |)
+                                          M.deref (| mk_str (| "`Step` invariants not upheld" |) |)
                                         |)
                                       ]
                                     |)
@@ -13026,9 +13012,7 @@ Module iter.
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.deref (|
-                                              M.read (|
-                                                Value.String "`Step` invariants not upheld"
-                                              |)
+                                              mk_str (| "`Step` invariants not upheld" |)
                                             |)
                                           |)
                                         ]
@@ -13303,9 +13287,7 @@ Module iter.
                                         |);
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.deref (|
-                                            M.read (| Value.String "`Step` invariants not upheld" |)
-                                          |)
+                                          M.deref (| mk_str (| "`Step` invariants not upheld" |) |)
                                         |)
                                       ]
                                     |)
@@ -15508,7 +15490,7 @@ Module iter.
                         |);
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.deref (| M.read (| Value.String "count overflowed usize" |) |)
+                          M.deref (| mk_str (| "count overflowed usize" |) |)
                         |)
                       ]
                     |)

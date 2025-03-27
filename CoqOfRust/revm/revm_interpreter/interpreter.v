@@ -107,39 +107,24 @@ Module interpreter.
                       M.alloc (|
                         Value.Array
                           [
-                            M.read (| Value.String "bytecode" |);
+                            mk_str (| "bytecode" |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "stack" |) |) |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "stack" |) |)
+                              M.deref (| mk_str (| "return_data" |) |)
                             |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "memory" |) |) |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "input" |) |) |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "return_data" |) |)
+                              M.deref (| mk_str (| "sub_routine" |) |)
                             |);
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "control" |) |) |);
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "memory" |) |)
+                              M.deref (| mk_str (| "runtime_flag" |) |)
                             |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "input" |) |)
-                            |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "sub_routine" |) |)
-                            |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "control" |) |)
-                            |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "runtime_flag" |) |)
-                            |);
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "extend" |) |)
-                            |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "extend" |) |) |)
                           ]
                       |)
                     |)
@@ -307,10 +292,7 @@ Module interpreter.
                 |),
                 [
                   M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.deref (| M.read (| Value.String "Interpreter" |) |)
-                  |);
+                  M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Interpreter" |) |) |);
                   M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| names |) |) |);
                   M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| values |) |) |)
                 ]
@@ -2026,11 +2008,8 @@ Module interpreter.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.deref (| M.read (| Value.String "InterpreterResult" |) |)
-              |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "result" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "InterpreterResult" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "result" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -2044,7 +2023,7 @@ Module interpreter.
                   |)
                 |)
               |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "output" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "output" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|
@@ -2058,7 +2037,7 @@ Module interpreter.
                   |)
                 |)
               |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "gas" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "gas" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|

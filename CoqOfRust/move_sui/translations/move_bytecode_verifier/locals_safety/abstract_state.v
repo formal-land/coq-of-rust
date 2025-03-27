@@ -110,7 +110,7 @@ Module locals_safety.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Unavailable" |) |)
+                              M.deref (| mk_str (| "Unavailable" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -124,7 +124,7 @@ Module locals_safety.
                           M.alloc (|
                             M.borrow (|
                               Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "MaybeAvailable" |) |)
+                              M.deref (| mk_str (| "MaybeAvailable" |) |)
                             |)
                           |)));
                       fun γ =>
@@ -136,10 +136,7 @@ Module locals_safety.
                               "move_bytecode_verifier::locals_safety::abstract_state::LocalState::Available"
                             |) in
                           M.alloc (|
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.deref (| M.read (| Value.String "Available" |) |)
-                            |)
+                            M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "Available" |) |) |)
                           |)))
                     ]
                   |)
@@ -481,14 +478,8 @@ Module locals_safety.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "AbstractState" |) |)
-                |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "current_function" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "AbstractState" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "current_function" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -502,10 +493,7 @@ Module locals_safety.
                     |)
                   |)
                 |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "all_local_abilities" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "all_local_abilities" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -519,10 +507,7 @@ Module locals_safety.
                     |)
                   |)
                 |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "local_states" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "local_states" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -2060,9 +2045,8 @@ Module locals_safety.
                               Ty.path "never",
                               M.get_function (| "core::panicking::panic", [], [] |),
                               [
-                                M.read (|
-                                  Value.String
-                                    "assertion failed: self.local_states[idx as usize] == Available"
+                                mk_str (|
+                                  "assertion failed: self.local_states[idx as usize] == Available"
                                 |)
                               ]
                             |)
@@ -2302,9 +2286,8 @@ Module locals_safety.
                               Ty.path "never",
                               M.get_function (| "core::panicking::panic", [], [] |),
                               [
-                                M.read (|
-                                  Value.String
-                                    "assertion failed: self.current_function == other.current_function"
+                                mk_str (|
+                                  "assertion failed: self.current_function == other.current_function"
                                 |)
                               ]
                             |)
@@ -2386,9 +2369,8 @@ Module locals_safety.
                               Ty.path "never",
                               M.get_function (| "core::panicking::panic", [], [] |),
                               [
-                                M.read (|
-                                  Value.String
-                                    "assertion failed: self.all_local_abilities.len() == other.all_local_abilities.len()"
+                                mk_str (|
+                                  "assertion failed: self.all_local_abilities.len() == other.all_local_abilities.len()"
                                 |)
                               ]
                             |)
@@ -2472,9 +2454,8 @@ Module locals_safety.
                               Ty.path "never",
                               M.get_function (| "core::panicking::panic", [], [] |),
                               [
-                                M.read (|
-                                  Value.String
-                                    "assertion failed: self.local_states.len() == other.local_states.len()"
+                                mk_str (|
+                                  "assertion failed: self.local_states.len() == other.local_states.len()"
                                 |)
                               ]
                             |)
@@ -3597,9 +3578,8 @@ Module locals_safety.
                                   Ty.path "never",
                                   M.get_function (| "core::panicking::panic", [], [] |),
                                   [
-                                    M.read (|
-                                      Value.String
-                                        "assertion failed: self.local_states.len() == joined.local_states.len()"
+                                    mk_str (|
+                                      "assertion failed: self.local_states.len() == joined.local_states.len()"
                                     |)
                                   ]
                                 |)

@@ -73,7 +73,7 @@ Module loop_summary.
             |),
             [
               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "NodeId" |) |) |);
+              M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "NodeId" |) |) |);
               M.borrow (|
                 Pointer.Kind.Ref,
                 M.deref (|

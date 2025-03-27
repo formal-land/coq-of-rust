@@ -85,14 +85,8 @@ Module block.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "BlobExcessGasAndPrice" |) |)
-                |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "excess_blob_gas" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "BlobExcessGasAndPrice" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "excess_blob_gas" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -106,10 +100,7 @@ Module block.
                     |)
                   |)
                 |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "blob_gasprice" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "blob_gasprice" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -576,9 +567,8 @@ Module block.
                                                         M.alloc (|
                                                           Value.Array
                                                             [
-                                                              M.read (|
-                                                                Value.String
-                                                                  "attempt to divide by zero"
+                                                              mk_str (|
+                                                                "attempt to divide by zero"
                                                               |)
                                                             ]
                                                         |)

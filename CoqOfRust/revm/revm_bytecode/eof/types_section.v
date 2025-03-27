@@ -44,11 +44,8 @@ Module eof.
               |),
               [
                 M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| f |) |) |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "TypesSection" |) |)
-                |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "inputs" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "TypesSection" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "inputs" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -62,7 +59,7 @@ Module eof.
                     |)
                   |)
                 |);
-                M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| Value.String "outputs" |) |) |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "outputs" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|
@@ -76,10 +73,7 @@ Module eof.
                     |)
                   |)
                 |);
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.deref (| M.read (| Value.String "max_stack_size" |) |)
-                |);
+                M.borrow (| Pointer.Kind.Ref, M.deref (| mk_str (| "max_stack_size" |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
                   M.deref (|

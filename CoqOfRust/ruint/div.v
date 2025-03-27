@@ -265,8 +265,7 @@ Module div.
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.alloc (|
-                                          Value.Array
-                                            [ M.read (| Value.String "Division by zero" |) ]
+                                          Value.Array [ mk_str (| "Division by zero" |) ]
                                         |)
                                       |)
                                     |)
@@ -448,8 +447,7 @@ Module div.
                                       M.borrow (|
                                         Pointer.Kind.Ref,
                                         M.alloc (|
-                                          Value.Array
-                                            [ M.read (| Value.String "Division by zero" |) ]
+                                          Value.Array [ mk_str (| "Division by zero" |) ]
                                         |)
                                       |)
                                     |)
