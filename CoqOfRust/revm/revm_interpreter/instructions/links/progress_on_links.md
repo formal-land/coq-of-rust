@@ -122,14 +122,14 @@
 - ❌ `codesize`
 - ❌ `codecopy`
 - ❌ `calldataload`
-- ❌ `calldatasize`
-- ❌ `callvalue`
+- ✅ `calldatasize`
+- ✅ `callvalue`
+- ❌ `memory_resize`
 - ❌ `calldatacopy`
 - ❌ `returndatasize`
 - ❌ `returndatacopy`
 - ❌ `returndataload`
 - ❌ `gas`
-- ❌ `memory_resize`
 
 ## Tx_info
 
@@ -144,6 +144,6 @@
 ## Summary
 
 - Total: 103
-- Admitted: 83
-- Defined: 20
-- Percentage: 19.42%
+- Admitted: 81
+- Defined: 22
+- Percentage: 21.36%

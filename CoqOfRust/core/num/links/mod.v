@@ -7,11 +7,7 @@ Require Import core.links.intrinsics.
 Module Impl_u64.
   Definition Self : Set := U64.t.
 
-  (*
-  pub const fn saturating_add(self, rhs: Self) -> Self {
-      intrinsics::saturating_add(self, rhs)
-  }
-  *)
+  (* pub const fn saturating_add(self, rhs: Self) -> Self *)
   Instance run_saturating_add (self rhs: Self) :
     Run.Trait num.Impl_u64.saturating_add [] [] [ φ self; φ rhs ] Self.
   Proof.
@@ -30,3 +26,26 @@ Module Impl_u64.
   Proof.
   Admitted.
 End Impl_u64.
+
+Module Impl_usize.
+  Definition Self : Set := Usize.t.
+
+  (* pub const fn saturating_add(self, rhs: Self) -> Self *)
+  Instance run_saturating_add (self rhs: Self) :
+    Run.Trait num.Impl_usize.saturating_add [] [] [ φ self; φ rhs ] Self.
+  Proof.
+    constructor.
+    run_symbolic.
+  Defined.
+
+  Instance run_saturating_mul (self rhs: Self) :
+    Run.Trait num.Impl_usize.saturating_mul [] [] [ φ self; φ rhs ] Self.
+  Proof.
+  Admitted.
+
+  (* pub const fn overflowing_sub(self, rhs: Self) -> (Self, bool) *)
+  Instance run_overflowing_sub (self rhs: Self) :
+    Run.Trait num.Impl_usize.overflowing_sub [] [] [ φ self; φ rhs ] (Self * bool).
+  Proof.
+  Admitted.
+End Impl_usize.

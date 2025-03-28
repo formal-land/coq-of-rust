@@ -1,5 +1,7 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
+Require Import core.links.array.
+Require Import ruint.lib.
 
 Module Uint.
   Parameter t : Usize.t -> Usize.t -> Set.
@@ -29,4 +31,16 @@ Module Impl_Uint.
   Proof.
   Admitted.
   Global Hint Rewrite ZERO_eq : run_constant.
+
+  (* pub const fn as_limbs(&self) -> &[u64; LIMBS] *)
+  Instance run_as_limbs
+    (BITS LIMBS : Usize.t)
+    (self : Ref.t Pointer.Kind.Ref (Uint.t BITS LIMBS)) :
+    Run.Trait
+      (Impl_ruint_Uint_BITS_LIMBS.as_limbs (φ BITS) (φ LIMBS)) [] [] [ φ self ]
+      (Ref.t Pointer.Kind.Ref (array.t U64.t LIMBS)).
+  Proof.
+    constructor.
+    run_symbolic.
+  Admitted.
 End Impl_Uint.
