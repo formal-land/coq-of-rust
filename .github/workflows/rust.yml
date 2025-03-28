@@ -154,6 +154,15 @@ jobs:
             rsync -rcv src/ ../../CoqOfRust/ruint/ --include='*/' --include='*.v' --include='*.rs' --exclude='*'
             cd ../..
           endGroup
+          startGroup "Translate alloy-core"
+            cd third-party/alloy-rs-core/crates/primitives
+            cp ../../rust-toolchain ./
+            cargo coq-of-rust
+            touch src/lib.rs
+            cargo coq-of-rust
+            rsync -rcv src/ ../../../../CoqOfRust/alloy_primitives/ --include='*/' --include='*.v' --include='*.rs' --exclude='*'
+            cd ../../../..
+          endGroup
           startGroup "Translate Move Sui"
             cd third-party/move-sui
             cp ../../rust-toolchain ./
