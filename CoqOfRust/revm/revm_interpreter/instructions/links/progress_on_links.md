@@ -105,13 +105,13 @@
 
 ## Stack
 
-- ❌ `pop`
+- ✅ `pop`
 - ❌ `push0`
 - ❌ `push`
 - ❌ `dup`
 - ❌ `swap`
-- ❌ `dupn`
-- ❌ `swapn`
+- ✅ `dupn`
+- ✅ `swapn`
 - ❌ `exchange`
 
 ## System
@@ -122,14 +122,14 @@
 - ❌ `codesize`
 - ❌ `codecopy`
 - ❌ `calldataload`
-- ❌ `calldatasize`
-- ❌ `callvalue`
+- ✅ `calldatasize`
+- ✅ `callvalue`
+- ❌ `memory_resize`
 - ❌ `calldatacopy`
 - ❌ `returndatasize`
 - ❌ `returndatacopy`
 - ❌ `returndataload`
 - ❌ `gas`
-- ❌ `memory_resize`
 
 ## Tx_info
 
@@ -144,6 +144,6 @@
 ## Summary
 
 - Total: 103
-- Admitted: 86
-- Defined: 17
-- Percentage: 16.50%
+- Admitted: 81
+- Defined: 22
+- Percentage: 21.36%

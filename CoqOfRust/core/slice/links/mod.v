@@ -12,11 +12,8 @@ Module Impl_Slice.
     pub fn get<I>(&self, index: I) -> Option<&I::Output>
     where
         I: SliceIndex<Self>,
-    {
-        index.get(self)
-    }
   *)
-  Instance run_get 
+  Instance run_get
       (T : Set) `{Link T}
       {I : Set} `{Link I} 
       {Output : Set} `{Link Output}
@@ -41,5 +38,13 @@ Module Impl_Slice.
       (index : I) :
     Run.Trait (slice.Impl_slice_T.get_unchecked_mut (Φ T)) [] [Φ I] [φ self; φ index]
       (Ref.t Pointer.Kind.MutRef Output).
+  Admitted.
+
+  (* pub const fn len(&self) -> usize *)
+  Instance run_len
+      (T : Set) `{Link T}
+      (self : Ref.t Pointer.Kind.Ref (Self T)) :
+    Run.Trait (slice.Impl_slice_T.len (Φ T)) [] [] [φ self]
+      Usize.t.
   Admitted.
 End Impl_Slice.

@@ -13,3 +13,6 @@
 [submodule "third-party/uint"]
 	path = third-party/uint
 	url = https://github.com/recmo/uint.git
+[submodule "third-party/alloy-rs-core"]
+	path = third-party/alloy-rs-core
+	url = https://github.com/alloy-rs/core.git

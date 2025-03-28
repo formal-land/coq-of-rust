@@ -108,6 +108,7 @@ Module StackTrait.
     top : Run_top Self;
     pop : Run_pop Self;
     pop_address : Run_pop_address Self;
+    exchange : Run_exchange Self;
     dup : Run_dup Self;
   }. 
 End StackTrait.
