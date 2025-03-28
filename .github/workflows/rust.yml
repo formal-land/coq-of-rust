@@ -60,6 +60,12 @@ jobs:
           #   ./generate_ink_example.sh
           #   cd ..
           # endGroup
+          # Generate markdown with progress on links for instructions
+          startGroup "Generate markdown with progress on links for instructions"
+            cd CoqOfRust/revm/revm_interpreter/instructions/links
+            python count_admitted.py > progress_on_links.md
+            cd ../../../../..
+          endGroup
           startGroup "Save space"
             cargo clean
           endGroup

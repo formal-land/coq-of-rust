@@ -57,18 +57,6 @@ Proof.
   run_symbolic.
 Defined.
 
-(* Instance run_coinbase
-  {WIRE H : Set} `{Link WIRE} `{Link H}
-  {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
-  {H_types : Host.Types.t} `{Host.Types.AreLinks H_types}
-  (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types)
-  (run_Host_for_H : Host.Run H H_types)
-  (interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t WIRE WIRE_types))
-  (_host : Ref.t Pointer.Kind.MutRef H) :
-  Trait block.(TraitMethod.method) [] []
-    [Ref.IsLink.(φ) (Ref.cast_to Pointer.Kind.Ref _host)]
-    (Ref.t Pointer.Kind.Ref H_types.(Host.Types.Block)). *)
-
 (*
 pub fn coinbase<WIRE: InterpreterTypes, H: Host + ?Sized>(
     interpreter: &mut Interpreter<WIRE>,
@@ -154,7 +142,7 @@ pub fn block_number<WIRE: InterpreterTypes, H: Host + ?Sized>(
     push!(interpreter, U256::from(host.block().number()));
 }
 *)
-Instance block_number
+Instance run_block_number
   {WIRE H : Set} `{Link WIRE} `{Link H}
   {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
   (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types)
@@ -188,7 +176,7 @@ pub fn difficulty<WIRE: InterpreterTypes, H: Host + ?Sized>(
     host: &mut H,
 )
 *)
-Instance difficulty
+Instance run_difficulty
   {WIRE H : Set} `{Link WIRE} `{Link H}
   {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
   {H_types : Host.Types.t} `{Host.Types.AreLinks H_types}
@@ -227,7 +215,7 @@ pub fn gaslimit<WIRE: InterpreterTypes, H: Host + ?Sized>(
     host: &mut H,
 )
 *)
-Instance gaslimit
+Instance run_gaslimit
   {WIRE H : Set} `{Link WIRE} `{Link H}
   {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
   {H_types : Host.Types.t} `{Host.Types.AreLinks H_types}
@@ -261,7 +249,7 @@ pub fn basefee<WIRE: InterpreterTypes, H: Host + ?Sized>(
     host: &mut H,
 )
 *)
-Instance basefee
+Instance run_basefee
   {WIRE H : Set} `{Link WIRE} `{Link H}
   {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
   {H_types : Host.Types.t} `{Host.Types.AreLinks H_types}
@@ -296,7 +284,7 @@ pub fn blob_basefee<WIRE: InterpreterTypes, H: Host + ?Sized>(
     host: &mut H,
 )
 *)
-Instance blob_basefee
+Instance run_blob_basefee
   {WIRE H : Set} `{Link WIRE} `{Link H}
   {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
   {H_types : Host.Types.t} `{Host.Types.AreLinks H_types}
