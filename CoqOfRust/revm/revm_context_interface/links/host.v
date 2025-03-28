@@ -1,9 +1,11 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
-Require Import CoqOfRust.revm.links.dependencies.
-Require Import CoqOfRust.revm.revm_context_interface.links.cfg.
-Require Import CoqOfRust.revm.revm_context_interface.links.block.
-Require Import CoqOfRust.revm.revm_context_interface.links.journaled_state.
+Require Import alloy_primitives.bits.links.address.
+Require Import alloy_primitives.bytes.links.mod.
+Require Import alloy_primitives.links.aliases.
+Require Import revm.revm_context_interface.links.cfg.
+Require Import revm.revm_context_interface.links.block.
+Require Import revm.revm_context_interface.links.journaled_state.
 
 (* TODO: Add source code *)
 Module Log.
@@ -125,7 +127,7 @@ Module Host.
       IsTraitMethod.t "revm_context_interface::cfg::Cfg" [] [] (Φ Self) "load_account_delegated" load_account_delegated *
       forall
           (self : Ref.t Pointer.Kind.MutRef Self)
-          (address : alloy_primitives.bits.links.address.Address.t),
+          (address : Address.t),
         {{ load_account_delegated [] [] [ φ self; φ address ] 🔽 option AccountLoad.t }}
     }.
 
@@ -135,7 +137,7 @@ Module Host.
       forall
           (self : Ref.t Pointer.Kind.MutRef Self)
           (number : U64.t),
-        {{ block_hash [] [] [ φ self; φ number ] 🔽 option B256.t }}
+        {{ block_hash [] [] [ φ self; φ number ] 🔽 option aliases.B256.t }}
     }.
 
   Definition Run_balance (Self : Set) `{Link Self} : Set :=
@@ -143,8 +145,8 @@ Module Host.
       IsTraitMethod.t "revm_context_interface::cfg::Cfg" [] [] (Φ Self) "balance" balance *
       forall
           (self : Ref.t Pointer.Kind.MutRef Self)
-          (address : alloy_primitives.bits.links.address.Address.t),
-        {{ balance [] [] [ φ self; φ address ] 🔽 option (StateLoad.t U256.t) }}
+          (address : Address.t),
+        {{ balance [] [] [ φ self; φ address ] 🔽 option (StateLoad.t aliases.U256.t) }}
     }.
 
   Definition Run_code (Self : Set) `{Link Self} : Set :=
@@ -152,8 +154,8 @@ Module Host.
       IsTraitMethod.t "revm_context_interface::cfg::Cfg" [] [] (Φ Self) "code" code *
       forall
           (self : Ref.t Pointer.Kind.MutRef Self)
-          (address : alloy_primitives.bits.links.address.Address.t),
-        {{ code [] [] [ φ self; φ address ] 🔽 option (Eip7702CodeLoad.t alloy_primitives.links.bytes_.Bytes.t) }}
+          (address : Address.t),
+        {{ code [] [] [ φ self; φ address ] 🔽 option (Eip7702CodeLoad.t Bytes.t) }}
     }.
 
   Definition Run_code_hash (Self : Set) `{Link Self} : Set :=
@@ -161,8 +163,8 @@ Module Host.
       IsTraitMethod.t "revm_context_interface::cfg::Cfg" [] [] (Φ Self) "code_hash" code_hash *
       forall
           (self : Ref.t Pointer.Kind.MutRef Self)
-          (address : alloy_primitives.bits.links.address.Address.t),
-        {{ code_hash [] [] [ φ self; φ address ] 🔽 option (Eip7702CodeLoad.t B256.t) }}
+          (address : Address.t),
+        {{ code_hash [] [] [ φ self; φ address ] 🔽 option (Eip7702CodeLoad.t aliases.B256.t) }}
     }.
 
   Definition Run_sload (Self : Set) `{Link Self} : Set :=
@@ -170,9 +172,9 @@ Module Host.
       IsTraitMethod.t "revm_context_interface::cfg::Cfg" [] [] (Φ Self) "sload" sload *
       forall
           (self : Ref.t Pointer.Kind.MutRef Self)
-          (address : alloy_primitives.bits.links.address.Address.t)
-          (index : U256.t),
-        {{ sload [] [] [ φ self; φ address; φ index ] 🔽 option (StateLoad.t U256.t) }}
+          (address : Address.t)
+          (index : aliases.U256.t),
+        {{ sload [] [] [ φ self; φ address; φ index ] 🔽 option (StateLoad.t aliases.U256.t) }}
     }.
 
   Definition Run_sstore (Self : Set) `{Link Self} : Set :=
@@ -180,9 +182,9 @@ Module Host.
       IsTraitMethod.t "revm_context_interface::cfg::Cfg" [] [] (Φ Self) "sstore" sstore *
       forall
           (self : Ref.t Pointer.Kind.MutRef Self)
-          (address : alloy_primitives.bits.links.address.Address.t)
-          (index : U256.t)
-          (value : U256.t),
+          (address : Address.t)
+          (index : aliases.U256.t)
+          (value : aliases.U256.t),
         {{ sstore [] [] [ φ self; φ address; φ index; φ value ] 🔽 option (StateLoad.t SStoreResult.t) }}
     }.
 
@@ -191,9 +193,9 @@ Module Host.
       IsTraitMethod.t "revm_context_interface::cfg::Cfg" [] [] (Φ Self) "tload" tload *
       forall
           (self : Ref.t Pointer.Kind.MutRef Self)
-          (address : alloy_primitives.bits.links.address.Address.t)
-          (index : U256.t),
-        {{ tload [] [] [ φ self; φ address; φ index ] 🔽 U256.t }}
+          (address : Address.t)
+          (index : aliases.U256.t),
+        {{ tload [] [] [ φ self; φ address; φ index ] 🔽 aliases.U256.t }}
     }.
 
   Definition Run_tstore (Self : Set) `{Link Self} : Set :=
@@ -201,9 +203,9 @@ Module Host.
       IsTraitMethod.t "revm_context_interface::cfg::Cfg" [] [] (Φ Self) "tstore" tstore *
       forall
           (self : Ref.t Pointer.Kind.MutRef Self)
-          (address : alloy_primitives.bits.links.address.Address.t)
-          (index : U256.t)
-          (value : U256.t),
+          (address : Address.t)
+          (index : aliases.U256.t)
+          (value : aliases.U256.t),
         {{ tstore [] [] [ φ self; φ address; φ index; φ value ] 🔽 unit }}
     }.
 
@@ -221,8 +223,8 @@ Module Host.
       IsTraitMethod.t "revm_context_interface::cfg::Cfg" [] [] (Φ Self) "selfdestruct" selfdestruct *
       forall
           (self : Ref.t Pointer.Kind.MutRef Self)
-          (address : alloy_primitives.bits.links.address.Address.t)
-          (target : alloy_primitives.bits.links.address.Address.t),
+          (address : Address.t)
+          (target : Address.t),
         {{ selfdestruct [] [] [ φ self; φ address; φ target ] 🔽 option (StateLoad.t SelfDestructResult.t) }}
     }.
 

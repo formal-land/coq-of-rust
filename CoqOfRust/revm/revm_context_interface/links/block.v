@@ -1,8 +1,8 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
-Require Import CoqOfRust.revm.links.dependencies.
-
-Module Address := dependencies.alloy_primitives.bits.links.address.Address.
+Require Import alloy_primitives.bits.links.address.
+Require Import alloy_primitives.links.aliases.
+Require Import core.links.option.
 
 (* 
 #[auto_impl(&, &mut, Box, Arc)]
@@ -68,7 +68,7 @@ Module Block.
   Definition Run_difficulty (Self : Set) `{Link Self} : Set :=
     TraitMethod.C (trait Self) "difficulty" (fun method =>
       forall (self : Ref.t Pointer.Kind.Ref Self),
-        Run.Trait method [] [] [ φ self ] U256.t
+        Run.Trait method [] [] [ φ self ] aliases.U256.t
     ).
 
   (* fn blob_gasprice(&self) -> Option<u128> *)

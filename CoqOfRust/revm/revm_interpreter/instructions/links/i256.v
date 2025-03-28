@@ -1,7 +1,7 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
+Require Import alloy_primitives.links.aliases.
 Require Import core.links.cmp.
-Require Import revm.links.dependencies.
 Require Import revm.revm_interpreter.instructions.i256.
 
 (*
@@ -71,7 +71,7 @@ Module Sign.
 End Sign.
 
 (* pub fn i256_sign(val: &U256) -> Sign *)
-Instance run_i256_sign (val : Ref.t Pointer.Kind.Ref U256.t) :
+Instance run_i256_sign (val : Ref.t Pointer.Kind.Ref aliases.U256.t) :
   Run.Trait instructions.i256.i256_sign [] [] [ φ val ] Sign.t.
 Proof.
   constructor.
@@ -79,7 +79,7 @@ Proof.
 Admitted.
 
 (* pub fn i256_sign_compl(val: &mut U256) -> Sign *)
-Instance run_i256_sign_compl (val : Ref.t Pointer.Kind.MutRef U256.t) :
+Instance run_i256_sign_compl (val : Ref.t Pointer.Kind.MutRef aliases.U256.t) :
   Run.Trait instructions.i256.i256_sign_compl [] [] [ φ val ] Sign.t.
 Proof.
   constructor.
@@ -87,7 +87,7 @@ Proof.
 Admitted.
 
 (* pub fn u256_remove_sign(val: &mut U256) *)
-Instance run_u256_remove_sign (val : Ref.t Pointer.Kind.MutRef U256.t) :
+Instance run_u256_remove_sign (val : Ref.t Pointer.Kind.MutRef aliases.U256.t) :
   Run.Trait instructions.i256.u256_remove_sign [] [] [ φ val ] unit.
 Proof.
   constructor.
@@ -95,7 +95,7 @@ Proof.
 Admitted.
 
 (* pub fn two_compl_mut(op: &mut U256) *)
-Instance run_two_compl_mut (op : Ref.t Pointer.Kind.MutRef U256.t) :
+Instance run_two_compl_mut (op : Ref.t Pointer.Kind.MutRef aliases.U256.t) :
   Run.Trait instructions.i256.two_compl_mut [] [] [ φ op ] unit.
 Proof.
   constructor.
@@ -104,7 +104,7 @@ Admitted.
 
 
 (* pub fn i256_cmp(first: &U256, second: &U256) -> Ordering *)
-Instance run_i256_cmp (first second : U256.t) :
+Instance run_i256_cmp (first second : aliases.U256.t) :
   Run.Trait instructions.i256.i256_cmp [] [] [ φ first; φ second ] Ordering.t.
 Proof.
   constructor.
@@ -112,16 +112,16 @@ Proof.
 Admitted.
 
 (* pub fn i256_div(mut first: U256, mut second: U256) -> U256 *)
-Instance run_i256_div (first second : U256.t) :
-  Run.Trait instructions.i256.i256_div [] [] [ φ first; φ second ] U256.t.
+Instance run_i256_div (first second : aliases.U256.t) :
+  Run.Trait instructions.i256.i256_div [] [] [ φ first; φ second ] aliases.U256.t.
 Proof.
   constructor.
   run_symbolic.
 Admitted.
 
 (* pub fn i256_mod(mut first: U256, mut second: U256) -> U256 *)
-Instance run_i256_mod (first second : U256.t) :
-  Run.Trait instructions.i256.i256_mod [] [] [ φ first; φ second ] U256.t.
+Instance run_i256_mod (first second : aliases.U256.t) :
+  Run.Trait instructions.i256.i256_mod [] [] [ φ first; φ second ] aliases.U256.t.
 Proof.
   constructor.
   run_symbolic.

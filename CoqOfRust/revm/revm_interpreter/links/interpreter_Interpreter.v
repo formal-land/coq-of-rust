@@ -1,6 +1,5 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
-Require Import revm.links.dependencies.
 Require Import revm_interpreter.interpreter.links.shared_memory.
 Require Import revm_interpreter.interpreter.links.stack.
 Require Import revm_interpreter.links.gas.

@@ -1,6 +1,5 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
-Require Import CoqOfRust.revm.links.dependencies.
 Require Import revm.revm_context_interface.links.host.
 Require Import revm.revm_context_interface.links.block.
 Require Import revm.revm_interpreter.links.gas.
@@ -88,7 +87,7 @@ Proof.
   destruct run_Host_for_H.
   destruct run_BlockGetter.
   destruct run_Block_for_Block.
-  destruct alloy_primitives.bits.links.fixed.Impl_Into_U256_for_FixedBytes.run.
+  (* destruct alloy_primitives.bits.links.fixed.Impl_Into_U256_for_FixedBytes.run. *)
   (* TODO: resolve axiomatization for:
   - Impl_Address::into_word(?)
   - FixedBytes::into()
@@ -202,7 +201,7 @@ Proof.
   destruct run_Host_for_H.
   destruct run_BlockGetter.
   destruct run_Block_for_Block.
-  destruct alloy_primitives.bits.links.fixed.Impl_Into_U256_for_FixedBytes.run.
+  (* destruct alloy_primitives.bits.links.fixed.Impl_Into_U256_for_FixedBytes.run. *)
   (* TODO: 
   - revm_interpreter::instructions::utility::IntoU256::into_u256
   *)

@@ -156,7 +156,7 @@ jobs:
           endGroup
           startGroup "Translate alloy-core"
             cd third-party/alloy-rs-core/crates/primitives
-            cp ../../rust-toolchain ./
+            cp ../../../../rust-toolchain ./
             cargo coq-of-rust
             touch src/lib.rs
             cargo coq-of-rust

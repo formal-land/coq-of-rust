@@ -1,8 +1,8 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
+Require Import alloy_primitives.links.aliases.
 Require Import core.num.mod.
 Require Import core.num.links.mod.
-Require Import revm.links.dependencies.
 Require Import revm.revm_context_interface.links.host.
 Require Import revm.revm_context_interface.links.journaled_state.
 Require Import revm.revm_interpreter.gas.links.constants.
@@ -33,7 +33,7 @@ Proof.
 Admitted.
 
 (* pub const fn log2floor(value: U256) -> u64 *)
-Instance run_log2floor (value : U256.t) :
+Instance run_log2floor (value : aliases.U256.t) :
   Run.Trait
     gas.calc.log2floor [] [] [ φ value ]
     U64.t.
@@ -43,7 +43,7 @@ Proof.
 Admitted.
 
 (* pub fn exp_cost(spec_id: SpecId, power: U256) -> Option<u64> *)
-Instance run_exp_cost (spec_id : SpecId.t) (power : U256.t) :
+Instance run_exp_cost (spec_id : SpecId.t) (power : aliases.U256.t) :
   Run.Trait
     gas.calc.exp_cost [] [] [ φ spec_id; φ power ]
     (option U64.t).
