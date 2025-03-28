@@ -105,13 +105,13 @@
 
 ## Stack
 
-- ❌ `pop`
+- ✅ `pop`
 - ❌ `push0`
 - ❌ `push`
 - ❌ `dup`
 - ❌ `swap`
-- ❌ `dupn`
-- ❌ `swapn`
+- ✅ `dupn`
+- ✅ `swapn`
 - ❌ `exchange`
 
 ## System
@@ -144,6 +144,6 @@
 ## Summary
 
 - Total: 103
-- Admitted: 86
-- Defined: 17
-- Percentage: 16.50%
+- Admitted: 83
+- Defined: 20
+- Percentage: 19.42%
