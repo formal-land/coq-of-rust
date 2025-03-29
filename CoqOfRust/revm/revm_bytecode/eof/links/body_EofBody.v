@@ -2,22 +2,22 @@ Require Import CoqOfRust.CoqOfRust.
 Require Import links.M.
 Require Import alloc.links.alloc.
 Require Import alloc.vec.links.mod.
-Require core.links.clone.
-Require core.links.default.
+Require Import alloy_primitives.bytes.links.mod.
+Require Import core.links.clone.
+Require Import core.links.default.
 Require Import core.links.option.
 Require Import core.slice.links.index.
 Require Import core.slice.links.mod.
-Require Import revm.links.dependencies.
 Require Import revm.revm_bytecode.eof.links.types_section.
 Require Import revm_bytecode.eof.body.
 
 Module EofBody.
   Record t : Set := {
-    types_section: Vec.t revm_bytecode.eof.links.types_section.TypesSection.t Global.t;
+    types_section: Vec.t TypesSection.t Global.t;
     code_section: Vec.t Usize.t Global.t;
-    code: alloy_primitives.links.bytes_.Bytes.t;
-    container_section: Vec.t alloy_primitives.links.bytes_.Bytes.t Global.t;
-    data_section: alloy_primitives.links.bytes_.Bytes.t;
+    code: Bytes.t;
+    container_section: Vec.t Bytes.t Global.t;
+    data_section: Bytes.t;
     is_data_filled: bool;
   }.
 
@@ -39,11 +39,11 @@ Module EofBody.
   Smpl Add apply of_ty : of_ty.
 
   Lemma of_value_with
-      (types_section : Vec.t revm_bytecode.eof.links.types_section.TypesSection.t Global.t) types_section'
+      (types_section : Vec.t TypesSection.t Global.t) types_section'
       (code_section : Vec.t Usize.t Global.t) code_section'
-      (code : alloy_primitives.links.bytes_.Bytes.t) code'
-      (container_section : Vec.t alloy_primitives.links.bytes_.Bytes.t Global.t) container_section'
-      (data_section : alloy_primitives.links.bytes_.Bytes.t) data_section'
+      (code : Bytes.t) code'
+      (container_section : Vec.t Bytes.t Global.t) container_section'
+      (data_section : Bytes.t) data_section'
       (is_data_filled : bool) is_data_filled' :
     types_section' = φ types_section ->
     code_section' = φ code_section ->
@@ -63,11 +63,11 @@ Module EofBody.
   Smpl Add apply of_value_with : of_value.
 
   Definition of_value
-      (types_section : Vec.t revm_bytecode.eof.links.types_section.TypesSection.t Global.t)
+      (types_section : Vec.t TypesSection.t Global.t)
       (code_section : Vec.t Usize.t Global.t)
-      (code : alloy_primitives.links.bytes_.Bytes.t)
-      (container_section : Vec.t alloy_primitives.links.bytes_.Bytes.t Global.t)
-      (data_section : alloy_primitives.links.bytes_.Bytes.t)
+      (code : Bytes.t)
+      (container_section : Vec.t Bytes.t Global.t)
+      (data_section : Bytes.t)
       (is_data_filled : bool) :
     OfValue.t (
       Value.StructRecord "revm_bytecode::eof::body::EofBody" [

@@ -1,6 +1,7 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
-Require Import CoqOfRust.revm.links.dependencies.
+Require Import alloy_primitives.bits.links.address.
+Require Import alloy_primitives.bytes.links.mod.
 Require Import revm.revm_context_interface.links.host.
 Require Import revm.revm_interpreter.links.interpreter.
 Require Import revm.revm_interpreter.links.interpreter_types.

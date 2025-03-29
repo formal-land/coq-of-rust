@@ -1,6 +1,6 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
-Require Import revm.links.dependencies.
+Require Import alloy_primitives.links.aliases.
 Require Import revm.revm_interpreter.instructions.host.
 Require Import revm.revm_interpreter.instructions.links.utility.
 Require Import revm.revm_interpreter.links.interpreter.
@@ -33,7 +33,6 @@ Proof.
   destruct Impl_IntoAddress_for_U256.run.
   run_symbolic.
 Admitted.
-
 
 (*
 pub fn selfbalance<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -69,12 +68,11 @@ Instance run_extcodesize
   (host : Ref.t Pointer.Kind.MutRef H) :
   Run.Trait
     instructions.host.extcodesize [] [ Φ WIRE; Φ H ] [ φ interpreter; φ host ]
-    U256.t.
+    aliases.U256.t.
 Proof.
   constructor.
   run_symbolic.
 Admitted.
-
 
 (*
 pub fn extcodehash<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -90,12 +88,11 @@ Instance run_extcodehash
   (host : Ref.t Pointer.Kind.MutRef H) :
   Run.Trait
     instructions.host.extcodehash [] [ Φ WIRE; Φ H ] [ φ interpreter; φ host ]
-    U256.t.
+    aliases.U256.t.
 Proof.
   constructor.
   run_symbolic.
 Admitted.
-
 
 (*
 pub fn extcodecopy<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -131,7 +128,7 @@ Instance run_blockhash
   (host : Ref.t Pointer.Kind.MutRef H) :
   Run.Trait
     instructions.host.blockhash [] [ Φ WIRE; Φ H ] [ φ interpreter; φ host ]
-    U256.t.
+    aliases.U256.t.
 Proof.
   constructor.
   run_symbolic.
@@ -151,7 +148,7 @@ Instance run_sload
   (host : Ref.t Pointer.Kind.MutRef H) :
   Run.Trait
     instructions.host.sload [] [ Φ WIRE; Φ H ] [ φ interpreter; φ host ]
-    U256.t.
+    aliases.U256.t.
 Proof.
   constructor.
   run_symbolic.
@@ -211,7 +208,7 @@ Instance run_tload
   (host : Ref.t Pointer.Kind.MutRef H) :
   Run.Trait
     instructions.host.tload [] [ Φ WIRE; Φ H ] [ φ interpreter; φ host ]
-    U256.t.
+    aliases.U256.t.
 Proof.
   constructor.
   run_symbolic.

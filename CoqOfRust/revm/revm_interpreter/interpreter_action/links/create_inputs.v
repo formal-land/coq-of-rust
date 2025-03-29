@@ -1,32 +1,26 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
-Require Import revm.links.dependencies.
+Require Import alloy_primitives.bits.links.address.
+Require Import alloy_primitives.bytes.links.mod.
+Require Import alloy_primitives.links.aliases.
 Require Import revm_context_interface.links.cfg.
 
 (*
-  /// Inputs for a create call.
-  #[derive(Clone, Debug, PartialEq, Eq, Hash)]
-  #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
   pub struct CreateInputs {
-      /// Caller address of the EVM.
       pub caller: Address,
-      /// The create scheme.
       pub scheme: CreateScheme,
-      /// The value to transfer.
       pub value: U256,
-      /// The init code of the contract.
       pub init_code: Bytes,
-      /// The gas limit of the call.
       pub gas_limit: u64,
   }
 *)
 
 Module CreateInputs.
   Record t : Set := {
-    caller : alloy_primitives.bits.links.address.Address.t;
+    caller : Address.t;
     scheme : CreateScheme.t;
-    value : U256.t;
-    init_code : alloy_primitives.links.bytes_.Bytes.t;
+    value : aliases.U256.t;
+    init_code : Bytes.t;
     gas_limit : U64.t;
   }.
 

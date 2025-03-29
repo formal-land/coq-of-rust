@@ -1,6 +1,8 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
-Require Import CoqOfRust.revm.links.dependencies.
+Require Import alloy_primitives.bits.links.address.
+Require Import alloy_primitives.bytes.links.mod.
+Require Import alloy_primitives.links.aliases.
 
 (*
   /// Call value.
@@ -18,8 +20,8 @@ Require Import CoqOfRust.revm.links.dependencies.
 
 Module CallValue.
   Inductive t : Set :=
-  | Transfer : U256.t -> t
-  | Apparent : U256.t -> t.
+  | Transfer : aliases.U256.t -> t
+  | Apparent : aliases.U256.t -> t.
 
   Global Instance IsLink : Link t := {
     Φ := Ty.path "revm_interpreter::interpreter_action::call_inputs::CallValue";
@@ -111,12 +113,12 @@ End CallScheme.
 (* TODO: Ranges? *)
 Module CallInputs.
   Record t : Set := {
-    input : alloy_primitives.links.bytes_.Bytes.t;
+    input : Bytes.t;
     return_memory_offset : Usize.t * Usize.t;
     gas_limit : U64.t;
-    bytecode_address : alloy_primitives.bits.links.address.Address.t;
-    target_address : alloy_primitives.bits.links.address.Address.t;
-    caller : alloy_primitives.bits.links.address.Address.t;
+    bytecode_address : Address.t;
+    target_address : Address.t;
+    caller : Address.t;
     value : CallValue.t;
     scheme : CallScheme.t;
     is_static : bool;

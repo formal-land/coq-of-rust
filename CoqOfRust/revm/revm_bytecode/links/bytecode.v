@@ -1,6 +1,5 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import links.M.
-Require Import revm.links.dependencies.
 
 (* Module Bytecode.
   Inductive t : Set :=

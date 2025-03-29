@@ -1,9 +1,11 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
+Require Import alloy_primitives.links.aliases.
+Require Import alloy_primitives.bits.links.fixed.
+Require Import alloy_primitives.utils.links.mod.
 Require Import core.links.cmp.
 Require Import core.num.links.mod.
 Require Import core.slice.links.mod.
-Require Import revm.links.dependencies.
 Require Import revm.revm_interpreter.gas.links.calc.
 Require Import revm.revm_interpreter.instructions.system.
 Require Import revm.revm_interpreter.interpreter.links.shared_memory.
@@ -212,7 +214,7 @@ Instance run_memory_resize
   {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
   (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types)
   (interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t WIRE WIRE_types))
-  (memory_offset : U256.t)
+  (memory_offset : aliases.U256.t)
   (len : Usize.t) :
   Run.Trait
     instructions.system.memory_resize [] [ Φ WIRE ] [ φ interpreter; φ memory_offset; φ len ]

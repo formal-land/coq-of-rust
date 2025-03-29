@@ -1,7 +1,6 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
-Require alloc.links.boxed.
-Require Import revm.links.dependencies.
+Require Import alloc.links.boxed.
 Require Import revm.revm_interpreter.interpreter_action.links.call_inputs.
 Require Import revm.revm_interpreter.interpreter_action.links.create_inputs.
 Require Import revm.revm_interpreter.interpreter_action.links.eof_create_inputs.

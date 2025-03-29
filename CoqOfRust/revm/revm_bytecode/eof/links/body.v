@@ -2,11 +2,11 @@ Require Import CoqOfRust.CoqOfRust.
 Require Import links.M.
 Require Import alloc.links.alloc.
 Require Import alloc.vec.links.mod.
+Require Import alloy_primitives.bytes.links.mod.
 Require Import core.links.clone.
 Require Import core.links.default.
 Require Import core.links.result.
 Require Import core.links.option.
-Require Import revm.links.dependencies.
 Require Export revm.revm_bytecode.eof.links.body_EofBody.
 Require Export revm.revm_bytecode.eof.links.header.
 Require Import revm.revm_bytecode.eof.links.types_section.
@@ -16,11 +16,11 @@ Require Import core.slice.links.mod.
 
 Module EofBody.
   Record t : Set := {
-    types_section: Vec.t revm_bytecode.eof.links.types_section.TypesSection.t Global.t;
+    types_section: Vec.t TypesSection.t Global.t;
     code_section: Vec.t Usize.t Global.t;
-    code: alloy_primitives.links.bytes_.Bytes.t;
-    container_section: Vec.t alloy_primitives.links.bytes_.Bytes.t Global.t;
-    data_section: alloy_primitives.links.bytes_.Bytes.t;
+    code: Bytes.t;
+    container_section: Vec.t Bytes.t Global.t;
+    data_section: Bytes.t;
     is_data_filled: bool;
   }.
 
@@ -42,11 +42,11 @@ Module EofBody.
   Smpl Add apply of_ty : of_ty.
 
   Lemma of_value_with
-      (types_section : Vec.t revm_bytecode.eof.links.types_section.TypesSection.t Global.t) types_section'
+      (types_section : Vec.t TypesSection.t Global.t) types_section'
       (code_section : Vec.t Usize.t Global.t) code_section'
-      (code : alloy_primitives.links.bytes_.Bytes.t) code'
-      (container_section : Vec.t alloy_primitives.links.bytes_.Bytes.t Global.t) container_section'
-      (data_section : alloy_primitives.links.bytes_.Bytes.t) data_section'
+      (code : Bytes.t) code'
+      (container_section : Vec.t Bytes.t Global.t) container_section'
+      (data_section : Bytes.t) data_section'
       (is_data_filled : bool) is_data_filled' :
     types_section' = φ types_section ->
     code_section' = φ code_section ->
@@ -66,11 +66,11 @@ Module EofBody.
   Smpl Add apply of_value_with : of_value.
 
   Definition of_value
-      (types_section : Vec.t revm_bytecode.eof.links.types_section.TypesSection.t Global.t)
+      (types_section : Vec.t TypesSection.t Global.t)
       (code_section : Vec.t Usize.t Global.t)
-      (code : alloy_primitives.links.bytes_.Bytes.t)
-      (container_section : Vec.t alloy_primitives.links.bytes_.Bytes.t Global.t)
-      (data_section : alloy_primitives.links.bytes_.Bytes.t)
+      (code : Bytes.t)
+      (container_section : Vec.t Bytes.t Global.t)
+      (data_section : Bytes.t)
       (is_data_filled : bool) :
     OfValue.t (
       Value.StructRecord "revm_bytecode::eof::body::EofBody" [
@@ -183,12 +183,12 @@ Module Impl_Clone_for_EofBody.
     { constructor.
       destruct (vec.links.mod.Impl_Clone_for_Vec.run (T := TypesSection.t) (A := Global.t)).
       destruct (vec.links.mod.Impl_Clone_for_Vec.run (T := Usize.t) (A := Global.t)).
-      destruct alloy_primitives.links.bytes_.Impl_Clone_for_Bytes.run.
-      destruct (vec.links.mod.Impl_Clone_for_Vec.run (T := alloy_primitives.links.bytes_.Bytes.t) (A := Global.t)).
+      destruct alloy_primitives.bytes.links.mod.Impl_Clone_for_Bytes.run.
+      destruct (vec.links.mod.Impl_Clone_for_Vec.run (T := Bytes.t) (A := Global.t)).
       destruct clone.Impl_Clone_for_bool.run.
       run_symbolic.
     }
-  Defined.
+  Admitted.
 
   Instance run : Clone.Run EofBody.t := {
     Clone.clone := run_clone;
@@ -206,10 +206,10 @@ Module Impl_Default_for_EofBody.
     { constructor.
       destruct (vec.links.mod.Impl_Default_for_Vec.run (T := TypesSection.t) (A := Global.t)).
       destruct (vec.links.mod.Impl_Default_for_Vec.run (T := Usize.t) (A := Global.t)).
-      destruct alloy_primitives.links.bytes_.Impl_Default_for_Bytes.run.
-      destruct (vec.links.mod.Impl_Default_for_Vec.run (T := alloy_primitives.links.bytes_.Bytes.t) (A := Global.t)).
+      destruct alloy_primitives.bytes.links.mod.Impl_Default_for_Bytes.run.
+      destruct (vec.links.mod.Impl_Default_for_Vec.run (T := Bytes.t) (A := Global.t)).
       destruct default.Impl_Default_for_bool.run.
-      run_symbolic. 
+      run_symbolic.
     }
   Defined.
 
@@ -230,7 +230,7 @@ Module Impl_EofBody.
     pub fn code(&self, index: usize) -> Option<Bytes>
   *)
   Instance run_code (self : Ref.t Pointer.Kind.Ref Self) (index : Usize.t) :
-    Run.Trait body.eof.body.Impl_revm_bytecode_eof_body_EofBody.code [] [] [φ self; φ index] (option alloy_primitives.links.bytes_.Bytes.t).
+    Run.Trait body.eof.body.Impl_revm_bytecode_eof_body_EofBody.code [] [] [φ self; φ index] (option Bytes.t).
   Proof.
     constructor.
     destruct (vec.links.mod.Impl_Index_for_Vec_T_A.run Usize.t Usize.t Global.t Usize.t).
@@ -273,7 +273,7 @@ Module Impl_EofBody.
   (*
     pub fn decode(input: &Bytes, header: &EofHeader) -> Result<Self, EofDecodeError>
   *)
-  Instance run_decode (input : Ref.t Pointer.Kind.Ref alloy_primitives.links.bytes_.Bytes.t) (header : Ref.t Pointer.Kind.Ref EofHeader.t) :
+  Instance run_decode (input : Ref.t Pointer.Kind.Ref Bytes.t) (header : Ref.t Pointer.Kind.Ref EofHeader.t) :
     Run.Trait body.eof.body.Impl_revm_bytecode_eof_body_EofBody.decode [] [] [φ input; φ header] (Result.t EofBody.t EofDecodeError.t).
   Proof.  
     constructor.

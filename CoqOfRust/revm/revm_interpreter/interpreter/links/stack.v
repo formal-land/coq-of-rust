@@ -2,6 +2,7 @@ Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
 Require Import alloc.links.alloc.
 Require Import alloc.vec.links.mod.
+Require Import alloy_primitives.links.aliases.
 Require Import core.links.array.
 Require Import core.links.hint.
 Require Import core.links.option.
@@ -9,7 +10,6 @@ Require Import core.links.panicking.
 Require Import core.links.result.
 Require Import core.slice.links.index.
 Require Import core.slice.links.mod.
-Require Import revm.links.dependencies.
 Require Import revm.revm_interpreter.interpreter.stack.
 Require Import revm.revm_interpreter.links.instruction_result.
 Require Import ruint.links.lib.
@@ -27,7 +27,7 @@ Import Impl_Vec_T_A.
 *)
 Module Stack.
   Record t : Set := {
-    data : Vec.t U256.t Global.t;
+    data : Vec.t aliases.U256.t Global.t;
   }.
 
   Global Instance IsLink : Link t := {
@@ -41,7 +41,7 @@ Module Stack.
   Smpl Add apply of_ty : of_ty.
 
   Lemma of_value_with
-      (data : Vec.t U256.t Global.t) data' :
+      (data : Vec.t aliases.U256.t Global.t) data' :
     data' = φ data ->
     Value.StructRecord "revm_interpreter::interpreter::stack::Stack" [
       ("data", data')
@@ -49,7 +49,7 @@ Module Stack.
   Proof. now intros; subst. Qed.
   Smpl Add apply of_value_with : of_value.
 
-  Definition of_value (data : Vec.t U256.t Global.t) data' :
+  Definition of_value (data : Vec.t aliases.U256.t Global.t) data' :
     data' = φ data ->
     OfValue.t (Value.StructRecord "revm_interpreter::interpreter::stack::Stack" [
       ("data", data')
@@ -122,7 +122,7 @@ Module Impl_Stack.
   Instance run_data (self : Ref.t Pointer.Kind.Ref Self) :
     Run.Trait
       interpreter.stack.Impl_revm_interpreter_interpreter_stack_Stack.data [] [] [φ self]
-      (Ref.t Pointer.Kind.Ref (Vec.t U256.t Global.t)).
+      (Ref.t Pointer.Kind.Ref (Vec.t aliases.U256.t Global.t)).
   Proof.
     constructor.
     run_symbolic.
@@ -132,7 +132,7 @@ Module Impl_Stack.
   Instance run_data_mut (self : Ref.t Pointer.Kind.MutRef Self) :
     Run.Trait
       interpreter.stack.Impl_revm_interpreter_interpreter_stack_Stack.data_mut [] [] [φ self]
-      (Ref.t Pointer.Kind.MutRef (Vec.t U256.t Global.t)).
+      (Ref.t Pointer.Kind.MutRef (Vec.t aliases.U256.t Global.t)).
   Proof.
     constructor.
     run_symbolic.
@@ -142,7 +142,7 @@ Module Impl_Stack.
   Instance run_into_data (self : Self) :
     Run.Trait
       interpreter.stack.Impl_revm_interpreter_interpreter_stack_Stack.into_data [] [] [φ self]
-      (Vec.t U256.t Global.t).
+      (Vec.t aliases.U256.t Global.t).
   Proof.
     constructor.
     run_symbolic.
@@ -152,7 +152,7 @@ Module Impl_Stack.
   Instance run_pop (self : Ref.t Pointer.Kind.MutRef Self) :
     Run.Trait
       interpreter.stack.Impl_revm_interpreter_interpreter_stack_Stack.pop [] [] [φ self]
-      (Result.t U256.t InstructionResult.t).
+      (Result.t aliases.U256.t InstructionResult.t).
   Proof.
     constructor.
     run_symbolic.
@@ -162,7 +162,7 @@ Module Impl_Stack.
   Instance run_pop_unsafe (self : Ref.t Pointer.Kind.MutRef Self) :
     Run.Trait
       interpreter.stack.Impl_revm_interpreter_interpreter_stack_Stack.pop_unsafe [] [] [φ self]
-      U256.t.
+      aliases.U256.t.
   Proof.
     constructor.
     run_symbolic.
@@ -172,10 +172,10 @@ Module Impl_Stack.
   Instance run_top_unsafe (self : Ref.t Pointer.Kind.MutRef Self) :
     Run.Trait
       interpreter.stack.Impl_revm_interpreter_interpreter_stack_Stack.top_unsafe [] [] [φ self]
-      (Ref.t Pointer.Kind.MutRef U256.t).
+      (Ref.t Pointer.Kind.MutRef aliases.U256.t).
   Proof.
     constructor.
-    destruct (Impl_DerefMut_for_Vec.run (T := U256.t) (A := Global.t)).
+    destruct (Impl_DerefMut_for_Vec.run (T := aliases.U256.t) (A := Global.t)).
     run_symbolic.
   Defined.
 
@@ -183,7 +183,7 @@ Module Impl_Stack.
   Instance run_popn (N : Usize.t) (self : Ref.t Pointer.Kind.MutRef Self) :
     Run.Trait
       interpreter.stack.Impl_revm_interpreter_interpreter_stack_Stack.popn [φ N] [] [φ self]
-      (array.t U256.t N).
+      (array.t aliases.U256.t N).
   Proof.
     constructor.
     assert (H_N_eq :
@@ -211,14 +211,14 @@ Module Impl_Stack.
   Instance run_popn_top (self : Ref.t Pointer.Kind.MutRef Self) (POPN : Usize.t) :
     Run.Trait
       interpreter.stack.Impl_revm_interpreter_interpreter_stack_Stack.popn_top [φ POPN] [] [φ self]
-      (array.t U256.t POPN * Ref.t Pointer.Kind.MutRef U256.t).
+      (array.t aliases.U256.t POPN * Ref.t Pointer.Kind.MutRef aliases.U256.t).
   Proof.
     constructor.
     run_symbolic.
   Defined.
 
   (* pub fn push(&mut self, value: U256) -> bool *)
-  Instance run_push (self : Ref.t Pointer.Kind.MutRef Self) (value : U256.t) :
+  Instance run_push (self : Ref.t Pointer.Kind.MutRef Self) (value : aliases.U256.t) :
     Run.Trait
       interpreter.stack.Impl_revm_interpreter_interpreter_stack_Stack.push [] [] [φ self; φ value]
       bool.
@@ -232,10 +232,10 @@ Module Impl_Stack.
     Run.Trait
       interpreter.stack.Impl_revm_interpreter_interpreter_stack_Stack.peek
         [] [] [φ self; φ no_from_top]
-      (Result.t U256.t InstructionResult.t).
+      (Result.t aliases.U256.t InstructionResult.t).
   Proof.
     constructor.
-    destruct (Impl_Index_for_Vec_T_A.run U256.t Usize.t Global.t U256.t).
+    destruct (Impl_Index_for_Vec_T_A.run aliases.U256.t Usize.t Global.t aliases.U256.t).
     run_symbolic.
   Admitted.
 
@@ -286,7 +286,7 @@ Module Impl_Stack.
   Instance run_set
       (self : Ref.t Pointer.Kind.MutRef Self)
       (no_from_top : Usize.t)
-      (val : U256.t) :
+      (val : aliases.U256.t) :
     Run.Trait
       interpreter.stack.Impl_revm_interpreter_interpreter_stack_Stack.set
         [] [] [φ self; φ no_from_top; φ val]

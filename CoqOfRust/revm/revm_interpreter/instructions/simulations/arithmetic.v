@@ -2,7 +2,7 @@ Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
 Require Import CoqOfRust.simulations.M.
 Import simulations.M.Notations.
-Require Import revm.links.dependencies.
+
 (*
 Require Import revm.interpreter.links.interpreter.
 Require Import revm.interpreter.interpreter.links.instruction_result.

@@ -1,9 +1,8 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
-Require Import CoqOfRust.core.convert.links.mod.
-Require Import CoqOfRust.revm.links.dependencies.
-Require Import CoqOfRust.revm.revm_specification.links.hardfork.
-
+Require Import alloy_primitives.links.aliases.
+Require Import core.convert.links.mod.
+Require Import revm.revm_specification.links.hardfork.
 (*
   /// Create scheme.
   #[derive(Clone, Copy, Debug, Eq, PartialEq, Hash)]
@@ -22,7 +21,7 @@ Require Import CoqOfRust.revm.revm_specification.links.hardfork.
 Module CreateScheme.
   Inductive t : Set :=
   | Create
-  | Create2 : U256.t -> t.
+  | Create2 : aliases.U256.t -> t.
 
   Global Instance IsLink : Link t := {
     Φ := Ty.path "revm_primitives::env::CreateScheme";
