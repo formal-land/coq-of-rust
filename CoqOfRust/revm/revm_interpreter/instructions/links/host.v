@@ -1,10 +1,15 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
 Require Import alloy_primitives.links.aliases.
+Require Import revm.revm_context_interface.links.host.
+Require Import revm.revm_context_interface.links.journaled_state.
+Require Import revm.revm_interpreter.gas.links.constants.
 Require Import revm.revm_interpreter.instructions.host.
 Require Import revm.revm_interpreter.instructions.links.utility.
+Require Import revm.revm_interpreter.links.gas.
 Require Import revm.revm_interpreter.links.interpreter.
 Require Import revm.revm_interpreter.links.interpreter_types.
+Require Import revm.revm_specification.links.hardfork.
 
 (*
 pub fn balance<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -15,7 +20,9 @@ pub fn balance<WIRE: InterpreterTypes, H: Host + ?Sized>(
 Instance run_balance
     {WIRE H : Set} `{Link WIRE} `{Link H}
     {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
+    {H_types : Host.Types.t} `{Host.Types.AreLinks H_types}
     (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types)
+    (run_Host_for_H : Host.Run H H_types)
     (interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t WIRE WIRE_types))
     (host : Ref.t Pointer.Kind.MutRef H) :
   Run.Trait
@@ -23,14 +30,20 @@ Instance run_balance
     unit.
 Proof.
   constructor.
-  cbn.
-  eapply Run.Rewrite. {
-    do 3 erewrite IsTraitAssociatedType_eq by apply run_InterpreterTypes_for_WIRE.
-    reflexivity.
-  }
   destruct run_InterpreterTypes_for_WIRE.
   destruct run_StackTrait_for_Stack.
+  destruct run_Host_for_H.
   destruct Impl_IntoAddress_for_U256.run.
+  (* 
+  {{LowM.CallClosure
+    (Ty.apply
+       (Ty.path
+          "core::option::Option") []
+       [Ty.apply
+          (Ty.path
+             "revm_context_interface::journaled_state::StateLoad")
+  Seems like LowM has some issue to make calls properly after the type annotation update?...
+  *)
   run_symbolic.
 Admitted.
 
@@ -40,10 +53,13 @@ pub fn selfbalance<WIRE: InterpreterTypes, H: Host + ?Sized>(
     _host: &mut H,
 )
 *)
+
 Instance run_selfbalance
   {WIRE H : Set} `{Link WIRE} `{Link H}
   {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
+  {H_types : Host.Types.t} `{Host.Types.AreLinks H_types}
   (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types)
+  (run_Host_for_H : Host.Run H H_types)
   (interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t WIRE WIRE_types))
   (_host : Ref.t Pointer.Kind.MutRef H) :
   Run.Trait
@@ -51,6 +67,14 @@ Instance run_selfbalance
     unit.
 Proof.
   constructor.
+  destruct run_InterpreterTypes_for_WIRE.
+  destruct run_StackTrait_for_Stack.
+  destruct run_Host_for_H.
+  destruct run_RuntimeFlag_for_RuntimeFlag.
+  destruct run_LoopControl_for_Control.
+  (* NOTE: for this instance of `Self`, Coq will complain that it is not a inductive definition *)
+  (* destruct (links.interpreter_types.InputsTrait.Run_target_address 
+    WIRE_types.(InterpreterTypes.Types.Input)). *)
   run_symbolic.
 Admitted.
 
@@ -63,6 +87,7 @@ pub fn extcodesize<WIRE: InterpreterTypes, H: Host + ?Sized>(
 Instance run_extcodesize
   {WIRE H : Set} `{Link WIRE} `{Link H}
   {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
+  {H_types : Host.Types.t} `{Host.Types.AreLinks H_types}
   (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types)
   (interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t WIRE WIRE_types))
   (host : Ref.t Pointer.Kind.MutRef H) :
@@ -71,7 +96,16 @@ Instance run_extcodesize
     aliases.U256.t.
 Proof.
   constructor.
+  destruct run_InterpreterTypes_for_WIRE.
+  destruct run_StackTrait_for_Stack.
+  (* destruct run_Host_for_H. *)
+  destruct run_RuntimeFlag_for_RuntimeFlag.
+  destruct run_LoopControl_for_Control.
+  (* TODO: "revm_interpreter::instructions::utility::IntoAddress::into_address" *)
   run_symbolic.
+  (* - apply aliases.U256.t. 
+  Coq seems to say the goal being a Type while U256.t being defined is a Set?...
+  *)
 Admitted.
 
 (*
@@ -83,6 +117,7 @@ pub fn extcodehash<WIRE: InterpreterTypes, H: Host + ?Sized>(
 Instance run_extcodehash
   {WIRE H : Set} `{Link WIRE} `{Link H}
   {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
+  {H_types : Host.Types.t} `{Host.Types.AreLinks H_types}
   (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types)
   (interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t WIRE WIRE_types))
   (host : Ref.t Pointer.Kind.MutRef H) :
@@ -91,6 +126,15 @@ Instance run_extcodehash
     aliases.U256.t.
 Proof.
   constructor.
+  destruct run_InterpreterTypes_for_WIRE.
+  destruct run_StackTrait_for_Stack.
+  (* destruct run_Host_for_H. *)
+  destruct run_RuntimeFlag_for_RuntimeFlag.
+  destruct run_LoopControl_for_Control.
+  (* TODO:
+  - Value.Tuple [] = lib.Uint.IsLink.(φ) ?return_
+  ^ (?What is this?)
+  *)
   run_symbolic.
 Admitted.
 
@@ -103,6 +147,7 @@ pub fn extcodecopy<WIRE: InterpreterTypes, H: Host + ?Sized>(
 Instance run_extcodecopy
   {WIRE H : Set} `{Link WIRE} `{Link H}
   {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
+  {H_types : Host.Types.t} `{Host.Types.AreLinks H_types}
   (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types)
   (interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t WIRE WIRE_types))
   (host : Ref.t Pointer.Kind.MutRef H) :
@@ -111,6 +156,15 @@ Instance run_extcodecopy
     unit.
 Proof.
   constructor.
+  destruct run_InterpreterTypes_for_WIRE.
+  destruct run_StackTrait_for_Stack.
+  (* destruct run_Host_for_H. *)
+  destruct run_RuntimeFlag_for_RuntimeFlag.
+  destruct run_LoopControl_for_Control.
+  (* TODO:
+  - "revm_interpreter::instructions::utility::IntoAddress"::into_address
+  ^ with a correct instance of Self maybe?
+  *)
   run_symbolic.
 Admitted.
 
@@ -123,6 +177,7 @@ pub fn blockhash<WIRE: InterpreterTypes, H: Host + ?Sized>(
 Instance run_blockhash
   {WIRE H : Set} `{Link WIRE} `{Link H}
   {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
+  {H_types : Host.Types.t} `{Host.Types.AreLinks H_types}
   (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types)
   (interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t WIRE WIRE_types))
   (host : Ref.t Pointer.Kind.MutRef H) :
@@ -131,6 +186,14 @@ Instance run_blockhash
     aliases.U256.t.
 Proof.
   constructor.
+  destruct run_InterpreterTypes_for_WIRE.
+  destruct run_StackTrait_for_Stack.
+  (* destruct run_Host_for_H. *)
+  destruct run_RuntimeFlag_for_RuntimeFlag.
+  destruct run_LoopControl_for_Control.
+  (* TODO:
+  - Value.Tuple [] = lib.Uint.IsLink.(φ) ?return_
+  *)
   run_symbolic.
 Admitted.
 
@@ -143,7 +206,9 @@ pub fn sload<WIRE: InterpreterTypes, H: Host + ?Sized>(
 Instance run_sload
   {WIRE H : Set} `{Link WIRE} `{Link H}
   {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
+  {H_types : Host.Types.t} `{Host.Types.AreLinks H_types}
   (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types)
+  (run_Host_for_H : Host.Run H H_types)
   (interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t WIRE WIRE_types))
   (host : Ref.t Pointer.Kind.MutRef H) :
   Run.Trait
@@ -151,6 +216,15 @@ Instance run_sload
     aliases.U256.t.
 Proof.
   constructor.
+  destruct run_InterpreterTypes_for_WIRE.
+  destruct run_StackTrait_for_Stack.
+  destruct run_Host_for_H.
+  destruct run_RuntimeFlag_for_RuntimeFlag.
+  destruct run_LoopControl_for_Control.
+  (* TODO:
+  - revm_interpreter::interpreter_types::InputsTrait::target_address
+  ^ `Self` issue?
+  *)
   run_symbolic.
 Admitted.
 
@@ -163,7 +237,9 @@ pub fn sstore<WIRE: InterpreterTypes, H: Host + ?Sized>(
 Instance run_sstore
   {WIRE H : Set} `{Link WIRE} `{Link H}
   {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
+  {H_types : Host.Types.t} `{Host.Types.AreLinks H_types}
   (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types)
+  (run_Host_for_H : Host.Run H H_types)
   (interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t WIRE WIRE_types))
   (host : Ref.t Pointer.Kind.MutRef H) :
   Run.Trait
@@ -171,6 +247,14 @@ Instance run_sstore
     unit.
 Proof.
   constructor.
+  destruct run_InterpreterTypes_for_WIRE.
+  destruct run_StackTrait_for_Stack.
+  destruct run_Host_for_H.
+  destruct run_RuntimeFlag_for_RuntimeFlag.
+  destruct run_LoopControl_for_Control.
+  (* TODO:
+  - "revm_interpreter::interpreter_types::InputsTrait"::target_address
+  *)
   run_symbolic.
 Admitted.
 
@@ -183,7 +267,9 @@ pub fn tstore<WIRE: InterpreterTypes, H: Host + ?Sized>(
 Instance run_tstore
   {WIRE H : Set} `{Link WIRE} `{Link H}
   {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
+  {H_types : Host.Types.t} `{Host.Types.AreLinks H_types}  
   (run_InterpreterTypes_for_WIRE : InterpreterTypes.Run WIRE WIRE_types)
+  (run_Host_for_H : Host.Run H H_types)
   (interpreter : Ref.t Pointer.Kind.MutRef (Interpreter.t WIRE WIRE_types))
   (host : Ref.t Pointer.Kind.MutRef H) :
   Run.Trait
@@ -191,6 +277,14 @@ Instance run_tstore
     unit.
 Proof.
   constructor.
+  destruct run_InterpreterTypes_for_WIRE.
+  destruct run_StackTrait_for_Stack.
+  destruct run_Host_for_H.
+  destruct run_RuntimeFlag_for_RuntimeFlag.
+  destruct run_LoopControl_for_Control.
+  (* TODO:
+  - "revm_interpreter::interpreter_types::InputsTrait"::target_address
+  *)
   run_symbolic.
 Admitted.
 
@@ -211,6 +305,10 @@ Instance run_tload
     aliases.U256.t.
 Proof.
   constructor.
+  destruct run_InterpreterTypes_for_WIRE.
+  destruct run_StackTrait_for_Stack.
+  destruct run_RuntimeFlag_for_RuntimeFlag.
+  destruct run_LoopControl_for_Control.
   run_symbolic.
 Admitted.
 
@@ -220,6 +318,7 @@ pub fn log<const N: usize, H: Host + ?Sized>(
     host: &mut H,
 )
 *)
+(* TODO: fill in parameter `N` : usize *)
 Instance run_log
   {WIRE H : Set} `{Link WIRE} `{Link H}
   {WIRE_types : InterpreterTypes.Types.t} `{InterpreterTypes.Types.AreLinks WIRE_types}
@@ -231,7 +330,14 @@ Instance run_log
     unit.
 Proof.
   constructor.
-  run_symbolic.
+  destruct run_InterpreterTypes_for_WIRE.
+  destruct run_StackTrait_for_Stack.
+  destruct run_RuntimeFlag_for_RuntimeFlag.
+  destruct run_LoopControl_for_Control.
+  (* TODO: 
+  - {{impossible "wrong number of arguments" 🔽 unit}}
+  *)
+  (* run_symbolic. *)
 Admitted.
 
 (*
@@ -251,5 +357,12 @@ Instance run_selfdestruct
     unit.
 Proof.
   constructor.
+  destruct run_InterpreterTypes_for_WIRE.
+  destruct run_StackTrait_for_Stack.
+  destruct run_RuntimeFlag_for_RuntimeFlag.
+  destruct run_LoopControl_for_Control.
+  (* TODO: 
+  - "revm_interpreter::instructions::utility::IntoAddress"::into_address
+  *)
   run_symbolic.
 Admitted.
