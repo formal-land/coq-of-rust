@@ -35,7 +35,7 @@ for file in sorted(os.listdir(".")):
                                 break
                             if "Defined" in following_line:
                                 break
-                    emoji = "❌" if isAdmitted else "✅"
+                    emoji = "[ ]" if isAdmitted else "[x]"
                     if isAdmitted:
                         admitted += 1
                     else:
