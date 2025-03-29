@@ -104,7 +104,7 @@
 - [ ] `mload`
 - [ ] `mstore`
 - [ ] `mstore8`
-- [ ] `msize`
+- [x] `msize`
 - [ ] `mcopy`
 
 ## Stack
@@ -148,6 +148,6 @@
 ## Summary
 
 - Total: 107
-- Admitted: 39
-- Defined: 68
-- Percentage: 63.55%
+- Admitted: 38
+- Defined: 69
+- Percentage: 64.49%
