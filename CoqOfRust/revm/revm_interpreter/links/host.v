@@ -1,6 +1,8 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
 
+(* TODO: refer to `instructions.v` *)
+
 (* 
 pub fn balance<WIRE: InterpreterTypes, H: Host + ?Sized>(
     interpreter: &mut Interpreter<WIRE>,
