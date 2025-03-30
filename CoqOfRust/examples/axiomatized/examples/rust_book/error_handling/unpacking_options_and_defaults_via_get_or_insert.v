@@ -60,5 +60,5 @@ End Impl_core_fmt_Debug_for_unpacking_options_and_defaults_via_get_or_insert_Fru
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "unpacking_options_and_defaults_via_get_or_insert::main" main.
+  M.IsFunction.C "unpacking_options_and_defaults_via_get_or_insert::main" main.
 Admitted.

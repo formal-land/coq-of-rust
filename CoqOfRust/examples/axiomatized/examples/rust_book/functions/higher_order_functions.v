@@ -3,11 +3,10 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter is_odd : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_is_odd :
-  M.IsFunction.Trait "higher_order_functions::is_odd" is_odd.
+Global Instance Instance_IsFunction_is_odd : M.IsFunction.C "higher_order_functions::is_odd" is_odd.
 Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "higher_order_functions::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "higher_order_functions::main" main.
 Admitted.

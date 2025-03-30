@@ -659,7 +659,11 @@ Module algorithms.
                                                     M.read (|
                                                       let~ q : Ty.path "u64" :=
                                                         M.copy (|
-                                                          M.get_constant "core::num::MAX"
+                                                          get_associated_constant (|
+                                                            Ty.path "u64",
+                                                            "MAX",
+                                                            Ty.path "u64"
+                                                          |)
                                                         |) in
                                                       let~ _carry : Ty.path "u64" :=
                                                         M.alloc (|
@@ -1438,7 +1442,7 @@ Module algorithms.
         end.
       
       Global Instance Instance_IsFunction_div_nxm_normalized :
-        M.IsFunction.Trait "ruint::algorithms::div::knuth::div_nxm_normalized" div_nxm_normalized.
+        M.IsFunction.C "ruint::algorithms::div::knuth::div_nxm_normalized" div_nxm_normalized.
       Admitted.
       Global Typeclasses Opaque div_nxm_normalized.
       
@@ -3641,8 +3645,11 @@ Module algorithms.
                                                                   ltac:(M.monadic
                                                                     (let~ q : Ty.path "u64" :=
                                                                       M.copy (|
-                                                                        M.get_constant
-                                                                          "core::num::MAX"
+                                                                        get_associated_constant (|
+                                                                          Ty.path "u64",
+                                                                          "MAX",
+                                                                          Ty.path "u64"
+                                                                        |)
                                                                       |) in
                                                                     let~ _carry : Ty.path "u64" :=
                                                                       M.alloc (|
@@ -3982,7 +3989,7 @@ Module algorithms.
         end.
       
       Global Instance Instance_IsFunction_div_nxm :
-        M.IsFunction.Trait "ruint::algorithms::div::knuth::div_nxm" div_nxm.
+        M.IsFunction.C "ruint::algorithms::div::knuth::div_nxm" div_nxm.
       Admitted.
       Global Typeclasses Opaque div_nxm.
     End knuth.

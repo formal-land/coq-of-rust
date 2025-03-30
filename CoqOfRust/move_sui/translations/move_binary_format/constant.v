@@ -462,7 +462,7 @@ Module constant.
     end.
   
   Global Instance Instance_IsFunction_sig_to_ty :
-    M.IsFunction.Trait "move_binary_format::constant::sig_to_ty" sig_to_ty.
+    M.IsFunction.C "move_binary_format::constant::sig_to_ty" sig_to_ty.
   Admitted.
   Global Typeclasses Opaque sig_to_ty.
   
@@ -867,7 +867,7 @@ Module constant.
     end.
   
   Global Instance Instance_IsFunction_ty_to_sig :
-    M.IsFunction.Trait "move_binary_format::constant::ty_to_sig" ty_to_sig.
+    M.IsFunction.C "move_binary_format::constant::ty_to_sig" ty_to_sig.
   Admitted.
   Global Typeclasses Opaque ty_to_sig.
   
@@ -1129,7 +1129,7 @@ Module constant.
       end.
     
     Global Instance AssociatedFunction_serialize_constant :
-      M.IsAssociatedFunction.Trait Self "serialize_constant" serialize_constant.
+      M.IsAssociatedFunction.C Self "serialize_constant" serialize_constant.
     Admitted.
     Global Typeclasses Opaque serialize_constant.
     
@@ -1347,7 +1347,7 @@ Module constant.
       end.
     
     Global Instance AssociatedFunction_deserialize_constant :
-      M.IsAssociatedFunction.Trait Self "deserialize_constant" deserialize_constant.
+      M.IsAssociatedFunction.C Self "deserialize_constant" deserialize_constant.
     Admitted.
     Global Typeclasses Opaque deserialize_constant.
   End Impl_move_binary_format_file_format_Constant.

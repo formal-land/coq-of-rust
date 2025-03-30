@@ -17,6 +17,7 @@ Require Import ruint.links.lib.
 Import Impl_Option.
 Import Impl_Slice.
 Import Impl_SliceIndex_for_Usize.
+Import Impl_Uint.
 Import Impl_Vec_T.
 Import Impl_Vec_T_A.
 
@@ -74,17 +75,14 @@ Module Stack.
   End SubPointer.
 End Stack.
 
-Definition STACK_LIMIT : Usize.t :=
-  {| Integer.value := 1024 |}.
-
-Lemma STACK_LIMIT_eq :
-  M.get_constant "revm_interpreter::interpreter::stack::STACK_LIMIT" =
-  φ (Ref.immediate Pointer.Kind.Raw STACK_LIMIT).
+Instance run_STACK_LIMIT :
+  Run.Trait
+    interpreter.stack.value_STACK_LIMIT [] [] []
+    (Ref.t Pointer.Kind.Raw Usize.t).
 Proof.
-  repeat (autorewrite with constant_rewrites || cbn).
-  reflexivity.
-Qed.
-Global Hint Rewrite STACK_LIMIT_eq : run_constant.
+  constructor.
+  run_symbolic.
+Defined.
 
 Module Impl_Stack.
   Definition Self : Set :=
@@ -186,25 +184,7 @@ Module Impl_Stack.
       (array.t aliases.U256.t N).
   Proof.
     constructor.
-    assert (H_N_eq :
-      M.get_constant "revm_interpreter::interpreter::stack::popn::N" =
-      φ (Ref.immediate Pointer.Kind.Raw N)
-    ) by admit.
-    assert (H_ZERO_eq :
-      M.get_constant "ruint::ZERO" =
-      φ (Ref.immediate Pointer.Kind.Raw (
-        Impl_Uint.ZERO {| Integer.value := 256 |} {| Integer.value := 4 |}
-      ))
-    ) by admit.
-    repeat (
-      run_symbolic ||
-      match goal with
-      | [ |- context[M.get_constant "revm_interpreter::interpreter::stack::popn::N"] ] =>
-        eapply Run.Rewrite; [rewrite H_N_eq; reflexivity |]
-      | [ |- context[M.get_constant "ruint::ZERO"] ] =>
-        eapply Run.Rewrite; [rewrite H_ZERO_eq; reflexivity |]
-      end
-    ).
+    run_symbolic.
   Admitted.
 
   (* pub unsafe fn popn_top<const POPN: usize>(&mut self) -> ([U256; POPN], &mut U256) *)

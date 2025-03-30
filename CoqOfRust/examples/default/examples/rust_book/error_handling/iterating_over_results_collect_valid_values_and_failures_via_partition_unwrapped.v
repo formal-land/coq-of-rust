@@ -736,7 +736,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait
+  M.IsFunction.C
     "iterating_over_results_collect_valid_values_and_failures_via_partition_unwrapped::main"
     main.
 Admitted.

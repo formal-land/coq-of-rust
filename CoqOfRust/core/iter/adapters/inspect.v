@@ -104,7 +104,7 @@ Module iter.
         
         Global Instance AssociatedFunction_new :
           forall (I F : Ty.t),
-          M.IsAssociatedFunction.Trait (Self I F) "new" (new I F).
+          M.IsAssociatedFunction.C (Self I F) "new" (new I F).
         Admitted.
         Global Typeclasses Opaque new.
         (*
@@ -198,7 +198,7 @@ Module iter.
         
         Global Instance AssociatedFunction_do_inspect :
           forall (I F : Ty.t),
-          M.IsAssociatedFunction.Trait (Self I F) "do_inspect" (do_inspect I F).
+          M.IsAssociatedFunction.C (Self I F) "do_inspect" (do_inspect I F).
         Admitted.
         Global Typeclasses Opaque do_inspect.
       End Impl_core_iter_adapters_inspect_Inspect_I_F.
@@ -392,7 +392,7 @@ Module iter.
         end.
       
       Global Instance Instance_IsFunction_inspect_fold :
-        M.IsFunction.Trait "core::iter::adapters::inspect::inspect_fold" inspect_fold.
+        M.IsFunction.C "core::iter::adapters::inspect::inspect_fold" inspect_fold.
       Admitted.
       Global Typeclasses Opaque inspect_fold.
       
@@ -493,7 +493,7 @@ Module iter.
         end.
       
       Global Instance Instance_IsFunction_inspect_try_fold :
-        M.IsFunction.Trait "core::iter::adapters::inspect::inspect_try_fold" inspect_try_fold.
+        M.IsFunction.C "core::iter::adapters::inspect::inspect_try_fold" inspect_try_fold.
       Admitted.
       Global Typeclasses Opaque inspect_try_fold.
       
@@ -1299,22 +1299,42 @@ Module iter.
           (Ty.path "core::option::Option")
           []
           [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ] *)
-        Definition value_EXPAND_BY (I F : Ty.t) : Value.t :=
+        Definition value_EXPAND_BY
+            (I F : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self I F in
-          M.run
-            ltac:(M.monadic
-              (M.get_constant "core::iter::traits::marker::InPlaceIterable::EXPAND_BY")).
+          ltac:(M.monadic
+            (get_constant (|
+              "core::iter::traits::marker::InPlaceIterable::EXPAND_BY",
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
+            |))).
         
         (*     const MERGE_BY: Option<NonZero<usize>> = I::MERGE_BY; *)
         (* Ty.apply
           (Ty.path "core::option::Option")
           []
           [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ] *)
-        Definition value_MERGE_BY (I F : Ty.t) : Value.t :=
+        Definition value_MERGE_BY
+            (I F : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self I F in
-          M.run
-            ltac:(M.monadic
-              (M.get_constant "core::iter::traits::marker::InPlaceIterable::MERGE_BY")).
+          ltac:(M.monadic
+            (get_constant (|
+              "core::iter::traits::marker::InPlaceIterable::MERGE_BY",
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
+            |))).
         
         Axiom Implements :
           forall (I F : Ty.t),
@@ -1325,8 +1345,8 @@ Module iter.
             (Self I F)
             (* Instance *)
             [
-              ("value_EXPAND_BY", InstanceField.Constant (value_EXPAND_BY I F));
-              ("value_MERGE_BY", InstanceField.Constant (value_MERGE_BY I F))
+              ("value_EXPAND_BY", InstanceField.Method (value_EXPAND_BY I F));
+              ("value_MERGE_BY", InstanceField.Method (value_MERGE_BY I F))
             ].
       End Impl_core_iter_traits_marker_InPlaceIterable_where_core_iter_traits_marker_InPlaceIterable_I_for_core_iter_adapters_inspect_Inspect_I_F.
     End inspect.

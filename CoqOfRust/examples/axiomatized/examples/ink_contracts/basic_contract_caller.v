@@ -76,17 +76,17 @@ Module Impl_basic_contract_caller_OtherContract.
   
   Parameter new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
   Admitted.
   
   Parameter flip : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_flip : M.IsAssociatedFunction.Trait Self "flip" flip.
+  Global Instance AssociatedFunction_flip : M.IsAssociatedFunction.C Self "flip" flip.
   Admitted.
   
   Parameter get : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_get : M.IsAssociatedFunction.Trait Self "get" get.
+  Global Instance AssociatedFunction_get : M.IsAssociatedFunction.C Self "get" get.
   Admitted.
 End Impl_basic_contract_caller_OtherContract.
 
@@ -103,12 +103,12 @@ Module Impl_basic_contract_caller_BasicContractCaller.
   
   Parameter new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
   Admitted.
   
   Parameter flip_and_get : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_flip_and_get :
-    M.IsAssociatedFunction.Trait Self "flip_and_get" flip_and_get.
+    M.IsAssociatedFunction.C Self "flip_and_get" flip_and_get.
   Admitted.
 End Impl_basic_contract_caller_BasicContractCaller.

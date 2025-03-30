@@ -173,7 +173,7 @@ Module range.
       
       Global Instance AssociatedFunction_remainder :
         forall (A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self A) "remainder" (remainder A).
+        M.IsAssociatedFunction.C (Self A) "remainder" (remainder A).
       Admitted.
       Global Typeclasses Opaque remainder.
     End Impl_core_range_iter_IterRange_A.
@@ -197,8 +197,12 @@ Module range.
       
       (*             const MAY_HAVE_SIDE_EFFECT: bool = false; *)
       (* Ty.path "bool" *)
-      Definition value_MAY_HAVE_SIDE_EFFECT : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Bool false |))).
+      Definition value_MAY_HAVE_SIDE_EFFECT
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        ltac:(M.monadic (M.alloc (| Value.Bool false |))).
       
       Axiom Implements :
         M.IsTraitInstance
@@ -207,7 +211,7 @@ Module range.
           (* Trait polymorphic types *) []
           Self
           (* Instance *)
-          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant value_MAY_HAVE_SIDE_EFFECT) ].
+          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Method value_MAY_HAVE_SIDE_EFFECT) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_range_iter_IterRange_usize.
     
     Module Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_range_iter_IterRange_u8.
@@ -229,8 +233,12 @@ Module range.
       
       (*             const MAY_HAVE_SIDE_EFFECT: bool = false; *)
       (* Ty.path "bool" *)
-      Definition value_MAY_HAVE_SIDE_EFFECT : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Bool false |))).
+      Definition value_MAY_HAVE_SIDE_EFFECT
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        ltac:(M.monadic (M.alloc (| Value.Bool false |))).
       
       Axiom Implements :
         M.IsTraitInstance
@@ -239,7 +247,7 @@ Module range.
           (* Trait polymorphic types *) []
           Self
           (* Instance *)
-          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant value_MAY_HAVE_SIDE_EFFECT) ].
+          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Method value_MAY_HAVE_SIDE_EFFECT) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_range_iter_IterRange_u8.
     
     Module Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_range_iter_IterRange_u16.
@@ -261,8 +269,12 @@ Module range.
       
       (*             const MAY_HAVE_SIDE_EFFECT: bool = false; *)
       (* Ty.path "bool" *)
-      Definition value_MAY_HAVE_SIDE_EFFECT : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Bool false |))).
+      Definition value_MAY_HAVE_SIDE_EFFECT
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        ltac:(M.monadic (M.alloc (| Value.Bool false |))).
       
       Axiom Implements :
         M.IsTraitInstance
@@ -271,7 +283,7 @@ Module range.
           (* Trait polymorphic types *) []
           Self
           (* Instance *)
-          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant value_MAY_HAVE_SIDE_EFFECT) ].
+          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Method value_MAY_HAVE_SIDE_EFFECT) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_range_iter_IterRange_u16.
     
     Module Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_range_iter_IterRange_isize.
@@ -293,8 +305,12 @@ Module range.
       
       (*             const MAY_HAVE_SIDE_EFFECT: bool = false; *)
       (* Ty.path "bool" *)
-      Definition value_MAY_HAVE_SIDE_EFFECT : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Bool false |))).
+      Definition value_MAY_HAVE_SIDE_EFFECT
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        ltac:(M.monadic (M.alloc (| Value.Bool false |))).
       
       Axiom Implements :
         M.IsTraitInstance
@@ -303,7 +319,7 @@ Module range.
           (* Trait polymorphic types *) []
           Self
           (* Instance *)
-          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant value_MAY_HAVE_SIDE_EFFECT) ].
+          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Method value_MAY_HAVE_SIDE_EFFECT) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_range_iter_IterRange_isize.
     
     Module Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_range_iter_IterRange_i8.
@@ -325,8 +341,12 @@ Module range.
       
       (*             const MAY_HAVE_SIDE_EFFECT: bool = false; *)
       (* Ty.path "bool" *)
-      Definition value_MAY_HAVE_SIDE_EFFECT : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Bool false |))).
+      Definition value_MAY_HAVE_SIDE_EFFECT
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        ltac:(M.monadic (M.alloc (| Value.Bool false |))).
       
       Axiom Implements :
         M.IsTraitInstance
@@ -335,7 +355,7 @@ Module range.
           (* Trait polymorphic types *) []
           Self
           (* Instance *)
-          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant value_MAY_HAVE_SIDE_EFFECT) ].
+          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Method value_MAY_HAVE_SIDE_EFFECT) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_range_iter_IterRange_i8.
     
     Module Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_range_iter_IterRange_i16.
@@ -357,8 +377,12 @@ Module range.
       
       (*             const MAY_HAVE_SIDE_EFFECT: bool = false; *)
       (* Ty.path "bool" *)
-      Definition value_MAY_HAVE_SIDE_EFFECT : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Bool false |))).
+      Definition value_MAY_HAVE_SIDE_EFFECT
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        ltac:(M.monadic (M.alloc (| Value.Bool false |))).
       
       Axiom Implements :
         M.IsTraitInstance
@@ -367,7 +391,7 @@ Module range.
           (* Trait polymorphic types *) []
           Self
           (* Instance *)
-          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant value_MAY_HAVE_SIDE_EFFECT) ].
+          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Method value_MAY_HAVE_SIDE_EFFECT) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_range_iter_IterRange_i16.
     
     Module Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_range_iter_IterRange_u32.
@@ -389,8 +413,12 @@ Module range.
       
       (*             const MAY_HAVE_SIDE_EFFECT: bool = false; *)
       (* Ty.path "bool" *)
-      Definition value_MAY_HAVE_SIDE_EFFECT : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Bool false |))).
+      Definition value_MAY_HAVE_SIDE_EFFECT
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        ltac:(M.monadic (M.alloc (| Value.Bool false |))).
       
       Axiom Implements :
         M.IsTraitInstance
@@ -399,7 +427,7 @@ Module range.
           (* Trait polymorphic types *) []
           Self
           (* Instance *)
-          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant value_MAY_HAVE_SIDE_EFFECT) ].
+          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Method value_MAY_HAVE_SIDE_EFFECT) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_range_iter_IterRange_u32.
     
     Module Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_range_iter_IterRange_i32.
@@ -421,8 +449,12 @@ Module range.
       
       (*             const MAY_HAVE_SIDE_EFFECT: bool = false; *)
       (* Ty.path "bool" *)
-      Definition value_MAY_HAVE_SIDE_EFFECT : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Bool false |))).
+      Definition value_MAY_HAVE_SIDE_EFFECT
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        ltac:(M.monadic (M.alloc (| Value.Bool false |))).
       
       Axiom Implements :
         M.IsTraitInstance
@@ -431,7 +463,7 @@ Module range.
           (* Trait polymorphic types *) []
           Self
           (* Instance *)
-          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant value_MAY_HAVE_SIDE_EFFECT) ].
+          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Method value_MAY_HAVE_SIDE_EFFECT) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_range_iter_IterRange_i32.
     
     Module Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_range_iter_IterRange_u64.
@@ -453,8 +485,12 @@ Module range.
       
       (*             const MAY_HAVE_SIDE_EFFECT: bool = false; *)
       (* Ty.path "bool" *)
-      Definition value_MAY_HAVE_SIDE_EFFECT : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Bool false |))).
+      Definition value_MAY_HAVE_SIDE_EFFECT
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        ltac:(M.monadic (M.alloc (| Value.Bool false |))).
       
       Axiom Implements :
         M.IsTraitInstance
@@ -463,7 +499,7 @@ Module range.
           (* Trait polymorphic types *) []
           Self
           (* Instance *)
-          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant value_MAY_HAVE_SIDE_EFFECT) ].
+          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Method value_MAY_HAVE_SIDE_EFFECT) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_range_iter_IterRange_u64.
     
     Module Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_range_iter_IterRange_i64.
@@ -485,8 +521,12 @@ Module range.
       
       (*             const MAY_HAVE_SIDE_EFFECT: bool = false; *)
       (* Ty.path "bool" *)
-      Definition value_MAY_HAVE_SIDE_EFFECT : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Bool false |))).
+      Definition value_MAY_HAVE_SIDE_EFFECT
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        ltac:(M.monadic (M.alloc (| Value.Bool false |))).
       
       Axiom Implements :
         M.IsTraitInstance
@@ -495,7 +535,7 @@ Module range.
           (* Trait polymorphic types *) []
           Self
           (* Instance *)
-          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant value_MAY_HAVE_SIDE_EFFECT) ].
+          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Method value_MAY_HAVE_SIDE_EFFECT) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_range_iter_IterRange_i64.
     
     Module Impl_core_iter_traits_iterator_Iterator_where_core_iter_range_Step_A_for_core_range_iter_IterRange_A.
@@ -1345,7 +1385,7 @@ Module range.
       
       Global Instance AssociatedFunction_remainder :
         forall (A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self A) "remainder" (remainder A).
+        M.IsAssociatedFunction.C (Self A) "remainder" (remainder A).
       Admitted.
       Global Typeclasses Opaque remainder.
     End Impl_core_range_iter_IterRangeInclusive_A.
@@ -2185,7 +2225,7 @@ Module range.
       
       Global Instance AssociatedFunction_remainder :
         forall (A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self A) "remainder" (remainder A).
+        M.IsAssociatedFunction.C (Self A) "remainder" (remainder A).
       Admitted.
       Global Typeclasses Opaque remainder.
     End Impl_core_range_iter_IterRangeFrom_A.

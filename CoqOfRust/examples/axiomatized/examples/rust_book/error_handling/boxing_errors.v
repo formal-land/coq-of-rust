@@ -80,15 +80,15 @@ End Impl_core_error_Error_for_boxing_errors_EmptyVec.
 Parameter double_first : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_double_first :
-  M.IsFunction.Trait "boxing_errors::double_first" double_first.
+  M.IsFunction.C "boxing_errors::double_first" double_first.
 Admitted.
 
 Parameter print : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_print : M.IsFunction.Trait "boxing_errors::print" print.
+Global Instance Instance_IsFunction_print : M.IsFunction.C "boxing_errors::print" print.
 Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "boxing_errors::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "boxing_errors::main" main.
 Admitted.

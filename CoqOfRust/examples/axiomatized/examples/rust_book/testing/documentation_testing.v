@@ -3,10 +3,10 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter add : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_add : M.IsFunction.Trait "documentation_testing::add" add.
+Global Instance Instance_IsFunction_add : M.IsFunction.C "documentation_testing::add" add.
 Admitted.
 
 Parameter div : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_div : M.IsFunction.Trait "documentation_testing::div" div.
+Global Instance Instance_IsFunction_div : M.IsFunction.C "documentation_testing::div" div.
 Admitted.

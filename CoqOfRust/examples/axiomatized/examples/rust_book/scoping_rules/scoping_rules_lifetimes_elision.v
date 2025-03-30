@@ -4,29 +4,29 @@ Require Import CoqOfRust.CoqOfRust.
 Parameter elided_input : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_elided_input :
-  M.IsFunction.Trait "scoping_rules_lifetimes_elision::elided_input" elided_input.
+  M.IsFunction.C "scoping_rules_lifetimes_elision::elided_input" elided_input.
 Admitted.
 
 Parameter annotated_input : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_annotated_input :
-  M.IsFunction.Trait "scoping_rules_lifetimes_elision::annotated_input" annotated_input.
+  M.IsFunction.C "scoping_rules_lifetimes_elision::annotated_input" annotated_input.
 Admitted.
 
 Parameter elided_pass : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_elided_pass :
-  M.IsFunction.Trait "scoping_rules_lifetimes_elision::elided_pass" elided_pass.
+  M.IsFunction.C "scoping_rules_lifetimes_elision::elided_pass" elided_pass.
 Admitted.
 
 Parameter annotated_pass : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_annotated_pass :
-  M.IsFunction.Trait "scoping_rules_lifetimes_elision::annotated_pass" annotated_pass.
+  M.IsFunction.C "scoping_rules_lifetimes_elision::annotated_pass" annotated_pass.
 Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "scoping_rules_lifetimes_elision::main" main.
+  M.IsFunction.C "scoping_rules_lifetimes_elision::main" main.
 Admitted.

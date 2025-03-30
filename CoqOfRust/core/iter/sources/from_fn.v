@@ -22,7 +22,7 @@ Module iter.
         end.
       
       Global Instance Instance_IsFunction_from_fn :
-        M.IsFunction.Trait "core::iter::sources::from_fn::from_fn" from_fn.
+        M.IsFunction.C "core::iter::sources::from_fn::from_fn" from_fn.
       Admitted.
       Global Typeclasses Opaque from_fn.
       

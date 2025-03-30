@@ -2,39 +2,42 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module blake2.
-  Definition value_F_ROUND : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1 |))).
+  Definition value_F_ROUND (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1 |))).
   
-  Axiom Constant_value_F_ROUND :
-    (M.get_constant "revm_precompile::blake2::F_ROUND") = value_F_ROUND.
-  Global Hint Rewrite Constant_value_F_ROUND : constant_rewrites.
+  Global Instance Instance_IsConstant_value_F_ROUND :
+    M.IsFunction.C "revm_precompile::blake2::F_ROUND" value_F_ROUND.
+  Admitted.
+  Global Typeclasses Opaque value_F_ROUND.
   
-  Definition value_INPUT_LENGTH : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 213 |))).
+  Definition value_INPUT_LENGTH (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 213 |))).
   
-  Axiom Constant_value_INPUT_LENGTH :
-    (M.get_constant "revm_precompile::blake2::INPUT_LENGTH") = value_INPUT_LENGTH.
-  Global Hint Rewrite Constant_value_INPUT_LENGTH : constant_rewrites.
+  Global Instance Instance_IsConstant_value_INPUT_LENGTH :
+    M.IsFunction.C "revm_precompile::blake2::INPUT_LENGTH" value_INPUT_LENGTH.
+  Admitted.
+  Global Typeclasses Opaque value_INPUT_LENGTH.
   
-  Definition value_FUN : Value.t :=
-    M.run_constant
-      ltac:(M.monadic
-        (M.alloc (|
-          Value.StructTuple
-            "revm_precompile::PrecompileWithAddress"
-            [
-              M.call_closure (|
-                Ty.path "alloy_primitives::bits::address::Address",
-                M.get_function (| "revm_precompile::u64_to_address", [], [] |),
-                [ Value.Integer IntegerKind.U64 9 ]
-              |);
-              (* ReifyFnPointer *)
-              M.pointer_coercion (M.get_function (| "revm_precompile::blake2::run", [], [] |))
-            ]
-        |))).
+  Definition value_FUN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic
+      (M.alloc (|
+        Value.StructTuple
+          "revm_precompile::PrecompileWithAddress"
+          [
+            M.call_closure (|
+              Ty.path "alloy_primitives::bits::address::Address",
+              M.get_function (| "revm_precompile::u64_to_address", [], [] |),
+              [ Value.Integer IntegerKind.U64 9 ]
+            |);
+            (* ReifyFnPointer *)
+            M.pointer_coercion (M.get_function (| "revm_precompile::blake2::run", [], [] |))
+          ]
+      |))).
   
-  Axiom Constant_value_FUN : (M.get_constant "revm_precompile::blake2::FUN") = value_FUN.
-  Global Hint Rewrite Constant_value_FUN : constant_rewrites.
+  Global Instance Instance_IsConstant_value_FUN :
+    M.IsFunction.C "revm_precompile::blake2::FUN" value_FUN.
+  Admitted.
+  Global Typeclasses Opaque value_FUN.
   
   (*
   pub fn run(input: &Bytes, gas_limit: u64) -> PrecompileResult {
@@ -188,7 +191,12 @@ Module blake2.
                                     |)
                                   ]
                                 |),
-                                M.read (| M.get_constant "revm_precompile::blake2::INPUT_LENGTH" |)
+                                M.read (|
+                                  get_constant (|
+                                    "revm_precompile::blake2::INPUT_LENGTH",
+                                    Ty.path "usize"
+                                  |)
+                                |)
                               |)
                             |)) in
                         let _ :=
@@ -328,7 +336,9 @@ Module blake2.
                 M.alloc (|
                   BinOp.Wrap.mul (|
                     M.cast (Ty.path "u64") (M.read (| rounds |)),
-                    M.read (| M.get_constant "revm_precompile::blake2::F_ROUND" |)
+                    M.read (|
+                      get_constant (| "revm_precompile::blake2::F_ROUND", Ty.path "u64" |)
+                    |)
                   |)
                 |) in
               let~ _ : Ty.tuple [] :=
@@ -1641,233 +1651,234 @@ Module blake2.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_run : M.IsFunction.Trait "revm_precompile::blake2::run" run.
+  Global Instance Instance_IsFunction_run : M.IsFunction.C "revm_precompile::blake2::run" run.
   Admitted.
   Global Typeclasses Opaque run.
   
   Module algo.
-    Definition value_SIGMA : Value.t :=
-      M.run_constant
-        ltac:(M.monadic
-          (M.alloc (|
-            Value.Array
-              [
-                Value.Array
-                  [
-                    Value.Integer IntegerKind.Usize 0;
-                    Value.Integer IntegerKind.Usize 1;
-                    Value.Integer IntegerKind.Usize 2;
-                    Value.Integer IntegerKind.Usize 3;
-                    Value.Integer IntegerKind.Usize 4;
-                    Value.Integer IntegerKind.Usize 5;
-                    Value.Integer IntegerKind.Usize 6;
-                    Value.Integer IntegerKind.Usize 7;
-                    Value.Integer IntegerKind.Usize 8;
-                    Value.Integer IntegerKind.Usize 9;
-                    Value.Integer IntegerKind.Usize 10;
-                    Value.Integer IntegerKind.Usize 11;
-                    Value.Integer IntegerKind.Usize 12;
-                    Value.Integer IntegerKind.Usize 13;
-                    Value.Integer IntegerKind.Usize 14;
-                    Value.Integer IntegerKind.Usize 15
-                  ];
-                Value.Array
-                  [
-                    Value.Integer IntegerKind.Usize 14;
-                    Value.Integer IntegerKind.Usize 10;
-                    Value.Integer IntegerKind.Usize 4;
-                    Value.Integer IntegerKind.Usize 8;
-                    Value.Integer IntegerKind.Usize 9;
-                    Value.Integer IntegerKind.Usize 15;
-                    Value.Integer IntegerKind.Usize 13;
-                    Value.Integer IntegerKind.Usize 6;
-                    Value.Integer IntegerKind.Usize 1;
-                    Value.Integer IntegerKind.Usize 12;
-                    Value.Integer IntegerKind.Usize 0;
-                    Value.Integer IntegerKind.Usize 2;
-                    Value.Integer IntegerKind.Usize 11;
-                    Value.Integer IntegerKind.Usize 7;
-                    Value.Integer IntegerKind.Usize 5;
-                    Value.Integer IntegerKind.Usize 3
-                  ];
-                Value.Array
-                  [
-                    Value.Integer IntegerKind.Usize 11;
-                    Value.Integer IntegerKind.Usize 8;
-                    Value.Integer IntegerKind.Usize 12;
-                    Value.Integer IntegerKind.Usize 0;
-                    Value.Integer IntegerKind.Usize 5;
-                    Value.Integer IntegerKind.Usize 2;
-                    Value.Integer IntegerKind.Usize 15;
-                    Value.Integer IntegerKind.Usize 13;
-                    Value.Integer IntegerKind.Usize 10;
-                    Value.Integer IntegerKind.Usize 14;
-                    Value.Integer IntegerKind.Usize 3;
-                    Value.Integer IntegerKind.Usize 6;
-                    Value.Integer IntegerKind.Usize 7;
-                    Value.Integer IntegerKind.Usize 1;
-                    Value.Integer IntegerKind.Usize 9;
-                    Value.Integer IntegerKind.Usize 4
-                  ];
-                Value.Array
-                  [
-                    Value.Integer IntegerKind.Usize 7;
-                    Value.Integer IntegerKind.Usize 9;
-                    Value.Integer IntegerKind.Usize 3;
-                    Value.Integer IntegerKind.Usize 1;
-                    Value.Integer IntegerKind.Usize 13;
-                    Value.Integer IntegerKind.Usize 12;
-                    Value.Integer IntegerKind.Usize 11;
-                    Value.Integer IntegerKind.Usize 14;
-                    Value.Integer IntegerKind.Usize 2;
-                    Value.Integer IntegerKind.Usize 6;
-                    Value.Integer IntegerKind.Usize 5;
-                    Value.Integer IntegerKind.Usize 10;
-                    Value.Integer IntegerKind.Usize 4;
-                    Value.Integer IntegerKind.Usize 0;
-                    Value.Integer IntegerKind.Usize 15;
-                    Value.Integer IntegerKind.Usize 8
-                  ];
-                Value.Array
-                  [
-                    Value.Integer IntegerKind.Usize 9;
-                    Value.Integer IntegerKind.Usize 0;
-                    Value.Integer IntegerKind.Usize 5;
-                    Value.Integer IntegerKind.Usize 7;
-                    Value.Integer IntegerKind.Usize 2;
-                    Value.Integer IntegerKind.Usize 4;
-                    Value.Integer IntegerKind.Usize 10;
-                    Value.Integer IntegerKind.Usize 15;
-                    Value.Integer IntegerKind.Usize 14;
-                    Value.Integer IntegerKind.Usize 1;
-                    Value.Integer IntegerKind.Usize 11;
-                    Value.Integer IntegerKind.Usize 12;
-                    Value.Integer IntegerKind.Usize 6;
-                    Value.Integer IntegerKind.Usize 8;
-                    Value.Integer IntegerKind.Usize 3;
-                    Value.Integer IntegerKind.Usize 13
-                  ];
-                Value.Array
-                  [
-                    Value.Integer IntegerKind.Usize 2;
-                    Value.Integer IntegerKind.Usize 12;
-                    Value.Integer IntegerKind.Usize 6;
-                    Value.Integer IntegerKind.Usize 10;
-                    Value.Integer IntegerKind.Usize 0;
-                    Value.Integer IntegerKind.Usize 11;
-                    Value.Integer IntegerKind.Usize 8;
-                    Value.Integer IntegerKind.Usize 3;
-                    Value.Integer IntegerKind.Usize 4;
-                    Value.Integer IntegerKind.Usize 13;
-                    Value.Integer IntegerKind.Usize 7;
-                    Value.Integer IntegerKind.Usize 5;
-                    Value.Integer IntegerKind.Usize 15;
-                    Value.Integer IntegerKind.Usize 14;
-                    Value.Integer IntegerKind.Usize 1;
-                    Value.Integer IntegerKind.Usize 9
-                  ];
-                Value.Array
-                  [
-                    Value.Integer IntegerKind.Usize 12;
-                    Value.Integer IntegerKind.Usize 5;
-                    Value.Integer IntegerKind.Usize 1;
-                    Value.Integer IntegerKind.Usize 15;
-                    Value.Integer IntegerKind.Usize 14;
-                    Value.Integer IntegerKind.Usize 13;
-                    Value.Integer IntegerKind.Usize 4;
-                    Value.Integer IntegerKind.Usize 10;
-                    Value.Integer IntegerKind.Usize 0;
-                    Value.Integer IntegerKind.Usize 7;
-                    Value.Integer IntegerKind.Usize 6;
-                    Value.Integer IntegerKind.Usize 3;
-                    Value.Integer IntegerKind.Usize 9;
-                    Value.Integer IntegerKind.Usize 2;
-                    Value.Integer IntegerKind.Usize 8;
-                    Value.Integer IntegerKind.Usize 11
-                  ];
-                Value.Array
-                  [
-                    Value.Integer IntegerKind.Usize 13;
-                    Value.Integer IntegerKind.Usize 11;
-                    Value.Integer IntegerKind.Usize 7;
-                    Value.Integer IntegerKind.Usize 14;
-                    Value.Integer IntegerKind.Usize 12;
-                    Value.Integer IntegerKind.Usize 1;
-                    Value.Integer IntegerKind.Usize 3;
-                    Value.Integer IntegerKind.Usize 9;
-                    Value.Integer IntegerKind.Usize 5;
-                    Value.Integer IntegerKind.Usize 0;
-                    Value.Integer IntegerKind.Usize 15;
-                    Value.Integer IntegerKind.Usize 4;
-                    Value.Integer IntegerKind.Usize 8;
-                    Value.Integer IntegerKind.Usize 6;
-                    Value.Integer IntegerKind.Usize 2;
-                    Value.Integer IntegerKind.Usize 10
-                  ];
-                Value.Array
-                  [
-                    Value.Integer IntegerKind.Usize 6;
-                    Value.Integer IntegerKind.Usize 15;
-                    Value.Integer IntegerKind.Usize 14;
-                    Value.Integer IntegerKind.Usize 9;
-                    Value.Integer IntegerKind.Usize 11;
-                    Value.Integer IntegerKind.Usize 3;
-                    Value.Integer IntegerKind.Usize 0;
-                    Value.Integer IntegerKind.Usize 8;
-                    Value.Integer IntegerKind.Usize 12;
-                    Value.Integer IntegerKind.Usize 2;
-                    Value.Integer IntegerKind.Usize 13;
-                    Value.Integer IntegerKind.Usize 7;
-                    Value.Integer IntegerKind.Usize 1;
-                    Value.Integer IntegerKind.Usize 4;
-                    Value.Integer IntegerKind.Usize 10;
-                    Value.Integer IntegerKind.Usize 5
-                  ];
-                Value.Array
-                  [
-                    Value.Integer IntegerKind.Usize 10;
-                    Value.Integer IntegerKind.Usize 2;
-                    Value.Integer IntegerKind.Usize 8;
-                    Value.Integer IntegerKind.Usize 4;
-                    Value.Integer IntegerKind.Usize 7;
-                    Value.Integer IntegerKind.Usize 6;
-                    Value.Integer IntegerKind.Usize 1;
-                    Value.Integer IntegerKind.Usize 5;
-                    Value.Integer IntegerKind.Usize 15;
-                    Value.Integer IntegerKind.Usize 11;
-                    Value.Integer IntegerKind.Usize 9;
-                    Value.Integer IntegerKind.Usize 14;
-                    Value.Integer IntegerKind.Usize 3;
-                    Value.Integer IntegerKind.Usize 12;
-                    Value.Integer IntegerKind.Usize 13;
-                    Value.Integer IntegerKind.Usize 0
-                  ]
-              ]
-          |))).
+    Definition value_SIGMA (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          Value.Array
+            [
+              Value.Array
+                [
+                  Value.Integer IntegerKind.Usize 0;
+                  Value.Integer IntegerKind.Usize 1;
+                  Value.Integer IntegerKind.Usize 2;
+                  Value.Integer IntegerKind.Usize 3;
+                  Value.Integer IntegerKind.Usize 4;
+                  Value.Integer IntegerKind.Usize 5;
+                  Value.Integer IntegerKind.Usize 6;
+                  Value.Integer IntegerKind.Usize 7;
+                  Value.Integer IntegerKind.Usize 8;
+                  Value.Integer IntegerKind.Usize 9;
+                  Value.Integer IntegerKind.Usize 10;
+                  Value.Integer IntegerKind.Usize 11;
+                  Value.Integer IntegerKind.Usize 12;
+                  Value.Integer IntegerKind.Usize 13;
+                  Value.Integer IntegerKind.Usize 14;
+                  Value.Integer IntegerKind.Usize 15
+                ];
+              Value.Array
+                [
+                  Value.Integer IntegerKind.Usize 14;
+                  Value.Integer IntegerKind.Usize 10;
+                  Value.Integer IntegerKind.Usize 4;
+                  Value.Integer IntegerKind.Usize 8;
+                  Value.Integer IntegerKind.Usize 9;
+                  Value.Integer IntegerKind.Usize 15;
+                  Value.Integer IntegerKind.Usize 13;
+                  Value.Integer IntegerKind.Usize 6;
+                  Value.Integer IntegerKind.Usize 1;
+                  Value.Integer IntegerKind.Usize 12;
+                  Value.Integer IntegerKind.Usize 0;
+                  Value.Integer IntegerKind.Usize 2;
+                  Value.Integer IntegerKind.Usize 11;
+                  Value.Integer IntegerKind.Usize 7;
+                  Value.Integer IntegerKind.Usize 5;
+                  Value.Integer IntegerKind.Usize 3
+                ];
+              Value.Array
+                [
+                  Value.Integer IntegerKind.Usize 11;
+                  Value.Integer IntegerKind.Usize 8;
+                  Value.Integer IntegerKind.Usize 12;
+                  Value.Integer IntegerKind.Usize 0;
+                  Value.Integer IntegerKind.Usize 5;
+                  Value.Integer IntegerKind.Usize 2;
+                  Value.Integer IntegerKind.Usize 15;
+                  Value.Integer IntegerKind.Usize 13;
+                  Value.Integer IntegerKind.Usize 10;
+                  Value.Integer IntegerKind.Usize 14;
+                  Value.Integer IntegerKind.Usize 3;
+                  Value.Integer IntegerKind.Usize 6;
+                  Value.Integer IntegerKind.Usize 7;
+                  Value.Integer IntegerKind.Usize 1;
+                  Value.Integer IntegerKind.Usize 9;
+                  Value.Integer IntegerKind.Usize 4
+                ];
+              Value.Array
+                [
+                  Value.Integer IntegerKind.Usize 7;
+                  Value.Integer IntegerKind.Usize 9;
+                  Value.Integer IntegerKind.Usize 3;
+                  Value.Integer IntegerKind.Usize 1;
+                  Value.Integer IntegerKind.Usize 13;
+                  Value.Integer IntegerKind.Usize 12;
+                  Value.Integer IntegerKind.Usize 11;
+                  Value.Integer IntegerKind.Usize 14;
+                  Value.Integer IntegerKind.Usize 2;
+                  Value.Integer IntegerKind.Usize 6;
+                  Value.Integer IntegerKind.Usize 5;
+                  Value.Integer IntegerKind.Usize 10;
+                  Value.Integer IntegerKind.Usize 4;
+                  Value.Integer IntegerKind.Usize 0;
+                  Value.Integer IntegerKind.Usize 15;
+                  Value.Integer IntegerKind.Usize 8
+                ];
+              Value.Array
+                [
+                  Value.Integer IntegerKind.Usize 9;
+                  Value.Integer IntegerKind.Usize 0;
+                  Value.Integer IntegerKind.Usize 5;
+                  Value.Integer IntegerKind.Usize 7;
+                  Value.Integer IntegerKind.Usize 2;
+                  Value.Integer IntegerKind.Usize 4;
+                  Value.Integer IntegerKind.Usize 10;
+                  Value.Integer IntegerKind.Usize 15;
+                  Value.Integer IntegerKind.Usize 14;
+                  Value.Integer IntegerKind.Usize 1;
+                  Value.Integer IntegerKind.Usize 11;
+                  Value.Integer IntegerKind.Usize 12;
+                  Value.Integer IntegerKind.Usize 6;
+                  Value.Integer IntegerKind.Usize 8;
+                  Value.Integer IntegerKind.Usize 3;
+                  Value.Integer IntegerKind.Usize 13
+                ];
+              Value.Array
+                [
+                  Value.Integer IntegerKind.Usize 2;
+                  Value.Integer IntegerKind.Usize 12;
+                  Value.Integer IntegerKind.Usize 6;
+                  Value.Integer IntegerKind.Usize 10;
+                  Value.Integer IntegerKind.Usize 0;
+                  Value.Integer IntegerKind.Usize 11;
+                  Value.Integer IntegerKind.Usize 8;
+                  Value.Integer IntegerKind.Usize 3;
+                  Value.Integer IntegerKind.Usize 4;
+                  Value.Integer IntegerKind.Usize 13;
+                  Value.Integer IntegerKind.Usize 7;
+                  Value.Integer IntegerKind.Usize 5;
+                  Value.Integer IntegerKind.Usize 15;
+                  Value.Integer IntegerKind.Usize 14;
+                  Value.Integer IntegerKind.Usize 1;
+                  Value.Integer IntegerKind.Usize 9
+                ];
+              Value.Array
+                [
+                  Value.Integer IntegerKind.Usize 12;
+                  Value.Integer IntegerKind.Usize 5;
+                  Value.Integer IntegerKind.Usize 1;
+                  Value.Integer IntegerKind.Usize 15;
+                  Value.Integer IntegerKind.Usize 14;
+                  Value.Integer IntegerKind.Usize 13;
+                  Value.Integer IntegerKind.Usize 4;
+                  Value.Integer IntegerKind.Usize 10;
+                  Value.Integer IntegerKind.Usize 0;
+                  Value.Integer IntegerKind.Usize 7;
+                  Value.Integer IntegerKind.Usize 6;
+                  Value.Integer IntegerKind.Usize 3;
+                  Value.Integer IntegerKind.Usize 9;
+                  Value.Integer IntegerKind.Usize 2;
+                  Value.Integer IntegerKind.Usize 8;
+                  Value.Integer IntegerKind.Usize 11
+                ];
+              Value.Array
+                [
+                  Value.Integer IntegerKind.Usize 13;
+                  Value.Integer IntegerKind.Usize 11;
+                  Value.Integer IntegerKind.Usize 7;
+                  Value.Integer IntegerKind.Usize 14;
+                  Value.Integer IntegerKind.Usize 12;
+                  Value.Integer IntegerKind.Usize 1;
+                  Value.Integer IntegerKind.Usize 3;
+                  Value.Integer IntegerKind.Usize 9;
+                  Value.Integer IntegerKind.Usize 5;
+                  Value.Integer IntegerKind.Usize 0;
+                  Value.Integer IntegerKind.Usize 15;
+                  Value.Integer IntegerKind.Usize 4;
+                  Value.Integer IntegerKind.Usize 8;
+                  Value.Integer IntegerKind.Usize 6;
+                  Value.Integer IntegerKind.Usize 2;
+                  Value.Integer IntegerKind.Usize 10
+                ];
+              Value.Array
+                [
+                  Value.Integer IntegerKind.Usize 6;
+                  Value.Integer IntegerKind.Usize 15;
+                  Value.Integer IntegerKind.Usize 14;
+                  Value.Integer IntegerKind.Usize 9;
+                  Value.Integer IntegerKind.Usize 11;
+                  Value.Integer IntegerKind.Usize 3;
+                  Value.Integer IntegerKind.Usize 0;
+                  Value.Integer IntegerKind.Usize 8;
+                  Value.Integer IntegerKind.Usize 12;
+                  Value.Integer IntegerKind.Usize 2;
+                  Value.Integer IntegerKind.Usize 13;
+                  Value.Integer IntegerKind.Usize 7;
+                  Value.Integer IntegerKind.Usize 1;
+                  Value.Integer IntegerKind.Usize 4;
+                  Value.Integer IntegerKind.Usize 10;
+                  Value.Integer IntegerKind.Usize 5
+                ];
+              Value.Array
+                [
+                  Value.Integer IntegerKind.Usize 10;
+                  Value.Integer IntegerKind.Usize 2;
+                  Value.Integer IntegerKind.Usize 8;
+                  Value.Integer IntegerKind.Usize 4;
+                  Value.Integer IntegerKind.Usize 7;
+                  Value.Integer IntegerKind.Usize 6;
+                  Value.Integer IntegerKind.Usize 1;
+                  Value.Integer IntegerKind.Usize 5;
+                  Value.Integer IntegerKind.Usize 15;
+                  Value.Integer IntegerKind.Usize 11;
+                  Value.Integer IntegerKind.Usize 9;
+                  Value.Integer IntegerKind.Usize 14;
+                  Value.Integer IntegerKind.Usize 3;
+                  Value.Integer IntegerKind.Usize 12;
+                  Value.Integer IntegerKind.Usize 13;
+                  Value.Integer IntegerKind.Usize 0
+                ]
+            ]
+        |))).
     
-    Axiom Constant_value_SIGMA :
-      (M.get_constant "revm_precompile::blake2::algo::SIGMA") = value_SIGMA.
-    Global Hint Rewrite Constant_value_SIGMA : constant_rewrites.
+    Global Instance Instance_IsConstant_value_SIGMA :
+      M.IsFunction.C "revm_precompile::blake2::algo::SIGMA" value_SIGMA.
+    Admitted.
+    Global Typeclasses Opaque value_SIGMA.
     
-    Definition value_IV : Value.t :=
-      M.run_constant
-        ltac:(M.monadic
-          (M.alloc (|
-            Value.Array
-              [
-                Value.Integer IntegerKind.U64 7640891576956012808;
-                Value.Integer IntegerKind.U64 13503953896175478587;
-                Value.Integer IntegerKind.U64 4354685564936845355;
-                Value.Integer IntegerKind.U64 11912009170470909681;
-                Value.Integer IntegerKind.U64 5840696475078001361;
-                Value.Integer IntegerKind.U64 11170449401992604703;
-                Value.Integer IntegerKind.U64 2270897969802886507;
-                Value.Integer IntegerKind.U64 6620516959819538809
-              ]
-          |))).
+    Definition value_IV (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          Value.Array
+            [
+              Value.Integer IntegerKind.U64 7640891576956012808;
+              Value.Integer IntegerKind.U64 13503953896175478587;
+              Value.Integer IntegerKind.U64 4354685564936845355;
+              Value.Integer IntegerKind.U64 11912009170470909681;
+              Value.Integer IntegerKind.U64 5840696475078001361;
+              Value.Integer IntegerKind.U64 11170449401992604703;
+              Value.Integer IntegerKind.U64 2270897969802886507;
+              Value.Integer IntegerKind.U64 6620516959819538809
+            ]
+        |))).
     
-    Axiom Constant_value_IV : (M.get_constant "revm_precompile::blake2::algo::IV") = value_IV.
-    Global Hint Rewrite Constant_value_IV : constant_rewrites.
+    Global Instance Instance_IsConstant_value_IV :
+      M.IsFunction.C "revm_precompile::blake2::algo::IV" value_IV.
+    Admitted.
+    Global Typeclasses Opaque value_IV.
     
     (*
         pub fn g(v: &mut [u64], a: usize, b: usize, c: usize, d: usize, x: u64, y: u64) {
@@ -2112,7 +2123,7 @@ Module blake2.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance Instance_IsFunction_g : M.IsFunction.Trait "revm_precompile::blake2::algo::g" g.
+    Global Instance Instance_IsFunction_g : M.IsFunction.C "revm_precompile::blake2::algo::g" g.
     Admitted.
     Global Typeclasses Opaque g.
     
@@ -2286,7 +2297,13 @@ Module blake2.
                       M.deref (|
                         M.borrow (|
                           Pointer.Kind.Ref,
-                          M.get_constant "revm_precompile::blake2::algo::IV"
+                          get_constant (|
+                            "revm_precompile::blake2::algo::IV",
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 8 ]
+                              [ Ty.path "u64" ]
+                          |)
                         |)
                       |)
                     |)
@@ -2435,7 +2452,18 @@ Module blake2.
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.SubPointer.get_array_field (|
-                                              M.get_constant "revm_precompile::blake2::algo::SIGMA",
+                                              get_constant (|
+                                                "revm_precompile::blake2::algo::SIGMA",
+                                                Ty.apply
+                                                  (Ty.path "array")
+                                                  [ Value.Integer IntegerKind.Usize 10 ]
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ Value.Integer IntegerKind.Usize 16 ]
+                                                      [ Ty.path "usize" ]
+                                                  ]
+                                              |),
                                               BinOp.Wrap.rem (|
                                                 M.read (| i |),
                                                 Value.Integer IntegerKind.Usize 10
@@ -2905,7 +2933,7 @@ Module blake2.
       end.
     
     Global Instance Instance_IsFunction_compress :
-      M.IsFunction.Trait "revm_precompile::blake2::algo::compress" compress.
+      M.IsFunction.C "revm_precompile::blake2::algo::compress" compress.
     Admitted.
     Global Typeclasses Opaque compress.
   End algo.

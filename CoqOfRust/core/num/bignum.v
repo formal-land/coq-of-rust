@@ -47,7 +47,9 @@ Module num.
                       (Ty.path "u8")
                       (BinOp.Wrap.shr (|
                         M.read (| v |),
-                        M.read (| M.get_constant "core::num::BITS" |)
+                        M.read (|
+                          get_associated_constant (| Ty.path "u8", "BITS", Ty.path "u32" |)
+                        |)
                       |));
                     M.cast (Ty.path "u8") (M.read (| v |))
                   ]
@@ -123,7 +125,7 @@ Module num.
                   BinOp.bit_or
                     (BinOp.Wrap.shl (|
                       M.cast (Ty.path "u16") (M.read (| borrow |)),
-                      M.read (| M.get_constant "core::num::BITS" |)
+                      M.read (| get_associated_constant (| Ty.path "u8", "BITS", Ty.path "u32" |) |)
                     |))
                     (M.cast (Ty.path "u16") (M.read (| self |)))
                 |) in
@@ -194,7 +196,9 @@ Module num.
                       (Ty.path "u16")
                       (BinOp.Wrap.shr (|
                         M.read (| v |),
-                        M.read (| M.get_constant "core::num::BITS" |)
+                        M.read (|
+                          get_associated_constant (| Ty.path "u16", "BITS", Ty.path "u32" |)
+                        |)
                       |));
                     M.cast (Ty.path "u16") (M.read (| v |))
                   ]
@@ -270,7 +274,9 @@ Module num.
                   BinOp.bit_or
                     (BinOp.Wrap.shl (|
                       M.cast (Ty.path "u32") (M.read (| borrow |)),
-                      M.read (| M.get_constant "core::num::BITS" |)
+                      M.read (|
+                        get_associated_constant (| Ty.path "u16", "BITS", Ty.path "u32" |)
+                      |)
                     |))
                     (M.cast (Ty.path "u32") (M.read (| self |)))
                 |) in
@@ -343,7 +349,9 @@ Module num.
                       (Ty.path "u32")
                       (BinOp.Wrap.shr (|
                         M.read (| v |),
-                        M.read (| M.get_constant "core::num::BITS" |)
+                        M.read (|
+                          get_associated_constant (| Ty.path "u32", "BITS", Ty.path "u32" |)
+                        |)
                       |));
                     M.cast (Ty.path "u32") (M.read (| v |))
                   ]
@@ -419,7 +427,9 @@ Module num.
                   BinOp.bit_or
                     (BinOp.Wrap.shl (|
                       M.cast (Ty.path "u64") (M.read (| borrow |)),
-                      M.read (| M.get_constant "core::num::BITS" |)
+                      M.read (|
+                        get_associated_constant (| Ty.path "u32", "BITS", Ty.path "u32" |)
+                      |)
                     |))
                     (M.cast (Ty.path "u64") (M.read (| self |)))
                 |) in
@@ -451,24 +461,23 @@ Module num.
           ].
     End Impl_core_num_bignum_FullOps_for_u32.
     
-    Definition value_SMALL_POW5 : Value.t :=
-      M.run_constant
-        ltac:(M.monadic
-          (M.alloc (|
-            Value.Array
-              [
-                Value.Tuple
-                  [ Value.Integer IntegerKind.U64 125; Value.Integer IntegerKind.Usize 3 ];
-                Value.Tuple
-                  [ Value.Integer IntegerKind.U64 15625; Value.Integer IntegerKind.Usize 6 ];
-                Value.Tuple
-                  [ Value.Integer IntegerKind.U64 1220703125; Value.Integer IntegerKind.Usize 13 ]
-              ]
-          |))).
+    Definition value_SMALL_POW5 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          Value.Array
+            [
+              Value.Tuple [ Value.Integer IntegerKind.U64 125; Value.Integer IntegerKind.Usize 3 ];
+              Value.Tuple
+                [ Value.Integer IntegerKind.U64 15625; Value.Integer IntegerKind.Usize 6 ];
+              Value.Tuple
+                [ Value.Integer IntegerKind.U64 1220703125; Value.Integer IntegerKind.Usize 13 ]
+            ]
+        |))).
     
-    Axiom Constant_value_SMALL_POW5 :
-      (M.get_constant "core::num::bignum::SMALL_POW5") = value_SMALL_POW5.
-    Global Hint Rewrite Constant_value_SMALL_POW5 : constant_rewrites.
+    Global Instance Instance_IsConstant_value_SMALL_POW5 :
+      M.IsFunction.C "core::num::bignum::SMALL_POW5" value_SMALL_POW5.
+    Admitted.
+    Global Typeclasses Opaque value_SMALL_POW5.
     
     Axiom Digit32 : (Ty.path "core::num::bignum::Digit32") = (Ty.path "u32").
     
@@ -526,7 +535,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_from_small :
-        M.IsAssociatedFunction.Trait Self "from_small" from_small.
+        M.IsAssociatedFunction.C Self "from_small" from_small.
       Admitted.
       Global Typeclasses Opaque from_small.
       
@@ -588,7 +597,13 @@ Module num.
                                   β,
                                   BinOp.Wrap.shr (|
                                     M.read (| β |),
-                                    M.read (| M.get_constant "core::num::BITS" |)
+                                    M.read (|
+                                      get_associated_constant (|
+                                        Ty.path "u32",
+                                        "BITS",
+                                        Ty.path "u32"
+                                      |)
+                                    |)
                                   |)
                                 |)
                               |) in
@@ -628,7 +643,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_from_u64 :
-        M.IsAssociatedFunction.Trait Self "from_u64" from_u64.
+        M.IsAssociatedFunction.C Self "from_u64" from_u64.
       Admitted.
       Global Typeclasses Opaque from_u64.
       
@@ -692,7 +707,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_digits : M.IsAssociatedFunction.Trait Self "digits" digits.
+      Global Instance AssociatedFunction_digits : M.IsAssociatedFunction.C Self "digits" digits.
       Admitted.
       Global Typeclasses Opaque digits.
       
@@ -713,7 +728,11 @@ Module num.
             M.read (|
               let~ digitbits : Ty.path "usize" :=
                 M.alloc (|
-                  M.cast (Ty.path "usize") (M.read (| M.get_constant "core::num::BITS" |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (|
+                      get_associated_constant (| Ty.path "u32", "BITS", Ty.path "u32" |)
+                    |))
                 |) in
               let~ d : Ty.path "usize" :=
                 M.alloc (| BinOp.Wrap.div (| M.read (| i |), M.read (| digitbits |) |) |) in
@@ -742,8 +761,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_get_bit :
-        M.IsAssociatedFunction.Trait Self "get_bit" get_bit.
+      Global Instance AssociatedFunction_get_bit : M.IsAssociatedFunction.C Self "get_bit" get_bit.
       Admitted.
       Global Typeclasses Opaque get_bit.
       
@@ -834,8 +852,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_is_zero :
-        M.IsAssociatedFunction.Trait Self "is_zero" is_zero.
+      Global Instance AssociatedFunction_is_zero : M.IsAssociatedFunction.C Self "is_zero" is_zero.
       Admitted.
       Global Typeclasses Opaque is_zero.
       
@@ -860,7 +877,11 @@ Module num.
             M.read (|
               let~ digitbits : Ty.path "usize" :=
                 M.alloc (|
-                  M.cast (Ty.path "usize") (M.read (| M.get_constant "core::num::BITS" |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (|
+                      get_associated_constant (| Ty.path "u32", "BITS", Ty.path "u32" |)
+                    |))
                 |) in
               let~ digits :
                   Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u32" ] ] :=
@@ -980,7 +1001,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_bit_length :
-        M.IsAssociatedFunction.Trait Self "bit_length" bit_length.
+        M.IsAssociatedFunction.C Self "bit_length" bit_length.
       Admitted.
       Global Typeclasses Opaque bit_length.
       
@@ -1368,7 +1389,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_add : M.IsAssociatedFunction.Trait Self "add" add.
+      Global Instance AssociatedFunction_add : M.IsAssociatedFunction.C Self "add" add.
       Admitted.
       Global Typeclasses Opaque add.
       
@@ -1597,7 +1618,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_add_small :
-        M.IsAssociatedFunction.Trait Self "add_small" add_small.
+        M.IsAssociatedFunction.C Self "add_small" add_small.
       Admitted.
       Global Typeclasses Opaque add_small.
       
@@ -1967,7 +1988,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_sub : M.IsAssociatedFunction.Trait Self "sub" sub.
+      Global Instance AssociatedFunction_sub : M.IsAssociatedFunction.C Self "sub" sub.
       Admitted.
       Global Typeclasses Opaque sub.
       
@@ -2236,7 +2257,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_mul_small :
-        M.IsAssociatedFunction.Trait Self "mul_small" mul_small.
+        M.IsAssociatedFunction.C Self "mul_small" mul_small.
       Admitted.
       Global Typeclasses Opaque mul_small.
       
@@ -2291,7 +2312,11 @@ Module num.
                 M.read (|
                   let~ digitbits : Ty.path "usize" :=
                     M.alloc (|
-                      M.cast (Ty.path "usize") (M.read (| M.get_constant "core::num::BITS" |))
+                      M.cast
+                        (Ty.path "usize")
+                        (M.read (|
+                          get_associated_constant (| Ty.path "u32", "BITS", Ty.path "u32" |)
+                        |))
                     |) in
                   let~ digits : Ty.path "usize" :=
                     M.alloc (| BinOp.Wrap.div (| M.read (| bits |), M.read (| digitbits |) |) |) in
@@ -3204,7 +3229,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_mul_pow2 :
-        M.IsAssociatedFunction.Trait Self "mul_pow2" mul_pow2.
+        M.IsAssociatedFunction.C Self "mul_pow2" mul_pow2.
       Admitted.
       Global Typeclasses Opaque mul_pow2.
       
@@ -3264,7 +3289,13 @@ Module num.
                   M.match_operator (|
                     None,
                     M.SubPointer.get_array_field (|
-                      M.get_constant "core::num::bignum::SMALL_POW5",
+                      get_constant (|
+                        "core::num::bignum::SMALL_POW5",
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 3 ]
+                          [ Ty.tuple [ Ty.path "u64"; Ty.path "usize" ] ]
+                      |),
                       M.read (| table_index |)
                     |),
                     [
@@ -3497,7 +3528,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_mul_pow5 :
-        M.IsAssociatedFunction.Trait Self "mul_pow5" mul_pow5.
+        M.IsAssociatedFunction.C Self "mul_pow5" mul_pow5.
       Admitted.
       Global Typeclasses Opaque mul_pow5.
       
@@ -3754,7 +3785,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_mul_digits :
-        M.IsAssociatedFunction.Trait Self "mul_digits" mul_digits.
+        M.IsAssociatedFunction.C Self "mul_digits" mul_digits.
       Admitted.
       Global Typeclasses Opaque mul_digits.
       
@@ -4038,7 +4069,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_div_rem_small :
-        M.IsAssociatedFunction.Trait Self "div_rem_small" div_rem_small.
+        M.IsAssociatedFunction.C Self "div_rem_small" div_rem_small.
       Admitted.
       Global Typeclasses Opaque div_rem_small.
       
@@ -4129,7 +4160,11 @@ Module num.
                 |) in
               let~ digitbits : Ty.path "usize" :=
                 M.alloc (|
-                  M.cast (Ty.path "usize") (M.read (| M.get_constant "core::num::BITS" |))
+                  M.cast
+                    (Ty.path "usize")
+                    (M.read (|
+                      get_associated_constant (| Ty.path "u32", "BITS", Ty.path "u32" |)
+                    |))
                 |) in
               let~ _ : Ty.tuple [] :=
                 M.use
@@ -5142,8 +5177,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_div_rem :
-        M.IsAssociatedFunction.Trait Self "div_rem" div_rem.
+      Global Instance AssociatedFunction_div_rem : M.IsAssociatedFunction.C Self "div_rem" div_rem.
       Admitted.
       Global Typeclasses Opaque div_rem.
     End Impl_core_num_bignum_Big32x40.
@@ -5718,7 +5752,11 @@ Module num.
                   let~ digitlen : Ty.path "usize" :=
                     M.alloc (|
                       BinOp.Wrap.div (|
-                        M.cast (Ty.path "usize") (M.read (| M.get_constant "core::num::BITS" |)),
+                        M.cast
+                          (Ty.path "usize")
+                          (M.read (|
+                            get_associated_constant (| Ty.path "u32", "BITS", Ty.path "u32" |)
+                          |)),
                         Value.Integer IntegerKind.Usize 4
                       |)
                     |) in
@@ -6439,7 +6477,7 @@ Module num.
           end.
         
         Global Instance AssociatedFunction_from_small :
-          M.IsAssociatedFunction.Trait Self "from_small" from_small.
+          M.IsAssociatedFunction.C Self "from_small" from_small.
         Admitted.
         Global Typeclasses Opaque from_small.
         
@@ -6504,7 +6542,13 @@ Module num.
                                     β,
                                     BinOp.Wrap.shr (|
                                       M.read (| β |),
-                                      M.read (| M.get_constant "core::num::BITS" |)
+                                      M.read (|
+                                        get_associated_constant (|
+                                          Ty.path "u8",
+                                          "BITS",
+                                          Ty.path "u32"
+                                        |)
+                                      |)
                                     |)
                                   |)
                                 |) in
@@ -6546,7 +6590,7 @@ Module num.
           end.
         
         Global Instance AssociatedFunction_from_u64 :
-          M.IsAssociatedFunction.Trait Self "from_u64" from_u64.
+          M.IsAssociatedFunction.C Self "from_u64" from_u64.
         Admitted.
         Global Typeclasses Opaque from_u64.
         
@@ -6613,8 +6657,7 @@ Module num.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Global Instance AssociatedFunction_digits :
-          M.IsAssociatedFunction.Trait Self "digits" digits.
+        Global Instance AssociatedFunction_digits : M.IsAssociatedFunction.C Self "digits" digits.
         Admitted.
         Global Typeclasses Opaque digits.
         
@@ -6635,7 +6678,11 @@ Module num.
               M.read (|
                 let~ digitbits : Ty.path "usize" :=
                   M.alloc (|
-                    M.cast (Ty.path "usize") (M.read (| M.get_constant "core::num::BITS" |))
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (|
+                        get_associated_constant (| Ty.path "u8", "BITS", Ty.path "u32" |)
+                      |))
                   |) in
                 let~ d : Ty.path "usize" :=
                   M.alloc (| BinOp.Wrap.div (| M.read (| i |), M.read (| digitbits |) |) |) in
@@ -6664,7 +6711,7 @@ Module num.
           end.
         
         Global Instance AssociatedFunction_get_bit :
-          M.IsAssociatedFunction.Trait Self "get_bit" get_bit.
+          M.IsAssociatedFunction.C Self "get_bit" get_bit.
         Admitted.
         Global Typeclasses Opaque get_bit.
         
@@ -6756,7 +6803,7 @@ Module num.
           end.
         
         Global Instance AssociatedFunction_is_zero :
-          M.IsAssociatedFunction.Trait Self "is_zero" is_zero.
+          M.IsAssociatedFunction.C Self "is_zero" is_zero.
         Admitted.
         Global Typeclasses Opaque is_zero.
         
@@ -6781,7 +6828,11 @@ Module num.
               M.read (|
                 let~ digitbits : Ty.path "usize" :=
                   M.alloc (|
-                    M.cast (Ty.path "usize") (M.read (| M.get_constant "core::num::BITS" |))
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (|
+                        get_associated_constant (| Ty.path "u8", "BITS", Ty.path "u32" |)
+                      |))
                   |) in
                 let~ digits :
                     Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ] :=
@@ -6901,7 +6952,7 @@ Module num.
           end.
         
         Global Instance AssociatedFunction_bit_length :
-          M.IsAssociatedFunction.Trait Self "bit_length" bit_length.
+          M.IsAssociatedFunction.C Self "bit_length" bit_length.
         Admitted.
         Global Typeclasses Opaque bit_length.
         
@@ -7296,7 +7347,7 @@ Module num.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Global Instance AssociatedFunction_add : M.IsAssociatedFunction.Trait Self "add" add.
+        Global Instance AssociatedFunction_add : M.IsAssociatedFunction.C Self "add" add.
         Admitted.
         Global Typeclasses Opaque add.
         
@@ -7525,7 +7576,7 @@ Module num.
           end.
         
         Global Instance AssociatedFunction_add_small :
-          M.IsAssociatedFunction.Trait Self "add_small" add_small.
+          M.IsAssociatedFunction.C Self "add_small" add_small.
         Admitted.
         Global Typeclasses Opaque add_small.
         
@@ -7903,7 +7954,7 @@ Module num.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Global Instance AssociatedFunction_sub : M.IsAssociatedFunction.Trait Self "sub" sub.
+        Global Instance AssociatedFunction_sub : M.IsAssociatedFunction.C Self "sub" sub.
         Admitted.
         Global Typeclasses Opaque sub.
         
@@ -8182,7 +8233,7 @@ Module num.
           end.
         
         Global Instance AssociatedFunction_mul_small :
-          M.IsAssociatedFunction.Trait Self "mul_small" mul_small.
+          M.IsAssociatedFunction.C Self "mul_small" mul_small.
         Admitted.
         Global Typeclasses Opaque mul_small.
         
@@ -8237,7 +8288,11 @@ Module num.
                   M.read (|
                     let~ digitbits : Ty.path "usize" :=
                       M.alloc (|
-                        M.cast (Ty.path "usize") (M.read (| M.get_constant "core::num::BITS" |))
+                        M.cast
+                          (Ty.path "usize")
+                          (M.read (|
+                            get_associated_constant (| Ty.path "u8", "BITS", Ty.path "u32" |)
+                          |))
                       |) in
                     let~ digits : Ty.path "usize" :=
                       M.alloc (|
@@ -9176,7 +9231,7 @@ Module num.
           end.
         
         Global Instance AssociatedFunction_mul_pow2 :
-          M.IsAssociatedFunction.Trait Self "mul_pow2" mul_pow2.
+          M.IsAssociatedFunction.C Self "mul_pow2" mul_pow2.
         Admitted.
         Global Typeclasses Opaque mul_pow2.
         
@@ -9241,7 +9296,13 @@ Module num.
                     M.match_operator (|
                       None,
                       M.SubPointer.get_array_field (|
-                        M.get_constant "core::num::bignum::SMALL_POW5",
+                        get_constant (|
+                          "core::num::bignum::SMALL_POW5",
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 3 ]
+                            [ Ty.tuple [ Ty.path "u64"; Ty.path "usize" ] ]
+                        |),
                         M.read (| table_index |)
                       |),
                       [
@@ -9476,7 +9537,7 @@ Module num.
           end.
         
         Global Instance AssociatedFunction_mul_pow5 :
-          M.IsAssociatedFunction.Trait Self "mul_pow5" mul_pow5.
+          M.IsAssociatedFunction.C Self "mul_pow5" mul_pow5.
         Admitted.
         Global Typeclasses Opaque mul_pow5.
         
@@ -9735,7 +9796,7 @@ Module num.
           end.
         
         Global Instance AssociatedFunction_mul_digits :
-          M.IsAssociatedFunction.Trait Self "mul_digits" mul_digits.
+          M.IsAssociatedFunction.C Self "mul_digits" mul_digits.
         Admitted.
         Global Typeclasses Opaque mul_digits.
         
@@ -10026,7 +10087,7 @@ Module num.
           end.
         
         Global Instance AssociatedFunction_div_rem_small :
-          M.IsAssociatedFunction.Trait Self "div_rem_small" div_rem_small.
+          M.IsAssociatedFunction.C Self "div_rem_small" div_rem_small.
         Admitted.
         Global Typeclasses Opaque div_rem_small.
         
@@ -10121,7 +10182,11 @@ Module num.
                   |) in
                 let~ digitbits : Ty.path "usize" :=
                   M.alloc (|
-                    M.cast (Ty.path "usize") (M.read (| M.get_constant "core::num::BITS" |))
+                    M.cast
+                      (Ty.path "usize")
+                      (M.read (|
+                        get_associated_constant (| Ty.path "u8", "BITS", Ty.path "u32" |)
+                      |))
                   |) in
                 let~ _ : Ty.tuple [] :=
                   M.use
@@ -11171,7 +11236,7 @@ Module num.
           end.
         
         Global Instance AssociatedFunction_div_rem :
-          M.IsAssociatedFunction.Trait Self "div_rem" div_rem.
+          M.IsAssociatedFunction.C Self "div_rem" div_rem.
         Admitted.
         Global Typeclasses Opaque div_rem.
       End Impl_core_num_bignum_tests_Big8x3.
@@ -11752,7 +11817,11 @@ Module num.
                     let~ digitlen : Ty.path "usize" :=
                       M.alloc (|
                         BinOp.Wrap.div (|
-                          M.cast (Ty.path "usize") (M.read (| M.get_constant "core::num::BITS" |)),
+                          M.cast
+                            (Ty.path "usize")
+                            (M.read (|
+                              get_associated_constant (| Ty.path "u8", "BITS", Ty.path "u32" |)
+                            |)),
                           Value.Integer IntegerKind.Usize 4
                         |)
                       |) in

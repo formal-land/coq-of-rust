@@ -381,6 +381,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "disambiguating_overlapping_traits::main" main.
+  M.IsFunction.C "disambiguating_overlapping_traits::main" main.
 Admitted.
 Global Typeclasses Opaque main.

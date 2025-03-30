@@ -20,8 +20,7 @@ Definition gen_range (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_gen_range :
-  M.IsFunction.Trait "guessing_game::gen_range" gen_range.
+Global Instance Instance_IsFunction_gen_range : M.IsFunction.C "guessing_game::gen_range" gen_range.
 Admitted.
 Global Typeclasses Opaque gen_range.
 
@@ -460,6 +459,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "guessing_game::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "guessing_game::main" main.
 Admitted.
 Global Typeclasses Opaque main.

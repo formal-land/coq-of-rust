@@ -1463,7 +1463,26 @@ Module interpreter_action.
                                     |),
                                     [
                                       M.borrow (| Pointer.Kind.Ref, x |);
-                                      M.borrow (| Pointer.Kind.Ref, M.get_constant "ruint::ZERO" |)
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        get_associated_constant (|
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [
+                                              Value.Integer IntegerKind.Usize 256;
+                                              Value.Integer IntegerKind.Usize 4
+                                            ]
+                                            [],
+                                          "ZERO",
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [
+                                              Value.Integer IntegerKind.Usize 256;
+                                              Value.Integer IntegerKind.Usize 4
+                                            ]
+                                            []
+                                        |)
+                                      |)
                                     ]
                                   |)))
                             ]
@@ -1476,7 +1495,7 @@ Module interpreter_action.
         end.
       
       Global Instance AssociatedFunction_transfers_value :
-        M.IsAssociatedFunction.Trait Self "transfers_value" transfers_value.
+        M.IsAssociatedFunction.C Self "transfers_value" transfers_value.
       Admitted.
       Global Typeclasses Opaque transfers_value.
       
@@ -1521,7 +1540,7 @@ Module interpreter_action.
         end.
       
       Global Instance AssociatedFunction_transfer_value :
-        M.IsAssociatedFunction.Trait Self "transfer_value" transfer_value.
+        M.IsAssociatedFunction.C Self "transfer_value" transfer_value.
       Admitted.
       Global Typeclasses Opaque transfer_value.
       
@@ -1566,7 +1585,7 @@ Module interpreter_action.
         end.
       
       Global Instance AssociatedFunction_apparent_value :
-        M.IsAssociatedFunction.Trait Self "apparent_value" apparent_value.
+        M.IsAssociatedFunction.C Self "apparent_value" apparent_value.
       Admitted.
       Global Typeclasses Opaque apparent_value.
       
@@ -1591,7 +1610,7 @@ Module interpreter_action.
         end.
       
       Global Instance AssociatedFunction_transfer_from :
-        M.IsAssociatedFunction.Trait Self "transfer_from" transfer_from.
+        M.IsAssociatedFunction.C Self "transfer_from" transfer_from.
       Admitted.
       Global Typeclasses Opaque transfer_from.
       
@@ -1616,7 +1635,7 @@ Module interpreter_action.
         end.
       
       Global Instance AssociatedFunction_transfer_to :
-        M.IsAssociatedFunction.Trait Self "transfer_to" transfer_to.
+        M.IsAssociatedFunction.C Self "transfer_to" transfer_to.
       Admitted.
       Global Typeclasses Opaque transfer_to.
       
@@ -1656,7 +1675,7 @@ Module interpreter_action.
         end.
       
       Global Instance AssociatedFunction_call_value :
-        M.IsAssociatedFunction.Trait Self "call_value" call_value.
+        M.IsAssociatedFunction.C Self "call_value" call_value.
       Admitted.
       Global Typeclasses Opaque call_value.
     End Impl_revm_interpreter_interpreter_action_call_inputs_CallInputs.
@@ -2105,7 +2124,7 @@ Module interpreter_action.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_is_ext : M.IsAssociatedFunction.Trait Self "is_ext" is_ext.
+      Global Instance AssociatedFunction_is_ext : M.IsAssociatedFunction.C Self "is_ext" is_ext.
       Admitted.
       Global Typeclasses Opaque is_ext.
       
@@ -2141,7 +2160,7 @@ Module interpreter_action.
         end.
       
       Global Instance AssociatedFunction_is_ext_delegate_call :
-        M.IsAssociatedFunction.Trait Self "is_ext_delegate_call" is_ext_delegate_call.
+        M.IsAssociatedFunction.C Self "is_ext_delegate_call" is_ext_delegate_call.
       Admitted.
       Global Typeclasses Opaque is_ext_delegate_call.
     End Impl_revm_interpreter_interpreter_action_call_inputs_CallScheme.
@@ -2791,7 +2810,21 @@ Module interpreter_action.
           ltac:(M.monadic
             (Value.StructTuple
               "revm_interpreter::interpreter_action::call_inputs::CallValue::Transfer"
-              [ M.read (| M.get_constant "ruint::ZERO" |) ]))
+              [
+                M.read (|
+                  get_associated_constant (|
+                    Ty.apply
+                      (Ty.path "ruint::Uint")
+                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                      [],
+                    "ZERO",
+                    Ty.apply
+                      (Ty.path "ruint::Uint")
+                      [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+                      []
+                  |)
+                |)
+              ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -2868,7 +2901,7 @@ Module interpreter_action.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_get : M.IsAssociatedFunction.Trait Self "get" get.
+      Global Instance AssociatedFunction_get : M.IsAssociatedFunction.C Self "get" get.
       Admitted.
       Global Typeclasses Opaque get.
       
@@ -2927,7 +2960,7 @@ Module interpreter_action.
         end.
       
       Global Instance AssociatedFunction_transfer :
-        M.IsAssociatedFunction.Trait Self "transfer" transfer.
+        M.IsAssociatedFunction.C Self "transfer" transfer.
       Admitted.
       Global Typeclasses Opaque transfer.
       
@@ -2964,7 +2997,7 @@ Module interpreter_action.
         end.
       
       Global Instance AssociatedFunction_is_transfer :
-        M.IsAssociatedFunction.Trait Self "is_transfer" is_transfer.
+        M.IsAssociatedFunction.C Self "is_transfer" is_transfer.
       Admitted.
       Global Typeclasses Opaque is_transfer.
       
@@ -3023,7 +3056,7 @@ Module interpreter_action.
         end.
       
       Global Instance AssociatedFunction_apparent :
-        M.IsAssociatedFunction.Trait Self "apparent" apparent.
+        M.IsAssociatedFunction.C Self "apparent" apparent.
       Admitted.
       Global Typeclasses Opaque apparent.
       
@@ -3060,7 +3093,7 @@ Module interpreter_action.
         end.
       
       Global Instance AssociatedFunction_is_apparent :
-        M.IsAssociatedFunction.Trait Self "is_apparent" is_apparent.
+        M.IsAssociatedFunction.C Self "is_apparent" is_apparent.
       Admitted.
       Global Typeclasses Opaque is_apparent.
     End Impl_revm_interpreter_interpreter_action_call_inputs_CallValue.

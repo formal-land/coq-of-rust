@@ -3,15 +3,15 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter id : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_id : M.IsFunction.Trait "example01::id" id.
+Global Instance Instance_IsFunction_id : M.IsFunction.C "example01::id" id.
 Admitted.
 
 Parameter tri : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_tri : M.IsFunction.Trait "example01::tri" tri.
+Global Instance Instance_IsFunction_tri : M.IsFunction.C "example01::tri" tri.
 Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "example01::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "example01::main" main.
 Admitted.

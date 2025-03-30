@@ -4,17 +4,17 @@ Require Import CoqOfRust.CoqOfRust.
 Parameter apply : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_apply :
-  M.IsFunction.Trait "functions_closures_as_input_parameters::apply" apply.
+  M.IsFunction.C "functions_closures_as_input_parameters::apply" apply.
 Admitted.
 
 Parameter apply_to_3 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_apply_to_3 :
-  M.IsFunction.Trait "functions_closures_as_input_parameters::apply_to_3" apply_to_3.
+  M.IsFunction.C "functions_closures_as_input_parameters::apply_to_3" apply_to_3.
 Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "functions_closures_as_input_parameters::main" main.
+  M.IsFunction.C "functions_closures_as_input_parameters::main" main.
 Admitted.

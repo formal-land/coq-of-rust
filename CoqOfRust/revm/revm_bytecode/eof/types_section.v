@@ -3,13 +3,19 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module eof.
   Module types_section.
-    Definition value_EOF_NON_RETURNING_FUNCTION : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 128 |))).
+    Definition value_EOF_NON_RETURNING_FUNCTION
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 128 |))).
     
-    Axiom Constant_value_EOF_NON_RETURNING_FUNCTION :
-      (M.get_constant "revm_bytecode::eof::types_section::EOF_NON_RETURNING_FUNCTION") =
+    Global Instance Instance_IsConstant_value_EOF_NON_RETURNING_FUNCTION :
+      M.IsFunction.C
+        "revm_bytecode::eof::types_section::EOF_NON_RETURNING_FUNCTION"
         value_EOF_NON_RETURNING_FUNCTION.
-    Global Hint Rewrite Constant_value_EOF_NON_RETURNING_FUNCTION : constant_rewrites.
+    Admitted.
+    Global Typeclasses Opaque value_EOF_NON_RETURNING_FUNCTION.
     
     (* StructRecord
       {
@@ -859,7 +865,7 @@ Module eof.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -882,14 +888,17 @@ Module eof.
                 |)
               |),
               M.read (|
-                M.get_constant "revm_bytecode::eof::types_section::EOF_NON_RETURNING_FUNCTION"
+                get_constant (|
+                  "revm_bytecode::eof::types_section::EOF_NON_RETURNING_FUNCTION",
+                  Ty.path "u8"
+                |)
               |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Global Instance AssociatedFunction_is_non_returning :
-        M.IsAssociatedFunction.Trait Self "is_non_returning" is_non_returning.
+        M.IsAssociatedFunction.C Self "is_non_returning" is_non_returning.
       Admitted.
       Global Typeclasses Opaque is_non_returning.
       
@@ -926,8 +935,7 @@ Module eof.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_io_diff :
-        M.IsAssociatedFunction.Trait Self "io_diff" io_diff.
+      Global Instance AssociatedFunction_io_diff : M.IsAssociatedFunction.C Self "io_diff" io_diff.
       Admitted.
       Global Typeclasses Opaque io_diff.
       
@@ -1049,7 +1057,7 @@ Module eof.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_encode : M.IsAssociatedFunction.Trait Self "encode" encode.
+      Global Instance AssociatedFunction_encode : M.IsAssociatedFunction.C Self "encode" encode.
       Admitted.
       Global Typeclasses Opaque encode.
       
@@ -1809,7 +1817,7 @@ Module eof.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_decode : M.IsAssociatedFunction.Trait Self "decode" decode.
+      Global Instance AssociatedFunction_decode : M.IsAssociatedFunction.C Self "decode" decode.
       Admitted.
       Global Typeclasses Opaque decode.
       
@@ -1955,7 +1963,7 @@ Module eof.
         end.
       
       Global Instance AssociatedFunction_validate :
-        M.IsAssociatedFunction.Trait Self "validate" validate.
+        M.IsAssociatedFunction.C Self "validate" validate.
       Admitted.
       Global Typeclasses Opaque validate.
     End Impl_revm_bytecode_eof_types_section_TypesSection.

@@ -147,7 +147,7 @@ Module Impl_call_builder_Selector.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
   Admitted.
   Global Typeclasses Opaque new.
 End Impl_call_builder_Selector.
@@ -207,7 +207,7 @@ Module Impl_call_builder_CallBuilderTest.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
   Admitted.
   Global Typeclasses Opaque new.
   
@@ -341,7 +341,7 @@ Module Impl_call_builder_CallBuilderTest.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_call : M.IsAssociatedFunction.Trait Self "call" call.
+  Global Instance AssociatedFunction_call : M.IsAssociatedFunction.C Self "call" call.
   Admitted.
   Global Typeclasses Opaque call.
   
@@ -367,7 +367,7 @@ Module Impl_call_builder_CallBuilderTest.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_invoke : M.IsAssociatedFunction.Trait Self "invoke" invoke.
+  Global Instance AssociatedFunction_invoke : M.IsAssociatedFunction.C Self "invoke" invoke.
   Admitted.
   Global Typeclasses Opaque invoke.
   
@@ -414,7 +414,7 @@ Module Impl_call_builder_CallBuilderTest.
     end.
   
   Global Instance AssociatedFunction_call_instantiate :
-    M.IsAssociatedFunction.Trait Self "call_instantiate" call_instantiate.
+    M.IsAssociatedFunction.C Self "call_instantiate" call_instantiate.
   Admitted.
   Global Typeclasses Opaque call_instantiate.
   
@@ -458,7 +458,7 @@ Module Impl_call_builder_CallBuilderTest.
     end.
   
   Global Instance AssociatedFunction_call_instantiate_fallible :
-    M.IsAssociatedFunction.Trait Self "call_instantiate_fallible" call_instantiate_fallible.
+    M.IsAssociatedFunction.C Self "call_instantiate_fallible" call_instantiate_fallible.
   Admitted.
   Global Typeclasses Opaque call_instantiate_fallible.
 End Impl_call_builder_CallBuilderTest.

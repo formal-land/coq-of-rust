@@ -97,7 +97,7 @@ Module constants.
     end.
   
   Global Instance Instance_IsFunction_verify_module :
-    M.IsFunction.Trait "move_bytecode_verifier::constants::verify_module" verify_module.
+    M.IsFunction.C "move_bytecode_verifier::constants::verify_module" verify_module.
   Admitted.
   Global Typeclasses Opaque verify_module.
   
@@ -438,7 +438,7 @@ Module constants.
     end.
   
   Global Instance Instance_IsFunction_verify_module_impl :
-    M.IsFunction.Trait "move_bytecode_verifier::constants::verify_module_impl" verify_module_impl.
+    M.IsFunction.C "move_bytecode_verifier::constants::verify_module_impl" verify_module_impl.
   Admitted.
   Global Typeclasses Opaque verify_module_impl.
   
@@ -604,7 +604,7 @@ Module constants.
     end.
   
   Global Instance Instance_IsFunction_verify_constant :
-    M.IsFunction.Trait "move_bytecode_verifier::constants::verify_constant" verify_constant.
+    M.IsFunction.C "move_bytecode_verifier::constants::verify_constant" verify_constant.
   Admitted.
   Global Typeclasses Opaque verify_constant.
   
@@ -684,9 +684,7 @@ Module constants.
     end.
   
   Global Instance Instance_IsFunction_verify_constant_type :
-    M.IsFunction.Trait
-      "move_bytecode_verifier::constants::verify_constant_type"
-      verify_constant_type.
+    M.IsFunction.C "move_bytecode_verifier::constants::verify_constant_type" verify_constant_type.
   Admitted.
   Global Typeclasses Opaque verify_constant_type.
   
@@ -767,9 +765,7 @@ Module constants.
     end.
   
   Global Instance Instance_IsFunction_verify_constant_data :
-    M.IsFunction.Trait
-      "move_bytecode_verifier::constants::verify_constant_data"
-      verify_constant_data.
+    M.IsFunction.C "move_bytecode_verifier::constants::verify_constant_data" verify_constant_data.
   Admitted.
   Global Typeclasses Opaque verify_constant_data.
 End constants.

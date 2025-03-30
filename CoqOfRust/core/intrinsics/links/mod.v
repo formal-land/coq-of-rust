@@ -1,7 +1,7 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
 Require Import core.links.cmpOrdering.
-Require Import core.intrinsics.
+Require Import core.intrinsics.mod.
 
 Instance run_three_way_compare (integer_kind : IntegerKind.t) (x y : Integer.t integer_kind) :
   Run.Trait

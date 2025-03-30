@@ -739,7 +739,7 @@ Module eip7702.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_len : M.IsAssociatedFunction.Trait Self "len" len.
+      Global Instance AssociatedFunction_len : M.IsAssociatedFunction.C Self "len" len.
       Admitted.
       Global Typeclasses Opaque len.
       
@@ -783,7 +783,7 @@ Module eip7702.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_empty : M.IsAssociatedFunction.Trait Self "empty" empty.
+      Global Instance AssociatedFunction_empty : M.IsAssociatedFunction.C Self "empty" empty.
       Admitted.
       Global Typeclasses Opaque empty.
       
@@ -814,7 +814,7 @@ Module eip7702.
         end.
       
       Global Instance AssociatedFunction_is_empty :
-        M.IsAssociatedFunction.Trait Self "is_empty" is_empty.
+        M.IsAssociatedFunction.C Self "is_empty" is_empty.
       Admitted.
       Global Typeclasses Opaque is_empty.
       
@@ -1227,7 +1227,7 @@ Module eip7702.
         end.
       
       Global Instance AssociatedFunction_recovered_iter :
-        M.IsAssociatedFunction.Trait Self "recovered_iter" recovered_iter.
+        M.IsAssociatedFunction.C Self "recovered_iter" recovered_iter.
       Admitted.
       Global Typeclasses Opaque recovered_iter.
       
@@ -1444,7 +1444,7 @@ Module eip7702.
         end.
       
       Global Instance AssociatedFunction_into_recovered :
-        M.IsAssociatedFunction.Trait Self "into_recovered" into_recovered.
+        M.IsAssociatedFunction.C Self "into_recovered" into_recovered.
       Admitted.
       Global Typeclasses Opaque into_recovered.
     End Impl_revm_specification_eip7702_authorization_list_AuthorizationList.

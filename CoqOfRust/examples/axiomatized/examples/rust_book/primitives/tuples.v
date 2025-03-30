@@ -3,7 +3,7 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter reverse : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_reverse : M.IsFunction.Trait "tuples::reverse" reverse.
+Global Instance Instance_IsFunction_reverse : M.IsFunction.C "tuples::reverse" reverse.
 Admitted.
 
 (* StructTuple
@@ -30,5 +30,5 @@ End Impl_core_fmt_Debug_for_tuples_Matrix.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "tuples::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "tuples::main" main.
 Admitted.

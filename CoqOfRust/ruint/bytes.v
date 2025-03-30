@@ -8,23 +8,27 @@ Module bytes.
     
     (*     pub const BYTES: usize = (BITS + 7) / 8; *)
     (* Ty.path "usize" *)
-    Definition value_BYTES (BITS LIMBS : Value.t) : Value.t :=
+    Definition value_BYTES
+        (BITS LIMBS : Value.t)
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
       let Self : Ty.t := Self BITS LIMBS in
-      M.run
-        ltac:(M.monadic
-          (M.alloc (|
-            BinOp.Wrap.div (|
-              BinOp.Wrap.add (|
-                M.read (| M.get_constant "ruint::bytes::BITS" |),
-                Value.Integer IntegerKind.Usize 7
-              |),
-              Value.Integer IntegerKind.Usize 8
-            |)
-          |))).
+      ltac:(M.monadic
+        (M.alloc (|
+          BinOp.Wrap.div (|
+            BinOp.Wrap.add (|
+              M.read (| get_constant (| "ruint::bytes::BITS", Ty.path "usize" |) |),
+              Value.Integer IntegerKind.Usize 7
+            |),
+            Value.Integer IntegerKind.Usize 8
+          |)
+        |))).
     
     Global Instance AssociatedConstant_value_BYTES :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedConstant.Trait (Self BITS LIMBS) "value_BYTES" (value_BYTES BITS LIMBS).
+      M.IsAssociatedFunction.C (Self BITS LIMBS) "BYTES" (value_BYTES BITS LIMBS).
     Admitted.
     Global Typeclasses Opaque value_BYTES.
     
@@ -81,7 +85,13 @@ Module bytes.
                       |)
                     ]
                   |);
-                  M.read (| M.get_constant "ruint::bytes::BYTES" |)
+                  M.read (|
+                    get_associated_constant (|
+                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                      "BYTES",
+                      Ty.path "usize"
+                    |)
+                  |)
                 ]
               |)
             |)
@@ -91,7 +101,7 @@ Module bytes.
     
     Global Instance AssociatedFunction_as_le_slice :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait (Self BITS LIMBS) "as_le_slice" (as_le_slice BITS LIMBS).
+      M.IsAssociatedFunction.C (Self BITS LIMBS) "as_le_slice" (as_le_slice BITS LIMBS).
     Admitted.
     Global Typeclasses Opaque as_le_slice.
     
@@ -161,7 +171,13 @@ Module bytes.
                               |)
                             ]
                           |);
-                          M.read (| M.get_constant "ruint::bytes::BYTES" |)
+                          M.read (|
+                            get_associated_constant (|
+                              Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                              "BYTES",
+                              Ty.path "usize"
+                            |)
+                          |)
                         ]
                       |)
                     |)
@@ -175,7 +191,7 @@ Module bytes.
     
     Global Instance AssociatedFunction_as_le_slice_mut :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait (Self BITS LIMBS) "as_le_slice_mut" (as_le_slice_mut BITS LIMBS).
+      M.IsAssociatedFunction.C (Self BITS LIMBS) "as_le_slice_mut" (as_le_slice_mut BITS LIMBS).
     Admitted.
     Global Typeclasses Opaque as_le_slice_mut.
     
@@ -243,7 +259,7 @@ Module bytes.
     
     Global Instance AssociatedFunction_as_le_bytes :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait (Self BITS LIMBS) "as_le_bytes" (as_le_bytes BITS LIMBS).
+      M.IsAssociatedFunction.C (Self BITS LIMBS) "as_le_bytes" (as_le_bytes BITS LIMBS).
     Admitted.
     Global Typeclasses Opaque as_le_bytes.
     
@@ -373,7 +389,7 @@ Module bytes.
     
     Global Instance AssociatedFunction_as_le_bytes_trimmed :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait
+      M.IsAssociatedFunction.C
         (Self BITS LIMBS)
         "as_le_bytes_trimmed"
         (as_le_bytes_trimmed BITS LIMBS).
@@ -432,9 +448,18 @@ Module bytes.
                                   UnOp.not (|
                                     BinOp.eq (|
                                       M.read (|
-                                        M.get_constant "ruint::bytes::to_le_bytes::BYTES"
+                                        get_constant (|
+                                          "ruint::bytes::to_le_bytes::BYTES",
+                                          Ty.path "usize"
+                                        |)
                                       |),
-                                      M.read (| M.get_constant "ruint::bytes::BYTES" |)
+                                      M.read (|
+                                        get_associated_constant (|
+                                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                          "BYTES",
+                                          Ty.path "usize"
+                                        |)
+                                      |)
                                     |)
                                   |)
                                 |)) in
@@ -542,7 +567,7 @@ Module bytes.
     
     Global Instance AssociatedFunction_to_le_bytes :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait (Self BITS LIMBS) "to_le_bytes" (to_le_bytes BITS LIMBS).
+      M.IsAssociatedFunction.C (Self BITS LIMBS) "to_le_bytes" (to_le_bytes BITS LIMBS).
     Admitted.
     Global Typeclasses Opaque to_le_bytes.
     
@@ -597,7 +622,7 @@ Module bytes.
     
     Global Instance AssociatedFunction_to_le_bytes_vec :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait (Self BITS LIMBS) "to_le_bytes_vec" (to_le_bytes_vec BITS LIMBS).
+      M.IsAssociatedFunction.C (Self BITS LIMBS) "to_le_bytes_vec" (to_le_bytes_vec BITS LIMBS).
     Admitted.
     Global Typeclasses Opaque to_le_bytes_vec.
     
@@ -652,7 +677,7 @@ Module bytes.
     
     Global Instance AssociatedFunction_to_le_bytes_trimmed_vec :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait
+      M.IsAssociatedFunction.C
         (Self BITS LIMBS)
         "to_le_bytes_trimmed_vec"
         (to_le_bytes_trimmed_vec BITS LIMBS).
@@ -806,7 +831,7 @@ Module bytes.
     
     Global Instance AssociatedFunction_to_be_bytes :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait (Self BITS LIMBS) "to_be_bytes" (to_be_bytes BITS LIMBS).
+      M.IsAssociatedFunction.C (Self BITS LIMBS) "to_be_bytes" (to_be_bytes BITS LIMBS).
     Admitted.
     Global Typeclasses Opaque to_be_bytes.
     
@@ -894,7 +919,7 @@ Module bytes.
     
     Global Instance AssociatedFunction_to_be_bytes_vec :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait (Self BITS LIMBS) "to_be_bytes_vec" (to_be_bytes_vec BITS LIMBS).
+      M.IsAssociatedFunction.C (Self BITS LIMBS) "to_be_bytes_vec" (to_be_bytes_vec BITS LIMBS).
     Admitted.
     Global Typeclasses Opaque to_be_bytes_vec.
     
@@ -982,7 +1007,7 @@ Module bytes.
     
     Global Instance AssociatedFunction_to_be_bytes_trimmed_vec :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait
+      M.IsAssociatedFunction.C
         (Self BITS LIMBS)
         "to_be_bytes_trimmed_vec"
         (to_be_bytes_trimmed_vec BITS LIMBS).
@@ -1020,8 +1045,19 @@ Module bytes.
                           (M.alloc (|
                             UnOp.not (|
                               BinOp.eq (|
-                                M.read (| M.get_constant "ruint::bytes::from_be_bytes::BYTES" |),
-                                M.read (| M.get_constant "ruint::bytes::BYTES" |)
+                                M.read (|
+                                  get_constant (|
+                                    "ruint::bytes::from_be_bytes::BYTES",
+                                    Ty.path "usize"
+                                  |)
+                                |),
+                                M.read (|
+                                  get_associated_constant (|
+                                    Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                    "BYTES",
+                                    Ty.path "usize"
+                                  |)
+                                |)
                               |)
                             |)
                           |)) in
@@ -1085,7 +1121,7 @@ Module bytes.
     
     Global Instance AssociatedFunction_from_be_bytes :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait (Self BITS LIMBS) "from_be_bytes" (from_be_bytes BITS LIMBS).
+      M.IsAssociatedFunction.C (Self BITS LIMBS) "from_be_bytes" (from_be_bytes BITS LIMBS).
     Admitted.
     Global Typeclasses Opaque from_be_bytes.
     
@@ -1180,7 +1216,7 @@ Module bytes.
     
     Global Instance AssociatedFunction_from_be_slice :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait (Self BITS LIMBS) "from_be_slice" (from_be_slice BITS LIMBS).
+      M.IsAssociatedFunction.C (Self BITS LIMBS) "from_be_slice" (from_be_slice BITS LIMBS).
     Admitted.
     Global Typeclasses Opaque from_be_slice.
     
@@ -1256,7 +1292,13 @@ Module bytes.
                                       |)
                                     ]
                                   |),
-                                  M.read (| M.get_constant "ruint::bytes::BYTES" |)
+                                  M.read (|
+                                    get_associated_constant (|
+                                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                      "BYTES",
+                                      Ty.path "usize"
+                                    |)
+                                  |)
                                 |)
                               |)) in
                           let _ :=
@@ -1284,7 +1326,13 @@ Module bytes.
                                 LogicalOp.and (|
                                   BinOp.eq (|
                                     BinOp.Wrap.rem (|
-                                      M.read (| M.get_constant "ruint::bytes::BYTES" |),
+                                      M.read (|
+                                        get_associated_constant (|
+                                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                          "BYTES",
+                                          Ty.path "usize"
+                                        |)
+                                      |),
                                       Value.Integer IntegerKind.Usize 8
                                     |),
                                     Value.Integer IntegerKind.Usize 0
@@ -1306,7 +1354,13 @@ Module bytes.
                                           |)
                                         ]
                                       |),
-                                      M.read (| M.get_constant "ruint::bytes::BYTES" |)
+                                      M.read (|
+                                        get_associated_constant (|
+                                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                          "BYTES",
+                                          Ty.path "usize"
+                                        |)
+                                      |)
                                     |)))
                                 |)
                               |)) in
@@ -1365,7 +1419,10 @@ Module bytes.
                                                     BinOp.lt (|
                                                       M.read (| i |),
                                                       M.read (|
-                                                        M.get_constant "ruint::bytes::LIMBS"
+                                                        get_constant (|
+                                                          "ruint::bytes::LIMBS",
+                                                          Ty.path "usize"
+                                                        |)
                                                       |)
                                                     |)
                                                   |)) in
@@ -1652,7 +1709,13 @@ Module bytes.
                               (M.alloc (|
                                 LogicalOp.and (|
                                   BinOp.gt (|
-                                    M.read (| M.get_constant "ruint::LIMBS'1" |),
+                                    M.read (|
+                                      get_associated_constant (|
+                                        Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                        "LIMBS",
+                                        Ty.path "usize"
+                                      |)
+                                    |),
                                     Value.Integer IntegerKind.Usize 0
                                   |),
                                   ltac:(M.monadic
@@ -1661,12 +1724,24 @@ Module bytes.
                                         M.SubPointer.get_array_field (|
                                           limbs,
                                           BinOp.Wrap.sub (|
-                                            M.read (| M.get_constant "ruint::LIMBS'1" |),
+                                            M.read (|
+                                              get_associated_constant (|
+                                                Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                                "LIMBS",
+                                                Ty.path "usize"
+                                              |)
+                                            |),
                                             Value.Integer IntegerKind.Usize 1
                                           |)
                                         |)
                                       |),
-                                      M.read (| M.get_constant "ruint::MASK" |)
+                                      M.read (|
+                                        get_associated_constant (|
+                                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                          "MASK",
+                                          Ty.path "u64"
+                                        |)
+                                      |)
                                     |)))
                                 |)
                               |)) in
@@ -1705,10 +1780,7 @@ Module bytes.
     
     Global Instance AssociatedFunction_try_from_be_slice :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait
-        (Self BITS LIMBS)
-        "try_from_be_slice"
-        (try_from_be_slice BITS LIMBS).
+      M.IsAssociatedFunction.C (Self BITS LIMBS) "try_from_be_slice" (try_from_be_slice BITS LIMBS).
     Admitted.
     Global Typeclasses Opaque try_from_be_slice.
     
@@ -1743,8 +1815,19 @@ Module bytes.
                           (M.alloc (|
                             UnOp.not (|
                               BinOp.eq (|
-                                M.read (| M.get_constant "ruint::bytes::from_le_bytes::BYTES" |),
-                                M.read (| M.get_constant "ruint::bytes::BYTES" |)
+                                M.read (|
+                                  get_constant (|
+                                    "ruint::bytes::from_le_bytes::BYTES",
+                                    Ty.path "usize"
+                                  |)
+                                |),
+                                M.read (|
+                                  get_associated_constant (|
+                                    Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                    "BYTES",
+                                    Ty.path "usize"
+                                  |)
+                                |)
                               |)
                             |)
                           |)) in
@@ -1808,7 +1891,7 @@ Module bytes.
     
     Global Instance AssociatedFunction_from_le_bytes :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait (Self BITS LIMBS) "from_le_bytes" (from_le_bytes BITS LIMBS).
+      M.IsAssociatedFunction.C (Self BITS LIMBS) "from_le_bytes" (from_le_bytes BITS LIMBS).
     Admitted.
     Global Typeclasses Opaque from_le_bytes.
     
@@ -1903,7 +1986,7 @@ Module bytes.
     
     Global Instance AssociatedFunction_from_le_slice :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait (Self BITS LIMBS) "from_le_slice" (from_le_slice BITS LIMBS).
+      M.IsAssociatedFunction.C (Self BITS LIMBS) "from_le_slice" (from_le_slice BITS LIMBS).
     Admitted.
     Global Typeclasses Opaque from_le_slice.
     
@@ -1979,7 +2062,13 @@ Module bytes.
                                     |),
                                     Value.Integer IntegerKind.Usize 8
                                   |),
-                                  M.read (| M.get_constant "ruint::LIMBS'1" |)
+                                  M.read (|
+                                    get_associated_constant (|
+                                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                      "LIMBS",
+                                      Ty.path "usize"
+                                    |)
+                                  |)
                                 |)
                               |)) in
                           let _ :=
@@ -2007,7 +2096,13 @@ Module bytes.
                                 LogicalOp.and (|
                                   BinOp.eq (|
                                     BinOp.Wrap.rem (|
-                                      M.read (| M.get_constant "ruint::bytes::BYTES" |),
+                                      M.read (|
+                                        get_associated_constant (|
+                                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                          "BYTES",
+                                          Ty.path "usize"
+                                        |)
+                                      |),
                                       Value.Integer IntegerKind.Usize 8
                                     |),
                                     Value.Integer IntegerKind.Usize 0
@@ -2029,7 +2124,13 @@ Module bytes.
                                           |)
                                         ]
                                       |),
-                                      M.read (| M.get_constant "ruint::bytes::BYTES" |)
+                                      M.read (|
+                                        get_associated_constant (|
+                                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                          "BYTES",
+                                          Ty.path "usize"
+                                        |)
+                                      |)
                                     |)))
                                 |)
                               |)) in
@@ -2061,7 +2162,10 @@ Module bytes.
                                                     BinOp.lt (|
                                                       M.read (| i |),
                                                       M.read (|
-                                                        M.get_constant "ruint::bytes::LIMBS"
+                                                        get_constant (|
+                                                          "ruint::bytes::LIMBS",
+                                                          Ty.path "usize"
+                                                        |)
                                                       |)
                                                     |)
                                                   |)) in
@@ -2341,7 +2445,13 @@ Module bytes.
                               (M.alloc (|
                                 LogicalOp.and (|
                                   BinOp.gt (|
-                                    M.read (| M.get_constant "ruint::LIMBS'1" |),
+                                    M.read (|
+                                      get_associated_constant (|
+                                        Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                        "LIMBS",
+                                        Ty.path "usize"
+                                      |)
+                                    |),
                                     Value.Integer IntegerKind.Usize 0
                                   |),
                                   ltac:(M.monadic
@@ -2350,12 +2460,24 @@ Module bytes.
                                         M.SubPointer.get_array_field (|
                                           limbs,
                                           BinOp.Wrap.sub (|
-                                            M.read (| M.get_constant "ruint::LIMBS'1" |),
+                                            M.read (|
+                                              get_associated_constant (|
+                                                Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                                "LIMBS",
+                                                Ty.path "usize"
+                                              |)
+                                            |),
                                             Value.Integer IntegerKind.Usize 1
                                           |)
                                         |)
                                       |),
-                                      M.read (| M.get_constant "ruint::MASK" |)
+                                      M.read (|
+                                        get_associated_constant (|
+                                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                          "MASK",
+                                          Ty.path "u64"
+                                        |)
+                                      |)
                                     |)))
                                 |)
                               |)) in
@@ -2394,10 +2516,7 @@ Module bytes.
     
     Global Instance AssociatedFunction_try_from_le_slice :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait
-        (Self BITS LIMBS)
-        "try_from_le_slice"
-        (try_from_le_slice BITS LIMBS).
+      M.IsAssociatedFunction.C (Self BITS LIMBS) "try_from_le_slice" (try_from_le_slice BITS LIMBS).
     Admitted.
     Global Typeclasses Opaque try_from_le_slice.
   End Impl_ruint_Uint_BITS_LIMBS.
@@ -2419,7 +2538,7 @@ Module bytes.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_nbytes : M.IsFunction.Trait "ruint::bytes::nbytes" nbytes.
+  Global Instance Instance_IsFunction_nbytes : M.IsFunction.C "ruint::bytes::nbytes" nbytes.
   Admitted.
   Global Typeclasses Opaque nbytes.
 End bytes.

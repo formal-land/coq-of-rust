@@ -2,21 +2,40 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module escape.
-  Definition value_HEX_DIGITS : Value.t :=
-    M.run_constant
-      ltac:(M.monadic
-        (M.deref (|
-          M.call_closure (|
+  Definition value_HEX_DIGITS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic
+      (M.deref (|
+        M.call_closure (|
+          Ty.apply
+            (Ty.path "&")
+            []
+            [
+              Ty.apply
+                (Ty.path "array")
+                [ Value.Integer IntegerKind.Usize 16 ]
+                [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+            ],
+          M.get_associated_function (|
             Ty.apply
-              (Ty.path "&")
+              (Ty.path "core::option::Option")
               []
               [
                 Ty.apply
-                  (Ty.path "array")
-                  [ Value.Integer IntegerKind.Usize 16 ]
-                  [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                  (Ty.path "&")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "array")
+                      [ Value.Integer IntegerKind.Usize 16 ]
+                      [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                  ]
               ],
-            M.get_associated_function (|
+            "unwrap",
+            [],
+            []
+          |),
+          [
+            M.call_closure (|
               Ty.apply
                 (Ty.path "core::option::Option")
                 []
@@ -31,43 +50,22 @@ Module escape.
                         [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
                     ]
                 ],
-              "unwrap",
-              [],
-              []
-            |),
-            [
-              M.call_closure (|
-                Ty.apply
-                  (Ty.path "core::option::Option")
-                  []
-                  [
-                    Ty.apply
-                      (Ty.path "&")
-                      []
-                      [
-                        Ty.apply
-                          (Ty.path "array")
-                          [ Value.Integer IntegerKind.Usize 16 ]
-                          [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
-                      ]
-                  ],
-                M.get_associated_function (|
-                  Ty.apply
-                    (Ty.path "array")
-                    [ Value.Integer IntegerKind.Usize 16 ]
-                    [ Ty.path "u8" ],
-                  "as_ascii",
-                  [],
-                  []
-                |),
-                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| UnsupportedLiteral |) |) |) ]
-              |)
-            ]
-          |)
-        |))).
+              M.get_associated_function (|
+                Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 16 ] [ Ty.path "u8" ],
+                "as_ascii",
+                [],
+                []
+              |),
+              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| UnsupportedLiteral |) |) |) ]
+            |)
+          ]
+        |)
+      |))).
   
-  Axiom Constant_value_HEX_DIGITS : (M.get_constant "core::escape::HEX_DIGITS") = value_HEX_DIGITS.
-  Global Hint Rewrite Constant_value_HEX_DIGITS : constant_rewrites.
+  Global Instance Instance_IsConstant_value_HEX_DIGITS :
+    M.IsFunction.C "core::escape::HEX_DIGITS" value_HEX_DIGITS.
+  Admitted.
+  Global Typeclasses Opaque value_HEX_DIGITS.
   
   (*
   const fn backslash<const N: usize>(a: ascii::Char) -> ([ascii::Char; N], Range<u8>) {
@@ -87,7 +85,8 @@ Module escape.
       ltac:(M.monadic
         (let a := M.alloc (| a |) in
         M.read (|
-          let~ _ : Ty.tuple [] := M.get_constant "core::escape::backslash_discriminant" in
+          let~ _ : Ty.tuple [] :=
+            get_constant (| "core::escape::backslash_discriminant", Ty.tuple [] |) in
           let~ output :
               Ty.apply (Ty.path "array") [ N ] [ Ty.path "core::ascii::ascii_char::AsciiChar" ] :=
             M.alloc (|
@@ -124,7 +123,7 @@ Module escape.
     end.
   
   Global Instance Instance_IsFunction_backslash :
-    M.IsFunction.Trait "core::escape::backslash" backslash.
+    M.IsFunction.C "core::escape::backslash" backslash.
   Admitted.
   Global Typeclasses Opaque backslash.
   
@@ -151,7 +150,8 @@ Module escape.
       ltac:(M.monadic
         (let byte := M.alloc (| byte |) in
         M.read (|
-          let~ _ : Ty.tuple [] := M.get_constant "core::escape::hex_escape_discriminant" in
+          let~ _ : Ty.tuple [] :=
+            get_constant (| "core::escape::hex_escape_discriminant", Ty.tuple [] |) in
           let~ output :
               Ty.apply (Ty.path "array") [ N ] [ Ty.path "core::ascii::ascii_char::AsciiChar" ] :=
             M.alloc (|
@@ -160,7 +160,13 @@ Module escape.
           let~ hi : Ty.path "core::ascii::ascii_char::AsciiChar" :=
             M.copy (|
               M.SubPointer.get_array_field (|
-                M.get_constant "core::escape::HEX_DIGITS",
+                get_constant (|
+                  "core::escape::HEX_DIGITS",
+                  Ty.apply
+                    (Ty.path "array")
+                    [ Value.Integer IntegerKind.Usize 16 ]
+                    [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                |),
                 M.cast
                   (Ty.path "usize")
                   (BinOp.Wrap.shr (| M.read (| byte |), Value.Integer IntegerKind.I32 4 |))
@@ -169,7 +175,13 @@ Module escape.
           let~ lo : Ty.path "core::ascii::ascii_char::AsciiChar" :=
             M.copy (|
               M.SubPointer.get_array_field (|
-                M.get_constant "core::escape::HEX_DIGITS",
+                get_constant (|
+                  "core::escape::HEX_DIGITS",
+                  Ty.apply
+                    (Ty.path "array")
+                    [ Value.Integer IntegerKind.Usize 16 ]
+                    [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                |),
                 M.cast
                   (Ty.path "usize")
                   (BinOp.bit_and (M.read (| byte |)) (Value.Integer IntegerKind.U8 15))
@@ -220,7 +232,7 @@ Module escape.
     end.
   
   Global Instance Instance_IsFunction_hex_escape :
-    M.IsFunction.Trait "core::escape::hex_escape" hex_escape.
+    M.IsFunction.C "core::escape::hex_escape" hex_escape.
   Admitted.
   Global Typeclasses Opaque hex_escape.
   
@@ -241,7 +253,8 @@ Module escape.
       ltac:(M.monadic
         (let a := M.alloc (| a |) in
         M.read (|
-          let~ _ : Ty.tuple [] := M.get_constant "core::escape::verbatim_discriminant" in
+          let~ _ : Ty.tuple [] :=
+            get_constant (| "core::escape::verbatim_discriminant", Ty.tuple [] |) in
           let~ output :
               Ty.apply (Ty.path "array") [ N ] [ Ty.path "core::ascii::ascii_char::AsciiChar" ] :=
             M.alloc (|
@@ -270,8 +283,7 @@ Module escape.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_verbatim :
-    M.IsFunction.Trait "core::escape::verbatim" verbatim.
+  Global Instance Instance_IsFunction_verbatim : M.IsFunction.C "core::escape::verbatim" verbatim.
   Admitted.
   Global Typeclasses Opaque verbatim.
   
@@ -356,11 +368,18 @@ Module escape.
       ltac:(M.monadic
         (let byte := M.alloc (| byte |) in
         M.read (|
-          let~ _ : Ty.tuple [] := M.get_constant "core::escape::escape_ascii_discriminant" in
+          let~ _ : Ty.tuple [] :=
+            get_constant (| "core::escape::escape_ascii_discriminant", Ty.tuple [] |) in
           let~ lookup : Ty.path "u8" :=
             M.copy (|
               M.SubPointer.get_array_field (|
-                M.get_constant "core::escape::escape_ascii::LOOKUP",
+                get_constant (|
+                  "core::escape::escape_ascii::LOOKUP",
+                  Ty.apply
+                    (Ty.path "array")
+                    [ Value.Integer IntegerKind.Usize 256 ]
+                    [ Ty.path "u8" ]
+                |),
                 M.cast (Ty.path "usize") (M.read (| byte |))
               |)
             |) in
@@ -485,176 +504,175 @@ Module escape.
     end.
   
   Global Instance Instance_IsFunction_escape_ascii :
-    M.IsFunction.Trait "core::escape::escape_ascii" escape_ascii.
+    M.IsFunction.C "core::escape::escape_ascii" escape_ascii.
   Admitted.
   Global Typeclasses Opaque escape_ascii.
   
   Module escape_ascii.
-    Definition value_LOOKUP : Value.t :=
-      M.run_constant
-        ltac:(M.monadic
-          (let~ arr :
-              Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 256 ] [ Ty.path "u8" ] :=
-            M.alloc (|
-              repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 256 |)
-            |) in
-          let~ idx : Ty.path "usize" := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
-          let~ _ : Ty.tuple [] :=
-            M.loop (|
-              Ty.tuple [],
-              ltac:(M.monadic
-                (M.match_operator (|
-                  Some (Ty.tuple []),
-                  M.alloc (| Value.Tuple [] |),
-                  [
-                    fun γ =>
-                      ltac:(M.monadic
-                        (let γ :=
-                          M.use
-                            (M.alloc (|
-                              BinOp.le (| M.read (| idx |), Value.Integer IntegerKind.Usize 255 |)
-                            |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ _ : Ty.tuple [] :=
-                          M.alloc (|
-                            M.write (|
-                              M.SubPointer.get_array_field (| arr, M.read (| idx |) |),
-                              M.read (|
-                                M.match_operator (|
-                                  Some (Ty.path "u8"),
-                                  M.alloc (| M.cast (Ty.path "u8") (M.read (| idx |)) |),
-                                  [
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let _ :=
-                                          M.is_constant_or_break_match (|
-                                            M.read (| γ |),
-                                            Value.Integer IntegerKind.U8 9
-                                          |) in
-                                        M.alloc (|
-                                          BinOp.bit_or
-                                            (Value.Integer IntegerKind.U8 128)
-                                            (M.read (| UnsupportedLiteral |))
-                                        |)));
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let _ :=
-                                          M.is_constant_or_break_match (|
-                                            M.read (| γ |),
-                                            Value.Integer IntegerKind.U8 13
-                                          |) in
-                                        M.alloc (|
-                                          BinOp.bit_or
-                                            (Value.Integer IntegerKind.U8 128)
-                                            (M.read (| UnsupportedLiteral |))
-                                        |)));
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let _ :=
-                                          M.is_constant_or_break_match (|
-                                            M.read (| γ |),
-                                            Value.Integer IntegerKind.U8 10
-                                          |) in
-                                        M.alloc (|
-                                          BinOp.bit_or
-                                            (Value.Integer IntegerKind.U8 128)
-                                            (M.read (| UnsupportedLiteral |))
-                                        |)));
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let _ :=
-                                          M.is_constant_or_break_match (|
-                                            M.read (| γ |),
-                                            Value.Integer IntegerKind.U8 92
-                                          |) in
-                                        M.alloc (|
-                                          BinOp.bit_or
-                                            (Value.Integer IntegerKind.U8 128)
-                                            (M.read (| UnsupportedLiteral |))
-                                        |)));
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let _ :=
-                                          M.is_constant_or_break_match (|
-                                            M.read (| γ |),
-                                            Value.Integer IntegerKind.U8 39
-                                          |) in
-                                        M.alloc (|
-                                          BinOp.bit_or
-                                            (Value.Integer IntegerKind.U8 128)
-                                            (M.read (| UnsupportedLiteral |))
-                                        |)));
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let _ :=
-                                          M.is_constant_or_break_match (|
-                                            M.read (| γ |),
-                                            Value.Integer IntegerKind.U8 34
-                                          |) in
-                                        M.alloc (|
-                                          BinOp.bit_or
-                                            (Value.Integer IntegerKind.U8 128)
-                                            (M.read (| UnsupportedLiteral |))
-                                        |)));
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (M.find_or_pattern (|
-                                          γ,
-                                          [
-                                            fun γ => ltac:(M.monadic (Value.Tuple []));
-                                            fun γ => ltac:(M.monadic (Value.Tuple []))
-                                          ],
-                                          fun γ =>
-                                            ltac:(M.monadic
-                                              match γ with
-                                              | [] =>
-                                                ltac:(M.monadic
-                                                  (M.alloc (|
-                                                    BinOp.bit_or
-                                                      (Value.Integer IntegerKind.U8 128)
-                                                      (M.read (| UnsupportedLiteral |))
-                                                  |)))
-                                              | _ => M.impossible "wrong number of arguments"
-                                              end)
-                                        |)));
-                                    fun γ =>
-                                      ltac:(M.monadic
-                                        (let idx := M.copy (| γ |) in
-                                        idx))
-                                  ]
-                                |)
+    Definition value_LOOKUP (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (let~ arr :
+            Ty.apply (Ty.path "array") [ Value.Integer IntegerKind.Usize 256 ] [ Ty.path "u8" ] :=
+          M.alloc (|
+            repeat (| Value.Integer IntegerKind.U8 0, Value.Integer IntegerKind.Usize 256 |)
+          |) in
+        let~ idx : Ty.path "usize" := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
+        let~ _ : Ty.tuple [] :=
+          M.loop (|
+            Ty.tuple [],
+            ltac:(M.monadic
+              (M.match_operator (|
+                Some (Ty.tuple []),
+                M.alloc (| Value.Tuple [] |),
+                [
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let γ :=
+                        M.use
+                          (M.alloc (|
+                            BinOp.le (| M.read (| idx |), Value.Integer IntegerKind.Usize 255 |)
+                          |)) in
+                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let~ _ : Ty.tuple [] :=
+                        M.alloc (|
+                          M.write (|
+                            M.SubPointer.get_array_field (| arr, M.read (| idx |) |),
+                            M.read (|
+                              M.match_operator (|
+                                Some (Ty.path "u8"),
+                                M.alloc (| M.cast (Ty.path "u8") (M.read (| idx |)) |),
+                                [
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let _ :=
+                                        M.is_constant_or_break_match (|
+                                          M.read (| γ |),
+                                          Value.Integer IntegerKind.U8 9
+                                        |) in
+                                      M.alloc (|
+                                        BinOp.bit_or
+                                          (Value.Integer IntegerKind.U8 128)
+                                          (M.read (| UnsupportedLiteral |))
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let _ :=
+                                        M.is_constant_or_break_match (|
+                                          M.read (| γ |),
+                                          Value.Integer IntegerKind.U8 13
+                                        |) in
+                                      M.alloc (|
+                                        BinOp.bit_or
+                                          (Value.Integer IntegerKind.U8 128)
+                                          (M.read (| UnsupportedLiteral |))
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let _ :=
+                                        M.is_constant_or_break_match (|
+                                          M.read (| γ |),
+                                          Value.Integer IntegerKind.U8 10
+                                        |) in
+                                      M.alloc (|
+                                        BinOp.bit_or
+                                          (Value.Integer IntegerKind.U8 128)
+                                          (M.read (| UnsupportedLiteral |))
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let _ :=
+                                        M.is_constant_or_break_match (|
+                                          M.read (| γ |),
+                                          Value.Integer IntegerKind.U8 92
+                                        |) in
+                                      M.alloc (|
+                                        BinOp.bit_or
+                                          (Value.Integer IntegerKind.U8 128)
+                                          (M.read (| UnsupportedLiteral |))
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let _ :=
+                                        M.is_constant_or_break_match (|
+                                          M.read (| γ |),
+                                          Value.Integer IntegerKind.U8 39
+                                        |) in
+                                      M.alloc (|
+                                        BinOp.bit_or
+                                          (Value.Integer IntegerKind.U8 128)
+                                          (M.read (| UnsupportedLiteral |))
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let _ :=
+                                        M.is_constant_or_break_match (|
+                                          M.read (| γ |),
+                                          Value.Integer IntegerKind.U8 34
+                                        |) in
+                                      M.alloc (|
+                                        BinOp.bit_or
+                                          (Value.Integer IntegerKind.U8 128)
+                                          (M.read (| UnsupportedLiteral |))
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (M.find_or_pattern (|
+                                        γ,
+                                        [
+                                          fun γ => ltac:(M.monadic (Value.Tuple []));
+                                          fun γ => ltac:(M.monadic (Value.Tuple []))
+                                        ],
+                                        fun γ =>
+                                          ltac:(M.monadic
+                                            match γ with
+                                            | [] =>
+                                              ltac:(M.monadic
+                                                (M.alloc (|
+                                                  BinOp.bit_or
+                                                    (Value.Integer IntegerKind.U8 128)
+                                                    (M.read (| UnsupportedLiteral |))
+                                                |)))
+                                            | _ => M.impossible "wrong number of arguments"
+                                            end)
+                                      |)));
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (let idx := M.copy (| γ |) in
+                                      idx))
+                                ]
                               |)
                             |)
-                          |) in
-                        let~ _ : Ty.tuple [] :=
-                          M.alloc (|
-                            let β := idx in
-                            M.write (|
-                              β,
-                              BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
-                            |)
-                          |) in
-                        M.alloc (| Value.Tuple [] |)));
-                    fun γ =>
-                      ltac:(M.monadic
-                        (M.alloc (|
-                          M.never_to_any (|
-                            M.read (|
-                              let~ _ : Ty.tuple [] :=
-                                M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
-                              M.alloc (| Value.Tuple [] |)
-                            |)
                           |)
-                        |)))
-                  ]
-                |)))
-            |) in
-          arr)).
+                        |) in
+                      let~ _ : Ty.tuple [] :=
+                        M.alloc (|
+                          let β := idx in
+                          M.write (|
+                            β,
+                            BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
+                          |)
+                        |) in
+                      M.alloc (| Value.Tuple [] |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (M.alloc (|
+                        M.never_to_any (|
+                          M.read (|
+                            let~ _ : Ty.tuple [] :=
+                              M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |) in
+                            M.alloc (| Value.Tuple [] |)
+                          |)
+                        |)
+                      |)))
+                ]
+              |)))
+          |) in
+        arr)).
     
-    Axiom Constant_value_LOOKUP :
-      (M.get_constant "core::escape::escape_ascii::LOOKUP") = value_LOOKUP.
-    Global Hint Rewrite Constant_value_LOOKUP : constant_rewrites.
+    Global Instance Instance_IsConstant_value_LOOKUP :
+      M.IsFunction.C "core::escape::escape_ascii::LOOKUP" value_LOOKUP.
+    Admitted.
+    Global Typeclasses Opaque value_LOOKUP.
   End escape_ascii.
   
   (*
@@ -688,7 +706,8 @@ Module escape.
       ltac:(M.monadic
         (let c := M.alloc (| c |) in
         M.read (|
-          let~ _ : Ty.tuple [] := M.get_constant "core::escape::escape_unicode_discriminant" in
+          let~ _ : Ty.tuple [] :=
+            get_constant (| "core::escape::escape_unicode_discriminant", Ty.tuple [] |) in
           let~ c : Ty.path "u32" := M.alloc (| M.cast (Ty.path "u32") (M.read (| c |)) |) in
           let~ start : Ty.path "usize" :=
             M.alloc (|
@@ -717,7 +736,13 @@ Module escape.
                 M.SubPointer.get_array_field (| output, Value.Integer IntegerKind.Usize 3 |),
                 M.read (|
                   M.SubPointer.get_array_field (|
-                    M.get_constant "core::escape::HEX_DIGITS",
+                    get_constant (|
+                      "core::escape::HEX_DIGITS",
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 16 ]
+                        [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                    |),
                     M.cast
                       (Ty.path "usize")
                       (BinOp.bit_and
@@ -733,7 +758,13 @@ Module escape.
                 M.SubPointer.get_array_field (| output, Value.Integer IntegerKind.Usize 4 |),
                 M.read (|
                   M.SubPointer.get_array_field (|
-                    M.get_constant "core::escape::HEX_DIGITS",
+                    get_constant (|
+                      "core::escape::HEX_DIGITS",
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 16 ]
+                        [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                    |),
                     M.cast
                       (Ty.path "usize")
                       (BinOp.bit_and
@@ -749,7 +780,13 @@ Module escape.
                 M.SubPointer.get_array_field (| output, Value.Integer IntegerKind.Usize 5 |),
                 M.read (|
                   M.SubPointer.get_array_field (|
-                    M.get_constant "core::escape::HEX_DIGITS",
+                    get_constant (|
+                      "core::escape::HEX_DIGITS",
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 16 ]
+                        [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                    |),
                     M.cast
                       (Ty.path "usize")
                       (BinOp.bit_and
@@ -765,7 +802,13 @@ Module escape.
                 M.SubPointer.get_array_field (| output, Value.Integer IntegerKind.Usize 6 |),
                 M.read (|
                   M.SubPointer.get_array_field (|
-                    M.get_constant "core::escape::HEX_DIGITS",
+                    get_constant (|
+                      "core::escape::HEX_DIGITS",
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 16 ]
+                        [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                    |),
                     M.cast
                       (Ty.path "usize")
                       (BinOp.bit_and
@@ -781,7 +824,13 @@ Module escape.
                 M.SubPointer.get_array_field (| output, Value.Integer IntegerKind.Usize 7 |),
                 M.read (|
                   M.SubPointer.get_array_field (|
-                    M.get_constant "core::escape::HEX_DIGITS",
+                    get_constant (|
+                      "core::escape::HEX_DIGITS",
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 16 ]
+                        [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                    |),
                     M.cast
                       (Ty.path "usize")
                       (BinOp.bit_and
@@ -797,7 +846,13 @@ Module escape.
                 M.SubPointer.get_array_field (| output, Value.Integer IntegerKind.Usize 8 |),
                 M.read (|
                   M.SubPointer.get_array_field (|
-                    M.get_constant "core::escape::HEX_DIGITS",
+                    get_constant (|
+                      "core::escape::HEX_DIGITS",
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 16 ]
+                        [ Ty.path "core::ascii::ascii_char::AsciiChar" ]
+                    |),
                     M.cast
                       (Ty.path "usize")
                       (BinOp.bit_and
@@ -855,7 +910,9 @@ Module escape.
                     ("end_",
                       M.cast
                         (Ty.path "u8")
-                        (M.read (| M.get_constant "core::escape::escape_unicode::N" |)))
+                        (M.read (|
+                          get_constant (| "core::escape::escape_unicode::N", Ty.path "usize" |)
+                        |)))
                   ]
               ]
           |)
@@ -864,7 +921,7 @@ Module escape.
     end.
   
   Global Instance Instance_IsFunction_escape_unicode :
-    M.IsFunction.Trait "core::escape::escape_unicode" escape_unicode.
+    M.IsFunction.C "core::escape::escape_unicode" escape_unicode.
   Admitted.
   Global Typeclasses Opaque escape_unicode.
   
@@ -1095,7 +1152,7 @@ Module escape.
     
     Global Instance AssociatedFunction_backslash :
       forall (N : Value.t),
-      M.IsAssociatedFunction.Trait (Self N) "backslash" (backslash N).
+      M.IsAssociatedFunction.C (Self N) "backslash" (backslash N).
     Admitted.
     Global Typeclasses Opaque backslash.
     
@@ -1148,7 +1205,7 @@ Module escape.
     
     Global Instance AssociatedFunction_ascii :
       forall (N : Value.t),
-      M.IsAssociatedFunction.Trait (Self N) "ascii" (ascii N).
+      M.IsAssociatedFunction.C (Self N) "ascii" (ascii N).
     Admitted.
     Global Typeclasses Opaque ascii.
     
@@ -1201,7 +1258,7 @@ Module escape.
     
     Global Instance AssociatedFunction_unicode :
       forall (N : Value.t),
-      M.IsAssociatedFunction.Trait (Self N) "unicode" (unicode N).
+      M.IsAssociatedFunction.C (Self N) "unicode" (unicode N).
     Admitted.
     Global Typeclasses Opaque unicode.
     
@@ -1233,7 +1290,7 @@ Module escape.
     
     Global Instance AssociatedFunction_empty :
       forall (N : Value.t),
-      M.IsAssociatedFunction.Trait (Self N) "empty" (empty N).
+      M.IsAssociatedFunction.C (Self N) "empty" (empty N).
     Admitted.
     Global Typeclasses Opaque empty.
     
@@ -1340,7 +1397,7 @@ Module escape.
     
     Global Instance AssociatedFunction_as_ascii :
       forall (N : Value.t),
-      M.IsAssociatedFunction.Trait (Self N) "as_ascii" (as_ascii N).
+      M.IsAssociatedFunction.C (Self N) "as_ascii" (as_ascii N).
     Admitted.
     Global Typeclasses Opaque as_ascii.
     
@@ -1399,7 +1456,7 @@ Module escape.
     
     Global Instance AssociatedFunction_as_str :
       forall (N : Value.t),
-      M.IsAssociatedFunction.Trait (Self N) "as_str" (as_str N).
+      M.IsAssociatedFunction.C (Self N) "as_str" (as_str N).
     Admitted.
     Global Typeclasses Opaque as_str.
     
@@ -1457,7 +1514,7 @@ Module escape.
     
     Global Instance AssociatedFunction_len :
       forall (N : Value.t),
-      M.IsAssociatedFunction.Trait (Self N) "len" (len N).
+      M.IsAssociatedFunction.C (Self N) "len" (len N).
     Admitted.
     Global Typeclasses Opaque len.
     
@@ -1647,7 +1704,7 @@ Module escape.
     
     Global Instance AssociatedFunction_next :
       forall (N : Value.t),
-      M.IsAssociatedFunction.Trait (Self N) "next" (next N).
+      M.IsAssociatedFunction.C (Self N) "next" (next N).
     Admitted.
     Global Typeclasses Opaque next.
     
@@ -1837,7 +1894,7 @@ Module escape.
     
     Global Instance AssociatedFunction_next_back :
       forall (N : Value.t),
-      M.IsAssociatedFunction.Trait (Self N) "next_back" (next_back N).
+      M.IsAssociatedFunction.C (Self N) "next_back" (next_back N).
     Admitted.
     Global Typeclasses Opaque next_back.
     
@@ -1885,7 +1942,7 @@ Module escape.
     
     Global Instance AssociatedFunction_advance_by :
       forall (N : Value.t),
-      M.IsAssociatedFunction.Trait (Self N) "advance_by" (advance_by N).
+      M.IsAssociatedFunction.C (Self N) "advance_by" (advance_by N).
     Admitted.
     Global Typeclasses Opaque advance_by.
     
@@ -1938,7 +1995,7 @@ Module escape.
     
     Global Instance AssociatedFunction_advance_back_by :
       forall (N : Value.t),
-      M.IsAssociatedFunction.Trait (Self N) "advance_back_by" (advance_back_by N).
+      M.IsAssociatedFunction.C (Self N) "advance_back_by" (advance_back_by N).
     Admitted.
     Global Typeclasses Opaque advance_back_by.
   End Impl_core_escape_EscapeIterInner_N.

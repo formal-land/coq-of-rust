@@ -14,12 +14,12 @@ Module Impl_associated_functions_and_methods_Point.
   
   Parameter origin : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_origin : M.IsAssociatedFunction.Trait Self "origin" origin.
+  Global Instance AssociatedFunction_origin : M.IsAssociatedFunction.C Self "origin" origin.
   Admitted.
   
   Parameter new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
   Admitted.
 End Impl_associated_functions_and_methods_Point.
 
@@ -40,24 +40,24 @@ Module Impl_associated_functions_and_methods_Rectangle.
   
   Parameter get_p1 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_get_p1 : M.IsAssociatedFunction.Trait Self "get_p1" get_p1.
+  Global Instance AssociatedFunction_get_p1 : M.IsAssociatedFunction.C Self "get_p1" get_p1.
   Admitted.
   
   Parameter area : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_area : M.IsAssociatedFunction.Trait Self "area" area.
+  Global Instance AssociatedFunction_area : M.IsAssociatedFunction.C Self "area" area.
   Admitted.
   
   Parameter perimeter : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_perimeter :
-    M.IsAssociatedFunction.Trait Self "perimeter" perimeter.
+    M.IsAssociatedFunction.C Self "perimeter" perimeter.
   Admitted.
   
   Parameter translate : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_translate :
-    M.IsAssociatedFunction.Trait Self "translate" translate.
+    M.IsAssociatedFunction.C Self "translate" translate.
   Admitted.
 End Impl_associated_functions_and_methods_Rectangle.
 
@@ -78,12 +78,12 @@ Module Impl_associated_functions_and_methods_Pair.
   
   Parameter destroy : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_destroy : M.IsAssociatedFunction.Trait Self "destroy" destroy.
+  Global Instance AssociatedFunction_destroy : M.IsAssociatedFunction.C Self "destroy" destroy.
   Admitted.
 End Impl_associated_functions_and_methods_Pair.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "associated_functions_and_methods::main" main.
+  M.IsFunction.C "associated_functions_and_methods::main" main.
 Admitted.

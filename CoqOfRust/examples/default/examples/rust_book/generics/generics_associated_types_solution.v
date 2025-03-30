@@ -214,7 +214,7 @@ Definition difference (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
   end.
 
 Global Instance Instance_IsFunction_difference :
-  M.IsFunction.Trait "generics_associated_types_solution::difference" difference.
+  M.IsFunction.C "generics_associated_types_solution::difference" difference.
 Admitted.
 Global Typeclasses Opaque difference.
 
@@ -245,7 +245,7 @@ Definition get_a (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Global Instance Instance_IsFunction_get_a :
-  M.IsFunction.Trait "generics_associated_types_solution::get_a" get_a.
+  M.IsFunction.C "generics_associated_types_solution::get_a" get_a.
 Admitted.
 Global Typeclasses Opaque get_a.
 
@@ -335,7 +335,7 @@ Definition get_output (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
   end.
 
 Global Instance Instance_IsFunction_get_output :
-  M.IsFunction.Trait "generics_associated_types_solution::get_output" get_output.
+  M.IsFunction.C "generics_associated_types_solution::get_output" get_output.
 Admitted.
 Global Typeclasses Opaque get_output.
 
@@ -862,6 +862,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "generics_associated_types_solution::main" main.
+  M.IsFunction.C "generics_associated_types_solution::main" main.
 Admitted.
 Global Typeclasses Opaque main.

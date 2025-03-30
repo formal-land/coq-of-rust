@@ -104,7 +104,7 @@ Module iter.
         
         Global Instance AssociatedFunction_new :
           forall (I P : Ty.t),
-          M.IsAssociatedFunction.Trait (Self I P) "new" (new I P).
+          M.IsAssociatedFunction.C (Self I P) "new" (new I P).
         Admitted.
         Global Typeclasses Opaque new.
         (*
@@ -169,8 +169,20 @@ Module iter.
                   M.alloc (|
                     repeat (|
                       M.read (|
-                        M.get_constant
-                          "core::iter::adapters::filter::next_chunk_dropless_discriminant"
+                        get_constant (|
+                          "core::iter::adapters::filter::next_chunk_dropless_discriminant",
+                          Ty.apply
+                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                            []
+                            [
+                              Ty.associated_in_trait
+                                "core::iter::traits::iterator::Iterator"
+                                []
+                                []
+                                I
+                                "Item"
+                            ]
+                        |)
                       |),
                       N
                     |)
@@ -435,8 +447,10 @@ Module iter.
                                                           BinOp.lt (|
                                                             M.read (| initialized |),
                                                             M.read (|
-                                                              M.get_constant
-                                                                "core::iter::adapters::filter::next_chunk_dropless::N"
+                                                              get_constant (|
+                                                                "core::iter::adapters::filter::next_chunk_dropless::N",
+                                                                Ty.path "usize"
+                                                              |)
                                                             |)
                                                           |)
                                                         |)) in
@@ -602,7 +616,7 @@ Module iter.
         
         Global Instance AssociatedFunction_next_chunk_dropless :
           forall (I P : Ty.t),
-          M.IsAssociatedFunction.Trait (Self I P) "next_chunk_dropless" (next_chunk_dropless I P).
+          M.IsAssociatedFunction.C (Self I P) "next_chunk_dropless" (next_chunk_dropless I P).
         Admitted.
         Global Typeclasses Opaque next_chunk_dropless.
       End Impl_core_iter_adapters_filter_Filter_I_P.
@@ -820,7 +834,7 @@ Module iter.
         end.
       
       Global Instance Instance_IsFunction_filter_fold :
-        M.IsFunction.Trait "core::iter::adapters::filter::filter_fold" filter_fold.
+        M.IsFunction.C "core::iter::adapters::filter::filter_fold" filter_fold.
       Admitted.
       Global Typeclasses Opaque filter_fold.
       
@@ -958,7 +972,7 @@ Module iter.
         end.
       
       Global Instance Instance_IsFunction_filter_try_fold :
-        M.IsFunction.Trait "core::iter::adapters::filter::filter_try_fold" filter_try_fold.
+        M.IsFunction.C "core::iter::adapters::filter::filter_try_fold" filter_try_fold.
       Admitted.
       Global Typeclasses Opaque filter_try_fold.
       
@@ -1082,7 +1096,44 @@ Module iter.
                             ]
                         ]) :=
                   M.copy (|
-                    M.get_constant "core::iter::adapters::filter::next_chunk_discriminant"
+                    get_constant (|
+                      "core::iter::adapters::filter::next_chunk_discriminant",
+                      Ty.function
+                        [
+                          Ty.apply
+                            (Ty.path "&mut")
+                            []
+                            [ Ty.apply (Ty.path "core::iter::adapters::filter::Filter") [] [ I; P ]
+                            ]
+                        ]
+                        (Ty.apply
+                          (Ty.path "core::result::Result")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "array")
+                              [ N ]
+                              [
+                                Ty.associated_in_trait
+                                  "core::iter::traits::iterator::Iterator"
+                                  []
+                                  []
+                                  I
+                                  "Item"
+                              ];
+                            Ty.apply
+                              (Ty.path "core::array::iter::IntoIter")
+                              [ N ]
+                              [
+                                Ty.associated_in_trait
+                                  "core::iter::traits::iterator::Iterator"
+                                  []
+                                  []
+                                  I
+                                  "Item"
+                              ]
+                          ])
+                    |)
                   |) in
                 M.alloc (|
                   M.call_closure (|
@@ -1785,22 +1836,42 @@ Module iter.
           (Ty.path "core::option::Option")
           []
           [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ] *)
-        Definition value_EXPAND_BY (I P : Ty.t) : Value.t :=
+        Definition value_EXPAND_BY
+            (I P : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self I P in
-          M.run
-            ltac:(M.monadic
-              (M.get_constant "core::iter::traits::marker::InPlaceIterable::EXPAND_BY")).
+          ltac:(M.monadic
+            (get_constant (|
+              "core::iter::traits::marker::InPlaceIterable::EXPAND_BY",
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
+            |))).
         
         (*     const MERGE_BY: Option<NonZero<usize>> = I::MERGE_BY; *)
         (* Ty.apply
           (Ty.path "core::option::Option")
           []
           [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ] *)
-        Definition value_MERGE_BY (I P : Ty.t) : Value.t :=
+        Definition value_MERGE_BY
+            (I P : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self I P in
-          M.run
-            ltac:(M.monadic
-              (M.get_constant "core::iter::traits::marker::InPlaceIterable::MERGE_BY")).
+          ltac:(M.monadic
+            (get_constant (|
+              "core::iter::traits::marker::InPlaceIterable::MERGE_BY",
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
+            |))).
         
         Axiom Implements :
           forall (I P : Ty.t),
@@ -1811,8 +1882,8 @@ Module iter.
             (Self I P)
             (* Instance *)
             [
-              ("value_EXPAND_BY", InstanceField.Constant (value_EXPAND_BY I P));
-              ("value_MERGE_BY", InstanceField.Constant (value_MERGE_BY I P))
+              ("value_EXPAND_BY", InstanceField.Method (value_EXPAND_BY I P));
+              ("value_MERGE_BY", InstanceField.Method (value_MERGE_BY I P))
             ].
       End Impl_core_iter_traits_marker_InPlaceIterable_where_core_iter_traits_marker_InPlaceIterable_I_for_core_iter_adapters_filter_Filter_I_P.
     End filter.

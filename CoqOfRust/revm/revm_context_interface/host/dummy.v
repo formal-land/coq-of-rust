@@ -872,7 +872,7 @@ Module host.
       
       Global Instance AssociatedFunction_new :
         forall (BLOCK TX CFG : Ty.t),
-        M.IsAssociatedFunction.Trait (Self BLOCK TX CFG) "new" (new BLOCK TX CFG).
+        M.IsAssociatedFunction.C (Self BLOCK TX CFG) "new" (new BLOCK TX CFG).
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -970,7 +970,7 @@ Module host.
       
       Global Instance AssociatedFunction_clear :
         forall (BLOCK TX CFG : Ty.t),
-        M.IsAssociatedFunction.Trait (Self BLOCK TX CFG) "clear" (clear BLOCK TX CFG).
+        M.IsAssociatedFunction.C (Self BLOCK TX CFG) "clear" (clear BLOCK TX CFG).
       Admitted.
       Global Typeclasses Opaque clear.
     End Impl_revm_context_interface_host_dummy_DummyHost_BLOCK_TX_CFG.
@@ -1194,7 +1194,21 @@ Module host.
             let _number := M.alloc (| _number |) in
             Value.StructTuple
               "core::option::Option::Some"
-              [ M.read (| M.get_constant "alloy_primitives::bits::fixed::ZERO" |) ]))
+              [
+                M.read (|
+                  get_associated_constant (|
+                    Ty.apply
+                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                      [ Value.Integer IntegerKind.Usize 32 ]
+                      [],
+                    "ZERO",
+                    Ty.apply
+                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                      [ Value.Integer IntegerKind.Usize 32 ]
+                      []
+                  |)
+                |)
+              ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -1338,7 +1352,18 @@ Module host.
                     [],
                     []
                   |),
-                  [ M.read (| M.get_constant "revm_primitives::KECCAK_EMPTY" |); Value.Bool false ]
+                  [
+                    M.read (|
+                      get_constant (|
+                        "revm_primitives::KECCAK_EMPTY",
+                        Ty.apply
+                          (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                          [ Value.Integer IntegerKind.Usize 32 ]
+                          []
+                      |)
+                    |);
+                    Value.Bool false
+                  ]
                 |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1595,7 +1620,28 @@ Module host.
                               [],
                               []
                             |),
-                            [ M.read (| entry |); M.read (| M.get_constant "ruint::ZERO" |) ]
+                            [
+                              M.read (| entry |);
+                              M.read (|
+                                get_associated_constant (|
+                                  Ty.apply
+                                    (Ty.path "ruint::Uint")
+                                    [
+                                      Value.Integer IntegerKind.Usize 256;
+                                      Value.Integer IntegerKind.Usize 4
+                                    ]
+                                    [],
+                                  "ZERO",
+                                  Ty.apply
+                                    (Ty.path "ruint::Uint")
+                                    [
+                                      Value.Integer IntegerKind.Usize 256;
+                                      Value.Integer IntegerKind.Usize 4
+                                    ]
+                                    []
+                                |)
+                              |)
+                            ]
                           |)
                         |) in
                       M.alloc (|
@@ -1632,7 +1678,28 @@ Module host.
                                 [],
                                 []
                               |),
-                              [ M.read (| M.get_constant "ruint::ZERO" |); Value.Bool true ]
+                              [
+                                M.read (|
+                                  get_associated_constant (|
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [
+                                        Value.Integer IntegerKind.Usize 256;
+                                        Value.Integer IntegerKind.Usize 4
+                                      ]
+                                      [],
+                                    "ZERO",
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [
+                                        Value.Integer IntegerKind.Usize 256;
+                                        Value.Integer IntegerKind.Usize 4
+                                      ]
+                                      []
+                                  |)
+                                |);
+                                Value.Bool true
+                              ]
                             |)
                           ]
                       |)))
@@ -1743,7 +1810,26 @@ Module host.
                           Value.StructRecord
                             "revm_context_interface::host::SStoreResult"
                             [
-                              ("original_value", M.read (| M.get_constant "ruint::ZERO" |));
+                              ("original_value",
+                                M.read (|
+                                  get_associated_constant (|
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [
+                                        Value.Integer IntegerKind.Usize 256;
+                                        Value.Integer IntegerKind.Usize 4
+                                      ]
+                                      [],
+                                    "ZERO",
+                                    Ty.apply
+                                      (Ty.path "ruint::Uint")
+                                      [
+                                        Value.Integer IntegerKind.Usize 256;
+                                        Value.Integer IntegerKind.Usize 4
+                                      ]
+                                      []
+                                  |)
+                                |));
                               ("present_value",
                                 M.call_closure (|
                                   Ty.apply
@@ -1770,7 +1856,27 @@ Module host.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| present |); M.read (| M.get_constant "ruint::ZERO" |)
+                                  [
+                                    M.read (| present |);
+                                    M.read (|
+                                      get_associated_constant (|
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [
+                                            Value.Integer IntegerKind.Usize 256;
+                                            Value.Integer IntegerKind.Usize 4
+                                          ]
+                                          [],
+                                        "ZERO",
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [
+                                            Value.Integer IntegerKind.Usize 256;
+                                            Value.Integer IntegerKind.Usize 4
+                                          ]
+                                          []
+                                      |)
+                                    |)
                                   ]
                                 |));
                               ("new_value", M.read (| value |))

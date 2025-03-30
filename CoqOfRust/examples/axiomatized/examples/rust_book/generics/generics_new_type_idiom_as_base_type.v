@@ -12,5 +12,5 @@ Require Import CoqOfRust.CoqOfRust.
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "generics_new_type_idiom_as_base_type::main" main.
+  M.IsFunction.C "generics_new_type_idiom_as_base_type::main" main.
 Admitted.

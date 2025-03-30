@@ -255,7 +255,7 @@ Module collections.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_kind : M.IsAssociatedFunction.Trait Self "kind" kind.
+    Global Instance AssociatedFunction_kind : M.IsAssociatedFunction.C Self "kind" kind.
     Admitted.
     Global Typeclasses Opaque kind.
   End Impl_alloc_collections_TryReserveError.

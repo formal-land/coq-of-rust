@@ -798,7 +798,7 @@ Module iter.
         end.
       
       Global Instance Instance_IsFunction_default_extend_tuple :
-        M.IsFunction.Trait "core::iter::traits::collect::default_extend_tuple" default_extend_tuple.
+        M.IsFunction.C "core::iter::traits::collect::default_extend_tuple" default_extend_tuple.
       Admitted.
       Global Typeclasses Opaque default_extend_tuple.
       
@@ -905,7 +905,7 @@ Module iter.
           end.
         
         Global Instance Instance_IsFunction_extend :
-          M.IsFunction.Trait "core::iter::traits::collect::default_extend_tuple::extend" extend.
+          M.IsFunction.C "core::iter::traits::collect::default_extend_tuple::extend" extend.
         Admitted.
         Global Typeclasses Opaque extend.
       End default_extend_tuple.

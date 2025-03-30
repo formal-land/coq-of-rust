@@ -757,7 +757,10 @@ Module map.
                                   |);
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.get_constant "alloy_primitives::map::fixed::N"
+                                    get_constant (|
+                                      "alloy_primitives::map::fixed::N",
+                                      Ty.path "usize"
+                                    |)
                                   |)
                                 ]
                             |),
@@ -873,7 +876,10 @@ Module map.
                                           ]
                                         |),
                                         M.read (|
-                                          M.get_constant "alloy_primitives::map::fixed::N"
+                                          get_constant (|
+                                            "alloy_primitives::map::fixed::N",
+                                            Ty.path "usize"
+                                          |)
                                         |)
                                       |)
                                     |)) in
@@ -910,7 +916,12 @@ Module map.
                         M.use
                           (M.alloc (|
                             BinOp.gt (|
-                              M.read (| M.get_constant "alloy_primitives::map::fixed::N" |),
+                              M.read (|
+                                get_constant (|
+                                  "alloy_primitives::map::fixed::N",
+                                  Ty.path "usize"
+                                |)
+                              |),
                               Value.Integer IntegerKind.Usize 32
                             |)
                           |)) in
@@ -1015,7 +1026,10 @@ Module map.
                                   M.borrow (| Pointer.Kind.Ref, i |);
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.get_constant "alloy_primitives::map::fixed::N"
+                                    get_constant (|
+                                      "alloy_primitives::map::fixed::N",
+                                      Ty.path "usize"
+                                    |)
                                   |)
                                 ]
                             |),
@@ -1285,7 +1299,9 @@ Module map.
                         M.use
                           (M.alloc (|
                             BinOp.gt (|
-                              M.read (| M.get_constant "core::num::BITS" |),
+                              M.read (|
+                                get_associated_constant (| Ty.path "usize", "BITS", Ty.path "u32" |)
+                              |),
                               Value.Integer IntegerKind.U32 64
                             |)
                           |)) in
@@ -1400,7 +1416,9 @@ Module map.
                         M.use
                           (M.alloc (|
                             BinOp.gt (|
-                              M.read (| M.get_constant "core::num::BITS" |),
+                              M.read (|
+                                get_associated_constant (| Ty.path "usize", "BITS", Ty.path "u32" |)
+                              |),
                               Value.Integer IntegerKind.U32 32
                             |)
                           |)) in
@@ -1515,7 +1533,9 @@ Module map.
                         M.use
                           (M.alloc (|
                             BinOp.gt (|
-                              M.read (| M.get_constant "core::num::BITS" |),
+                              M.read (|
+                                get_associated_constant (| Ty.path "usize", "BITS", Ty.path "u32" |)
+                              |),
                               Value.Integer IntegerKind.U32 16
                             |)
                           |)) in
@@ -1630,7 +1650,9 @@ Module map.
                         M.use
                           (M.alloc (|
                             BinOp.gt (|
-                              M.read (| M.get_constant "core::num::BITS" |),
+                              M.read (|
+                                get_associated_constant (| Ty.path "usize", "BITS", Ty.path "u32" |)
+                              |),
                               Value.Integer IntegerKind.U32 8
                             |)
                           |)) in
@@ -1798,7 +1820,7 @@ Module map.
       end.
     
     Global Instance Instance_IsFunction_write_bytes_unrolled :
-      M.IsFunction.Trait "alloy_primitives::map::fixed::write_bytes_unrolled" write_bytes_unrolled.
+      M.IsFunction.C "alloy_primitives::map::fixed::write_bytes_unrolled" write_bytes_unrolled.
     Admitted.
     Global Typeclasses Opaque write_bytes_unrolled.
   End fixed.

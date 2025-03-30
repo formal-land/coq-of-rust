@@ -1784,40 +1784,45 @@ Module eof.
           (* Instance *) [ ("partial_cmp", InstanceField.Method partial_cmp) ].
     End Impl_core_cmp_PartialOrd_revm_bytecode_eof_header_EofHeader_for_revm_bytecode_eof_header_EofHeader.
     
-    Definition value_KIND_TERMINAL : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 0 |))).
+    Definition value_KIND_TERMINAL (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 0 |))).
     
-    Axiom Constant_value_KIND_TERMINAL :
-      (M.get_constant "revm_bytecode::eof::header::KIND_TERMINAL") = value_KIND_TERMINAL.
-    Global Hint Rewrite Constant_value_KIND_TERMINAL : constant_rewrites.
+    Global Instance Instance_IsConstant_value_KIND_TERMINAL :
+      M.IsFunction.C "revm_bytecode::eof::header::KIND_TERMINAL" value_KIND_TERMINAL.
+    Admitted.
+    Global Typeclasses Opaque value_KIND_TERMINAL.
     
-    Definition value_KIND_TYPES : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 1 |))).
+    Definition value_KIND_TYPES (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 1 |))).
     
-    Axiom Constant_value_KIND_TYPES :
-      (M.get_constant "revm_bytecode::eof::header::KIND_TYPES") = value_KIND_TYPES.
-    Global Hint Rewrite Constant_value_KIND_TYPES : constant_rewrites.
+    Global Instance Instance_IsConstant_value_KIND_TYPES :
+      M.IsFunction.C "revm_bytecode::eof::header::KIND_TYPES" value_KIND_TYPES.
+    Admitted.
+    Global Typeclasses Opaque value_KIND_TYPES.
     
-    Definition value_KIND_CODE : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 2 |))).
+    Definition value_KIND_CODE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 2 |))).
     
-    Axiom Constant_value_KIND_CODE :
-      (M.get_constant "revm_bytecode::eof::header::KIND_CODE") = value_KIND_CODE.
-    Global Hint Rewrite Constant_value_KIND_CODE : constant_rewrites.
+    Global Instance Instance_IsConstant_value_KIND_CODE :
+      M.IsFunction.C "revm_bytecode::eof::header::KIND_CODE" value_KIND_CODE.
+    Admitted.
+    Global Typeclasses Opaque value_KIND_CODE.
     
-    Definition value_KIND_CONTAINER : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 3 |))).
+    Definition value_KIND_CONTAINER (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 3 |))).
     
-    Axiom Constant_value_KIND_CONTAINER :
-      (M.get_constant "revm_bytecode::eof::header::KIND_CONTAINER") = value_KIND_CONTAINER.
-    Global Hint Rewrite Constant_value_KIND_CONTAINER : constant_rewrites.
+    Global Instance Instance_IsConstant_value_KIND_CONTAINER :
+      M.IsFunction.C "revm_bytecode::eof::header::KIND_CONTAINER" value_KIND_CONTAINER.
+    Admitted.
+    Global Typeclasses Opaque value_KIND_CONTAINER.
     
-    Definition value_KIND_DATA : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 4 |))).
+    Definition value_KIND_DATA (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 4 |))).
     
-    Axiom Constant_value_KIND_DATA :
-      (M.get_constant "revm_bytecode::eof::header::KIND_DATA") = value_KIND_DATA.
-    Global Hint Rewrite Constant_value_KIND_DATA : constant_rewrites.
+    Global Instance Instance_IsConstant_value_KIND_DATA :
+      M.IsFunction.C "revm_bytecode::eof::header::KIND_DATA" value_KIND_DATA.
+    Admitted.
+    Global Typeclasses Opaque value_KIND_DATA.
     
     (*
     fn consume_header_section_size(input: &[u8]) -> Result<(&[u8], Vec<u16>, usize), EofDecodeError> {
@@ -2432,7 +2437,7 @@ Module eof.
       end.
     
     Global Instance Instance_IsFunction_consume_header_section_size :
-      M.IsFunction.Trait
+      M.IsFunction.C
         "revm_bytecode::eof::header::consume_header_section_size"
         consume_header_section_size.
     Admitted.
@@ -2577,7 +2582,7 @@ Module eof.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_size : M.IsAssociatedFunction.Trait Self "size" size.
+      Global Instance AssociatedFunction_size : M.IsAssociatedFunction.C Self "size" size.
       Admitted.
       Global Typeclasses Opaque size.
       
@@ -2609,7 +2614,7 @@ Module eof.
         end.
       
       Global Instance AssociatedFunction_data_size_raw_i :
-        M.IsAssociatedFunction.Trait Self "data_size_raw_i" data_size_raw_i.
+        M.IsAssociatedFunction.C Self "data_size_raw_i" data_size_raw_i.
       Admitted.
       Global Typeclasses Opaque data_size_raw_i.
       
@@ -2639,7 +2644,7 @@ Module eof.
         end.
       
       Global Instance AssociatedFunction_types_count :
-        M.IsAssociatedFunction.Trait Self "types_count" types_count.
+        M.IsAssociatedFunction.C Self "types_count" types_count.
       Admitted.
       Global Typeclasses Opaque types_count.
       
@@ -2698,7 +2703,7 @@ Module eof.
         end.
       
       Global Instance AssociatedFunction_body_size :
-        M.IsAssociatedFunction.Trait Self "body_size" body_size.
+        M.IsAssociatedFunction.C Self "body_size" body_size.
       Admitted.
       Global Typeclasses Opaque body_size.
       
@@ -2738,7 +2743,7 @@ Module eof.
         end.
       
       Global Instance AssociatedFunction_eof_size :
-        M.IsAssociatedFunction.Trait Self "eof_size" eof_size.
+        M.IsAssociatedFunction.C Self "eof_size" eof_size.
       Admitted.
       Global Typeclasses Opaque eof_size.
       
@@ -2860,7 +2865,9 @@ Module eof.
                     |),
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| buffer |) |) |);
-                      M.read (| M.get_constant "revm_bytecode::eof::header::KIND_TYPES" |)
+                      M.read (|
+                        get_constant (| "revm_bytecode::eof::header::KIND_TYPES", Ty.path "u8" |)
+                      |)
                     ]
                   |)
                 |) in
@@ -2928,7 +2935,9 @@ Module eof.
                     |),
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| buffer |) |) |);
-                      M.read (| M.get_constant "revm_bytecode::eof::header::KIND_CODE" |)
+                      M.read (|
+                        get_constant (| "revm_bytecode::eof::header::KIND_CODE", Ty.path "u8" |)
+                      |)
                     ]
                   |)
                 |) in
@@ -3195,7 +3204,12 @@ Module eof.
                                   Pointer.Kind.MutRef,
                                   M.deref (| M.read (| buffer |) |)
                                 |);
-                                M.read (| M.get_constant "revm_bytecode::eof::header::KIND_DATA" |)
+                                M.read (|
+                                  get_constant (|
+                                    "revm_bytecode::eof::header::KIND_DATA",
+                                    Ty.path "u8"
+                                  |)
+                                |)
                               ]
                             |)
                           |) in
@@ -3221,7 +3235,10 @@ Module eof.
                                   M.deref (| M.read (| buffer |) |)
                                 |);
                                 M.read (|
-                                  M.get_constant "revm_bytecode::eof::header::KIND_CONTAINER"
+                                  get_constant (|
+                                    "revm_bytecode::eof::header::KIND_CONTAINER",
+                                    Ty.path "u8"
+                                  |)
                                 |)
                               ]
                             |)
@@ -3472,7 +3489,12 @@ Module eof.
                                   Pointer.Kind.MutRef,
                                   M.deref (| M.read (| buffer |) |)
                                 |);
-                                M.read (| M.get_constant "revm_bytecode::eof::header::KIND_DATA" |)
+                                M.read (|
+                                  get_constant (|
+                                    "revm_bytecode::eof::header::KIND_DATA",
+                                    Ty.path "u8"
+                                  |)
+                                |)
                               ]
                             |)
                           |) in
@@ -3543,7 +3565,9 @@ Module eof.
                     |),
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| buffer |) |) |);
-                      M.read (| M.get_constant "revm_bytecode::eof::header::KIND_TERMINAL" |)
+                      M.read (|
+                        get_constant (| "revm_bytecode::eof::header::KIND_TERMINAL", Ty.path "u8" |)
+                      |)
                     ]
                   |)
                 |) in
@@ -3552,7 +3576,7 @@ Module eof.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_encode : M.IsAssociatedFunction.Trait Self "encode" encode.
+      Global Instance AssociatedFunction_encode : M.IsAssociatedFunction.C Self "encode" encode.
       Admitted.
       Global Typeclasses Opaque encode.
       
@@ -4309,8 +4333,10 @@ Module eof.
                                                           BinOp.ne (|
                                                             M.read (| kind_types |),
                                                             M.read (|
-                                                              M.get_constant
-                                                                "revm_bytecode::eof::header::KIND_TYPES"
+                                                              get_constant (|
+                                                                "revm_bytecode::eof::header::KIND_TYPES",
+                                                                Ty.path "u8"
+                                                              |)
                                                             |)
                                                           |)
                                                         |)) in
@@ -4850,8 +4876,10 @@ Module eof.
                                                                           BinOp.ne (|
                                                                             M.read (| kind_types |),
                                                                             M.read (|
-                                                                              M.get_constant
-                                                                                "revm_bytecode::eof::header::KIND_CODE"
+                                                                              get_constant (|
+                                                                                "revm_bytecode::eof::header::KIND_CODE",
+                                                                                Ty.path "u8"
+                                                                              |)
                                                                             |)
                                                                           |)
                                                                         |)) in
@@ -6466,8 +6494,11 @@ Module eof.
                                                                                                                           kind_data
                                                                                                                         |),
                                                                                                                         M.read (|
-                                                                                                                          M.get_constant
-                                                                                                                            "revm_bytecode::eof::header::KIND_DATA"
+                                                                                                                          get_constant (|
+                                                                                                                            "revm_bytecode::eof::header::KIND_DATA",
+                                                                                                                            Ty.path
+                                                                                                                              "u8"
+                                                                                                                          |)
                                                                                                                         |)
                                                                                                                       |)
                                                                                                                     |)) in
@@ -7154,8 +7185,11 @@ Module eof.
                                                                                                               terminator
                                                                                                             |),
                                                                                                             M.read (|
-                                                                                                              M.get_constant
-                                                                                                                "revm_bytecode::eof::header::KIND_TERMINAL"
+                                                                                                              get_constant (|
+                                                                                                                "revm_bytecode::eof::header::KIND_TERMINAL",
+                                                                                                                Ty.path
+                                                                                                                  "u8"
+                                                                                                              |)
                                                                                                             |)
                                                                                                           |)
                                                                                                         |)) in
@@ -7235,7 +7269,7 @@ Module eof.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_decode : M.IsAssociatedFunction.Trait Self "decode" decode.
+      Global Instance AssociatedFunction_decode : M.IsAssociatedFunction.C Self "decode" decode.
       Admitted.
       Global Typeclasses Opaque decode.
     End Impl_revm_bytecode_eof_header_EofHeader.

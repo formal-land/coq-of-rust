@@ -56,7 +56,7 @@ Module num.
         end.
       
       Global Instance Instance_IsFunction_estimate_scaling_factor :
-        M.IsFunction.Trait
+        M.IsFunction.C
           "core::num::flt2dec::estimator::estimate_scaling_factor"
           estimate_scaling_factor.
       Admitted.

@@ -40,5 +40,5 @@ End Impl_core_default_Default_for_scoping_rules_lifetimes_traits_Borrowed.
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "scoping_rules_lifetimes_traits::main" main.
+  M.IsFunction.C "scoping_rules_lifetimes_traits::main" main.
 Admitted.

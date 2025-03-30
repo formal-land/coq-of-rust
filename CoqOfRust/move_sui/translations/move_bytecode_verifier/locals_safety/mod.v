@@ -189,7 +189,7 @@ Module locals_safety.
     end.
   
   Global Instance Instance_IsFunction_verify :
-    M.IsFunction.Trait "move_bytecode_verifier::locals_safety::verify" verify.
+    M.IsFunction.C "move_bytecode_verifier::locals_safety::verify" verify.
   Admitted.
   Global Typeclasses Opaque verify.
   
@@ -388,8 +388,10 @@ Module locals_safety.
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| meter |) |) |);
                             Value.StructTuple "move_bytecode_verifier_meter::Scope::Function" [];
                             M.read (|
-                              M.get_constant
-                                "move_bytecode_verifier::locals_safety::abstract_state::STEP_BASE_COST"
+                              get_constant (|
+                                "move_bytecode_verifier::locals_safety::abstract_state::STEP_BASE_COST",
+                                Ty.path "u128"
+                              |)
                             |)
                           ]
                         |)
@@ -1085,8 +1087,10 @@ Module locals_safety.
                                         "move_bytecode_verifier_meter::Scope::Function"
                                         [];
                                       M.read (|
-                                        M.get_constant
-                                          "move_bytecode_verifier::locals_safety::abstract_state::RET_PER_LOCAL_COST"
+                                        get_constant (|
+                                          "move_bytecode_verifier::locals_safety::abstract_state::RET_PER_LOCAL_COST",
+                                          Ty.path "u128"
+                                        |)
                                       |);
                                       M.call_closure (|
                                         Ty.path "usize",
@@ -2370,7 +2374,7 @@ Module locals_safety.
     end.
   
   Global Instance Instance_IsFunction_execute_inner :
-    M.IsFunction.Trait "move_bytecode_verifier::locals_safety::execute_inner" execute_inner.
+    M.IsFunction.C "move_bytecode_verifier::locals_safety::execute_inner" execute_inner.
   Admitted.
   Global Typeclasses Opaque execute_inner.
   

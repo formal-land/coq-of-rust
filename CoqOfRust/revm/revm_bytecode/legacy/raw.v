@@ -464,7 +464,7 @@ Module legacy.
         end.
       
       Global Instance AssociatedFunction_analysis :
-        M.IsAssociatedFunction.Trait Self "analysis" analysis.
+        M.IsAssociatedFunction.C Self "analysis" analysis.
       Admitted.
       Global Typeclasses Opaque analysis.
       
@@ -684,7 +684,7 @@ Module legacy.
         end.
       
       Global Instance AssociatedFunction_into_analyzed :
-        M.IsAssociatedFunction.Trait Self "into_analyzed" into_analyzed.
+        M.IsAssociatedFunction.C Self "into_analyzed" into_analyzed.
       Admitted.
       Global Typeclasses Opaque into_analyzed.
     End Impl_revm_bytecode_legacy_raw_LegacyRawBytecode.
@@ -891,7 +891,7 @@ Module legacy.
       end.
     
     Global Instance Instance_IsFunction_analyze_legacy :
-      M.IsFunction.Trait "revm_bytecode::legacy::raw::analyze_legacy" analyze_legacy.
+      M.IsFunction.C "revm_bytecode::legacy::raw::analyze_legacy" analyze_legacy.
     Admitted.
     Global Typeclasses Opaque analyze_legacy.
   End raw.

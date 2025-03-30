@@ -693,7 +693,20 @@ Module abi.
               [
                 M.read (| __deserializer |);
                 mk_str (| "ScriptABI" |);
-                M.read (| M.get_constant "move_core_types::abi::_'1::deserialize::VARIANTS" |);
+                M.read (|
+                  get_constant (|
+                    "move_core_types::abi::_'1::deserialize::VARIANTS",
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                      ]
+                  |)
+                |);
                 Value.StructRecord
                   "move_core_types::abi::_'1::deserialize::__Visitor"
                   [
@@ -1300,7 +1313,20 @@ Module abi.
               [
                 M.read (| __deserializer |);
                 mk_str (| "ScriptFunctionABI" |);
-                M.read (| M.get_constant "move_core_types::abi::_'3::deserialize::FIELDS" |);
+                M.read (|
+                  get_constant (|
+                    "move_core_types::abi::_'3::deserialize::FIELDS",
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                      ]
+                  |)
+                |);
                 Value.StructRecord
                   "move_core_types::abi::_'3::deserialize::__Visitor"
                   [
@@ -1927,7 +1953,20 @@ Module abi.
               [
                 M.read (| __deserializer |);
                 mk_str (| "TransactionScriptABI" |);
-                M.read (| M.get_constant "move_core_types::abi::_'5::deserialize::FIELDS" |);
+                M.read (|
+                  get_constant (|
+                    "move_core_types::abi::_'5::deserialize::FIELDS",
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                      ]
+                  |)
+                |);
                 Value.StructRecord
                   "move_core_types::abi::_'5::deserialize::__Visitor"
                   [
@@ -2266,7 +2305,20 @@ Module abi.
               [
                 M.read (| __deserializer |);
                 mk_str (| "ArgumentABI" |);
-                M.read (| M.get_constant "move_core_types::abi::_'7::deserialize::FIELDS" |);
+                M.read (|
+                  get_constant (|
+                    "move_core_types::abi::_'7::deserialize::FIELDS",
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                      ]
+                  |)
+                |);
                 Value.StructRecord
                   "move_core_types::abi::_'7::deserialize::__Visitor"
                   [
@@ -2521,7 +2573,20 @@ Module abi.
               [
                 M.read (| __deserializer |);
                 mk_str (| "TypeArgumentABI" |);
-                M.read (| M.get_constant "move_core_types::abi::_'9::deserialize::FIELDS" |);
+                M.read (|
+                  get_constant (|
+                    "move_core_types::abi::_'9::deserialize::FIELDS",
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                      ]
+                  |)
+                |);
                 Value.StructRecord
                   "move_core_types::abi::_'9::deserialize::__Visitor"
                   [
@@ -4832,7 +4897,7 @@ Module abi.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -4881,7 +4946,7 @@ Module abi.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_name : M.IsAssociatedFunction.Trait Self "name" name.
+    Global Instance AssociatedFunction_name : M.IsAssociatedFunction.C Self "name" name.
     Admitted.
     Global Typeclasses Opaque name.
     
@@ -4930,7 +4995,7 @@ Module abi.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_doc : M.IsAssociatedFunction.Trait Self "doc" doc.
+    Global Instance AssociatedFunction_doc : M.IsAssociatedFunction.C Self "doc" doc.
     Admitted.
     Global Typeclasses Opaque doc.
     
@@ -4982,7 +5047,7 @@ Module abi.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_code : M.IsAssociatedFunction.Trait Self "code" code.
+    Global Instance AssociatedFunction_code : M.IsAssociatedFunction.C Self "code" code.
     Admitted.
     Global Typeclasses Opaque code.
     
@@ -5045,8 +5110,7 @@ Module abi.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_ty_args :
-      M.IsAssociatedFunction.Trait Self "ty_args" ty_args.
+    Global Instance AssociatedFunction_ty_args : M.IsAssociatedFunction.C Self "ty_args" ty_args.
     Admitted.
     Global Typeclasses Opaque ty_args.
     
@@ -5101,7 +5165,7 @@ Module abi.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_args : M.IsAssociatedFunction.Trait Self "args" args.
+    Global Instance AssociatedFunction_args : M.IsAssociatedFunction.C Self "args" args.
     Admitted.
     Global Typeclasses Opaque args.
   End Impl_move_core_types_abi_TransactionScriptABI.
@@ -5147,7 +5211,7 @@ Module abi.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -5196,7 +5260,7 @@ Module abi.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_name : M.IsAssociatedFunction.Trait Self "name" name.
+    Global Instance AssociatedFunction_name : M.IsAssociatedFunction.C Self "name" name.
     Admitted.
     Global Typeclasses Opaque name.
     
@@ -5227,7 +5291,7 @@ Module abi.
       end.
     
     Global Instance AssociatedFunction_module_name :
-      M.IsAssociatedFunction.Trait Self "module_name" module_name.
+      M.IsAssociatedFunction.C Self "module_name" module_name.
     Admitted.
     Global Typeclasses Opaque module_name.
     
@@ -5276,7 +5340,7 @@ Module abi.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_doc : M.IsAssociatedFunction.Trait Self "doc" doc.
+    Global Instance AssociatedFunction_doc : M.IsAssociatedFunction.C Self "doc" doc.
     Admitted.
     Global Typeclasses Opaque doc.
     
@@ -5339,8 +5403,7 @@ Module abi.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_ty_args :
-      M.IsAssociatedFunction.Trait Self "ty_args" ty_args.
+    Global Instance AssociatedFunction_ty_args : M.IsAssociatedFunction.C Self "ty_args" ty_args.
     Admitted.
     Global Typeclasses Opaque ty_args.
     
@@ -5395,7 +5458,7 @@ Module abi.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_args : M.IsAssociatedFunction.Trait Self "args" args.
+    Global Instance AssociatedFunction_args : M.IsAssociatedFunction.C Self "args" args.
     Admitted.
     Global Typeclasses Opaque args.
   End Impl_move_core_types_abi_ScriptFunctionABI.
@@ -5436,7 +5499,7 @@ Module abi.
       end.
     
     Global Instance AssociatedFunction_is_script_fun_abi :
-      M.IsAssociatedFunction.Trait Self "is_script_fun_abi" is_script_fun_abi.
+      M.IsAssociatedFunction.C Self "is_script_fun_abi" is_script_fun_abi.
     Admitted.
     Global Typeclasses Opaque is_script_fun_abi.
     
@@ -5477,7 +5540,7 @@ Module abi.
       end.
     
     Global Instance AssociatedFunction_is_transaction_script_abi :
-      M.IsAssociatedFunction.Trait Self "is_transaction_script_abi" is_transaction_script_abi.
+      M.IsAssociatedFunction.C Self "is_transaction_script_abi" is_transaction_script_abi.
     Admitted.
     Global Typeclasses Opaque is_transaction_script_abi.
     
@@ -5564,7 +5627,7 @@ Module abi.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_name : M.IsAssociatedFunction.Trait Self "name" name.
+    Global Instance AssociatedFunction_name : M.IsAssociatedFunction.C Self "name" name.
     Admitted.
     Global Typeclasses Opaque name.
     
@@ -5651,7 +5714,7 @@ Module abi.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_doc : M.IsAssociatedFunction.Trait Self "doc" doc.
+    Global Instance AssociatedFunction_doc : M.IsAssociatedFunction.C Self "doc" doc.
     Admitted.
     Global Typeclasses Opaque doc.
     
@@ -5763,8 +5826,7 @@ Module abi.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_ty_args :
-      M.IsAssociatedFunction.Trait Self "ty_args" ty_args.
+    Global Instance AssociatedFunction_ty_args : M.IsAssociatedFunction.C Self "ty_args" ty_args.
     Admitted.
     Global Typeclasses Opaque ty_args.
     
@@ -5876,7 +5938,7 @@ Module abi.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_args : M.IsAssociatedFunction.Trait Self "args" args.
+    Global Instance AssociatedFunction_args : M.IsAssociatedFunction.C Self "args" args.
     Admitted.
     Global Typeclasses Opaque args.
   End Impl_move_core_types_abi_ScriptABI.
@@ -5901,7 +5963,7 @@ Module abi.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -5950,7 +6012,7 @@ Module abi.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_name : M.IsAssociatedFunction.Trait Self "name" name.
+    Global Instance AssociatedFunction_name : M.IsAssociatedFunction.C Self "name" name.
     Admitted.
     Global Typeclasses Opaque name.
     
@@ -5980,8 +6042,7 @@ Module abi.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_type_tag :
-      M.IsAssociatedFunction.Trait Self "type_tag" type_tag.
+    Global Instance AssociatedFunction_type_tag : M.IsAssociatedFunction.C Self "type_tag" type_tag.
     Admitted.
     Global Typeclasses Opaque type_tag.
   End Impl_move_core_types_abi_ArgumentABI.
@@ -6005,7 +6066,7 @@ Module abi.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -6054,7 +6115,7 @@ Module abi.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_name : M.IsAssociatedFunction.Trait Self "name" name.
+    Global Instance AssociatedFunction_name : M.IsAssociatedFunction.C Self "name" name.
     Admitted.
     Global Typeclasses Opaque name.
   End Impl_move_core_types_abi_TypeArgumentABI.

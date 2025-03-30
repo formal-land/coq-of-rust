@@ -32,8 +32,6 @@ Proof.
     set (f := Function2.of_run (run_unknown run_InterpreterTypes_for_WIRE)).
     change (Value.Closure _) with (φ f).
     run_symbolic.
-    rewrite array.repeat_φ_eq.
-    run_symbolic.
   }
   { (* stop *)
     set (f := Function2.of_run (run_stop run_InterpreterTypes_for_WIRE)).

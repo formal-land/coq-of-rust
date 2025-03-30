@@ -50,17 +50,16 @@ Module Impl_call_builder_delegate_CallBuilderDelegateTest.
   
   Parameter new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
   Admitted.
   
   Parameter delegate : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_delegate :
-    M.IsAssociatedFunction.Trait Self "delegate" delegate.
+  Global Instance AssociatedFunction_delegate : M.IsAssociatedFunction.C Self "delegate" delegate.
   Admitted.
   
   Parameter invoke : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_invoke : M.IsAssociatedFunction.Trait Self "invoke" invoke.
+  Global Instance AssociatedFunction_invoke : M.IsAssociatedFunction.C Self "invoke" invoke.
   Admitted.
 End Impl_call_builder_delegate_CallBuilderDelegateTest.

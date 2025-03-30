@@ -152,7 +152,14 @@ Module vec.
                                             |),
                                             [
                                               M.read (|
-                                                M.get_constant "alloc::raw_vec::MIN_NON_ZERO_CAP"
+                                                get_associated_constant (|
+                                                  Ty.apply
+                                                    (Ty.path "alloc::raw_vec::RawVec")
+                                                    []
+                                                    [ T; Ty.path "alloc::alloc::Global" ],
+                                                  "MIN_NON_ZERO_CAP",
+                                                  Ty.path "usize"
+                                                |)
                                               |);
                                               M.call_closure (|
                                                 Ty.path "usize",

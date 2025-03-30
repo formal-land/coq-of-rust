@@ -66,7 +66,7 @@ Module mul.
     
     Global Instance AssociatedFunction_checked_mul :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait (Self BITS LIMBS) "checked_mul" (checked_mul BITS LIMBS).
+      M.IsAssociatedFunction.C (Self BITS LIMBS) "checked_mul" (checked_mul BITS LIMBS).
     Admitted.
     Global Typeclasses Opaque checked_mul.
     
@@ -95,7 +95,13 @@ Module mul.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             let~ result : Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] :=
-              M.copy (| M.get_constant "ruint::ZERO" |) in
+              M.copy (|
+                get_associated_constant (|
+                  Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                  "ZERO",
+                  Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                |)
+              |) in
             let~ overflow : Ty.path "bool" :=
               M.alloc (|
                 M.call_closure (|
@@ -161,7 +167,7 @@ Module mul.
                         M.use
                           (M.alloc (|
                             BinOp.gt (|
-                              M.read (| M.get_constant "ruint::mul::BITS" |),
+                              M.read (| get_constant (| "ruint::mul::BITS", Ty.path "usize" |) |),
                               Value.Integer IntegerKind.Usize 0
                             |)
                           |)) in
@@ -182,12 +188,20 @@ Module mul.
                                       "limbs"
                                     |),
                                     BinOp.Wrap.sub (|
-                                      M.read (| M.get_constant "ruint::mul::LIMBS" |),
+                                      M.read (|
+                                        get_constant (| "ruint::mul::LIMBS", Ty.path "usize" |)
+                                      |),
                                       Value.Integer IntegerKind.Usize 1
                                     |)
                                   |)
                                 |),
-                                M.read (| M.get_constant "ruint::MASK" |)
+                                M.read (|
+                                  get_associated_constant (|
+                                    Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                    "MASK",
+                                    Ty.path "u64"
+                                  |)
+                                |)
                               |))
                           |)
                         |) in
@@ -201,7 +215,9 @@ Module mul.
                                 "limbs"
                               |),
                               BinOp.Wrap.sub (|
-                                M.read (| M.get_constant "ruint::mul::LIMBS" |),
+                                M.read (|
+                                  get_constant (| "ruint::mul::LIMBS", Ty.path "usize" |)
+                                |),
                                 Value.Integer IntegerKind.Usize 1
                               |)
                             |) in
@@ -209,7 +225,13 @@ Module mul.
                             β,
                             BinOp.bit_and
                               (M.read (| β |))
-                              (M.read (| M.get_constant "ruint::MASK" |))
+                              (M.read (|
+                                get_associated_constant (|
+                                  Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                  "MASK",
+                                  Ty.path "u64"
+                                |)
+                              |))
                           |)
                         |) in
                       M.alloc (| Value.Tuple [] |)));
@@ -223,7 +245,7 @@ Module mul.
     
     Global Instance AssociatedFunction_overflowing_mul :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait (Self BITS LIMBS) "overflowing_mul" (overflowing_mul BITS LIMBS).
+      M.IsAssociatedFunction.C (Self BITS LIMBS) "overflowing_mul" (overflowing_mul BITS LIMBS).
     Admitted.
     Global Typeclasses Opaque overflowing_mul.
     
@@ -271,7 +293,13 @@ Module mul.
                     let _ :=
                       M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
                     value));
-                fun γ => ltac:(M.monadic (M.get_constant "ruint::MAX"))
+                fun γ =>
+                  ltac:(M.monadic
+                    (get_associated_constant (|
+                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                      "MAX",
+                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                    |)))
               ]
             |)
           |)))
@@ -280,7 +308,7 @@ Module mul.
     
     Global Instance AssociatedFunction_saturating_mul :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait (Self BITS LIMBS) "saturating_mul" (saturating_mul BITS LIMBS).
+      M.IsAssociatedFunction.C (Self BITS LIMBS) "saturating_mul" (saturating_mul BITS LIMBS).
     Admitted.
     Global Typeclasses Opaque saturating_mul.
     
@@ -308,7 +336,13 @@ Module mul.
           let rhs := M.alloc (| rhs |) in
           M.read (|
             let~ result : Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] :=
-              M.copy (| M.get_constant "ruint::ZERO" |) in
+              M.copy (|
+                get_associated_constant (|
+                  Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                  "ZERO",
+                  Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                |)
+              |) in
             let~ _ : Ty.tuple [] :=
               M.alloc (|
                 M.call_closure (|
@@ -374,7 +408,7 @@ Module mul.
                         M.use
                           (M.alloc (|
                             BinOp.gt (|
-                              M.read (| M.get_constant "ruint::mul::BITS" |),
+                              M.read (| get_constant (| "ruint::mul::BITS", Ty.path "usize" |) |),
                               Value.Integer IntegerKind.Usize 0
                             |)
                           |)) in
@@ -389,7 +423,9 @@ Module mul.
                                 "limbs"
                               |),
                               BinOp.Wrap.sub (|
-                                M.read (| M.get_constant "ruint::mul::LIMBS" |),
+                                M.read (|
+                                  get_constant (| "ruint::mul::LIMBS", Ty.path "usize" |)
+                                |),
                                 Value.Integer IntegerKind.Usize 1
                               |)
                             |) in
@@ -397,7 +433,13 @@ Module mul.
                             β,
                             BinOp.bit_and
                               (M.read (| β |))
-                              (M.read (| M.get_constant "ruint::MASK" |))
+                              (M.read (|
+                                get_associated_constant (|
+                                  Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                  "MASK",
+                                  Ty.path "u64"
+                                |)
+                              |))
                           |)
                         |) in
                       M.alloc (| Value.Tuple [] |)));
@@ -411,7 +453,7 @@ Module mul.
     
     Global Instance AssociatedFunction_wrapping_mul :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait (Self BITS LIMBS) "wrapping_mul" (wrapping_mul BITS LIMBS).
+      M.IsAssociatedFunction.C (Self BITS LIMBS) "wrapping_mul" (wrapping_mul BITS LIMBS).
     Admitted.
     Global Typeclasses Opaque wrapping_mul.
     
@@ -473,7 +515,9 @@ Module mul.
                               (M.alloc (|
                                 LogicalOp.or (|
                                   BinOp.eq (|
-                                    M.read (| M.get_constant "ruint::mul::BITS" |),
+                                    M.read (|
+                                      get_constant (| "ruint::mul::BITS", Ty.path "usize" |)
+                                    |),
                                     Value.Integer IntegerKind.Usize 0
                                   |),
                                   ltac:(M.monadic
@@ -507,7 +551,13 @@ Module mul.
                     ]
                   |) in
                 let~ result : Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] :=
-                  M.copy (| M.get_constant "ruint::ZERO" |) in
+                  M.copy (|
+                    get_associated_constant (|
+                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                      "ZERO",
+                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                    |)
+                  |) in
                 let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     M.write (|
@@ -590,10 +640,26 @@ Module mul.
                                   |),
                                   [
                                     M.read (| n |);
-                                    M.read (| M.get_constant "ruint::mul::inv_ring::W3" |)
+                                    M.read (|
+                                      get_constant (|
+                                        "ruint::mul::inv_ring::W3",
+                                        Ty.apply
+                                          (Ty.path "core::num::wrapping::Wrapping")
+                                          []
+                                          [ Ty.path "u64" ]
+                                      |)
+                                    |)
                                   ]
                                 |);
-                                M.read (| M.get_constant "ruint::mul::inv_ring::W2" |)
+                                M.read (|
+                                  get_constant (|
+                                    "ruint::mul::inv_ring::W2",
+                                    Ty.apply
+                                      (Ty.path "core::num::wrapping::Wrapping")
+                                      []
+                                      [ Ty.path "u64" ]
+                                  |)
+                                |)
                               ]
                             |)
                           |) in
@@ -643,7 +709,15 @@ Module mul.
                                     []
                                   |),
                                   [
-                                    M.read (| M.get_constant "ruint::mul::inv_ring::W2" |);
+                                    M.read (|
+                                      get_constant (|
+                                        "ruint::mul::inv_ring::W2",
+                                        Ty.apply
+                                          (Ty.path "core::num::wrapping::Wrapping")
+                                          []
+                                          [ Ty.path "u64" ]
+                                      |)
+                                    |);
                                     M.call_closure (|
                                       Ty.apply
                                         (Ty.path "core::num::wrapping::Wrapping")
@@ -719,7 +793,15 @@ Module mul.
                                     []
                                   |),
                                   [
-                                    M.read (| M.get_constant "ruint::mul::inv_ring::W2" |);
+                                    M.read (|
+                                      get_constant (|
+                                        "ruint::mul::inv_ring::W2",
+                                        Ty.apply
+                                          (Ty.path "core::num::wrapping::Wrapping")
+                                          []
+                                          [ Ty.path "u64" ]
+                                      |)
+                                    |);
                                     M.call_closure (|
                                       Ty.apply
                                         (Ty.path "core::num::wrapping::Wrapping")
@@ -795,7 +877,15 @@ Module mul.
                                     []
                                   |),
                                   [
-                                    M.read (| M.get_constant "ruint::mul::inv_ring::W2" |);
+                                    M.read (|
+                                      get_constant (|
+                                        "ruint::mul::inv_ring::W2",
+                                        Ty.apply
+                                          (Ty.path "core::num::wrapping::Wrapping")
+                                          []
+                                          [ Ty.path "u64" ]
+                                      |)
+                                    |);
                                     M.call_closure (|
                                       Ty.apply
                                         (Ty.path "core::num::wrapping::Wrapping")
@@ -871,7 +961,15 @@ Module mul.
                                     []
                                   |),
                                   [
-                                    M.read (| M.get_constant "ruint::mul::inv_ring::W2" |);
+                                    M.read (|
+                                      get_constant (|
+                                        "ruint::mul::inv_ring::W2",
+                                        Ty.apply
+                                          (Ty.path "core::num::wrapping::Wrapping")
+                                          []
+                                          [ Ty.path "u64" ]
+                                      |)
+                                    |);
                                     M.call_closure (|
                                       Ty.apply
                                         (Ty.path "core::num::wrapping::Wrapping")
@@ -1075,7 +1173,9 @@ Module mul.
                                   (M.alloc (|
                                     BinOp.lt (|
                                       M.read (| correct_limbs |),
-                                      M.read (| M.get_constant "ruint::mul::LIMBS" |)
+                                      M.read (|
+                                        get_constant (| "ruint::mul::LIMBS", Ty.path "usize" |)
+                                      |)
                                     |)
                                   |)) in
                               let _ :=
@@ -1173,13 +1273,21 @@ Module mul.
                       M.SubPointer.get_array_field (|
                         M.SubPointer.get_struct_record_field (| result, "ruint::Uint", "limbs" |),
                         BinOp.Wrap.sub (|
-                          M.read (| M.get_constant "ruint::mul::LIMBS" |),
+                          M.read (| get_constant (| "ruint::mul::LIMBS", Ty.path "usize" |) |),
                           Value.Integer IntegerKind.Usize 1
                         |)
                       |) in
                     M.write (|
                       β,
-                      BinOp.bit_and (M.read (| β |)) (M.read (| M.get_constant "ruint::MASK" |))
+                      BinOp.bit_and
+                        (M.read (| β |))
+                        (M.read (|
+                          get_associated_constant (|
+                            Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                            "MASK",
+                            Ty.path "u64"
+                          |)
+                        |))
                     |)
                   |) in
                 M.alloc (| Value.StructTuple "core::option::Option::Some" [ M.read (| result |) ] |)
@@ -1190,7 +1298,7 @@ Module mul.
     
     Global Instance AssociatedFunction_inv_ring :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait (Self BITS LIMBS) "inv_ring" (inv_ring BITS LIMBS).
+      M.IsAssociatedFunction.C (Self BITS LIMBS) "inv_ring" (inv_ring BITS LIMBS).
     Admitted.
     Global Typeclasses Opaque inv_ring.
     
@@ -1236,14 +1344,19 @@ Module mul.
                     [
                       M.borrow (|
                         Pointer.Kind.Ref,
-                        M.get_constant "ruint::mul::widening_mul::BITS_RES"
+                        get_constant (| "ruint::mul::widening_mul::BITS_RES", Ty.path "usize" |)
                       |);
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
                           BinOp.Wrap.add (|
-                            M.read (| M.get_constant "ruint::mul::BITS" |),
-                            M.read (| M.get_constant "ruint::mul::widening_mul::BITS_RHS" |)
+                            M.read (| get_constant (| "ruint::mul::BITS", Ty.path "usize" |) |),
+                            M.read (|
+                              get_constant (|
+                                "ruint::mul::widening_mul::BITS_RHS",
+                                Ty.path "usize"
+                              |)
+                            |)
                           |)
                         |)
                       |)
@@ -1332,7 +1445,7 @@ Module mul.
                     [
                       M.borrow (|
                         Pointer.Kind.Ref,
-                        M.get_constant "ruint::mul::widening_mul::LIMBS_RES"
+                        get_constant (| "ruint::mul::widening_mul::LIMBS_RES", Ty.path "usize" |)
                       |);
                       M.borrow (|
                         Pointer.Kind.Ref,
@@ -1340,7 +1453,14 @@ Module mul.
                           M.call_closure (|
                             Ty.path "usize",
                             M.get_function (| "ruint::nlimbs", [], [] |),
-                            [ M.read (| M.get_constant "ruint::mul::widening_mul::BITS_RES" |) ]
+                            [
+                              M.read (|
+                                get_constant (|
+                                  "ruint::mul::widening_mul::BITS_RES",
+                                  Ty.path "usize"
+                                |)
+                              |)
+                            ]
                           |)
                         |)
                       |)
@@ -1422,7 +1542,13 @@ Module mul.
                 ]
               |) in
             let~ result : Ty.apply (Ty.path "ruint::Uint") [ BITS_RES; LIMBS_RES ] [] :=
-              M.copy (| M.get_constant "ruint::ZERO" |) in
+              M.copy (|
+                get_associated_constant (|
+                  Ty.apply (Ty.path "ruint::Uint") [ BITS_RES; LIMBS_RES ] [],
+                  "ZERO",
+                  Ty.apply (Ty.path "ruint::Uint") [ BITS_RES; LIMBS_RES ] []
+                |)
+              |) in
             let~ _ : Ty.path "bool" :=
               M.alloc (|
                 M.call_closure (|
@@ -1488,7 +1614,12 @@ Module mul.
                         M.use
                           (M.alloc (|
                             BinOp.gt (|
-                              M.read (| M.get_constant "ruint::mul::widening_mul::LIMBS_RES" |),
+                              M.read (|
+                                get_constant (|
+                                  "ruint::mul::widening_mul::LIMBS_RES",
+                                  Ty.path "usize"
+                                |)
+                              |),
                               Value.Integer IntegerKind.Usize 0
                             |)
                           |)) in
@@ -1527,14 +1658,25 @@ Module mul.
                                                         |),
                                                         BinOp.Wrap.sub (|
                                                           M.read (|
-                                                            M.get_constant
-                                                              "ruint::mul::widening_mul::LIMBS_RES"
+                                                            get_constant (|
+                                                              "ruint::mul::widening_mul::LIMBS_RES",
+                                                              Ty.path "usize"
+                                                            |)
                                                           |),
                                                           Value.Integer IntegerKind.Usize 1
                                                         |)
                                                       |)
                                                     |),
-                                                    M.read (| M.get_constant "ruint::MASK" |)
+                                                    M.read (|
+                                                      get_associated_constant (|
+                                                        Ty.apply
+                                                          (Ty.path "ruint::Uint")
+                                                          [ BITS_RES; LIMBS_RES ]
+                                                          [],
+                                                        "MASK",
+                                                        Ty.path "u64"
+                                                      |)
+                                                    |)
                                                   |)
                                                 |)
                                               |)) in
@@ -1578,7 +1720,7 @@ Module mul.
     
     Global Instance AssociatedFunction_widening_mul :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait (Self BITS LIMBS) "widening_mul" (widening_mul BITS LIMBS).
+      M.IsAssociatedFunction.C (Self BITS LIMBS) "widening_mul" (widening_mul BITS LIMBS).
     Admitted.
     Global Typeclasses Opaque widening_mul.
   End Impl_ruint_Uint_BITS_LIMBS.
@@ -1623,7 +1765,9 @@ Module mul.
                             M.use
                               (M.alloc (|
                                 BinOp.eq (|
-                                  M.read (| M.get_constant "ruint::mul::BITS" |),
+                                  M.read (|
+                                    get_constant (| "ruint::mul::BITS", Ty.path "usize" |)
+                                  |),
                                   Value.Integer IntegerKind.Usize 0
                                 |)
                               |)) in
@@ -1631,7 +1775,17 @@ Module mul.
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
-                              M.read (| M.return_ (| M.read (| M.get_constant "ruint::ZERO" |) |) |)
+                              M.read (|
+                                M.return_ (|
+                                  M.read (|
+                                    get_associated_constant (|
+                                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                      "ZERO",
+                                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                                    |)
+                                  |)
+                                |)
+                              |)
                             |)
                           |)));
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -1733,7 +1887,9 @@ Module mul.
                             M.use
                               (M.alloc (|
                                 BinOp.eq (|
-                                  M.read (| M.get_constant "ruint::mul::BITS" |),
+                                  M.read (|
+                                    get_constant (| "ruint::mul::BITS", Ty.path "usize" |)
+                                  |),
                                   Value.Integer IntegerKind.Usize 0
                                 |)
                               |)) in
@@ -1741,7 +1897,17 @@ Module mul.
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
-                              M.read (| M.return_ (| M.read (| M.get_constant "ruint::ZERO" |) |) |)
+                              M.read (|
+                                M.return_ (|
+                                  M.read (|
+                                    get_associated_constant (|
+                                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                      "ZERO",
+                                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                                    |)
+                                  |)
+                                |)
+                              |)
                             |)
                           |)));
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))

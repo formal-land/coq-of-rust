@@ -70,7 +70,7 @@ Definition red (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Global Instance Instance_IsFunction_red :
-  M.IsFunction.Trait "generics_bounds_test_case_empty_bounds::red" red.
+  M.IsFunction.C "generics_bounds_test_case_empty_bounds::red" red.
 Admitted.
 Global Typeclasses Opaque red.
 
@@ -89,7 +89,7 @@ Definition blue (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Global Instance Instance_IsFunction_blue :
-  M.IsFunction.Trait "generics_bounds_test_case_empty_bounds::blue" blue.
+  M.IsFunction.C "generics_bounds_test_case_empty_bounds::blue" blue.
 Admitted.
 Global Typeclasses Opaque blue.
 
@@ -298,6 +298,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "generics_bounds_test_case_empty_bounds::main" main.
+  M.IsFunction.C "generics_bounds_test_case_empty_bounds::main" main.
 Admitted.
 Global Typeclasses Opaque main.

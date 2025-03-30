@@ -4,11 +4,11 @@ Require Import CoqOfRust.CoqOfRust.
 Parameter destroy_box : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_destroy_box :
-  M.IsFunction.Trait "scoping_rules_ownership_and_rules::destroy_box" destroy_box.
+  M.IsFunction.C "scoping_rules_ownership_and_rules::destroy_box" destroy_box.
 Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "scoping_rules_ownership_and_rules::main" main.
+  M.IsFunction.C "scoping_rules_ownership_and_rules::main" main.
 Admitted.

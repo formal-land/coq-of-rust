@@ -470,6 +470,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "unpacking_options_and_defaults_via_or_else::main" main.
+  M.IsFunction.C "unpacking_options_and_defaults_via_or_else::main" main.
 Admitted.
 Global Typeclasses Opaque main.

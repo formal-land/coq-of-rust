@@ -4,10 +4,10 @@ Require Import CoqOfRust.CoqOfRust.
 Parameter analyze_slice : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_analyze_slice :
-  M.IsFunction.Trait "arrays_and_slices::analyze_slice" analyze_slice.
+  M.IsFunction.C "arrays_and_slices::analyze_slice" analyze_slice.
 Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "arrays_and_slices::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "arrays_and_slices::main" main.
 Admitted.

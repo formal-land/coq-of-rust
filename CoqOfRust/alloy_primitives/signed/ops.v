@@ -52,7 +52,7 @@ Module signed.
       
       Global Instance AssociatedFunction_abs :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "abs" (abs BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "abs" (abs BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque abs.
       
@@ -94,7 +94,10 @@ Module signed.
                                 (M.alloc (|
                                   BinOp.eq (|
                                     M.read (|
-                                      M.get_constant "alloy_primitives::signed::ops::BITS"
+                                      get_constant (|
+                                        "alloy_primitives::signed::ops::BITS",
+                                        Ty.path "usize"
+                                      |)
                                     |),
                                     Value.Integer IntegerKind.Usize 0
                                   |)
@@ -153,7 +156,17 @@ Module signed.
                                     M.borrow (| Pointer.Kind.Ref, self |);
                                     M.borrow (|
                                       Pointer.Kind.Ref,
-                                      M.get_constant "alloy_primitives::signed::int::MIN"
+                                      get_associated_constant (|
+                                        Ty.apply
+                                          (Ty.path "alloy_primitives::signed::int::Signed")
+                                          [ BITS; LIMBS ]
+                                          [],
+                                        "MIN",
+                                        Ty.apply
+                                          (Ty.path "alloy_primitives::signed::int::Signed")
+                                          [ BITS; LIMBS ]
+                                          []
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -195,10 +208,7 @@ Module signed.
       
       Global Instance AssociatedFunction_overflowing_abs :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait
-          (Self BITS LIMBS)
-          "overflowing_abs"
-          (overflowing_abs BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "overflowing_abs" (overflowing_abs BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque overflowing_abs.
       
@@ -270,7 +280,7 @@ Module signed.
       
       Global Instance AssociatedFunction_checked_abs :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "checked_abs" (checked_abs BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "checked_abs" (checked_abs BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque checked_abs.
       
@@ -325,7 +335,19 @@ Module signed.
                       let _ :=
                         M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
                       value));
-                  fun γ => ltac:(M.monadic (M.get_constant "alloy_primitives::signed::int::MAX"))
+                  fun γ =>
+                    ltac:(M.monadic
+                      (get_associated_constant (|
+                        Ty.apply
+                          (Ty.path "alloy_primitives::signed::int::Signed")
+                          [ BITS; LIMBS ]
+                          [],
+                        "MAX",
+                        Ty.apply
+                          (Ty.path "alloy_primitives::signed::int::Signed")
+                          [ BITS; LIMBS ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -334,7 +356,7 @@ Module signed.
       
       Global Instance AssociatedFunction_saturating_abs :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "saturating_abs" (saturating_abs BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "saturating_abs" (saturating_abs BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque saturating_abs.
       
@@ -383,7 +405,7 @@ Module signed.
       
       Global Instance AssociatedFunction_wrapping_abs :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "wrapping_abs" (wrapping_abs BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "wrapping_abs" (wrapping_abs BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque wrapping_abs.
       
@@ -429,7 +451,7 @@ Module signed.
       
       Global Instance AssociatedFunction_unsigned_abs :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "unsigned_abs" (unsigned_abs BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "unsigned_abs" (unsigned_abs BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque unsigned_abs.
       
@@ -471,7 +493,10 @@ Module signed.
                                 (M.alloc (|
                                   BinOp.eq (|
                                     M.read (|
-                                      M.get_constant "alloy_primitives::signed::ops::BITS"
+                                      get_constant (|
+                                        "alloy_primitives::signed::ops::BITS",
+                                        Ty.path "usize"
+                                      |)
                                     |),
                                     Value.Integer IntegerKind.Usize 0
                                   |)
@@ -530,7 +555,17 @@ Module signed.
                                     M.borrow (| Pointer.Kind.Ref, self |);
                                     M.borrow (|
                                       Pointer.Kind.Ref,
-                                      M.get_constant "alloy_primitives::signed::int::MIN"
+                                      get_associated_constant (|
+                                        Ty.apply
+                                          (Ty.path "alloy_primitives::signed::int::Signed")
+                                          [ BITS; LIMBS ]
+                                          [],
+                                        "MIN",
+                                        Ty.apply
+                                          (Ty.path "alloy_primitives::signed::int::Signed")
+                                          [ BITS; LIMBS ]
+                                          []
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -576,10 +611,7 @@ Module signed.
       
       Global Instance AssociatedFunction_overflowing_neg :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait
-          (Self BITS LIMBS)
-          "overflowing_neg"
-          (overflowing_neg BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "overflowing_neg" (overflowing_neg BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque overflowing_neg.
       
@@ -651,7 +683,7 @@ Module signed.
       
       Global Instance AssociatedFunction_checked_neg :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "checked_neg" (checked_neg BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "checked_neg" (checked_neg BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque checked_neg.
       
@@ -706,7 +738,19 @@ Module signed.
                       let _ :=
                         M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
                       value));
-                  fun γ => ltac:(M.monadic (M.get_constant "alloy_primitives::signed::int::MAX"))
+                  fun γ =>
+                    ltac:(M.monadic
+                      (get_associated_constant (|
+                        Ty.apply
+                          (Ty.path "alloy_primitives::signed::int::Signed")
+                          [ BITS; LIMBS ]
+                          [],
+                        "MAX",
+                        Ty.apply
+                          (Ty.path "alloy_primitives::signed::int::Signed")
+                          [ BITS; LIMBS ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -715,7 +759,7 @@ Module signed.
       
       Global Instance AssociatedFunction_saturating_neg :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "saturating_neg" (saturating_neg BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "saturating_neg" (saturating_neg BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque saturating_neg.
       
@@ -764,7 +808,7 @@ Module signed.
       
       Global Instance AssociatedFunction_wrapping_neg :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "wrapping_neg" (wrapping_neg BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "wrapping_neg" (wrapping_neg BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque wrapping_neg.
       
@@ -960,10 +1004,7 @@ Module signed.
       
       Global Instance AssociatedFunction_overflowing_add :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait
-          (Self BITS LIMBS)
-          "overflowing_add"
-          (overflowing_add BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "overflowing_add" (overflowing_add BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque overflowing_add.
       
@@ -1036,7 +1077,7 @@ Module signed.
       
       Global Instance AssociatedFunction_checked_add :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "checked_add" (checked_add BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "checked_add" (checked_add BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque checked_add.
       
@@ -1139,7 +1180,17 @@ Module signed.
                                           γ,
                                           "alloy_primitives::signed::sign::Sign::Positive"
                                         |) in
-                                      M.get_constant "alloy_primitives::signed::int::MIN"));
+                                      get_associated_constant (|
+                                        Ty.apply
+                                          (Ty.path "alloy_primitives::signed::int::Signed")
+                                          [ BITS; LIMBS ]
+                                          [],
+                                        "MIN",
+                                        Ty.apply
+                                          (Ty.path "alloy_primitives::signed::int::Signed")
+                                          [ BITS; LIMBS ]
+                                          []
+                                      |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let _ :=
@@ -1147,7 +1198,17 @@ Module signed.
                                           γ,
                                           "alloy_primitives::signed::sign::Sign::Negative"
                                         |) in
-                                      M.get_constant "alloy_primitives::signed::int::MAX"))
+                                      get_associated_constant (|
+                                        Ty.apply
+                                          (Ty.path "alloy_primitives::signed::int::Signed")
+                                          [ BITS; LIMBS ]
+                                          [],
+                                        "MAX",
+                                        Ty.apply
+                                          (Ty.path "alloy_primitives::signed::int::Signed")
+                                          [ BITS; LIMBS ]
+                                          []
+                                      |)))
                                 ]
                               |)));
                           fun γ => ltac:(M.monadic result)
@@ -1161,7 +1222,7 @@ Module signed.
       
       Global Instance AssociatedFunction_saturating_add :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "saturating_add" (saturating_add BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "saturating_add" (saturating_add BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque saturating_add.
       
@@ -1211,7 +1272,7 @@ Module signed.
       
       Global Instance AssociatedFunction_wrapping_add :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "wrapping_add" (wrapping_add BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "wrapping_add" (wrapping_add BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque wrapping_add.
       
@@ -1411,10 +1472,7 @@ Module signed.
       
       Global Instance AssociatedFunction_overflowing_sub :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait
-          (Self BITS LIMBS)
-          "overflowing_sub"
-          (overflowing_sub BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "overflowing_sub" (overflowing_sub BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque overflowing_sub.
       
@@ -1487,7 +1545,7 @@ Module signed.
       
       Global Instance AssociatedFunction_checked_sub :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "checked_sub" (checked_sub BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "checked_sub" (checked_sub BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque checked_sub.
       
@@ -1590,7 +1648,17 @@ Module signed.
                                           γ,
                                           "alloy_primitives::signed::sign::Sign::Positive"
                                         |) in
-                                      M.get_constant "alloy_primitives::signed::int::MIN"));
+                                      get_associated_constant (|
+                                        Ty.apply
+                                          (Ty.path "alloy_primitives::signed::int::Signed")
+                                          [ BITS; LIMBS ]
+                                          [],
+                                        "MIN",
+                                        Ty.apply
+                                          (Ty.path "alloy_primitives::signed::int::Signed")
+                                          [ BITS; LIMBS ]
+                                          []
+                                      |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let _ :=
@@ -1598,7 +1666,17 @@ Module signed.
                                           γ,
                                           "alloy_primitives::signed::sign::Sign::Negative"
                                         |) in
-                                      M.get_constant "alloy_primitives::signed::int::MAX"))
+                                      get_associated_constant (|
+                                        Ty.apply
+                                          (Ty.path "alloy_primitives::signed::int::Signed")
+                                          [ BITS; LIMBS ]
+                                          [],
+                                        "MAX",
+                                        Ty.apply
+                                          (Ty.path "alloy_primitives::signed::int::Signed")
+                                          [ BITS; LIMBS ]
+                                          []
+                                      |)))
                                 ]
                               |)));
                           fun γ => ltac:(M.monadic result)
@@ -1612,7 +1690,7 @@ Module signed.
       
       Global Instance AssociatedFunction_saturating_sub :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "saturating_sub" (saturating_sub BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "saturating_sub" (saturating_sub BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque saturating_sub.
       
@@ -1662,7 +1740,7 @@ Module signed.
       
       Global Instance AssociatedFunction_wrapping_sub :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "wrapping_sub" (wrapping_sub BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "wrapping_sub" (wrapping_sub BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque wrapping_sub.
       
@@ -1742,7 +1820,17 @@ Module signed.
                                     Value.Tuple
                                       [
                                         M.read (|
-                                          M.get_constant "alloy_primitives::signed::int::ZERO"
+                                          get_associated_constant (|
+                                            Ty.apply
+                                              (Ty.path "alloy_primitives::signed::int::Signed")
+                                              [ BITS; LIMBS ]
+                                              [],
+                                            "ZERO",
+                                            Ty.apply
+                                              (Ty.path "alloy_primitives::signed::int::Signed")
+                                              [ BITS; LIMBS ]
+                                              []
+                                          |)
                                         |);
                                         Value.Bool false
                                       ]
@@ -1897,10 +1985,7 @@ Module signed.
       
       Global Instance AssociatedFunction_overflowing_mul :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait
-          (Self BITS LIMBS)
-          "overflowing_mul"
-          (overflowing_mul BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "overflowing_mul" (overflowing_mul BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque overflowing_mul.
       
@@ -1973,7 +2058,7 @@ Module signed.
       
       Global Instance AssociatedFunction_checked_mul :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "checked_mul" (checked_mul BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "checked_mul" (checked_mul BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque checked_mul.
       
@@ -2103,7 +2188,17 @@ Module signed.
                                           γ,
                                           "alloy_primitives::signed::sign::Sign::Positive"
                                         |) in
-                                      M.get_constant "alloy_primitives::signed::int::MAX"));
+                                      get_associated_constant (|
+                                        Ty.apply
+                                          (Ty.path "alloy_primitives::signed::int::Signed")
+                                          [ BITS; LIMBS ]
+                                          [],
+                                        "MAX",
+                                        Ty.apply
+                                          (Ty.path "alloy_primitives::signed::int::Signed")
+                                          [ BITS; LIMBS ]
+                                          []
+                                      |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let _ :=
@@ -2111,7 +2206,17 @@ Module signed.
                                           γ,
                                           "alloy_primitives::signed::sign::Sign::Negative"
                                         |) in
-                                      M.get_constant "alloy_primitives::signed::int::MIN"))
+                                      get_associated_constant (|
+                                        Ty.apply
+                                          (Ty.path "alloy_primitives::signed::int::Signed")
+                                          [ BITS; LIMBS ]
+                                          [],
+                                        "MIN",
+                                        Ty.apply
+                                          (Ty.path "alloy_primitives::signed::int::Signed")
+                                          [ BITS; LIMBS ]
+                                          []
+                                      |)))
                                 ]
                               |)));
                           fun γ => ltac:(M.monadic result)
@@ -2125,7 +2230,7 @@ Module signed.
       
       Global Instance AssociatedFunction_saturating_mul :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "saturating_mul" (saturating_mul BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "saturating_mul" (saturating_mul BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque saturating_mul.
       
@@ -2175,7 +2280,7 @@ Module signed.
       
       Global Instance AssociatedFunction_wrapping_mul :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "wrapping_mul" (wrapping_mul BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "wrapping_mul" (wrapping_mul BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque wrapping_mul.
       
@@ -2415,10 +2520,7 @@ Module signed.
       
       Global Instance AssociatedFunction_overflowing_div :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait
-          (Self BITS LIMBS)
-          "overflowing_div"
-          (overflowing_div BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "overflowing_div" (overflowing_div BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque overflowing_div.
       
@@ -2497,7 +2599,17 @@ Module signed.
                                       M.borrow (| Pointer.Kind.Ref, self |);
                                       M.borrow (|
                                         Pointer.Kind.Ref,
-                                        M.get_constant "alloy_primitives::signed::int::MIN"
+                                        get_associated_constant (|
+                                          Ty.apply
+                                            (Ty.path "alloy_primitives::signed::int::Signed")
+                                            [ BITS; LIMBS ]
+                                            [],
+                                          "MIN",
+                                          Ty.apply
+                                            (Ty.path "alloy_primitives::signed::int::Signed")
+                                            [ BITS; LIMBS ]
+                                            []
+                                        |)
                                       |)
                                     ]
                                   |),
@@ -2525,7 +2637,17 @@ Module signed.
                                         M.borrow (| Pointer.Kind.Ref, rhs |);
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.get_constant "alloy_primitives::signed::int::MINUS_ONE"
+                                          get_associated_constant (|
+                                            Ty.apply
+                                              (Ty.path "alloy_primitives::signed::int::Signed")
+                                              [ BITS; LIMBS ]
+                                              [],
+                                            "MINUS_ONE",
+                                            Ty.apply
+                                              (Ty.path "alloy_primitives::signed::int::Signed")
+                                              [ BITS; LIMBS ]
+                                              []
+                                          |)
                                         |)
                                       ]
                                     |)))
@@ -2577,7 +2699,7 @@ Module signed.
       
       Global Instance AssociatedFunction_checked_div :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "checked_div" (checked_div BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "checked_div" (checked_div BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque checked_div.
       
@@ -2634,7 +2756,19 @@ Module signed.
                       let _ :=
                         M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
                       value));
-                  fun γ => ltac:(M.monadic (M.get_constant "alloy_primitives::signed::int::MAX"))
+                  fun γ =>
+                    ltac:(M.monadic
+                      (get_associated_constant (|
+                        Ty.apply
+                          (Ty.path "alloy_primitives::signed::int::Signed")
+                          [ BITS; LIMBS ]
+                          [],
+                        "MAX",
+                        Ty.apply
+                          (Ty.path "alloy_primitives::signed::int::Signed")
+                          [ BITS; LIMBS ]
+                          []
+                      |)))
                 ]
               |)
             |)))
@@ -2643,7 +2777,7 @@ Module signed.
       
       Global Instance AssociatedFunction_saturating_div :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "saturating_div" (saturating_div BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "saturating_div" (saturating_div BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque saturating_div.
       
@@ -2693,7 +2827,7 @@ Module signed.
       
       Global Instance AssociatedFunction_wrapping_div :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "wrapping_div" (wrapping_div BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "wrapping_div" (wrapping_div BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque wrapping_div.
       
@@ -2758,7 +2892,17 @@ Module signed.
                                   M.borrow (| Pointer.Kind.Ref, self |);
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.get_constant "alloy_primitives::signed::int::MIN"
+                                    get_associated_constant (|
+                                      Ty.apply
+                                        (Ty.path "alloy_primitives::signed::int::Signed")
+                                        [ BITS; LIMBS ]
+                                        [],
+                                      "MIN",
+                                      Ty.apply
+                                        (Ty.path "alloy_primitives::signed::int::Signed")
+                                        [ BITS; LIMBS ]
+                                        []
+                                    |)
                                   |)
                                 ]
                               |),
@@ -2786,7 +2930,17 @@ Module signed.
                                     M.borrow (| Pointer.Kind.Ref, rhs |);
                                     M.borrow (|
                                       Pointer.Kind.Ref,
-                                      M.get_constant "alloy_primitives::signed::int::MINUS_ONE"
+                                      get_associated_constant (|
+                                        Ty.apply
+                                          (Ty.path "alloy_primitives::signed::int::Signed")
+                                          [ BITS; LIMBS ]
+                                          [],
+                                        "MINUS_ONE",
+                                        Ty.apply
+                                          (Ty.path "alloy_primitives::signed::int::Signed")
+                                          [ BITS; LIMBS ]
+                                          []
+                                      |)
                                     |)
                                   ]
                                 |)))
@@ -2796,7 +2950,19 @@ Module signed.
                       M.alloc (|
                         Value.Tuple
                           [
-                            M.read (| M.get_constant "alloy_primitives::signed::int::ZERO" |);
+                            M.read (|
+                              get_associated_constant (|
+                                Ty.apply
+                                  (Ty.path "alloy_primitives::signed::int::Signed")
+                                  [ BITS; LIMBS ]
+                                  [],
+                                "ZERO",
+                                Ty.apply
+                                  (Ty.path "alloy_primitives::signed::int::Signed")
+                                  [ BITS; LIMBS ]
+                                  []
+                              |)
+                            |);
                             Value.Bool true
                           ]
                       |)));
@@ -2897,10 +3063,7 @@ Module signed.
       
       Global Instance AssociatedFunction_overflowing_rem :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait
-          (Self BITS LIMBS)
-          "overflowing_rem"
-          (overflowing_rem BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "overflowing_rem" (overflowing_rem BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque overflowing_rem.
       
@@ -2979,7 +3142,17 @@ Module signed.
                                       M.borrow (| Pointer.Kind.Ref, self |);
                                       M.borrow (|
                                         Pointer.Kind.Ref,
-                                        M.get_constant "alloy_primitives::signed::int::MIN"
+                                        get_associated_constant (|
+                                          Ty.apply
+                                            (Ty.path "alloy_primitives::signed::int::Signed")
+                                            [ BITS; LIMBS ]
+                                            [],
+                                          "MIN",
+                                          Ty.apply
+                                            (Ty.path "alloy_primitives::signed::int::Signed")
+                                            [ BITS; LIMBS ]
+                                            []
+                                        |)
                                       |)
                                     ]
                                   |),
@@ -3007,7 +3180,17 @@ Module signed.
                                         M.borrow (| Pointer.Kind.Ref, rhs |);
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.get_constant "alloy_primitives::signed::int::MINUS_ONE"
+                                          get_associated_constant (|
+                                            Ty.apply
+                                              (Ty.path "alloy_primitives::signed::int::Signed")
+                                              [ BITS; LIMBS ]
+                                              [],
+                                            "MINUS_ONE",
+                                            Ty.apply
+                                              (Ty.path "alloy_primitives::signed::int::Signed")
+                                              [ BITS; LIMBS ]
+                                              []
+                                          |)
                                         |)
                                       ]
                                     |)))
@@ -3059,7 +3242,7 @@ Module signed.
       
       Global Instance AssociatedFunction_checked_rem :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "checked_rem" (checked_rem BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "checked_rem" (checked_rem BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque checked_rem.
       
@@ -3109,7 +3292,7 @@ Module signed.
       
       Global Instance AssociatedFunction_wrapping_rem :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "wrapping_rem" (wrapping_rem BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "wrapping_rem" (wrapping_rem BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque wrapping_rem.
       
@@ -3274,7 +3457,19 @@ Module signed.
                                   |),
                                   [
                                     M.read (| q |);
-                                    M.read (| M.get_constant "alloy_primitives::signed::int::ONE" |)
+                                    M.read (|
+                                      get_associated_constant (|
+                                        Ty.apply
+                                          (Ty.path "alloy_primitives::signed::int::Signed")
+                                          [ BITS; LIMBS ]
+                                          [],
+                                        "ONE",
+                                        Ty.apply
+                                          (Ty.path "alloy_primitives::signed::int::Signed")
+                                          [ BITS; LIMBS ]
+                                          []
+                                      |)
+                                    |)
                                   ]
                                 |)
                               |)));
@@ -3305,7 +3500,19 @@ Module signed.
                                   |),
                                   [
                                     M.read (| q |);
-                                    M.read (| M.get_constant "alloy_primitives::signed::int::ONE" |)
+                                    M.read (|
+                                      get_associated_constant (|
+                                        Ty.apply
+                                          (Ty.path "alloy_primitives::signed::int::Signed")
+                                          [ BITS; LIMBS ]
+                                          [],
+                                        "ONE",
+                                        Ty.apply
+                                          (Ty.path "alloy_primitives::signed::int::Signed")
+                                          [ BITS; LIMBS ]
+                                          []
+                                      |)
+                                    |)
                                   ]
                                 |)
                               |)))
@@ -3320,7 +3527,7 @@ Module signed.
       
       Global Instance AssociatedFunction_div_euclid :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "div_euclid" (div_euclid BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "div_euclid" (div_euclid BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque div_euclid.
       
@@ -3384,7 +3591,17 @@ Module signed.
                                   M.borrow (| Pointer.Kind.Ref, self |);
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.get_constant "alloy_primitives::signed::int::MIN"
+                                    get_associated_constant (|
+                                      Ty.apply
+                                        (Ty.path "alloy_primitives::signed::int::Signed")
+                                        [ BITS; LIMBS ]
+                                        [],
+                                      "MIN",
+                                      Ty.apply
+                                        (Ty.path "alloy_primitives::signed::int::Signed")
+                                        [ BITS; LIMBS ]
+                                        []
+                                    |)
                                   |)
                                 ]
                               |),
@@ -3412,7 +3629,17 @@ Module signed.
                                     M.borrow (| Pointer.Kind.Ref, rhs |);
                                     M.borrow (|
                                       Pointer.Kind.Ref,
-                                      M.get_constant "alloy_primitives::signed::int::MINUS_ONE"
+                                      get_associated_constant (|
+                                        Ty.apply
+                                          (Ty.path "alloy_primitives::signed::int::Signed")
+                                          [ BITS; LIMBS ]
+                                          [],
+                                        "MINUS_ONE",
+                                        Ty.apply
+                                          (Ty.path "alloy_primitives::signed::int::Signed")
+                                          [ BITS; LIMBS ]
+                                          []
+                                      |)
                                     |)
                                   ]
                                 |)))
@@ -3452,7 +3679,7 @@ Module signed.
       
       Global Instance AssociatedFunction_overflowing_div_euclid :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait
+        M.IsAssociatedFunction.C
           (Self BITS LIMBS)
           "overflowing_div_euclid"
           (overflowing_div_euclid BITS LIMBS).
@@ -3534,7 +3761,17 @@ Module signed.
                                       M.borrow (| Pointer.Kind.Ref, self |);
                                       M.borrow (|
                                         Pointer.Kind.Ref,
-                                        M.get_constant "alloy_primitives::signed::int::MIN"
+                                        get_associated_constant (|
+                                          Ty.apply
+                                            (Ty.path "alloy_primitives::signed::int::Signed")
+                                            [ BITS; LIMBS ]
+                                            [],
+                                          "MIN",
+                                          Ty.apply
+                                            (Ty.path "alloy_primitives::signed::int::Signed")
+                                            [ BITS; LIMBS ]
+                                            []
+                                        |)
                                       |)
                                     ]
                                   |),
@@ -3562,7 +3799,17 @@ Module signed.
                                         M.borrow (| Pointer.Kind.Ref, rhs |);
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.get_constant "alloy_primitives::signed::int::MINUS_ONE"
+                                          get_associated_constant (|
+                                            Ty.apply
+                                              (Ty.path "alloy_primitives::signed::int::Signed")
+                                              [ BITS; LIMBS ]
+                                              [],
+                                            "MINUS_ONE",
+                                            Ty.apply
+                                              (Ty.path "alloy_primitives::signed::int::Signed")
+                                              [ BITS; LIMBS ]
+                                              []
+                                          |)
                                         |)
                                       ]
                                     |)))
@@ -3603,7 +3850,7 @@ Module signed.
       
       Global Instance AssociatedFunction_checked_div_euclid :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait
+        M.IsAssociatedFunction.C
           (Self BITS LIMBS)
           "checked_div_euclid"
           (checked_div_euclid BITS LIMBS).
@@ -3656,7 +3903,7 @@ Module signed.
       
       Global Instance AssociatedFunction_wrapping_div_euclid :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait
+        M.IsAssociatedFunction.C
           (Self BITS LIMBS)
           "wrapping_div_euclid"
           (wrapping_div_euclid BITS LIMBS).
@@ -3745,7 +3992,17 @@ Module signed.
                                 M.borrow (| Pointer.Kind.Ref, r |);
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.get_constant "alloy_primitives::signed::int::ZERO"
+                                  get_associated_constant (|
+                                    Ty.apply
+                                      (Ty.path "alloy_primitives::signed::int::Signed")
+                                      [ BITS; LIMBS ]
+                                      [],
+                                    "ZERO",
+                                    Ty.apply
+                                      (Ty.path "alloy_primitives::signed::int::Signed")
+                                      [ BITS; LIMBS ]
+                                      []
+                                  |)
                                 |)
                               ]
                             |)
@@ -3787,7 +4044,17 @@ Module signed.
                                         M.borrow (| Pointer.Kind.Ref, rhs |);
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.get_constant "alloy_primitives::signed::int::ZERO"
+                                          get_associated_constant (|
+                                            Ty.apply
+                                              (Ty.path "alloy_primitives::signed::int::Signed")
+                                              [ BITS; LIMBS ]
+                                              [],
+                                            "ZERO",
+                                            Ty.apply
+                                              (Ty.path "alloy_primitives::signed::int::Signed")
+                                              [ BITS; LIMBS ]
+                                              []
+                                          |)
                                         |)
                                       ]
                                     |)
@@ -3862,7 +4129,7 @@ Module signed.
       
       Global Instance AssociatedFunction_rem_euclid :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "rem_euclid" (rem_euclid BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "rem_euclid" (rem_euclid BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque rem_euclid.
       
@@ -3926,7 +4193,17 @@ Module signed.
                                   M.borrow (| Pointer.Kind.Ref, self |);
                                   M.borrow (|
                                     Pointer.Kind.Ref,
-                                    M.get_constant "alloy_primitives::signed::int::MIN"
+                                    get_associated_constant (|
+                                      Ty.apply
+                                        (Ty.path "alloy_primitives::signed::int::Signed")
+                                        [ BITS; LIMBS ]
+                                        [],
+                                      "MIN",
+                                      Ty.apply
+                                        (Ty.path "alloy_primitives::signed::int::Signed")
+                                        [ BITS; LIMBS ]
+                                        []
+                                    |)
                                   |)
                                 ]
                               |),
@@ -3954,7 +4231,17 @@ Module signed.
                                     M.borrow (| Pointer.Kind.Ref, rhs |);
                                     M.borrow (|
                                       Pointer.Kind.Ref,
-                                      M.get_constant "alloy_primitives::signed::int::MINUS_ONE"
+                                      get_associated_constant (|
+                                        Ty.apply
+                                          (Ty.path "alloy_primitives::signed::int::Signed")
+                                          [ BITS; LIMBS ]
+                                          [],
+                                        "MINUS_ONE",
+                                        Ty.apply
+                                          (Ty.path "alloy_primitives::signed::int::Signed")
+                                          [ BITS; LIMBS ]
+                                          []
+                                      |)
                                     |)
                                   ]
                                 |)))
@@ -3964,7 +4251,19 @@ Module signed.
                       M.alloc (|
                         Value.Tuple
                           [
-                            M.read (| M.get_constant "alloy_primitives::signed::int::ZERO" |);
+                            M.read (|
+                              get_associated_constant (|
+                                Ty.apply
+                                  (Ty.path "alloy_primitives::signed::int::Signed")
+                                  [ BITS; LIMBS ]
+                                  [],
+                                "ZERO",
+                                Ty.apply
+                                  (Ty.path "alloy_primitives::signed::int::Signed")
+                                  [ BITS; LIMBS ]
+                                  []
+                              |)
+                            |);
                             Value.Bool true
                           ]
                       |)));
@@ -4000,7 +4299,7 @@ Module signed.
       
       Global Instance AssociatedFunction_overflowing_rem_euclid :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait
+        M.IsAssociatedFunction.C
           (Self BITS LIMBS)
           "overflowing_rem_euclid"
           (overflowing_rem_euclid BITS LIMBS).
@@ -4053,7 +4352,7 @@ Module signed.
       
       Global Instance AssociatedFunction_wrapping_rem_euclid :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait
+        M.IsAssociatedFunction.C
           (Self BITS LIMBS)
           "wrapping_rem_euclid"
           (wrapping_rem_euclid BITS LIMBS).
@@ -4135,7 +4434,17 @@ Module signed.
                                       M.borrow (| Pointer.Kind.Ref, self |);
                                       M.borrow (|
                                         Pointer.Kind.Ref,
-                                        M.get_constant "alloy_primitives::signed::int::MIN"
+                                        get_associated_constant (|
+                                          Ty.apply
+                                            (Ty.path "alloy_primitives::signed::int::Signed")
+                                            [ BITS; LIMBS ]
+                                            [],
+                                          "MIN",
+                                          Ty.apply
+                                            (Ty.path "alloy_primitives::signed::int::Signed")
+                                            [ BITS; LIMBS ]
+                                            []
+                                        |)
                                       |)
                                     ]
                                   |),
@@ -4163,7 +4472,17 @@ Module signed.
                                         M.borrow (| Pointer.Kind.Ref, rhs |);
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.get_constant "alloy_primitives::signed::int::MINUS_ONE"
+                                          get_associated_constant (|
+                                            Ty.apply
+                                              (Ty.path "alloy_primitives::signed::int::Signed")
+                                              [ BITS; LIMBS ]
+                                              [],
+                                            "MINUS_ONE",
+                                            Ty.apply
+                                              (Ty.path "alloy_primitives::signed::int::Signed")
+                                              [ BITS; LIMBS ]
+                                              []
+                                          |)
                                         |)
                                       ]
                                     |)))
@@ -4204,7 +4523,7 @@ Module signed.
       
       Global Instance AssociatedFunction_checked_rem_euclid :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait
+        M.IsAssociatedFunction.C
           (Self BITS LIMBS)
           "checked_rem_euclid"
           (checked_rem_euclid BITS LIMBS).
@@ -4238,7 +4557,9 @@ Module signed.
                 M.alloc (|
                   LogicalOp.and (|
                     BinOp.ne (|
-                      M.read (| M.get_constant "alloy_primitives::signed::ops::BITS" |),
+                      M.read (|
+                        get_constant (| "alloy_primitives::signed::ops::BITS", Ty.path "usize" |)
+                      |),
                       Value.Integer IntegerKind.Usize 0
                     |),
                     ltac:(M.monadic
@@ -4314,7 +4635,7 @@ Module signed.
       
       Global Instance AssociatedFunction_pow_sign :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "pow_sign" (pow_sign BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "pow_sign" (pow_sign BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque pow_sign.
       
@@ -4409,7 +4730,7 @@ Module signed.
       
       Global Instance AssociatedFunction_exp10 :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "exp10" (exp10 BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "exp10" (exp10 BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque exp10.
       
@@ -4459,7 +4780,7 @@ Module signed.
       
       Global Instance AssociatedFunction_pow :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "pow" (pow BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "pow" (pow BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque pow.
       
@@ -4504,7 +4825,10 @@ Module signed.
                                 (M.alloc (|
                                   BinOp.eq (|
                                     M.read (|
-                                      M.get_constant "alloy_primitives::signed::ops::BITS"
+                                      get_constant (|
+                                        "alloy_primitives::signed::ops::BITS",
+                                        Ty.path "usize"
+                                      |)
                                     |),
                                     Value.Integer IntegerKind.Usize 0
                                   |)
@@ -4518,7 +4842,17 @@ Module signed.
                                     Value.Tuple
                                       [
                                         M.read (|
-                                          M.get_constant "alloy_primitives::signed::int::ZERO"
+                                          get_associated_constant (|
+                                            Ty.apply
+                                              (Ty.path "alloy_primitives::signed::int::Signed")
+                                              [ BITS; LIMBS ]
+                                              [],
+                                            "ZERO",
+                                            Ty.apply
+                                              (Ty.path "alloy_primitives::signed::int::Signed")
+                                              [ BITS; LIMBS ]
+                                              []
+                                          |)
                                         |);
                                         Value.Bool false
                                       ]
@@ -4634,10 +4968,7 @@ Module signed.
       
       Global Instance AssociatedFunction_overflowing_pow :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait
-          (Self BITS LIMBS)
-          "overflowing_pow"
-          (overflowing_pow BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "overflowing_pow" (overflowing_pow BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque overflowing_pow.
       
@@ -4731,7 +5062,7 @@ Module signed.
       
       Global Instance AssociatedFunction_checked_pow :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "checked_pow" (checked_pow BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "checked_pow" (checked_pow BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque checked_pow.
       
@@ -4834,7 +5165,17 @@ Module signed.
                                           γ,
                                           "alloy_primitives::signed::sign::Sign::Positive"
                                         |) in
-                                      M.get_constant "alloy_primitives::signed::int::MAX"));
+                                      get_associated_constant (|
+                                        Ty.apply
+                                          (Ty.path "alloy_primitives::signed::int::Signed")
+                                          [ BITS; LIMBS ]
+                                          [],
+                                        "MAX",
+                                        Ty.apply
+                                          (Ty.path "alloy_primitives::signed::int::Signed")
+                                          [ BITS; LIMBS ]
+                                          []
+                                      |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let _ :=
@@ -4842,7 +5183,17 @@ Module signed.
                                           γ,
                                           "alloy_primitives::signed::sign::Sign::Negative"
                                         |) in
-                                      M.get_constant "alloy_primitives::signed::int::MIN"))
+                                      get_associated_constant (|
+                                        Ty.apply
+                                          (Ty.path "alloy_primitives::signed::int::Signed")
+                                          [ BITS; LIMBS ]
+                                          [],
+                                        "MIN",
+                                        Ty.apply
+                                          (Ty.path "alloy_primitives::signed::int::Signed")
+                                          [ BITS; LIMBS ]
+                                          []
+                                      |)))
                                 ]
                               |)));
                           fun γ => ltac:(M.monadic result)
@@ -4856,7 +5207,7 @@ Module signed.
       
       Global Instance AssociatedFunction_saturating_pow :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "saturating_pow" (saturating_pow BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "saturating_pow" (saturating_pow BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque saturating_pow.
       
@@ -4906,7 +5257,7 @@ Module signed.
       
       Global Instance AssociatedFunction_wrapping_pow :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "wrapping_pow" (wrapping_pow BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "wrapping_pow" (wrapping_pow BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque wrapping_pow.
       
@@ -4952,7 +5303,19 @@ Module signed.
                       M.alloc (|
                         Value.Tuple
                           [
-                            M.read (| M.get_constant "alloy_primitives::signed::int::ZERO" |);
+                            M.read (|
+                              get_associated_constant (|
+                                Ty.apply
+                                  (Ty.path "alloy_primitives::signed::int::Signed")
+                                  [ BITS; LIMBS ]
+                                  [],
+                                "ZERO",
+                                Ty.apply
+                                  (Ty.path "alloy_primitives::signed::int::Signed")
+                                  [ BITS; LIMBS ]
+                                  []
+                              |)
+                            |);
                             Value.Bool true
                           ]
                       |)));
@@ -4998,10 +5361,7 @@ Module signed.
       
       Global Instance AssociatedFunction_overflowing_shl :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait
-          (Self BITS LIMBS)
-          "overflowing_shl"
-          (overflowing_shl BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "overflowing_shl" (overflowing_shl BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque overflowing_shl.
       
@@ -5074,7 +5434,7 @@ Module signed.
       
       Global Instance AssociatedFunction_checked_shl :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "checked_shl" (checked_shl BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "checked_shl" (checked_shl BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque checked_shl.
       
@@ -5124,7 +5484,7 @@ Module signed.
       
       Global Instance AssociatedFunction_wrapping_shl :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "wrapping_shl" (wrapping_shl BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "wrapping_shl" (wrapping_shl BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque wrapping_shl.
       
@@ -5170,7 +5530,19 @@ Module signed.
                       M.alloc (|
                         Value.Tuple
                           [
-                            M.read (| M.get_constant "alloy_primitives::signed::int::ZERO" |);
+                            M.read (|
+                              get_associated_constant (|
+                                Ty.apply
+                                  (Ty.path "alloy_primitives::signed::int::Signed")
+                                  [ BITS; LIMBS ]
+                                  [],
+                                "ZERO",
+                                Ty.apply
+                                  (Ty.path "alloy_primitives::signed::int::Signed")
+                                  [ BITS; LIMBS ]
+                                  []
+                              |)
+                            |);
                             Value.Bool true
                           ]
                       |)));
@@ -5216,10 +5588,7 @@ Module signed.
       
       Global Instance AssociatedFunction_overflowing_shr :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait
-          (Self BITS LIMBS)
-          "overflowing_shr"
-          (overflowing_shr BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "overflowing_shr" (overflowing_shr BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque overflowing_shr.
       
@@ -5292,7 +5661,7 @@ Module signed.
       
       Global Instance AssociatedFunction_checked_shr :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "checked_shr" (checked_shr BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "checked_shr" (checked_shr BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque checked_shr.
       
@@ -5342,7 +5711,7 @@ Module signed.
       
       Global Instance AssociatedFunction_wrapping_shr :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "wrapping_shr" (wrapping_shr BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "wrapping_shr" (wrapping_shr BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque wrapping_shr.
       
@@ -5410,7 +5779,10 @@ Module signed.
                                     ltac:(M.monadic
                                       (BinOp.eq (|
                                         M.read (|
-                                          M.get_constant "alloy_primitives::signed::ops::BITS"
+                                          get_constant (|
+                                            "alloy_primitives::signed::ops::BITS",
+                                            Ty.path "usize"
+                                          |)
                                         |),
                                         Value.Integer IntegerKind.Usize 0
                                       |)))
@@ -5438,7 +5810,10 @@ Module signed.
                                     M.read (| rhs |),
                                     BinOp.Wrap.sub (|
                                       M.read (|
-                                        M.get_constant "alloy_primitives::signed::ops::BITS"
+                                        get_constant (|
+                                          "alloy_primitives::signed::ops::BITS",
+                                          Ty.path "usize"
+                                        |)
                                       |),
                                       Value.Integer IntegerKind.Usize 1
                                     |)
@@ -5476,7 +5851,17 @@ Module signed.
                                         M.read (|
                                           M.return_ (|
                                             M.read (|
-                                              M.get_constant "alloy_primitives::signed::int::ZERO"
+                                              get_associated_constant (|
+                                                Ty.apply
+                                                  (Ty.path "alloy_primitives::signed::int::Signed")
+                                                  [ BITS; LIMBS ]
+                                                  [],
+                                                "ZERO",
+                                                Ty.apply
+                                                  (Ty.path "alloy_primitives::signed::int::Signed")
+                                                  [ BITS; LIMBS ]
+                                                  []
+                                              |)
                                             |)
                                           |)
                                         |)
@@ -5494,8 +5879,17 @@ Module signed.
                                         M.read (|
                                           M.return_ (|
                                             M.read (|
-                                              M.get_constant
-                                                "alloy_primitives::signed::int::MINUS_ONE"
+                                              get_associated_constant (|
+                                                Ty.apply
+                                                  (Ty.path "alloy_primitives::signed::int::Signed")
+                                                  [ BITS; LIMBS ]
+                                                  [],
+                                                "MINUS_ONE",
+                                                Ty.apply
+                                                  (Ty.path "alloy_primitives::signed::int::Signed")
+                                                  [ BITS; LIMBS ]
+                                                  []
+                                              |)
                                             |)
                                           |)
                                         |)
@@ -5642,8 +6036,10 @@ Module signed.
                                                 [
                                                   BinOp.Wrap.sub (|
                                                     M.read (|
-                                                      M.get_constant
-                                                        "alloy_primitives::signed::ops::BITS"
+                                                      get_constant (|
+                                                        "alloy_primitives::signed::ops::BITS",
+                                                        Ty.path "usize"
+                                                      |)
                                                     |),
                                                     M.read (| rhs |)
                                                   |)
@@ -5721,7 +6117,7 @@ Module signed.
       
       Global Instance AssociatedFunction_asr :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "asr" (asr BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "asr" (asr BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque asr.
       
@@ -5771,7 +6167,12 @@ Module signed.
                               BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.Usize 0 |),
                               ltac:(M.monadic
                                 (BinOp.eq (|
-                                  M.read (| M.get_constant "alloy_primitives::signed::ops::BITS" |),
+                                  M.read (|
+                                    get_constant (|
+                                      "alloy_primitives::signed::ops::BITS",
+                                      Ty.path "usize"
+                                    |)
+                                  |),
                                   Value.Integer IntegerKind.Usize 0
                                 |)))
                             |)
@@ -5897,7 +6298,7 @@ Module signed.
       
       Global Instance AssociatedFunction_asl :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait (Self BITS LIMBS) "asl" (asl BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "asl" (asl BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque asl.
       
@@ -5984,10 +6385,7 @@ Module signed.
       
       Global Instance AssociatedFunction_twos_complement :
         forall (BITS LIMBS : Value.t),
-        M.IsAssociatedFunction.Trait
-          (Self BITS LIMBS)
-          "twos_complement"
-          (twos_complement BITS LIMBS).
+        M.IsAssociatedFunction.C (Self BITS LIMBS) "twos_complement" (twos_complement BITS LIMBS).
       Admitted.
       Global Typeclasses Opaque twos_complement.
     End Impl_alloy_primitives_signed_int_Signed_BITS_LIMBS.
@@ -9261,7 +9659,13 @@ Module signed.
               |),
               [
                 M.read (| iter |);
-                M.read (| M.get_constant "alloy_primitives::signed::int::ZERO" |);
+                M.read (|
+                  get_associated_constant (|
+                    Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [],
+                    "ZERO",
+                    Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] []
+                  |)
+                |);
                 M.closure
                   (fun γ =>
                     ltac:(M.monadic
@@ -9400,7 +9804,13 @@ Module signed.
               |),
               [
                 M.read (| iter |);
-                M.read (| M.get_constant "alloy_primitives::signed::int::ONE" |);
+                M.read (|
+                  get_associated_constant (|
+                    Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] [],
+                    "ONE",
+                    Ty.apply (Ty.path "alloy_primitives::signed::int::Signed") [ BITS; LIMBS ] []
+                  |)
+                |);
                 M.closure
                   (fun γ =>
                     ltac:(M.monadic

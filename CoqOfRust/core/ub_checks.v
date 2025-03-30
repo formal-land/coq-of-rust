@@ -46,7 +46,7 @@ Module hint.
       end.
     
     Global Instance Instance_IsFunction_precondition_check :
-      M.IsFunction.Trait "core::hint::unreachable_unchecked::precondition_check" precondition_check.
+      M.IsFunction.C "core::hint::unreachable_unchecked::precondition_check" precondition_check.
     Admitted.
     Global Typeclasses Opaque precondition_check.
   End unreachable_unchecked.
@@ -96,7 +96,7 @@ Module hint.
       end.
     
     Global Instance Instance_IsFunction_precondition_check :
-      M.IsFunction.Trait "core::hint::assert_unchecked::precondition_check" precondition_check.
+      M.IsFunction.C "core::hint::assert_unchecked::precondition_check" precondition_check.
     Admitted.
     Global Typeclasses Opaque precondition_check.
   End assert_unchecked.
@@ -220,9 +220,7 @@ Module intrinsics.
       end.
     
     Global Instance Instance_IsFunction_precondition_check :
-      M.IsFunction.Trait
-        "core::intrinsics::copy_nonoverlapping::precondition_check"
-        precondition_check.
+      M.IsFunction.C "core::intrinsics::copy_nonoverlapping::precondition_check" precondition_check.
     Admitted.
     Global Typeclasses Opaque precondition_check.
   End copy_nonoverlapping.
@@ -305,7 +303,7 @@ Module intrinsics.
       end.
     
     Global Instance Instance_IsFunction_precondition_check :
-      M.IsFunction.Trait "core::intrinsics::copy::precondition_check" precondition_check.
+      M.IsFunction.C "core::intrinsics::copy::precondition_check" precondition_check.
     Admitted.
     Global Typeclasses Opaque precondition_check.
   End copy.
@@ -371,7 +369,7 @@ Module intrinsics.
       end.
     
     Global Instance Instance_IsFunction_precondition_check :
-      M.IsFunction.Trait "core::intrinsics::write_bytes::precondition_check" precondition_check.
+      M.IsFunction.C "core::intrinsics::write_bytes::precondition_check" precondition_check.
     Admitted.
     Global Typeclasses Opaque precondition_check.
   End write_bytes.
@@ -497,7 +495,7 @@ Module ptr.
       end.
     
     Global Instance Instance_IsFunction_precondition_check :
-      M.IsFunction.Trait "core::ptr::swap_nonoverlapping::precondition_check" precondition_check.
+      M.IsFunction.C "core::ptr::swap_nonoverlapping::precondition_check" precondition_check.
     Admitted.
     Global Typeclasses Opaque precondition_check.
   End swap_nonoverlapping.
@@ -563,7 +561,7 @@ Module ptr.
       end.
     
     Global Instance Instance_IsFunction_precondition_check :
-      M.IsFunction.Trait "core::ptr::replace::precondition_check" precondition_check.
+      M.IsFunction.C "core::ptr::replace::precondition_check" precondition_check.
     Admitted.
     Global Typeclasses Opaque precondition_check.
   End replace.
@@ -629,7 +627,7 @@ Module ptr.
       end.
     
     Global Instance Instance_IsFunction_precondition_check :
-      M.IsFunction.Trait "core::ptr::read::precondition_check" precondition_check.
+      M.IsFunction.C "core::ptr::read::precondition_check" precondition_check.
     Admitted.
     Global Typeclasses Opaque precondition_check.
   End read.
@@ -699,7 +697,7 @@ Module ptr.
       end.
     
     Global Instance Instance_IsFunction_precondition_check :
-      M.IsFunction.Trait "core::ptr::write::precondition_check" precondition_check.
+      M.IsFunction.C "core::ptr::write::precondition_check" precondition_check.
     Admitted.
     Global Typeclasses Opaque precondition_check.
   End write.
@@ -765,7 +763,7 @@ Module ptr.
       end.
     
     Global Instance Instance_IsFunction_precondition_check :
-      M.IsFunction.Trait "core::ptr::read_volatile::precondition_check" precondition_check.
+      M.IsFunction.C "core::ptr::read_volatile::precondition_check" precondition_check.
     Admitted.
     Global Typeclasses Opaque precondition_check.
   End read_volatile.
@@ -835,7 +833,7 @@ Module ptr.
       end.
     
     Global Instance Instance_IsFunction_precondition_check :
-      M.IsFunction.Trait "core::ptr::write_volatile::precondition_check" precondition_check.
+      M.IsFunction.C "core::ptr::write_volatile::precondition_check" precondition_check.
     Admitted.
     Global Typeclasses Opaque precondition_check.
   End write_volatile.
@@ -892,7 +890,7 @@ Module ub_checks.
     end.
   
   Global Instance Instance_IsFunction_check_language_ub :
-    M.IsFunction.Trait "core::ub_checks::check_language_ub" check_language_ub.
+    M.IsFunction.C "core::ub_checks::check_language_ub" check_language_ub.
   Admitted.
   Global Typeclasses Opaque check_language_ub.
   
@@ -955,9 +953,7 @@ Module ub_checks.
     end.
   
   Global Instance Instance_IsFunction_maybe_is_aligned_and_not_null :
-    M.IsFunction.Trait
-      "core::ub_checks::maybe_is_aligned_and_not_null"
-      maybe_is_aligned_and_not_null.
+    M.IsFunction.C "core::ub_checks::maybe_is_aligned_and_not_null" maybe_is_aligned_and_not_null.
   Admitted.
   Global Typeclasses Opaque maybe_is_aligned_and_not_null.
   
@@ -988,12 +984,16 @@ Module ub_checks.
                             BinOp.eq (| M.read (| size |), Value.Integer IntegerKind.Usize 0 |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.get_constant "core::num::MAX"));
+                      get_associated_constant (| Ty.path "usize", "MAX", Ty.path "usize" |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
                         BinOp.Wrap.div (|
-                          M.cast (Ty.path "usize") (M.read (| M.get_constant "core::num::MAX" |)),
+                          M.cast
+                            (Ty.path "usize")
+                            (M.read (|
+                              get_associated_constant (| Ty.path "isize", "MAX", Ty.path "isize" |)
+                            |)),
                           M.read (| size |)
                         |)
                       |)))
@@ -1006,7 +1006,7 @@ Module ub_checks.
     end.
   
   Global Instance Instance_IsFunction_is_valid_allocation_size :
-    M.IsFunction.Trait "core::ub_checks::is_valid_allocation_size" is_valid_allocation_size.
+    M.IsFunction.C "core::ub_checks::is_valid_allocation_size" is_valid_allocation_size.
   Admitted.
   Global Typeclasses Opaque is_valid_allocation_size.
   
@@ -1089,7 +1089,7 @@ Module ub_checks.
     end.
   
   Global Instance Instance_IsFunction_maybe_is_nonoverlapping :
-    M.IsFunction.Trait "core::ub_checks::maybe_is_nonoverlapping" maybe_is_nonoverlapping.
+    M.IsFunction.C "core::ub_checks::maybe_is_nonoverlapping" maybe_is_nonoverlapping.
   Admitted.
   Global Typeclasses Opaque maybe_is_nonoverlapping.
 End ub_checks.
@@ -1183,7 +1183,7 @@ Module char.
         end.
       
       Global Instance Instance_IsFunction_precondition_check :
-        M.IsFunction.Trait
+        M.IsFunction.C
           "core::char::convert::from_u32_unchecked::precondition_check"
           precondition_check.
       Admitted.
@@ -1272,9 +1272,7 @@ Module slice.
         end.
       
       Global Instance Instance_IsFunction_precondition_check :
-        M.IsFunction.Trait
-          "core::slice::raw::from_raw_parts::precondition_check"
-          precondition_check.
+        M.IsFunction.C "core::slice::raw::from_raw_parts::precondition_check" precondition_check.
       Admitted.
       Global Typeclasses Opaque precondition_check.
     End from_raw_parts.
@@ -1357,7 +1355,7 @@ Module slice.
         end.
       
       Global Instance Instance_IsFunction_precondition_check :
-        M.IsFunction.Trait
+        M.IsFunction.C
           "core::slice::raw::from_raw_parts_mut::precondition_check"
           precondition_check.
       Admitted.

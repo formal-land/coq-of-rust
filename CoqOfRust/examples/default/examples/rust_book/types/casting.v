@@ -928,7 +928,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             M.alloc (|
                                               M.cast
                                                 (Ty.path "u8")
-                                                (M.read (| M.get_constant "core::f32::NAN" |))
+                                                (M.read (|
+                                                  get_associated_constant (|
+                                                    Ty.path "f32",
+                                                    "NAN",
+                                                    Ty.path "f32"
+                                                  |)
+                                                |))
                                             |)
                                           |)
                                         |)
@@ -1161,7 +1167,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                   [],
                                                   [ Ty.path "u8" ]
                                                 |),
-                                                [ M.read (| M.get_constant "core::f32::NAN" |) ]
+                                                [
+                                                  M.read (|
+                                                    get_associated_constant (|
+                                                      Ty.path "f32",
+                                                      "NAN",
+                                                      Ty.path "f32"
+                                                    |)
+                                                  |)
+                                                ]
                                               |)
                                             |)
                                           |)
@@ -1185,6 +1199,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "casting::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "casting::main" main.
 Admitted.
 Global Typeclasses Opaque main.

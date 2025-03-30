@@ -272,7 +272,7 @@ Module algorithms.
         end.
       
       Global Instance Instance_IsFunction_div_nx1_normalized :
-        M.IsFunction.Trait "ruint::algorithms::div::small::div_nx1_normalized" div_nx1_normalized.
+        M.IsFunction.C "ruint::algorithms::div::small::div_nx1_normalized" div_nx1_normalized.
       Admitted.
       Global Typeclasses Opaque div_nx1_normalized.
       
@@ -1020,7 +1020,7 @@ Module algorithms.
         end.
       
       Global Instance Instance_IsFunction_div_nx1 :
-        M.IsFunction.Trait "ruint::algorithms::div::small::div_nx1" div_nx1.
+        M.IsFunction.C "ruint::algorithms::div::small::div_nx1" div_nx1.
       Admitted.
       Global Typeclasses Opaque div_nx1.
       
@@ -1279,7 +1279,7 @@ Module algorithms.
         end.
       
       Global Instance Instance_IsFunction_div_nx2_normalized :
-        M.IsFunction.Trait "ruint::algorithms::div::small::div_nx2_normalized" div_nx2_normalized.
+        M.IsFunction.C "ruint::algorithms::div::small::div_nx2_normalized" div_nx2_normalized.
       Admitted.
       Global Typeclasses Opaque div_nx2_normalized.
       
@@ -2030,7 +2030,7 @@ Module algorithms.
         end.
       
       Global Instance Instance_IsFunction_div_nx2 :
-        M.IsFunction.Trait "ruint::algorithms::div::small::div_nx2" div_nx2.
+        M.IsFunction.C "ruint::algorithms::div::small::div_nx2" div_nx2.
       Admitted.
       Global Typeclasses Opaque div_nx2.
       
@@ -2196,7 +2196,7 @@ Module algorithms.
         end.
       
       Global Instance Instance_IsFunction_div_2x1_ref :
-        M.IsFunction.Trait "ruint::algorithms::div::small::div_2x1_ref" div_2x1_ref.
+        M.IsFunction.C "ruint::algorithms::div::small::div_2x1_ref" div_2x1_ref.
       Admitted.
       Global Typeclasses Opaque div_2x1_ref.
       
@@ -2639,7 +2639,7 @@ Module algorithms.
         end.
       
       Global Instance Instance_IsFunction_div_2x1_mg10 :
-        M.IsFunction.Trait "ruint::algorithms::div::small::div_2x1_mg10" div_2x1_mg10.
+        M.IsFunction.C "ruint::algorithms::div::small::div_2x1_mg10" div_2x1_mg10.
       Admitted.
       Global Typeclasses Opaque div_2x1_mg10.
       
@@ -3220,7 +3220,7 @@ Module algorithms.
         end.
       
       Global Instance Instance_IsFunction_div_3x2_ref :
-        M.IsFunction.Trait "ruint::algorithms::div::small::div_3x2_ref" div_3x2_ref.
+        M.IsFunction.C "ruint::algorithms::div::small::div_3x2_ref" div_3x2_ref.
       Admitted.
       Global Typeclasses Opaque div_3x2_ref.
       
@@ -3796,7 +3796,7 @@ Module algorithms.
         end.
       
       Global Instance Instance_IsFunction_div_3x2_mg10 :
-        M.IsFunction.Trait "ruint::algorithms::div::small::div_3x2_mg10" div_3x2_mg10.
+        M.IsFunction.C "ruint::algorithms::div::small::div_3x2_mg10" div_3x2_mg10.
       Admitted.
       Global Typeclasses Opaque div_3x2_mg10.
     End small.

@@ -632,6 +632,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "scoping_rules_borrowing_aliasing::main" main.
+  M.IsFunction.C "scoping_rules_borrowing_aliasing::main" main.
 Admitted.
 Global Typeclasses Opaque main.

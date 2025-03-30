@@ -642,7 +642,7 @@ Module num.
       end.
     
     Global Instance Instance_IsFunction_pfe_empty :
-      M.IsFunction.Trait "core::num::dec2flt::pfe_empty" pfe_empty.
+      M.IsFunction.C "core::num::dec2flt::pfe_empty" pfe_empty.
     Admitted.
     Global Typeclasses Opaque pfe_empty.
     
@@ -662,7 +662,7 @@ Module num.
       end.
     
     Global Instance Instance_IsFunction_pfe_invalid :
-      M.IsFunction.Trait "core::num::dec2flt::pfe_invalid" pfe_invalid.
+      M.IsFunction.C "core::num::dec2flt::pfe_invalid" pfe_invalid.
     Admitted.
     Global Typeclasses Opaque pfe_invalid.
     
@@ -705,7 +705,10 @@ Module num.
                           |)
                         |)),
                       M.read (|
-                        M.get_constant "core::num::dec2flt::float::RawFloat::MANTISSA_EXPLICIT_BITS"
+                        get_constant (|
+                          "core::num::dec2flt::float::RawFloat::MANTISSA_EXPLICIT_BITS",
+                          Ty.path "usize"
+                        |)
                       |)
                     |))
                 |)
@@ -730,7 +733,7 @@ Module num.
       end.
     
     Global Instance Instance_IsFunction_biased_fp_to_float :
-      M.IsFunction.Trait "core::num::dec2flt::biased_fp_to_float" biased_fp_to_float.
+      M.IsFunction.C "core::num::dec2flt::biased_fp_to_float" biased_fp_to_float.
     Admitted.
     Global Typeclasses Opaque biased_fp_to_float.
     
@@ -1347,7 +1350,7 @@ Module num.
       end.
     
     Global Instance Instance_IsFunction_dec2flt :
-      M.IsFunction.Trait "core::num::dec2flt::dec2flt" dec2flt.
+      M.IsFunction.C "core::num::dec2flt::dec2flt" dec2flt.
     Admitted.
     Global Typeclasses Opaque dec2flt.
   End dec2flt.

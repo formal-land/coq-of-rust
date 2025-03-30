@@ -3536,7 +3536,18 @@ Module normalized.
                 M.read (| __deserializer |);
                 mk_str (| "Type" |);
                 M.read (|
-                  M.get_constant "move_binary_format::normalized::_'1::deserialize::VARIANTS"
+                  get_constant (|
+                    "move_binary_format::normalized::_'1::deserialize::VARIANTS",
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                      ]
+                  |)
                 |);
                 Value.StructRecord
                   "move_binary_format::normalized::_'1::deserialize::__Visitor"
@@ -3877,7 +3888,18 @@ Module normalized.
                 M.read (| __deserializer |);
                 mk_str (| "Field" |);
                 M.read (|
-                  M.get_constant "move_binary_format::normalized::_'3::deserialize::FIELDS"
+                  get_constant (|
+                    "move_binary_format::normalized::_'3::deserialize::FIELDS",
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                      ]
+                  |)
                 |);
                 Value.StructRecord
                   "move_binary_format::normalized::_'3::deserialize::__Visitor"
@@ -4223,7 +4245,18 @@ Module normalized.
                 M.read (| __deserializer |);
                 mk_str (| "Constant" |);
                 M.read (|
-                  M.get_constant "move_binary_format::normalized::_'5::deserialize::FIELDS"
+                  get_constant (|
+                    "move_binary_format::normalized::_'5::deserialize::FIELDS",
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                      ]
+                  |)
                 |);
                 Value.StructRecord
                   "move_binary_format::normalized::_'5::deserialize::__Visitor"
@@ -4664,7 +4697,18 @@ Module normalized.
                 M.read (| __deserializer |);
                 mk_str (| "Struct" |);
                 M.read (|
-                  M.get_constant "move_binary_format::normalized::_'7::deserialize::FIELDS"
+                  get_constant (|
+                    "move_binary_format::normalized::_'7::deserialize::FIELDS",
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                      ]
+                  |)
                 |);
                 Value.StructRecord
                   "move_binary_format::normalized::_'7::deserialize::__Visitor"
@@ -5373,7 +5417,18 @@ Module normalized.
                 M.read (| __deserializer |);
                 mk_str (| "Function" |);
                 M.read (|
-                  M.get_constant "move_binary_format::normalized::_'9::deserialize::FIELDS"
+                  get_constant (|
+                    "move_binary_format::normalized::_'9::deserialize::FIELDS",
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                      ]
+                  |)
                 |);
                 Value.StructRecord
                   "move_binary_format::normalized::_'9::deserialize::__Visitor"
@@ -5714,7 +5769,18 @@ Module normalized.
                 M.read (| __deserializer |);
                 mk_str (| "FieldRef" |);
                 M.read (|
-                  M.get_constant "move_binary_format::normalized::_'11::deserialize::FIELDS"
+                  get_constant (|
+                    "move_binary_format::normalized::_'11::deserialize::FIELDS",
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                      ]
+                  |)
                 |);
                 Value.StructRecord
                   "move_binary_format::normalized::_'11::deserialize::__Visitor"
@@ -6055,7 +6121,18 @@ Module normalized.
                 M.read (| __deserializer |);
                 mk_str (| "FunctionRef" |);
                 M.read (|
-                  M.get_constant "move_binary_format::normalized::_'13::deserialize::FIELDS"
+                  get_constant (|
+                    "move_binary_format::normalized::_'13::deserialize::FIELDS",
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                      ]
+                  |)
                 |);
                 Value.StructRecord
                   "move_binary_format::normalized::_'13::deserialize::__Visitor"
@@ -9445,7 +9522,18 @@ Module normalized.
                 M.read (| __deserializer |);
                 mk_str (| "Bytecode" |);
                 M.read (|
-                  M.get_constant "move_binary_format::normalized::_'15::deserialize::VARIANTS"
+                  get_constant (|
+                    "move_binary_format::normalized::_'15::deserialize::VARIANTS",
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                      ]
+                  |)
                 |);
                 Value.StructRecord
                   "move_binary_format::normalized::_'15::deserialize::__Visitor"
@@ -10332,7 +10420,18 @@ Module normalized.
                 M.read (| __deserializer |);
                 mk_str (| "Module" |);
                 M.read (|
-                  M.get_constant "move_binary_format::normalized::_'17::deserialize::FIELDS"
+                  get_constant (|
+                    "move_binary_format::normalized::_'17::deserialize::FIELDS",
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                      ]
+                  |)
                 |);
                 Value.StructRecord
                   "move_binary_format::normalized::_'17::deserialize::__Visitor"
@@ -27068,7 +27167,7 @@ Module normalized.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
   End Impl_move_binary_format_normalized_Constant.
@@ -28920,7 +29019,7 @@ Module normalized.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -28978,7 +29077,7 @@ Module normalized.
       end.
     
     Global Instance AssociatedFunction_module_id :
-      M.IsAssociatedFunction.Trait Self "module_id" module_id.
+      M.IsAssociatedFunction.C Self "module_id" module_id.
     Admitted.
     Global Typeclasses Opaque module_id.
   End Impl_move_binary_format_normalized_Module.
@@ -30058,7 +30157,7 @@ Module normalized.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -30369,7 +30468,7 @@ Module normalized.
       end.
     
     Global Instance AssociatedFunction_is_closed :
-      M.IsAssociatedFunction.Trait Self "is_closed" is_closed.
+      M.IsAssociatedFunction.C Self "is_closed" is_closed.
     Admitted.
     Global Typeclasses Opaque is_closed.
     
@@ -31011,7 +31110,7 @@ Module normalized.
       end.
     
     Global Instance AssociatedFunction_into_type_tag :
-      M.IsAssociatedFunction.Trait Self "into_type_tag" into_type_tag.
+      M.IsAssociatedFunction.C Self "into_type_tag" into_type_tag.
     Admitted.
     Global Typeclasses Opaque into_type_tag.
     
@@ -31160,7 +31259,7 @@ Module normalized.
       end.
     
     Global Instance AssociatedFunction_into_struct_tag :
-      M.IsAssociatedFunction.Trait Self "into_struct_tag" into_struct_tag.
+      M.IsAssociatedFunction.C Self "into_struct_tag" into_struct_tag.
     Admitted.
     Global Typeclasses Opaque into_struct_tag.
     
@@ -31852,7 +31951,7 @@ Module normalized.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_subst : M.IsAssociatedFunction.Trait Self "subst" subst.
+    Global Instance AssociatedFunction_subst : M.IsAssociatedFunction.C Self "subst" subst.
     Admitted.
     Global Typeclasses Opaque subst.
   End Impl_move_binary_format_normalized_Type.
@@ -31953,7 +32052,7 @@ Module normalized.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
   End Impl_move_binary_format_normalized_Field.
@@ -32411,7 +32510,7 @@ Module normalized.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -32466,8 +32565,7 @@ Module normalized.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_from_idx :
-      M.IsAssociatedFunction.Trait Self "from_idx" from_idx.
+    Global Instance AssociatedFunction_from_idx : M.IsAssociatedFunction.C Self "from_idx" from_idx.
     Admitted.
     Global Typeclasses Opaque from_idx.
     
@@ -32640,7 +32738,7 @@ Module normalized.
       end.
     
     Global Instance AssociatedFunction_type_param_constraints :
-      M.IsAssociatedFunction.Trait Self "type_param_constraints" type_param_constraints.
+      M.IsAssociatedFunction.C Self "type_param_constraints" type_param_constraints.
     Admitted.
     Global Typeclasses Opaque type_param_constraints.
   End Impl_move_binary_format_normalized_Struct.
@@ -33726,7 +33824,7 @@ Module normalized.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -34041,7 +34139,7 @@ Module normalized.
       end.
     
     Global Instance AssociatedFunction_new_from_name :
-      M.IsAssociatedFunction.Trait Self "new_from_name" new_from_name.
+      M.IsAssociatedFunction.C Self "new_from_name" new_from_name.
     Admitted.
     Global Typeclasses Opaque new_from_name.
   End Impl_move_binary_format_normalized_Function.
@@ -34515,7 +34613,7 @@ Module normalized.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -34566,8 +34664,7 @@ Module normalized.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_from_idx :
-      M.IsAssociatedFunction.Trait Self "from_idx" from_idx.
+    Global Instance AssociatedFunction_from_idx : M.IsAssociatedFunction.C Self "from_idx" from_idx.
     Admitted.
     Global Typeclasses Opaque from_idx.
   End Impl_move_binary_format_normalized_FieldRef.
@@ -34678,7 +34775,7 @@ Module normalized.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -34729,8 +34826,7 @@ Module normalized.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_from_idx :
-      M.IsAssociatedFunction.Trait Self "from_idx" from_idx.
+    Global Instance AssociatedFunction_from_idx : M.IsAssociatedFunction.C Self "from_idx" from_idx.
     Admitted.
     Global Typeclasses Opaque from_idx.
   End Impl_move_binary_format_normalized_FunctionRef.
@@ -36807,7 +36903,7 @@ Module normalized.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
   End Impl_move_binary_format_normalized_Bytecode.
@@ -39270,7 +39366,7 @@ Module normalized.
     end.
   
   Global Instance Instance_IsFunction_struct_instantiation :
-    M.IsFunction.Trait "move_binary_format::normalized::struct_instantiation" struct_instantiation.
+    M.IsFunction.C "move_binary_format::normalized::struct_instantiation" struct_instantiation.
   Admitted.
   Global Typeclasses Opaque struct_instantiation.
   
@@ -39630,7 +39726,7 @@ Module normalized.
     end.
   
   Global Instance Instance_IsFunction_field_instantiation :
-    M.IsFunction.Trait "move_binary_format::normalized::field_instantiation" field_instantiation.
+    M.IsFunction.C "move_binary_format::normalized::field_instantiation" field_instantiation.
   Admitted.
   Global Typeclasses Opaque field_instantiation.
   
@@ -39720,7 +39816,7 @@ Module normalized.
     end.
   
   Global Instance Instance_IsFunction_signature_to_single_type :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "move_binary_format::normalized::signature_to_single_type"
       signature_to_single_type.
   Admitted.

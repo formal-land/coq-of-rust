@@ -22,19 +22,19 @@ Module Impl_functions_order_SomeType.
   
   Parameter meth1 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_meth1 : M.IsAssociatedFunction.Trait Self "meth1" meth1.
+  Global Instance AssociatedFunction_meth1 : M.IsAssociatedFunction.C Self "meth1" meth1.
   Admitted.
   
   Parameter meth2 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_meth2 : M.IsAssociatedFunction.Trait Self "meth2" meth2.
+  Global Instance AssociatedFunction_meth2 : M.IsAssociatedFunction.C Self "meth2" meth2.
   Admitted.
 End Impl_functions_order_SomeType.
 
 Parameter depends_on_trait_impl : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_depends_on_trait_impl :
-  M.IsFunction.Trait "functions_order::depends_on_trait_impl" depends_on_trait_impl.
+  M.IsFunction.C "functions_order::depends_on_trait_impl" depends_on_trait_impl.
 Admitted.
 
 (* Trait *)
@@ -83,37 +83,35 @@ End Impl_functions_order_SomeTrait_for_functions_order_OtherType.
 Module inner_mod.
   Parameter bar : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance Instance_IsFunction_bar :
-    M.IsFunction.Trait "functions_order::inner_mod::bar" bar.
+  Global Instance Instance_IsFunction_bar : M.IsFunction.C "functions_order::inner_mod::bar" bar.
   Admitted.
   
   Parameter tar : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance Instance_IsFunction_tar :
-    M.IsFunction.Trait "functions_order::inner_mod::tar" tar.
+  Global Instance Instance_IsFunction_tar : M.IsFunction.C "functions_order::inner_mod::tar" tar.
   Admitted.
   
   Module nested_mod.
     Parameter tick : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_tick :
-      M.IsFunction.Trait "functions_order::inner_mod::nested_mod::tick" tick.
+      M.IsFunction.C "functions_order::inner_mod::nested_mod::tick" tick.
     Admitted.
     
     Parameter tack : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_tack :
-      M.IsFunction.Trait "functions_order::inner_mod::nested_mod::tack" tack.
+      M.IsFunction.C "functions_order::inner_mod::nested_mod::tack" tack.
     Admitted.
   End nested_mod.
 End inner_mod.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "functions_order::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "functions_order::main" main.
 Admitted.
 
 Parameter foo : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_foo : M.IsFunction.Trait "functions_order::foo" foo.
+Global Instance Instance_IsFunction_foo : M.IsFunction.C "functions_order::foo" foo.
 Admitted.

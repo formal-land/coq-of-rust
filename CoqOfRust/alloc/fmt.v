@@ -82,7 +82,7 @@ Module fmt.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_format : M.IsFunction.Trait "alloc::fmt::format" format.
+  Global Instance Instance_IsFunction_format : M.IsFunction.C "alloc::fmt::format" format.
   Admitted.
   Global Typeclasses Opaque format.
   
@@ -176,7 +176,7 @@ Module fmt.
       end.
     
     Global Instance Instance_IsFunction_format_inner :
-      M.IsFunction.Trait "alloc::fmt::format::format_inner" format_inner.
+      M.IsFunction.C "alloc::fmt::format::format_inner" format_inner.
     Admitted.
     Global Typeclasses Opaque format_inner.
   End format.

@@ -186,7 +186,7 @@ Definition cat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_cat : M.IsFunction.Trait "filesystem_operations::cat" cat.
+Global Instance Instance_IsFunction_cat : M.IsFunction.C "filesystem_operations::cat" cat.
 Admitted.
 Global Typeclasses Opaque cat.
 
@@ -348,7 +348,7 @@ Definition echo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_echo : M.IsFunction.Trait "filesystem_operations::echo" echo.
+Global Instance Instance_IsFunction_echo : M.IsFunction.C "filesystem_operations::echo" echo.
 Admitted.
 Global Typeclasses Opaque echo.
 
@@ -456,7 +456,7 @@ Definition touch (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_touch : M.IsFunction.Trait "filesystem_operations::touch" touch.
+Global Instance Instance_IsFunction_touch : M.IsFunction.C "filesystem_operations::touch" touch.
 Admitted.
 Global Typeclasses Opaque touch.
 
@@ -2392,6 +2392,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "filesystem_operations::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "filesystem_operations::main" main.
 Admitted.
 Global Typeclasses Opaque main.

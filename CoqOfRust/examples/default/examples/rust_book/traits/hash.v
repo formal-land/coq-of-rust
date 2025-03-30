@@ -195,7 +195,7 @@ Definition calculate_hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.
   end.
 
 Global Instance Instance_IsFunction_calculate_hash :
-  M.IsFunction.Trait "hash::calculate_hash" calculate_hash.
+  M.IsFunction.C "hash::calculate_hash" calculate_hash.
 Admitted.
 Global Typeclasses Opaque calculate_hash.
 
@@ -331,6 +331,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "hash::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "hash::main" main.
 Admitted.
 Global Typeclasses Opaque main.

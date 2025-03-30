@@ -96,7 +96,7 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
   
   Global Instance AssociatedFunction_contains :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction.Trait (Self K V) "contains" (contains K V).
+    M.IsAssociatedFunction.C (Self K V) "contains" (contains K V).
   Admitted.
   Global Typeclasses Opaque contains.
   
@@ -124,7 +124,7 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
   
   Global Instance AssociatedFunction_get :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction.Trait (Self K V) "get" (get K V).
+    M.IsAssociatedFunction.C (Self K V) "get" (get K V).
   Admitted.
   Global Typeclasses Opaque get.
   
@@ -153,7 +153,7 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
   
   Global Instance AssociatedFunction_insert :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction.Trait (Self K V) "insert" (insert K V).
+    M.IsAssociatedFunction.C (Self K V) "insert" (insert K V).
   Admitted.
   Global Typeclasses Opaque insert.
   
@@ -179,7 +179,7 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
   
   Global Instance AssociatedFunction_new :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction.Trait (Self K V) "new" (new K V).
+    M.IsAssociatedFunction.C (Self K V) "new" (new K V).
   Admitted.
   Global Typeclasses Opaque new.
   
@@ -207,7 +207,7 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
   
   Global Instance AssociatedFunction_remove :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction.Trait (Self K V) "remove" (remove K V).
+    M.IsAssociatedFunction.C (Self K V) "remove" (remove K V).
   Admitted.
   Global Typeclasses Opaque remove.
   
@@ -235,7 +235,7 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
   
   Global Instance AssociatedFunction_size :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction.Trait (Self K V) "size" (size K V).
+    M.IsAssociatedFunction.C (Self K V) "size" (size K V).
   Admitted.
   Global Typeclasses Opaque size.
   
@@ -263,7 +263,7 @@ Module Impl_mapping_integration_tests_Mapping_K_V.
   
   Global Instance AssociatedFunction_take :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction.Trait (Self K V) "take" (take K V).
+    M.IsAssociatedFunction.C (Self K V) "take" (take K V).
   Admitted.
   Global Typeclasses Opaque take.
 End Impl_mapping_integration_tests_Mapping_K_V.
@@ -386,7 +386,7 @@ Module Impl_mapping_integration_tests_Env.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_caller : M.IsAssociatedFunction.Trait Self "caller" caller.
+  Global Instance AssociatedFunction_caller : M.IsAssociatedFunction.C Self "caller" caller.
   Admitted.
   Global Typeclasses Opaque caller.
 End Impl_mapping_integration_tests_Env.
@@ -472,8 +472,7 @@ Module Impl_mapping_integration_tests_Mappings.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_init_env :
-    M.IsAssociatedFunction.Trait Self "init_env" init_env.
+  Global Instance AssociatedFunction_init_env : M.IsAssociatedFunction.C Self "init_env" init_env.
   Admitted.
   Global Typeclasses Opaque init_env.
   
@@ -496,7 +495,7 @@ Module Impl_mapping_integration_tests_Mappings.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_env : M.IsAssociatedFunction.Trait Self "env" env.
+  Global Instance AssociatedFunction_env : M.IsAssociatedFunction.C Self "env" env.
   Admitted.
   Global Typeclasses Opaque env.
   
@@ -546,7 +545,7 @@ Module Impl_mapping_integration_tests_Mappings.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
   Admitted.
   Global Typeclasses Opaque new.
   
@@ -624,7 +623,7 @@ Module Impl_mapping_integration_tests_Mappings.
     end.
   
   Global Instance AssociatedFunction_get_balance :
-    M.IsAssociatedFunction.Trait Self "get_balance" get_balance.
+    M.IsAssociatedFunction.C Self "get_balance" get_balance.
   Admitted.
   Global Typeclasses Opaque get_balance.
   
@@ -701,7 +700,7 @@ Module Impl_mapping_integration_tests_Mappings.
     end.
   
   Global Instance AssociatedFunction_insert_balance :
-    M.IsAssociatedFunction.Trait Self "insert_balance" insert_balance.
+    M.IsAssociatedFunction.C Self "insert_balance" insert_balance.
   Admitted.
   Global Typeclasses Opaque insert_balance.
   
@@ -776,7 +775,7 @@ Module Impl_mapping_integration_tests_Mappings.
     end.
   
   Global Instance AssociatedFunction_size_balance :
-    M.IsAssociatedFunction.Trait Self "size_balance" size_balance.
+    M.IsAssociatedFunction.C Self "size_balance" size_balance.
   Admitted.
   Global Typeclasses Opaque size_balance.
   
@@ -854,7 +853,7 @@ Module Impl_mapping_integration_tests_Mappings.
     end.
   
   Global Instance AssociatedFunction_contains_balance :
-    M.IsAssociatedFunction.Trait Self "contains_balance" contains_balance.
+    M.IsAssociatedFunction.C Self "contains_balance" contains_balance.
   Admitted.
   Global Typeclasses Opaque contains_balance.
   
@@ -931,7 +930,7 @@ Module Impl_mapping_integration_tests_Mappings.
     end.
   
   Global Instance AssociatedFunction_remove_balance :
-    M.IsAssociatedFunction.Trait Self "remove_balance" remove_balance.
+    M.IsAssociatedFunction.C Self "remove_balance" remove_balance.
   Admitted.
   Global Typeclasses Opaque remove_balance.
   
@@ -1006,7 +1005,7 @@ Module Impl_mapping_integration_tests_Mappings.
     end.
   
   Global Instance AssociatedFunction_take_balance :
-    M.IsAssociatedFunction.Trait Self "take_balance" take_balance.
+    M.IsAssociatedFunction.C Self "take_balance" take_balance.
   Admitted.
   Global Typeclasses Opaque take_balance.
 End Impl_mapping_integration_tests_Mappings.

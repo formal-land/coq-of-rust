@@ -225,7 +225,7 @@ Module Impl_constructors_return_value_ReturnFlags.
     end.
   
   Global Instance AssociatedFunction_new_with_reverted :
-    M.IsAssociatedFunction.Trait Self "new_with_reverted" new_with_reverted.
+    M.IsAssociatedFunction.C Self "new_with_reverted" new_with_reverted.
   Admitted.
   Global Typeclasses Opaque new_with_reverted.
 End Impl_constructors_return_value_ReturnFlags.
@@ -250,7 +250,7 @@ Definition return_value (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
   end.
 
 Global Instance Instance_IsFunction_return_value :
-  M.IsFunction.Trait "constructors_return_value::return_value" return_value.
+  M.IsFunction.C "constructors_return_value::return_value" return_value.
 Admitted.
 Global Typeclasses Opaque return_value.
 
@@ -273,7 +273,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
   Admitted.
   Global Typeclasses Opaque new.
   
@@ -336,7 +336,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_try_new : M.IsAssociatedFunction.Trait Self "try_new" try_new.
+  Global Instance AssociatedFunction_try_new : M.IsAssociatedFunction.C Self "try_new" try_new.
   Admitted.
   Global Typeclasses Opaque try_new.
   
@@ -424,7 +424,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
     end.
   
   Global Instance AssociatedFunction_revert_new :
-    M.IsAssociatedFunction.Trait Self "revert_new" revert_new.
+    M.IsAssociatedFunction.C Self "revert_new" revert_new.
   Admitted.
   Global Typeclasses Opaque revert_new.
   
@@ -578,7 +578,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
     end.
   
   Global Instance AssociatedFunction_try_revert_new :
-    M.IsAssociatedFunction.Trait Self "try_revert_new" try_revert_new.
+    M.IsAssociatedFunction.C Self "try_revert_new" try_revert_new.
   Admitted.
   Global Typeclasses Opaque try_revert_new.
   
@@ -603,7 +603,7 @@ Module Impl_constructors_return_value_ConstructorsReturnValue.
     end.
   
   Global Instance AssociatedFunction_get_value :
-    M.IsAssociatedFunction.Trait Self "get_value" get_value.
+    M.IsAssociatedFunction.C Self "get_value" get_value.
   Admitted.
   Global Typeclasses Opaque get_value.
 End Impl_constructors_return_value_ConstructorsReturnValue.

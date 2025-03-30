@@ -207,7 +207,7 @@ Definition have_ingredients (ε : list Value.t) (τ : list Ty.t) (α : list Valu
   end.
 
 Global Instance Instance_IsFunction_have_ingredients :
-  M.IsFunction.Trait "combinators_and_then::have_ingredients" have_ingredients.
+  M.IsFunction.C "combinators_and_then::have_ingredients" have_ingredients.
 Admitted.
 Global Typeclasses Opaque have_ingredients.
 
@@ -246,7 +246,7 @@ Definition have_recipe (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
   end.
 
 Global Instance Instance_IsFunction_have_recipe :
-  M.IsFunction.Trait "combinators_and_then::have_recipe" have_recipe.
+  M.IsFunction.C "combinators_and_then::have_recipe" have_recipe.
 Admitted.
 Global Typeclasses Opaque have_recipe.
 
@@ -329,7 +329,7 @@ Definition cookable_v1 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
   end.
 
 Global Instance Instance_IsFunction_cookable_v1 :
-  M.IsFunction.Trait "combinators_and_then::cookable_v1" cookable_v1.
+  M.IsFunction.C "combinators_and_then::cookable_v1" cookable_v1.
 Admitted.
 Global Typeclasses Opaque cookable_v1.
 
@@ -372,7 +372,7 @@ Definition cookable_v2 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
   end.
 
 Global Instance Instance_IsFunction_cookable_v2 :
-  M.IsFunction.Trait "combinators_and_then::cookable_v2" cookable_v2.
+  M.IsFunction.C "combinators_and_then::cookable_v2" cookable_v2.
 Admitted.
 Global Typeclasses Opaque cookable_v2.
 
@@ -563,7 +563,7 @@ Definition eat (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_eat : M.IsFunction.Trait "combinators_and_then::eat" eat.
+Global Instance Instance_IsFunction_eat : M.IsFunction.C "combinators_and_then::eat" eat.
 Admitted.
 Global Typeclasses Opaque eat.
 
@@ -640,6 +640,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "combinators_and_then::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "combinators_and_then::main" main.
 Admitted.
 Global Typeclasses Opaque main.

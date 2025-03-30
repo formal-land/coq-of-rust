@@ -2742,7 +2742,7 @@ Module num.
       
       Global Instance AssociatedFunction_new :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+        M.IsAssociatedFunction.C (Self T) "new" (new T).
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -2866,7 +2866,7 @@ Module num.
       
       Global Instance AssociatedFunction_new_unchecked :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "new_unchecked" (new_unchecked T).
+        M.IsAssociatedFunction.C (Self T) "new_unchecked" (new_unchecked T).
       Admitted.
       Global Typeclasses Opaque new_unchecked.
       
@@ -2966,7 +2966,7 @@ Module num.
       
       Global Instance AssociatedFunction_from_mut :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "from_mut" (from_mut T).
+        M.IsAssociatedFunction.C (Self T) "from_mut" (from_mut T).
       Admitted.
       Global Typeclasses Opaque from_mut.
       
@@ -3124,7 +3124,7 @@ Module num.
       
       Global Instance AssociatedFunction_from_mut_unchecked :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "from_mut_unchecked" (from_mut_unchecked T).
+        M.IsAssociatedFunction.C (Self T) "from_mut_unchecked" (from_mut_unchecked T).
       Admitted.
       Global Typeclasses Opaque from_mut_unchecked.
       
@@ -3171,7 +3171,7 @@ Module num.
       
       Global Instance AssociatedFunction_get :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "get" (get T).
+        M.IsAssociatedFunction.C (Self T) "get" (get T).
       Admitted.
       Global Typeclasses Opaque get.
     End Impl_core_num_nonzero_NonZero_T.
@@ -3186,10 +3186,11 @@ Module num.
       
       (*             pub const BITS: u32 = <$Int>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
+      Definition value_BITS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic (get_associated_constant (| Ty.path "u8", "BITS", Ty.path "u32" |))).
       
       Global Instance AssociatedConstant_value_BITS :
-        M.IsAssociatedConstant.Trait Self "value_BITS" value_BITS.
+        M.IsAssociatedFunction.C Self "BITS" value_BITS.
       Admitted.
       Global Typeclasses Opaque value_BITS.
       
@@ -3231,7 +3232,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_leading_zeros :
-        M.IsAssociatedFunction.Trait Self "leading_zeros" leading_zeros.
+        M.IsAssociatedFunction.C Self "leading_zeros" leading_zeros.
       Admitted.
       Global Typeclasses Opaque leading_zeros.
       
@@ -3273,7 +3274,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_trailing_zeros :
-        M.IsAssociatedFunction.Trait Self "trailing_zeros" trailing_zeros.
+        M.IsAssociatedFunction.C Self "trailing_zeros" trailing_zeros.
       Admitted.
       Global Typeclasses Opaque trailing_zeros.
       
@@ -3321,7 +3322,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_count_ones :
-        M.IsAssociatedFunction.Trait Self "count_ones" count_ones.
+        M.IsAssociatedFunction.C Self "count_ones" count_ones.
       Admitted.
       Global Typeclasses Opaque count_ones.
       
@@ -3376,7 +3377,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_rotate_left :
-        M.IsAssociatedFunction.Trait Self "rotate_left" rotate_left.
+        M.IsAssociatedFunction.C Self "rotate_left" rotate_left.
       Admitted.
       Global Typeclasses Opaque rotate_left.
       
@@ -3431,7 +3432,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_rotate_right :
-        M.IsAssociatedFunction.Trait Self "rotate_right" rotate_right.
+        M.IsAssociatedFunction.C Self "rotate_right" rotate_right.
       Admitted.
       Global Typeclasses Opaque rotate_right.
       
@@ -3484,7 +3485,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_swap_bytes :
-        M.IsAssociatedFunction.Trait Self "swap_bytes" swap_bytes.
+        M.IsAssociatedFunction.C Self "swap_bytes" swap_bytes.
       Admitted.
       Global Typeclasses Opaque swap_bytes.
       
@@ -3537,7 +3538,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_reverse_bits :
-        M.IsAssociatedFunction.Trait Self "reverse_bits" reverse_bits.
+        M.IsAssociatedFunction.C Self "reverse_bits" reverse_bits.
       Admitted.
       Global Typeclasses Opaque reverse_bits.
       
@@ -3589,8 +3590,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_from_be :
-        M.IsAssociatedFunction.Trait Self "from_be" from_be.
+      Global Instance AssociatedFunction_from_be : M.IsAssociatedFunction.C Self "from_be" from_be.
       Admitted.
       Global Typeclasses Opaque from_be.
       
@@ -3642,8 +3642,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_from_le :
-        M.IsAssociatedFunction.Trait Self "from_le" from_le.
+      Global Instance AssociatedFunction_from_le : M.IsAssociatedFunction.C Self "from_le" from_le.
       Admitted.
       Global Typeclasses Opaque from_le.
       
@@ -3695,7 +3694,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_to_be : M.IsAssociatedFunction.Trait Self "to_be" to_be.
+      Global Instance AssociatedFunction_to_be : M.IsAssociatedFunction.C Self "to_be" to_be.
       Admitted.
       Global Typeclasses Opaque to_be.
       
@@ -3747,87 +3746,83 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_to_le : M.IsAssociatedFunction.Trait Self "to_le" to_le.
+      Global Instance AssociatedFunction_to_le : M.IsAssociatedFunction.C Self "to_le" to_le.
       Admitted.
       Global Typeclasses Opaque to_le.
       
       (*         pub const MIN: Self = Self::new(1).unwrap(); *)
       (* Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] *)
-      Definition value_MIN : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              M.call_closure (|
-                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
-                M.get_associated_function (|
+      Definition value_MIN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
+              M.get_associated_function (|
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ],
+                "unwrap",
+                [],
+                []
+              |),
+              [
+                M.call_closure (|
                   Ty.apply
                     (Ty.path "core::option::Option")
                     []
                     [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ],
-                  "unwrap",
-                  [],
-                  []
-                |),
-                [
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
-                      "new",
-                      [],
-                      []
-                    |),
-                    [ Value.Integer IntegerKind.U8 1 ]
-                  |)
-                ]
-              |)
-            |))).
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
+                    "new",
+                    [],
+                    []
+                  |),
+                  [ Value.Integer IntegerKind.U8 1 ]
+                |)
+              ]
+            |)
+          |))).
       
-      Global Instance AssociatedConstant_value_MIN :
-        M.IsAssociatedConstant.Trait Self "value_MIN" value_MIN.
+      Global Instance AssociatedConstant_value_MIN : M.IsAssociatedFunction.C Self "MIN" value_MIN.
       Admitted.
       Global Typeclasses Opaque value_MIN.
       
       (*         pub const MAX: Self = Self::new(<$Int>::MAX).unwrap(); *)
       (* Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] *)
-      Definition value_MAX : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              M.call_closure (|
-                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
-                M.get_associated_function (|
+      Definition value_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
+              M.get_associated_function (|
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ],
+                "unwrap",
+                [],
+                []
+              |),
+              [
+                M.call_closure (|
                   Ty.apply
                     (Ty.path "core::option::Option")
                     []
                     [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ],
-                  "unwrap",
-                  [],
-                  []
-                |),
-                [
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ] ],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
-                      "new",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.get_constant "core::num::MAX" |) ]
-                  |)
-                ]
-              |)
-            |))).
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
+                    "new",
+                    [],
+                    []
+                  |),
+                  [ M.read (| get_associated_constant (| Ty.path "u8", "MAX", Ty.path "u8" |) |) ]
+                |)
+              ]
+            |)
+          |))).
       
-      Global Instance AssociatedConstant_value_MAX :
-        M.IsAssociatedConstant.Trait Self "value_MAX" value_MAX.
+      Global Instance AssociatedConstant_value_MAX : M.IsAssociatedFunction.C Self "MAX" value_MAX.
       Admitted.
       Global Typeclasses Opaque value_MAX.
       
@@ -3923,7 +3918,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_checked_add :
-        M.IsAssociatedFunction.Trait Self "checked_add" checked_add.
+        M.IsAssociatedFunction.C Self "checked_add" checked_add.
       Admitted.
       Global Typeclasses Opaque checked_add.
       
@@ -3977,7 +3972,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_saturating_add :
-        M.IsAssociatedFunction.Trait Self "saturating_add" saturating_add.
+        M.IsAssociatedFunction.C Self "saturating_add" saturating_add.
       Admitted.
       Global Typeclasses Opaque saturating_add.
       
@@ -4025,7 +4020,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_unchecked_add :
-        M.IsAssociatedFunction.Trait Self "unchecked_add" unchecked_add.
+        M.IsAssociatedFunction.C Self "unchecked_add" unchecked_add.
       Admitted.
       Global Typeclasses Opaque unchecked_add.
       
@@ -4123,7 +4118,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_checked_next_power_of_two :
-        M.IsAssociatedFunction.Trait Self "checked_next_power_of_two" checked_next_power_of_two.
+        M.IsAssociatedFunction.C Self "checked_next_power_of_two" checked_next_power_of_two.
       Admitted.
       Global Typeclasses Opaque checked_next_power_of_two.
       
@@ -4139,7 +4134,13 @@ Module num.
             (let self := M.alloc (| self |) in
             BinOp.Wrap.sub (|
               BinOp.Wrap.sub (|
-                M.read (| M.get_constant "core::num::nonzero::BITS" |),
+                M.read (|
+                  get_associated_constant (|
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
+                    "BITS",
+                    Ty.path "u32"
+                  |)
+                |),
                 Value.Integer IntegerKind.U32 1
               |),
               M.call_closure (|
@@ -4156,7 +4157,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_ilog2 : M.IsAssociatedFunction.Trait Self "ilog2" ilog2.
+      Global Instance AssociatedFunction_ilog2 : M.IsAssociatedFunction.C Self "ilog2" ilog2.
       Admitted.
       Global Typeclasses Opaque ilog2.
       
@@ -4189,7 +4190,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_ilog10 : M.IsAssociatedFunction.Trait Self "ilog10" ilog10.
+      Global Instance AssociatedFunction_ilog10 : M.IsAssociatedFunction.C Self "ilog10" ilog10.
       Admitted.
       Global Typeclasses Opaque ilog10.
       
@@ -4249,7 +4250,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_midpoint :
-        M.IsAssociatedFunction.Trait Self "midpoint" midpoint.
+        M.IsAssociatedFunction.C Self "midpoint" midpoint.
       Admitted.
       Global Typeclasses Opaque midpoint.
       
@@ -4291,7 +4292,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_is_power_of_two :
-        M.IsAssociatedFunction.Trait Self "is_power_of_two" is_power_of_two.
+        M.IsAssociatedFunction.C Self "is_power_of_two" is_power_of_two.
       Admitted.
       Global Typeclasses Opaque is_power_of_two.
       
@@ -4348,7 +4349,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_isqrt : M.IsAssociatedFunction.Trait Self "isqrt" isqrt.
+      Global Instance AssociatedFunction_isqrt : M.IsAssociatedFunction.C Self "isqrt" isqrt.
       Admitted.
       Global Typeclasses Opaque isqrt.
       
@@ -4456,7 +4457,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_checked_mul :
-        M.IsAssociatedFunction.Trait Self "checked_mul" checked_mul.
+        M.IsAssociatedFunction.C Self "checked_mul" checked_mul.
       Admitted.
       Global Typeclasses Opaque checked_mul.
       
@@ -4520,7 +4521,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_saturating_mul :
-        M.IsAssociatedFunction.Trait Self "saturating_mul" saturating_mul.
+        M.IsAssociatedFunction.C Self "saturating_mul" saturating_mul.
       Admitted.
       Global Typeclasses Opaque saturating_mul.
       
@@ -4577,7 +4578,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_unchecked_mul :
-        M.IsAssociatedFunction.Trait Self "unchecked_mul" unchecked_mul.
+        M.IsAssociatedFunction.C Self "unchecked_mul" unchecked_mul.
       Admitted.
       Global Typeclasses Opaque unchecked_mul.
       
@@ -4673,7 +4674,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_checked_pow :
-        M.IsAssociatedFunction.Trait Self "checked_pow" checked_pow.
+        M.IsAssociatedFunction.C Self "checked_pow" checked_pow.
       Admitted.
       Global Typeclasses Opaque checked_pow.
       
@@ -4728,7 +4729,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_saturating_pow :
-        M.IsAssociatedFunction.Trait Self "saturating_pow" saturating_pow.
+        M.IsAssociatedFunction.C Self "saturating_pow" saturating_pow.
       Admitted.
       Global Typeclasses Opaque saturating_pow.
       (*
@@ -4791,7 +4792,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_div_ceil :
-        M.IsAssociatedFunction.Trait Self "div_ceil" div_ceil.
+        M.IsAssociatedFunction.C Self "div_ceil" div_ceil.
       Admitted.
       Global Typeclasses Opaque div_ceil.
     End Impl_core_num_nonzero_NonZero_u8.
@@ -5201,10 +5202,11 @@ Module num.
       
       (*             pub const BITS: u32 = <$Int>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
+      Definition value_BITS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic (get_associated_constant (| Ty.path "u16", "BITS", Ty.path "u32" |))).
       
       Global Instance AssociatedConstant_value_BITS :
-        M.IsAssociatedConstant.Trait Self "value_BITS" value_BITS.
+        M.IsAssociatedFunction.C Self "BITS" value_BITS.
       Admitted.
       Global Typeclasses Opaque value_BITS.
       
@@ -5246,7 +5248,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_leading_zeros :
-        M.IsAssociatedFunction.Trait Self "leading_zeros" leading_zeros.
+        M.IsAssociatedFunction.C Self "leading_zeros" leading_zeros.
       Admitted.
       Global Typeclasses Opaque leading_zeros.
       
@@ -5288,7 +5290,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_trailing_zeros :
-        M.IsAssociatedFunction.Trait Self "trailing_zeros" trailing_zeros.
+        M.IsAssociatedFunction.C Self "trailing_zeros" trailing_zeros.
       Admitted.
       Global Typeclasses Opaque trailing_zeros.
       
@@ -5336,7 +5338,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_count_ones :
-        M.IsAssociatedFunction.Trait Self "count_ones" count_ones.
+        M.IsAssociatedFunction.C Self "count_ones" count_ones.
       Admitted.
       Global Typeclasses Opaque count_ones.
       
@@ -5391,7 +5393,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_rotate_left :
-        M.IsAssociatedFunction.Trait Self "rotate_left" rotate_left.
+        M.IsAssociatedFunction.C Self "rotate_left" rotate_left.
       Admitted.
       Global Typeclasses Opaque rotate_left.
       
@@ -5446,7 +5448,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_rotate_right :
-        M.IsAssociatedFunction.Trait Self "rotate_right" rotate_right.
+        M.IsAssociatedFunction.C Self "rotate_right" rotate_right.
       Admitted.
       Global Typeclasses Opaque rotate_right.
       
@@ -5499,7 +5501,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_swap_bytes :
-        M.IsAssociatedFunction.Trait Self "swap_bytes" swap_bytes.
+        M.IsAssociatedFunction.C Self "swap_bytes" swap_bytes.
       Admitted.
       Global Typeclasses Opaque swap_bytes.
       
@@ -5552,7 +5554,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_reverse_bits :
-        M.IsAssociatedFunction.Trait Self "reverse_bits" reverse_bits.
+        M.IsAssociatedFunction.C Self "reverse_bits" reverse_bits.
       Admitted.
       Global Typeclasses Opaque reverse_bits.
       
@@ -5604,8 +5606,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_from_be :
-        M.IsAssociatedFunction.Trait Self "from_be" from_be.
+      Global Instance AssociatedFunction_from_be : M.IsAssociatedFunction.C Self "from_be" from_be.
       Admitted.
       Global Typeclasses Opaque from_be.
       
@@ -5657,8 +5658,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_from_le :
-        M.IsAssociatedFunction.Trait Self "from_le" from_le.
+      Global Instance AssociatedFunction_from_le : M.IsAssociatedFunction.C Self "from_le" from_le.
       Admitted.
       Global Typeclasses Opaque from_le.
       
@@ -5710,7 +5710,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_to_be : M.IsAssociatedFunction.Trait Self "to_be" to_be.
+      Global Instance AssociatedFunction_to_be : M.IsAssociatedFunction.C Self "to_be" to_be.
       Admitted.
       Global Typeclasses Opaque to_be.
       
@@ -5762,87 +5762,83 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_to_le : M.IsAssociatedFunction.Trait Self "to_le" to_le.
+      Global Instance AssociatedFunction_to_le : M.IsAssociatedFunction.C Self "to_le" to_le.
       Admitted.
       Global Typeclasses Opaque to_le.
       
       (*         pub const MIN: Self = Self::new(1).unwrap(); *)
       (* Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] *)
-      Definition value_MIN : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              M.call_closure (|
-                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
-                M.get_associated_function (|
+      Definition value_MIN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
+              M.get_associated_function (|
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ],
+                "unwrap",
+                [],
+                []
+              |),
+              [
+                M.call_closure (|
                   Ty.apply
                     (Ty.path "core::option::Option")
                     []
                     [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ],
-                  "unwrap",
-                  [],
-                  []
-                |),
-                [
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
-                      "new",
-                      [],
-                      []
-                    |),
-                    [ Value.Integer IntegerKind.U16 1 ]
-                  |)
-                ]
-              |)
-            |))).
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
+                    "new",
+                    [],
+                    []
+                  |),
+                  [ Value.Integer IntegerKind.U16 1 ]
+                |)
+              ]
+            |)
+          |))).
       
-      Global Instance AssociatedConstant_value_MIN :
-        M.IsAssociatedConstant.Trait Self "value_MIN" value_MIN.
+      Global Instance AssociatedConstant_value_MIN : M.IsAssociatedFunction.C Self "MIN" value_MIN.
       Admitted.
       Global Typeclasses Opaque value_MIN.
       
       (*         pub const MAX: Self = Self::new(<$Int>::MAX).unwrap(); *)
       (* Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] *)
-      Definition value_MAX : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              M.call_closure (|
-                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
-                M.get_associated_function (|
+      Definition value_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
+              M.get_associated_function (|
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ],
+                "unwrap",
+                [],
+                []
+              |),
+              [
+                M.call_closure (|
                   Ty.apply
                     (Ty.path "core::option::Option")
                     []
                     [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ],
-                  "unwrap",
-                  [],
-                  []
-                |),
-                [
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ] ],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
-                      "new",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.get_constant "core::num::MAX" |) ]
-                  |)
-                ]
-              |)
-            |))).
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
+                    "new",
+                    [],
+                    []
+                  |),
+                  [ M.read (| get_associated_constant (| Ty.path "u16", "MAX", Ty.path "u16" |) |) ]
+                |)
+              ]
+            |)
+          |))).
       
-      Global Instance AssociatedConstant_value_MAX :
-        M.IsAssociatedConstant.Trait Self "value_MAX" value_MAX.
+      Global Instance AssociatedConstant_value_MAX : M.IsAssociatedFunction.C Self "MAX" value_MAX.
       Admitted.
       Global Typeclasses Opaque value_MAX.
       
@@ -5938,7 +5934,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_checked_add :
-        M.IsAssociatedFunction.Trait Self "checked_add" checked_add.
+        M.IsAssociatedFunction.C Self "checked_add" checked_add.
       Admitted.
       Global Typeclasses Opaque checked_add.
       
@@ -5992,7 +5988,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_saturating_add :
-        M.IsAssociatedFunction.Trait Self "saturating_add" saturating_add.
+        M.IsAssociatedFunction.C Self "saturating_add" saturating_add.
       Admitted.
       Global Typeclasses Opaque saturating_add.
       
@@ -6040,7 +6036,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_unchecked_add :
-        M.IsAssociatedFunction.Trait Self "unchecked_add" unchecked_add.
+        M.IsAssociatedFunction.C Self "unchecked_add" unchecked_add.
       Admitted.
       Global Typeclasses Opaque unchecked_add.
       
@@ -6138,7 +6134,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_checked_next_power_of_two :
-        M.IsAssociatedFunction.Trait Self "checked_next_power_of_two" checked_next_power_of_two.
+        M.IsAssociatedFunction.C Self "checked_next_power_of_two" checked_next_power_of_two.
       Admitted.
       Global Typeclasses Opaque checked_next_power_of_two.
       
@@ -6154,7 +6150,13 @@ Module num.
             (let self := M.alloc (| self |) in
             BinOp.Wrap.sub (|
               BinOp.Wrap.sub (|
-                M.read (| M.get_constant "core::num::nonzero::BITS" |),
+                M.read (|
+                  get_associated_constant (|
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
+                    "BITS",
+                    Ty.path "u32"
+                  |)
+                |),
                 Value.Integer IntegerKind.U32 1
               |),
               M.call_closure (|
@@ -6171,7 +6173,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_ilog2 : M.IsAssociatedFunction.Trait Self "ilog2" ilog2.
+      Global Instance AssociatedFunction_ilog2 : M.IsAssociatedFunction.C Self "ilog2" ilog2.
       Admitted.
       Global Typeclasses Opaque ilog2.
       
@@ -6204,7 +6206,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_ilog10 : M.IsAssociatedFunction.Trait Self "ilog10" ilog10.
+      Global Instance AssociatedFunction_ilog10 : M.IsAssociatedFunction.C Self "ilog10" ilog10.
       Admitted.
       Global Typeclasses Opaque ilog10.
       
@@ -6264,7 +6266,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_midpoint :
-        M.IsAssociatedFunction.Trait Self "midpoint" midpoint.
+        M.IsAssociatedFunction.C Self "midpoint" midpoint.
       Admitted.
       Global Typeclasses Opaque midpoint.
       
@@ -6306,7 +6308,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_is_power_of_two :
-        M.IsAssociatedFunction.Trait Self "is_power_of_two" is_power_of_two.
+        M.IsAssociatedFunction.C Self "is_power_of_two" is_power_of_two.
       Admitted.
       Global Typeclasses Opaque is_power_of_two.
       
@@ -6363,7 +6365,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_isqrt : M.IsAssociatedFunction.Trait Self "isqrt" isqrt.
+      Global Instance AssociatedFunction_isqrt : M.IsAssociatedFunction.C Self "isqrt" isqrt.
       Admitted.
       Global Typeclasses Opaque isqrt.
       
@@ -6471,7 +6473,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_checked_mul :
-        M.IsAssociatedFunction.Trait Self "checked_mul" checked_mul.
+        M.IsAssociatedFunction.C Self "checked_mul" checked_mul.
       Admitted.
       Global Typeclasses Opaque checked_mul.
       
@@ -6535,7 +6537,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_saturating_mul :
-        M.IsAssociatedFunction.Trait Self "saturating_mul" saturating_mul.
+        M.IsAssociatedFunction.C Self "saturating_mul" saturating_mul.
       Admitted.
       Global Typeclasses Opaque saturating_mul.
       
@@ -6592,7 +6594,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_unchecked_mul :
-        M.IsAssociatedFunction.Trait Self "unchecked_mul" unchecked_mul.
+        M.IsAssociatedFunction.C Self "unchecked_mul" unchecked_mul.
       Admitted.
       Global Typeclasses Opaque unchecked_mul.
       
@@ -6688,7 +6690,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_checked_pow :
-        M.IsAssociatedFunction.Trait Self "checked_pow" checked_pow.
+        M.IsAssociatedFunction.C Self "checked_pow" checked_pow.
       Admitted.
       Global Typeclasses Opaque checked_pow.
       
@@ -6743,7 +6745,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_saturating_pow :
-        M.IsAssociatedFunction.Trait Self "saturating_pow" saturating_pow.
+        M.IsAssociatedFunction.C Self "saturating_pow" saturating_pow.
       Admitted.
       Global Typeclasses Opaque saturating_pow.
       (*
@@ -6806,7 +6808,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_div_ceil :
-        M.IsAssociatedFunction.Trait Self "div_ceil" div_ceil.
+        M.IsAssociatedFunction.C Self "div_ceil" div_ceil.
       Admitted.
       Global Typeclasses Opaque div_ceil.
     End Impl_core_num_nonzero_NonZero_u16.
@@ -7216,10 +7218,11 @@ Module num.
       
       (*             pub const BITS: u32 = <$Int>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
+      Definition value_BITS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic (get_associated_constant (| Ty.path "u32", "BITS", Ty.path "u32" |))).
       
       Global Instance AssociatedConstant_value_BITS :
-        M.IsAssociatedConstant.Trait Self "value_BITS" value_BITS.
+        M.IsAssociatedFunction.C Self "BITS" value_BITS.
       Admitted.
       Global Typeclasses Opaque value_BITS.
       
@@ -7261,7 +7264,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_leading_zeros :
-        M.IsAssociatedFunction.Trait Self "leading_zeros" leading_zeros.
+        M.IsAssociatedFunction.C Self "leading_zeros" leading_zeros.
       Admitted.
       Global Typeclasses Opaque leading_zeros.
       
@@ -7303,7 +7306,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_trailing_zeros :
-        M.IsAssociatedFunction.Trait Self "trailing_zeros" trailing_zeros.
+        M.IsAssociatedFunction.C Self "trailing_zeros" trailing_zeros.
       Admitted.
       Global Typeclasses Opaque trailing_zeros.
       
@@ -7351,7 +7354,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_count_ones :
-        M.IsAssociatedFunction.Trait Self "count_ones" count_ones.
+        M.IsAssociatedFunction.C Self "count_ones" count_ones.
       Admitted.
       Global Typeclasses Opaque count_ones.
       
@@ -7406,7 +7409,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_rotate_left :
-        M.IsAssociatedFunction.Trait Self "rotate_left" rotate_left.
+        M.IsAssociatedFunction.C Self "rotate_left" rotate_left.
       Admitted.
       Global Typeclasses Opaque rotate_left.
       
@@ -7461,7 +7464,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_rotate_right :
-        M.IsAssociatedFunction.Trait Self "rotate_right" rotate_right.
+        M.IsAssociatedFunction.C Self "rotate_right" rotate_right.
       Admitted.
       Global Typeclasses Opaque rotate_right.
       
@@ -7514,7 +7517,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_swap_bytes :
-        M.IsAssociatedFunction.Trait Self "swap_bytes" swap_bytes.
+        M.IsAssociatedFunction.C Self "swap_bytes" swap_bytes.
       Admitted.
       Global Typeclasses Opaque swap_bytes.
       
@@ -7567,7 +7570,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_reverse_bits :
-        M.IsAssociatedFunction.Trait Self "reverse_bits" reverse_bits.
+        M.IsAssociatedFunction.C Self "reverse_bits" reverse_bits.
       Admitted.
       Global Typeclasses Opaque reverse_bits.
       
@@ -7619,8 +7622,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_from_be :
-        M.IsAssociatedFunction.Trait Self "from_be" from_be.
+      Global Instance AssociatedFunction_from_be : M.IsAssociatedFunction.C Self "from_be" from_be.
       Admitted.
       Global Typeclasses Opaque from_be.
       
@@ -7672,8 +7674,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_from_le :
-        M.IsAssociatedFunction.Trait Self "from_le" from_le.
+      Global Instance AssociatedFunction_from_le : M.IsAssociatedFunction.C Self "from_le" from_le.
       Admitted.
       Global Typeclasses Opaque from_le.
       
@@ -7725,7 +7726,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_to_be : M.IsAssociatedFunction.Trait Self "to_be" to_be.
+      Global Instance AssociatedFunction_to_be : M.IsAssociatedFunction.C Self "to_be" to_be.
       Admitted.
       Global Typeclasses Opaque to_be.
       
@@ -7777,87 +7778,83 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_to_le : M.IsAssociatedFunction.Trait Self "to_le" to_le.
+      Global Instance AssociatedFunction_to_le : M.IsAssociatedFunction.C Self "to_le" to_le.
       Admitted.
       Global Typeclasses Opaque to_le.
       
       (*         pub const MIN: Self = Self::new(1).unwrap(); *)
       (* Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] *)
-      Definition value_MIN : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              M.call_closure (|
-                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
-                M.get_associated_function (|
+      Definition value_MIN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
+              M.get_associated_function (|
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ],
+                "unwrap",
+                [],
+                []
+              |),
+              [
+                M.call_closure (|
                   Ty.apply
                     (Ty.path "core::option::Option")
                     []
                     [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ],
-                  "unwrap",
-                  [],
-                  []
-                |),
-                [
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
-                      "new",
-                      [],
-                      []
-                    |),
-                    [ Value.Integer IntegerKind.U32 1 ]
-                  |)
-                ]
-              |)
-            |))).
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
+                    "new",
+                    [],
+                    []
+                  |),
+                  [ Value.Integer IntegerKind.U32 1 ]
+                |)
+              ]
+            |)
+          |))).
       
-      Global Instance AssociatedConstant_value_MIN :
-        M.IsAssociatedConstant.Trait Self "value_MIN" value_MIN.
+      Global Instance AssociatedConstant_value_MIN : M.IsAssociatedFunction.C Self "MIN" value_MIN.
       Admitted.
       Global Typeclasses Opaque value_MIN.
       
       (*         pub const MAX: Self = Self::new(<$Int>::MAX).unwrap(); *)
       (* Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] *)
-      Definition value_MAX : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              M.call_closure (|
-                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
-                M.get_associated_function (|
+      Definition value_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
+              M.get_associated_function (|
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ],
+                "unwrap",
+                [],
+                []
+              |),
+              [
+                M.call_closure (|
                   Ty.apply
                     (Ty.path "core::option::Option")
                     []
                     [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ],
-                  "unwrap",
-                  [],
-                  []
-                |),
-                [
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ] ],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
-                      "new",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.get_constant "core::num::MAX" |) ]
-                  |)
-                ]
-              |)
-            |))).
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
+                    "new",
+                    [],
+                    []
+                  |),
+                  [ M.read (| get_associated_constant (| Ty.path "u32", "MAX", Ty.path "u32" |) |) ]
+                |)
+              ]
+            |)
+          |))).
       
-      Global Instance AssociatedConstant_value_MAX :
-        M.IsAssociatedConstant.Trait Self "value_MAX" value_MAX.
+      Global Instance AssociatedConstant_value_MAX : M.IsAssociatedFunction.C Self "MAX" value_MAX.
       Admitted.
       Global Typeclasses Opaque value_MAX.
       
@@ -7953,7 +7950,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_checked_add :
-        M.IsAssociatedFunction.Trait Self "checked_add" checked_add.
+        M.IsAssociatedFunction.C Self "checked_add" checked_add.
       Admitted.
       Global Typeclasses Opaque checked_add.
       
@@ -8007,7 +8004,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_saturating_add :
-        M.IsAssociatedFunction.Trait Self "saturating_add" saturating_add.
+        M.IsAssociatedFunction.C Self "saturating_add" saturating_add.
       Admitted.
       Global Typeclasses Opaque saturating_add.
       
@@ -8055,7 +8052,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_unchecked_add :
-        M.IsAssociatedFunction.Trait Self "unchecked_add" unchecked_add.
+        M.IsAssociatedFunction.C Self "unchecked_add" unchecked_add.
       Admitted.
       Global Typeclasses Opaque unchecked_add.
       
@@ -8153,7 +8150,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_checked_next_power_of_two :
-        M.IsAssociatedFunction.Trait Self "checked_next_power_of_two" checked_next_power_of_two.
+        M.IsAssociatedFunction.C Self "checked_next_power_of_two" checked_next_power_of_two.
       Admitted.
       Global Typeclasses Opaque checked_next_power_of_two.
       
@@ -8169,7 +8166,13 @@ Module num.
             (let self := M.alloc (| self |) in
             BinOp.Wrap.sub (|
               BinOp.Wrap.sub (|
-                M.read (| M.get_constant "core::num::nonzero::BITS" |),
+                M.read (|
+                  get_associated_constant (|
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
+                    "BITS",
+                    Ty.path "u32"
+                  |)
+                |),
                 Value.Integer IntegerKind.U32 1
               |),
               M.call_closure (|
@@ -8186,7 +8189,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_ilog2 : M.IsAssociatedFunction.Trait Self "ilog2" ilog2.
+      Global Instance AssociatedFunction_ilog2 : M.IsAssociatedFunction.C Self "ilog2" ilog2.
       Admitted.
       Global Typeclasses Opaque ilog2.
       
@@ -8219,7 +8222,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_ilog10 : M.IsAssociatedFunction.Trait Self "ilog10" ilog10.
+      Global Instance AssociatedFunction_ilog10 : M.IsAssociatedFunction.C Self "ilog10" ilog10.
       Admitted.
       Global Typeclasses Opaque ilog10.
       
@@ -8279,7 +8282,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_midpoint :
-        M.IsAssociatedFunction.Trait Self "midpoint" midpoint.
+        M.IsAssociatedFunction.C Self "midpoint" midpoint.
       Admitted.
       Global Typeclasses Opaque midpoint.
       
@@ -8321,7 +8324,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_is_power_of_two :
-        M.IsAssociatedFunction.Trait Self "is_power_of_two" is_power_of_two.
+        M.IsAssociatedFunction.C Self "is_power_of_two" is_power_of_two.
       Admitted.
       Global Typeclasses Opaque is_power_of_two.
       
@@ -8378,7 +8381,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_isqrt : M.IsAssociatedFunction.Trait Self "isqrt" isqrt.
+      Global Instance AssociatedFunction_isqrt : M.IsAssociatedFunction.C Self "isqrt" isqrt.
       Admitted.
       Global Typeclasses Opaque isqrt.
       
@@ -8486,7 +8489,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_checked_mul :
-        M.IsAssociatedFunction.Trait Self "checked_mul" checked_mul.
+        M.IsAssociatedFunction.C Self "checked_mul" checked_mul.
       Admitted.
       Global Typeclasses Opaque checked_mul.
       
@@ -8550,7 +8553,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_saturating_mul :
-        M.IsAssociatedFunction.Trait Self "saturating_mul" saturating_mul.
+        M.IsAssociatedFunction.C Self "saturating_mul" saturating_mul.
       Admitted.
       Global Typeclasses Opaque saturating_mul.
       
@@ -8607,7 +8610,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_unchecked_mul :
-        M.IsAssociatedFunction.Trait Self "unchecked_mul" unchecked_mul.
+        M.IsAssociatedFunction.C Self "unchecked_mul" unchecked_mul.
       Admitted.
       Global Typeclasses Opaque unchecked_mul.
       
@@ -8703,7 +8706,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_checked_pow :
-        M.IsAssociatedFunction.Trait Self "checked_pow" checked_pow.
+        M.IsAssociatedFunction.C Self "checked_pow" checked_pow.
       Admitted.
       Global Typeclasses Opaque checked_pow.
       
@@ -8758,7 +8761,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_saturating_pow :
-        M.IsAssociatedFunction.Trait Self "saturating_pow" saturating_pow.
+        M.IsAssociatedFunction.C Self "saturating_pow" saturating_pow.
       Admitted.
       Global Typeclasses Opaque saturating_pow.
       (*
@@ -8821,7 +8824,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_div_ceil :
-        M.IsAssociatedFunction.Trait Self "div_ceil" div_ceil.
+        M.IsAssociatedFunction.C Self "div_ceil" div_ceil.
       Admitted.
       Global Typeclasses Opaque div_ceil.
     End Impl_core_num_nonzero_NonZero_u32.
@@ -9231,10 +9234,11 @@ Module num.
       
       (*             pub const BITS: u32 = <$Int>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
+      Definition value_BITS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic (get_associated_constant (| Ty.path "u64", "BITS", Ty.path "u32" |))).
       
       Global Instance AssociatedConstant_value_BITS :
-        M.IsAssociatedConstant.Trait Self "value_BITS" value_BITS.
+        M.IsAssociatedFunction.C Self "BITS" value_BITS.
       Admitted.
       Global Typeclasses Opaque value_BITS.
       
@@ -9276,7 +9280,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_leading_zeros :
-        M.IsAssociatedFunction.Trait Self "leading_zeros" leading_zeros.
+        M.IsAssociatedFunction.C Self "leading_zeros" leading_zeros.
       Admitted.
       Global Typeclasses Opaque leading_zeros.
       
@@ -9318,7 +9322,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_trailing_zeros :
-        M.IsAssociatedFunction.Trait Self "trailing_zeros" trailing_zeros.
+        M.IsAssociatedFunction.C Self "trailing_zeros" trailing_zeros.
       Admitted.
       Global Typeclasses Opaque trailing_zeros.
       
@@ -9366,7 +9370,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_count_ones :
-        M.IsAssociatedFunction.Trait Self "count_ones" count_ones.
+        M.IsAssociatedFunction.C Self "count_ones" count_ones.
       Admitted.
       Global Typeclasses Opaque count_ones.
       
@@ -9421,7 +9425,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_rotate_left :
-        M.IsAssociatedFunction.Trait Self "rotate_left" rotate_left.
+        M.IsAssociatedFunction.C Self "rotate_left" rotate_left.
       Admitted.
       Global Typeclasses Opaque rotate_left.
       
@@ -9476,7 +9480,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_rotate_right :
-        M.IsAssociatedFunction.Trait Self "rotate_right" rotate_right.
+        M.IsAssociatedFunction.C Self "rotate_right" rotate_right.
       Admitted.
       Global Typeclasses Opaque rotate_right.
       
@@ -9529,7 +9533,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_swap_bytes :
-        M.IsAssociatedFunction.Trait Self "swap_bytes" swap_bytes.
+        M.IsAssociatedFunction.C Self "swap_bytes" swap_bytes.
       Admitted.
       Global Typeclasses Opaque swap_bytes.
       
@@ -9582,7 +9586,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_reverse_bits :
-        M.IsAssociatedFunction.Trait Self "reverse_bits" reverse_bits.
+        M.IsAssociatedFunction.C Self "reverse_bits" reverse_bits.
       Admitted.
       Global Typeclasses Opaque reverse_bits.
       
@@ -9634,8 +9638,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_from_be :
-        M.IsAssociatedFunction.Trait Self "from_be" from_be.
+      Global Instance AssociatedFunction_from_be : M.IsAssociatedFunction.C Self "from_be" from_be.
       Admitted.
       Global Typeclasses Opaque from_be.
       
@@ -9687,8 +9690,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_from_le :
-        M.IsAssociatedFunction.Trait Self "from_le" from_le.
+      Global Instance AssociatedFunction_from_le : M.IsAssociatedFunction.C Self "from_le" from_le.
       Admitted.
       Global Typeclasses Opaque from_le.
       
@@ -9740,7 +9742,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_to_be : M.IsAssociatedFunction.Trait Self "to_be" to_be.
+      Global Instance AssociatedFunction_to_be : M.IsAssociatedFunction.C Self "to_be" to_be.
       Admitted.
       Global Typeclasses Opaque to_be.
       
@@ -9792,87 +9794,83 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_to_le : M.IsAssociatedFunction.Trait Self "to_le" to_le.
+      Global Instance AssociatedFunction_to_le : M.IsAssociatedFunction.C Self "to_le" to_le.
       Admitted.
       Global Typeclasses Opaque to_le.
       
       (*         pub const MIN: Self = Self::new(1).unwrap(); *)
       (* Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] *)
-      Definition value_MIN : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              M.call_closure (|
-                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
-                M.get_associated_function (|
+      Definition value_MIN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
+              M.get_associated_function (|
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ],
+                "unwrap",
+                [],
+                []
+              |),
+              [
+                M.call_closure (|
                   Ty.apply
                     (Ty.path "core::option::Option")
                     []
                     [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ],
-                  "unwrap",
-                  [],
-                  []
-                |),
-                [
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
-                      "new",
-                      [],
-                      []
-                    |),
-                    [ Value.Integer IntegerKind.U64 1 ]
-                  |)
-                ]
-              |)
-            |))).
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
+                    "new",
+                    [],
+                    []
+                  |),
+                  [ Value.Integer IntegerKind.U64 1 ]
+                |)
+              ]
+            |)
+          |))).
       
-      Global Instance AssociatedConstant_value_MIN :
-        M.IsAssociatedConstant.Trait Self "value_MIN" value_MIN.
+      Global Instance AssociatedConstant_value_MIN : M.IsAssociatedFunction.C Self "MIN" value_MIN.
       Admitted.
       Global Typeclasses Opaque value_MIN.
       
       (*         pub const MAX: Self = Self::new(<$Int>::MAX).unwrap(); *)
       (* Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] *)
-      Definition value_MAX : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              M.call_closure (|
-                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
-                M.get_associated_function (|
+      Definition value_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
+              M.get_associated_function (|
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ],
+                "unwrap",
+                [],
+                []
+              |),
+              [
+                M.call_closure (|
                   Ty.apply
                     (Ty.path "core::option::Option")
                     []
                     [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ],
-                  "unwrap",
-                  [],
-                  []
-                |),
-                [
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ] ],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
-                      "new",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.get_constant "core::num::MAX" |) ]
-                  |)
-                ]
-              |)
-            |))).
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
+                    "new",
+                    [],
+                    []
+                  |),
+                  [ M.read (| get_associated_constant (| Ty.path "u64", "MAX", Ty.path "u64" |) |) ]
+                |)
+              ]
+            |)
+          |))).
       
-      Global Instance AssociatedConstant_value_MAX :
-        M.IsAssociatedConstant.Trait Self "value_MAX" value_MAX.
+      Global Instance AssociatedConstant_value_MAX : M.IsAssociatedFunction.C Self "MAX" value_MAX.
       Admitted.
       Global Typeclasses Opaque value_MAX.
       
@@ -9968,7 +9966,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_checked_add :
-        M.IsAssociatedFunction.Trait Self "checked_add" checked_add.
+        M.IsAssociatedFunction.C Self "checked_add" checked_add.
       Admitted.
       Global Typeclasses Opaque checked_add.
       
@@ -10022,7 +10020,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_saturating_add :
-        M.IsAssociatedFunction.Trait Self "saturating_add" saturating_add.
+        M.IsAssociatedFunction.C Self "saturating_add" saturating_add.
       Admitted.
       Global Typeclasses Opaque saturating_add.
       
@@ -10070,7 +10068,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_unchecked_add :
-        M.IsAssociatedFunction.Trait Self "unchecked_add" unchecked_add.
+        M.IsAssociatedFunction.C Self "unchecked_add" unchecked_add.
       Admitted.
       Global Typeclasses Opaque unchecked_add.
       
@@ -10168,7 +10166,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_checked_next_power_of_two :
-        M.IsAssociatedFunction.Trait Self "checked_next_power_of_two" checked_next_power_of_two.
+        M.IsAssociatedFunction.C Self "checked_next_power_of_two" checked_next_power_of_two.
       Admitted.
       Global Typeclasses Opaque checked_next_power_of_two.
       
@@ -10184,7 +10182,13 @@ Module num.
             (let self := M.alloc (| self |) in
             BinOp.Wrap.sub (|
               BinOp.Wrap.sub (|
-                M.read (| M.get_constant "core::num::nonzero::BITS" |),
+                M.read (|
+                  get_associated_constant (|
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
+                    "BITS",
+                    Ty.path "u32"
+                  |)
+                |),
                 Value.Integer IntegerKind.U32 1
               |),
               M.call_closure (|
@@ -10201,7 +10205,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_ilog2 : M.IsAssociatedFunction.Trait Self "ilog2" ilog2.
+      Global Instance AssociatedFunction_ilog2 : M.IsAssociatedFunction.C Self "ilog2" ilog2.
       Admitted.
       Global Typeclasses Opaque ilog2.
       
@@ -10234,7 +10238,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_ilog10 : M.IsAssociatedFunction.Trait Self "ilog10" ilog10.
+      Global Instance AssociatedFunction_ilog10 : M.IsAssociatedFunction.C Self "ilog10" ilog10.
       Admitted.
       Global Typeclasses Opaque ilog10.
       
@@ -10294,7 +10298,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_midpoint :
-        M.IsAssociatedFunction.Trait Self "midpoint" midpoint.
+        M.IsAssociatedFunction.C Self "midpoint" midpoint.
       Admitted.
       Global Typeclasses Opaque midpoint.
       
@@ -10336,7 +10340,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_is_power_of_two :
-        M.IsAssociatedFunction.Trait Self "is_power_of_two" is_power_of_two.
+        M.IsAssociatedFunction.C Self "is_power_of_two" is_power_of_two.
       Admitted.
       Global Typeclasses Opaque is_power_of_two.
       
@@ -10393,7 +10397,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_isqrt : M.IsAssociatedFunction.Trait Self "isqrt" isqrt.
+      Global Instance AssociatedFunction_isqrt : M.IsAssociatedFunction.C Self "isqrt" isqrt.
       Admitted.
       Global Typeclasses Opaque isqrt.
       
@@ -10501,7 +10505,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_checked_mul :
-        M.IsAssociatedFunction.Trait Self "checked_mul" checked_mul.
+        M.IsAssociatedFunction.C Self "checked_mul" checked_mul.
       Admitted.
       Global Typeclasses Opaque checked_mul.
       
@@ -10565,7 +10569,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_saturating_mul :
-        M.IsAssociatedFunction.Trait Self "saturating_mul" saturating_mul.
+        M.IsAssociatedFunction.C Self "saturating_mul" saturating_mul.
       Admitted.
       Global Typeclasses Opaque saturating_mul.
       
@@ -10622,7 +10626,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_unchecked_mul :
-        M.IsAssociatedFunction.Trait Self "unchecked_mul" unchecked_mul.
+        M.IsAssociatedFunction.C Self "unchecked_mul" unchecked_mul.
       Admitted.
       Global Typeclasses Opaque unchecked_mul.
       
@@ -10718,7 +10722,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_checked_pow :
-        M.IsAssociatedFunction.Trait Self "checked_pow" checked_pow.
+        M.IsAssociatedFunction.C Self "checked_pow" checked_pow.
       Admitted.
       Global Typeclasses Opaque checked_pow.
       
@@ -10773,7 +10777,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_saturating_pow :
-        M.IsAssociatedFunction.Trait Self "saturating_pow" saturating_pow.
+        M.IsAssociatedFunction.C Self "saturating_pow" saturating_pow.
       Admitted.
       Global Typeclasses Opaque saturating_pow.
       (*
@@ -10836,7 +10840,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_div_ceil :
-        M.IsAssociatedFunction.Trait Self "div_ceil" div_ceil.
+        M.IsAssociatedFunction.C Self "div_ceil" div_ceil.
       Admitted.
       Global Typeclasses Opaque div_ceil.
     End Impl_core_num_nonzero_NonZero_u64.
@@ -11246,10 +11250,11 @@ Module num.
       
       (*             pub const BITS: u32 = <$Int>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
+      Definition value_BITS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic (get_associated_constant (| Ty.path "u128", "BITS", Ty.path "u32" |))).
       
       Global Instance AssociatedConstant_value_BITS :
-        M.IsAssociatedConstant.Trait Self "value_BITS" value_BITS.
+        M.IsAssociatedFunction.C Self "BITS" value_BITS.
       Admitted.
       Global Typeclasses Opaque value_BITS.
       
@@ -11291,7 +11296,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_leading_zeros :
-        M.IsAssociatedFunction.Trait Self "leading_zeros" leading_zeros.
+        M.IsAssociatedFunction.C Self "leading_zeros" leading_zeros.
       Admitted.
       Global Typeclasses Opaque leading_zeros.
       
@@ -11333,7 +11338,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_trailing_zeros :
-        M.IsAssociatedFunction.Trait Self "trailing_zeros" trailing_zeros.
+        M.IsAssociatedFunction.C Self "trailing_zeros" trailing_zeros.
       Admitted.
       Global Typeclasses Opaque trailing_zeros.
       
@@ -11381,7 +11386,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_count_ones :
-        M.IsAssociatedFunction.Trait Self "count_ones" count_ones.
+        M.IsAssociatedFunction.C Self "count_ones" count_ones.
       Admitted.
       Global Typeclasses Opaque count_ones.
       
@@ -11436,7 +11441,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_rotate_left :
-        M.IsAssociatedFunction.Trait Self "rotate_left" rotate_left.
+        M.IsAssociatedFunction.C Self "rotate_left" rotate_left.
       Admitted.
       Global Typeclasses Opaque rotate_left.
       
@@ -11491,7 +11496,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_rotate_right :
-        M.IsAssociatedFunction.Trait Self "rotate_right" rotate_right.
+        M.IsAssociatedFunction.C Self "rotate_right" rotate_right.
       Admitted.
       Global Typeclasses Opaque rotate_right.
       
@@ -11544,7 +11549,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_swap_bytes :
-        M.IsAssociatedFunction.Trait Self "swap_bytes" swap_bytes.
+        M.IsAssociatedFunction.C Self "swap_bytes" swap_bytes.
       Admitted.
       Global Typeclasses Opaque swap_bytes.
       
@@ -11597,7 +11602,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_reverse_bits :
-        M.IsAssociatedFunction.Trait Self "reverse_bits" reverse_bits.
+        M.IsAssociatedFunction.C Self "reverse_bits" reverse_bits.
       Admitted.
       Global Typeclasses Opaque reverse_bits.
       
@@ -11649,8 +11654,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_from_be :
-        M.IsAssociatedFunction.Trait Self "from_be" from_be.
+      Global Instance AssociatedFunction_from_be : M.IsAssociatedFunction.C Self "from_be" from_be.
       Admitted.
       Global Typeclasses Opaque from_be.
       
@@ -11702,8 +11706,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_from_le :
-        M.IsAssociatedFunction.Trait Self "from_le" from_le.
+      Global Instance AssociatedFunction_from_le : M.IsAssociatedFunction.C Self "from_le" from_le.
       Admitted.
       Global Typeclasses Opaque from_le.
       
@@ -11755,7 +11758,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_to_be : M.IsAssociatedFunction.Trait Self "to_be" to_be.
+      Global Instance AssociatedFunction_to_be : M.IsAssociatedFunction.C Self "to_be" to_be.
       Admitted.
       Global Typeclasses Opaque to_be.
       
@@ -11807,87 +11810,84 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_to_le : M.IsAssociatedFunction.Trait Self "to_le" to_le.
+      Global Instance AssociatedFunction_to_le : M.IsAssociatedFunction.C Self "to_le" to_le.
       Admitted.
       Global Typeclasses Opaque to_le.
       
       (*         pub const MIN: Self = Self::new(1).unwrap(); *)
       (* Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] *)
-      Definition value_MIN : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              M.call_closure (|
-                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
-                M.get_associated_function (|
+      Definition value_MIN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
+              M.get_associated_function (|
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ],
+                "unwrap",
+                [],
+                []
+              |),
+              [
+                M.call_closure (|
                   Ty.apply
                     (Ty.path "core::option::Option")
                     []
                     [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ],
-                  "unwrap",
-                  [],
-                  []
-                |),
-                [
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
-                      "new",
-                      [],
-                      []
-                    |),
-                    [ Value.Integer IntegerKind.U128 1 ]
-                  |)
-                ]
-              |)
-            |))).
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
+                    "new",
+                    [],
+                    []
+                  |),
+                  [ Value.Integer IntegerKind.U128 1 ]
+                |)
+              ]
+            |)
+          |))).
       
-      Global Instance AssociatedConstant_value_MIN :
-        M.IsAssociatedConstant.Trait Self "value_MIN" value_MIN.
+      Global Instance AssociatedConstant_value_MIN : M.IsAssociatedFunction.C Self "MIN" value_MIN.
       Admitted.
       Global Typeclasses Opaque value_MIN.
       
       (*         pub const MAX: Self = Self::new(<$Int>::MAX).unwrap(); *)
       (* Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] *)
-      Definition value_MAX : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              M.call_closure (|
-                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
-                M.get_associated_function (|
+      Definition value_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
+              M.get_associated_function (|
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ],
+                "unwrap",
+                [],
+                []
+              |),
+              [
+                M.call_closure (|
                   Ty.apply
                     (Ty.path "core::option::Option")
                     []
                     [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ],
-                  "unwrap",
-                  [],
-                  []
-                |),
-                [
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ] ],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
-                      "new",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.get_constant "core::num::MAX" |) ]
-                  |)
-                ]
-              |)
-            |))).
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
+                    "new",
+                    [],
+                    []
+                  |),
+                  [ M.read (| get_associated_constant (| Ty.path "u128", "MAX", Ty.path "u128" |) |)
+                  ]
+                |)
+              ]
+            |)
+          |))).
       
-      Global Instance AssociatedConstant_value_MAX :
-        M.IsAssociatedConstant.Trait Self "value_MAX" value_MAX.
+      Global Instance AssociatedConstant_value_MAX : M.IsAssociatedFunction.C Self "MAX" value_MAX.
       Admitted.
       Global Typeclasses Opaque value_MAX.
       
@@ -11986,7 +11986,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_checked_add :
-        M.IsAssociatedFunction.Trait Self "checked_add" checked_add.
+        M.IsAssociatedFunction.C Self "checked_add" checked_add.
       Admitted.
       Global Typeclasses Opaque checked_add.
       
@@ -12040,7 +12040,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_saturating_add :
-        M.IsAssociatedFunction.Trait Self "saturating_add" saturating_add.
+        M.IsAssociatedFunction.C Self "saturating_add" saturating_add.
       Admitted.
       Global Typeclasses Opaque saturating_add.
       
@@ -12088,7 +12088,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_unchecked_add :
-        M.IsAssociatedFunction.Trait Self "unchecked_add" unchecked_add.
+        M.IsAssociatedFunction.C Self "unchecked_add" unchecked_add.
       Admitted.
       Global Typeclasses Opaque unchecked_add.
       
@@ -12189,7 +12189,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_checked_next_power_of_two :
-        M.IsAssociatedFunction.Trait Self "checked_next_power_of_two" checked_next_power_of_two.
+        M.IsAssociatedFunction.C Self "checked_next_power_of_two" checked_next_power_of_two.
       Admitted.
       Global Typeclasses Opaque checked_next_power_of_two.
       
@@ -12205,7 +12205,13 @@ Module num.
             (let self := M.alloc (| self |) in
             BinOp.Wrap.sub (|
               BinOp.Wrap.sub (|
-                M.read (| M.get_constant "core::num::nonzero::BITS" |),
+                M.read (|
+                  get_associated_constant (|
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
+                    "BITS",
+                    Ty.path "u32"
+                  |)
+                |),
                 Value.Integer IntegerKind.U32 1
               |),
               M.call_closure (|
@@ -12222,7 +12228,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_ilog2 : M.IsAssociatedFunction.Trait Self "ilog2" ilog2.
+      Global Instance AssociatedFunction_ilog2 : M.IsAssociatedFunction.C Self "ilog2" ilog2.
       Admitted.
       Global Typeclasses Opaque ilog2.
       
@@ -12255,7 +12261,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_ilog10 : M.IsAssociatedFunction.Trait Self "ilog10" ilog10.
+      Global Instance AssociatedFunction_ilog10 : M.IsAssociatedFunction.C Self "ilog10" ilog10.
       Admitted.
       Global Typeclasses Opaque ilog10.
       
@@ -12315,7 +12321,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_midpoint :
-        M.IsAssociatedFunction.Trait Self "midpoint" midpoint.
+        M.IsAssociatedFunction.C Self "midpoint" midpoint.
       Admitted.
       Global Typeclasses Opaque midpoint.
       
@@ -12357,7 +12363,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_is_power_of_two :
-        M.IsAssociatedFunction.Trait Self "is_power_of_two" is_power_of_two.
+        M.IsAssociatedFunction.C Self "is_power_of_two" is_power_of_two.
       Admitted.
       Global Typeclasses Opaque is_power_of_two.
       
@@ -12414,7 +12420,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_isqrt : M.IsAssociatedFunction.Trait Self "isqrt" isqrt.
+      Global Instance AssociatedFunction_isqrt : M.IsAssociatedFunction.C Self "isqrt" isqrt.
       Admitted.
       Global Typeclasses Opaque isqrt.
       
@@ -12525,7 +12531,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_checked_mul :
-        M.IsAssociatedFunction.Trait Self "checked_mul" checked_mul.
+        M.IsAssociatedFunction.C Self "checked_mul" checked_mul.
       Admitted.
       Global Typeclasses Opaque checked_mul.
       
@@ -12589,7 +12595,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_saturating_mul :
-        M.IsAssociatedFunction.Trait Self "saturating_mul" saturating_mul.
+        M.IsAssociatedFunction.C Self "saturating_mul" saturating_mul.
       Admitted.
       Global Typeclasses Opaque saturating_mul.
       
@@ -12646,7 +12652,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_unchecked_mul :
-        M.IsAssociatedFunction.Trait Self "unchecked_mul" unchecked_mul.
+        M.IsAssociatedFunction.C Self "unchecked_mul" unchecked_mul.
       Admitted.
       Global Typeclasses Opaque unchecked_mul.
       
@@ -12745,7 +12751,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_checked_pow :
-        M.IsAssociatedFunction.Trait Self "checked_pow" checked_pow.
+        M.IsAssociatedFunction.C Self "checked_pow" checked_pow.
       Admitted.
       Global Typeclasses Opaque checked_pow.
       
@@ -12800,7 +12806,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_saturating_pow :
-        M.IsAssociatedFunction.Trait Self "saturating_pow" saturating_pow.
+        M.IsAssociatedFunction.C Self "saturating_pow" saturating_pow.
       Admitted.
       Global Typeclasses Opaque saturating_pow.
       (*
@@ -12863,7 +12869,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_div_ceil :
-        M.IsAssociatedFunction.Trait Self "div_ceil" div_ceil.
+        M.IsAssociatedFunction.C Self "div_ceil" div_ceil.
       Admitted.
       Global Typeclasses Opaque div_ceil.
     End Impl_core_num_nonzero_NonZero_u128.
@@ -13273,10 +13279,11 @@ Module num.
       
       (*             pub const BITS: u32 = <$Int>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
+      Definition value_BITS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic (get_associated_constant (| Ty.path "usize", "BITS", Ty.path "u32" |))).
       
       Global Instance AssociatedConstant_value_BITS :
-        M.IsAssociatedConstant.Trait Self "value_BITS" value_BITS.
+        M.IsAssociatedFunction.C Self "BITS" value_BITS.
       Admitted.
       Global Typeclasses Opaque value_BITS.
       
@@ -13318,7 +13325,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_leading_zeros :
-        M.IsAssociatedFunction.Trait Self "leading_zeros" leading_zeros.
+        M.IsAssociatedFunction.C Self "leading_zeros" leading_zeros.
       Admitted.
       Global Typeclasses Opaque leading_zeros.
       
@@ -13360,7 +13367,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_trailing_zeros :
-        M.IsAssociatedFunction.Trait Self "trailing_zeros" trailing_zeros.
+        M.IsAssociatedFunction.C Self "trailing_zeros" trailing_zeros.
       Admitted.
       Global Typeclasses Opaque trailing_zeros.
       
@@ -13408,7 +13415,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_count_ones :
-        M.IsAssociatedFunction.Trait Self "count_ones" count_ones.
+        M.IsAssociatedFunction.C Self "count_ones" count_ones.
       Admitted.
       Global Typeclasses Opaque count_ones.
       
@@ -13463,7 +13470,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_rotate_left :
-        M.IsAssociatedFunction.Trait Self "rotate_left" rotate_left.
+        M.IsAssociatedFunction.C Self "rotate_left" rotate_left.
       Admitted.
       Global Typeclasses Opaque rotate_left.
       
@@ -13518,7 +13525,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_rotate_right :
-        M.IsAssociatedFunction.Trait Self "rotate_right" rotate_right.
+        M.IsAssociatedFunction.C Self "rotate_right" rotate_right.
       Admitted.
       Global Typeclasses Opaque rotate_right.
       
@@ -13571,7 +13578,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_swap_bytes :
-        M.IsAssociatedFunction.Trait Self "swap_bytes" swap_bytes.
+        M.IsAssociatedFunction.C Self "swap_bytes" swap_bytes.
       Admitted.
       Global Typeclasses Opaque swap_bytes.
       
@@ -13624,7 +13631,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_reverse_bits :
-        M.IsAssociatedFunction.Trait Self "reverse_bits" reverse_bits.
+        M.IsAssociatedFunction.C Self "reverse_bits" reverse_bits.
       Admitted.
       Global Typeclasses Opaque reverse_bits.
       
@@ -13676,8 +13683,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_from_be :
-        M.IsAssociatedFunction.Trait Self "from_be" from_be.
+      Global Instance AssociatedFunction_from_be : M.IsAssociatedFunction.C Self "from_be" from_be.
       Admitted.
       Global Typeclasses Opaque from_be.
       
@@ -13729,8 +13735,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_from_le :
-        M.IsAssociatedFunction.Trait Self "from_le" from_le.
+      Global Instance AssociatedFunction_from_le : M.IsAssociatedFunction.C Self "from_le" from_le.
       Admitted.
       Global Typeclasses Opaque from_le.
       
@@ -13782,7 +13787,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_to_be : M.IsAssociatedFunction.Trait Self "to_be" to_be.
+      Global Instance AssociatedFunction_to_be : M.IsAssociatedFunction.C Self "to_be" to_be.
       Admitted.
       Global Typeclasses Opaque to_be.
       
@@ -13834,87 +13839,87 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_to_le : M.IsAssociatedFunction.Trait Self "to_le" to_le.
+      Global Instance AssociatedFunction_to_le : M.IsAssociatedFunction.C Self "to_le" to_le.
       Admitted.
       Global Typeclasses Opaque to_le.
       
       (*         pub const MIN: Self = Self::new(1).unwrap(); *)
       (* Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] *)
-      Definition value_MIN : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              M.call_closure (|
-                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
-                M.get_associated_function (|
+      Definition value_MIN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
+              M.get_associated_function (|
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
+                "unwrap",
+                [],
+                []
+              |),
+              [
+                M.call_closure (|
                   Ty.apply
                     (Ty.path "core::option::Option")
                     []
                     [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
-                  "unwrap",
-                  [],
-                  []
-                |),
-                [
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
-                      "new",
-                      [],
-                      []
-                    |),
-                    [ Value.Integer IntegerKind.Usize 1 ]
-                  |)
-                ]
-              |)
-            |))).
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
+                    "new",
+                    [],
+                    []
+                  |),
+                  [ Value.Integer IntegerKind.Usize 1 ]
+                |)
+              ]
+            |)
+          |))).
       
-      Global Instance AssociatedConstant_value_MIN :
-        M.IsAssociatedConstant.Trait Self "value_MIN" value_MIN.
+      Global Instance AssociatedConstant_value_MIN : M.IsAssociatedFunction.C Self "MIN" value_MIN.
       Admitted.
       Global Typeclasses Opaque value_MIN.
       
       (*         pub const MAX: Self = Self::new(<$Int>::MAX).unwrap(); *)
       (* Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] *)
-      Definition value_MAX : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              M.call_closure (|
-                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
-                M.get_associated_function (|
+      Definition value_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
+              M.get_associated_function (|
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
+                "unwrap",
+                [],
+                []
+              |),
+              [
+                M.call_closure (|
                   Ty.apply
                     (Ty.path "core::option::Option")
                     []
                     [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
-                  "unwrap",
-                  [],
-                  []
-                |),
-                [
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
-                      "new",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.get_constant "core::num::MAX" |) ]
-                  |)
-                ]
-              |)
-            |))).
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
+                    "new",
+                    [],
+                    []
+                  |),
+                  [
+                    M.read (|
+                      get_associated_constant (| Ty.path "usize", "MAX", Ty.path "usize" |)
+                    |)
+                  ]
+                |)
+              ]
+            |)
+          |))).
       
-      Global Instance AssociatedConstant_value_MAX :
-        M.IsAssociatedConstant.Trait Self "value_MAX" value_MAX.
+      Global Instance AssociatedConstant_value_MAX : M.IsAssociatedFunction.C Self "MAX" value_MAX.
       Admitted.
       Global Typeclasses Opaque value_MAX.
       
@@ -14013,7 +14018,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_checked_add :
-        M.IsAssociatedFunction.Trait Self "checked_add" checked_add.
+        M.IsAssociatedFunction.C Self "checked_add" checked_add.
       Admitted.
       Global Typeclasses Opaque checked_add.
       
@@ -14067,7 +14072,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_saturating_add :
-        M.IsAssociatedFunction.Trait Self "saturating_add" saturating_add.
+        M.IsAssociatedFunction.C Self "saturating_add" saturating_add.
       Admitted.
       Global Typeclasses Opaque saturating_add.
       
@@ -14115,7 +14120,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_unchecked_add :
-        M.IsAssociatedFunction.Trait Self "unchecked_add" unchecked_add.
+        M.IsAssociatedFunction.C Self "unchecked_add" unchecked_add.
       Admitted.
       Global Typeclasses Opaque unchecked_add.
       
@@ -14216,7 +14221,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_checked_next_power_of_two :
-        M.IsAssociatedFunction.Trait Self "checked_next_power_of_two" checked_next_power_of_two.
+        M.IsAssociatedFunction.C Self "checked_next_power_of_two" checked_next_power_of_two.
       Admitted.
       Global Typeclasses Opaque checked_next_power_of_two.
       
@@ -14232,7 +14237,13 @@ Module num.
             (let self := M.alloc (| self |) in
             BinOp.Wrap.sub (|
               BinOp.Wrap.sub (|
-                M.read (| M.get_constant "core::num::nonzero::BITS" |),
+                M.read (|
+                  get_associated_constant (|
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
+                    "BITS",
+                    Ty.path "u32"
+                  |)
+                |),
                 Value.Integer IntegerKind.U32 1
               |),
               M.call_closure (|
@@ -14249,7 +14260,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_ilog2 : M.IsAssociatedFunction.Trait Self "ilog2" ilog2.
+      Global Instance AssociatedFunction_ilog2 : M.IsAssociatedFunction.C Self "ilog2" ilog2.
       Admitted.
       Global Typeclasses Opaque ilog2.
       
@@ -14282,7 +14293,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_ilog10 : M.IsAssociatedFunction.Trait Self "ilog10" ilog10.
+      Global Instance AssociatedFunction_ilog10 : M.IsAssociatedFunction.C Self "ilog10" ilog10.
       Admitted.
       Global Typeclasses Opaque ilog10.
       
@@ -14342,7 +14353,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_midpoint :
-        M.IsAssociatedFunction.Trait Self "midpoint" midpoint.
+        M.IsAssociatedFunction.C Self "midpoint" midpoint.
       Admitted.
       Global Typeclasses Opaque midpoint.
       
@@ -14384,7 +14395,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_is_power_of_two :
-        M.IsAssociatedFunction.Trait Self "is_power_of_two" is_power_of_two.
+        M.IsAssociatedFunction.C Self "is_power_of_two" is_power_of_two.
       Admitted.
       Global Typeclasses Opaque is_power_of_two.
       
@@ -14441,7 +14452,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_isqrt : M.IsAssociatedFunction.Trait Self "isqrt" isqrt.
+      Global Instance AssociatedFunction_isqrt : M.IsAssociatedFunction.C Self "isqrt" isqrt.
       Admitted.
       Global Typeclasses Opaque isqrt.
       
@@ -14552,7 +14563,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_checked_mul :
-        M.IsAssociatedFunction.Trait Self "checked_mul" checked_mul.
+        M.IsAssociatedFunction.C Self "checked_mul" checked_mul.
       Admitted.
       Global Typeclasses Opaque checked_mul.
       
@@ -14616,7 +14627,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_saturating_mul :
-        M.IsAssociatedFunction.Trait Self "saturating_mul" saturating_mul.
+        M.IsAssociatedFunction.C Self "saturating_mul" saturating_mul.
       Admitted.
       Global Typeclasses Opaque saturating_mul.
       
@@ -14673,7 +14684,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_unchecked_mul :
-        M.IsAssociatedFunction.Trait Self "unchecked_mul" unchecked_mul.
+        M.IsAssociatedFunction.C Self "unchecked_mul" unchecked_mul.
       Admitted.
       Global Typeclasses Opaque unchecked_mul.
       
@@ -14772,7 +14783,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_checked_pow :
-        M.IsAssociatedFunction.Trait Self "checked_pow" checked_pow.
+        M.IsAssociatedFunction.C Self "checked_pow" checked_pow.
       Admitted.
       Global Typeclasses Opaque checked_pow.
       
@@ -14827,7 +14838,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_saturating_pow :
-        M.IsAssociatedFunction.Trait Self "saturating_pow" saturating_pow.
+        M.IsAssociatedFunction.C Self "saturating_pow" saturating_pow.
       Admitted.
       Global Typeclasses Opaque saturating_pow.
       (*
@@ -14890,7 +14901,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_div_ceil :
-        M.IsAssociatedFunction.Trait Self "div_ceil" div_ceil.
+        M.IsAssociatedFunction.C Self "div_ceil" div_ceil.
       Admitted.
       Global Typeclasses Opaque div_ceil.
     End Impl_core_num_nonzero_NonZero_usize.
@@ -15301,10 +15312,11 @@ Module num.
       
       (*             pub const BITS: u32 = <$Int>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
+      Definition value_BITS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic (get_associated_constant (| Ty.path "i8", "BITS", Ty.path "u32" |))).
       
       Global Instance AssociatedConstant_value_BITS :
-        M.IsAssociatedConstant.Trait Self "value_BITS" value_BITS.
+        M.IsAssociatedFunction.C Self "BITS" value_BITS.
       Admitted.
       Global Typeclasses Opaque value_BITS.
       
@@ -15343,7 +15355,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_leading_zeros :
-        M.IsAssociatedFunction.Trait Self "leading_zeros" leading_zeros.
+        M.IsAssociatedFunction.C Self "leading_zeros" leading_zeros.
       Admitted.
       Global Typeclasses Opaque leading_zeros.
       
@@ -15382,7 +15394,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_trailing_zeros :
-        M.IsAssociatedFunction.Trait Self "trailing_zeros" trailing_zeros.
+        M.IsAssociatedFunction.C Self "trailing_zeros" trailing_zeros.
       Admitted.
       Global Typeclasses Opaque trailing_zeros.
       
@@ -15430,7 +15442,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_count_ones :
-        M.IsAssociatedFunction.Trait Self "count_ones" count_ones.
+        M.IsAssociatedFunction.C Self "count_ones" count_ones.
       Admitted.
       Global Typeclasses Opaque count_ones.
       
@@ -15485,7 +15497,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_rotate_left :
-        M.IsAssociatedFunction.Trait Self "rotate_left" rotate_left.
+        M.IsAssociatedFunction.C Self "rotate_left" rotate_left.
       Admitted.
       Global Typeclasses Opaque rotate_left.
       
@@ -15540,7 +15552,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_rotate_right :
-        M.IsAssociatedFunction.Trait Self "rotate_right" rotate_right.
+        M.IsAssociatedFunction.C Self "rotate_right" rotate_right.
       Admitted.
       Global Typeclasses Opaque rotate_right.
       
@@ -15593,7 +15605,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_swap_bytes :
-        M.IsAssociatedFunction.Trait Self "swap_bytes" swap_bytes.
+        M.IsAssociatedFunction.C Self "swap_bytes" swap_bytes.
       Admitted.
       Global Typeclasses Opaque swap_bytes.
       
@@ -15646,7 +15658,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_reverse_bits :
-        M.IsAssociatedFunction.Trait Self "reverse_bits" reverse_bits.
+        M.IsAssociatedFunction.C Self "reverse_bits" reverse_bits.
       Admitted.
       Global Typeclasses Opaque reverse_bits.
       
@@ -15698,8 +15710,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_from_be :
-        M.IsAssociatedFunction.Trait Self "from_be" from_be.
+      Global Instance AssociatedFunction_from_be : M.IsAssociatedFunction.C Self "from_be" from_be.
       Admitted.
       Global Typeclasses Opaque from_be.
       
@@ -15751,8 +15762,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_from_le :
-        M.IsAssociatedFunction.Trait Self "from_le" from_le.
+      Global Instance AssociatedFunction_from_le : M.IsAssociatedFunction.C Self "from_le" from_le.
       Admitted.
       Global Typeclasses Opaque from_le.
       
@@ -15804,7 +15814,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_to_be : M.IsAssociatedFunction.Trait Self "to_be" to_be.
+      Global Instance AssociatedFunction_to_be : M.IsAssociatedFunction.C Self "to_be" to_be.
       Admitted.
       Global Typeclasses Opaque to_be.
       
@@ -15856,87 +15866,83 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_to_le : M.IsAssociatedFunction.Trait Self "to_le" to_le.
+      Global Instance AssociatedFunction_to_le : M.IsAssociatedFunction.C Self "to_le" to_le.
       Admitted.
       Global Typeclasses Opaque to_le.
       
       (*         pub const MIN: Self = Self::new(<$Int>::MIN).unwrap(); *)
       (* Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] *)
-      Definition value_MIN : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              M.call_closure (|
-                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
-                M.get_associated_function (|
+      Definition value_MIN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
+              M.get_associated_function (|
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ],
+                "unwrap",
+                [],
+                []
+              |),
+              [
+                M.call_closure (|
                   Ty.apply
                     (Ty.path "core::option::Option")
                     []
                     [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ],
-                  "unwrap",
-                  [],
-                  []
-                |),
-                [
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
-                      "new",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.get_constant "core::num::MIN" |) ]
-                  |)
-                ]
-              |)
-            |))).
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
+                    "new",
+                    [],
+                    []
+                  |),
+                  [ M.read (| get_associated_constant (| Ty.path "i8", "MIN", Ty.path "i8" |) |) ]
+                |)
+              ]
+            |)
+          |))).
       
-      Global Instance AssociatedConstant_value_MIN :
-        M.IsAssociatedConstant.Trait Self "value_MIN" value_MIN.
+      Global Instance AssociatedConstant_value_MIN : M.IsAssociatedFunction.C Self "MIN" value_MIN.
       Admitted.
       Global Typeclasses Opaque value_MIN.
       
       (*         pub const MAX: Self = Self::new(<$Int>::MAX).unwrap(); *)
       (* Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] *)
-      Definition value_MAX : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              M.call_closure (|
-                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
-                M.get_associated_function (|
+      Definition value_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
+              M.get_associated_function (|
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ],
+                "unwrap",
+                [],
+                []
+              |),
+              [
+                M.call_closure (|
                   Ty.apply
                     (Ty.path "core::option::Option")
                     []
                     [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ],
-                  "unwrap",
-                  [],
-                  []
-                |),
-                [
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ] ],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
-                      "new",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.get_constant "core::num::MAX" |) ]
-                  |)
-                ]
-              |)
-            |))).
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
+                    "new",
+                    [],
+                    []
+                  |),
+                  [ M.read (| get_associated_constant (| Ty.path "i8", "MAX", Ty.path "i8" |) |) ]
+                |)
+              ]
+            |)
+          |))).
       
-      Global Instance AssociatedConstant_value_MAX :
-        M.IsAssociatedConstant.Trait Self "value_MAX" value_MAX.
+      Global Instance AssociatedConstant_value_MAX : M.IsAssociatedFunction.C Self "MAX" value_MAX.
       Admitted.
       Global Typeclasses Opaque value_MAX.
       
@@ -15981,7 +15987,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_abs : M.IsAssociatedFunction.Trait Self "abs" abs.
+      Global Instance AssociatedFunction_abs : M.IsAssociatedFunction.C Self "abs" abs.
       Admitted.
       Global Typeclasses Opaque abs.
       
@@ -16069,7 +16075,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_checked_abs :
-        M.IsAssociatedFunction.Trait Self "checked_abs" checked_abs.
+        M.IsAssociatedFunction.C Self "checked_abs" checked_abs.
       Admitted.
       Global Typeclasses Opaque checked_abs.
       
@@ -16142,7 +16148,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_overflowing_abs :
-        M.IsAssociatedFunction.Trait Self "overflowing_abs" overflowing_abs.
+        M.IsAssociatedFunction.C Self "overflowing_abs" overflowing_abs.
       Admitted.
       Global Typeclasses Opaque overflowing_abs.
       
@@ -16188,7 +16194,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_saturating_abs :
-        M.IsAssociatedFunction.Trait Self "saturating_abs" saturating_abs.
+        M.IsAssociatedFunction.C Self "saturating_abs" saturating_abs.
       Admitted.
       Global Typeclasses Opaque saturating_abs.
       
@@ -16234,7 +16240,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_wrapping_abs :
-        M.IsAssociatedFunction.Trait Self "wrapping_abs" wrapping_abs.
+        M.IsAssociatedFunction.C Self "wrapping_abs" wrapping_abs.
       Admitted.
       Global Typeclasses Opaque wrapping_abs.
       
@@ -16280,7 +16286,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_unsigned_abs :
-        M.IsAssociatedFunction.Trait Self "unsigned_abs" unsigned_abs.
+        M.IsAssociatedFunction.C Self "unsigned_abs" unsigned_abs.
       Admitted.
       Global Typeclasses Opaque unsigned_abs.
       
@@ -16314,7 +16320,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_is_positive :
-        M.IsAssociatedFunction.Trait Self "is_positive" is_positive.
+        M.IsAssociatedFunction.C Self "is_positive" is_positive.
       Admitted.
       Global Typeclasses Opaque is_positive.
       
@@ -16348,7 +16354,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_is_negative :
-        M.IsAssociatedFunction.Trait Self "is_negative" is_negative.
+        M.IsAssociatedFunction.C Self "is_negative" is_negative.
       Admitted.
       Global Typeclasses Opaque is_negative.
       
@@ -16448,7 +16454,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_checked_neg :
-        M.IsAssociatedFunction.Trait Self "checked_neg" checked_neg.
+        M.IsAssociatedFunction.C Self "checked_neg" checked_neg.
       Admitted.
       Global Typeclasses Opaque checked_neg.
       
@@ -16518,7 +16524,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_overflowing_neg :
-        M.IsAssociatedFunction.Trait Self "overflowing_neg" overflowing_neg.
+        M.IsAssociatedFunction.C Self "overflowing_neg" overflowing_neg.
       Admitted.
       Global Typeclasses Opaque overflowing_neg.
       
@@ -16582,14 +16588,18 @@ Module num.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  M.get_constant "core::num::nonzero::MAX"
+                  get_associated_constant (|
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ],
+                    "MAX",
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i8" ]
+                  |)
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Global Instance AssociatedFunction_saturating_neg :
-        M.IsAssociatedFunction.Trait Self "saturating_neg" saturating_neg.
+        M.IsAssociatedFunction.C Self "saturating_neg" saturating_neg.
       Admitted.
       Global Typeclasses Opaque saturating_neg.
       
@@ -16642,7 +16652,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_wrapping_neg :
-        M.IsAssociatedFunction.Trait Self "wrapping_neg" wrapping_neg.
+        M.IsAssociatedFunction.C Self "wrapping_neg" wrapping_neg.
       Admitted.
       Global Typeclasses Opaque wrapping_neg.
       
@@ -16750,7 +16760,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_checked_mul :
-        M.IsAssociatedFunction.Trait Self "checked_mul" checked_mul.
+        M.IsAssociatedFunction.C Self "checked_mul" checked_mul.
       Admitted.
       Global Typeclasses Opaque checked_mul.
       
@@ -16814,7 +16824,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_saturating_mul :
-        M.IsAssociatedFunction.Trait Self "saturating_mul" saturating_mul.
+        M.IsAssociatedFunction.C Self "saturating_mul" saturating_mul.
       Admitted.
       Global Typeclasses Opaque saturating_mul.
       
@@ -16871,7 +16881,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_unchecked_mul :
-        M.IsAssociatedFunction.Trait Self "unchecked_mul" unchecked_mul.
+        M.IsAssociatedFunction.C Self "unchecked_mul" unchecked_mul.
       Admitted.
       Global Typeclasses Opaque unchecked_mul.
       
@@ -16967,7 +16977,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_checked_pow :
-        M.IsAssociatedFunction.Trait Self "checked_pow" checked_pow.
+        M.IsAssociatedFunction.C Self "checked_pow" checked_pow.
       Admitted.
       Global Typeclasses Opaque checked_pow.
       
@@ -17022,7 +17032,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_saturating_pow :
-        M.IsAssociatedFunction.Trait Self "saturating_pow" saturating_pow.
+        M.IsAssociatedFunction.C Self "saturating_pow" saturating_pow.
       Admitted.
       Global Typeclasses Opaque saturating_pow.
     End Impl_core_num_nonzero_NonZero_i8.
@@ -17300,10 +17310,11 @@ Module num.
       
       (*             pub const BITS: u32 = <$Int>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
+      Definition value_BITS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic (get_associated_constant (| Ty.path "i16", "BITS", Ty.path "u32" |))).
       
       Global Instance AssociatedConstant_value_BITS :
-        M.IsAssociatedConstant.Trait Self "value_BITS" value_BITS.
+        M.IsAssociatedFunction.C Self "BITS" value_BITS.
       Admitted.
       Global Typeclasses Opaque value_BITS.
       
@@ -17342,7 +17353,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_leading_zeros :
-        M.IsAssociatedFunction.Trait Self "leading_zeros" leading_zeros.
+        M.IsAssociatedFunction.C Self "leading_zeros" leading_zeros.
       Admitted.
       Global Typeclasses Opaque leading_zeros.
       
@@ -17381,7 +17392,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_trailing_zeros :
-        M.IsAssociatedFunction.Trait Self "trailing_zeros" trailing_zeros.
+        M.IsAssociatedFunction.C Self "trailing_zeros" trailing_zeros.
       Admitted.
       Global Typeclasses Opaque trailing_zeros.
       
@@ -17429,7 +17440,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_count_ones :
-        M.IsAssociatedFunction.Trait Self "count_ones" count_ones.
+        M.IsAssociatedFunction.C Self "count_ones" count_ones.
       Admitted.
       Global Typeclasses Opaque count_ones.
       
@@ -17484,7 +17495,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_rotate_left :
-        M.IsAssociatedFunction.Trait Self "rotate_left" rotate_left.
+        M.IsAssociatedFunction.C Self "rotate_left" rotate_left.
       Admitted.
       Global Typeclasses Opaque rotate_left.
       
@@ -17539,7 +17550,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_rotate_right :
-        M.IsAssociatedFunction.Trait Self "rotate_right" rotate_right.
+        M.IsAssociatedFunction.C Self "rotate_right" rotate_right.
       Admitted.
       Global Typeclasses Opaque rotate_right.
       
@@ -17592,7 +17603,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_swap_bytes :
-        M.IsAssociatedFunction.Trait Self "swap_bytes" swap_bytes.
+        M.IsAssociatedFunction.C Self "swap_bytes" swap_bytes.
       Admitted.
       Global Typeclasses Opaque swap_bytes.
       
@@ -17645,7 +17656,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_reverse_bits :
-        M.IsAssociatedFunction.Trait Self "reverse_bits" reverse_bits.
+        M.IsAssociatedFunction.C Self "reverse_bits" reverse_bits.
       Admitted.
       Global Typeclasses Opaque reverse_bits.
       
@@ -17697,8 +17708,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_from_be :
-        M.IsAssociatedFunction.Trait Self "from_be" from_be.
+      Global Instance AssociatedFunction_from_be : M.IsAssociatedFunction.C Self "from_be" from_be.
       Admitted.
       Global Typeclasses Opaque from_be.
       
@@ -17750,8 +17760,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_from_le :
-        M.IsAssociatedFunction.Trait Self "from_le" from_le.
+      Global Instance AssociatedFunction_from_le : M.IsAssociatedFunction.C Self "from_le" from_le.
       Admitted.
       Global Typeclasses Opaque from_le.
       
@@ -17803,7 +17812,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_to_be : M.IsAssociatedFunction.Trait Self "to_be" to_be.
+      Global Instance AssociatedFunction_to_be : M.IsAssociatedFunction.C Self "to_be" to_be.
       Admitted.
       Global Typeclasses Opaque to_be.
       
@@ -17855,87 +17864,83 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_to_le : M.IsAssociatedFunction.Trait Self "to_le" to_le.
+      Global Instance AssociatedFunction_to_le : M.IsAssociatedFunction.C Self "to_le" to_le.
       Admitted.
       Global Typeclasses Opaque to_le.
       
       (*         pub const MIN: Self = Self::new(<$Int>::MIN).unwrap(); *)
       (* Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] *)
-      Definition value_MIN : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              M.call_closure (|
-                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
-                M.get_associated_function (|
+      Definition value_MIN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
+              M.get_associated_function (|
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ],
+                "unwrap",
+                [],
+                []
+              |),
+              [
+                M.call_closure (|
                   Ty.apply
                     (Ty.path "core::option::Option")
                     []
                     [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ],
-                  "unwrap",
-                  [],
-                  []
-                |),
-                [
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
-                      "new",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.get_constant "core::num::MIN" |) ]
-                  |)
-                ]
-              |)
-            |))).
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
+                    "new",
+                    [],
+                    []
+                  |),
+                  [ M.read (| get_associated_constant (| Ty.path "i16", "MIN", Ty.path "i16" |) |) ]
+                |)
+              ]
+            |)
+          |))).
       
-      Global Instance AssociatedConstant_value_MIN :
-        M.IsAssociatedConstant.Trait Self "value_MIN" value_MIN.
+      Global Instance AssociatedConstant_value_MIN : M.IsAssociatedFunction.C Self "MIN" value_MIN.
       Admitted.
       Global Typeclasses Opaque value_MIN.
       
       (*         pub const MAX: Self = Self::new(<$Int>::MAX).unwrap(); *)
       (* Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] *)
-      Definition value_MAX : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              M.call_closure (|
-                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
-                M.get_associated_function (|
+      Definition value_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
+              M.get_associated_function (|
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ],
+                "unwrap",
+                [],
+                []
+              |),
+              [
+                M.call_closure (|
                   Ty.apply
                     (Ty.path "core::option::Option")
                     []
                     [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ],
-                  "unwrap",
-                  [],
-                  []
-                |),
-                [
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ] ],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
-                      "new",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.get_constant "core::num::MAX" |) ]
-                  |)
-                ]
-              |)
-            |))).
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
+                    "new",
+                    [],
+                    []
+                  |),
+                  [ M.read (| get_associated_constant (| Ty.path "i16", "MAX", Ty.path "i16" |) |) ]
+                |)
+              ]
+            |)
+          |))).
       
-      Global Instance AssociatedConstant_value_MAX :
-        M.IsAssociatedConstant.Trait Self "value_MAX" value_MAX.
+      Global Instance AssociatedConstant_value_MAX : M.IsAssociatedFunction.C Self "MAX" value_MAX.
       Admitted.
       Global Typeclasses Opaque value_MAX.
       
@@ -17980,7 +17985,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_abs : M.IsAssociatedFunction.Trait Self "abs" abs.
+      Global Instance AssociatedFunction_abs : M.IsAssociatedFunction.C Self "abs" abs.
       Admitted.
       Global Typeclasses Opaque abs.
       
@@ -18068,7 +18073,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_checked_abs :
-        M.IsAssociatedFunction.Trait Self "checked_abs" checked_abs.
+        M.IsAssociatedFunction.C Self "checked_abs" checked_abs.
       Admitted.
       Global Typeclasses Opaque checked_abs.
       
@@ -18141,7 +18146,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_overflowing_abs :
-        M.IsAssociatedFunction.Trait Self "overflowing_abs" overflowing_abs.
+        M.IsAssociatedFunction.C Self "overflowing_abs" overflowing_abs.
       Admitted.
       Global Typeclasses Opaque overflowing_abs.
       
@@ -18187,7 +18192,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_saturating_abs :
-        M.IsAssociatedFunction.Trait Self "saturating_abs" saturating_abs.
+        M.IsAssociatedFunction.C Self "saturating_abs" saturating_abs.
       Admitted.
       Global Typeclasses Opaque saturating_abs.
       
@@ -18233,7 +18238,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_wrapping_abs :
-        M.IsAssociatedFunction.Trait Self "wrapping_abs" wrapping_abs.
+        M.IsAssociatedFunction.C Self "wrapping_abs" wrapping_abs.
       Admitted.
       Global Typeclasses Opaque wrapping_abs.
       
@@ -18279,7 +18284,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_unsigned_abs :
-        M.IsAssociatedFunction.Trait Self "unsigned_abs" unsigned_abs.
+        M.IsAssociatedFunction.C Self "unsigned_abs" unsigned_abs.
       Admitted.
       Global Typeclasses Opaque unsigned_abs.
       
@@ -18313,7 +18318,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_is_positive :
-        M.IsAssociatedFunction.Trait Self "is_positive" is_positive.
+        M.IsAssociatedFunction.C Self "is_positive" is_positive.
       Admitted.
       Global Typeclasses Opaque is_positive.
       
@@ -18347,7 +18352,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_is_negative :
-        M.IsAssociatedFunction.Trait Self "is_negative" is_negative.
+        M.IsAssociatedFunction.C Self "is_negative" is_negative.
       Admitted.
       Global Typeclasses Opaque is_negative.
       
@@ -18447,7 +18452,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_checked_neg :
-        M.IsAssociatedFunction.Trait Self "checked_neg" checked_neg.
+        M.IsAssociatedFunction.C Self "checked_neg" checked_neg.
       Admitted.
       Global Typeclasses Opaque checked_neg.
       
@@ -18517,7 +18522,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_overflowing_neg :
-        M.IsAssociatedFunction.Trait Self "overflowing_neg" overflowing_neg.
+        M.IsAssociatedFunction.C Self "overflowing_neg" overflowing_neg.
       Admitted.
       Global Typeclasses Opaque overflowing_neg.
       
@@ -18581,14 +18586,18 @@ Module num.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  M.get_constant "core::num::nonzero::MAX"
+                  get_associated_constant (|
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ],
+                    "MAX",
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i16" ]
+                  |)
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Global Instance AssociatedFunction_saturating_neg :
-        M.IsAssociatedFunction.Trait Self "saturating_neg" saturating_neg.
+        M.IsAssociatedFunction.C Self "saturating_neg" saturating_neg.
       Admitted.
       Global Typeclasses Opaque saturating_neg.
       
@@ -18641,7 +18650,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_wrapping_neg :
-        M.IsAssociatedFunction.Trait Self "wrapping_neg" wrapping_neg.
+        M.IsAssociatedFunction.C Self "wrapping_neg" wrapping_neg.
       Admitted.
       Global Typeclasses Opaque wrapping_neg.
       
@@ -18749,7 +18758,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_checked_mul :
-        M.IsAssociatedFunction.Trait Self "checked_mul" checked_mul.
+        M.IsAssociatedFunction.C Self "checked_mul" checked_mul.
       Admitted.
       Global Typeclasses Opaque checked_mul.
       
@@ -18813,7 +18822,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_saturating_mul :
-        M.IsAssociatedFunction.Trait Self "saturating_mul" saturating_mul.
+        M.IsAssociatedFunction.C Self "saturating_mul" saturating_mul.
       Admitted.
       Global Typeclasses Opaque saturating_mul.
       
@@ -18870,7 +18879,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_unchecked_mul :
-        M.IsAssociatedFunction.Trait Self "unchecked_mul" unchecked_mul.
+        M.IsAssociatedFunction.C Self "unchecked_mul" unchecked_mul.
       Admitted.
       Global Typeclasses Opaque unchecked_mul.
       
@@ -18966,7 +18975,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_checked_pow :
-        M.IsAssociatedFunction.Trait Self "checked_pow" checked_pow.
+        M.IsAssociatedFunction.C Self "checked_pow" checked_pow.
       Admitted.
       Global Typeclasses Opaque checked_pow.
       
@@ -19021,7 +19030,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_saturating_pow :
-        M.IsAssociatedFunction.Trait Self "saturating_pow" saturating_pow.
+        M.IsAssociatedFunction.C Self "saturating_pow" saturating_pow.
       Admitted.
       Global Typeclasses Opaque saturating_pow.
     End Impl_core_num_nonzero_NonZero_i16.
@@ -19299,10 +19308,11 @@ Module num.
       
       (*             pub const BITS: u32 = <$Int>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
+      Definition value_BITS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic (get_associated_constant (| Ty.path "i32", "BITS", Ty.path "u32" |))).
       
       Global Instance AssociatedConstant_value_BITS :
-        M.IsAssociatedConstant.Trait Self "value_BITS" value_BITS.
+        M.IsAssociatedFunction.C Self "BITS" value_BITS.
       Admitted.
       Global Typeclasses Opaque value_BITS.
       
@@ -19341,7 +19351,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_leading_zeros :
-        M.IsAssociatedFunction.Trait Self "leading_zeros" leading_zeros.
+        M.IsAssociatedFunction.C Self "leading_zeros" leading_zeros.
       Admitted.
       Global Typeclasses Opaque leading_zeros.
       
@@ -19380,7 +19390,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_trailing_zeros :
-        M.IsAssociatedFunction.Trait Self "trailing_zeros" trailing_zeros.
+        M.IsAssociatedFunction.C Self "trailing_zeros" trailing_zeros.
       Admitted.
       Global Typeclasses Opaque trailing_zeros.
       
@@ -19428,7 +19438,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_count_ones :
-        M.IsAssociatedFunction.Trait Self "count_ones" count_ones.
+        M.IsAssociatedFunction.C Self "count_ones" count_ones.
       Admitted.
       Global Typeclasses Opaque count_ones.
       
@@ -19483,7 +19493,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_rotate_left :
-        M.IsAssociatedFunction.Trait Self "rotate_left" rotate_left.
+        M.IsAssociatedFunction.C Self "rotate_left" rotate_left.
       Admitted.
       Global Typeclasses Opaque rotate_left.
       
@@ -19538,7 +19548,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_rotate_right :
-        M.IsAssociatedFunction.Trait Self "rotate_right" rotate_right.
+        M.IsAssociatedFunction.C Self "rotate_right" rotate_right.
       Admitted.
       Global Typeclasses Opaque rotate_right.
       
@@ -19591,7 +19601,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_swap_bytes :
-        M.IsAssociatedFunction.Trait Self "swap_bytes" swap_bytes.
+        M.IsAssociatedFunction.C Self "swap_bytes" swap_bytes.
       Admitted.
       Global Typeclasses Opaque swap_bytes.
       
@@ -19644,7 +19654,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_reverse_bits :
-        M.IsAssociatedFunction.Trait Self "reverse_bits" reverse_bits.
+        M.IsAssociatedFunction.C Self "reverse_bits" reverse_bits.
       Admitted.
       Global Typeclasses Opaque reverse_bits.
       
@@ -19696,8 +19706,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_from_be :
-        M.IsAssociatedFunction.Trait Self "from_be" from_be.
+      Global Instance AssociatedFunction_from_be : M.IsAssociatedFunction.C Self "from_be" from_be.
       Admitted.
       Global Typeclasses Opaque from_be.
       
@@ -19749,8 +19758,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_from_le :
-        M.IsAssociatedFunction.Trait Self "from_le" from_le.
+      Global Instance AssociatedFunction_from_le : M.IsAssociatedFunction.C Self "from_le" from_le.
       Admitted.
       Global Typeclasses Opaque from_le.
       
@@ -19802,7 +19810,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_to_be : M.IsAssociatedFunction.Trait Self "to_be" to_be.
+      Global Instance AssociatedFunction_to_be : M.IsAssociatedFunction.C Self "to_be" to_be.
       Admitted.
       Global Typeclasses Opaque to_be.
       
@@ -19854,87 +19862,83 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_to_le : M.IsAssociatedFunction.Trait Self "to_le" to_le.
+      Global Instance AssociatedFunction_to_le : M.IsAssociatedFunction.C Self "to_le" to_le.
       Admitted.
       Global Typeclasses Opaque to_le.
       
       (*         pub const MIN: Self = Self::new(<$Int>::MIN).unwrap(); *)
       (* Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] *)
-      Definition value_MIN : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              M.call_closure (|
-                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
-                M.get_associated_function (|
+      Definition value_MIN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
+              M.get_associated_function (|
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ],
+                "unwrap",
+                [],
+                []
+              |),
+              [
+                M.call_closure (|
                   Ty.apply
                     (Ty.path "core::option::Option")
                     []
                     [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ],
-                  "unwrap",
-                  [],
-                  []
-                |),
-                [
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
-                      "new",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.get_constant "core::num::MIN" |) ]
-                  |)
-                ]
-              |)
-            |))).
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
+                    "new",
+                    [],
+                    []
+                  |),
+                  [ M.read (| get_associated_constant (| Ty.path "i32", "MIN", Ty.path "i32" |) |) ]
+                |)
+              ]
+            |)
+          |))).
       
-      Global Instance AssociatedConstant_value_MIN :
-        M.IsAssociatedConstant.Trait Self "value_MIN" value_MIN.
+      Global Instance AssociatedConstant_value_MIN : M.IsAssociatedFunction.C Self "MIN" value_MIN.
       Admitted.
       Global Typeclasses Opaque value_MIN.
       
       (*         pub const MAX: Self = Self::new(<$Int>::MAX).unwrap(); *)
       (* Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] *)
-      Definition value_MAX : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              M.call_closure (|
-                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
-                M.get_associated_function (|
+      Definition value_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
+              M.get_associated_function (|
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ],
+                "unwrap",
+                [],
+                []
+              |),
+              [
+                M.call_closure (|
                   Ty.apply
                     (Ty.path "core::option::Option")
                     []
                     [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ],
-                  "unwrap",
-                  [],
-                  []
-                |),
-                [
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ] ],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
-                      "new",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.get_constant "core::num::MAX" |) ]
-                  |)
-                ]
-              |)
-            |))).
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
+                    "new",
+                    [],
+                    []
+                  |),
+                  [ M.read (| get_associated_constant (| Ty.path "i32", "MAX", Ty.path "i32" |) |) ]
+                |)
+              ]
+            |)
+          |))).
       
-      Global Instance AssociatedConstant_value_MAX :
-        M.IsAssociatedConstant.Trait Self "value_MAX" value_MAX.
+      Global Instance AssociatedConstant_value_MAX : M.IsAssociatedFunction.C Self "MAX" value_MAX.
       Admitted.
       Global Typeclasses Opaque value_MAX.
       
@@ -19979,7 +19983,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_abs : M.IsAssociatedFunction.Trait Self "abs" abs.
+      Global Instance AssociatedFunction_abs : M.IsAssociatedFunction.C Self "abs" abs.
       Admitted.
       Global Typeclasses Opaque abs.
       
@@ -20067,7 +20071,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_checked_abs :
-        M.IsAssociatedFunction.Trait Self "checked_abs" checked_abs.
+        M.IsAssociatedFunction.C Self "checked_abs" checked_abs.
       Admitted.
       Global Typeclasses Opaque checked_abs.
       
@@ -20140,7 +20144,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_overflowing_abs :
-        M.IsAssociatedFunction.Trait Self "overflowing_abs" overflowing_abs.
+        M.IsAssociatedFunction.C Self "overflowing_abs" overflowing_abs.
       Admitted.
       Global Typeclasses Opaque overflowing_abs.
       
@@ -20186,7 +20190,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_saturating_abs :
-        M.IsAssociatedFunction.Trait Self "saturating_abs" saturating_abs.
+        M.IsAssociatedFunction.C Self "saturating_abs" saturating_abs.
       Admitted.
       Global Typeclasses Opaque saturating_abs.
       
@@ -20232,7 +20236,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_wrapping_abs :
-        M.IsAssociatedFunction.Trait Self "wrapping_abs" wrapping_abs.
+        M.IsAssociatedFunction.C Self "wrapping_abs" wrapping_abs.
       Admitted.
       Global Typeclasses Opaque wrapping_abs.
       
@@ -20278,7 +20282,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_unsigned_abs :
-        M.IsAssociatedFunction.Trait Self "unsigned_abs" unsigned_abs.
+        M.IsAssociatedFunction.C Self "unsigned_abs" unsigned_abs.
       Admitted.
       Global Typeclasses Opaque unsigned_abs.
       
@@ -20312,7 +20316,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_is_positive :
-        M.IsAssociatedFunction.Trait Self "is_positive" is_positive.
+        M.IsAssociatedFunction.C Self "is_positive" is_positive.
       Admitted.
       Global Typeclasses Opaque is_positive.
       
@@ -20346,7 +20350,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_is_negative :
-        M.IsAssociatedFunction.Trait Self "is_negative" is_negative.
+        M.IsAssociatedFunction.C Self "is_negative" is_negative.
       Admitted.
       Global Typeclasses Opaque is_negative.
       
@@ -20446,7 +20450,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_checked_neg :
-        M.IsAssociatedFunction.Trait Self "checked_neg" checked_neg.
+        M.IsAssociatedFunction.C Self "checked_neg" checked_neg.
       Admitted.
       Global Typeclasses Opaque checked_neg.
       
@@ -20516,7 +20520,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_overflowing_neg :
-        M.IsAssociatedFunction.Trait Self "overflowing_neg" overflowing_neg.
+        M.IsAssociatedFunction.C Self "overflowing_neg" overflowing_neg.
       Admitted.
       Global Typeclasses Opaque overflowing_neg.
       
@@ -20580,14 +20584,18 @@ Module num.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  M.get_constant "core::num::nonzero::MAX"
+                  get_associated_constant (|
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ],
+                    "MAX",
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i32" ]
+                  |)
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Global Instance AssociatedFunction_saturating_neg :
-        M.IsAssociatedFunction.Trait Self "saturating_neg" saturating_neg.
+        M.IsAssociatedFunction.C Self "saturating_neg" saturating_neg.
       Admitted.
       Global Typeclasses Opaque saturating_neg.
       
@@ -20640,7 +20648,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_wrapping_neg :
-        M.IsAssociatedFunction.Trait Self "wrapping_neg" wrapping_neg.
+        M.IsAssociatedFunction.C Self "wrapping_neg" wrapping_neg.
       Admitted.
       Global Typeclasses Opaque wrapping_neg.
       
@@ -20748,7 +20756,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_checked_mul :
-        M.IsAssociatedFunction.Trait Self "checked_mul" checked_mul.
+        M.IsAssociatedFunction.C Self "checked_mul" checked_mul.
       Admitted.
       Global Typeclasses Opaque checked_mul.
       
@@ -20812,7 +20820,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_saturating_mul :
-        M.IsAssociatedFunction.Trait Self "saturating_mul" saturating_mul.
+        M.IsAssociatedFunction.C Self "saturating_mul" saturating_mul.
       Admitted.
       Global Typeclasses Opaque saturating_mul.
       
@@ -20869,7 +20877,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_unchecked_mul :
-        M.IsAssociatedFunction.Trait Self "unchecked_mul" unchecked_mul.
+        M.IsAssociatedFunction.C Self "unchecked_mul" unchecked_mul.
       Admitted.
       Global Typeclasses Opaque unchecked_mul.
       
@@ -20965,7 +20973,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_checked_pow :
-        M.IsAssociatedFunction.Trait Self "checked_pow" checked_pow.
+        M.IsAssociatedFunction.C Self "checked_pow" checked_pow.
       Admitted.
       Global Typeclasses Opaque checked_pow.
       
@@ -21020,7 +21028,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_saturating_pow :
-        M.IsAssociatedFunction.Trait Self "saturating_pow" saturating_pow.
+        M.IsAssociatedFunction.C Self "saturating_pow" saturating_pow.
       Admitted.
       Global Typeclasses Opaque saturating_pow.
     End Impl_core_num_nonzero_NonZero_i32.
@@ -21298,10 +21306,11 @@ Module num.
       
       (*             pub const BITS: u32 = <$Int>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
+      Definition value_BITS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic (get_associated_constant (| Ty.path "i64", "BITS", Ty.path "u32" |))).
       
       Global Instance AssociatedConstant_value_BITS :
-        M.IsAssociatedConstant.Trait Self "value_BITS" value_BITS.
+        M.IsAssociatedFunction.C Self "BITS" value_BITS.
       Admitted.
       Global Typeclasses Opaque value_BITS.
       
@@ -21340,7 +21349,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_leading_zeros :
-        M.IsAssociatedFunction.Trait Self "leading_zeros" leading_zeros.
+        M.IsAssociatedFunction.C Self "leading_zeros" leading_zeros.
       Admitted.
       Global Typeclasses Opaque leading_zeros.
       
@@ -21379,7 +21388,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_trailing_zeros :
-        M.IsAssociatedFunction.Trait Self "trailing_zeros" trailing_zeros.
+        M.IsAssociatedFunction.C Self "trailing_zeros" trailing_zeros.
       Admitted.
       Global Typeclasses Opaque trailing_zeros.
       
@@ -21427,7 +21436,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_count_ones :
-        M.IsAssociatedFunction.Trait Self "count_ones" count_ones.
+        M.IsAssociatedFunction.C Self "count_ones" count_ones.
       Admitted.
       Global Typeclasses Opaque count_ones.
       
@@ -21482,7 +21491,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_rotate_left :
-        M.IsAssociatedFunction.Trait Self "rotate_left" rotate_left.
+        M.IsAssociatedFunction.C Self "rotate_left" rotate_left.
       Admitted.
       Global Typeclasses Opaque rotate_left.
       
@@ -21537,7 +21546,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_rotate_right :
-        M.IsAssociatedFunction.Trait Self "rotate_right" rotate_right.
+        M.IsAssociatedFunction.C Self "rotate_right" rotate_right.
       Admitted.
       Global Typeclasses Opaque rotate_right.
       
@@ -21590,7 +21599,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_swap_bytes :
-        M.IsAssociatedFunction.Trait Self "swap_bytes" swap_bytes.
+        M.IsAssociatedFunction.C Self "swap_bytes" swap_bytes.
       Admitted.
       Global Typeclasses Opaque swap_bytes.
       
@@ -21643,7 +21652,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_reverse_bits :
-        M.IsAssociatedFunction.Trait Self "reverse_bits" reverse_bits.
+        M.IsAssociatedFunction.C Self "reverse_bits" reverse_bits.
       Admitted.
       Global Typeclasses Opaque reverse_bits.
       
@@ -21695,8 +21704,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_from_be :
-        M.IsAssociatedFunction.Trait Self "from_be" from_be.
+      Global Instance AssociatedFunction_from_be : M.IsAssociatedFunction.C Self "from_be" from_be.
       Admitted.
       Global Typeclasses Opaque from_be.
       
@@ -21748,8 +21756,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_from_le :
-        M.IsAssociatedFunction.Trait Self "from_le" from_le.
+      Global Instance AssociatedFunction_from_le : M.IsAssociatedFunction.C Self "from_le" from_le.
       Admitted.
       Global Typeclasses Opaque from_le.
       
@@ -21801,7 +21808,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_to_be : M.IsAssociatedFunction.Trait Self "to_be" to_be.
+      Global Instance AssociatedFunction_to_be : M.IsAssociatedFunction.C Self "to_be" to_be.
       Admitted.
       Global Typeclasses Opaque to_be.
       
@@ -21853,87 +21860,83 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_to_le : M.IsAssociatedFunction.Trait Self "to_le" to_le.
+      Global Instance AssociatedFunction_to_le : M.IsAssociatedFunction.C Self "to_le" to_le.
       Admitted.
       Global Typeclasses Opaque to_le.
       
       (*         pub const MIN: Self = Self::new(<$Int>::MIN).unwrap(); *)
       (* Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] *)
-      Definition value_MIN : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              M.call_closure (|
-                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
-                M.get_associated_function (|
+      Definition value_MIN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
+              M.get_associated_function (|
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ],
+                "unwrap",
+                [],
+                []
+              |),
+              [
+                M.call_closure (|
                   Ty.apply
                     (Ty.path "core::option::Option")
                     []
                     [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ],
-                  "unwrap",
-                  [],
-                  []
-                |),
-                [
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
-                      "new",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.get_constant "core::num::MIN" |) ]
-                  |)
-                ]
-              |)
-            |))).
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
+                    "new",
+                    [],
+                    []
+                  |),
+                  [ M.read (| get_associated_constant (| Ty.path "i64", "MIN", Ty.path "i64" |) |) ]
+                |)
+              ]
+            |)
+          |))).
       
-      Global Instance AssociatedConstant_value_MIN :
-        M.IsAssociatedConstant.Trait Self "value_MIN" value_MIN.
+      Global Instance AssociatedConstant_value_MIN : M.IsAssociatedFunction.C Self "MIN" value_MIN.
       Admitted.
       Global Typeclasses Opaque value_MIN.
       
       (*         pub const MAX: Self = Self::new(<$Int>::MAX).unwrap(); *)
       (* Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] *)
-      Definition value_MAX : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              M.call_closure (|
-                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
-                M.get_associated_function (|
+      Definition value_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
+              M.get_associated_function (|
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ],
+                "unwrap",
+                [],
+                []
+              |),
+              [
+                M.call_closure (|
                   Ty.apply
                     (Ty.path "core::option::Option")
                     []
                     [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ],
-                  "unwrap",
-                  [],
-                  []
-                |),
-                [
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ] ],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
-                      "new",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.get_constant "core::num::MAX" |) ]
-                  |)
-                ]
-              |)
-            |))).
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
+                    "new",
+                    [],
+                    []
+                  |),
+                  [ M.read (| get_associated_constant (| Ty.path "i64", "MAX", Ty.path "i64" |) |) ]
+                |)
+              ]
+            |)
+          |))).
       
-      Global Instance AssociatedConstant_value_MAX :
-        M.IsAssociatedConstant.Trait Self "value_MAX" value_MAX.
+      Global Instance AssociatedConstant_value_MAX : M.IsAssociatedFunction.C Self "MAX" value_MAX.
       Admitted.
       Global Typeclasses Opaque value_MAX.
       
@@ -21978,7 +21981,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_abs : M.IsAssociatedFunction.Trait Self "abs" abs.
+      Global Instance AssociatedFunction_abs : M.IsAssociatedFunction.C Self "abs" abs.
       Admitted.
       Global Typeclasses Opaque abs.
       
@@ -22066,7 +22069,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_checked_abs :
-        M.IsAssociatedFunction.Trait Self "checked_abs" checked_abs.
+        M.IsAssociatedFunction.C Self "checked_abs" checked_abs.
       Admitted.
       Global Typeclasses Opaque checked_abs.
       
@@ -22139,7 +22142,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_overflowing_abs :
-        M.IsAssociatedFunction.Trait Self "overflowing_abs" overflowing_abs.
+        M.IsAssociatedFunction.C Self "overflowing_abs" overflowing_abs.
       Admitted.
       Global Typeclasses Opaque overflowing_abs.
       
@@ -22185,7 +22188,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_saturating_abs :
-        M.IsAssociatedFunction.Trait Self "saturating_abs" saturating_abs.
+        M.IsAssociatedFunction.C Self "saturating_abs" saturating_abs.
       Admitted.
       Global Typeclasses Opaque saturating_abs.
       
@@ -22231,7 +22234,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_wrapping_abs :
-        M.IsAssociatedFunction.Trait Self "wrapping_abs" wrapping_abs.
+        M.IsAssociatedFunction.C Self "wrapping_abs" wrapping_abs.
       Admitted.
       Global Typeclasses Opaque wrapping_abs.
       
@@ -22277,7 +22280,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_unsigned_abs :
-        M.IsAssociatedFunction.Trait Self "unsigned_abs" unsigned_abs.
+        M.IsAssociatedFunction.C Self "unsigned_abs" unsigned_abs.
       Admitted.
       Global Typeclasses Opaque unsigned_abs.
       
@@ -22311,7 +22314,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_is_positive :
-        M.IsAssociatedFunction.Trait Self "is_positive" is_positive.
+        M.IsAssociatedFunction.C Self "is_positive" is_positive.
       Admitted.
       Global Typeclasses Opaque is_positive.
       
@@ -22345,7 +22348,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_is_negative :
-        M.IsAssociatedFunction.Trait Self "is_negative" is_negative.
+        M.IsAssociatedFunction.C Self "is_negative" is_negative.
       Admitted.
       Global Typeclasses Opaque is_negative.
       
@@ -22445,7 +22448,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_checked_neg :
-        M.IsAssociatedFunction.Trait Self "checked_neg" checked_neg.
+        M.IsAssociatedFunction.C Self "checked_neg" checked_neg.
       Admitted.
       Global Typeclasses Opaque checked_neg.
       
@@ -22515,7 +22518,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_overflowing_neg :
-        M.IsAssociatedFunction.Trait Self "overflowing_neg" overflowing_neg.
+        M.IsAssociatedFunction.C Self "overflowing_neg" overflowing_neg.
       Admitted.
       Global Typeclasses Opaque overflowing_neg.
       
@@ -22579,14 +22582,18 @@ Module num.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  M.get_constant "core::num::nonzero::MAX"
+                  get_associated_constant (|
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ],
+                    "MAX",
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i64" ]
+                  |)
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Global Instance AssociatedFunction_saturating_neg :
-        M.IsAssociatedFunction.Trait Self "saturating_neg" saturating_neg.
+        M.IsAssociatedFunction.C Self "saturating_neg" saturating_neg.
       Admitted.
       Global Typeclasses Opaque saturating_neg.
       
@@ -22639,7 +22646,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_wrapping_neg :
-        M.IsAssociatedFunction.Trait Self "wrapping_neg" wrapping_neg.
+        M.IsAssociatedFunction.C Self "wrapping_neg" wrapping_neg.
       Admitted.
       Global Typeclasses Opaque wrapping_neg.
       
@@ -22747,7 +22754,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_checked_mul :
-        M.IsAssociatedFunction.Trait Self "checked_mul" checked_mul.
+        M.IsAssociatedFunction.C Self "checked_mul" checked_mul.
       Admitted.
       Global Typeclasses Opaque checked_mul.
       
@@ -22811,7 +22818,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_saturating_mul :
-        M.IsAssociatedFunction.Trait Self "saturating_mul" saturating_mul.
+        M.IsAssociatedFunction.C Self "saturating_mul" saturating_mul.
       Admitted.
       Global Typeclasses Opaque saturating_mul.
       
@@ -22868,7 +22875,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_unchecked_mul :
-        M.IsAssociatedFunction.Trait Self "unchecked_mul" unchecked_mul.
+        M.IsAssociatedFunction.C Self "unchecked_mul" unchecked_mul.
       Admitted.
       Global Typeclasses Opaque unchecked_mul.
       
@@ -22964,7 +22971,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_checked_pow :
-        M.IsAssociatedFunction.Trait Self "checked_pow" checked_pow.
+        M.IsAssociatedFunction.C Self "checked_pow" checked_pow.
       Admitted.
       Global Typeclasses Opaque checked_pow.
       
@@ -23019,7 +23026,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_saturating_pow :
-        M.IsAssociatedFunction.Trait Self "saturating_pow" saturating_pow.
+        M.IsAssociatedFunction.C Self "saturating_pow" saturating_pow.
       Admitted.
       Global Typeclasses Opaque saturating_pow.
     End Impl_core_num_nonzero_NonZero_i64.
@@ -23297,10 +23304,11 @@ Module num.
       
       (*             pub const BITS: u32 = <$Int>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
+      Definition value_BITS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic (get_associated_constant (| Ty.path "i128", "BITS", Ty.path "u32" |))).
       
       Global Instance AssociatedConstant_value_BITS :
-        M.IsAssociatedConstant.Trait Self "value_BITS" value_BITS.
+        M.IsAssociatedFunction.C Self "BITS" value_BITS.
       Admitted.
       Global Typeclasses Opaque value_BITS.
       
@@ -23339,7 +23347,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_leading_zeros :
-        M.IsAssociatedFunction.Trait Self "leading_zeros" leading_zeros.
+        M.IsAssociatedFunction.C Self "leading_zeros" leading_zeros.
       Admitted.
       Global Typeclasses Opaque leading_zeros.
       
@@ -23378,7 +23386,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_trailing_zeros :
-        M.IsAssociatedFunction.Trait Self "trailing_zeros" trailing_zeros.
+        M.IsAssociatedFunction.C Self "trailing_zeros" trailing_zeros.
       Admitted.
       Global Typeclasses Opaque trailing_zeros.
       
@@ -23426,7 +23434,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_count_ones :
-        M.IsAssociatedFunction.Trait Self "count_ones" count_ones.
+        M.IsAssociatedFunction.C Self "count_ones" count_ones.
       Admitted.
       Global Typeclasses Opaque count_ones.
       
@@ -23481,7 +23489,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_rotate_left :
-        M.IsAssociatedFunction.Trait Self "rotate_left" rotate_left.
+        M.IsAssociatedFunction.C Self "rotate_left" rotate_left.
       Admitted.
       Global Typeclasses Opaque rotate_left.
       
@@ -23536,7 +23544,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_rotate_right :
-        M.IsAssociatedFunction.Trait Self "rotate_right" rotate_right.
+        M.IsAssociatedFunction.C Self "rotate_right" rotate_right.
       Admitted.
       Global Typeclasses Opaque rotate_right.
       
@@ -23589,7 +23597,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_swap_bytes :
-        M.IsAssociatedFunction.Trait Self "swap_bytes" swap_bytes.
+        M.IsAssociatedFunction.C Self "swap_bytes" swap_bytes.
       Admitted.
       Global Typeclasses Opaque swap_bytes.
       
@@ -23642,7 +23650,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_reverse_bits :
-        M.IsAssociatedFunction.Trait Self "reverse_bits" reverse_bits.
+        M.IsAssociatedFunction.C Self "reverse_bits" reverse_bits.
       Admitted.
       Global Typeclasses Opaque reverse_bits.
       
@@ -23694,8 +23702,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_from_be :
-        M.IsAssociatedFunction.Trait Self "from_be" from_be.
+      Global Instance AssociatedFunction_from_be : M.IsAssociatedFunction.C Self "from_be" from_be.
       Admitted.
       Global Typeclasses Opaque from_be.
       
@@ -23747,8 +23754,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_from_le :
-        M.IsAssociatedFunction.Trait Self "from_le" from_le.
+      Global Instance AssociatedFunction_from_le : M.IsAssociatedFunction.C Self "from_le" from_le.
       Admitted.
       Global Typeclasses Opaque from_le.
       
@@ -23800,7 +23806,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_to_be : M.IsAssociatedFunction.Trait Self "to_be" to_be.
+      Global Instance AssociatedFunction_to_be : M.IsAssociatedFunction.C Self "to_be" to_be.
       Admitted.
       Global Typeclasses Opaque to_be.
       
@@ -23852,87 +23858,85 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_to_le : M.IsAssociatedFunction.Trait Self "to_le" to_le.
+      Global Instance AssociatedFunction_to_le : M.IsAssociatedFunction.C Self "to_le" to_le.
       Admitted.
       Global Typeclasses Opaque to_le.
       
       (*         pub const MIN: Self = Self::new(<$Int>::MIN).unwrap(); *)
       (* Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] *)
-      Definition value_MIN : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              M.call_closure (|
-                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
-                M.get_associated_function (|
+      Definition value_MIN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
+              M.get_associated_function (|
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ],
+                "unwrap",
+                [],
+                []
+              |),
+              [
+                M.call_closure (|
                   Ty.apply
                     (Ty.path "core::option::Option")
                     []
                     [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ],
-                  "unwrap",
-                  [],
-                  []
-                |),
-                [
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
-                      "new",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.get_constant "core::num::MIN" |) ]
-                  |)
-                ]
-              |)
-            |))).
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
+                    "new",
+                    [],
+                    []
+                  |),
+                  [ M.read (| get_associated_constant (| Ty.path "i128", "MIN", Ty.path "i128" |) |)
+                  ]
+                |)
+              ]
+            |)
+          |))).
       
-      Global Instance AssociatedConstant_value_MIN :
-        M.IsAssociatedConstant.Trait Self "value_MIN" value_MIN.
+      Global Instance AssociatedConstant_value_MIN : M.IsAssociatedFunction.C Self "MIN" value_MIN.
       Admitted.
       Global Typeclasses Opaque value_MIN.
       
       (*         pub const MAX: Self = Self::new(<$Int>::MAX).unwrap(); *)
       (* Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] *)
-      Definition value_MAX : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              M.call_closure (|
-                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
-                M.get_associated_function (|
+      Definition value_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
+              M.get_associated_function (|
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ],
+                "unwrap",
+                [],
+                []
+              |),
+              [
+                M.call_closure (|
                   Ty.apply
                     (Ty.path "core::option::Option")
                     []
                     [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ],
-                  "unwrap",
-                  [],
-                  []
-                |),
-                [
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ] ],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
-                      "new",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.get_constant "core::num::MAX" |) ]
-                  |)
-                ]
-              |)
-            |))).
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
+                    "new",
+                    [],
+                    []
+                  |),
+                  [ M.read (| get_associated_constant (| Ty.path "i128", "MAX", Ty.path "i128" |) |)
+                  ]
+                |)
+              ]
+            |)
+          |))).
       
-      Global Instance AssociatedConstant_value_MAX :
-        M.IsAssociatedConstant.Trait Self "value_MAX" value_MAX.
+      Global Instance AssociatedConstant_value_MAX : M.IsAssociatedFunction.C Self "MAX" value_MAX.
       Admitted.
       Global Typeclasses Opaque value_MAX.
       
@@ -23977,7 +23981,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_abs : M.IsAssociatedFunction.Trait Self "abs" abs.
+      Global Instance AssociatedFunction_abs : M.IsAssociatedFunction.C Self "abs" abs.
       Admitted.
       Global Typeclasses Opaque abs.
       
@@ -24068,7 +24072,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_checked_abs :
-        M.IsAssociatedFunction.Trait Self "checked_abs" checked_abs.
+        M.IsAssociatedFunction.C Self "checked_abs" checked_abs.
       Admitted.
       Global Typeclasses Opaque checked_abs.
       
@@ -24144,7 +24148,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_overflowing_abs :
-        M.IsAssociatedFunction.Trait Self "overflowing_abs" overflowing_abs.
+        M.IsAssociatedFunction.C Self "overflowing_abs" overflowing_abs.
       Admitted.
       Global Typeclasses Opaque overflowing_abs.
       
@@ -24190,7 +24194,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_saturating_abs :
-        M.IsAssociatedFunction.Trait Self "saturating_abs" saturating_abs.
+        M.IsAssociatedFunction.C Self "saturating_abs" saturating_abs.
       Admitted.
       Global Typeclasses Opaque saturating_abs.
       
@@ -24236,7 +24240,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_wrapping_abs :
-        M.IsAssociatedFunction.Trait Self "wrapping_abs" wrapping_abs.
+        M.IsAssociatedFunction.C Self "wrapping_abs" wrapping_abs.
       Admitted.
       Global Typeclasses Opaque wrapping_abs.
       
@@ -24282,7 +24286,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_unsigned_abs :
-        M.IsAssociatedFunction.Trait Self "unsigned_abs" unsigned_abs.
+        M.IsAssociatedFunction.C Self "unsigned_abs" unsigned_abs.
       Admitted.
       Global Typeclasses Opaque unsigned_abs.
       
@@ -24316,7 +24320,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_is_positive :
-        M.IsAssociatedFunction.Trait Self "is_positive" is_positive.
+        M.IsAssociatedFunction.C Self "is_positive" is_positive.
       Admitted.
       Global Typeclasses Opaque is_positive.
       
@@ -24350,7 +24354,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_is_negative :
-        M.IsAssociatedFunction.Trait Self "is_negative" is_negative.
+        M.IsAssociatedFunction.C Self "is_negative" is_negative.
       Admitted.
       Global Typeclasses Opaque is_negative.
       
@@ -24450,7 +24454,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_checked_neg :
-        M.IsAssociatedFunction.Trait Self "checked_neg" checked_neg.
+        M.IsAssociatedFunction.C Self "checked_neg" checked_neg.
       Admitted.
       Global Typeclasses Opaque checked_neg.
       
@@ -24523,7 +24527,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_overflowing_neg :
-        M.IsAssociatedFunction.Trait Self "overflowing_neg" overflowing_neg.
+        M.IsAssociatedFunction.C Self "overflowing_neg" overflowing_neg.
       Admitted.
       Global Typeclasses Opaque overflowing_neg.
       
@@ -24587,14 +24591,18 @@ Module num.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  M.get_constant "core::num::nonzero::MAX"
+                  get_associated_constant (|
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ],
+                    "MAX",
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "i128" ]
+                  |)
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Global Instance AssociatedFunction_saturating_neg :
-        M.IsAssociatedFunction.Trait Self "saturating_neg" saturating_neg.
+        M.IsAssociatedFunction.C Self "saturating_neg" saturating_neg.
       Admitted.
       Global Typeclasses Opaque saturating_neg.
       
@@ -24647,7 +24655,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_wrapping_neg :
-        M.IsAssociatedFunction.Trait Self "wrapping_neg" wrapping_neg.
+        M.IsAssociatedFunction.C Self "wrapping_neg" wrapping_neg.
       Admitted.
       Global Typeclasses Opaque wrapping_neg.
       
@@ -24758,7 +24766,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_checked_mul :
-        M.IsAssociatedFunction.Trait Self "checked_mul" checked_mul.
+        M.IsAssociatedFunction.C Self "checked_mul" checked_mul.
       Admitted.
       Global Typeclasses Opaque checked_mul.
       
@@ -24822,7 +24830,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_saturating_mul :
-        M.IsAssociatedFunction.Trait Self "saturating_mul" saturating_mul.
+        M.IsAssociatedFunction.C Self "saturating_mul" saturating_mul.
       Admitted.
       Global Typeclasses Opaque saturating_mul.
       
@@ -24879,7 +24887,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_unchecked_mul :
-        M.IsAssociatedFunction.Trait Self "unchecked_mul" unchecked_mul.
+        M.IsAssociatedFunction.C Self "unchecked_mul" unchecked_mul.
       Admitted.
       Global Typeclasses Opaque unchecked_mul.
       
@@ -24978,7 +24986,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_checked_pow :
-        M.IsAssociatedFunction.Trait Self "checked_pow" checked_pow.
+        M.IsAssociatedFunction.C Self "checked_pow" checked_pow.
       Admitted.
       Global Typeclasses Opaque checked_pow.
       
@@ -25033,7 +25041,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_saturating_pow :
-        M.IsAssociatedFunction.Trait Self "saturating_pow" saturating_pow.
+        M.IsAssociatedFunction.C Self "saturating_pow" saturating_pow.
       Admitted.
       Global Typeclasses Opaque saturating_pow.
     End Impl_core_num_nonzero_NonZero_i128.
@@ -25311,10 +25319,11 @@ Module num.
       
       (*             pub const BITS: u32 = <$Int>::BITS; *)
       (* Ty.path "u32" *)
-      Definition value_BITS : Value.t := M.run ltac:(M.monadic (M.get_constant "core::num::BITS")).
+      Definition value_BITS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic (get_associated_constant (| Ty.path "isize", "BITS", Ty.path "u32" |))).
       
       Global Instance AssociatedConstant_value_BITS :
-        M.IsAssociatedConstant.Trait Self "value_BITS" value_BITS.
+        M.IsAssociatedFunction.C Self "BITS" value_BITS.
       Admitted.
       Global Typeclasses Opaque value_BITS.
       
@@ -25353,7 +25362,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_leading_zeros :
-        M.IsAssociatedFunction.Trait Self "leading_zeros" leading_zeros.
+        M.IsAssociatedFunction.C Self "leading_zeros" leading_zeros.
       Admitted.
       Global Typeclasses Opaque leading_zeros.
       
@@ -25392,7 +25401,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_trailing_zeros :
-        M.IsAssociatedFunction.Trait Self "trailing_zeros" trailing_zeros.
+        M.IsAssociatedFunction.C Self "trailing_zeros" trailing_zeros.
       Admitted.
       Global Typeclasses Opaque trailing_zeros.
       
@@ -25440,7 +25449,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_count_ones :
-        M.IsAssociatedFunction.Trait Self "count_ones" count_ones.
+        M.IsAssociatedFunction.C Self "count_ones" count_ones.
       Admitted.
       Global Typeclasses Opaque count_ones.
       
@@ -25495,7 +25504,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_rotate_left :
-        M.IsAssociatedFunction.Trait Self "rotate_left" rotate_left.
+        M.IsAssociatedFunction.C Self "rotate_left" rotate_left.
       Admitted.
       Global Typeclasses Opaque rotate_left.
       
@@ -25550,7 +25559,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_rotate_right :
-        M.IsAssociatedFunction.Trait Self "rotate_right" rotate_right.
+        M.IsAssociatedFunction.C Self "rotate_right" rotate_right.
       Admitted.
       Global Typeclasses Opaque rotate_right.
       
@@ -25603,7 +25612,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_swap_bytes :
-        M.IsAssociatedFunction.Trait Self "swap_bytes" swap_bytes.
+        M.IsAssociatedFunction.C Self "swap_bytes" swap_bytes.
       Admitted.
       Global Typeclasses Opaque swap_bytes.
       
@@ -25656,7 +25665,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_reverse_bits :
-        M.IsAssociatedFunction.Trait Self "reverse_bits" reverse_bits.
+        M.IsAssociatedFunction.C Self "reverse_bits" reverse_bits.
       Admitted.
       Global Typeclasses Opaque reverse_bits.
       
@@ -25708,8 +25717,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_from_be :
-        M.IsAssociatedFunction.Trait Self "from_be" from_be.
+      Global Instance AssociatedFunction_from_be : M.IsAssociatedFunction.C Self "from_be" from_be.
       Admitted.
       Global Typeclasses Opaque from_be.
       
@@ -25761,8 +25769,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_from_le :
-        M.IsAssociatedFunction.Trait Self "from_le" from_le.
+      Global Instance AssociatedFunction_from_le : M.IsAssociatedFunction.C Self "from_le" from_le.
       Admitted.
       Global Typeclasses Opaque from_le.
       
@@ -25814,7 +25821,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_to_be : M.IsAssociatedFunction.Trait Self "to_be" to_be.
+      Global Instance AssociatedFunction_to_be : M.IsAssociatedFunction.C Self "to_be" to_be.
       Admitted.
       Global Typeclasses Opaque to_be.
       
@@ -25866,87 +25873,91 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_to_le : M.IsAssociatedFunction.Trait Self "to_le" to_le.
+      Global Instance AssociatedFunction_to_le : M.IsAssociatedFunction.C Self "to_le" to_le.
       Admitted.
       Global Typeclasses Opaque to_le.
       
       (*         pub const MIN: Self = Self::new(<$Int>::MIN).unwrap(); *)
       (* Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ] *)
-      Definition value_MIN : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              M.call_closure (|
-                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
-                M.get_associated_function (|
+      Definition value_MIN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
+              M.get_associated_function (|
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ] ],
+                "unwrap",
+                [],
+                []
+              |),
+              [
+                M.call_closure (|
                   Ty.apply
                     (Ty.path "core::option::Option")
                     []
                     [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ] ],
-                  "unwrap",
-                  [],
-                  []
-                |),
-                [
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ] ],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
-                      "new",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.get_constant "core::num::MIN" |) ]
-                  |)
-                ]
-              |)
-            |))).
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
+                    "new",
+                    [],
+                    []
+                  |),
+                  [
+                    M.read (|
+                      get_associated_constant (| Ty.path "isize", "MIN", Ty.path "isize" |)
+                    |)
+                  ]
+                |)
+              ]
+            |)
+          |))).
       
-      Global Instance AssociatedConstant_value_MIN :
-        M.IsAssociatedConstant.Trait Self "value_MIN" value_MIN.
+      Global Instance AssociatedConstant_value_MIN : M.IsAssociatedFunction.C Self "MIN" value_MIN.
       Admitted.
       Global Typeclasses Opaque value_MIN.
       
       (*         pub const MAX: Self = Self::new(<$Int>::MAX).unwrap(); *)
       (* Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ] *)
-      Definition value_MAX : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              M.call_closure (|
-                Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
-                M.get_associated_function (|
+      Definition value_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            M.call_closure (|
+              Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
+              M.get_associated_function (|
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ] ],
+                "unwrap",
+                [],
+                []
+              |),
+              [
+                M.call_closure (|
                   Ty.apply
                     (Ty.path "core::option::Option")
                     []
                     [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ] ],
-                  "unwrap",
-                  [],
-                  []
-                |),
-                [
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "core::option::Option")
-                      []
-                      [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ] ],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
-                      "new",
-                      [],
-                      []
-                    |),
-                    [ M.read (| M.get_constant "core::num::MAX" |) ]
-                  |)
-                ]
-              |)
-            |))).
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
+                    "new",
+                    [],
+                    []
+                  |),
+                  [
+                    M.read (|
+                      get_associated_constant (| Ty.path "isize", "MAX", Ty.path "isize" |)
+                    |)
+                  ]
+                |)
+              ]
+            |)
+          |))).
       
-      Global Instance AssociatedConstant_value_MAX :
-        M.IsAssociatedConstant.Trait Self "value_MAX" value_MAX.
+      Global Instance AssociatedConstant_value_MAX : M.IsAssociatedFunction.C Self "MAX" value_MAX.
       Admitted.
       Global Typeclasses Opaque value_MAX.
       
@@ -25991,7 +26002,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_abs : M.IsAssociatedFunction.Trait Self "abs" abs.
+      Global Instance AssociatedFunction_abs : M.IsAssociatedFunction.C Self "abs" abs.
       Admitted.
       Global Typeclasses Opaque abs.
       
@@ -26082,7 +26093,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_checked_abs :
-        M.IsAssociatedFunction.Trait Self "checked_abs" checked_abs.
+        M.IsAssociatedFunction.C Self "checked_abs" checked_abs.
       Admitted.
       Global Typeclasses Opaque checked_abs.
       
@@ -26158,7 +26169,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_overflowing_abs :
-        M.IsAssociatedFunction.Trait Self "overflowing_abs" overflowing_abs.
+        M.IsAssociatedFunction.C Self "overflowing_abs" overflowing_abs.
       Admitted.
       Global Typeclasses Opaque overflowing_abs.
       
@@ -26204,7 +26215,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_saturating_abs :
-        M.IsAssociatedFunction.Trait Self "saturating_abs" saturating_abs.
+        M.IsAssociatedFunction.C Self "saturating_abs" saturating_abs.
       Admitted.
       Global Typeclasses Opaque saturating_abs.
       
@@ -26250,7 +26261,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_wrapping_abs :
-        M.IsAssociatedFunction.Trait Self "wrapping_abs" wrapping_abs.
+        M.IsAssociatedFunction.C Self "wrapping_abs" wrapping_abs.
       Admitted.
       Global Typeclasses Opaque wrapping_abs.
       
@@ -26296,7 +26307,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_unsigned_abs :
-        M.IsAssociatedFunction.Trait Self "unsigned_abs" unsigned_abs.
+        M.IsAssociatedFunction.C Self "unsigned_abs" unsigned_abs.
       Admitted.
       Global Typeclasses Opaque unsigned_abs.
       
@@ -26330,7 +26341,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_is_positive :
-        M.IsAssociatedFunction.Trait Self "is_positive" is_positive.
+        M.IsAssociatedFunction.C Self "is_positive" is_positive.
       Admitted.
       Global Typeclasses Opaque is_positive.
       
@@ -26364,7 +26375,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_is_negative :
-        M.IsAssociatedFunction.Trait Self "is_negative" is_negative.
+        M.IsAssociatedFunction.C Self "is_negative" is_negative.
       Admitted.
       Global Typeclasses Opaque is_negative.
       
@@ -26464,7 +26475,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_checked_neg :
-        M.IsAssociatedFunction.Trait Self "checked_neg" checked_neg.
+        M.IsAssociatedFunction.C Self "checked_neg" checked_neg.
       Admitted.
       Global Typeclasses Opaque checked_neg.
       
@@ -26537,7 +26548,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_overflowing_neg :
-        M.IsAssociatedFunction.Trait Self "overflowing_neg" overflowing_neg.
+        M.IsAssociatedFunction.C Self "overflowing_neg" overflowing_neg.
       Admitted.
       Global Typeclasses Opaque overflowing_neg.
       
@@ -26601,14 +26612,18 @@ Module num.
                         fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                       ]
                     |) in
-                  M.get_constant "core::num::nonzero::MAX"
+                  get_associated_constant (|
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ],
+                    "MAX",
+                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "isize" ]
+                  |)
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Global Instance AssociatedFunction_saturating_neg :
-        M.IsAssociatedFunction.Trait Self "saturating_neg" saturating_neg.
+        M.IsAssociatedFunction.C Self "saturating_neg" saturating_neg.
       Admitted.
       Global Typeclasses Opaque saturating_neg.
       
@@ -26661,7 +26676,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_wrapping_neg :
-        M.IsAssociatedFunction.Trait Self "wrapping_neg" wrapping_neg.
+        M.IsAssociatedFunction.C Self "wrapping_neg" wrapping_neg.
       Admitted.
       Global Typeclasses Opaque wrapping_neg.
       
@@ -26772,7 +26787,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_checked_mul :
-        M.IsAssociatedFunction.Trait Self "checked_mul" checked_mul.
+        M.IsAssociatedFunction.C Self "checked_mul" checked_mul.
       Admitted.
       Global Typeclasses Opaque checked_mul.
       
@@ -26836,7 +26851,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_saturating_mul :
-        M.IsAssociatedFunction.Trait Self "saturating_mul" saturating_mul.
+        M.IsAssociatedFunction.C Self "saturating_mul" saturating_mul.
       Admitted.
       Global Typeclasses Opaque saturating_mul.
       
@@ -26893,7 +26908,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_unchecked_mul :
-        M.IsAssociatedFunction.Trait Self "unchecked_mul" unchecked_mul.
+        M.IsAssociatedFunction.C Self "unchecked_mul" unchecked_mul.
       Admitted.
       Global Typeclasses Opaque unchecked_mul.
       
@@ -26992,7 +27007,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_checked_pow :
-        M.IsAssociatedFunction.Trait Self "checked_pow" checked_pow.
+        M.IsAssociatedFunction.C Self "checked_pow" checked_pow.
       Admitted.
       Global Typeclasses Opaque checked_pow.
       
@@ -27047,7 +27062,7 @@ Module num.
         end.
       
       Global Instance AssociatedFunction_saturating_pow :
-        M.IsAssociatedFunction.Trait Self "saturating_pow" saturating_pow.
+        M.IsAssociatedFunction.C Self "saturating_pow" saturating_pow.
       Admitted.
       Global Typeclasses Opaque saturating_pow.
     End Impl_core_num_nonzero_NonZero_isize.

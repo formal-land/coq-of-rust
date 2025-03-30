@@ -79,7 +79,7 @@ Module intrinsics.
       end.
     
     Global Instance Instance_IsFunction_value_UnwindContinue :
-      M.IsFunction.Trait "core::intrinsics::mir::UnwindContinue" value_UnwindContinue.
+      M.IsFunction.C "core::intrinsics::mir::UnwindContinue" value_UnwindContinue.
     Admitted.
     Global Typeclasses Opaque value_UnwindContinue.
     
@@ -103,7 +103,7 @@ Module intrinsics.
       end.
     
     Global Instance Instance_IsFunction_value_UnwindUnreachable :
-      M.IsFunction.Trait "core::intrinsics::mir::UnwindUnreachable" value_UnwindUnreachable.
+      M.IsFunction.C "core::intrinsics::mir::UnwindUnreachable" value_UnwindUnreachable.
     Admitted.
     Global Typeclasses Opaque value_UnwindUnreachable.
     
@@ -128,7 +128,7 @@ Module intrinsics.
       end.
     
     Global Instance Instance_IsFunction_value_UnwindTerminate :
-      M.IsFunction.Trait "core::intrinsics::mir::UnwindTerminate" value_UnwindTerminate.
+      M.IsFunction.C "core::intrinsics::mir::UnwindTerminate" value_UnwindTerminate.
     Admitted.
     Global Typeclasses Opaque value_UnwindTerminate.
     
@@ -153,7 +153,7 @@ Module intrinsics.
       end.
     
     Global Instance Instance_IsFunction_value_UnwindCleanup :
-      M.IsFunction.Trait "core::intrinsics::mir::UnwindCleanup" value_UnwindCleanup.
+      M.IsFunction.C "core::intrinsics::mir::UnwindCleanup" value_UnwindCleanup.
     Admitted.
     Global Typeclasses Opaque value_UnwindCleanup.
     
@@ -182,7 +182,7 @@ Module intrinsics.
       end.
     
     Global Instance Instance_IsFunction_value_ReturnTo :
-      M.IsFunction.Trait "core::intrinsics::mir::ReturnTo" value_ReturnTo.
+      M.IsFunction.C "core::intrinsics::mir::ReturnTo" value_ReturnTo.
     Admitted.
     Global Typeclasses Opaque value_ReturnTo.
     
@@ -202,7 +202,7 @@ Module intrinsics.
       end.
     
     Global Instance Instance_IsFunction_value_Return :
-      M.IsFunction.Trait "core::intrinsics::mir::Return" value_Return.
+      M.IsFunction.C "core::intrinsics::mir::Return" value_Return.
     Admitted.
     Global Typeclasses Opaque value_Return.
     
@@ -223,7 +223,7 @@ Module intrinsics.
       end.
     
     Global Instance Instance_IsFunction_value_Goto :
-      M.IsFunction.Trait "core::intrinsics::mir::Goto" value_Goto.
+      M.IsFunction.C "core::intrinsics::mir::Goto" value_Goto.
     Admitted.
     Global Typeclasses Opaque value_Goto.
     
@@ -243,7 +243,7 @@ Module intrinsics.
       end.
     
     Global Instance Instance_IsFunction_value_Unreachable :
-      M.IsFunction.Trait "core::intrinsics::mir::Unreachable" value_Unreachable.
+      M.IsFunction.C "core::intrinsics::mir::Unreachable" value_Unreachable.
     Admitted.
     Global Typeclasses Opaque value_Unreachable.
     
@@ -266,7 +266,7 @@ Module intrinsics.
       end.
     
     Global Instance Instance_IsFunction_value_Drop :
-      M.IsFunction.Trait "core::intrinsics::mir::Drop" value_Drop.
+      M.IsFunction.C "core::intrinsics::mir::Drop" value_Drop.
     Admitted.
     Global Typeclasses Opaque value_Drop.
     
@@ -289,7 +289,7 @@ Module intrinsics.
       end.
     
     Global Instance Instance_IsFunction_value_Call :
-      M.IsFunction.Trait "core::intrinsics::mir::Call" value_Call.
+      M.IsFunction.C "core::intrinsics::mir::Call" value_Call.
     Admitted.
     Global Typeclasses Opaque value_Call.
     
@@ -310,7 +310,7 @@ Module intrinsics.
       end.
     
     Global Instance Instance_IsFunction_value_TailCall :
-      M.IsFunction.Trait "core::intrinsics::mir::TailCall" value_TailCall.
+      M.IsFunction.C "core::intrinsics::mir::TailCall" value_TailCall.
     Admitted.
     Global Typeclasses Opaque value_TailCall.
     
@@ -334,7 +334,7 @@ Module intrinsics.
       end.
     
     Global Instance Instance_IsFunction_value_UnwindResume :
-      M.IsFunction.Trait "core::intrinsics::mir::UnwindResume" value_UnwindResume.
+      M.IsFunction.C "core::intrinsics::mir::UnwindResume" value_UnwindResume.
     Admitted.
     Global Typeclasses Opaque value_UnwindResume.
     
@@ -355,7 +355,7 @@ Module intrinsics.
       end.
     
     Global Instance Instance_IsFunction_value_StorageLive :
-      M.IsFunction.Trait "core::intrinsics::mir::StorageLive" value_StorageLive.
+      M.IsFunction.C "core::intrinsics::mir::StorageLive" value_StorageLive.
     Admitted.
     Global Typeclasses Opaque value_StorageLive.
     
@@ -376,7 +376,7 @@ Module intrinsics.
       end.
     
     Global Instance Instance_IsFunction_value_StorageDead :
-      M.IsFunction.Trait "core::intrinsics::mir::StorageDead" value_StorageDead.
+      M.IsFunction.C "core::intrinsics::mir::StorageDead" value_StorageDead.
     Admitted.
     Global Typeclasses Opaque value_StorageDead.
     
@@ -397,7 +397,7 @@ Module intrinsics.
       end.
     
     Global Instance Instance_IsFunction_value_Assume :
-      M.IsFunction.Trait "core::intrinsics::mir::Assume" value_Assume.
+      M.IsFunction.C "core::intrinsics::mir::Assume" value_Assume.
     Admitted.
     Global Typeclasses Opaque value_Assume.
     
@@ -418,7 +418,7 @@ Module intrinsics.
       end.
     
     Global Instance Instance_IsFunction_value_Deinit :
-      M.IsFunction.Trait "core::intrinsics::mir::Deinit" value_Deinit.
+      M.IsFunction.C "core::intrinsics::mir::Deinit" value_Deinit.
     Admitted.
     Global Typeclasses Opaque value_Deinit.
     
@@ -439,7 +439,7 @@ Module intrinsics.
       end.
     
     Global Instance Instance_IsFunction_value_Checked :
-      M.IsFunction.Trait "core::intrinsics::mir::Checked" value_Checked.
+      M.IsFunction.C "core::intrinsics::mir::Checked" value_Checked.
     Admitted.
     Global Typeclasses Opaque value_Checked.
     
@@ -460,7 +460,7 @@ Module intrinsics.
       end.
     
     Global Instance Instance_IsFunction_value_Len :
-      M.IsFunction.Trait "core::intrinsics::mir::Len" value_Len.
+      M.IsFunction.C "core::intrinsics::mir::Len" value_Len.
     Admitted.
     Global Typeclasses Opaque value_Len.
     
@@ -481,7 +481,7 @@ Module intrinsics.
       end.
     
     Global Instance Instance_IsFunction_value_PtrMetadata :
-      M.IsFunction.Trait "core::intrinsics::mir::PtrMetadata" value_PtrMetadata.
+      M.IsFunction.C "core::intrinsics::mir::PtrMetadata" value_PtrMetadata.
     Admitted.
     Global Typeclasses Opaque value_PtrMetadata.
     
@@ -506,7 +506,7 @@ Module intrinsics.
       end.
     
     Global Instance Instance_IsFunction_value_CopyForDeref :
-      M.IsFunction.Trait "core::intrinsics::mir::CopyForDeref" value_CopyForDeref.
+      M.IsFunction.C "core::intrinsics::mir::CopyForDeref" value_CopyForDeref.
     Admitted.
     Global Typeclasses Opaque value_CopyForDeref.
     
@@ -527,7 +527,7 @@ Module intrinsics.
       end.
     
     Global Instance Instance_IsFunction_value_Retag :
-      M.IsFunction.Trait "core::intrinsics::mir::Retag" value_Retag.
+      M.IsFunction.C "core::intrinsics::mir::Retag" value_Retag.
     Admitted.
     Global Typeclasses Opaque value_Retag.
     
@@ -548,7 +548,7 @@ Module intrinsics.
       end.
     
     Global Instance Instance_IsFunction_value_Move :
-      M.IsFunction.Trait "core::intrinsics::mir::Move" value_Move.
+      M.IsFunction.C "core::intrinsics::mir::Move" value_Move.
     Admitted.
     Global Typeclasses Opaque value_Move.
     
@@ -569,7 +569,7 @@ Module intrinsics.
       end.
     
     Global Instance Instance_IsFunction_value_Static :
-      M.IsFunction.Trait "core::intrinsics::mir::Static" value_Static.
+      M.IsFunction.C "core::intrinsics::mir::Static" value_Static.
     Admitted.
     Global Typeclasses Opaque value_Static.
     
@@ -590,7 +590,7 @@ Module intrinsics.
       end.
     
     Global Instance Instance_IsFunction_value_StaticMut :
-      M.IsFunction.Trait "core::intrinsics::mir::StaticMut" value_StaticMut.
+      M.IsFunction.C "core::intrinsics::mir::StaticMut" value_StaticMut.
     Admitted.
     Global Typeclasses Opaque value_StaticMut.
     
@@ -615,7 +615,7 @@ Module intrinsics.
       end.
     
     Global Instance Instance_IsFunction_value_Discriminant :
-      M.IsFunction.Trait "core::intrinsics::mir::Discriminant" value_Discriminant.
+      M.IsFunction.C "core::intrinsics::mir::Discriminant" value_Discriminant.
     Admitted.
     Global Typeclasses Opaque value_Discriminant.
     
@@ -641,7 +641,7 @@ Module intrinsics.
       end.
     
     Global Instance Instance_IsFunction_value_SetDiscriminant :
-      M.IsFunction.Trait "core::intrinsics::mir::SetDiscriminant" value_SetDiscriminant.
+      M.IsFunction.C "core::intrinsics::mir::SetDiscriminant" value_SetDiscriminant.
     Admitted.
     Global Typeclasses Opaque value_SetDiscriminant.
     
@@ -663,7 +663,7 @@ Module intrinsics.
       end.
     
     Global Instance Instance_IsFunction_value_Offset :
-      M.IsFunction.Trait "core::intrinsics::mir::Offset" value_Offset.
+      M.IsFunction.C "core::intrinsics::mir::Offset" value_Offset.
     Admitted.
     Global Typeclasses Opaque value_Offset.
     
@@ -685,7 +685,7 @@ Module intrinsics.
       end.
     
     Global Instance Instance_IsFunction_value_Field :
-      M.IsFunction.Trait "core::intrinsics::mir::Field" value_Field.
+      M.IsFunction.C "core::intrinsics::mir::Field" value_Field.
     Admitted.
     Global Typeclasses Opaque value_Field.
     
@@ -707,7 +707,7 @@ Module intrinsics.
       end.
     
     Global Instance Instance_IsFunction_value_Variant :
-      M.IsFunction.Trait "core::intrinsics::mir::Variant" value_Variant.
+      M.IsFunction.C "core::intrinsics::mir::Variant" value_Variant.
     Admitted.
     Global Typeclasses Opaque value_Variant.
     
@@ -732,7 +732,7 @@ Module intrinsics.
       end.
     
     Global Instance Instance_IsFunction_value_CastTransmute :
-      M.IsFunction.Trait "core::intrinsics::mir::CastTransmute" value_CastTransmute.
+      M.IsFunction.C "core::intrinsics::mir::CastTransmute" value_CastTransmute.
     Admitted.
     Global Typeclasses Opaque value_CastTransmute.
     
@@ -757,7 +757,7 @@ Module intrinsics.
       end.
     
     Global Instance Instance_IsFunction_value_CastPtrToPtr :
-      M.IsFunction.Trait "core::intrinsics::mir::CastPtrToPtr" value_CastPtrToPtr.
+      M.IsFunction.C "core::intrinsics::mir::CastPtrToPtr" value_CastPtrToPtr.
     Admitted.
     Global Typeclasses Opaque value_CastPtrToPtr.
     
@@ -782,7 +782,7 @@ Module intrinsics.
       end.
     
     Global Instance Instance_IsFunction___internal_make_place :
-      M.IsFunction.Trait "core::intrinsics::mir::__internal_make_place" __internal_make_place.
+      M.IsFunction.C "core::intrinsics::mir::__internal_make_place" __internal_make_place.
     Admitted.
     Global Typeclasses Opaque __internal_make_place.
     
@@ -804,7 +804,7 @@ Module intrinsics.
       end.
     
     Global Instance Instance_IsFunction___debuginfo :
-      M.IsFunction.Trait "core::intrinsics::mir::__debuginfo" __debuginfo.
+      M.IsFunction.C "core::intrinsics::mir::__debuginfo" __debuginfo.
     Admitted.
     Global Typeclasses Opaque __debuginfo.
   End mir.

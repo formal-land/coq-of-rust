@@ -101,7 +101,18 @@ Module eof.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.SubPointer.get_array_field (|
-                                M.get_constant "revm_bytecode::opcode::OPCODE_INFO",
+                                get_constant (|
+                                  "revm_bytecode::opcode::OPCODE_INFO",
+                                  Ty.apply
+                                    (Ty.path "array")
+                                    [ Value.Integer IntegerKind.Usize 256 ]
+                                    [
+                                      Ty.apply
+                                        (Ty.path "core::option::Option")
+                                        []
+                                        [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ]
+                                    ]
+                                |),
                                 M.cast (Ty.path "usize") (M.read (| op |))
                               |)
                             |)
@@ -925,7 +936,7 @@ Module eof.
       end.
     
     Global Instance Instance_IsFunction_print :
-      M.IsFunction.Trait "revm_bytecode::eof::printer::print" print.
+      M.IsFunction.C "revm_bytecode::eof::printer::print" print.
     Admitted.
     Global Typeclasses Opaque print.
   End printer.

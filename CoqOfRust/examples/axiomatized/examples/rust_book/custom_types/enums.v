@@ -40,10 +40,10 @@ Axiom IsDiscriminant_WebEvent_Click : M.IsDiscriminant "enums::WebEvent::Click" 
 
 Parameter inspect : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_inspect : M.IsFunction.Trait "enums::inspect" inspect.
+Global Instance Instance_IsFunction_inspect : M.IsFunction.C "enums::inspect" inspect.
 Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "enums::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "enums::main" main.
 Admitted.

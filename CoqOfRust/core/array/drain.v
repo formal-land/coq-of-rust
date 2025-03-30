@@ -106,7 +106,7 @@ Module array.
       end.
     
     Global Instance Instance_IsFunction_drain_array_with :
-      M.IsFunction.Trait "core::array::drain::drain_array_with" drain_array_with.
+      M.IsFunction.C "core::array::drain::drain_array_with" drain_array_with.
     Admitted.
     Global Typeclasses Opaque drain_array_with.
     

@@ -933,8 +933,10 @@ Module boxed.
                                 |);
                                 M.borrow (|
                                   Pointer.Kind.Ref,
-                                  M.get_constant
-                                    "alloc::boxed::convert::boxed_slice_as_array_unchecked::N"
+                                  get_constant (|
+                                    "alloc::boxed::convert::boxed_slice_as_array_unchecked::N",
+                                    Ty.path "usize"
+                                  |)
                                 |)
                               ]
                           |),
@@ -1079,7 +1081,7 @@ Module boxed.
       end.
     
     Global Instance Instance_IsFunction_boxed_slice_as_array_unchecked :
-      M.IsFunction.Trait
+      M.IsFunction.C
         "alloc::boxed::convert::boxed_slice_as_array_unchecked"
         boxed_slice_as_array_unchecked.
     Admitted.
@@ -1159,7 +1161,9 @@ Module boxed.
                                   |)
                                 ]
                               |),
-                              M.read (| M.get_constant "alloc::boxed::convert::N" |)
+                              M.read (|
+                                get_constant (| "alloc::boxed::convert::N", Ty.path "usize" |)
+                              |)
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1282,7 +1286,9 @@ Module boxed.
                                 |),
                                 [ M.borrow (| Pointer.Kind.Ref, vec |) ]
                               |),
-                              M.read (| M.get_constant "alloc::boxed::convert::N" |)
+                              M.read (|
+                                get_constant (| "alloc::boxed::convert::N", Ty.path "usize" |)
+                              |)
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1437,7 +1443,7 @@ Module boxed.
       
       Global Instance AssociatedFunction_downcast :
         forall (A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self A) "downcast" (downcast A).
+        M.IsAssociatedFunction.C (Self A) "downcast" (downcast A).
       Admitted.
       Global Typeclasses Opaque downcast.
       
@@ -1570,7 +1576,7 @@ Module boxed.
       
       Global Instance AssociatedFunction_downcast_unchecked :
         forall (A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self A) "downcast_unchecked" (downcast_unchecked A).
+        M.IsAssociatedFunction.C (Self A) "downcast_unchecked" (downcast_unchecked A).
       Admitted.
       Global Typeclasses Opaque downcast_unchecked.
     End Impl_alloc_boxed_Box_Dyn_core_any_Any_Trait_A.
@@ -1673,7 +1679,7 @@ Module boxed.
       
       Global Instance AssociatedFunction_downcast :
         forall (A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self A) "downcast" (downcast A).
+        M.IsAssociatedFunction.C (Self A) "downcast" (downcast A).
       Admitted.
       Global Typeclasses Opaque downcast.
       
@@ -1824,7 +1830,7 @@ Module boxed.
       
       Global Instance AssociatedFunction_downcast_unchecked :
         forall (A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self A) "downcast_unchecked" (downcast_unchecked A).
+        M.IsAssociatedFunction.C (Self A) "downcast_unchecked" (downcast_unchecked A).
       Admitted.
       Global Typeclasses Opaque downcast_unchecked.
     End Impl_alloc_boxed_Box_Dyn_core_any_Any_Trait_core_marker_Send_AutoTrait_A.
@@ -1940,7 +1946,7 @@ Module boxed.
       
       Global Instance AssociatedFunction_downcast :
         forall (A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self A) "downcast" (downcast A).
+        M.IsAssociatedFunction.C (Self A) "downcast" (downcast A).
       Admitted.
       Global Typeclasses Opaque downcast.
       
@@ -2099,7 +2105,7 @@ Module boxed.
       
       Global Instance AssociatedFunction_downcast_unchecked :
         forall (A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self A) "downcast_unchecked" (downcast_unchecked A).
+        M.IsAssociatedFunction.C (Self A) "downcast_unchecked" (downcast_unchecked A).
       Admitted.
       Global Typeclasses Opaque downcast_unchecked.
     End Impl_alloc_boxed_Box_Dyn_core_any_Any_Trait_core_marker_Sync_AutoTrait_core_marker_Send_AutoTrait_A.
@@ -2780,7 +2786,7 @@ Module boxed.
         end.
       
       Global Instance AssociatedFunction_downcast :
-        M.IsAssociatedFunction.Trait Self "downcast" downcast.
+        M.IsAssociatedFunction.C Self "downcast" downcast.
       Admitted.
       Global Typeclasses Opaque downcast.
     End Impl_Dyn_core_error_Error_Trait.
@@ -3003,7 +3009,7 @@ Module boxed.
         end.
       
       Global Instance AssociatedFunction_downcast :
-        M.IsAssociatedFunction.Trait Self "downcast" downcast.
+        M.IsAssociatedFunction.C Self "downcast" downcast.
       Admitted.
       Global Typeclasses Opaque downcast.
     End Impl_Dyn_core_error_Error_Trait_core_marker_Send_AutoTrait.
@@ -3237,7 +3243,7 @@ Module boxed.
         end.
       
       Global Instance AssociatedFunction_downcast :
-        M.IsAssociatedFunction.Trait Self "downcast" downcast.
+        M.IsAssociatedFunction.C Self "downcast" downcast.
       Admitted.
       Global Typeclasses Opaque downcast.
     End Impl_Dyn_core_error_Error_Trait_core_marker_Sync_AutoTrait_core_marker_Send_AutoTrait.

@@ -1204,4 +1204,30 @@ impl ArgDecl {
             }),
         ]
     }
+
+    pub(crate) fn polymorphic_function_params() -> Vec<Rc<Self>> {
+        vec![
+            ArgDecl::new(
+                Rc::new(ArgDeclVar::Simple {
+                    idents: vec!["ε".to_string()],
+                    ty: Some(Expression::just_name("list Value.t")),
+                }),
+                ArgSpecKind::Explicit,
+            ),
+            ArgDecl::new(
+                Rc::new(ArgDeclVar::Simple {
+                    idents: vec!["τ".to_string()],
+                    ty: Some(Expression::just_name("list Ty.t")),
+                }),
+                ArgSpecKind::Explicit,
+            ),
+            ArgDecl::new(
+                Rc::new(ArgDeclVar::Simple {
+                    idents: vec!["α".to_string()],
+                    ty: Some(Expression::just_name("list Value.t")),
+                }),
+                ArgSpecKind::Explicit,
+            ),
+        ]
+    }
 }

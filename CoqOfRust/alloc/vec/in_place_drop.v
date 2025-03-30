@@ -57,7 +57,7 @@ Module vec.
       
       Global Instance AssociatedFunction_len :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "len" (len T).
+        M.IsAssociatedFunction.C (Self T) "len" (len T).
       Admitted.
       Global Typeclasses Opaque len.
     End Impl_alloc_vec_in_place_drop_InPlaceDrop_T.

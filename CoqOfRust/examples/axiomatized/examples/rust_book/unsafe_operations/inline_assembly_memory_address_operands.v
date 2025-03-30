@@ -4,14 +4,14 @@ Require Import CoqOfRust.CoqOfRust.
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "inline_assembly_memory_address_operands::main" main.
+  M.IsFunction.C "inline_assembly_memory_address_operands::main" main.
 Admitted.
 
 Module main.
   Parameter load_fpu_control_word : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance Instance_IsFunction_load_fpu_control_word :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "inline_assembly_memory_address_operands::main::load_fpu_control_word"
       load_fpu_control_word.
   Admitted.

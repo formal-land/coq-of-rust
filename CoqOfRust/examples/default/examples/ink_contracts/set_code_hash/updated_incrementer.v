@@ -133,7 +133,7 @@ Module Impl_updated_incrementer_Env.
     end.
   
   Global Instance AssociatedFunction_set_code_hash :
-    M.IsAssociatedFunction.Trait Self "set_code_hash" set_code_hash.
+    M.IsAssociatedFunction.C Self "set_code_hash" set_code_hash.
   Admitted.
   Global Typeclasses Opaque set_code_hash.
 End Impl_updated_incrementer_Env.
@@ -168,8 +168,7 @@ Module Impl_updated_incrementer_Incrementer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_init_env :
-    M.IsAssociatedFunction.Trait Self "init_env" init_env.
+  Global Instance AssociatedFunction_init_env : M.IsAssociatedFunction.C Self "init_env" init_env.
   Admitted.
   Global Typeclasses Opaque init_env.
   
@@ -196,7 +195,7 @@ Module Impl_updated_incrementer_Incrementer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_env : M.IsAssociatedFunction.Trait Self "env" env.
+  Global Instance AssociatedFunction_env : M.IsAssociatedFunction.C Self "env" env.
   Admitted.
   Global Typeclasses Opaque env.
   
@@ -237,7 +236,7 @@ Module Impl_updated_incrementer_Incrementer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
   Admitted.
   Global Typeclasses Opaque new.
   
@@ -348,7 +347,7 @@ Module Impl_updated_incrementer_Incrementer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_inc : M.IsAssociatedFunction.Trait Self "inc" inc.
+  Global Instance AssociatedFunction_inc : M.IsAssociatedFunction.C Self "inc" inc.
   Admitted.
   Global Typeclasses Opaque inc.
   
@@ -372,7 +371,7 @@ Module Impl_updated_incrementer_Incrementer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_get : M.IsAssociatedFunction.Trait Self "get" get.
+  Global Instance AssociatedFunction_get : M.IsAssociatedFunction.C Self "get" get.
   Admitted.
   Global Typeclasses Opaque get.
   
@@ -555,8 +554,7 @@ Module Impl_updated_incrementer_Incrementer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_set_code :
-    M.IsAssociatedFunction.Trait Self "set_code" set_code.
+  Global Instance AssociatedFunction_set_code : M.IsAssociatedFunction.C Self "set_code" set_code.
   Admitted.
   Global Typeclasses Opaque set_code.
 End Impl_updated_incrementer_Incrementer.

@@ -2,169 +2,193 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module i128.
-  Definition value_MIN : Value.t :=
-    M.run_constant ltac:(M.monadic (M.get_constant "core::num::MIN")).
+  Definition value_MIN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (get_associated_constant (| Ty.path "i128", "MIN", Ty.path "i128" |))).
   
-  Axiom Constant_value_MIN : (M.get_constant "core::i128::MIN") = value_MIN.
-  Global Hint Rewrite Constant_value_MIN : constant_rewrites.
+  Global Instance Instance_IsConstant_value_MIN : M.IsFunction.C "core::i128::MIN" value_MIN.
+  Admitted.
+  Global Typeclasses Opaque value_MIN.
   
-  Definition value_MAX : Value.t :=
-    M.run_constant ltac:(M.monadic (M.get_constant "core::num::MAX")).
+  Definition value_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (get_associated_constant (| Ty.path "i128", "MAX", Ty.path "i128" |))).
   
-  Axiom Constant_value_MAX : (M.get_constant "core::i128::MAX") = value_MAX.
-  Global Hint Rewrite Constant_value_MAX : constant_rewrites.
+  Global Instance Instance_IsConstant_value_MAX : M.IsFunction.C "core::i128::MAX" value_MAX.
+  Admitted.
+  Global Typeclasses Opaque value_MAX.
 End i128.
 
 Module i16.
-  Definition value_MIN : Value.t :=
-    M.run_constant ltac:(M.monadic (M.get_constant "core::num::MIN")).
+  Definition value_MIN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (get_associated_constant (| Ty.path "i16", "MIN", Ty.path "i16" |))).
   
-  Axiom Constant_value_MIN : (M.get_constant "core::i16::MIN") = value_MIN.
-  Global Hint Rewrite Constant_value_MIN : constant_rewrites.
+  Global Instance Instance_IsConstant_value_MIN : M.IsFunction.C "core::i16::MIN" value_MIN.
+  Admitted.
+  Global Typeclasses Opaque value_MIN.
   
-  Definition value_MAX : Value.t :=
-    M.run_constant ltac:(M.monadic (M.get_constant "core::num::MAX")).
+  Definition value_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (get_associated_constant (| Ty.path "i16", "MAX", Ty.path "i16" |))).
   
-  Axiom Constant_value_MAX : (M.get_constant "core::i16::MAX") = value_MAX.
-  Global Hint Rewrite Constant_value_MAX : constant_rewrites.
+  Global Instance Instance_IsConstant_value_MAX : M.IsFunction.C "core::i16::MAX" value_MAX.
+  Admitted.
+  Global Typeclasses Opaque value_MAX.
 End i16.
 
 Module i32.
-  Definition value_MIN : Value.t :=
-    M.run_constant ltac:(M.monadic (M.get_constant "core::num::MIN")).
+  Definition value_MIN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (get_associated_constant (| Ty.path "i32", "MIN", Ty.path "i32" |))).
   
-  Axiom Constant_value_MIN : (M.get_constant "core::i32::MIN") = value_MIN.
-  Global Hint Rewrite Constant_value_MIN : constant_rewrites.
+  Global Instance Instance_IsConstant_value_MIN : M.IsFunction.C "core::i32::MIN" value_MIN.
+  Admitted.
+  Global Typeclasses Opaque value_MIN.
   
-  Definition value_MAX : Value.t :=
-    M.run_constant ltac:(M.monadic (M.get_constant "core::num::MAX")).
+  Definition value_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (get_associated_constant (| Ty.path "i32", "MAX", Ty.path "i32" |))).
   
-  Axiom Constant_value_MAX : (M.get_constant "core::i32::MAX") = value_MAX.
-  Global Hint Rewrite Constant_value_MAX : constant_rewrites.
+  Global Instance Instance_IsConstant_value_MAX : M.IsFunction.C "core::i32::MAX" value_MAX.
+  Admitted.
+  Global Typeclasses Opaque value_MAX.
 End i32.
 
 Module i64.
-  Definition value_MIN : Value.t :=
-    M.run_constant ltac:(M.monadic (M.get_constant "core::num::MIN")).
+  Definition value_MIN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (get_associated_constant (| Ty.path "i64", "MIN", Ty.path "i64" |))).
   
-  Axiom Constant_value_MIN : (M.get_constant "core::i64::MIN") = value_MIN.
-  Global Hint Rewrite Constant_value_MIN : constant_rewrites.
+  Global Instance Instance_IsConstant_value_MIN : M.IsFunction.C "core::i64::MIN" value_MIN.
+  Admitted.
+  Global Typeclasses Opaque value_MIN.
   
-  Definition value_MAX : Value.t :=
-    M.run_constant ltac:(M.monadic (M.get_constant "core::num::MAX")).
+  Definition value_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (get_associated_constant (| Ty.path "i64", "MAX", Ty.path "i64" |))).
   
-  Axiom Constant_value_MAX : (M.get_constant "core::i64::MAX") = value_MAX.
-  Global Hint Rewrite Constant_value_MAX : constant_rewrites.
+  Global Instance Instance_IsConstant_value_MAX : M.IsFunction.C "core::i64::MAX" value_MAX.
+  Admitted.
+  Global Typeclasses Opaque value_MAX.
 End i64.
 
 Module i8.
-  Definition value_MIN : Value.t :=
-    M.run_constant ltac:(M.monadic (M.get_constant "core::num::MIN")).
+  Definition value_MIN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (get_associated_constant (| Ty.path "i8", "MIN", Ty.path "i8" |))).
   
-  Axiom Constant_value_MIN : (M.get_constant "core::i8::MIN") = value_MIN.
-  Global Hint Rewrite Constant_value_MIN : constant_rewrites.
+  Global Instance Instance_IsConstant_value_MIN : M.IsFunction.C "core::i8::MIN" value_MIN.
+  Admitted.
+  Global Typeclasses Opaque value_MIN.
   
-  Definition value_MAX : Value.t :=
-    M.run_constant ltac:(M.monadic (M.get_constant "core::num::MAX")).
+  Definition value_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (get_associated_constant (| Ty.path "i8", "MAX", Ty.path "i8" |))).
   
-  Axiom Constant_value_MAX : (M.get_constant "core::i8::MAX") = value_MAX.
-  Global Hint Rewrite Constant_value_MAX : constant_rewrites.
+  Global Instance Instance_IsConstant_value_MAX : M.IsFunction.C "core::i8::MAX" value_MAX.
+  Admitted.
+  Global Typeclasses Opaque value_MAX.
 End i8.
 
 Module isize.
-  Definition value_MIN : Value.t :=
-    M.run_constant ltac:(M.monadic (M.get_constant "core::num::MIN")).
+  Definition value_MIN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (get_associated_constant (| Ty.path "isize", "MIN", Ty.path "isize" |))).
   
-  Axiom Constant_value_MIN : (M.get_constant "core::isize::MIN") = value_MIN.
-  Global Hint Rewrite Constant_value_MIN : constant_rewrites.
+  Global Instance Instance_IsConstant_value_MIN : M.IsFunction.C "core::isize::MIN" value_MIN.
+  Admitted.
+  Global Typeclasses Opaque value_MIN.
   
-  Definition value_MAX : Value.t :=
-    M.run_constant ltac:(M.monadic (M.get_constant "core::num::MAX")).
+  Definition value_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (get_associated_constant (| Ty.path "isize", "MAX", Ty.path "isize" |))).
   
-  Axiom Constant_value_MAX : (M.get_constant "core::isize::MAX") = value_MAX.
-  Global Hint Rewrite Constant_value_MAX : constant_rewrites.
+  Global Instance Instance_IsConstant_value_MAX : M.IsFunction.C "core::isize::MAX" value_MAX.
+  Admitted.
+  Global Typeclasses Opaque value_MAX.
 End isize.
 
 Module u128.
-  Definition value_MIN : Value.t :=
-    M.run_constant ltac:(M.monadic (M.get_constant "core::num::MIN")).
+  Definition value_MIN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (get_associated_constant (| Ty.path "u128", "MIN", Ty.path "u128" |))).
   
-  Axiom Constant_value_MIN : (M.get_constant "core::u128::MIN") = value_MIN.
-  Global Hint Rewrite Constant_value_MIN : constant_rewrites.
+  Global Instance Instance_IsConstant_value_MIN : M.IsFunction.C "core::u128::MIN" value_MIN.
+  Admitted.
+  Global Typeclasses Opaque value_MIN.
   
-  Definition value_MAX : Value.t :=
-    M.run_constant ltac:(M.monadic (M.get_constant "core::num::MAX")).
+  Definition value_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (get_associated_constant (| Ty.path "u128", "MAX", Ty.path "u128" |))).
   
-  Axiom Constant_value_MAX : (M.get_constant "core::u128::MAX") = value_MAX.
-  Global Hint Rewrite Constant_value_MAX : constant_rewrites.
+  Global Instance Instance_IsConstant_value_MAX : M.IsFunction.C "core::u128::MAX" value_MAX.
+  Admitted.
+  Global Typeclasses Opaque value_MAX.
 End u128.
 
 Module u16.
-  Definition value_MIN : Value.t :=
-    M.run_constant ltac:(M.monadic (M.get_constant "core::num::MIN")).
+  Definition value_MIN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (get_associated_constant (| Ty.path "u16", "MIN", Ty.path "u16" |))).
   
-  Axiom Constant_value_MIN : (M.get_constant "core::u16::MIN") = value_MIN.
-  Global Hint Rewrite Constant_value_MIN : constant_rewrites.
+  Global Instance Instance_IsConstant_value_MIN : M.IsFunction.C "core::u16::MIN" value_MIN.
+  Admitted.
+  Global Typeclasses Opaque value_MIN.
   
-  Definition value_MAX : Value.t :=
-    M.run_constant ltac:(M.monadic (M.get_constant "core::num::MAX")).
+  Definition value_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (get_associated_constant (| Ty.path "u16", "MAX", Ty.path "u16" |))).
   
-  Axiom Constant_value_MAX : (M.get_constant "core::u16::MAX") = value_MAX.
-  Global Hint Rewrite Constant_value_MAX : constant_rewrites.
+  Global Instance Instance_IsConstant_value_MAX : M.IsFunction.C "core::u16::MAX" value_MAX.
+  Admitted.
+  Global Typeclasses Opaque value_MAX.
 End u16.
 
 Module u32.
-  Definition value_MIN : Value.t :=
-    M.run_constant ltac:(M.monadic (M.get_constant "core::num::MIN")).
+  Definition value_MIN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (get_associated_constant (| Ty.path "u32", "MIN", Ty.path "u32" |))).
   
-  Axiom Constant_value_MIN : (M.get_constant "core::u32::MIN") = value_MIN.
-  Global Hint Rewrite Constant_value_MIN : constant_rewrites.
+  Global Instance Instance_IsConstant_value_MIN : M.IsFunction.C "core::u32::MIN" value_MIN.
+  Admitted.
+  Global Typeclasses Opaque value_MIN.
   
-  Definition value_MAX : Value.t :=
-    M.run_constant ltac:(M.monadic (M.get_constant "core::num::MAX")).
+  Definition value_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (get_associated_constant (| Ty.path "u32", "MAX", Ty.path "u32" |))).
   
-  Axiom Constant_value_MAX : (M.get_constant "core::u32::MAX") = value_MAX.
-  Global Hint Rewrite Constant_value_MAX : constant_rewrites.
+  Global Instance Instance_IsConstant_value_MAX : M.IsFunction.C "core::u32::MAX" value_MAX.
+  Admitted.
+  Global Typeclasses Opaque value_MAX.
 End u32.
 
 Module u64.
-  Definition value_MIN : Value.t :=
-    M.run_constant ltac:(M.monadic (M.get_constant "core::num::MIN")).
+  Definition value_MIN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (get_associated_constant (| Ty.path "u64", "MIN", Ty.path "u64" |))).
   
-  Axiom Constant_value_MIN : (M.get_constant "core::u64::MIN") = value_MIN.
-  Global Hint Rewrite Constant_value_MIN : constant_rewrites.
+  Global Instance Instance_IsConstant_value_MIN : M.IsFunction.C "core::u64::MIN" value_MIN.
+  Admitted.
+  Global Typeclasses Opaque value_MIN.
   
-  Definition value_MAX : Value.t :=
-    M.run_constant ltac:(M.monadic (M.get_constant "core::num::MAX")).
+  Definition value_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (get_associated_constant (| Ty.path "u64", "MAX", Ty.path "u64" |))).
   
-  Axiom Constant_value_MAX : (M.get_constant "core::u64::MAX") = value_MAX.
-  Global Hint Rewrite Constant_value_MAX : constant_rewrites.
+  Global Instance Instance_IsConstant_value_MAX : M.IsFunction.C "core::u64::MAX" value_MAX.
+  Admitted.
+  Global Typeclasses Opaque value_MAX.
 End u64.
 
 Module u8.
-  Definition value_MIN : Value.t :=
-    M.run_constant ltac:(M.monadic (M.get_constant "core::num::MIN")).
+  Definition value_MIN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (get_associated_constant (| Ty.path "u8", "MIN", Ty.path "u8" |))).
   
-  Axiom Constant_value_MIN : (M.get_constant "core::u8::MIN") = value_MIN.
-  Global Hint Rewrite Constant_value_MIN : constant_rewrites.
+  Global Instance Instance_IsConstant_value_MIN : M.IsFunction.C "core::u8::MIN" value_MIN.
+  Admitted.
+  Global Typeclasses Opaque value_MIN.
   
-  Definition value_MAX : Value.t :=
-    M.run_constant ltac:(M.monadic (M.get_constant "core::num::MAX")).
+  Definition value_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (get_associated_constant (| Ty.path "u8", "MAX", Ty.path "u8" |))).
   
-  Axiom Constant_value_MAX : (M.get_constant "core::u8::MAX") = value_MAX.
-  Global Hint Rewrite Constant_value_MAX : constant_rewrites.
+  Global Instance Instance_IsConstant_value_MAX : M.IsFunction.C "core::u8::MAX" value_MAX.
+  Admitted.
+  Global Typeclasses Opaque value_MAX.
 End u8.
 
 Module usize.
-  Definition value_MIN : Value.t :=
-    M.run_constant ltac:(M.monadic (M.get_constant "core::num::MIN")).
+  Definition value_MIN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (get_associated_constant (| Ty.path "usize", "MIN", Ty.path "usize" |))).
   
-  Axiom Constant_value_MIN : (M.get_constant "core::usize::MIN") = value_MIN.
-  Global Hint Rewrite Constant_value_MIN : constant_rewrites.
+  Global Instance Instance_IsConstant_value_MIN : M.IsFunction.C "core::usize::MIN" value_MIN.
+  Admitted.
+  Global Typeclasses Opaque value_MIN.
   
-  Definition value_MAX : Value.t :=
-    M.run_constant ltac:(M.monadic (M.get_constant "core::num::MAX")).
+  Definition value_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (get_associated_constant (| Ty.path "usize", "MAX", Ty.path "usize" |))).
   
-  Axiom Constant_value_MAX : (M.get_constant "core::usize::MAX") = value_MAX.
-  Global Hint Rewrite Constant_value_MAX : constant_rewrites.
+  Global Instance Instance_IsConstant_value_MAX : M.IsFunction.C "core::usize::MAX" value_MAX.
+  Admitted.
+  Global Typeclasses Opaque value_MAX.
 End usize.

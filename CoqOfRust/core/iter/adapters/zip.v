@@ -205,7 +205,7 @@ Module iter.
         
         Global Instance AssociatedFunction_new :
           forall (A B : Ty.t),
-          M.IsAssociatedFunction.Trait (Self A B) "new" (new A B).
+          M.IsAssociatedFunction.C (Self A B) "new" (new A B).
         Admitted.
         Global Typeclasses Opaque new.
         
@@ -365,7 +365,7 @@ Module iter.
         
         Global Instance AssociatedFunction_super_nth :
           forall (A B : Ty.t),
-          M.IsAssociatedFunction.Trait (Self A B) "super_nth" (super_nth A B).
+          M.IsAssociatedFunction.C (Self A B) "super_nth" (super_nth A B).
         Admitted.
         Global Typeclasses Opaque super_nth.
       End Impl_core_iter_adapters_zip_Zip_A_B.
@@ -483,8 +483,7 @@ Module iter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance Instance_IsFunction_zip :
-        M.IsFunction.Trait "core::iter::adapters::zip::zip" zip.
+      Global Instance Instance_IsFunction_zip : M.IsFunction.C "core::iter::adapters::zip::zip" zip.
       Admitted.
       Global Typeclasses Opaque zip.
       
@@ -3937,8 +3936,10 @@ Module iter.
                                     (M.alloc (|
                                       LogicalOp.and (|
                                         M.read (|
-                                          M.get_constant
-                                            "core::iter::adapters::zip::TrustedRandomAccessNoCoerce::MAY_HAVE_SIDE_EFFECT"
+                                          get_constant (|
+                                            "core::iter::adapters::zip::TrustedRandomAccessNoCoerce::MAY_HAVE_SIDE_EFFECT",
+                                            Ty.path "bool"
+                                          |)
                                         |),
                                         ltac:(M.monadic
                                           (BinOp.lt (|
@@ -4240,8 +4241,10 @@ Module iter.
                                       ltac:(M.monadic
                                         (let γ :=
                                           M.use
-                                            (M.get_constant
-                                              "core::iter::adapters::zip::TrustedRandomAccessNoCoerce::MAY_HAVE_SIDE_EFFECT") in
+                                            (get_constant (|
+                                              "core::iter::adapters::zip::TrustedRandomAccessNoCoerce::MAY_HAVE_SIDE_EFFECT",
+                                              Ty.path "bool"
+                                            |)) in
                                         let _ :=
                                           M.is_constant_or_break_match (|
                                             M.read (| γ |),
@@ -4296,8 +4299,10 @@ Module iter.
                                     ltac:(M.monadic
                                       (let γ :=
                                         M.use
-                                          (M.get_constant
-                                            "core::iter::adapters::zip::TrustedRandomAccessNoCoerce::MAY_HAVE_SIDE_EFFECT") in
+                                          (get_constant (|
+                                            "core::iter::adapters::zip::TrustedRandomAccessNoCoerce::MAY_HAVE_SIDE_EFFECT",
+                                            Ty.path "bool"
+                                          |)) in
                                       let _ :=
                                         M.is_constant_or_break_match (|
                                           M.read (| γ |),
@@ -4469,13 +4474,17 @@ Module iter.
                               (M.alloc (|
                                 LogicalOp.or (|
                                   M.read (|
-                                    M.get_constant
-                                      "core::iter::adapters::zip::TrustedRandomAccessNoCoerce::MAY_HAVE_SIDE_EFFECT"
+                                    get_constant (|
+                                      "core::iter::adapters::zip::TrustedRandomAccessNoCoerce::MAY_HAVE_SIDE_EFFECT",
+                                      Ty.path "bool"
+                                    |)
                                   |),
                                   ltac:(M.monadic
                                     (M.read (|
-                                      M.get_constant
-                                        "core::iter::adapters::zip::TrustedRandomAccessNoCoerce::MAY_HAVE_SIDE_EFFECT"
+                                      get_constant (|
+                                        "core::iter::adapters::zip::TrustedRandomAccessNoCoerce::MAY_HAVE_SIDE_EFFECT",
+                                        Ty.path "bool"
+                                      |)
                                     |)))
                                 |)
                               |)) in
@@ -4584,8 +4593,10 @@ Module iter.
                                                 (M.alloc (|
                                                   LogicalOp.and (|
                                                     M.read (|
-                                                      M.get_constant
-                                                        "core::iter::adapters::zip::TrustedRandomAccessNoCoerce::MAY_HAVE_SIDE_EFFECT"
+                                                      get_constant (|
+                                                        "core::iter::adapters::zip::TrustedRandomAccessNoCoerce::MAY_HAVE_SIDE_EFFECT",
+                                                        Ty.path "bool"
+                                                      |)
                                                     |),
                                                     ltac:(M.monadic
                                                       (BinOp.gt (|
@@ -4995,8 +5006,10 @@ Module iter.
                                               (M.alloc (|
                                                 LogicalOp.and (|
                                                   M.read (|
-                                                    M.get_constant
-                                                      "core::iter::adapters::zip::TrustedRandomAccessNoCoerce::MAY_HAVE_SIDE_EFFECT"
+                                                    get_constant (|
+                                                      "core::iter::adapters::zip::TrustedRandomAccessNoCoerce::MAY_HAVE_SIDE_EFFECT",
+                                                      Ty.path "bool"
+                                                    |)
                                                   |),
                                                   ltac:(M.monadic
                                                     (BinOp.gt (|
@@ -5394,23 +5407,31 @@ Module iter.
         
         (*     const MAY_HAVE_SIDE_EFFECT: bool = A::MAY_HAVE_SIDE_EFFECT || B::MAY_HAVE_SIDE_EFFECT; *)
         (* Ty.path "bool" *)
-        Definition value_MAY_HAVE_SIDE_EFFECT (A B : Ty.t) : Value.t :=
+        Definition value_MAY_HAVE_SIDE_EFFECT
+            (A B : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self A B in
-          M.run
-            ltac:(M.monadic
-              (M.alloc (|
-                LogicalOp.or (|
-                  M.read (|
-                    M.get_constant
-                      "core::iter::adapters::zip::TrustedRandomAccessNoCoerce::MAY_HAVE_SIDE_EFFECT"
-                  |),
-                  ltac:(M.monadic
-                    (M.read (|
-                      M.get_constant
-                        "core::iter::adapters::zip::TrustedRandomAccessNoCoerce::MAY_HAVE_SIDE_EFFECT"
-                    |)))
-                |)
-              |))).
+          ltac:(M.monadic
+            (M.alloc (|
+              LogicalOp.or (|
+                M.read (|
+                  get_constant (|
+                    "core::iter::adapters::zip::TrustedRandomAccessNoCoerce::MAY_HAVE_SIDE_EFFECT",
+                    Ty.path "bool"
+                  |)
+                |),
+                ltac:(M.monadic
+                  (M.read (|
+                    get_constant (|
+                      "core::iter::adapters::zip::TrustedRandomAccessNoCoerce::MAY_HAVE_SIDE_EFFECT",
+                      Ty.path "bool"
+                    |)
+                  |)))
+              |)
+            |))).
         
         Axiom Implements :
           forall (A B : Ty.t),
@@ -5420,9 +5441,7 @@ Module iter.
             (* Trait polymorphic types *) []
             (Self A B)
             (* Instance *)
-            [
-              ("value_MAY_HAVE_SIDE_EFFECT",
-                InstanceField.Constant (value_MAY_HAVE_SIDE_EFFECT A B))
+            [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Method (value_MAY_HAVE_SIDE_EFFECT A B))
             ].
       End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_where_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_A_where_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_B_for_core_iter_adapters_zip_Zip_A_B.
       
@@ -5585,22 +5604,42 @@ Module iter.
           (Ty.path "core::option::Option")
           []
           [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ] *)
-        Definition value_EXPAND_BY (A B : Ty.t) : Value.t :=
+        Definition value_EXPAND_BY
+            (A B : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self A B in
-          M.run
-            ltac:(M.monadic
-              (M.get_constant "core::iter::traits::marker::InPlaceIterable::EXPAND_BY")).
+          ltac:(M.monadic
+            (get_constant (|
+              "core::iter::traits::marker::InPlaceIterable::EXPAND_BY",
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
+            |))).
         
         (*     const MERGE_BY: Option<NonZero<usize>> = A::MERGE_BY; *)
         (* Ty.apply
           (Ty.path "core::option::Option")
           []
           [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ] *)
-        Definition value_MERGE_BY (A B : Ty.t) : Value.t :=
+        Definition value_MERGE_BY
+            (A B : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self A B in
-          M.run
-            ltac:(M.monadic
-              (M.get_constant "core::iter::traits::marker::InPlaceIterable::MERGE_BY")).
+          ltac:(M.monadic
+            (get_constant (|
+              "core::iter::traits::marker::InPlaceIterable::MERGE_BY",
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
+            |))).
         
         Axiom Implements :
           forall (A B : Ty.t),
@@ -5611,8 +5650,8 @@ Module iter.
             (Self A B)
             (* Instance *)
             [
-              ("value_EXPAND_BY", InstanceField.Constant (value_EXPAND_BY A B));
-              ("value_MERGE_BY", InstanceField.Constant (value_MERGE_BY A B))
+              ("value_EXPAND_BY", InstanceField.Method (value_EXPAND_BY A B));
+              ("value_MERGE_BY", InstanceField.Method (value_MERGE_BY A B))
             ].
       End Impl_core_iter_traits_marker_InPlaceIterable_where_core_iter_traits_marker_InPlaceIterable_A_for_core_iter_adapters_zip_Zip_A_B.
       
@@ -5935,7 +5974,7 @@ Module iter.
         end.
       
       Global Instance Instance_IsFunction_try_get_unchecked :
-        M.IsFunction.Trait "core::iter::adapters::zip::try_get_unchecked" try_get_unchecked.
+        M.IsFunction.C "core::iter::adapters::zip::try_get_unchecked" try_get_unchecked.
       Admitted.
       Global Typeclasses Opaque try_get_unchecked.
       
@@ -6345,7 +6384,15 @@ Module iter.
                               ltac:(M.monadic
                                 (M.alloc (|
                                   Value.Tuple
-                                    [ M.read (| M.get_constant "core::num::MAX" |); Value.Bool true
+                                    [
+                                      M.read (|
+                                        get_associated_constant (|
+                                          Ty.path "usize",
+                                          "MAX",
+                                          Ty.path "usize"
+                                        |)
+                                      |);
+                                      Value.Bool true
                                     ]
                                 |)))
                           ]

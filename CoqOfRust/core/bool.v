@@ -37,7 +37,7 @@ Module bool.
       end.
     
     Global Instance AssociatedFunction_then_some :
-      M.IsAssociatedFunction.Trait Self "then_some" then_some.
+      M.IsAssociatedFunction.C Self "then_some" then_some.
     Admitted.
     Global Typeclasses Opaque then_some.
     
@@ -88,7 +88,7 @@ Module bool.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_then_ : M.IsAssociatedFunction.Trait Self "then_" then_.
+    Global Instance AssociatedFunction_then_ : M.IsAssociatedFunction.C Self "then" then_.
     Admitted.
     Global Typeclasses Opaque then_.
   End Impl_bool.

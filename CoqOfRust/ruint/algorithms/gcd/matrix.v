@@ -340,23 +340,22 @@ Module algorithms.
         
         (*     pub const IDENTITY: Self = Self(1, 0, 0, 1, true); *)
         (* Ty.path "ruint::algorithms::gcd::matrix::Matrix" *)
-        Definition value_IDENTITY : Value.t :=
-          M.run
-            ltac:(M.monadic
-              (M.alloc (|
-                Value.StructTuple
-                  "ruint::algorithms::gcd::matrix::Matrix"
-                  [
-                    Value.Integer IntegerKind.U64 1;
-                    Value.Integer IntegerKind.U64 0;
-                    Value.Integer IntegerKind.U64 0;
-                    Value.Integer IntegerKind.U64 1;
-                    Value.Bool true
-                  ]
-              |))).
+        Definition value_IDENTITY (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          ltac:(M.monadic
+            (M.alloc (|
+              Value.StructTuple
+                "ruint::algorithms::gcd::matrix::Matrix"
+                [
+                  Value.Integer IntegerKind.U64 1;
+                  Value.Integer IntegerKind.U64 0;
+                  Value.Integer IntegerKind.U64 0;
+                  Value.Integer IntegerKind.U64 1;
+                  Value.Bool true
+                ]
+            |))).
         
         Global Instance AssociatedConstant_value_IDENTITY :
-          M.IsAssociatedConstant.Trait Self "value_IDENTITY" value_IDENTITY.
+          M.IsAssociatedFunction.C Self "IDENTITY" value_IDENTITY.
         Admitted.
         Global Typeclasses Opaque value_IDENTITY.
         
@@ -538,7 +537,7 @@ Module algorithms.
           end.
         
         Global Instance AssociatedFunction_compose :
-          M.IsAssociatedFunction.Trait Self "compose" compose.
+          M.IsAssociatedFunction.C Self "compose" compose.
         Admitted.
         Global Typeclasses Opaque compose.
         
@@ -590,7 +589,10 @@ Module algorithms.
                                   (M.alloc (|
                                     BinOp.eq (|
                                       M.read (|
-                                        M.get_constant "ruint::algorithms::gcd::matrix::apply::BITS"
+                                        get_constant (|
+                                          "ruint::algorithms::gcd::matrix::apply::BITS",
+                                          Ty.path "usize"
+                                        |)
                                       |),
                                       Value.Integer IntegerKind.Usize 0
                                     |)
@@ -988,7 +990,7 @@ Module algorithms.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Global Instance AssociatedFunction_apply : M.IsAssociatedFunction.Trait Self "apply" apply.
+        Global Instance AssociatedFunction_apply : M.IsAssociatedFunction.C Self "apply" apply.
         Admitted.
         Global Typeclasses Opaque apply.
         
@@ -1271,7 +1273,7 @@ Module algorithms.
           end.
         
         Global Instance AssociatedFunction_apply_u128 :
-          M.IsAssociatedFunction.Trait Self "apply_u128" apply_u128.
+          M.IsAssociatedFunction.C Self "apply_u128" apply_u128.
         Admitted.
         Global Typeclasses Opaque apply_u128.
         
@@ -1737,7 +1739,7 @@ Module algorithms.
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
-        Global Instance AssociatedFunction_from : M.IsAssociatedFunction.Trait Self "from" from.
+        Global Instance AssociatedFunction_from : M.IsAssociatedFunction.C Self "from" from.
         Admitted.
         Global Typeclasses Opaque from.
         
@@ -1849,7 +1851,11 @@ Module algorithms.
                                   M.read (|
                                     M.return_ (|
                                       M.read (|
-                                        M.get_constant "ruint::algorithms::gcd::matrix::IDENTITY"
+                                        get_associated_constant (|
+                                          Ty.path "ruint::algorithms::gcd::matrix::Matrix",
+                                          "IDENTITY",
+                                          Ty.path "ruint::algorithms::gcd::matrix::Matrix"
+                                        |)
                                       |)
                                     |)
                                   |)
@@ -2031,7 +2037,7 @@ Module algorithms.
           end.
         
         Global Instance AssociatedFunction_from_u64 :
-          M.IsAssociatedFunction.Trait Self "from_u64" from_u64.
+          M.IsAssociatedFunction.C Self "from_u64" from_u64.
         Admitted.
         Global Typeclasses Opaque from_u64.
         
@@ -2290,8 +2296,10 @@ Module algorithms.
                                     BinOp.lt (|
                                       M.read (| a1 |),
                                       M.read (|
-                                        M.get_constant
-                                          "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT"
+                                        get_constant (|
+                                          "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT",
+                                          Ty.path "u64"
+                                        |)
                                       |)
                                     |)
                                   |)) in
@@ -2305,7 +2313,11 @@ Module algorithms.
                                   M.read (|
                                     M.return_ (|
                                       M.read (|
-                                        M.get_constant "ruint::algorithms::gcd::matrix::IDENTITY"
+                                        get_associated_constant (|
+                                          Ty.path "ruint::algorithms::gcd::matrix::Matrix",
+                                          "IDENTITY",
+                                          Ty.path "ruint::algorithms::gcd::matrix::Matrix"
+                                        |)
                                       |)
                                     |)
                                   |)
@@ -2343,8 +2355,10 @@ Module algorithms.
                                     BinOp.lt (|
                                       M.read (| a2 |),
                                       M.read (|
-                                        M.get_constant
-                                          "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT"
+                                        get_constant (|
+                                          "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT",
+                                          Ty.path "u64"
+                                        |)
                                       |)
                                     |)
                                   |)) in
@@ -2365,8 +2379,10 @@ Module algorithms.
                                   BinOp.Wrap.rem (|
                                     M.read (| k2 |),
                                     M.read (|
-                                      M.get_constant
-                                        "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT"
+                                      get_constant (|
+                                        "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT",
+                                        Ty.path "u64"
+                                      |)
                                     |)
                                   |)
                                 |) in
@@ -2420,8 +2436,11 @@ Module algorithms.
                                           M.read (|
                                             M.return_ (|
                                               M.read (|
-                                                M.get_constant
-                                                  "ruint::algorithms::gcd::matrix::IDENTITY"
+                                                get_associated_constant (|
+                                                  Ty.path "ruint::algorithms::gcd::matrix::Matrix",
+                                                  "IDENTITY",
+                                                  Ty.path "ruint::algorithms::gcd::matrix::Matrix"
+                                                |)
                                               |)
                                             |)
                                           |)
@@ -2464,8 +2483,10 @@ Module algorithms.
                                         BinOp.ge (|
                                           M.read (| a3 |),
                                           M.read (|
-                                            M.get_constant
-                                              "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT"
+                                            get_constant (|
+                                              "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT",
+                                              Ty.path "u64"
+                                            |)
                                           |)
                                         |)
                                       |)) in
@@ -2647,8 +2668,10 @@ Module algorithms.
                                                   BinOp.lt (|
                                                     M.read (| a3 |),
                                                     M.read (|
-                                                      M.get_constant
-                                                        "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT"
+                                                      get_constant (|
+                                                        "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT",
+                                                        Ty.path "u64"
+                                                      |)
                                                     |)
                                                   |)
                                                 |)) in
@@ -2869,7 +2892,10 @@ Module algorithms.
                         BinOp.Wrap.rem (|
                           M.read (| k0 |),
                           M.read (|
-                            M.get_constant "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT"
+                            get_constant (|
+                              "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT",
+                              Ty.path "u64"
+                            |)
                           |)
                         |)
                       |) in
@@ -2878,7 +2904,10 @@ Module algorithms.
                         BinOp.Wrap.rem (|
                           M.read (| k1 |),
                           M.read (|
-                            M.get_constant "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT"
+                            get_constant (|
+                              "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT",
+                              Ty.path "u64"
+                            |)
                           |)
                         |)
                       |) in
@@ -2887,7 +2916,10 @@ Module algorithms.
                         BinOp.Wrap.rem (|
                           M.read (| k2 |),
                           M.read (|
-                            M.get_constant "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT"
+                            get_constant (|
+                              "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT",
+                              Ty.path "u64"
+                            |)
                           |)
                         |)
                       |) in
@@ -2896,7 +2928,10 @@ Module algorithms.
                         BinOp.Wrap.rem (|
                           M.read (| k3 |),
                           M.read (|
-                            M.get_constant "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT"
+                            get_constant (|
+                              "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT",
+                              Ty.path "u64"
+                            |)
                           |)
                         |)
                       |) in
@@ -2927,8 +2962,10 @@ Module algorithms.
                                                 BinOp.ge (|
                                                   M.read (| a2 |),
                                                   M.read (|
-                                                    M.get_constant
-                                                      "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT"
+                                                    get_constant (|
+                                                      "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT",
+                                                      Ty.path "u64"
+                                                    |)
                                                   |)
                                                 |)
                                               |)
@@ -2981,8 +3018,10 @@ Module algorithms.
                                                 BinOp.lt (|
                                                   M.read (| a3 |),
                                                   M.read (|
-                                                    M.get_constant
-                                                      "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT"
+                                                    get_constant (|
+                                                      "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT",
+                                                      Ty.path "u64"
+                                                    |)
                                                   |)
                                                 |)
                                               |)
@@ -3315,7 +3354,7 @@ Module algorithms.
           end.
         
         Global Instance AssociatedFunction_from_u64_prefix :
-          M.IsAssociatedFunction.Trait Self "from_u64_prefix" from_u64_prefix.
+          M.IsAssociatedFunction.C Self "from_u64_prefix" from_u64_prefix.
         Admitted.
         Global Typeclasses Opaque from_u64_prefix.
         
@@ -3466,7 +3505,11 @@ Module algorithms.
                                         M.borrow (| Pointer.Kind.Ref, q |);
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.get_constant "ruint::algorithms::gcd::matrix::IDENTITY"
+                                          get_associated_constant (|
+                                            Ty.path "ruint::algorithms::gcd::matrix::Matrix",
+                                            "IDENTITY",
+                                            Ty.path "ruint::algorithms::gcd::matrix::Matrix"
+                                          |)
                                         |)
                                       ]
                                     |)
@@ -3489,7 +3532,7 @@ Module algorithms.
           end.
         
         Global Instance AssociatedFunction_from_u128_prefix :
-          M.IsAssociatedFunction.Trait Self "from_u128_prefix" from_u128_prefix.
+          M.IsAssociatedFunction.C Self "from_u128_prefix" from_u128_prefix.
         Admitted.
         Global Typeclasses Opaque from_u128_prefix.
       End Impl_ruint_algorithms_gcd_matrix_Matrix.

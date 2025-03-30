@@ -80,7 +80,7 @@ Definition print_one (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : 
   end.
 
 Global Instance Instance_IsFunction_print_one :
-  M.IsFunction.Trait "scoping_rules_lifetimes_functions::print_one" print_one.
+  M.IsFunction.C "scoping_rules_lifetimes_functions::print_one" print_one.
 Admitted.
 Global Typeclasses Opaque print_one.
 
@@ -106,7 +106,7 @@ Definition add_one (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
   end.
 
 Global Instance Instance_IsFunction_add_one :
-  M.IsFunction.Trait "scoping_rules_lifetimes_functions::add_one" add_one.
+  M.IsFunction.C "scoping_rules_lifetimes_functions::add_one" add_one.
 Admitted.
 Global Typeclasses Opaque add_one.
 
@@ -210,7 +210,7 @@ Definition print_multi (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
   end.
 
 Global Instance Instance_IsFunction_print_multi :
-  M.IsFunction.Trait "scoping_rules_lifetimes_functions::print_multi" print_multi.
+  M.IsFunction.C "scoping_rules_lifetimes_functions::print_multi" print_multi.
 Admitted.
 Global Typeclasses Opaque print_multi.
 
@@ -230,7 +230,7 @@ Definition pass_x (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :
   end.
 
 Global Instance Instance_IsFunction_pass_x :
-  M.IsFunction.Trait "scoping_rules_lifetimes_functions::pass_x" pass_x.
+  M.IsFunction.C "scoping_rules_lifetimes_functions::pass_x" pass_x.
 Admitted.
 Global Typeclasses Opaque pass_x.
 
@@ -323,6 +323,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "scoping_rules_lifetimes_functions::main" main.
+  M.IsFunction.C "scoping_rules_lifetimes_functions::main" main.
 Admitted.
 Global Typeclasses Opaque main.

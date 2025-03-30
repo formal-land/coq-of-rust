@@ -47,13 +47,13 @@ End Impl_generics_associated_types_solution_Contains_for_generics_associated_typ
 Parameter difference : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_difference :
-  M.IsFunction.Trait "generics_associated_types_solution::difference" difference.
+  M.IsFunction.C "generics_associated_types_solution::difference" difference.
 Admitted.
 
 Parameter get_a : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_get_a :
-  M.IsFunction.Trait "generics_associated_types_solution::get_a" get_a.
+  M.IsFunction.C "generics_associated_types_solution::get_a" get_a.
 Admitted.
 
 (* Trait *)
@@ -83,11 +83,11 @@ End Impl_generics_associated_types_solution_TraitWithParams_I8_12_i32_T_bool_T_f
 Parameter get_output : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_get_output :
-  M.IsFunction.Trait "generics_associated_types_solution::get_output" get_output.
+  M.IsFunction.C "generics_associated_types_solution::get_output" get_output.
 Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "generics_associated_types_solution::main" main.
+  M.IsFunction.C "generics_associated_types_solution::main" main.
 Admitted.

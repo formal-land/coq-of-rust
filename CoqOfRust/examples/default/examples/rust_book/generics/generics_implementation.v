@@ -46,7 +46,7 @@ Module Impl_generics_implementation_Val.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_value : M.IsAssociatedFunction.Trait Self "value" value.
+  Global Instance AssociatedFunction_value : M.IsAssociatedFunction.C Self "value" value.
   Admitted.
   Global Typeclasses Opaque value.
 End Impl_generics_implementation_Val.
@@ -84,7 +84,7 @@ Module Impl_generics_implementation_GenVal_T.
   
   Global Instance AssociatedFunction_value :
     forall (T : Ty.t),
-    M.IsAssociatedFunction.Trait (Self T) "value" (value T).
+    M.IsAssociatedFunction.C (Self T) "value" (value T).
   Admitted.
   Global Typeclasses Opaque value.
 End Impl_generics_implementation_GenVal_T.
@@ -231,6 +231,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "generics_implementation::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "generics_implementation::main" main.
 Admitted.
 Global Typeclasses Opaque main.

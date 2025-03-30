@@ -55,7 +55,14 @@ Module modular.
                                   |),
                                   [
                                     M.borrow (| Pointer.Kind.Ref, modulus |);
-                                    M.borrow (| Pointer.Kind.Ref, M.get_constant "ruint::ZERO" |)
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      get_associated_constant (|
+                                        Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                        "ZERO",
+                                        Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                                      |)
+                                    |)
                                   ]
                                 |)
                               |)) in
@@ -63,7 +70,17 @@ Module modular.
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
-                              M.read (| M.return_ (| M.read (| M.get_constant "ruint::ZERO" |) |) |)
+                              M.read (|
+                                M.return_ (|
+                                  M.read (|
+                                    get_associated_constant (|
+                                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                      "ZERO",
+                                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                                    |)
+                                  |)
+                                |)
+                              |)
                             |)
                           |)));
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -126,7 +143,7 @@ Module modular.
     
     Global Instance AssociatedFunction_reduce_mod :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait (Self BITS LIMBS) "reduce_mod" (reduce_mod BITS LIMBS).
+      M.IsAssociatedFunction.C (Self BITS LIMBS) "reduce_mod" (reduce_mod BITS LIMBS).
     Admitted.
     Global Typeclasses Opaque reduce_mod.
     
@@ -273,7 +290,7 @@ Module modular.
     
     Global Instance AssociatedFunction_add_mod :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait (Self BITS LIMBS) "add_mod" (add_mod BITS LIMBS).
+      M.IsAssociatedFunction.C (Self BITS LIMBS) "add_mod" (add_mod BITS LIMBS).
     Admitted.
     Global Typeclasses Opaque add_mod.
     
@@ -343,7 +360,14 @@ Module modular.
                                   |),
                                   [
                                     M.borrow (| Pointer.Kind.Ref, modulus |);
-                                    M.borrow (| Pointer.Kind.Ref, M.get_constant "ruint::ZERO" |)
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      get_associated_constant (|
+                                        Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                        "ZERO",
+                                        Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                                      |)
+                                    |)
                                   ]
                                 |)
                               |)) in
@@ -351,7 +375,17 @@ Module modular.
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
-                              M.read (| M.return_ (| M.read (| M.get_constant "ruint::ZERO" |) |) |)
+                              M.read (|
+                                M.return_ (|
+                                  M.read (|
+                                    get_associated_constant (|
+                                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                      "ZERO",
+                                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                                    |)
+                                  |)
+                                |)
+                              |)
                             |)
                           |)));
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -384,7 +418,7 @@ Module modular.
                       [
                         BinOp.Wrap.mul (|
                           Value.Integer IntegerKind.Usize 2,
-                          M.read (| M.get_constant "ruint::modular::BITS" |)
+                          M.read (| get_constant (| "ruint::modular::BITS", Ty.path "usize" |) |)
                         |)
                       ]
                     |)
@@ -413,7 +447,12 @@ Module modular.
                                             BinOp.ge (|
                                               BinOp.Wrap.mul (|
                                                 Value.Integer IntegerKind.Usize 2,
-                                                M.read (| M.get_constant "ruint::modular::LIMBS" |)
+                                                M.read (|
+                                                  get_constant (|
+                                                    "ruint::modular::LIMBS",
+                                                    Ty.path "usize"
+                                                  |)
+                                                |)
                                               |),
                                               M.read (| product_len |)
                                             |)
@@ -635,7 +674,7 @@ Module modular.
     
     Global Instance AssociatedFunction_mul_mod :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait (Self BITS LIMBS) "mul_mod" (mul_mod BITS LIMBS).
+      M.IsAssociatedFunction.C (Self BITS LIMBS) "mul_mod" (mul_mod BITS LIMBS).
     Admitted.
     Global Typeclasses Opaque mul_mod.
     
@@ -701,7 +740,14 @@ Module modular.
                                     |),
                                     [
                                       M.borrow (| Pointer.Kind.Ref, modulus |);
-                                      M.borrow (| Pointer.Kind.Ref, M.get_constant "ruint::ZERO" |)
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        get_associated_constant (|
+                                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                          "ZERO",
+                                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                                        |)
+                                      |)
                                     ]
                                   |),
                                   ltac:(M.monadic
@@ -741,7 +787,17 @@ Module modular.
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
-                              M.read (| M.return_ (| M.read (| M.get_constant "ruint::ZERO" |) |) |)
+                              M.read (|
+                                M.return_ (|
+                                  M.read (|
+                                    get_associated_constant (|
+                                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                      "ZERO",
+                                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                                    |)
+                                  |)
+                                |)
+                              |)
                             |)
                           |)));
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -788,7 +844,11 @@ Module modular.
                                         M.borrow (| Pointer.Kind.Ref, exp |);
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.get_constant "ruint::ZERO"
+                                          get_associated_constant (|
+                                            Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                            "ZERO",
+                                            Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                                          |)
                                         |)
                                       ]
                                     |)
@@ -916,7 +976,7 @@ Module modular.
     
     Global Instance AssociatedFunction_pow_mod :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait (Self BITS LIMBS) "pow_mod" (pow_mod BITS LIMBS).
+      M.IsAssociatedFunction.C (Self BITS LIMBS) "pow_mod" (pow_mod BITS LIMBS).
     Admitted.
     Global Typeclasses Opaque pow_mod.
     
@@ -950,7 +1010,7 @@ Module modular.
     
     Global Instance AssociatedFunction_inv_mod :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait (Self BITS LIMBS) "inv_mod" (inv_mod BITS LIMBS).
+      M.IsAssociatedFunction.C (Self BITS LIMBS) "inv_mod" (inv_mod BITS LIMBS).
     Admitted.
     Global Typeclasses Opaque inv_mod.
     
@@ -1000,7 +1060,9 @@ Module modular.
                             M.use
                               (M.alloc (|
                                 BinOp.eq (|
-                                  M.read (| M.get_constant "ruint::modular::BITS" |),
+                                  M.read (|
+                                    get_constant (| "ruint::modular::BITS", Ty.path "usize" |)
+                                  |),
                                   Value.Integer IntegerKind.Usize 0
                                 |)
                               |)) in
@@ -1008,7 +1070,17 @@ Module modular.
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
-                              M.read (| M.return_ (| M.read (| M.get_constant "ruint::ZERO" |) |) |)
+                              M.read (|
+                                M.return_ (|
+                                  M.read (|
+                                    get_associated_constant (|
+                                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                      "ZERO",
+                                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                                    |)
+                                  |)
+                                |)
+                              |)
                             |)
                           |)));
                       fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
@@ -1047,7 +1119,10 @@ Module modular.
                               |)
                             |)
                           |);
-                          M.borrow (| Pointer.Kind.Ref, M.get_constant "core::num::MAX" |)
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            get_associated_constant (| Ty.path "u64", "MAX", Ty.path "u64" |)
+                          |)
                         ]
                     |),
                     [
@@ -1126,7 +1201,13 @@ Module modular.
                     ]
                   |) in
                 let~ result : Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] :=
-                  M.copy (| M.get_constant "ruint::ZERO" |) in
+                  M.copy (|
+                    get_associated_constant (|
+                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                      "ZERO",
+                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                    |)
+                  |) in
                 let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     M.call_closure (|
@@ -1277,7 +1358,7 @@ Module modular.
     
     Global Instance AssociatedFunction_mul_redc :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait (Self BITS LIMBS) "mul_redc" (mul_redc BITS LIMBS).
+      M.IsAssociatedFunction.C (Self BITS LIMBS) "mul_redc" (mul_redc BITS LIMBS).
     Admitted.
     Global Typeclasses Opaque mul_redc.
   End Impl_ruint_Uint_BITS_LIMBS.

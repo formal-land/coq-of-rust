@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Parameter decode_input : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_decode_input :
-  M.IsFunction.Trait "wildcard_selector::decode_input" decode_input.
+  M.IsFunction.C "wildcard_selector::decode_input" decode_input.
 Admitted.
 
 (* StructTuple
@@ -20,18 +20,17 @@ Module Impl_wildcard_selector_WildcardSelector.
   
   Parameter new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
   Admitted.
   
   Parameter wildcard : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_wildcard :
-    M.IsAssociatedFunction.Trait Self "wildcard" wildcard.
+  Global Instance AssociatedFunction_wildcard : M.IsAssociatedFunction.C Self "wildcard" wildcard.
   Admitted.
   
   Parameter wildcard_complement : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_wildcard_complement :
-    M.IsAssociatedFunction.Trait Self "wildcard_complement" wildcard_complement.
+    M.IsAssociatedFunction.C Self "wildcard_complement" wildcard_complement.
   Admitted.
 End Impl_wildcard_selector_WildcardSelector.

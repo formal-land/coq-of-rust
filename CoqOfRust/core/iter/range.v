@@ -388,7 +388,9 @@ Module iter.
                           None,
                           M.alloc (|
                             BinOp.Wrap.add (|
-                              M.read (| M.get_constant "core::num::MAX" |),
+                              M.read (|
+                                get_associated_constant (| Ty.path "u8", "MAX", Ty.path "u8" |)
+                              |),
                               Value.Integer IntegerKind.U8 1
                             |)
                           |),
@@ -475,7 +477,9 @@ Module iter.
                           None,
                           M.alloc (|
                             BinOp.Wrap.sub (|
-                              M.read (| M.get_constant "core::num::MIN" |),
+                              M.read (|
+                                get_associated_constant (| Ty.path "u8", "MIN", Ty.path "u8" |)
+                              |),
                               Value.Integer IntegerKind.U8 1
                             |)
                           |),
@@ -826,7 +830,9 @@ Module iter.
                           None,
                           M.alloc (|
                             BinOp.Wrap.add (|
-                              M.read (| M.get_constant "core::num::MAX" |),
+                              M.read (|
+                                get_associated_constant (| Ty.path "i8", "MAX", Ty.path "i8" |)
+                              |),
                               Value.Integer IntegerKind.I8 1
                             |)
                           |),
@@ -913,7 +919,9 @@ Module iter.
                           None,
                           M.alloc (|
                             BinOp.Wrap.sub (|
-                              M.read (| M.get_constant "core::num::MIN" |),
+                              M.read (|
+                                get_associated_constant (| Ty.path "i8", "MIN", Ty.path "i8" |)
+                              |),
                               Value.Integer IntegerKind.I8 1
                             |)
                           |),
@@ -1383,7 +1391,9 @@ Module iter.
                           None,
                           M.alloc (|
                             BinOp.Wrap.add (|
-                              M.read (| M.get_constant "core::num::MAX" |),
+                              M.read (|
+                                get_associated_constant (| Ty.path "u16", "MAX", Ty.path "u16" |)
+                              |),
                               Value.Integer IntegerKind.U16 1
                             |)
                           |),
@@ -1470,7 +1480,9 @@ Module iter.
                           None,
                           M.alloc (|
                             BinOp.Wrap.sub (|
-                              M.read (| M.get_constant "core::num::MIN" |),
+                              M.read (|
+                                get_associated_constant (| Ty.path "u16", "MIN", Ty.path "u16" |)
+                              |),
                               Value.Integer IntegerKind.U16 1
                             |)
                           |),
@@ -1821,7 +1833,9 @@ Module iter.
                           None,
                           M.alloc (|
                             BinOp.Wrap.add (|
-                              M.read (| M.get_constant "core::num::MAX" |),
+                              M.read (|
+                                get_associated_constant (| Ty.path "i16", "MAX", Ty.path "i16" |)
+                              |),
                               Value.Integer IntegerKind.I16 1
                             |)
                           |),
@@ -1908,7 +1922,9 @@ Module iter.
                           None,
                           M.alloc (|
                             BinOp.Wrap.sub (|
-                              M.read (| M.get_constant "core::num::MIN" |),
+                              M.read (|
+                                get_associated_constant (| Ty.path "i16", "MIN", Ty.path "i16" |)
+                              |),
                               Value.Integer IntegerKind.I16 1
                             |)
                           |),
@@ -2378,7 +2394,9 @@ Module iter.
                           None,
                           M.alloc (|
                             BinOp.Wrap.add (|
-                              M.read (| M.get_constant "core::num::MAX" |),
+                              M.read (|
+                                get_associated_constant (| Ty.path "u32", "MAX", Ty.path "u32" |)
+                              |),
                               Value.Integer IntegerKind.U32 1
                             |)
                           |),
@@ -2465,7 +2483,9 @@ Module iter.
                           None,
                           M.alloc (|
                             BinOp.Wrap.sub (|
-                              M.read (| M.get_constant "core::num::MIN" |),
+                              M.read (|
+                                get_associated_constant (| Ty.path "u32", "MIN", Ty.path "u32" |)
+                              |),
                               Value.Integer IntegerKind.U32 1
                             |)
                           |),
@@ -2816,7 +2836,9 @@ Module iter.
                           None,
                           M.alloc (|
                             BinOp.Wrap.add (|
-                              M.read (| M.get_constant "core::num::MAX" |),
+                              M.read (|
+                                get_associated_constant (| Ty.path "i32", "MAX", Ty.path "i32" |)
+                              |),
                               Value.Integer IntegerKind.I32 1
                             |)
                           |),
@@ -2903,7 +2925,9 @@ Module iter.
                           None,
                           M.alloc (|
                             BinOp.Wrap.sub (|
-                              M.read (| M.get_constant "core::num::MIN" |),
+                              M.read (|
+                                get_associated_constant (| Ty.path "i32", "MIN", Ty.path "i32" |)
+                              |),
                               Value.Integer IntegerKind.I32 1
                             |)
                           |),
@@ -3373,7 +3397,9 @@ Module iter.
                           None,
                           M.alloc (|
                             BinOp.Wrap.add (|
-                              M.read (| M.get_constant "core::num::MAX" |),
+                              M.read (|
+                                get_associated_constant (| Ty.path "u64", "MAX", Ty.path "u64" |)
+                              |),
                               Value.Integer IntegerKind.U64 1
                             |)
                           |),
@@ -3460,7 +3486,9 @@ Module iter.
                           None,
                           M.alloc (|
                             BinOp.Wrap.sub (|
-                              M.read (| M.get_constant "core::num::MIN" |),
+                              M.read (|
+                                get_associated_constant (| Ty.path "u64", "MIN", Ty.path "u64" |)
+                              |),
                               Value.Integer IntegerKind.U64 1
                             |)
                           |),
@@ -3811,7 +3839,9 @@ Module iter.
                           None,
                           M.alloc (|
                             BinOp.Wrap.add (|
-                              M.read (| M.get_constant "core::num::MAX" |),
+                              M.read (|
+                                get_associated_constant (| Ty.path "i64", "MAX", Ty.path "i64" |)
+                              |),
                               Value.Integer IntegerKind.I64 1
                             |)
                           |),
@@ -3898,7 +3928,9 @@ Module iter.
                           None,
                           M.alloc (|
                             BinOp.Wrap.sub (|
-                              M.read (| M.get_constant "core::num::MIN" |),
+                              M.read (|
+                                get_associated_constant (| Ty.path "i64", "MIN", Ty.path "i64" |)
+                              |),
                               Value.Integer IntegerKind.I64 1
                             |)
                           |),
@@ -4368,7 +4400,13 @@ Module iter.
                           None,
                           M.alloc (|
                             BinOp.Wrap.add (|
-                              M.read (| M.get_constant "core::num::MAX" |),
+                              M.read (|
+                                get_associated_constant (|
+                                  Ty.path "usize",
+                                  "MAX",
+                                  Ty.path "usize"
+                                |)
+                              |),
                               Value.Integer IntegerKind.Usize 1
                             |)
                           |),
@@ -4455,7 +4493,13 @@ Module iter.
                           None,
                           M.alloc (|
                             BinOp.Wrap.sub (|
-                              M.read (| M.get_constant "core::num::MIN" |),
+                              M.read (|
+                                get_associated_constant (|
+                                  Ty.path "usize",
+                                  "MIN",
+                                  Ty.path "usize"
+                                |)
+                              |),
                               Value.Integer IntegerKind.Usize 1
                             |)
                           |),
@@ -4807,7 +4851,13 @@ Module iter.
                           None,
                           M.alloc (|
                             BinOp.Wrap.add (|
-                              M.read (| M.get_constant "core::num::MAX" |),
+                              M.read (|
+                                get_associated_constant (|
+                                  Ty.path "isize",
+                                  "MAX",
+                                  Ty.path "isize"
+                                |)
+                              |),
                               Value.Integer IntegerKind.Isize 1
                             |)
                           |),
@@ -4894,7 +4944,13 @@ Module iter.
                           None,
                           M.alloc (|
                             BinOp.Wrap.sub (|
-                              M.read (| M.get_constant "core::num::MIN" |),
+                              M.read (|
+                                get_associated_constant (|
+                                  Ty.path "isize",
+                                  "MIN",
+                                  Ty.path "isize"
+                                |)
+                              |),
                               Value.Integer IntegerKind.Isize 1
                             |)
                           |),
@@ -5360,7 +5416,9 @@ Module iter.
                           None,
                           M.alloc (|
                             BinOp.Wrap.add (|
-                              M.read (| M.get_constant "core::num::MAX" |),
+                              M.read (|
+                                get_associated_constant (| Ty.path "u128", "MAX", Ty.path "u128" |)
+                              |),
                               Value.Integer IntegerKind.U128 1
                             |)
                           |),
@@ -5447,7 +5505,9 @@ Module iter.
                           None,
                           M.alloc (|
                             BinOp.Wrap.sub (|
-                              M.read (| M.get_constant "core::num::MIN" |),
+                              M.read (|
+                                get_associated_constant (| Ty.path "u128", "MIN", Ty.path "u128" |)
+                              |),
                               Value.Integer IntegerKind.U128 1
                             |)
                           |),
@@ -5604,7 +5664,13 @@ Module iter.
                               (M.alloc (|
                                 Value.Tuple
                                   [
-                                    M.read (| M.get_constant "core::num::MAX" |);
+                                    M.read (|
+                                      get_associated_constant (|
+                                        Ty.path "usize",
+                                        "MAX",
+                                        Ty.path "usize"
+                                      |)
+                                    |);
                                     Value.StructTuple "core::option::Option::None" []
                                   ]
                               |)))
@@ -5751,7 +5817,9 @@ Module iter.
                           None,
                           M.alloc (|
                             BinOp.Wrap.add (|
-                              M.read (| M.get_constant "core::num::MAX" |),
+                              M.read (|
+                                get_associated_constant (| Ty.path "i128", "MAX", Ty.path "i128" |)
+                              |),
                               Value.Integer IntegerKind.I128 1
                             |)
                           |),
@@ -5838,7 +5906,9 @@ Module iter.
                           None,
                           M.alloc (|
                             BinOp.Wrap.sub (|
-                              M.read (| M.get_constant "core::num::MIN" |),
+                              M.read (|
+                                get_associated_constant (| Ty.path "i128", "MIN", Ty.path "i128" |)
+                              |),
                               Value.Integer IntegerKind.I128 1
                             |)
                           |),
@@ -6051,7 +6121,13 @@ Module iter.
                                       (M.alloc (|
                                         Value.Tuple
                                           [
-                                            M.read (| M.get_constant "core::num::MAX" |);
+                                            M.read (|
+                                              get_associated_constant (|
+                                                Ty.path "usize",
+                                                "MAX",
+                                                Ty.path "usize"
+                                              |)
+                                            |);
                                             Value.StructTuple "core::option::Option::None" []
                                           ]
                                       |)))
@@ -6063,7 +6139,13 @@ Module iter.
                               M.alloc (|
                                 Value.Tuple
                                   [
-                                    M.read (| M.get_constant "core::num::MAX" |);
+                                    M.read (|
+                                      get_associated_constant (|
+                                        Ty.path "usize",
+                                        "MAX",
+                                        Ty.path "usize"
+                                      |)
+                                    |);
                                     Value.StructTuple "core::option::Option::None" []
                                   ]
                               |)))
@@ -6320,7 +6402,11 @@ Module iter.
                                                         Value.Tuple
                                                           [
                                                             M.read (|
-                                                              M.get_constant "core::num::MAX"
+                                                              get_associated_constant (|
+                                                                Ty.path "usize",
+                                                                "MAX",
+                                                                Ty.path "usize"
+                                                              |)
                                                             |);
                                                             Value.StructTuple
                                                               "core::option::Option::None"
@@ -6390,7 +6476,11 @@ Module iter.
                                                         Value.Tuple
                                                           [
                                                             M.read (|
-                                                              M.get_constant "core::num::MAX"
+                                                              get_associated_constant (|
+                                                                Ty.path "usize",
+                                                                "MAX",
+                                                                Ty.path "usize"
+                                                              |)
                                                             |);
                                                             Value.StructTuple
                                                               "core::option::Option::None"
@@ -6696,7 +6786,13 @@ Module iter.
                                   M.read (| res |),
                                   M.cast
                                     (Ty.path "u32")
-                                    (M.read (| M.get_constant "core::char::methods::MAX" |))
+                                    (M.read (|
+                                      get_associated_constant (|
+                                        Ty.path "char",
+                                        "MAX",
+                                        Ty.path "char"
+                                      |)
+                                    |))
                                 |)
                               |)) in
                           let _ :=
@@ -11331,8 +11427,12 @@ Module iter.
       
       (*             const MAY_HAVE_SIDE_EFFECT: bool = false; *)
       (* Ty.path "bool" *)
-      Definition value_MAY_HAVE_SIDE_EFFECT : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Bool false |))).
+      Definition value_MAY_HAVE_SIDE_EFFECT
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        ltac:(M.monadic (M.alloc (| Value.Bool false |))).
       
       Axiom Implements :
         M.IsTraitInstance
@@ -11341,7 +11441,7 @@ Module iter.
           (* Trait polymorphic types *) []
           Self
           (* Instance *)
-          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant value_MAY_HAVE_SIDE_EFFECT) ].
+          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Method value_MAY_HAVE_SIDE_EFFECT) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_ops_range_Range_usize.
     
     Module Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_ops_range_Range_u8.
@@ -11361,8 +11461,12 @@ Module iter.
       
       (*             const MAY_HAVE_SIDE_EFFECT: bool = false; *)
       (* Ty.path "bool" *)
-      Definition value_MAY_HAVE_SIDE_EFFECT : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Bool false |))).
+      Definition value_MAY_HAVE_SIDE_EFFECT
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        ltac:(M.monadic (M.alloc (| Value.Bool false |))).
       
       Axiom Implements :
         M.IsTraitInstance
@@ -11371,7 +11475,7 @@ Module iter.
           (* Trait polymorphic types *) []
           Self
           (* Instance *)
-          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant value_MAY_HAVE_SIDE_EFFECT) ].
+          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Method value_MAY_HAVE_SIDE_EFFECT) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_ops_range_Range_u8.
     
     Module Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_ops_range_Range_u16.
@@ -11391,8 +11495,12 @@ Module iter.
       
       (*             const MAY_HAVE_SIDE_EFFECT: bool = false; *)
       (* Ty.path "bool" *)
-      Definition value_MAY_HAVE_SIDE_EFFECT : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Bool false |))).
+      Definition value_MAY_HAVE_SIDE_EFFECT
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        ltac:(M.monadic (M.alloc (| Value.Bool false |))).
       
       Axiom Implements :
         M.IsTraitInstance
@@ -11401,7 +11509,7 @@ Module iter.
           (* Trait polymorphic types *) []
           Self
           (* Instance *)
-          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant value_MAY_HAVE_SIDE_EFFECT) ].
+          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Method value_MAY_HAVE_SIDE_EFFECT) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_ops_range_Range_u16.
     
     Module Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_ops_range_Range_isize.
@@ -11421,8 +11529,12 @@ Module iter.
       
       (*             const MAY_HAVE_SIDE_EFFECT: bool = false; *)
       (* Ty.path "bool" *)
-      Definition value_MAY_HAVE_SIDE_EFFECT : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Bool false |))).
+      Definition value_MAY_HAVE_SIDE_EFFECT
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        ltac:(M.monadic (M.alloc (| Value.Bool false |))).
       
       Axiom Implements :
         M.IsTraitInstance
@@ -11431,7 +11543,7 @@ Module iter.
           (* Trait polymorphic types *) []
           Self
           (* Instance *)
-          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant value_MAY_HAVE_SIDE_EFFECT) ].
+          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Method value_MAY_HAVE_SIDE_EFFECT) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_ops_range_Range_isize.
     
     Module Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_ops_range_Range_i8.
@@ -11451,8 +11563,12 @@ Module iter.
       
       (*             const MAY_HAVE_SIDE_EFFECT: bool = false; *)
       (* Ty.path "bool" *)
-      Definition value_MAY_HAVE_SIDE_EFFECT : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Bool false |))).
+      Definition value_MAY_HAVE_SIDE_EFFECT
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        ltac:(M.monadic (M.alloc (| Value.Bool false |))).
       
       Axiom Implements :
         M.IsTraitInstance
@@ -11461,7 +11577,7 @@ Module iter.
           (* Trait polymorphic types *) []
           Self
           (* Instance *)
-          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant value_MAY_HAVE_SIDE_EFFECT) ].
+          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Method value_MAY_HAVE_SIDE_EFFECT) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_ops_range_Range_i8.
     
     Module Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_ops_range_Range_i16.
@@ -11481,8 +11597,12 @@ Module iter.
       
       (*             const MAY_HAVE_SIDE_EFFECT: bool = false; *)
       (* Ty.path "bool" *)
-      Definition value_MAY_HAVE_SIDE_EFFECT : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Bool false |))).
+      Definition value_MAY_HAVE_SIDE_EFFECT
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        ltac:(M.monadic (M.alloc (| Value.Bool false |))).
       
       Axiom Implements :
         M.IsTraitInstance
@@ -11491,7 +11611,7 @@ Module iter.
           (* Trait polymorphic types *) []
           Self
           (* Instance *)
-          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant value_MAY_HAVE_SIDE_EFFECT) ].
+          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Method value_MAY_HAVE_SIDE_EFFECT) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_ops_range_Range_i16.
     
     Module Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_ops_range_Range_u32.
@@ -11511,8 +11631,12 @@ Module iter.
       
       (*             const MAY_HAVE_SIDE_EFFECT: bool = false; *)
       (* Ty.path "bool" *)
-      Definition value_MAY_HAVE_SIDE_EFFECT : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Bool false |))).
+      Definition value_MAY_HAVE_SIDE_EFFECT
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        ltac:(M.monadic (M.alloc (| Value.Bool false |))).
       
       Axiom Implements :
         M.IsTraitInstance
@@ -11521,7 +11645,7 @@ Module iter.
           (* Trait polymorphic types *) []
           Self
           (* Instance *)
-          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant value_MAY_HAVE_SIDE_EFFECT) ].
+          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Method value_MAY_HAVE_SIDE_EFFECT) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_ops_range_Range_u32.
     
     Module Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_ops_range_Range_i32.
@@ -11541,8 +11665,12 @@ Module iter.
       
       (*             const MAY_HAVE_SIDE_EFFECT: bool = false; *)
       (* Ty.path "bool" *)
-      Definition value_MAY_HAVE_SIDE_EFFECT : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Bool false |))).
+      Definition value_MAY_HAVE_SIDE_EFFECT
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        ltac:(M.monadic (M.alloc (| Value.Bool false |))).
       
       Axiom Implements :
         M.IsTraitInstance
@@ -11551,7 +11679,7 @@ Module iter.
           (* Trait polymorphic types *) []
           Self
           (* Instance *)
-          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant value_MAY_HAVE_SIDE_EFFECT) ].
+          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Method value_MAY_HAVE_SIDE_EFFECT) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_ops_range_Range_i32.
     
     Module Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_ops_range_Range_u64.
@@ -11571,8 +11699,12 @@ Module iter.
       
       (*             const MAY_HAVE_SIDE_EFFECT: bool = false; *)
       (* Ty.path "bool" *)
-      Definition value_MAY_HAVE_SIDE_EFFECT : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Bool false |))).
+      Definition value_MAY_HAVE_SIDE_EFFECT
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        ltac:(M.monadic (M.alloc (| Value.Bool false |))).
       
       Axiom Implements :
         M.IsTraitInstance
@@ -11581,7 +11713,7 @@ Module iter.
           (* Trait polymorphic types *) []
           Self
           (* Instance *)
-          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant value_MAY_HAVE_SIDE_EFFECT) ].
+          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Method value_MAY_HAVE_SIDE_EFFECT) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_ops_range_Range_u64.
     
     Module Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_ops_range_Range_i64.
@@ -11601,8 +11733,12 @@ Module iter.
       
       (*             const MAY_HAVE_SIDE_EFFECT: bool = false; *)
       (* Ty.path "bool" *)
-      Definition value_MAY_HAVE_SIDE_EFFECT : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.Bool false |))).
+      Definition value_MAY_HAVE_SIDE_EFFECT
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        ltac:(M.monadic (M.alloc (| Value.Bool false |))).
       
       Axiom Implements :
         M.IsTraitInstance
@@ -11611,7 +11747,7 @@ Module iter.
           (* Trait polymorphic types *) []
           Self
           (* Instance *)
-          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant value_MAY_HAVE_SIDE_EFFECT) ].
+          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Method value_MAY_HAVE_SIDE_EFFECT) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_ops_range_Range_i64.
     
     Module Impl_core_iter_traits_exact_size_ExactSizeIterator_for_core_ops_range_RangeInclusive_u8.
@@ -11901,7 +12037,7 @@ Module iter.
             (let self := M.alloc (| self |) in
             Value.Tuple
               [
-                M.read (| M.get_constant "core::num::MAX" |);
+                M.read (| get_associated_constant (| Ty.path "usize", "MAX", Ty.path "usize" |) |);
                 Value.StructTuple "core::option::Option::None" []
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"

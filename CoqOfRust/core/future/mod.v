@@ -204,7 +204,7 @@ Module future.
     end.
   
   Global Instance Instance_IsFunction_get_context :
-    M.IsFunction.Trait "core::future::get_context" get_context.
+    M.IsFunction.C "core::future::get_context" get_context.
   Admitted.
   Global Typeclasses Opaque get_context.
 End future.

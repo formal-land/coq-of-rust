@@ -51,11 +51,10 @@ End Impl_returning_traits_with_dyn_Animal_for_returning_traits_with_dyn_Cow.
 Parameter random_animal : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_random_animal :
-  M.IsFunction.Trait "returning_traits_with_dyn::random_animal" random_animal.
+  M.IsFunction.C "returning_traits_with_dyn::random_animal" random_animal.
 Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "returning_traits_with_dyn::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "returning_traits_with_dyn::main" main.
 Admitted.

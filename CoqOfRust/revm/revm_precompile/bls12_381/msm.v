@@ -3,156 +3,156 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module bls12_381.
   Module msm.
-    Definition value_MSM_MULTIPLIER : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1000 |))).
+    Definition value_MSM_MULTIPLIER (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1000 |))).
     
-    Axiom Constant_value_MSM_MULTIPLIER :
-      (M.get_constant "revm_precompile::bls12_381::msm::MSM_MULTIPLIER") = value_MSM_MULTIPLIER.
-    Global Hint Rewrite Constant_value_MSM_MULTIPLIER : constant_rewrites.
+    Global Instance Instance_IsConstant_value_MSM_MULTIPLIER :
+      M.IsFunction.C "revm_precompile::bls12_381::msm::MSM_MULTIPLIER" value_MSM_MULTIPLIER.
+    Admitted.
+    Global Typeclasses Opaque value_MSM_MULTIPLIER.
     
-    Definition value_MSM_DISCOUNT_TABLE : Value.t :=
-      M.run_constant
-        ltac:(M.monadic
-          (M.alloc (|
-            M.alloc (|
-              Value.Array
-                [
-                  Value.Integer IntegerKind.U16 1200;
-                  Value.Integer IntegerKind.U16 888;
-                  Value.Integer IntegerKind.U16 764;
-                  Value.Integer IntegerKind.U16 641;
-                  Value.Integer IntegerKind.U16 594;
-                  Value.Integer IntegerKind.U16 547;
-                  Value.Integer IntegerKind.U16 500;
-                  Value.Integer IntegerKind.U16 453;
-                  Value.Integer IntegerKind.U16 438;
-                  Value.Integer IntegerKind.U16 423;
-                  Value.Integer IntegerKind.U16 408;
-                  Value.Integer IntegerKind.U16 394;
-                  Value.Integer IntegerKind.U16 379;
-                  Value.Integer IntegerKind.U16 364;
-                  Value.Integer IntegerKind.U16 349;
-                  Value.Integer IntegerKind.U16 334;
-                  Value.Integer IntegerKind.U16 330;
-                  Value.Integer IntegerKind.U16 326;
-                  Value.Integer IntegerKind.U16 322;
-                  Value.Integer IntegerKind.U16 318;
-                  Value.Integer IntegerKind.U16 314;
-                  Value.Integer IntegerKind.U16 310;
-                  Value.Integer IntegerKind.U16 306;
-                  Value.Integer IntegerKind.U16 302;
-                  Value.Integer IntegerKind.U16 298;
-                  Value.Integer IntegerKind.U16 294;
-                  Value.Integer IntegerKind.U16 289;
-                  Value.Integer IntegerKind.U16 285;
-                  Value.Integer IntegerKind.U16 281;
-                  Value.Integer IntegerKind.U16 277;
-                  Value.Integer IntegerKind.U16 273;
-                  Value.Integer IntegerKind.U16 269;
-                  Value.Integer IntegerKind.U16 268;
-                  Value.Integer IntegerKind.U16 266;
-                  Value.Integer IntegerKind.U16 265;
-                  Value.Integer IntegerKind.U16 263;
-                  Value.Integer IntegerKind.U16 262;
-                  Value.Integer IntegerKind.U16 260;
-                  Value.Integer IntegerKind.U16 259;
-                  Value.Integer IntegerKind.U16 257;
-                  Value.Integer IntegerKind.U16 256;
-                  Value.Integer IntegerKind.U16 254;
-                  Value.Integer IntegerKind.U16 253;
-                  Value.Integer IntegerKind.U16 251;
-                  Value.Integer IntegerKind.U16 250;
-                  Value.Integer IntegerKind.U16 248;
-                  Value.Integer IntegerKind.U16 247;
-                  Value.Integer IntegerKind.U16 245;
-                  Value.Integer IntegerKind.U16 244;
-                  Value.Integer IntegerKind.U16 242;
-                  Value.Integer IntegerKind.U16 241;
-                  Value.Integer IntegerKind.U16 239;
-                  Value.Integer IntegerKind.U16 238;
-                  Value.Integer IntegerKind.U16 236;
-                  Value.Integer IntegerKind.U16 235;
-                  Value.Integer IntegerKind.U16 233;
-                  Value.Integer IntegerKind.U16 232;
-                  Value.Integer IntegerKind.U16 231;
-                  Value.Integer IntegerKind.U16 229;
-                  Value.Integer IntegerKind.U16 228;
-                  Value.Integer IntegerKind.U16 226;
-                  Value.Integer IntegerKind.U16 225;
-                  Value.Integer IntegerKind.U16 223;
-                  Value.Integer IntegerKind.U16 222;
-                  Value.Integer IntegerKind.U16 221;
-                  Value.Integer IntegerKind.U16 220;
-                  Value.Integer IntegerKind.U16 219;
-                  Value.Integer IntegerKind.U16 219;
-                  Value.Integer IntegerKind.U16 218;
-                  Value.Integer IntegerKind.U16 217;
-                  Value.Integer IntegerKind.U16 216;
-                  Value.Integer IntegerKind.U16 216;
-                  Value.Integer IntegerKind.U16 215;
-                  Value.Integer IntegerKind.U16 214;
-                  Value.Integer IntegerKind.U16 213;
-                  Value.Integer IntegerKind.U16 213;
-                  Value.Integer IntegerKind.U16 212;
-                  Value.Integer IntegerKind.U16 211;
-                  Value.Integer IntegerKind.U16 211;
-                  Value.Integer IntegerKind.U16 210;
-                  Value.Integer IntegerKind.U16 209;
-                  Value.Integer IntegerKind.U16 208;
-                  Value.Integer IntegerKind.U16 208;
-                  Value.Integer IntegerKind.U16 207;
-                  Value.Integer IntegerKind.U16 206;
-                  Value.Integer IntegerKind.U16 205;
-                  Value.Integer IntegerKind.U16 205;
-                  Value.Integer IntegerKind.U16 204;
-                  Value.Integer IntegerKind.U16 203;
-                  Value.Integer IntegerKind.U16 202;
-                  Value.Integer IntegerKind.U16 202;
-                  Value.Integer IntegerKind.U16 201;
-                  Value.Integer IntegerKind.U16 200;
-                  Value.Integer IntegerKind.U16 199;
-                  Value.Integer IntegerKind.U16 199;
-                  Value.Integer IntegerKind.U16 198;
-                  Value.Integer IntegerKind.U16 197;
-                  Value.Integer IntegerKind.U16 196;
-                  Value.Integer IntegerKind.U16 196;
-                  Value.Integer IntegerKind.U16 195;
-                  Value.Integer IntegerKind.U16 194;
-                  Value.Integer IntegerKind.U16 193;
-                  Value.Integer IntegerKind.U16 193;
-                  Value.Integer IntegerKind.U16 192;
-                  Value.Integer IntegerKind.U16 191;
-                  Value.Integer IntegerKind.U16 191;
-                  Value.Integer IntegerKind.U16 190;
-                  Value.Integer IntegerKind.U16 189;
-                  Value.Integer IntegerKind.U16 188;
-                  Value.Integer IntegerKind.U16 188;
-                  Value.Integer IntegerKind.U16 187;
-                  Value.Integer IntegerKind.U16 186;
-                  Value.Integer IntegerKind.U16 185;
-                  Value.Integer IntegerKind.U16 185;
-                  Value.Integer IntegerKind.U16 184;
-                  Value.Integer IntegerKind.U16 183;
-                  Value.Integer IntegerKind.U16 182;
-                  Value.Integer IntegerKind.U16 182;
-                  Value.Integer IntegerKind.U16 181;
-                  Value.Integer IntegerKind.U16 180;
-                  Value.Integer IntegerKind.U16 179;
-                  Value.Integer IntegerKind.U16 179;
-                  Value.Integer IntegerKind.U16 178;
-                  Value.Integer IntegerKind.U16 177;
-                  Value.Integer IntegerKind.U16 176;
-                  Value.Integer IntegerKind.U16 176;
-                  Value.Integer IntegerKind.U16 175;
-                  Value.Integer IntegerKind.U16 174
-                ]
-            |)
-          |))).
+    Definition value_MSM_DISCOUNT_TABLE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          M.alloc (|
+            Value.Array
+              [
+                Value.Integer IntegerKind.U16 1200;
+                Value.Integer IntegerKind.U16 888;
+                Value.Integer IntegerKind.U16 764;
+                Value.Integer IntegerKind.U16 641;
+                Value.Integer IntegerKind.U16 594;
+                Value.Integer IntegerKind.U16 547;
+                Value.Integer IntegerKind.U16 500;
+                Value.Integer IntegerKind.U16 453;
+                Value.Integer IntegerKind.U16 438;
+                Value.Integer IntegerKind.U16 423;
+                Value.Integer IntegerKind.U16 408;
+                Value.Integer IntegerKind.U16 394;
+                Value.Integer IntegerKind.U16 379;
+                Value.Integer IntegerKind.U16 364;
+                Value.Integer IntegerKind.U16 349;
+                Value.Integer IntegerKind.U16 334;
+                Value.Integer IntegerKind.U16 330;
+                Value.Integer IntegerKind.U16 326;
+                Value.Integer IntegerKind.U16 322;
+                Value.Integer IntegerKind.U16 318;
+                Value.Integer IntegerKind.U16 314;
+                Value.Integer IntegerKind.U16 310;
+                Value.Integer IntegerKind.U16 306;
+                Value.Integer IntegerKind.U16 302;
+                Value.Integer IntegerKind.U16 298;
+                Value.Integer IntegerKind.U16 294;
+                Value.Integer IntegerKind.U16 289;
+                Value.Integer IntegerKind.U16 285;
+                Value.Integer IntegerKind.U16 281;
+                Value.Integer IntegerKind.U16 277;
+                Value.Integer IntegerKind.U16 273;
+                Value.Integer IntegerKind.U16 269;
+                Value.Integer IntegerKind.U16 268;
+                Value.Integer IntegerKind.U16 266;
+                Value.Integer IntegerKind.U16 265;
+                Value.Integer IntegerKind.U16 263;
+                Value.Integer IntegerKind.U16 262;
+                Value.Integer IntegerKind.U16 260;
+                Value.Integer IntegerKind.U16 259;
+                Value.Integer IntegerKind.U16 257;
+                Value.Integer IntegerKind.U16 256;
+                Value.Integer IntegerKind.U16 254;
+                Value.Integer IntegerKind.U16 253;
+                Value.Integer IntegerKind.U16 251;
+                Value.Integer IntegerKind.U16 250;
+                Value.Integer IntegerKind.U16 248;
+                Value.Integer IntegerKind.U16 247;
+                Value.Integer IntegerKind.U16 245;
+                Value.Integer IntegerKind.U16 244;
+                Value.Integer IntegerKind.U16 242;
+                Value.Integer IntegerKind.U16 241;
+                Value.Integer IntegerKind.U16 239;
+                Value.Integer IntegerKind.U16 238;
+                Value.Integer IntegerKind.U16 236;
+                Value.Integer IntegerKind.U16 235;
+                Value.Integer IntegerKind.U16 233;
+                Value.Integer IntegerKind.U16 232;
+                Value.Integer IntegerKind.U16 231;
+                Value.Integer IntegerKind.U16 229;
+                Value.Integer IntegerKind.U16 228;
+                Value.Integer IntegerKind.U16 226;
+                Value.Integer IntegerKind.U16 225;
+                Value.Integer IntegerKind.U16 223;
+                Value.Integer IntegerKind.U16 222;
+                Value.Integer IntegerKind.U16 221;
+                Value.Integer IntegerKind.U16 220;
+                Value.Integer IntegerKind.U16 219;
+                Value.Integer IntegerKind.U16 219;
+                Value.Integer IntegerKind.U16 218;
+                Value.Integer IntegerKind.U16 217;
+                Value.Integer IntegerKind.U16 216;
+                Value.Integer IntegerKind.U16 216;
+                Value.Integer IntegerKind.U16 215;
+                Value.Integer IntegerKind.U16 214;
+                Value.Integer IntegerKind.U16 213;
+                Value.Integer IntegerKind.U16 213;
+                Value.Integer IntegerKind.U16 212;
+                Value.Integer IntegerKind.U16 211;
+                Value.Integer IntegerKind.U16 211;
+                Value.Integer IntegerKind.U16 210;
+                Value.Integer IntegerKind.U16 209;
+                Value.Integer IntegerKind.U16 208;
+                Value.Integer IntegerKind.U16 208;
+                Value.Integer IntegerKind.U16 207;
+                Value.Integer IntegerKind.U16 206;
+                Value.Integer IntegerKind.U16 205;
+                Value.Integer IntegerKind.U16 205;
+                Value.Integer IntegerKind.U16 204;
+                Value.Integer IntegerKind.U16 203;
+                Value.Integer IntegerKind.U16 202;
+                Value.Integer IntegerKind.U16 202;
+                Value.Integer IntegerKind.U16 201;
+                Value.Integer IntegerKind.U16 200;
+                Value.Integer IntegerKind.U16 199;
+                Value.Integer IntegerKind.U16 199;
+                Value.Integer IntegerKind.U16 198;
+                Value.Integer IntegerKind.U16 197;
+                Value.Integer IntegerKind.U16 196;
+                Value.Integer IntegerKind.U16 196;
+                Value.Integer IntegerKind.U16 195;
+                Value.Integer IntegerKind.U16 194;
+                Value.Integer IntegerKind.U16 193;
+                Value.Integer IntegerKind.U16 193;
+                Value.Integer IntegerKind.U16 192;
+                Value.Integer IntegerKind.U16 191;
+                Value.Integer IntegerKind.U16 191;
+                Value.Integer IntegerKind.U16 190;
+                Value.Integer IntegerKind.U16 189;
+                Value.Integer IntegerKind.U16 188;
+                Value.Integer IntegerKind.U16 188;
+                Value.Integer IntegerKind.U16 187;
+                Value.Integer IntegerKind.U16 186;
+                Value.Integer IntegerKind.U16 185;
+                Value.Integer IntegerKind.U16 185;
+                Value.Integer IntegerKind.U16 184;
+                Value.Integer IntegerKind.U16 183;
+                Value.Integer IntegerKind.U16 182;
+                Value.Integer IntegerKind.U16 182;
+                Value.Integer IntegerKind.U16 181;
+                Value.Integer IntegerKind.U16 180;
+                Value.Integer IntegerKind.U16 179;
+                Value.Integer IntegerKind.U16 179;
+                Value.Integer IntegerKind.U16 178;
+                Value.Integer IntegerKind.U16 177;
+                Value.Integer IntegerKind.U16 176;
+                Value.Integer IntegerKind.U16 176;
+                Value.Integer IntegerKind.U16 175;
+                Value.Integer IntegerKind.U16 174
+              ]
+          |)
+        |))).
     
-    Axiom Constant_value_MSM_DISCOUNT_TABLE :
-      (M.get_constant "revm_precompile::bls12_381::msm::MSM_DISCOUNT_TABLE") =
-        value_MSM_DISCOUNT_TABLE.
-    Global Hint Rewrite Constant_value_MSM_DISCOUNT_TABLE : constant_rewrites.
+    Global Instance Instance_IsConstant_value_MSM_DISCOUNT_TABLE :
+      M.IsFunction.C "revm_precompile::bls12_381::msm::MSM_DISCOUNT_TABLE" value_MSM_DISCOUNT_TABLE.
+    Admitted.
+    Global Typeclasses Opaque value_MSM_DISCOUNT_TABLE.
     
     (*
     pub(super) fn msm_required_gas(k: usize, multiplication_cost: u64) -> u64 {
@@ -218,8 +218,18 @@ Module bls12_381.
                                 Pointer.Kind.Ref,
                                 M.deref (|
                                   M.read (|
-                                    M.get_constant
-                                      "revm_precompile::bls12_381::msm::MSM_DISCOUNT_TABLE"
+                                    get_constant (|
+                                      "revm_precompile::bls12_381::msm::MSM_DISCOUNT_TABLE",
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 128 ]
+                                            [ Ty.path "u16" ]
+                                        ]
+                                    |)
                                   |)
                                 |)
                               |)
@@ -238,7 +248,18 @@ Module bls12_381.
                         M.SubPointer.get_array_field (|
                           M.deref (|
                             M.read (|
-                              M.get_constant "revm_precompile::bls12_381::msm::MSM_DISCOUNT_TABLE"
+                              get_constant (|
+                                "revm_precompile::bls12_381::msm::MSM_DISCOUNT_TABLE",
+                                Ty.apply
+                                  (Ty.path "&")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "array")
+                                      [ Value.Integer IntegerKind.Usize 128 ]
+                                      [ Ty.path "u16" ]
+                                  ]
+                              |)
                             |)
                           |),
                           M.read (| index |)
@@ -254,7 +275,12 @@ Module bls12_381.
                       |),
                       M.read (| multiplication_cost |)
                     |),
-                    M.read (| M.get_constant "revm_precompile::bls12_381::msm::MSM_MULTIPLIER" |)
+                    M.read (|
+                      get_constant (|
+                        "revm_precompile::bls12_381::msm::MSM_MULTIPLIER",
+                        Ty.path "u64"
+                      |)
+                    |)
                   |)
                 |)
               |)))
@@ -263,7 +289,7 @@ Module bls12_381.
       end.
     
     Global Instance Instance_IsFunction_msm_required_gas :
-      M.IsFunction.Trait "revm_precompile::bls12_381::msm::msm_required_gas" msm_required_gas.
+      M.IsFunction.C "revm_precompile::bls12_381::msm::msm_required_gas" msm_required_gas.
     Admitted.
     Global Typeclasses Opaque msm_required_gas.
   End msm.

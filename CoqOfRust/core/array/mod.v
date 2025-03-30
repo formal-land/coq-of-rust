@@ -23,14 +23,17 @@ Module array.
             M.call_closure (|
               Ty.apply (Ty.path "core::iter::sources::repeat_n::RepeatN") [] [ T ],
               M.get_function (| "core::iter::sources::repeat_n::repeat_n", [], [ T ] |),
-              [ M.read (| val |); M.read (| M.get_constant "core::array::repeat::N" |) ]
+              [
+                M.read (| val |);
+                M.read (| get_constant (| "core::array::repeat::N", Ty.path "usize" |) |)
+              ]
             |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_repeat : M.IsFunction.Trait "core::array::repeat" repeat.
+  Global Instance Instance_IsFunction_repeat : M.IsFunction.C "core::array::repeat" repeat.
   Admitted.
   Global Typeclasses Opaque repeat.
   
@@ -84,7 +87,7 @@ Module array.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_from_fn : M.IsFunction.Trait "core::array::from_fn" from_fn.
+  Global Instance Instance_IsFunction_from_fn : M.IsFunction.C "core::array::from_fn" from_fn.
   Admitted.
   Global Typeclasses Opaque from_fn.
   
@@ -122,7 +125,18 @@ Module array.
                     [ Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Output" ]
                 ] :=
             M.alloc (|
-              repeat (| M.read (| M.get_constant "core::array::try_from_fn_discriminant" |), N |)
+              repeat (|
+                M.read (|
+                  get_constant (|
+                    "core::array::try_from_fn_discriminant",
+                    Ty.apply
+                      (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                      []
+                      [ Ty.associated_in_trait "core::ops::try_trait::Try" [] [] R "Output" ]
+                  |)
+                |),
+                N
+              |)
             |) in
           M.match_operator (|
             Some
@@ -275,7 +289,7 @@ Module array.
     end.
   
   Global Instance Instance_IsFunction_try_from_fn :
-    M.IsFunction.Trait "core::array::try_from_fn" try_from_fn.
+    M.IsFunction.C "core::array::try_from_fn" try_from_fn.
   Admitted.
   Global Typeclasses Opaque try_from_fn.
   
@@ -323,8 +337,7 @@ Module array.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_from_ref :
-    M.IsFunction.Trait "core::array::from_ref" from_ref.
+  Global Instance Instance_IsFunction_from_ref : M.IsFunction.C "core::array::from_ref" from_ref.
   Admitted.
   Global Typeclasses Opaque from_ref.
   
@@ -387,8 +400,7 @@ Module array.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_from_mut :
-    M.IsFunction.Trait "core::array::from_mut" from_mut.
+  Global Instance Instance_IsFunction_from_mut : M.IsFunction.C "core::array::from_mut" from_mut.
   Admitted.
   Global Typeclasses Opaque from_mut.
   
@@ -2522,7 +2534,7 @@ Module array.
     Definition Self (T : Ty.t) : Ty.t :=
       Ty.apply
         (Ty.path "array")
-        [ M.unevaluated_const (M.get_constant "core::array_discriminant") ]
+        [ M.unevaluated_const (mk_str (| "core_array_discriminant" |)) ]
         [ T ].
     
     (*
@@ -5785,7 +5797,7 @@ Module array.
     Definition Self (T : Ty.t) : Ty.t :=
       Ty.apply
         (Ty.path "array")
-        [ M.unevaluated_const (M.get_constant "core::array_discriminant") ]
+        [ M.unevaluated_const (mk_str (| "core_array_discriminant" |)) ]
         [ T ].
     
     (*             fn default() -> [T; $n] { [] } *)
@@ -5871,7 +5883,7 @@ Module array.
     
     Global Instance AssociatedFunction_map :
       forall (N : Value.t) (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self N T) "map" (map N T).
+      M.IsAssociatedFunction.C (Self N T) "map" (map N T).
     Admitted.
     Global Typeclasses Opaque map.
     
@@ -6057,7 +6069,7 @@ Module array.
     
     Global Instance AssociatedFunction_try_map :
       forall (N : Value.t) (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self N T) "try_map" (try_map N T).
+      M.IsAssociatedFunction.C (Self N T) "try_map" (try_map N T).
     Admitted.
     Global Typeclasses Opaque try_map.
     
@@ -6084,7 +6096,7 @@ Module array.
     
     Global Instance AssociatedFunction_as_slice :
       forall (N : Value.t) (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self N T) "as_slice" (as_slice N T).
+      M.IsAssociatedFunction.C (Self N T) "as_slice" (as_slice N T).
     Admitted.
     Global Typeclasses Opaque as_slice.
     
@@ -6114,7 +6126,7 @@ Module array.
     
     Global Instance AssociatedFunction_as_mut_slice :
       forall (N : Value.t) (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self N T) "as_mut_slice" (as_mut_slice N T).
+      M.IsAssociatedFunction.C (Self N T) "as_mut_slice" (as_mut_slice N T).
     Admitted.
     Global Typeclasses Opaque as_mut_slice.
     
@@ -6174,7 +6186,7 @@ Module array.
                               (M.alloc (|
                                 BinOp.lt (|
                                   M.read (| i |),
-                                  M.read (| M.get_constant "core::array::N" |)
+                                  M.read (| get_constant (| "core::array::N", Ty.path "usize" |) |)
                                 |)
                               |)) in
                           let _ :=
@@ -6238,7 +6250,7 @@ Module array.
     
     Global Instance AssociatedFunction_each_ref :
       forall (N : Value.t) (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self N T) "each_ref" (each_ref N T).
+      M.IsAssociatedFunction.C (Self N T) "each_ref" (each_ref N T).
     Admitted.
     Global Typeclasses Opaque each_ref.
     
@@ -6298,7 +6310,7 @@ Module array.
                               (M.alloc (|
                                 BinOp.lt (|
                                   M.read (| i |),
-                                  M.read (| M.get_constant "core::array::N" |)
+                                  M.read (| get_constant (| "core::array::N", Ty.path "usize" |) |)
                                 |)
                               |)) in
                           let _ :=
@@ -6362,7 +6374,7 @@ Module array.
     
     Global Instance AssociatedFunction_each_mut :
       forall (N : Value.t) (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self N T) "each_mut" (each_mut N T).
+      M.IsAssociatedFunction.C (Self N T) "each_mut" (each_mut N T).
     Admitted.
     Global Typeclasses Opaque each_mut.
     
@@ -6458,7 +6470,7 @@ Module array.
     
     Global Instance AssociatedFunction_split_array_ref :
       forall (N : Value.t) (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self N T) "split_array_ref" (split_array_ref N T).
+      M.IsAssociatedFunction.C (Self N T) "split_array_ref" (split_array_ref N T).
     Admitted.
     Global Typeclasses Opaque split_array_ref.
     
@@ -6554,7 +6566,7 @@ Module array.
     
     Global Instance AssociatedFunction_split_array_mut :
       forall (N : Value.t) (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self N T) "split_array_mut" (split_array_mut N T).
+      M.IsAssociatedFunction.C (Self N T) "split_array_mut" (split_array_mut N T).
     Admitted.
     Global Typeclasses Opaque split_array_mut.
     
@@ -6650,7 +6662,7 @@ Module array.
     
     Global Instance AssociatedFunction_rsplit_array_ref :
       forall (N : Value.t) (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self N T) "rsplit_array_ref" (rsplit_array_ref N T).
+      M.IsAssociatedFunction.C (Self N T) "rsplit_array_ref" (rsplit_array_ref N T).
     Admitted.
     Global Typeclasses Opaque rsplit_array_ref.
     
@@ -6746,7 +6758,7 @@ Module array.
     
     Global Instance AssociatedFunction_rsplit_array_mut :
       forall (N : Value.t) (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self N T) "rsplit_array_mut" (rsplit_array_mut N T).
+      M.IsAssociatedFunction.C (Self N T) "rsplit_array_mut" (rsplit_array_mut N T).
     Admitted.
     Global Typeclasses Opaque rsplit_array_mut.
   End Impl_array_N_T.
@@ -6827,7 +6839,7 @@ Module array.
     end.
   
   Global Instance Instance_IsFunction_from_trusted_iterator :
-    M.IsFunction.Trait "core::array::from_trusted_iterator" from_trusted_iterator.
+    M.IsFunction.C "core::array::from_trusted_iterator" from_trusted_iterator.
   Admitted.
   Global Typeclasses Opaque from_trusted_iterator.
   
@@ -6897,7 +6909,10 @@ Module array.
                                 |)
                               |),
                               M.read (|
-                                M.get_constant "core::array::try_from_trusted_iterator::N"
+                                get_constant (|
+                                  "core::array::try_from_trusted_iterator::N",
+                                  Ty.path "usize"
+                                |)
                               |)
                             |)
                           |)
@@ -6938,7 +6953,7 @@ Module array.
     end.
   
   Global Instance Instance_IsFunction_try_from_trusted_iterator :
-    M.IsFunction.Trait "core::array::try_from_trusted_iterator" try_from_trusted_iterator.
+    M.IsFunction.C "core::array::try_from_trusted_iterator" try_from_trusted_iterator.
   Admitted.
   Global Typeclasses Opaque try_from_trusted_iterator.
   
@@ -6990,7 +7005,7 @@ Module array.
       end.
     
     Global Instance Instance_IsFunction_next :
-      M.IsFunction.Trait "core::array::try_from_trusted_iterator::next" next.
+      M.IsFunction.C "core::array::try_from_trusted_iterator::next" next.
     Admitted.
     Global Typeclasses Opaque next.
   End try_from_trusted_iterator.
@@ -7321,7 +7336,7 @@ Module array.
     end.
   
   Global Instance Instance_IsFunction_try_from_fn_erased :
-    M.IsFunction.Trait "core::array::try_from_fn_erased" try_from_fn_erased.
+    M.IsFunction.C "core::array::try_from_fn_erased" try_from_fn_erased.
   Admitted.
   Global Typeclasses Opaque try_from_fn_erased.
   
@@ -7461,7 +7476,7 @@ Module array.
     
     Global Instance AssociatedFunction_push_unchecked :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "push_unchecked" (push_unchecked T).
+      M.IsAssociatedFunction.C (Self T) "push_unchecked" (push_unchecked T).
     Admitted.
     Global Typeclasses Opaque push_unchecked.
   End Impl_core_array_Guard_T.
@@ -7716,7 +7731,12 @@ Module array.
                 [ Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ] ] :=
             M.alloc (|
               repeat (|
-                M.read (| M.get_constant "core::array::iter_next_chunk_discriminant" |),
+                M.read (|
+                  get_constant (|
+                    "core::array::iter_next_chunk_discriminant",
+                    Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
+                  |)
+                |),
                 N
               |)
             |) in
@@ -7805,7 +7825,7 @@ Module array.
     end.
   
   Global Instance Instance_IsFunction_iter_next_chunk :
-    M.IsFunction.Trait "core::array::iter_next_chunk" iter_next_chunk.
+    M.IsFunction.C "core::array::iter_next_chunk" iter_next_chunk.
   Admitted.
   Global Typeclasses Opaque iter_next_chunk.
   
@@ -7982,7 +8002,7 @@ Module array.
     end.
   
   Global Instance Instance_IsFunction_iter_next_chunk_erased :
-    M.IsFunction.Trait "core::array::iter_next_chunk_erased" iter_next_chunk_erased.
+    M.IsFunction.C "core::array::iter_next_chunk_erased" iter_next_chunk_erased.
   Admitted.
   Global Typeclasses Opaque iter_next_chunk_erased.
 End array.

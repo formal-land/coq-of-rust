@@ -41,7 +41,7 @@ Module my.
     
     Global Instance AssociatedFunction_new :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+      M.IsAssociatedFunction.C (Self T) "new" (new T).
     Admitted.
     Global Typeclasses Opaque new.
   End Impl_struct_visibility_my_ClosedBox_T.
@@ -187,6 +187,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "struct_visibility::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "struct_visibility::main" main.
 Admitted.
 Global Typeclasses Opaque main.

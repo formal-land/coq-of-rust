@@ -433,7 +433,7 @@ Module borrow.
     
     Global Instance AssociatedFunction_is_borrowed :
       forall (B : Ty.t),
-      M.IsAssociatedFunction.Trait (Self B) "is_borrowed" (is_borrowed B).
+      M.IsAssociatedFunction.C (Self B) "is_borrowed" (is_borrowed B).
     Admitted.
     Global Typeclasses Opaque is_borrowed.
     
@@ -465,7 +465,7 @@ Module borrow.
     
     Global Instance AssociatedFunction_is_owned :
       forall (B : Ty.t),
-      M.IsAssociatedFunction.Trait (Self B) "is_owned" (is_owned B).
+      M.IsAssociatedFunction.C (Self B) "is_owned" (is_owned B).
     Admitted.
     Global Typeclasses Opaque is_owned.
     
@@ -644,7 +644,7 @@ Module borrow.
     
     Global Instance AssociatedFunction_to_mut :
       forall (B : Ty.t),
-      M.IsAssociatedFunction.Trait (Self B) "to_mut" (to_mut B).
+      M.IsAssociatedFunction.C (Self B) "to_mut" (to_mut B).
     Admitted.
     Global Typeclasses Opaque to_mut.
     
@@ -705,7 +705,7 @@ Module borrow.
     
     Global Instance AssociatedFunction_into_owned :
       forall (B : Ty.t),
-      M.IsAssociatedFunction.Trait (Self B) "into_owned" (into_owned B).
+      M.IsAssociatedFunction.C (Self B) "into_owned" (into_owned B).
     Admitted.
     Global Typeclasses Opaque into_owned.
   End Impl_alloc_borrow_Cow_B.

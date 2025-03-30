@@ -1493,7 +1493,7 @@ Module hash.
       end.
     
     Global Instance Instance_IsFunction_u8to64_le :
-      M.IsFunction.Trait "core::hash::sip::u8to64_le" u8to64_le.
+      M.IsFunction.C "core::hash::sip::u8to64_le" u8to64_le.
     Admitted.
     Global Typeclasses Opaque u8to64_le.
     
@@ -1522,7 +1522,7 @@ Module hash.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -1566,7 +1566,7 @@ Module hash.
         end.
       
       Global Instance AssociatedFunction_new_with_keys :
-        M.IsAssociatedFunction.Trait Self "new_with_keys" new_with_keys.
+        M.IsAssociatedFunction.C Self "new_with_keys" new_with_keys.
       Admitted.
       Global Typeclasses Opaque new_with_keys.
     End Impl_core_hash_sip_SipHasher.
@@ -1596,7 +1596,7 @@ Module hash.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -1636,7 +1636,7 @@ Module hash.
         end.
       
       Global Instance AssociatedFunction_new_with_keys :
-        M.IsAssociatedFunction.Trait Self "new_with_keys" new_with_keys.
+        M.IsAssociatedFunction.C Self "new_with_keys" new_with_keys.
       Admitted.
       Global Typeclasses Opaque new_with_keys.
     End Impl_core_hash_sip_SipHasher13.
@@ -1714,7 +1714,7 @@ Module hash.
       
       Global Instance AssociatedFunction_new_with_keys :
         forall (S : Ty.t),
-        M.IsAssociatedFunction.Trait (Self S) "new_with_keys" (new_with_keys S).
+        M.IsAssociatedFunction.C (Self S) "new_with_keys" (new_with_keys S).
       Admitted.
       Global Typeclasses Opaque new_with_keys.
       
@@ -1856,7 +1856,7 @@ Module hash.
       
       Global Instance AssociatedFunction_reset :
         forall (S : Ty.t),
-        M.IsAssociatedFunction.Trait (Self S) "reset" (reset S).
+        M.IsAssociatedFunction.C (Self S) "reset" (reset S).
       Admitted.
       Global Typeclasses Opaque reset.
     End Impl_core_hash_sip_Hasher_S.

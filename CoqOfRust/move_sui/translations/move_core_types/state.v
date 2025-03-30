@@ -279,7 +279,21 @@ Module state.
             ]
           |),
           [
-            M.borrow (| Pointer.Kind.Ref, M.get_constant "move_core_types::state::STATE" |);
+            M.borrow (|
+              Pointer.Kind.Ref,
+              get_constant (|
+                "move_core_types::state::STATE",
+                Ty.apply
+                  (Ty.path "std::thread::local::LocalKey")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "core::cell::RefCell")
+                      []
+                      [ Ty.path "move_core_types::state::VMState" ]
+                  ]
+              |)
+            |);
             M.closure
               (fun γ =>
                 ltac:(M.monadic
@@ -335,7 +349,7 @@ Module state.
     end.
   
   Global Instance Instance_IsFunction_set_state :
-    M.IsFunction.Trait "move_core_types::state::set_state" set_state.
+    M.IsFunction.C "move_core_types::state::set_state" set_state.
   Admitted.
   Global Typeclasses Opaque set_state.
   
@@ -383,7 +397,21 @@ Module state.
             ]
           |),
           [
-            M.borrow (| Pointer.Kind.Ref, M.get_constant "move_core_types::state::STATE" |);
+            M.borrow (|
+              Pointer.Kind.Ref,
+              get_constant (|
+                "move_core_types::state::STATE",
+                Ty.apply
+                  (Ty.path "std::thread::local::LocalKey")
+                  []
+                  [
+                    Ty.apply
+                      (Ty.path "core::cell::RefCell")
+                      []
+                      [ Ty.path "move_core_types::state::VMState" ]
+                  ]
+              |)
+            |);
             M.closure
               (fun γ =>
                 ltac:(M.monadic
@@ -473,7 +501,7 @@ Module state.
     end.
   
   Global Instance Instance_IsFunction_get_state :
-    M.IsFunction.Trait "move_core_types::state::get_state" get_state.
+    M.IsFunction.C "move_core_types::state::get_state" get_state.
   Admitted.
   Global Typeclasses Opaque get_state.
 End state.

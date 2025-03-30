@@ -1257,7 +1257,7 @@ Module algorithms.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance Instance_IsFunction_div : M.IsFunction.Trait "ruint::algorithms::div::div" div.
+    Global Instance Instance_IsFunction_div : M.IsFunction.C "ruint::algorithms::div::div" div.
     Admitted.
     Global Typeclasses Opaque div.
   End div.

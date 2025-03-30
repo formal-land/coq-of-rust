@@ -108,7 +108,7 @@ Module signed.
       end.
     
     Global Instance Instance_IsFunction_handle_overflow :
-      M.IsFunction.Trait "alloy_primitives::signed::utils::handle_overflow" handle_overflow.
+      M.IsFunction.C "alloy_primitives::signed::utils::handle_overflow" handle_overflow.
     Admitted.
     Global Typeclasses Opaque handle_overflow.
     
@@ -142,8 +142,10 @@ Module signed.
                               (M.alloc (|
                                 BinOp.eq (|
                                   M.read (|
-                                    M.get_constant
-                                      "alloy_primitives::signed::utils::twos_complement::BITS"
+                                    get_constant (|
+                                      "alloy_primitives::signed::utils::twos_complement::BITS",
+                                      Ty.path "usize"
+                                    |)
                                   |),
                                   Value.Integer IntegerKind.Usize 0
                                 |)
@@ -202,7 +204,7 @@ Module signed.
       end.
     
     Global Instance Instance_IsFunction_twos_complement :
-      M.IsFunction.Trait "alloy_primitives::signed::utils::twos_complement" twos_complement.
+      M.IsFunction.C "alloy_primitives::signed::utils::twos_complement" twos_complement.
     Admitted.
     Global Typeclasses Opaque twos_complement.
     
@@ -248,7 +250,10 @@ Module signed.
                               (M.alloc (|
                                 BinOp.eq (|
                                   M.read (|
-                                    M.get_constant "alloy_primitives::signed::utils::const_eq::BITS"
+                                    get_constant (|
+                                      "alloy_primitives::signed::utils::const_eq::BITS",
+                                      Ty.path "usize"
+                                    |)
                                   |),
                                   Value.Integer IntegerKind.Usize 0
                                 |)
@@ -336,8 +341,10 @@ Module signed.
                                     BinOp.lt (|
                                       M.read (| i |),
                                       M.read (|
-                                        M.get_constant
-                                          "alloy_primitives::signed::utils::const_eq::LIMBS"
+                                        get_constant (|
+                                          "alloy_primitives::signed::utils::const_eq::LIMBS",
+                                          Ty.path "usize"
+                                        |)
                                       |)
                                     |)
                                   |)) in
@@ -419,7 +426,7 @@ Module signed.
       end.
     
     Global Instance Instance_IsFunction_const_eq :
-      M.IsFunction.Trait "alloy_primitives::signed::utils::const_eq" const_eq.
+      M.IsFunction.C "alloy_primitives::signed::utils::const_eq" const_eq.
     Admitted.
     Global Typeclasses Opaque const_eq.
     
@@ -454,7 +461,10 @@ Module signed.
                               (M.alloc (|
                                 BinOp.eq (|
                                   M.read (|
-                                    M.get_constant "alloy_primitives::signed::utils::max::LIMBS"
+                                    get_constant (|
+                                      "alloy_primitives::signed::utils::max::LIMBS",
+                                      Ty.path "usize"
+                                    |)
                                   |),
                                   Value.Integer IntegerKind.Usize 0
                                 |)
@@ -485,22 +495,12 @@ Module signed.
                     ]
                   |) in
                 let~ limbs : Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] :=
-                  M.alloc (| repeat (| M.read (| M.get_constant "core::num::MAX" |), LIMBS |) |) in
-                let~ _ : Ty.tuple [] :=
                   M.alloc (|
-                    let β :=
-                      M.SubPointer.get_array_field (|
-                        limbs,
-                        BinOp.Wrap.sub (|
-                          M.read (| M.get_constant "alloy_primitives::signed::utils::max::LIMBS" |),
-                          Value.Integer IntegerKind.Usize 1
-                        |)
-                      |) in
-                    M.write (|
-                      β,
-                      BinOp.bit_and
-                        (M.read (| β |))
-                        (M.read (| M.get_constant "alloy_primitives::signed::int::MASK" |))
+                    repeat (|
+                      M.read (|
+                        get_associated_constant (| Ty.path "u64", "MAX", Ty.path "u64" |)
+                      |),
+                      LIMBS
                     |)
                   |) in
                 let~ _ : Ty.tuple [] :=
@@ -509,7 +509,43 @@ Module signed.
                       M.SubPointer.get_array_field (|
                         limbs,
                         BinOp.Wrap.sub (|
-                          M.read (| M.get_constant "alloy_primitives::signed::utils::max::LIMBS" |),
+                          M.read (|
+                            get_constant (|
+                              "alloy_primitives::signed::utils::max::LIMBS",
+                              Ty.path "usize"
+                            |)
+                          |),
+                          Value.Integer IntegerKind.Usize 1
+                        |)
+                      |) in
+                    M.write (|
+                      β,
+                      BinOp.bit_and
+                        (M.read (| β |))
+                        (M.read (|
+                          get_associated_constant (|
+                            Ty.apply
+                              (Ty.path "alloy_primitives::signed::int::Signed")
+                              [ BITS; LIMBS ]
+                              [],
+                            "MASK",
+                            Ty.path "u64"
+                          |)
+                        |))
+                    |)
+                  |) in
+                let~ _ : Ty.tuple [] :=
+                  M.alloc (|
+                    let β :=
+                      M.SubPointer.get_array_field (|
+                        limbs,
+                        BinOp.Wrap.sub (|
+                          M.read (|
+                            get_constant (|
+                              "alloy_primitives::signed::utils::max::LIMBS",
+                              Ty.path "usize"
+                            |)
+                          |),
                           Value.Integer IntegerKind.Usize 1
                         |)
                       |) in
@@ -518,7 +554,16 @@ Module signed.
                       BinOp.bit_and
                         (M.read (| β |))
                         (UnOp.not (|
-                          M.read (| M.get_constant "alloy_primitives::signed::int::SIGN_BIT" |)
+                          M.read (|
+                            get_associated_constant (|
+                              Ty.apply
+                                (Ty.path "alloy_primitives::signed::int::Signed")
+                                [ BITS; LIMBS ]
+                                [],
+                              "SIGN_BIT",
+                              Ty.path "u64"
+                            |)
+                          |)
                         |))
                     |)
                   |) in
@@ -544,7 +589,7 @@ Module signed.
       end.
     
     Global Instance Instance_IsFunction_max :
-      M.IsFunction.Trait "alloy_primitives::signed::utils::max" max.
+      M.IsFunction.C "alloy_primitives::signed::utils::max" max.
     Admitted.
     Global Typeclasses Opaque max.
     
@@ -578,7 +623,10 @@ Module signed.
                               (M.alloc (|
                                 BinOp.eq (|
                                   M.read (|
-                                    M.get_constant "alloy_primitives::signed::utils::min::LIMBS"
+                                    get_constant (|
+                                      "alloy_primitives::signed::utils::min::LIMBS",
+                                      Ty.path "usize"
+                                    |)
                                   |),
                                   Value.Integer IntegerKind.Usize 0
                                 |)
@@ -616,11 +664,25 @@ Module signed.
                       M.SubPointer.get_array_field (|
                         limbs,
                         BinOp.Wrap.sub (|
-                          M.read (| M.get_constant "alloy_primitives::signed::utils::min::LIMBS" |),
+                          M.read (|
+                            get_constant (|
+                              "alloy_primitives::signed::utils::min::LIMBS",
+                              Ty.path "usize"
+                            |)
+                          |),
                           Value.Integer IntegerKind.Usize 1
                         |)
                       |),
-                      M.read (| M.get_constant "alloy_primitives::signed::int::SIGN_BIT" |)
+                      M.read (|
+                        get_associated_constant (|
+                          Ty.apply
+                            (Ty.path "alloy_primitives::signed::int::Signed")
+                            [ BITS; LIMBS ]
+                            [],
+                          "SIGN_BIT",
+                          Ty.path "u64"
+                        |)
+                      |)
                     |)
                   |) in
                 M.alloc (|
@@ -645,7 +707,7 @@ Module signed.
       end.
     
     Global Instance Instance_IsFunction_min :
-      M.IsFunction.Trait "alloy_primitives::signed::utils::min" min.
+      M.IsFunction.C "alloy_primitives::signed::utils::min" min.
     Admitted.
     Global Typeclasses Opaque min.
     
@@ -683,7 +745,7 @@ Module signed.
       end.
     
     Global Instance Instance_IsFunction_zero :
-      M.IsFunction.Trait "alloy_primitives::signed::utils::zero" zero.
+      M.IsFunction.C "alloy_primitives::signed::utils::zero" zero.
     Admitted.
     Global Typeclasses Opaque zero.
     
@@ -717,7 +779,10 @@ Module signed.
                               (M.alloc (|
                                 BinOp.eq (|
                                   M.read (|
-                                    M.get_constant "alloy_primitives::signed::utils::one::LIMBS"
+                                    get_constant (|
+                                      "alloy_primitives::signed::utils::one::LIMBS",
+                                      Ty.path "usize"
+                                    |)
                                   |),
                                   Value.Integer IntegerKind.Usize 0
                                 |)
@@ -778,7 +843,7 @@ Module signed.
       end.
     
     Global Instance Instance_IsFunction_one :
-      M.IsFunction.Trait "alloy_primitives::signed::utils::one" one.
+      M.IsFunction.C "alloy_primitives::signed::utils::one" one.
     Admitted.
     Global Typeclasses Opaque one.
     
@@ -867,7 +932,7 @@ Module signed.
       end.
     
     Global Instance Instance_IsFunction_sign_bit :
-      M.IsFunction.Trait "alloy_primitives::signed::utils::sign_bit" sign_bit.
+      M.IsFunction.C "alloy_primitives::signed::utils::sign_bit" sign_bit.
     Admitted.
     Global Typeclasses Opaque sign_bit.
   End utils.

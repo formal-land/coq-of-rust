@@ -5,141 +5,141 @@ Module num.
   Module flt2dec.
     Module strategy.
       Module dragon.
-        Definition value_POW10 : Value.t :=
-          M.run_constant
-            ltac:(M.monadic
-              (M.alloc (|
-                M.alloc (|
-                  Value.Array
-                    [
-                      Value.Integer IntegerKind.U32 1;
-                      Value.Integer IntegerKind.U32 10;
-                      Value.Integer IntegerKind.U32 100;
-                      Value.Integer IntegerKind.U32 1000;
-                      Value.Integer IntegerKind.U32 10000;
-                      Value.Integer IntegerKind.U32 100000;
-                      Value.Integer IntegerKind.U32 1000000;
-                      Value.Integer IntegerKind.U32 10000000;
-                      Value.Integer IntegerKind.U32 100000000;
-                      Value.Integer IntegerKind.U32 1000000000
-                    ]
-                |)
-              |))).
+        Definition value_POW10 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          ltac:(M.monadic
+            (M.alloc (|
+              M.alloc (|
+                Value.Array
+                  [
+                    Value.Integer IntegerKind.U32 1;
+                    Value.Integer IntegerKind.U32 10;
+                    Value.Integer IntegerKind.U32 100;
+                    Value.Integer IntegerKind.U32 1000;
+                    Value.Integer IntegerKind.U32 10000;
+                    Value.Integer IntegerKind.U32 100000;
+                    Value.Integer IntegerKind.U32 1000000;
+                    Value.Integer IntegerKind.U32 10000000;
+                    Value.Integer IntegerKind.U32 100000000;
+                    Value.Integer IntegerKind.U32 1000000000
+                  ]
+              |)
+            |))).
         
-        Axiom Constant_value_POW10 :
-          (M.get_constant "core::num::flt2dec::strategy::dragon::POW10") = value_POW10.
-        Global Hint Rewrite Constant_value_POW10 : constant_rewrites.
+        Global Instance Instance_IsConstant_value_POW10 :
+          M.IsFunction.C "core::num::flt2dec::strategy::dragon::POW10" value_POW10.
+        Admitted.
+        Global Typeclasses Opaque value_POW10.
         
-        Definition value_POW5TO16 : Value.t :=
-          M.run_constant
-            ltac:(M.monadic
-              (M.alloc (|
-                M.alloc (|
-                  Value.Array
-                    [ Value.Integer IntegerKind.U32 2264035265; Value.Integer IntegerKind.U32 35 ]
-                |)
-              |))).
+        Definition value_POW5TO16 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          ltac:(M.monadic
+            (M.alloc (|
+              M.alloc (|
+                Value.Array
+                  [ Value.Integer IntegerKind.U32 2264035265; Value.Integer IntegerKind.U32 35 ]
+              |)
+            |))).
         
-        Axiom Constant_value_POW5TO16 :
-          (M.get_constant "core::num::flt2dec::strategy::dragon::POW5TO16") = value_POW5TO16.
-        Global Hint Rewrite Constant_value_POW5TO16 : constant_rewrites.
+        Global Instance Instance_IsConstant_value_POW5TO16 :
+          M.IsFunction.C "core::num::flt2dec::strategy::dragon::POW5TO16" value_POW5TO16.
+        Admitted.
+        Global Typeclasses Opaque value_POW5TO16.
         
-        Definition value_POW5TO32 : Value.t :=
-          M.run_constant
-            ltac:(M.monadic
-              (M.alloc (|
-                M.alloc (|
-                  Value.Array
-                    [
-                      Value.Integer IntegerKind.U32 2242703233;
-                      Value.Integer IntegerKind.U32 762134875;
-                      Value.Integer IntegerKind.U32 1262
-                    ]
-                |)
-              |))).
+        Definition value_POW5TO32 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          ltac:(M.monadic
+            (M.alloc (|
+              M.alloc (|
+                Value.Array
+                  [
+                    Value.Integer IntegerKind.U32 2242703233;
+                    Value.Integer IntegerKind.U32 762134875;
+                    Value.Integer IntegerKind.U32 1262
+                  ]
+              |)
+            |))).
         
-        Axiom Constant_value_POW5TO32 :
-          (M.get_constant "core::num::flt2dec::strategy::dragon::POW5TO32") = value_POW5TO32.
-        Global Hint Rewrite Constant_value_POW5TO32 : constant_rewrites.
+        Global Instance Instance_IsConstant_value_POW5TO32 :
+          M.IsFunction.C "core::num::flt2dec::strategy::dragon::POW5TO32" value_POW5TO32.
+        Admitted.
+        Global Typeclasses Opaque value_POW5TO32.
         
-        Definition value_POW5TO64 : Value.t :=
-          M.run_constant
-            ltac:(M.monadic
-              (M.alloc (|
-                M.alloc (|
-                  Value.Array
-                    [
-                      Value.Integer IntegerKind.U32 3211403009;
-                      Value.Integer IntegerKind.U32 1849224548;
-                      Value.Integer IntegerKind.U32 3668416493;
-                      Value.Integer IntegerKind.U32 3913284084;
-                      Value.Integer IntegerKind.U32 1593091
-                    ]
-                |)
-              |))).
+        Definition value_POW5TO64 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          ltac:(M.monadic
+            (M.alloc (|
+              M.alloc (|
+                Value.Array
+                  [
+                    Value.Integer IntegerKind.U32 3211403009;
+                    Value.Integer IntegerKind.U32 1849224548;
+                    Value.Integer IntegerKind.U32 3668416493;
+                    Value.Integer IntegerKind.U32 3913284084;
+                    Value.Integer IntegerKind.U32 1593091
+                  ]
+              |)
+            |))).
         
-        Axiom Constant_value_POW5TO64 :
-          (M.get_constant "core::num::flt2dec::strategy::dragon::POW5TO64") = value_POW5TO64.
-        Global Hint Rewrite Constant_value_POW5TO64 : constant_rewrites.
+        Global Instance Instance_IsConstant_value_POW5TO64 :
+          M.IsFunction.C "core::num::flt2dec::strategy::dragon::POW5TO64" value_POW5TO64.
+        Admitted.
+        Global Typeclasses Opaque value_POW5TO64.
         
-        Definition value_POW5TO128 : Value.t :=
-          M.run_constant
-            ltac:(M.monadic
-              (M.alloc (|
-                M.alloc (|
-                  Value.Array
-                    [
-                      Value.Integer IntegerKind.U32 781532673;
-                      Value.Integer IntegerKind.U32 64985353;
-                      Value.Integer IntegerKind.U32 253049085;
-                      Value.Integer IntegerKind.U32 594863151;
-                      Value.Integer IntegerKind.U32 3553621484;
-                      Value.Integer IntegerKind.U32 3288652808;
-                      Value.Integer IntegerKind.U32 3167596762;
-                      Value.Integer IntegerKind.U32 2788392729;
-                      Value.Integer IntegerKind.U32 3911132675;
-                      Value.Integer IntegerKind.U32 590
-                    ]
-                |)
-              |))).
+        Definition value_POW5TO128 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          ltac:(M.monadic
+            (M.alloc (|
+              M.alloc (|
+                Value.Array
+                  [
+                    Value.Integer IntegerKind.U32 781532673;
+                    Value.Integer IntegerKind.U32 64985353;
+                    Value.Integer IntegerKind.U32 253049085;
+                    Value.Integer IntegerKind.U32 594863151;
+                    Value.Integer IntegerKind.U32 3553621484;
+                    Value.Integer IntegerKind.U32 3288652808;
+                    Value.Integer IntegerKind.U32 3167596762;
+                    Value.Integer IntegerKind.U32 2788392729;
+                    Value.Integer IntegerKind.U32 3911132675;
+                    Value.Integer IntegerKind.U32 590
+                  ]
+              |)
+            |))).
         
-        Axiom Constant_value_POW5TO128 :
-          (M.get_constant "core::num::flt2dec::strategy::dragon::POW5TO128") = value_POW5TO128.
-        Global Hint Rewrite Constant_value_POW5TO128 : constant_rewrites.
+        Global Instance Instance_IsConstant_value_POW5TO128 :
+          M.IsFunction.C "core::num::flt2dec::strategy::dragon::POW5TO128" value_POW5TO128.
+        Admitted.
+        Global Typeclasses Opaque value_POW5TO128.
         
-        Definition value_POW5TO256 : Value.t :=
-          M.run_constant
-            ltac:(M.monadic
-              (M.alloc (|
-                M.alloc (|
-                  Value.Array
-                    [
-                      Value.Integer IntegerKind.U32 2553183233;
-                      Value.Integer IntegerKind.U32 3201533787;
-                      Value.Integer IntegerKind.U32 3638140786;
-                      Value.Integer IntegerKind.U32 303378311;
-                      Value.Integer IntegerKind.U32 1809731782;
-                      Value.Integer IntegerKind.U32 3477761648;
-                      Value.Integer IntegerKind.U32 3583367183;
-                      Value.Integer IntegerKind.U32 649228654;
-                      Value.Integer IntegerKind.U32 2915460784;
-                      Value.Integer IntegerKind.U32 487929380;
-                      Value.Integer IntegerKind.U32 1011012442;
-                      Value.Integer IntegerKind.U32 1677677582;
-                      Value.Integer IntegerKind.U32 3428152256;
-                      Value.Integer IntegerKind.U32 1710878487;
-                      Value.Integer IntegerKind.U32 1438394610;
-                      Value.Integer IntegerKind.U32 2161952759;
-                      Value.Integer IntegerKind.U32 4100910556;
-                      Value.Integer IntegerKind.U32 1608314830;
-                      Value.Integer IntegerKind.U32 349175
-                    ]
-                |)
-              |))).
+        Definition value_POW5TO256 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          ltac:(M.monadic
+            (M.alloc (|
+              M.alloc (|
+                Value.Array
+                  [
+                    Value.Integer IntegerKind.U32 2553183233;
+                    Value.Integer IntegerKind.U32 3201533787;
+                    Value.Integer IntegerKind.U32 3638140786;
+                    Value.Integer IntegerKind.U32 303378311;
+                    Value.Integer IntegerKind.U32 1809731782;
+                    Value.Integer IntegerKind.U32 3477761648;
+                    Value.Integer IntegerKind.U32 3583367183;
+                    Value.Integer IntegerKind.U32 649228654;
+                    Value.Integer IntegerKind.U32 2915460784;
+                    Value.Integer IntegerKind.U32 487929380;
+                    Value.Integer IntegerKind.U32 1011012442;
+                    Value.Integer IntegerKind.U32 1677677582;
+                    Value.Integer IntegerKind.U32 3428152256;
+                    Value.Integer IntegerKind.U32 1710878487;
+                    Value.Integer IntegerKind.U32 1438394610;
+                    Value.Integer IntegerKind.U32 2161952759;
+                    Value.Integer IntegerKind.U32 4100910556;
+                    Value.Integer IntegerKind.U32 1608314830;
+                    Value.Integer IntegerKind.U32 349175
+                  ]
+              |)
+            |))).
         
-        Axiom Constant_value_POW5TO256 :
-          (M.get_constant "core::num::flt2dec::strategy::dragon::POW5TO256") = value_POW5TO256.
-        Global Hint Rewrite Constant_value_POW5TO256 : constant_rewrites.
+        Global Instance Instance_IsConstant_value_POW5TO256 :
+          M.IsFunction.C "core::num::flt2dec::strategy::dragon::POW5TO256" value_POW5TO256.
+        Admitted.
+        Global Typeclasses Opaque value_POW5TO256.
         
         (*
         pub fn mul_pow10(x: &mut Big, n: usize) -> &mut Big {
@@ -278,8 +278,18 @@ Module num.
                                                 M.SubPointer.get_array_field (|
                                                   M.deref (|
                                                     M.read (|
-                                                      M.get_constant
-                                                        "core::num::flt2dec::strategy::dragon::POW10"
+                                                      get_constant (|
+                                                        "core::num::flt2dec::strategy::dragon::POW10",
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "array")
+                                                              [ Value.Integer IntegerKind.Usize 10 ]
+                                                              [ Ty.path "u32" ]
+                                                          ]
+                                                      |)
                                                     |)
                                                   |),
                                                   BinOp.bit_and
@@ -347,8 +357,18 @@ Module num.
                                           M.SubPointer.get_array_field (|
                                             M.deref (|
                                               M.read (|
-                                                M.get_constant
-                                                  "core::num::flt2dec::strategy::dragon::POW10"
+                                                get_constant (|
+                                                  "core::num::flt2dec::strategy::dragon::POW10",
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "array")
+                                                        [ Value.Integer IntegerKind.Usize 10 ]
+                                                        [ Ty.path "u32" ]
+                                                    ]
+                                                |)
                                               |)
                                             |),
                                             BinOp.bit_and
@@ -416,8 +436,18 @@ Module num.
                                           M.SubPointer.get_array_field (|
                                             M.deref (|
                                               M.read (|
-                                                M.get_constant
-                                                  "core::num::flt2dec::strategy::dragon::POW10"
+                                                get_constant (|
+                                                  "core::num::flt2dec::strategy::dragon::POW10",
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "array")
+                                                        [ Value.Integer IntegerKind.Usize 10 ]
+                                                        [ Ty.path "u32" ]
+                                                    ]
+                                                |)
                                               |)
                                             |),
                                             Value.Integer IntegerKind.Usize 8
@@ -483,8 +513,18 @@ Module num.
                                             Pointer.Kind.Ref,
                                             M.deref (|
                                               M.read (|
-                                                M.get_constant
-                                                  "core::num::flt2dec::strategy::dragon::POW5TO16"
+                                                get_constant (|
+                                                  "core::num::flt2dec::strategy::dragon::POW5TO16",
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "array")
+                                                        [ Value.Integer IntegerKind.Usize 2 ]
+                                                        [ Ty.path "u32" ]
+                                                    ]
+                                                |)
                                               |)
                                             |)
                                           |)
@@ -548,8 +588,18 @@ Module num.
                                             Pointer.Kind.Ref,
                                             M.deref (|
                                               M.read (|
-                                                M.get_constant
-                                                  "core::num::flt2dec::strategy::dragon::POW5TO32"
+                                                get_constant (|
+                                                  "core::num::flt2dec::strategy::dragon::POW5TO32",
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "array")
+                                                        [ Value.Integer IntegerKind.Usize 3 ]
+                                                        [ Ty.path "u32" ]
+                                                    ]
+                                                |)
                                               |)
                                             |)
                                           |)
@@ -613,8 +663,18 @@ Module num.
                                             Pointer.Kind.Ref,
                                             M.deref (|
                                               M.read (|
-                                                M.get_constant
-                                                  "core::num::flt2dec::strategy::dragon::POW5TO64"
+                                                get_constant (|
+                                                  "core::num::flt2dec::strategy::dragon::POW5TO64",
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "array")
+                                                        [ Value.Integer IntegerKind.Usize 5 ]
+                                                        [ Ty.path "u32" ]
+                                                    ]
+                                                |)
                                               |)
                                             |)
                                           |)
@@ -678,8 +738,18 @@ Module num.
                                             Pointer.Kind.Ref,
                                             M.deref (|
                                               M.read (|
-                                                M.get_constant
-                                                  "core::num::flt2dec::strategy::dragon::POW5TO128"
+                                                get_constant (|
+                                                  "core::num::flt2dec::strategy::dragon::POW5TO128",
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "array")
+                                                        [ Value.Integer IntegerKind.Usize 10 ]
+                                                        [ Ty.path "u32" ]
+                                                    ]
+                                                |)
                                               |)
                                             |)
                                           |)
@@ -743,8 +813,18 @@ Module num.
                                             Pointer.Kind.Ref,
                                             M.deref (|
                                               M.read (|
-                                                M.get_constant
-                                                  "core::num::flt2dec::strategy::dragon::POW5TO256"
+                                                get_constant (|
+                                                  "core::num::flt2dec::strategy::dragon::POW5TO256",
+                                                  Ty.apply
+                                                    (Ty.path "&")
+                                                    []
+                                                    [
+                                                      Ty.apply
+                                                        (Ty.path "array")
+                                                        [ Value.Integer IntegerKind.Usize 19 ]
+                                                        [ Ty.path "u32" ]
+                                                    ]
+                                                |)
                                               |)
                                             |)
                                           |)
@@ -783,7 +863,7 @@ Module num.
           end.
         
         Global Instance Instance_IsFunction_mul_pow10 :
-          M.IsFunction.Trait "core::num::flt2dec::strategy::dragon::mul_pow10" mul_pow10.
+          M.IsFunction.C "core::num::flt2dec::strategy::dragon::mul_pow10" mul_pow10.
         Admitted.
         Global Typeclasses Opaque mul_pow10.
         
@@ -824,7 +904,18 @@ Module num.
                                 Pointer.Kind.Ref,
                                 M.deref (|
                                   M.read (|
-                                    M.get_constant "core::num::flt2dec::strategy::dragon::POW10"
+                                    get_constant (|
+                                      "core::num::flt2dec::strategy::dragon::POW10",
+                                      Ty.apply
+                                        (Ty.path "&")
+                                        []
+                                        [
+                                          Ty.apply
+                                            (Ty.path "array")
+                                            [ Value.Integer IntegerKind.Usize 10 ]
+                                            [ Ty.path "u32" ]
+                                        ]
+                                    |)
                                   |)
                                 |)
                               |)
@@ -887,8 +978,18 @@ Module num.
                                             M.SubPointer.get_array_field (|
                                               M.deref (|
                                                 M.read (|
-                                                  M.get_constant
-                                                    "core::num::flt2dec::strategy::dragon::POW10"
+                                                  get_constant (|
+                                                    "core::num::flt2dec::strategy::dragon::POW10",
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "array")
+                                                          [ Value.Integer IntegerKind.Usize 10 ]
+                                                          [ Ty.path "u32" ]
+                                                      ]
+                                                  |)
                                                 |)
                                               |),
                                               M.read (| largest |)
@@ -951,7 +1052,18 @@ Module num.
                                 M.SubPointer.get_array_field (|
                                   M.deref (|
                                     M.read (|
-                                      M.get_constant "core::num::flt2dec::strategy::dragon::POW10"
+                                      get_constant (|
+                                        "core::num::flt2dec::strategy::dragon::POW10",
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "array")
+                                              [ Value.Integer IntegerKind.Usize 10 ]
+                                              [ Ty.path "u32" ]
+                                          ]
+                                      |)
                                     |)
                                   |),
                                   M.read (| n |)
@@ -970,7 +1082,7 @@ Module num.
           end.
         
         Global Instance Instance_IsFunction_div_2pow10 :
-          M.IsFunction.Trait "core::num::flt2dec::strategy::dragon::div_2pow10" div_2pow10.
+          M.IsFunction.C "core::num::flt2dec::strategy::dragon::div_2pow10" div_2pow10.
         Admitted.
         Global Typeclasses Opaque div_2pow10.
         
@@ -1360,9 +1472,7 @@ Module num.
           end.
         
         Global Instance Instance_IsFunction_div_rem_upto_16 :
-          M.IsFunction.Trait
-            "core::num::flt2dec::strategy::dragon::div_rem_upto_16"
-            div_rem_upto_16.
+          M.IsFunction.C "core::num::flt2dec::strategy::dragon::div_rem_upto_16" div_rem_upto_16.
         Admitted.
         Global Typeclasses Opaque div_rem_upto_16.
         
@@ -1835,7 +1945,12 @@ Module num.
                                         |)
                                       ]
                                     |),
-                                    M.read (| M.get_constant "core::num::flt2dec::MAX_SIG_DIGITS" |)
+                                    M.read (|
+                                      get_constant (|
+                                        "core::num::flt2dec::MAX_SIG_DIGITS",
+                                        Ty.path "usize"
+                                      |)
+                                    |)
                                   |)
                                 |)
                               |)) in
@@ -3240,9 +3355,7 @@ Module num.
           end.
         
         Global Instance Instance_IsFunction_format_shortest :
-          M.IsFunction.Trait
-            "core::num::flt2dec::strategy::dragon::format_shortest"
-            format_shortest.
+          M.IsFunction.C "core::num::flt2dec::strategy::dragon::format_shortest" format_shortest.
         Admitted.
         Global Typeclasses Opaque format_shortest.
         
@@ -5964,7 +6077,7 @@ Module num.
           end.
         
         Global Instance Instance_IsFunction_format_exact :
-          M.IsFunction.Trait "core::num::flt2dec::strategy::dragon::format_exact" format_exact.
+          M.IsFunction.C "core::num::flt2dec::strategy::dragon::format_exact" format_exact.
         Admitted.
         Global Typeclasses Opaque format_exact.
       End dragon.

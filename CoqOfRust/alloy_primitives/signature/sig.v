@@ -3,40 +3,39 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module signature.
   Module sig.
-    Definition value_SECP256K1N_ORDER : Value.t :=
-      M.run_constant
-        ltac:(M.monadic
-          (M.alloc (|
-            M.call_closure (|
+    Definition value_SECP256K1N_ORDER (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          M.call_closure (|
+            Ty.apply
+              (Ty.path "ruint::Uint")
+              [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
+              [],
+            M.get_associated_function (|
               Ty.apply
                 (Ty.path "ruint::Uint")
                 [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
                 [],
-              M.get_associated_function (|
-                Ty.apply
-                  (Ty.path "ruint::Uint")
-                  [ Value.Integer IntegerKind.Usize 256; Value.Integer IntegerKind.Usize 4 ]
-                  [],
-                "from_limbs",
-                [],
-                []
-              |),
-              [
-                Value.Array
-                  [
-                    Value.Integer IntegerKind.U64 13822214165235122497;
-                    Value.Integer IntegerKind.U64 13451932020343611451;
-                    Value.Integer IntegerKind.U64 18446744073709551614;
-                    Value.Integer IntegerKind.U64 18446744073709551615
-                  ]
-              ]
-            |)
-          |))).
+              "from_limbs",
+              [],
+              []
+            |),
+            [
+              Value.Array
+                [
+                  Value.Integer IntegerKind.U64 13822214165235122497;
+                  Value.Integer IntegerKind.U64 13451932020343611451;
+                  Value.Integer IntegerKind.U64 18446744073709551614;
+                  Value.Integer IntegerKind.U64 18446744073709551615
+                ]
+            ]
+          |)
+        |))).
     
-    Axiom Constant_value_SECP256K1N_ORDER :
-      (M.get_constant "alloy_primitives::signature::sig::SECP256K1N_ORDER") =
-        value_SECP256K1N_ORDER.
-    Global Hint Rewrite Constant_value_SECP256K1N_ORDER : constant_rewrites.
+    Global Instance Instance_IsConstant_value_SECP256K1N_ORDER :
+      M.IsFunction.C "alloy_primitives::signature::sig::SECP256K1N_ORDER" value_SECP256K1N_ORDER.
+    Admitted.
+    Global Typeclasses Opaque value_SECP256K1N_ORDER.
     
     (* StructRecord
       {
@@ -1135,7 +1134,13 @@ Module signature.
                       |),
                       [
                         M.read (|
-                          M.get_constant "alloy_primitives::signature::sig::test_signature::RES"
+                          get_constant (|
+                            "alloy_primitives::signature::sig::test_signature::RES",
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 32 ]
+                              [ Ty.path "u8" ]
+                          |)
                         |)
                       ]
                     |);
@@ -1155,7 +1160,13 @@ Module signature.
                       |),
                       [
                         M.read (|
-                          M.get_constant "alloy_primitives::signature::sig::test_signature::RES'1"
+                          get_constant (|
+                            "alloy_primitives::signature::sig::test_signature::RES'1",
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 32 ]
+                              [ Ty.path "u8" ]
+                          |)
                         |)
                       ]
                     |);
@@ -1168,7 +1179,7 @@ Module signature.
         end.
       
       Global Instance AssociatedFunction_test_signature :
-        M.IsAssociatedFunction.Trait Self "test_signature" test_signature.
+        M.IsAssociatedFunction.C Self "test_signature" test_signature.
       Admitted.
       Global Typeclasses Opaque test_signature.
       
@@ -1190,7 +1201,7 @@ Module signature.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -1322,7 +1333,7 @@ Module signature.
         end.
       
       Global Instance AssociatedFunction_from_scalars_and_parity :
-        M.IsAssociatedFunction.Trait Self "from_scalars_and_parity" from_scalars_and_parity.
+        M.IsAssociatedFunction.C Self "from_scalars_and_parity" from_scalars_and_parity.
       Admitted.
       Global Typeclasses Opaque from_scalars_and_parity.
       
@@ -1431,8 +1442,16 @@ Module signature.
                                       |),
                                       [
                                         M.read (|
-                                          M.get_constant
-                                            "alloy_primitives::signature::sig::SECP256K1N_ORDER"
+                                          get_constant (|
+                                            "alloy_primitives::signature::sig::SECP256K1N_ORDER",
+                                            Ty.apply
+                                              (Ty.path "ruint::Uint")
+                                              [
+                                                Value.Integer IntegerKind.Usize 256;
+                                                Value.Integer IntegerKind.Usize 4
+                                              ]
+                                              []
+                                          |)
                                         |);
                                         Value.Integer IntegerKind.I32 1
                                       ]
@@ -1512,8 +1531,16 @@ Module signature.
                                     |),
                                     [
                                       M.read (|
-                                        M.get_constant
-                                          "alloy_primitives::signature::sig::SECP256K1N_ORDER"
+                                        get_constant (|
+                                          "alloy_primitives::signature::sig::SECP256K1N_ORDER",
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [
+                                              Value.Integer IntegerKind.Usize 256;
+                                              Value.Integer IntegerKind.Usize 4
+                                            ]
+                                            []
+                                        |)
                                       |);
                                       M.read (| s |)
                                     ]
@@ -1531,7 +1558,7 @@ Module signature.
         end.
       
       Global Instance AssociatedFunction_normalize_s :
-        M.IsAssociatedFunction.Trait Self "normalize_s" normalize_s.
+        M.IsAssociatedFunction.C Self "normalize_s" normalize_s.
       Admitted.
       Global Typeclasses Opaque normalize_s.
       
@@ -1698,7 +1725,7 @@ Module signature.
         end.
       
       Global Instance AssociatedFunction_from_bytes_and_parity :
-        M.IsAssociatedFunction.Trait Self "from_bytes_and_parity" from_bytes_and_parity.
+        M.IsAssociatedFunction.C Self "from_bytes_and_parity" from_bytes_and_parity.
       Admitted.
       Global Typeclasses Opaque from_bytes_and_parity.
       
@@ -1904,7 +1931,7 @@ Module signature.
         end.
       
       Global Instance AssociatedFunction_from_rs_and_parity :
-        M.IsAssociatedFunction.Trait Self "from_rs_and_parity" from_rs_and_parity.
+        M.IsAssociatedFunction.C Self "from_rs_and_parity" from_rs_and_parity.
       Admitted.
       Global Typeclasses Opaque from_rs_and_parity.
       
@@ -1954,7 +1981,7 @@ Module signature.
         end.
       
       Global Instance AssociatedFunction_with_chain_id :
-        M.IsAssociatedFunction.Trait Self "with_chain_id" with_chain_id.
+        M.IsAssociatedFunction.C Self "with_chain_id" with_chain_id.
       Admitted.
       Global Typeclasses Opaque with_chain_id.
       
@@ -2002,7 +2029,7 @@ Module signature.
         end.
       
       Global Instance AssociatedFunction_with_parity_bool :
-        M.IsAssociatedFunction.Trait Self "with_parity_bool" with_parity_bool.
+        M.IsAssociatedFunction.C Self "with_parity_bool" with_parity_bool.
       Admitted.
       Global Typeclasses Opaque with_parity_bool.
       
@@ -2026,7 +2053,7 @@ Module signature.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_r : M.IsAssociatedFunction.Trait Self "r" r.
+      Global Instance AssociatedFunction_r : M.IsAssociatedFunction.C Self "r" r.
       Admitted.
       Global Typeclasses Opaque r.
       
@@ -2050,7 +2077,7 @@ Module signature.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_s : M.IsAssociatedFunction.Trait Self "s" s.
+      Global Instance AssociatedFunction_s : M.IsAssociatedFunction.C Self "s" s.
       Admitted.
       Global Typeclasses Opaque s.
       
@@ -2074,7 +2101,7 @@ Module signature.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_v : M.IsAssociatedFunction.Trait Self "v" v.
+      Global Instance AssociatedFunction_v : M.IsAssociatedFunction.C Self "v" v.
       Admitted.
       Global Typeclasses Opaque v.
       
@@ -2111,7 +2138,7 @@ Module signature.
         end.
       
       Global Instance AssociatedFunction_chain_id :
-        M.IsAssociatedFunction.Trait Self "chain_id" chain_id.
+        M.IsAssociatedFunction.C Self "chain_id" chain_id.
       Admitted.
       Global Typeclasses Opaque chain_id.
       
@@ -2155,7 +2182,7 @@ Module signature.
         end.
       
       Global Instance AssociatedFunction_has_eip155_value :
-        M.IsAssociatedFunction.Trait Self "has_eip155_value" has_eip155_value.
+        M.IsAssociatedFunction.C Self "has_eip155_value" has_eip155_value.
       Admitted.
       Global Typeclasses Opaque has_eip155_value.
       
@@ -2414,7 +2441,7 @@ Module signature.
         end.
       
       Global Instance AssociatedFunction_as_bytes :
-        M.IsAssociatedFunction.Trait Self "as_bytes" as_bytes.
+        M.IsAssociatedFunction.C Self "as_bytes" as_bytes.
       Admitted.
       Global Typeclasses Opaque as_bytes.
       
@@ -2467,7 +2494,7 @@ Module signature.
         end.
       
       Global Instance AssociatedFunction_with_parity :
-        M.IsAssociatedFunction.Trait Self "with_parity" with_parity.
+        M.IsAssociatedFunction.C Self "with_parity" with_parity.
       Admitted.
       Global Typeclasses Opaque with_parity.
     End Impl_alloy_primitives_signature_sig_Signature.

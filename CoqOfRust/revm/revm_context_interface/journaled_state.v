@@ -962,7 +962,7 @@ Module journaled_state.
     
     Global Instance AssociatedFunction_new :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+      M.IsAssociatedFunction.C (Self T) "new" (new T).
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -1029,7 +1029,7 @@ Module journaled_state.
     
     Global Instance AssociatedFunction_map :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "map" (map T).
+      M.IsAssociatedFunction.C (Self T) "map" (map T).
     Admitted.
     Global Typeclasses Opaque map.
   End Impl_revm_context_interface_journaled_state_StateLoad_T.
@@ -1999,7 +1999,7 @@ Module journaled_state.
     
     Global Instance AssociatedFunction_new_state_load :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "new_state_load" (new_state_load T).
+      M.IsAssociatedFunction.C (Self T) "new_state_load" (new_state_load T).
     Admitted.
     Global Typeclasses Opaque new_state_load.
     
@@ -2047,7 +2047,7 @@ Module journaled_state.
     
     Global Instance AssociatedFunction_new_not_delegated :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "new_not_delegated" (new_not_delegated T).
+      M.IsAssociatedFunction.C (Self T) "new_not_delegated" (new_not_delegated T).
     Admitted.
     Global Typeclasses Opaque new_not_delegated.
     
@@ -2159,7 +2159,7 @@ Module journaled_state.
     
     Global Instance AssociatedFunction_into_components :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "into_components" (into_components T).
+      M.IsAssociatedFunction.C (Self T) "into_components" (into_components T).
     Admitted.
     Global Typeclasses Opaque into_components.
     
@@ -2201,7 +2201,7 @@ Module journaled_state.
     
     Global Instance AssociatedFunction_set_delegate_load :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "set_delegate_load" (set_delegate_load T).
+      M.IsAssociatedFunction.C (Self T) "set_delegate_load" (set_delegate_load T).
     Admitted.
     Global Typeclasses Opaque set_delegate_load.
     
@@ -2234,7 +2234,7 @@ Module journaled_state.
     
     Global Instance AssociatedFunction_new :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+      M.IsAssociatedFunction.C (Self T) "new" (new T).
     Admitted.
     Global Typeclasses Opaque new.
   End Impl_revm_context_interface_journaled_state_Eip7702CodeLoad_T.

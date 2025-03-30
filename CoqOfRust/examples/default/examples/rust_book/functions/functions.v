@@ -52,7 +52,7 @@ Definition is_divisible_by (ε : list Value.t) (τ : list Ty.t) (α : list Value
   end.
 
 Global Instance Instance_IsFunction_is_divisible_by :
-  M.IsFunction.Trait "functions::is_divisible_by" is_divisible_by.
+  M.IsFunction.C "functions::is_divisible_by" is_divisible_by.
 Admitted.
 Global Typeclasses Opaque is_divisible_by.
 
@@ -314,7 +314,7 @@ Definition fizzbuzz (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_fizzbuzz : M.IsFunction.Trait "functions::fizzbuzz" fizzbuzz.
+Global Instance Instance_IsFunction_fizzbuzz : M.IsFunction.C "functions::fizzbuzz" fizzbuzz.
 Admitted.
 Global Typeclasses Opaque fizzbuzz.
 
@@ -427,7 +427,7 @@ Definition fizzbuzz_to (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) 
   end.
 
 Global Instance Instance_IsFunction_fizzbuzz_to :
-  M.IsFunction.Trait "functions::fizzbuzz_to" fizzbuzz_to.
+  M.IsFunction.C "functions::fizzbuzz_to" fizzbuzz_to.
 Admitted.
 Global Typeclasses Opaque fizzbuzz_to.
 
@@ -455,6 +455,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "functions::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "functions::main" main.
 Admitted.
 Global Typeclasses Opaque main.

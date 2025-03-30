@@ -4,17 +4,15 @@ Require Import CoqOfRust.CoqOfRust.
 Parameter multiply : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_multiply :
-  M.IsFunction.Trait "introducing_question_mark::multiply" multiply.
+  M.IsFunction.C "introducing_question_mark::multiply" multiply.
 Admitted.
 
 Parameter print : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_print :
-  M.IsFunction.Trait "introducing_question_mark::print" print.
+Global Instance Instance_IsFunction_print : M.IsFunction.C "introducing_question_mark::print" print.
 Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "introducing_question_mark::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "introducing_question_mark::main" main.
 Admitted.

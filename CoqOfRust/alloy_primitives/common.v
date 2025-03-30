@@ -621,7 +621,7 @@ Module common.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_to : M.IsAssociatedFunction.Trait Self "to" to.
+    Global Instance AssociatedFunction_to : M.IsAssociatedFunction.C Self "to" to.
     Admitted.
     Global Typeclasses Opaque to.
     
@@ -654,7 +654,7 @@ Module common.
       end.
     
     Global Instance AssociatedFunction_is_create :
-      M.IsAssociatedFunction.Trait Self "is_create" is_create.
+      M.IsAssociatedFunction.C Self "is_create" is_create.
     Admitted.
     Global Typeclasses Opaque is_create.
     
@@ -690,8 +690,7 @@ Module common.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_is_call :
-      M.IsAssociatedFunction.Trait Self "is_call" is_call.
+    Global Instance AssociatedFunction_is_call : M.IsAssociatedFunction.C Self "is_call" is_call.
     Admitted.
     Global Typeclasses Opaque is_call.
     
@@ -717,7 +716,7 @@ Module common.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_size : M.IsAssociatedFunction.Trait Self "size" size.
+    Global Instance AssociatedFunction_size : M.IsAssociatedFunction.C Self "size" size.
     Admitted.
     Global Typeclasses Opaque size.
   End Impl_alloy_primitives_common_TxKind.

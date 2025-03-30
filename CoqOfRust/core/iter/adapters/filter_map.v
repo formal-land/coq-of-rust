@@ -104,7 +104,7 @@ Module iter.
         
         Global Instance AssociatedFunction_new :
           forall (I F : Ty.t),
-          M.IsAssociatedFunction.Trait (Self I F) "new" (new I F).
+          M.IsAssociatedFunction.C (Self I F) "new" (new I F).
         Admitted.
         Global Typeclasses Opaque new.
       End Impl_core_iter_adapters_filter_map_FilterMap_I_F.
@@ -313,7 +313,7 @@ Module iter.
         end.
       
       Global Instance Instance_IsFunction_filter_map_fold :
-        M.IsFunction.Trait "core::iter::adapters::filter_map::filter_map_fold" filter_map_fold.
+        M.IsFunction.C "core::iter::adapters::filter_map::filter_map_fold" filter_map_fold.
       Admitted.
       Global Typeclasses Opaque filter_map_fold.
       
@@ -444,9 +444,7 @@ Module iter.
         end.
       
       Global Instance Instance_IsFunction_filter_map_try_fold :
-        M.IsFunction.Trait
-          "core::iter::adapters::filter_map::filter_map_try_fold"
-          filter_map_try_fold.
+        M.IsFunction.C "core::iter::adapters::filter_map::filter_map_try_fold" filter_map_try_fold.
       Admitted.
       Global Typeclasses Opaque filter_map_try_fold.
       
@@ -581,7 +579,10 @@ Module iter.
                   M.alloc (|
                     repeat (|
                       M.read (|
-                        M.get_constant "core::iter::adapters::filter_map::next_chunk_discriminant"
+                        get_constant (|
+                          "core::iter::adapters::filter_map::next_chunk_discriminant",
+                          Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ B ]
+                        |)
                       |),
                       N
                     |)
@@ -991,8 +992,10 @@ Module iter.
                                                               |)
                                                             |),
                                                             M.read (|
-                                                              M.get_constant
-                                                                "core::iter::adapters::filter_map::next_chunk::N"
+                                                              get_constant (|
+                                                                "core::iter::adapters::filter_map::next_chunk::N",
+                                                                Ty.path "usize"
+                                                              |)
                                                             |)
                                                           |)
                                                         |)) in
@@ -1807,22 +1810,42 @@ Module iter.
           (Ty.path "core::option::Option")
           []
           [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ] *)
-        Definition value_EXPAND_BY (I F : Ty.t) : Value.t :=
+        Definition value_EXPAND_BY
+            (I F : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self I F in
-          M.run
-            ltac:(M.monadic
-              (M.get_constant "core::iter::traits::marker::InPlaceIterable::EXPAND_BY")).
+          ltac:(M.monadic
+            (get_constant (|
+              "core::iter::traits::marker::InPlaceIterable::EXPAND_BY",
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
+            |))).
         
         (*     const MERGE_BY: Option<NonZero<usize>> = I::MERGE_BY; *)
         (* Ty.apply
           (Ty.path "core::option::Option")
           []
           [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ] *)
-        Definition value_MERGE_BY (I F : Ty.t) : Value.t :=
+        Definition value_MERGE_BY
+            (I F : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self I F in
-          M.run
-            ltac:(M.monadic
-              (M.get_constant "core::iter::traits::marker::InPlaceIterable::MERGE_BY")).
+          ltac:(M.monadic
+            (get_constant (|
+              "core::iter::traits::marker::InPlaceIterable::MERGE_BY",
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
+            |))).
         
         Axiom Implements :
           forall (I F : Ty.t),
@@ -1833,8 +1856,8 @@ Module iter.
             (Self I F)
             (* Instance *)
             [
-              ("value_EXPAND_BY", InstanceField.Constant (value_EXPAND_BY I F));
-              ("value_MERGE_BY", InstanceField.Constant (value_MERGE_BY I F))
+              ("value_EXPAND_BY", InstanceField.Method (value_EXPAND_BY I F));
+              ("value_MERGE_BY", InstanceField.Method (value_MERGE_BY I F))
             ].
       End Impl_core_iter_traits_marker_InPlaceIterable_where_core_iter_traits_marker_InPlaceIterable_I_for_core_iter_adapters_filter_map_FilterMap_I_F.
     End filter_map.

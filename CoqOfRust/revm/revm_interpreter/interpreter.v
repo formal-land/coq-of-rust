@@ -843,7 +843,7 @@ Module interpreter.
     
     Global Instance AssociatedFunction_new :
       forall (EXT MG : Ty.t),
-      M.IsAssociatedFunction.Trait (Self EXT MG) "new" (new EXT MG).
+      M.IsAssociatedFunction.C (Self EXT MG) "new" (new EXT MG).
     Admitted.
     Global Typeclasses Opaque new.
   End Impl_revm_interpreter_interpreter_Interpreter_revm_interpreter_interpreter_EthInterpreter_EXT_MG.
@@ -1517,7 +1517,7 @@ Module interpreter.
     
     Global Instance AssociatedFunction_step :
       forall (IW : Ty.t),
-      M.IsAssociatedFunction.Trait (Self IW) "step" (step IW).
+      M.IsAssociatedFunction.C (Self IW) "step" (step IW).
     Admitted.
     Global Typeclasses Opaque step.
     
@@ -1858,7 +1858,7 @@ Module interpreter.
     
     Global Instance AssociatedFunction_run :
       forall (IW : Ty.t),
-      M.IsAssociatedFunction.Trait (Self IW) "run" (run IW).
+      M.IsAssociatedFunction.C (Self IW) "run" (run IW).
     Admitted.
     Global Typeclasses Opaque run.
   End Impl_revm_interpreter_interpreter_Interpreter_IW.
@@ -2278,7 +2278,7 @@ Module interpreter.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -2313,7 +2313,7 @@ Module interpreter.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_is_ok : M.IsAssociatedFunction.Trait Self "is_ok" is_ok.
+    Global Instance AssociatedFunction_is_ok : M.IsAssociatedFunction.C Self "is_ok" is_ok.
     Admitted.
     Global Typeclasses Opaque is_ok.
     
@@ -2349,7 +2349,7 @@ Module interpreter.
       end.
     
     Global Instance AssociatedFunction_is_revert :
-      M.IsAssociatedFunction.Trait Self "is_revert" is_revert.
+      M.IsAssociatedFunction.C Self "is_revert" is_revert.
     Admitted.
     Global Typeclasses Opaque is_revert.
     
@@ -2384,8 +2384,7 @@ Module interpreter.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_is_error :
-      M.IsAssociatedFunction.Trait Self "is_error" is_error.
+    Global Instance AssociatedFunction_is_error : M.IsAssociatedFunction.C Self "is_error" is_error.
     Admitted.
     Global Typeclasses Opaque is_error.
   End Impl_revm_interpreter_interpreter_InterpreterResult.

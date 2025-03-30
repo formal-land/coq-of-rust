@@ -661,7 +661,7 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
   end.
 
 Global Instance Instance_IsFunction_double_first :
-  M.IsFunction.Trait "wrapping_errors::double_first" double_first.
+  M.IsFunction.C "wrapping_errors::double_first" double_first.
 Admitted.
 Global Typeclasses Opaque double_first.
 
@@ -947,7 +947,7 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_print : M.IsFunction.Trait "wrapping_errors::print" print.
+Global Instance Instance_IsFunction_print : M.IsFunction.C "wrapping_errors::print" print.
 Admitted.
 Global Typeclasses Opaque print.
 
@@ -1166,6 +1166,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "wrapping_errors::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "wrapping_errors::main" main.
 Admitted.
 Global Typeclasses Opaque main.

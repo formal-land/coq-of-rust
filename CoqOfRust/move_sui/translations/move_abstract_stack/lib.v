@@ -193,7 +193,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
   
   Global Instance AssociatedFunction_new :
     forall (T : Ty.t),
-    M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+    M.IsAssociatedFunction.C (Self T) "new" (new T).
   Admitted.
   Global Typeclasses Opaque new.
   
@@ -511,7 +511,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
   
   Global Instance AssociatedFunction_is_empty :
     forall (T : Ty.t),
-    M.IsAssociatedFunction.Trait (Self T) "is_empty" (is_empty T).
+    M.IsAssociatedFunction.C (Self T) "is_empty" (is_empty T).
   Admitted.
   Global Typeclasses Opaque is_empty.
   
@@ -828,7 +828,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
   
   Global Instance AssociatedFunction_len :
     forall (T : Ty.t),
-    M.IsAssociatedFunction.Trait (Self T) "len" (len T).
+    M.IsAssociatedFunction.C (Self T) "len" (len T).
   Admitted.
   Global Typeclasses Opaque len.
   
@@ -866,7 +866,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
   
   Global Instance AssociatedFunction_push :
     forall (T : Ty.t),
-    M.IsAssociatedFunction.Trait (Self T) "push" (push T).
+    M.IsAssociatedFunction.C (Self T) "push" (push T).
   Admitted.
   Global Typeclasses Opaque push.
   
@@ -1180,7 +1180,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
   
   Global Instance AssociatedFunction_push_n :
     forall (T : Ty.t),
-    M.IsAssociatedFunction.Trait (Self T) "push_n" (push_n T).
+    M.IsAssociatedFunction.C (Self T) "push_n" (push_n T).
   Admitted.
   Global Typeclasses Opaque push_n.
   
@@ -1242,7 +1242,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
   
   Global Instance AssociatedFunction_pop :
     forall (T : Ty.t),
-    M.IsAssociatedFunction.Trait (Self T) "pop" (pop T).
+    M.IsAssociatedFunction.C (Self T) "pop" (pop T).
   Admitted.
   Global Typeclasses Opaque pop.
   
@@ -1641,7 +1641,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
   
   Global Instance AssociatedFunction_pop_eq_n :
     forall (T : Ty.t),
-    M.IsAssociatedFunction.Trait (Self T) "pop_eq_n" (pop_eq_n T).
+    M.IsAssociatedFunction.C (Self T) "pop_eq_n" (pop_eq_n T).
   Admitted.
   Global Typeclasses Opaque pop_eq_n.
   
@@ -2105,7 +2105,7 @@ Module Impl_move_abstract_stack_AbstractStack_T.
   
   Global Instance AssociatedFunction_pop_any_n :
     forall (T : Ty.t),
-    M.IsAssociatedFunction.Trait (Self T) "pop_any_n" (pop_any_n T).
+    M.IsAssociatedFunction.C (Self T) "pop_any_n" (pop_any_n T).
   Admitted.
   Global Typeclasses Opaque pop_any_n.
 End Impl_move_abstract_stack_AbstractStack_T.

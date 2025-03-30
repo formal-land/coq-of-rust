@@ -170,7 +170,7 @@ Module async_iter.
       end.
     
     Global Instance Instance_IsFunction_from_iter :
-      M.IsFunction.Trait "core::async_iter::from_iter::from_iter" from_iter.
+      M.IsFunction.C "core::async_iter::from_iter::from_iter" from_iter.
     Admitted.
     Global Typeclasses Opaque from_iter.
     

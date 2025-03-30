@@ -262,8 +262,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                               M.cast
                                                 (Ty.path "i32")
                                                 (BinOp.Wrap.add (|
-                                                  M.get_constant
-                                                    "enums_c_like::Color::Red_discriminant",
+                                                  M.read (|
+                                                    get_constant (|
+                                                      "enums_c_like::Color::Red_discriminant",
+                                                      Ty.path "isize"
+                                                    |)
+                                                  |),
                                                   Value.Integer IntegerKind.Isize 0
                                                 |))
                                             |)
@@ -379,8 +383,12 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                               M.cast
                                                 (Ty.path "i32")
                                                 (BinOp.Wrap.add (|
-                                                  M.get_constant
-                                                    "enums_c_like::Color::Blue_discriminant",
+                                                  M.read (|
+                                                    get_constant (|
+                                                      "enums_c_like::Color::Blue_discriminant",
+                                                      Ty.path "isize"
+                                                    |)
+                                                  |),
                                                   Value.Integer IntegerKind.Isize 0
                                                 |))
                                             |)
@@ -447,6 +455,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "enums_c_like::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "enums_c_like::main" main.
 Admitted.
 Global Typeclasses Opaque main.

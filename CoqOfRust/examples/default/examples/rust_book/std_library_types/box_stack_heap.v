@@ -144,7 +144,7 @@ Definition origin (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_origin : M.IsFunction.Trait "box_stack_heap::origin" origin.
+Global Instance Instance_IsFunction_origin : M.IsFunction.C "box_stack_heap::origin" origin.
 Admitted.
 Global Typeclasses Opaque origin.
 
@@ -182,7 +182,7 @@ Definition boxed_origin (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
   end.
 
 Global Instance Instance_IsFunction_boxed_origin :
-  M.IsFunction.Trait "box_stack_heap::boxed_origin" boxed_origin.
+  M.IsFunction.C "box_stack_heap::boxed_origin" boxed_origin.
 Admitted.
 Global Typeclasses Opaque boxed_origin.
 
@@ -958,6 +958,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "box_stack_heap::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "box_stack_heap::main" main.
 Admitted.
 Global Typeclasses Opaque main.

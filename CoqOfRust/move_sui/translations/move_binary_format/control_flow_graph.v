@@ -448,19 +448,18 @@ Module control_flow_graph.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_display :
-      M.IsAssociatedFunction.Trait Self "display" display.
+    Global Instance AssociatedFunction_display : M.IsAssociatedFunction.C Self "display" display.
     Admitted.
     Global Typeclasses Opaque display.
   End Impl_move_binary_format_control_flow_graph_BasicBlock.
   
-  Definition value_ENTRY_BLOCK_ID : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U16 0 |))).
+  Definition value_ENTRY_BLOCK_ID (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U16 0 |))).
   
-  Axiom Constant_value_ENTRY_BLOCK_ID :
-    (M.get_constant "move_binary_format::control_flow_graph::ENTRY_BLOCK_ID") =
-      value_ENTRY_BLOCK_ID.
-  Global Hint Rewrite Constant_value_ENTRY_BLOCK_ID : constant_rewrites.
+  Global Instance Instance_IsConstant_value_ENTRY_BLOCK_ID :
+    M.IsFunction.C "move_binary_format::control_flow_graph::ENTRY_BLOCK_ID" value_ENTRY_BLOCK_ID.
+  Admitted.
+  Global Typeclasses Opaque value_ENTRY_BLOCK_ID.
   
   Module Impl_move_binary_format_control_flow_graph_VMControlFlowGraph.
     Definition Self : Ty.t := Ty.path "move_binary_format::control_flow_graph::VMControlFlowGraph".
@@ -672,7 +671,10 @@ Module control_flow_graph.
                   [
                     M.borrow (| Pointer.Kind.MutRef, block_ids |);
                     M.read (|
-                      M.get_constant "move_binary_format::control_flow_graph::ENTRY_BLOCK_ID"
+                      get_constant (|
+                        "move_binary_format::control_flow_graph::ENTRY_BLOCK_ID",
+                        Ty.path "u16"
+                      |)
                     |)
                   ]
                 |)
@@ -1313,8 +1315,10 @@ Module control_flow_graph.
                             Value.Array
                               [
                                 M.read (|
-                                  M.get_constant
-                                    "move_binary_format::control_flow_graph::ENTRY_BLOCK_ID"
+                                  get_constant (|
+                                    "move_binary_format::control_flow_graph::ENTRY_BLOCK_ID",
+                                    Ty.path "u16"
+                                  |)
                                 |)
                               ]
                           |)
@@ -2387,7 +2391,7 @@ Module control_flow_graph.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -2675,8 +2679,7 @@ Module control_flow_graph.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_display :
-      M.IsAssociatedFunction.Trait Self "display" display.
+    Global Instance AssociatedFunction_display : M.IsAssociatedFunction.C Self "display" display.
     Admitted.
     Global Typeclasses Opaque display.
     
@@ -2743,7 +2746,7 @@ Module control_flow_graph.
       end.
     
     Global Instance AssociatedFunction_is_end_of_block :
-      M.IsAssociatedFunction.Trait Self "is_end_of_block" is_end_of_block.
+      M.IsAssociatedFunction.C Self "is_end_of_block" is_end_of_block.
     Admitted.
     Global Typeclasses Opaque is_end_of_block.
     
@@ -2917,7 +2920,7 @@ Module control_flow_graph.
       end.
     
     Global Instance AssociatedFunction_record_block_ids :
-      M.IsAssociatedFunction.Trait Self "record_block_ids" record_block_ids.
+      M.IsAssociatedFunction.C Self "record_block_ids" record_block_ids.
     Admitted.
     Global Typeclasses Opaque record_block_ids.
     
@@ -3414,7 +3417,7 @@ Module control_flow_graph.
       end.
     
     Global Instance AssociatedFunction_traverse_by :
-      M.IsAssociatedFunction.Trait Self "traverse_by" traverse_by.
+      M.IsAssociatedFunction.C Self "traverse_by" traverse_by.
     Admitted.
     Global Typeclasses Opaque traverse_by.
     
@@ -3449,7 +3452,7 @@ Module control_flow_graph.
       end.
     
     Global Instance AssociatedFunction_reachable_from :
-      M.IsAssociatedFunction.Trait Self "reachable_from" reachable_from.
+      M.IsAssociatedFunction.C Self "reachable_from" reachable_from.
     Admitted.
     Global Typeclasses Opaque reachable_from.
   End Impl_move_binary_format_control_flow_graph_VMControlFlowGraph.
@@ -3966,7 +3969,12 @@ Module control_flow_graph.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          M.read (| M.get_constant "move_binary_format::control_flow_graph::ENTRY_BLOCK_ID" |)))
+          M.read (|
+            get_constant (|
+              "move_binary_format::control_flow_graph::ENTRY_BLOCK_ID",
+              Ty.path "u16"
+            |)
+          |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     

@@ -37,7 +37,7 @@ Definition apply (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Global Instance Instance_IsFunction_apply :
-  M.IsFunction.Trait "functions_closures_type_anonymity_define_and_use::apply" apply.
+  M.IsFunction.C "functions_closures_type_anonymity_define_and_use::apply" apply.
 Admitted.
 Global Typeclasses Opaque apply.
 
@@ -164,6 +164,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "functions_closures_type_anonymity_define_and_use::main" main.
+  M.IsFunction.C "functions_closures_type_anonymity_define_and_use::main" main.
 Admitted.
 Global Typeclasses Opaque main.

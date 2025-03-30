@@ -32,7 +32,7 @@ Definition set_code_hash (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
   end.
 
 Global Instance Instance_IsFunction_set_code_hash :
-  M.IsFunction.Trait "set_code_hash::set_code_hash" set_code_hash.
+  M.IsFunction.C "set_code_hash::set_code_hash" set_code_hash.
 Admitted.
 Global Typeclasses Opaque set_code_hash.
 
@@ -110,7 +110,7 @@ Module Impl_set_code_hash_Incrementer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
   Admitted.
   Global Typeclasses Opaque new.
   
@@ -221,7 +221,7 @@ Module Impl_set_code_hash_Incrementer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_inc : M.IsAssociatedFunction.Trait Self "inc" inc.
+  Global Instance AssociatedFunction_inc : M.IsAssociatedFunction.C Self "inc" inc.
   Admitted.
   Global Typeclasses Opaque inc.
   
@@ -245,7 +245,7 @@ Module Impl_set_code_hash_Incrementer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_get : M.IsAssociatedFunction.Trait Self "get" get.
+  Global Instance AssociatedFunction_get : M.IsAssociatedFunction.C Self "get" get.
   Admitted.
   Global Typeclasses Opaque get.
   
@@ -411,8 +411,7 @@ Module Impl_set_code_hash_Incrementer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_set_code :
-    M.IsAssociatedFunction.Trait Self "set_code" set_code.
+  Global Instance AssociatedFunction_set_code : M.IsAssociatedFunction.C Self "set_code" set_code.
   Admitted.
   Global Typeclasses Opaque set_code.
 End Impl_set_code_hash_Incrementer.

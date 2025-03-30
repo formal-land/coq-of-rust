@@ -1250,7 +1250,7 @@ Module bytecode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -1330,7 +1330,7 @@ Module bytecode.
       end.
     
     Global Instance AssociatedFunction_legacy_jump_table :
-      M.IsAssociatedFunction.Trait Self "legacy_jump_table" legacy_jump_table.
+      M.IsAssociatedFunction.C Self "legacy_jump_table" legacy_jump_table.
     Admitted.
     Global Typeclasses Opaque legacy_jump_table.
     
@@ -1374,7 +1374,13 @@ Module bytecode.
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    M.get_constant "revm_primitives::KECCAK_EMPTY"));
+                    get_constant (|
+                      "revm_primitives::KECCAK_EMPTY",
+                      Ty.apply
+                        (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                        [ Value.Integer IntegerKind.Usize 32 ]
+                        []
+                    |)));
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
@@ -1417,7 +1423,7 @@ Module bytecode.
       end.
     
     Global Instance AssociatedFunction_hash_slow :
-      M.IsAssociatedFunction.Trait Self "hash_slow" hash_slow.
+      M.IsAssociatedFunction.C Self "hash_slow" hash_slow.
     Admitted.
     Global Typeclasses Opaque hash_slow.
     
@@ -1476,7 +1482,7 @@ Module bytecode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_eof : M.IsAssociatedFunction.Trait Self "eof" eof.
+    Global Instance AssociatedFunction_eof : M.IsAssociatedFunction.C Self "eof" eof.
     Admitted.
     Global Typeclasses Opaque eof.
     
@@ -1512,7 +1518,7 @@ Module bytecode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_is_eof : M.IsAssociatedFunction.Trait Self "is_eof" is_eof.
+    Global Instance AssociatedFunction_is_eof : M.IsAssociatedFunction.C Self "is_eof" is_eof.
     Admitted.
     Global Typeclasses Opaque is_eof.
     
@@ -1549,7 +1555,7 @@ Module bytecode.
       end.
     
     Global Instance AssociatedFunction_is_eip7702 :
-      M.IsAssociatedFunction.Trait Self "is_eip7702" is_eip7702.
+      M.IsAssociatedFunction.C Self "is_eip7702" is_eip7702.
     Admitted.
     Global Typeclasses Opaque is_eip7702.
     
@@ -1585,7 +1591,7 @@ Module bytecode.
       end.
     
     Global Instance AssociatedFunction_new_legacy :
-      M.IsAssociatedFunction.Trait Self "new_legacy" new_legacy.
+      M.IsAssociatedFunction.C Self "new_legacy" new_legacy.
     Admitted.
     Global Typeclasses Opaque new_legacy.
     
@@ -1639,8 +1645,7 @@ Module bytecode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new_raw :
-      M.IsAssociatedFunction.Trait Self "new_raw" new_raw.
+    Global Instance AssociatedFunction_new_raw : M.IsAssociatedFunction.C Self "new_raw" new_raw.
     Admitted.
     Global Typeclasses Opaque new_raw.
     
@@ -1672,7 +1677,7 @@ Module bytecode.
       end.
     
     Global Instance AssociatedFunction_new_eip7702 :
-      M.IsAssociatedFunction.Trait Self "new_eip7702" new_eip7702.
+      M.IsAssociatedFunction.C Self "new_eip7702" new_eip7702.
     Admitted.
     Global Typeclasses Opaque new_eip7702.
     
@@ -1820,7 +1825,13 @@ Module bytecode.
                                       Pointer.Kind.Ref,
                                       M.deref (|
                                         M.read (|
-                                          M.get_constant "revm_bytecode::eof::EOF_MAGIC_BYTES"
+                                          get_constant (|
+                                            "revm_bytecode::eof::EOF_MAGIC_BYTES",
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ Ty.path "alloy_primitives::bytes_::Bytes" ]
+                                          |)
                                         |)
                                       |)
                                     |)
@@ -2022,8 +2033,13 @@ Module bytecode.
                                       Pointer.Kind.Ref,
                                       M.deref (|
                                         M.read (|
-                                          M.get_constant
-                                            "revm_bytecode::eip7702::EIP7702_MAGIC_BYTES"
+                                          get_constant (|
+                                            "revm_bytecode::eip7702::EIP7702_MAGIC_BYTES",
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ Ty.path "alloy_primitives::bytes_::Bytes" ]
+                                          |)
                                         |)
                                       |)
                                     |)
@@ -2190,7 +2206,7 @@ Module bytecode.
       end.
     
     Global Instance AssociatedFunction_new_raw_checked :
-      M.IsAssociatedFunction.Trait Self "new_raw_checked" new_raw_checked.
+      M.IsAssociatedFunction.C Self "new_raw_checked" new_raw_checked.
     Admitted.
     Global Typeclasses Opaque new_raw_checked.
     
@@ -2232,7 +2248,7 @@ Module bytecode.
       end.
     
     Global Instance AssociatedFunction_new_analyzed :
-      M.IsAssociatedFunction.Trait Self "new_analyzed" new_analyzed.
+      M.IsAssociatedFunction.C Self "new_analyzed" new_analyzed.
     Admitted.
     Global Typeclasses Opaque new_analyzed.
     
@@ -2388,8 +2404,7 @@ Module bytecode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_bytecode :
-      M.IsAssociatedFunction.Trait Self "bytecode" bytecode.
+    Global Instance AssociatedFunction_bytecode : M.IsAssociatedFunction.C Self "bytecode" bytecode.
     Admitted.
     Global Typeclasses Opaque bytecode.
     
@@ -2480,7 +2495,7 @@ Module bytecode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_bytes : M.IsAssociatedFunction.Trait Self "bytes" bytes.
+    Global Instance AssociatedFunction_bytes : M.IsAssociatedFunction.C Self "bytes" bytes.
     Admitted.
     Global Typeclasses Opaque bytes.
     
@@ -2614,7 +2629,7 @@ Module bytecode.
       end.
     
     Global Instance AssociatedFunction_bytes_slice :
-      M.IsAssociatedFunction.Trait Self "bytes_slice" bytes_slice.
+      M.IsAssociatedFunction.C Self "bytes_slice" bytes_slice.
     Admitted.
     Global Typeclasses Opaque bytes_slice.
     
@@ -2792,7 +2807,7 @@ Module bytecode.
       end.
     
     Global Instance AssociatedFunction_original_bytes :
-      M.IsAssociatedFunction.Trait Self "original_bytes" original_bytes.
+      M.IsAssociatedFunction.C Self "original_bytes" original_bytes.
     Admitted.
     Global Typeclasses Opaque original_bytes.
     
@@ -3043,7 +3058,7 @@ Module bytecode.
       end.
     
     Global Instance AssociatedFunction_original_byte_slice :
-      M.IsAssociatedFunction.Trait Self "original_byte_slice" original_byte_slice.
+      M.IsAssociatedFunction.C Self "original_byte_slice" original_byte_slice.
     Admitted.
     Global Typeclasses Opaque original_byte_slice.
     
@@ -3086,7 +3101,7 @@ Module bytecode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_len : M.IsAssociatedFunction.Trait Self "len" len.
+    Global Instance AssociatedFunction_len : M.IsAssociatedFunction.C Self "len" len.
     Admitted.
     Global Typeclasses Opaque len.
     
@@ -3116,8 +3131,7 @@ Module bytecode.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_is_empty :
-      M.IsAssociatedFunction.Trait Self "is_empty" is_empty.
+    Global Instance AssociatedFunction_is_empty : M.IsAssociatedFunction.C Self "is_empty" is_empty.
     Admitted.
     Global Typeclasses Opaque is_empty.
   End Impl_revm_bytecode_bytecode_Bytecode.

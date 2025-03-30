@@ -180,5 +180,5 @@ End Impl_core_ops_arith_Add_generics_phantom_type_test_case_unit_clarification_L
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "generics_phantom_type_test_case_unit_clarification::main" main.
+  M.IsFunction.C "generics_phantom_type_test_case_unit_clarification::main" main.
 Admitted.

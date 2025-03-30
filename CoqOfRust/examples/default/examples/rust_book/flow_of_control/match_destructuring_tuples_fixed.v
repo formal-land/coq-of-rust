@@ -377,6 +377,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "match_destructuring_tuples_fixed::main" main.
+  M.IsFunction.C "match_destructuring_tuples_fixed::main" main.
 Admitted.
 Global Typeclasses Opaque main.

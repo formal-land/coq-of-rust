@@ -2557,7 +2557,7 @@ Module str.
         end.
       
       Global Instance AssociatedFunction_utf8_size :
-        M.IsAssociatedFunction.Trait Self "utf8_size" utf8_size.
+        M.IsAssociatedFunction.C Self "utf8_size" utf8_size.
       Admitted.
       Global Typeclasses Opaque utf8_size.
     End Impl_core_str_pattern_CharSearcher.
@@ -11861,7 +11861,7 @@ Module str.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
       Admitted.
       Global Typeclasses Opaque new.
     End Impl_core_str_pattern_StrSearcher.
@@ -12270,7 +12270,13 @@ Module str.
                                     "memory"
                                   |)
                                 |),
-                                M.read (| M.get_constant "core::num::MAX" |)
+                                M.read (|
+                                  get_associated_constant (|
+                                    Ty.path "usize",
+                                    "MAX",
+                                    Ty.path "usize"
+                                  |)
+                                |)
                               |)
                             |) in
                           M.match_operator (|
@@ -12661,7 +12667,13 @@ Module str.
                                     "memory"
                                   |)
                                 |),
-                                M.read (| M.get_constant "core::num::MAX" |)
+                                M.read (|
+                                  get_associated_constant (|
+                                    Ty.path "usize",
+                                    "MAX",
+                                    Ty.path "usize"
+                                  |)
+                                |)
                               |)
                             |) in
                           M.match_operator (|
@@ -13227,7 +13239,13 @@ Module str.
                                     "memory"
                                   |)
                                 |),
-                                M.read (| M.get_constant "core::num::MAX" |)
+                                M.read (|
+                                  get_associated_constant (|
+                                    Ty.path "usize",
+                                    "MAX",
+                                    Ty.path "usize"
+                                  |)
+                                |)
                               |)
                             |) in
                           M.match_operator (|
@@ -13617,7 +13635,13 @@ Module str.
                                     "memory"
                                   |)
                                 |),
-                                M.read (| M.get_constant "core::num::MAX" |)
+                                M.read (|
+                                  get_associated_constant (|
+                                    Ty.path "usize",
+                                    "MAX",
+                                    Ty.path "usize"
+                                  |)
+                                |)
                               |)
                             |) in
                           M.match_operator (|
@@ -14844,9 +14868,21 @@ Module str.
                                                     ("position", Value.Integer IntegerKind.Usize 0);
                                                     ("end_", M.read (| end_ |));
                                                     ("memory",
-                                                      M.read (| M.get_constant "core::num::MAX" |));
+                                                      M.read (|
+                                                        get_associated_constant (|
+                                                          Ty.path "usize",
+                                                          "MAX",
+                                                          Ty.path "usize"
+                                                        |)
+                                                      |));
                                                     ("memory_back",
-                                                      M.read (| M.get_constant "core::num::MAX" |))
+                                                      M.read (|
+                                                        get_associated_constant (|
+                                                          Ty.path "usize",
+                                                          "MAX",
+                                                          Ty.path "usize"
+                                                        |)
+                                                      |))
                                                   ]
                                               |)))
                                         ]
@@ -14861,7 +14897,7 @@ Module str.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -14959,7 +14995,7 @@ Module str.
         end.
       
       Global Instance AssociatedFunction_byteset_create :
-        M.IsAssociatedFunction.Trait Self "byteset_create" byteset_create.
+        M.IsAssociatedFunction.C Self "byteset_create" byteset_create.
       Admitted.
       Global Typeclasses Opaque byteset_create.
       
@@ -14995,7 +15031,7 @@ Module str.
         end.
       
       Global Instance AssociatedFunction_byteset_contains :
-        M.IsAssociatedFunction.Trait Self "byteset_contains" byteset_contains.
+        M.IsAssociatedFunction.C Self "byteset_contains" byteset_contains.
       Admitted.
       Global Typeclasses Opaque byteset_contains.
       
@@ -16180,7 +16216,7 @@ Module str.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_next : M.IsAssociatedFunction.Trait Self "next" next.
+      Global Instance AssociatedFunction_next : M.IsAssociatedFunction.C Self "next" next.
       Admitted.
       Global Typeclasses Opaque next.
       
@@ -17450,7 +17486,7 @@ Module str.
         end.
       
       Global Instance AssociatedFunction_next_back :
-        M.IsAssociatedFunction.Trait Self "next_back" next_back.
+        M.IsAssociatedFunction.C Self "next_back" next_back.
       Admitted.
       Global Typeclasses Opaque next_back.
       
@@ -17731,7 +17767,7 @@ Module str.
         end.
       
       Global Instance AssociatedFunction_maximal_suffix :
-        M.IsAssociatedFunction.Trait Self "maximal_suffix" maximal_suffix.
+        M.IsAssociatedFunction.C Self "maximal_suffix" maximal_suffix.
       Admitted.
       Global Typeclasses Opaque maximal_suffix.
       
@@ -18114,7 +18150,7 @@ Module str.
         end.
       
       Global Instance AssociatedFunction_reverse_maximal_suffix :
-        M.IsAssociatedFunction.Trait Self "reverse_maximal_suffix" reverse_maximal_suffix.
+        M.IsAssociatedFunction.C Self "reverse_maximal_suffix" reverse_maximal_suffix.
       Admitted.
       Global Typeclasses Opaque reverse_maximal_suffix.
     End Impl_core_str_pattern_TwoWaySearcher.
@@ -18709,7 +18745,16 @@ Module str.
                                     ]
                                   |),
                                   BinOp.Wrap.add (|
-                                    M.read (| M.get_constant "core::core_simd::vector::LEN" |),
+                                    M.read (|
+                                      get_associated_constant (|
+                                        Ty.apply
+                                          (Ty.path "core::core_simd::vector::Simd")
+                                          [ Value.Integer IntegerKind.Usize 16 ]
+                                          [ Ty.path "u8" ],
+                                        "LEN",
+                                        Ty.path "usize"
+                                      |)
+                                    |),
                                     M.read (| last_byte_offset |)
                                   |)
                                 |)
@@ -19707,11 +19752,20 @@ Module str.
                                           |),
                                           BinOp.Wrap.mul (|
                                             M.read (|
-                                              M.get_constant
-                                                "core::str::pattern::simd_contains::UNROLL"
+                                              get_constant (|
+                                                "core::str::pattern::simd_contains::UNROLL",
+                                                Ty.path "usize"
+                                              |)
                                             |),
                                             M.read (|
-                                              M.get_constant "core::core_simd::vector::LEN"
+                                              get_associated_constant (|
+                                                Ty.apply
+                                                  (Ty.path "core::core_simd::vector::Simd")
+                                                  [ Value.Integer IntegerKind.Usize 16 ]
+                                                  [ Ty.path "u8" ],
+                                                "LEN",
+                                                Ty.path "usize"
+                                              |)
                                             |)
                                           |)
                                         |),
@@ -19779,8 +19833,10 @@ Module str.
                                               ("start", Value.Integer IntegerKind.Usize 0);
                                               ("end_",
                                                 M.read (|
-                                                  M.get_constant
-                                                    "core::str::pattern::simd_contains::UNROLL"
+                                                  get_constant (|
+                                                    "core::str::pattern::simd_contains::UNROLL",
+                                                    Ty.path "usize"
+                                                  |)
                                                 |))
                                             ]
                                         ]
@@ -19878,8 +19934,19 @@ Module str.
                                                                         BinOp.Wrap.mul (|
                                                                           M.read (| j |),
                                                                           M.read (|
-                                                                            M.get_constant
-                                                                              "core::core_simd::vector::LEN"
+                                                                            get_associated_constant (|
+                                                                              Ty.apply
+                                                                                (Ty.path
+                                                                                  "core::core_simd::vector::Simd")
+                                                                                [
+                                                                                  Value.Integer
+                                                                                    IntegerKind.Usize
+                                                                                    16
+                                                                                ]
+                                                                                [ Ty.path "u8" ],
+                                                                              "LEN",
+                                                                              Ty.path "usize"
+                                                                            |)
                                                                           |)
                                                                         |)
                                                                       |)
@@ -19924,8 +19991,10 @@ Module str.
                                               ("start", Value.Integer IntegerKind.Usize 0);
                                               ("end_",
                                                 M.read (|
-                                                  M.get_constant
-                                                    "core::str::pattern::simd_contains::UNROLL"
+                                                  get_constant (|
+                                                    "core::str::pattern::simd_contains::UNROLL",
+                                                    Ty.path "usize"
+                                                  |)
                                                 |))
                                             ]
                                         ]
@@ -20065,8 +20134,23 @@ Module str.
                                                                                   BinOp.Wrap.mul (|
                                                                                     M.read (| j |),
                                                                                     M.read (|
-                                                                                      M.get_constant
-                                                                                        "core::core_simd::vector::LEN"
+                                                                                      get_associated_constant (|
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "core::core_simd::vector::Simd")
+                                                                                          [
+                                                                                            Value.Integer
+                                                                                              IntegerKind.Usize
+                                                                                              16
+                                                                                          ]
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "u8"
+                                                                                          ],
+                                                                                        "LEN",
+                                                                                        Ty.path
+                                                                                          "usize"
+                                                                                      |)
                                                                                     |)
                                                                                   |)
                                                                                 |);
@@ -20098,9 +20182,21 @@ Module str.
                                       M.read (| β |),
                                       BinOp.Wrap.mul (|
                                         M.read (|
-                                          M.get_constant "core::str::pattern::simd_contains::UNROLL"
+                                          get_constant (|
+                                            "core::str::pattern::simd_contains::UNROLL",
+                                            Ty.path "usize"
+                                          |)
                                         |),
-                                        M.read (| M.get_constant "core::core_simd::vector::LEN" |)
+                                        M.read (|
+                                          get_associated_constant (|
+                                            Ty.apply
+                                              (Ty.path "core::core_simd::vector::Simd")
+                                              [ Value.Integer IntegerKind.Usize 16 ]
+                                              [ Ty.path "u8" ],
+                                            "LEN",
+                                            Ty.path "usize"
+                                          |)
+                                        |)
                                       |)
                                     |)
                                   |)
@@ -20142,7 +20238,16 @@ Module str.
                                             M.read (| i |),
                                             M.read (| last_byte_offset |)
                                           |),
-                                          M.read (| M.get_constant "core::core_simd::vector::LEN" |)
+                                          M.read (|
+                                            get_associated_constant (|
+                                              Ty.apply
+                                                (Ty.path "core::core_simd::vector::Simd")
+                                                [ Value.Integer IntegerKind.Usize 16 ]
+                                                [ Ty.path "u8" ],
+                                              "LEN",
+                                              Ty.path "usize"
+                                            |)
+                                          |)
                                         |),
                                         M.call_closure (|
                                           Ty.path "usize",
@@ -20264,7 +20369,16 @@ Module str.
                                     β,
                                     BinOp.Wrap.add (|
                                       M.read (| β |),
-                                      M.read (| M.get_constant "core::core_simd::vector::LEN" |)
+                                      M.read (|
+                                        get_associated_constant (|
+                                          Ty.apply
+                                            (Ty.path "core::core_simd::vector::Simd")
+                                            [ Value.Integer IntegerKind.Usize 16 ]
+                                            [ Ty.path "u8" ],
+                                          "LEN",
+                                          Ty.path "usize"
+                                        |)
+                                      |)
                                     |)
                                   |)
                                 |) in
@@ -20301,7 +20415,16 @@ Module str.
                         |),
                         M.read (| last_byte_offset |)
                       |),
-                      M.read (| M.get_constant "core::core_simd::vector::LEN" |)
+                      M.read (|
+                        get_associated_constant (|
+                          Ty.apply
+                            (Ty.path "core::core_simd::vector::Simd")
+                            [ Value.Integer IntegerKind.Usize 16 ]
+                            [ Ty.path "u8" ],
+                          "LEN",
+                          Ty.path "usize"
+                        |)
+                      |)
                     |)
                   |) in
                 let~ mask : Ty.path "u16" :=
@@ -20378,17 +20501,18 @@ Module str.
       end.
     
     Global Instance Instance_IsFunction_simd_contains :
-      M.IsFunction.Trait "core::str::pattern::simd_contains" simd_contains.
+      M.IsFunction.C "core::str::pattern::simd_contains" simd_contains.
     Admitted.
     Global Typeclasses Opaque simd_contains.
     
     Module simd_contains.
-      Definition value_UNROLL : Value.t :=
-        M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 4 |))).
+      Definition value_UNROLL (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 4 |))).
       
-      Axiom Constant_value_UNROLL :
-        (M.get_constant "core::str::pattern::simd_contains::UNROLL") = value_UNROLL.
-      Global Hint Rewrite Constant_value_UNROLL : constant_rewrites.
+      Global Instance Instance_IsConstant_value_UNROLL :
+        M.IsFunction.C "core::str::pattern::simd_contains::UNROLL" value_UNROLL.
+      Admitted.
+      Global Typeclasses Opaque value_UNROLL.
     End simd_contains.
     
     (*
@@ -21201,7 +21325,7 @@ Module str.
       end.
     
     Global Instance Instance_IsFunction_small_slice_eq :
-      M.IsFunction.Trait "core::str::pattern::small_slice_eq" small_slice_eq.
+      M.IsFunction.C "core::str::pattern::small_slice_eq" small_slice_eq.
     Admitted.
     Global Typeclasses Opaque small_slice_eq.
   End pattern.

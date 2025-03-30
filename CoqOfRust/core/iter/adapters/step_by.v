@@ -287,7 +287,7 @@ Module iter.
         
         Global Instance AssociatedFunction_new :
           forall (I : Ty.t),
-          M.IsAssociatedFunction.Trait (Self I) "new" (new I).
+          M.IsAssociatedFunction.C (Self I) "new" (new I).
         Admitted.
         Global Typeclasses Opaque new.
         
@@ -339,7 +339,7 @@ Module iter.
         
         Global Instance AssociatedFunction_original_step :
           forall (I : Ty.t),
-          M.IsAssociatedFunction.Trait (Self I) "original_step" (original_step I).
+          M.IsAssociatedFunction.C (Self I) "original_step" (original_step I).
         Admitted.
         Global Typeclasses Opaque original_step.
         (*
@@ -467,7 +467,7 @@ Module iter.
         
         Global Instance AssociatedFunction_next_back_index :
           forall (I : Ty.t),
-          M.IsAssociatedFunction.Trait (Self I) "next_back_index" (next_back_index I).
+          M.IsAssociatedFunction.C (Self I) "next_back_index" (next_back_index I).
         Admitted.
         Global Typeclasses Opaque next_back_index.
       End Impl_core_iter_adapters_step_by_StepBy_I.
@@ -1448,7 +1448,13 @@ Module iter.
                                   (M.alloc (|
                                     BinOp.eq (|
                                       M.read (| n |),
-                                      M.read (| M.get_constant "core::num::MAX" |)
+                                      M.read (|
+                                        get_associated_constant (|
+                                          Ty.path "usize",
+                                          "MAX",
+                                          Ty.path "usize"
+                                        |)
+                                      |)
                                     |)
                                   |)) in
                               let _ :=
@@ -1650,14 +1656,26 @@ Module iter.
                               let~ div_n : Ty.path "usize" :=
                                 M.alloc (|
                                   BinOp.Wrap.div (|
-                                    M.read (| M.get_constant "core::num::MAX" |),
+                                    M.read (|
+                                      get_associated_constant (|
+                                        Ty.path "usize",
+                                        "MAX",
+                                        Ty.path "usize"
+                                      |)
+                                    |),
                                     M.read (| n |)
                                   |)
                                 |) in
                               let~ div_step : Ty.path "usize" :=
                                 M.alloc (|
                                   BinOp.Wrap.div (|
-                                    M.read (| M.get_constant "core::num::MAX" |),
+                                    M.read (|
+                                      get_associated_constant (|
+                                        Ty.path "usize",
+                                        "MAX",
+                                        Ty.path "usize"
+                                      |)
+                                    |),
                                     M.read (| step |)
                                   |)
                                 |) in
@@ -3221,7 +3239,7 @@ Module iter.
                             |)
                           ]
                         |);
-                        M.read (| M.get_constant "core::num::MAX" |)
+                        M.read (| get_associated_constant (| Ty.path "u8", "MAX", Ty.path "u8" |) |)
                       ]
                     |)
                   |) in
@@ -3839,7 +3857,7 @@ Module iter.
                             |)
                           ]
                         |);
-                        M.read (| M.get_constant "core::num::MAX" |)
+                        M.read (| get_associated_constant (| Ty.path "u8", "MAX", Ty.path "u8" |) |)
                       ]
                     |)
                   |) in
@@ -4195,7 +4213,9 @@ Module iter.
                             |)
                           ]
                         |);
-                        M.read (| M.get_constant "core::num::MAX" |)
+                        M.read (|
+                          get_associated_constant (| Ty.path "u16", "MAX", Ty.path "u16" |)
+                        |)
                       ]
                     |)
                   |) in
@@ -4813,7 +4833,9 @@ Module iter.
                             |)
                           ]
                         |);
-                        M.read (| M.get_constant "core::num::MAX" |)
+                        M.read (|
+                          get_associated_constant (| Ty.path "u16", "MAX", Ty.path "u16" |)
+                        |)
                       ]
                     |)
                   |) in
@@ -5169,7 +5191,9 @@ Module iter.
                             |)
                           ]
                         |);
-                        M.read (| M.get_constant "core::num::MAX" |)
+                        M.read (|
+                          get_associated_constant (| Ty.path "u32", "MAX", Ty.path "u32" |)
+                        |)
                       ]
                     |)
                   |) in
@@ -5787,7 +5811,9 @@ Module iter.
                             |)
                           ]
                         |);
-                        M.read (| M.get_constant "core::num::MAX" |)
+                        M.read (|
+                          get_associated_constant (| Ty.path "u32", "MAX", Ty.path "u32" |)
+                        |)
                       ]
                     |)
                   |) in
@@ -6143,7 +6169,9 @@ Module iter.
                             |)
                           ]
                         |);
-                        M.read (| M.get_constant "core::num::MAX" |)
+                        M.read (|
+                          get_associated_constant (| Ty.path "u64", "MAX", Ty.path "u64" |)
+                        |)
                       ]
                     |)
                   |) in
@@ -6761,7 +6789,9 @@ Module iter.
                             |)
                           ]
                         |);
-                        M.read (| M.get_constant "core::num::MAX" |)
+                        M.read (|
+                          get_associated_constant (| Ty.path "u64", "MAX", Ty.path "u64" |)
+                        |)
                       ]
                     |)
                   |) in
@@ -7118,7 +7148,9 @@ Module iter.
                             |)
                           ]
                         |);
-                        M.read (| M.get_constant "core::num::MAX" |)
+                        M.read (|
+                          get_associated_constant (| Ty.path "usize", "MAX", Ty.path "usize" |)
+                        |)
                       ]
                     |)
                   |) in
@@ -7736,7 +7768,9 @@ Module iter.
                             |)
                           ]
                         |);
-                        M.read (| M.get_constant "core::num::MAX" |)
+                        M.read (|
+                          get_associated_constant (| Ty.path "usize", "MAX", Ty.path "usize" |)
+                        |)
                       ]
                     |)
                   |) in

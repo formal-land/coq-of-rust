@@ -28,7 +28,7 @@ Module iter.
         end.
       
       Global Instance Instance_IsFunction_successors :
-        M.IsFunction.Trait "core::iter::sources::successors::successors" successors.
+        M.IsFunction.C "core::iter::sources::successors::successors" successors.
       Admitted.
       Global Typeclasses Opaque successors.
       

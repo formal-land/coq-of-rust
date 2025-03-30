@@ -292,7 +292,7 @@ Module fmt.
       end.
     
     Global Instance Instance_IsFunction_float_to_decimal_common_exact :
-      M.IsFunction.Trait
+      M.IsFunction.C
         "core::fmt::float::float_to_decimal_common_exact"
         float_to_decimal_common_exact.
     Admitted.
@@ -475,7 +475,7 @@ Module fmt.
       end.
     
     Global Instance Instance_IsFunction_float_to_decimal_common_shortest :
-      M.IsFunction.Trait
+      M.IsFunction.C
         "core::fmt::float::float_to_decimal_common_shortest"
         float_to_decimal_common_shortest.
     Admitted.
@@ -611,7 +611,7 @@ Module fmt.
       end.
     
     Global Instance Instance_IsFunction_float_to_decimal_display :
-      M.IsFunction.Trait "core::fmt::float::float_to_decimal_display" float_to_decimal_display.
+      M.IsFunction.C "core::fmt::float::float_to_decimal_display" float_to_decimal_display.
     Admitted.
     Global Typeclasses Opaque float_to_decimal_display.
     
@@ -795,7 +795,7 @@ Module fmt.
       end.
     
     Global Instance Instance_IsFunction_float_to_exponential_common_exact :
-      M.IsFunction.Trait
+      M.IsFunction.C
         "core::fmt::float::float_to_exponential_common_exact"
         float_to_exponential_common_exact.
     Admitted.
@@ -981,7 +981,7 @@ Module fmt.
       end.
     
     Global Instance Instance_IsFunction_float_to_exponential_common_shortest :
-      M.IsFunction.Trait
+      M.IsFunction.C
         "core::fmt::float::float_to_exponential_common_shortest"
         float_to_exponential_common_shortest.
     Admitted.
@@ -1124,9 +1124,7 @@ Module fmt.
       end.
     
     Global Instance Instance_IsFunction_float_to_exponential_common :
-      M.IsFunction.Trait
-        "core::fmt::float::float_to_exponential_common"
-        float_to_exponential_common.
+      M.IsFunction.C "core::fmt::float::float_to_exponential_common" float_to_exponential_common.
     Admitted.
     Global Typeclasses Opaque float_to_exponential_common.
     
@@ -1331,7 +1329,7 @@ Module fmt.
       end.
     
     Global Instance Instance_IsFunction_float_to_general_debug :
-      M.IsFunction.Trait "core::fmt::float::float_to_general_debug" float_to_general_debug.
+      M.IsFunction.C "core::fmt::float::float_to_general_debug" float_to_general_debug.
     Admitted.
     Global Typeclasses Opaque float_to_general_debug.
     

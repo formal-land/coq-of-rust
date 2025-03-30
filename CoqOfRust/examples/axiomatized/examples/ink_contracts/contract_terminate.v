@@ -62,13 +62,13 @@ Module Impl_contract_terminate_Env.
   
   Parameter caller : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_caller : M.IsAssociatedFunction.Trait Self "caller" caller.
+  Global Instance AssociatedFunction_caller : M.IsAssociatedFunction.C Self "caller" caller.
   Admitted.
   
   Parameter terminate_contract : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_terminate_contract :
-    M.IsAssociatedFunction.Trait Self "terminate_contract" terminate_contract.
+    M.IsAssociatedFunction.C Self "terminate_contract" terminate_contract.
   Admitted.
 End Impl_contract_terminate_Env.
 
@@ -85,23 +85,22 @@ Module Impl_contract_terminate_JustTerminate.
   
   Parameter init_env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_init_env :
-    M.IsAssociatedFunction.Trait Self "init_env" init_env.
+  Global Instance AssociatedFunction_init_env : M.IsAssociatedFunction.C Self "init_env" init_env.
   Admitted.
   
   Parameter env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_env : M.IsAssociatedFunction.Trait Self "env" env.
+  Global Instance AssociatedFunction_env : M.IsAssociatedFunction.C Self "env" env.
   Admitted.
   
   Parameter new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
   Admitted.
   
   Parameter terminate_me : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_terminate_me :
-    M.IsAssociatedFunction.Trait Self "terminate_me" terminate_me.
+    M.IsAssociatedFunction.C Self "terminate_me" terminate_me.
   Admitted.
 End Impl_contract_terminate_JustTerminate.

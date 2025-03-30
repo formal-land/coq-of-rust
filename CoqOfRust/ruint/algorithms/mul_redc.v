@@ -597,7 +597,10 @@ Module algorithms.
                                     |)
                                   |)
                                 |);
-                                M.borrow (| Pointer.Kind.Ref, M.get_constant "core::num::MAX" |)
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  get_associated_constant (| Ty.path "u64", "MAX", Ty.path "u64" |)
+                                |)
                               ]
                           |),
                           [
@@ -2602,7 +2605,7 @@ Module algorithms.
       end.
     
     Global Instance Instance_IsFunction_mul_redc :
-      M.IsFunction.Trait "ruint::algorithms::mul_redc::mul_redc" mul_redc.
+      M.IsFunction.C "ruint::algorithms::mul_redc::mul_redc" mul_redc.
     Admitted.
     Global Typeclasses Opaque mul_redc.
   End mul_redc.

@@ -724,7 +724,7 @@ Module legacy.
         end.
       
       Global Instance AssociatedFunction_as_slice :
-        M.IsAssociatedFunction.Trait Self "as_slice" as_slice.
+        M.IsAssociatedFunction.C Self "as_slice" as_slice.
       Admitted.
       Global Typeclasses Opaque as_slice.
       
@@ -791,7 +791,7 @@ Module legacy.
         end.
       
       Global Instance AssociatedFunction_from_slice :
-        M.IsAssociatedFunction.Trait Self "from_slice" from_slice.
+        M.IsAssociatedFunction.C Self "from_slice" from_slice.
       Admitted.
       Global Typeclasses Opaque from_slice.
       
@@ -998,7 +998,7 @@ Module legacy.
         end.
       
       Global Instance AssociatedFunction_is_valid :
-        M.IsAssociatedFunction.Trait Self "is_valid" is_valid.
+        M.IsAssociatedFunction.C Self "is_valid" is_valid.
       Admitted.
       Global Typeclasses Opaque is_valid.
     End Impl_revm_bytecode_legacy_jump_map_JumpTable.

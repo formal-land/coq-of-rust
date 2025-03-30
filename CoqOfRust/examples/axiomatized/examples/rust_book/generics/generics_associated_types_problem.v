@@ -38,11 +38,11 @@ End Impl_generics_associated_types_problem_Contains_i32_i32_for_generics_associa
 Parameter difference : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_difference :
-  M.IsFunction.Trait "generics_associated_types_problem::difference" difference.
+  M.IsFunction.C "generics_associated_types_problem::difference" difference.
 Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "generics_associated_types_problem::main" main.
+  M.IsFunction.C "generics_associated_types_problem::main" main.
 Admitted.

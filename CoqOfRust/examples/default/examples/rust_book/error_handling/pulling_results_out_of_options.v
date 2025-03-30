@@ -190,7 +190,7 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
   end.
 
 Global Instance Instance_IsFunction_double_first :
-  M.IsFunction.Trait "pulling_results_out_of_options::double_first" double_first.
+  M.IsFunction.C "pulling_results_out_of_options::double_first" double_first.
 Admitted.
 Global Typeclasses Opaque double_first.
 
@@ -666,6 +666,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "pulling_results_out_of_options::main" main.
+  M.IsFunction.C "pulling_results_out_of_options::main" main.
 Admitted.
 Global Typeclasses Opaque main.

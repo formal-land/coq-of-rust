@@ -3,20 +3,20 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter cat : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_cat : M.IsFunction.Trait "filesystem_operations::cat" cat.
+Global Instance Instance_IsFunction_cat : M.IsFunction.C "filesystem_operations::cat" cat.
 Admitted.
 
 Parameter echo : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_echo : M.IsFunction.Trait "filesystem_operations::echo" echo.
+Global Instance Instance_IsFunction_echo : M.IsFunction.C "filesystem_operations::echo" echo.
 Admitted.
 
 Parameter touch : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_touch : M.IsFunction.Trait "filesystem_operations::touch" touch.
+Global Instance Instance_IsFunction_touch : M.IsFunction.C "filesystem_operations::touch" touch.
 Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "filesystem_operations::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "filesystem_operations::main" main.
 Admitted.

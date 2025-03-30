@@ -896,7 +896,14 @@ Module bits.
         let Self : Ty.t := Self N in
         match ε, τ, α with
         | [], [], [] =>
-          ltac:(M.monadic (M.read (| M.get_constant "alloy_primitives::bits::fixed::ZERO" |)))
+          ltac:(M.monadic
+            (M.read (|
+              get_associated_constant (|
+                Ty.apply (Ty.path "alloy_primitives::bits::fixed::FixedBytes") [ N ] [],
+                "ZERO",
+                Ty.apply (Ty.path "alloy_primitives::bits::fixed::FixedBytes") [ N ] []
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -932,7 +939,11 @@ Module bits.
               M.deref (|
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.get_constant "alloy_primitives::bits::fixed::ZERO"
+                  get_associated_constant (|
+                    Ty.apply (Ty.path "alloy_primitives::bits::fixed::FixedBytes") [ N ] [],
+                    "ZERO",
+                    Ty.apply (Ty.path "alloy_primitives::bits::fixed::FixedBytes") [ N ] []
+                  |)
                 |)
               |)
             |)))
@@ -4436,7 +4447,10 @@ Module bits.
                                   LogicalOp.or (|
                                     BinOp.le (|
                                       M.read (|
-                                        M.get_constant "alloy_primitives::bits::fixed::N"
+                                        get_constant (|
+                                          "alloy_primitives::bits::fixed::N",
+                                          Ty.path "usize"
+                                        |)
                                       |),
                                       Value.Integer IntegerKind.Usize 4
                                     |),
@@ -4758,13 +4772,19 @@ Module bits.
                                           ("start",
                                             BinOp.Wrap.sub (|
                                               M.read (|
-                                                M.get_constant "alloy_primitives::bits::fixed::N"
+                                                get_constant (|
+                                                  "alloy_primitives::bits::fixed::N",
+                                                  Ty.path "usize"
+                                                |)
                                               |),
                                               Value.Integer IntegerKind.Usize 2
                                             |));
                                           ("end_",
                                             M.read (|
-                                              M.get_constant "alloy_primitives::bits::fixed::N"
+                                              get_constant (|
+                                                "alloy_primitives::bits::fixed::N",
+                                                Ty.path "usize"
+                                              |)
                                             |))
                                         ]
                                     ]
@@ -4808,8 +4828,10 @@ Module bits.
                                                 BinOp.Wrap.add (|
                                                   Value.Integer IntegerKind.Usize 6,
                                                   M.read (|
-                                                    M.get_constant
-                                                      "alloy_primitives::bits::fixed::fmt::SEP_LEN"
+                                                    get_constant (|
+                                                      "alloy_primitives::bits::fixed::fmt::SEP_LEN",
+                                                      Ty.path "usize"
+                                                    |)
                                                   |)
                                                 |))
                                             ]
@@ -5770,19 +5792,23 @@ Module bits.
       
       (*     pub const ZERO: Self = Self([0u8; N]); *)
       (* Ty.apply (Ty.path "alloy_primitives::bits::fixed::FixedBytes") [ N ] [] *)
-      Definition value_ZERO (N : Value.t) : Value.t :=
+      Definition value_ZERO
+          (N : Value.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self N in
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              Value.StructTuple
-                "alloy_primitives::bits::fixed::FixedBytes"
-                [ repeat (| Value.Integer IntegerKind.U8 0, N |) ]
-            |))).
+        ltac:(M.monadic
+          (M.alloc (|
+            Value.StructTuple
+              "alloy_primitives::bits::fixed::FixedBytes"
+              [ repeat (| Value.Integer IntegerKind.U8 0, N |) ]
+          |))).
       
       Global Instance AssociatedConstant_value_ZERO :
         forall (N : Value.t),
-        M.IsAssociatedConstant.Trait (Self N) "value_ZERO" (value_ZERO N).
+        M.IsAssociatedFunction.C (Self N) "ZERO" (value_ZERO N).
       Admitted.
       Global Typeclasses Opaque value_ZERO.
       
@@ -5803,7 +5829,7 @@ Module bits.
       
       Global Instance AssociatedFunction_new :
         forall (N : Value.t),
-        M.IsAssociatedFunction.Trait (Self N) "new" (new N).
+        M.IsAssociatedFunction.C (Self N) "new" (new N).
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -5841,7 +5867,12 @@ Module bits.
                           M.use
                             (M.alloc (|
                               BinOp.gt (|
-                                M.read (| M.get_constant "alloy_primitives::bits::fixed::N" |),
+                                M.read (|
+                                  get_constant (|
+                                    "alloy_primitives::bits::fixed::N",
+                                    Ty.path "usize"
+                                  |)
+                                |),
                                 Value.Integer IntegerKind.Usize 0
                               |)
                             |)) in
@@ -5853,7 +5884,12 @@ Module bits.
                               M.SubPointer.get_array_field (|
                                 bytes,
                                 BinOp.Wrap.sub (|
-                                  M.read (| M.get_constant "alloy_primitives::bits::fixed::N" |),
+                                  M.read (|
+                                    get_constant (|
+                                      "alloy_primitives::bits::fixed::N",
+                                      Ty.path "usize"
+                                    |)
+                                  |),
                                   Value.Integer IntegerKind.Usize 1
                                 |)
                               |),
@@ -5873,7 +5909,7 @@ Module bits.
       
       Global Instance AssociatedFunction_with_last_byte :
         forall (N : Value.t),
-        M.IsAssociatedFunction.Trait (Self N) "with_last_byte" (with_last_byte N).
+        M.IsAssociatedFunction.C (Self N) "with_last_byte" (with_last_byte N).
       Admitted.
       Global Typeclasses Opaque with_last_byte.
       
@@ -5901,7 +5937,7 @@ Module bits.
       
       Global Instance AssociatedFunction_repeat_byte :
         forall (N : Value.t),
-        M.IsAssociatedFunction.Trait (Self N) "repeat_byte" (repeat_byte N).
+        M.IsAssociatedFunction.C (Self N) "repeat_byte" (repeat_byte N).
       Admitted.
       Global Typeclasses Opaque repeat_byte.
       
@@ -5919,13 +5955,14 @@ Module bits.
         let Self : Ty.t := Self N in
         match ε, τ, α with
         | [], [], [] =>
-          ltac:(M.monadic (M.read (| M.get_constant "alloy_primitives::bits::fixed::N" |)))
+          ltac:(M.monadic
+            (M.read (| get_constant (| "alloy_primitives::bits::fixed::N", Ty.path "usize" |) |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Global Instance AssociatedFunction_len_bytes :
         forall (N : Value.t),
-        M.IsAssociatedFunction.Trait (Self N) "len_bytes" (len_bytes N).
+        M.IsAssociatedFunction.C (Self N) "len_bytes" (len_bytes N).
       Admitted.
       Global Typeclasses Opaque len_bytes.
       
@@ -5971,14 +6008,24 @@ Module bits.
                               UnOp.not (|
                                 BinOp.eq (|
                                   BinOp.Wrap.add (|
-                                    M.read (| M.get_constant "alloy_primitives::bits::fixed::N" |),
                                     M.read (|
-                                      M.get_constant
-                                        "alloy_primitives::bits::fixed::concat_const::M"
+                                      get_constant (|
+                                        "alloy_primitives::bits::fixed::N",
+                                        Ty.path "usize"
+                                      |)
+                                    |),
+                                    M.read (|
+                                      get_constant (|
+                                        "alloy_primitives::bits::fixed::concat_const::M",
+                                        Ty.path "usize"
+                                      |)
                                     |)
                                   |),
                                   M.read (|
-                                    M.get_constant "alloy_primitives::bits::fixed::concat_const::Z"
+                                    get_constant (|
+                                      "alloy_primitives::bits::fixed::concat_const::Z",
+                                      Ty.path "usize"
+                                    |)
                                   |)
                                 |)
                               |)
@@ -6044,8 +6091,10 @@ Module bits.
                                   BinOp.lt (|
                                     M.read (| i |),
                                     M.read (|
-                                      M.get_constant
-                                        "alloy_primitives::bits::fixed::concat_const::Z"
+                                      get_constant (|
+                                        "alloy_primitives::bits::fixed::concat_const::Z",
+                                        Ty.path "usize"
+                                      |)
                                     |)
                                   |)
                                 |)) in
@@ -6068,8 +6117,10 @@ Module bits.
                                                   BinOp.ge (|
                                                     M.read (| i |),
                                                     M.read (|
-                                                      M.get_constant
-                                                        "alloy_primitives::bits::fixed::N"
+                                                      get_constant (|
+                                                        "alloy_primitives::bits::fixed::N",
+                                                        Ty.path "usize"
+                                                      |)
                                                     |)
                                                   |)
                                                 |)) in
@@ -6087,7 +6138,10 @@ Module bits.
                                               BinOp.Wrap.sub (|
                                                 M.read (| i |),
                                                 M.read (|
-                                                  M.get_constant "alloy_primitives::bits::fixed::N"
+                                                  get_constant (|
+                                                    "alloy_primitives::bits::fixed::N",
+                                                    Ty.path "usize"
+                                                  |)
                                                 |)
                                               |)
                                             |)));
@@ -6143,7 +6197,7 @@ Module bits.
       
       Global Instance AssociatedFunction_concat_const :
         forall (N : Value.t),
-        M.IsAssociatedFunction.Trait (Self N) "concat_const" (concat_const N).
+        M.IsAssociatedFunction.C (Self N) "concat_const" (concat_const N).
       Admitted.
       Global Typeclasses Opaque concat_const.
       
@@ -6305,8 +6359,10 @@ Module bits.
                                                     M.deref (|
                                                       M.borrow (|
                                                         Pointer.Kind.Ref,
-                                                        M.get_constant
-                                                          "alloy_primitives::bits::fixed::N"
+                                                        get_constant (|
+                                                          "alloy_primitives::bits::fixed::N",
+                                                          Ty.path "usize"
+                                                        |)
                                                       |)
                                                     |)
                                                   |)
@@ -6331,7 +6387,7 @@ Module bits.
       
       Global Instance AssociatedFunction_from_slice :
         forall (N : Value.t),
-        M.IsAssociatedFunction.Trait (Self N) "from_slice" (from_slice N).
+        M.IsAssociatedFunction.C (Self N) "from_slice" (from_slice N).
       Admitted.
       Global Typeclasses Opaque from_slice.
       
@@ -6382,7 +6438,12 @@ Module bits.
                               UnOp.not (|
                                 BinOp.le (|
                                   M.read (| len |),
-                                  M.read (| M.get_constant "alloy_primitives::bits::fixed::N" |)
+                                  M.read (|
+                                    get_constant (|
+                                      "alloy_primitives::bits::fixed::N",
+                                      Ty.path "usize"
+                                    |)
+                                  |)
                                 |)
                               |)
                             |)) in
@@ -6443,8 +6504,10 @@ Module bits.
                                                       M.deref (|
                                                         M.borrow (|
                                                           Pointer.Kind.Ref,
-                                                          M.get_constant
-                                                            "alloy_primitives::bits::fixed::N"
+                                                          get_constant (|
+                                                            "alloy_primitives::bits::fixed::N",
+                                                            Ty.path "usize"
+                                                          |)
                                                         |)
                                                       |)
                                                     |)
@@ -6483,7 +6546,13 @@ Module bits.
                 |) in
               let~ bytes :
                   Ty.apply (Ty.path "alloy_primitives::bits::fixed::FixedBytes") [ N ] [] :=
-                M.copy (| M.get_constant "alloy_primitives::bits::fixed::ZERO" |) in
+                M.copy (|
+                  get_associated_constant (|
+                    Ty.apply (Ty.path "alloy_primitives::bits::fixed::FixedBytes") [ N ] [],
+                    "ZERO",
+                    Ty.apply (Ty.path "alloy_primitives::bits::fixed::FixedBytes") [ N ] []
+                  |)
+                |) in
               let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
@@ -6528,7 +6597,10 @@ Module bits.
                                   ("start",
                                     BinOp.Wrap.sub (|
                                       M.read (|
-                                        M.get_constant "alloy_primitives::bits::fixed::N"
+                                        get_constant (|
+                                          "alloy_primitives::bits::fixed::N",
+                                          Ty.path "usize"
+                                        |)
                                       |),
                                       M.read (| len |)
                                     |))
@@ -6548,7 +6620,7 @@ Module bits.
       
       Global Instance AssociatedFunction_left_padding_from :
         forall (N : Value.t),
-        M.IsAssociatedFunction.Trait (Self N) "left_padding_from" (left_padding_from N).
+        M.IsAssociatedFunction.C (Self N) "left_padding_from" (left_padding_from N).
       Admitted.
       Global Typeclasses Opaque left_padding_from.
       
@@ -6599,7 +6671,12 @@ Module bits.
                               UnOp.not (|
                                 BinOp.le (|
                                   M.read (| len |),
-                                  M.read (| M.get_constant "alloy_primitives::bits::fixed::N" |)
+                                  M.read (|
+                                    get_constant (|
+                                      "alloy_primitives::bits::fixed::N",
+                                      Ty.path "usize"
+                                    |)
+                                  |)
                                 |)
                               |)
                             |)) in
@@ -6660,8 +6737,10 @@ Module bits.
                                                       M.deref (|
                                                         M.borrow (|
                                                           Pointer.Kind.Ref,
-                                                          M.get_constant
-                                                            "alloy_primitives::bits::fixed::N"
+                                                          get_constant (|
+                                                            "alloy_primitives::bits::fixed::N",
+                                                            Ty.path "usize"
+                                                          |)
                                                         |)
                                                       |)
                                                     |)
@@ -6700,7 +6779,13 @@ Module bits.
                 |) in
               let~ bytes :
                   Ty.apply (Ty.path "alloy_primitives::bits::fixed::FixedBytes") [ N ] [] :=
-                M.copy (| M.get_constant "alloy_primitives::bits::fixed::ZERO" |) in
+                M.copy (|
+                  get_associated_constant (|
+                    Ty.apply (Ty.path "alloy_primitives::bits::fixed::FixedBytes") [ N ] [],
+                    "ZERO",
+                    Ty.apply (Ty.path "alloy_primitives::bits::fixed::FixedBytes") [ N ] []
+                  |)
+                |) in
               let~ _ : Ty.tuple [] :=
                 M.alloc (|
                   M.call_closure (|
@@ -6757,7 +6842,7 @@ Module bits.
       
       Global Instance AssociatedFunction_right_padding_from :
         forall (N : Value.t),
-        M.IsAssociatedFunction.Trait (Self N) "right_padding_from" (right_padding_from N).
+        M.IsAssociatedFunction.C (Self N) "right_padding_from" (right_padding_from N).
       Admitted.
       Global Typeclasses Opaque right_padding_from.
       
@@ -6790,7 +6875,7 @@ Module bits.
       
       Global Instance AssociatedFunction_as_slice :
         forall (N : Value.t),
-        M.IsAssociatedFunction.Trait (Self N) "as_slice" (as_slice N).
+        M.IsAssociatedFunction.C (Self N) "as_slice" (as_slice N).
       Admitted.
       Global Typeclasses Opaque as_slice.
       
@@ -6833,7 +6918,7 @@ Module bits.
       
       Global Instance AssociatedFunction_as_mut_slice :
         forall (N : Value.t),
-        M.IsAssociatedFunction.Trait (Self N) "as_mut_slice" (as_mut_slice N).
+        M.IsAssociatedFunction.C (Self N) "as_mut_slice" (as_mut_slice N).
       Admitted.
       Global Typeclasses Opaque as_mut_slice.
       
@@ -6890,7 +6975,7 @@ Module bits.
       
       Global Instance AssociatedFunction_covers :
         forall (N : Value.t),
-        M.IsAssociatedFunction.Trait (Self N) "covers" (covers N).
+        M.IsAssociatedFunction.C (Self N) "covers" (covers N).
       Admitted.
       Global Typeclasses Opaque covers.
       
@@ -6949,7 +7034,7 @@ Module bits.
       
       Global Instance AssociatedFunction_const_covers :
         forall (N : Value.t),
-        M.IsAssociatedFunction.Trait (Self N) "const_covers" (const_covers N).
+        M.IsAssociatedFunction.C (Self N) "const_covers" (const_covers N).
       Admitted.
       Global Typeclasses Opaque const_covers.
       
@@ -6992,7 +7077,10 @@ Module bits.
                                       BinOp.lt (|
                                         M.read (| i |),
                                         M.read (|
-                                          M.get_constant "alloy_primitives::bits::fixed::N"
+                                          get_constant (|
+                                            "alloy_primitives::bits::fixed::N",
+                                            Ty.path "usize"
+                                          |)
                                         |)
                                       |)
                                     |)) in
@@ -7083,7 +7171,7 @@ Module bits.
       
       Global Instance AssociatedFunction_const_eq :
         forall (N : Value.t),
-        M.IsAssociatedFunction.Trait (Self N) "const_eq" (const_eq N).
+        M.IsAssociatedFunction.C (Self N) "const_eq" (const_eq N).
       Admitted.
       Global Typeclasses Opaque const_eq.
       
@@ -7113,7 +7201,11 @@ Module bits.
                 M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.get_constant "alloy_primitives::bits::fixed::ZERO"
+                  get_associated_constant (|
+                    Ty.apply (Ty.path "alloy_primitives::bits::fixed::FixedBytes") [ N ] [],
+                    "ZERO",
+                    Ty.apply (Ty.path "alloy_primitives::bits::fixed::FixedBytes") [ N ] []
+                  |)
                 |)
               ]
             |)))
@@ -7122,7 +7214,7 @@ Module bits.
       
       Global Instance AssociatedFunction_is_zero :
         forall (N : Value.t),
-        M.IsAssociatedFunction.Trait (Self N) "is_zero" (is_zero N).
+        M.IsAssociatedFunction.C (Self N) "is_zero" (is_zero N).
       Admitted.
       Global Typeclasses Opaque is_zero.
       
@@ -7157,7 +7249,11 @@ Module bits.
                   M.deref (|
                     M.borrow (|
                       Pointer.Kind.Ref,
-                      M.get_constant "alloy_primitives::bits::fixed::ZERO"
+                      get_associated_constant (|
+                        Ty.apply (Ty.path "alloy_primitives::bits::fixed::FixedBytes") [ N ] [],
+                        "ZERO",
+                        Ty.apply (Ty.path "alloy_primitives::bits::fixed::FixedBytes") [ N ] []
+                      |)
                     |)
                   |)
                 |)
@@ -7168,7 +7264,7 @@ Module bits.
       
       Global Instance AssociatedFunction_const_is_zero :
         forall (N : Value.t),
-        M.IsAssociatedFunction.Trait (Self N) "const_is_zero" (const_is_zero N).
+        M.IsAssociatedFunction.C (Self N) "const_is_zero" (const_is_zero N).
       Admitted.
       Global Typeclasses Opaque const_is_zero.
       
@@ -7192,7 +7288,13 @@ Module bits.
             let rhs := M.alloc (| rhs |) in
             M.read (|
               let~ ret : Ty.apply (Ty.path "alloy_primitives::bits::fixed::FixedBytes") [ N ] [] :=
-                M.copy (| M.get_constant "alloy_primitives::bits::fixed::ZERO" |) in
+                M.copy (|
+                  get_associated_constant (|
+                    Ty.apply (Ty.path "alloy_primitives::bits::fixed::FixedBytes") [ N ] [],
+                    "ZERO",
+                    Ty.apply (Ty.path "alloy_primitives::bits::fixed::FixedBytes") [ N ] []
+                  |)
+                |) in
               let~ i : Ty.path "usize" := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
               let~ _ : Ty.tuple [] :=
                 M.loop (|
@@ -7209,7 +7311,12 @@ Module bits.
                                 (M.alloc (|
                                   BinOp.lt (|
                                     M.read (| i |),
-                                    M.read (| M.get_constant "alloy_primitives::bits::fixed::N" |)
+                                    M.read (|
+                                      get_constant (|
+                                        "alloy_primitives::bits::fixed::N",
+                                        Ty.path "usize"
+                                      |)
+                                    |)
                                   |)
                                 |)) in
                             let _ :=
@@ -7281,7 +7388,7 @@ Module bits.
       
       Global Instance AssociatedFunction_bit_and :
         forall (N : Value.t),
-        M.IsAssociatedFunction.Trait (Self N) "bit_and" (bit_and N).
+        M.IsAssociatedFunction.C (Self N) "bit_and" (bit_and N).
       Admitted.
       Global Typeclasses Opaque bit_and.
       
@@ -7305,7 +7412,13 @@ Module bits.
             let rhs := M.alloc (| rhs |) in
             M.read (|
               let~ ret : Ty.apply (Ty.path "alloy_primitives::bits::fixed::FixedBytes") [ N ] [] :=
-                M.copy (| M.get_constant "alloy_primitives::bits::fixed::ZERO" |) in
+                M.copy (|
+                  get_associated_constant (|
+                    Ty.apply (Ty.path "alloy_primitives::bits::fixed::FixedBytes") [ N ] [],
+                    "ZERO",
+                    Ty.apply (Ty.path "alloy_primitives::bits::fixed::FixedBytes") [ N ] []
+                  |)
+                |) in
               let~ i : Ty.path "usize" := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
               let~ _ : Ty.tuple [] :=
                 M.loop (|
@@ -7322,7 +7435,12 @@ Module bits.
                                 (M.alloc (|
                                   BinOp.lt (|
                                     M.read (| i |),
-                                    M.read (| M.get_constant "alloy_primitives::bits::fixed::N" |)
+                                    M.read (|
+                                      get_constant (|
+                                        "alloy_primitives::bits::fixed::N",
+                                        Ty.path "usize"
+                                      |)
+                                    |)
                                   |)
                                 |)) in
                             let _ :=
@@ -7394,7 +7512,7 @@ Module bits.
       
       Global Instance AssociatedFunction_bit_or :
         forall (N : Value.t),
-        M.IsAssociatedFunction.Trait (Self N) "bit_or" (bit_or N).
+        M.IsAssociatedFunction.C (Self N) "bit_or" (bit_or N).
       Admitted.
       Global Typeclasses Opaque bit_or.
       
@@ -7418,7 +7536,13 @@ Module bits.
             let rhs := M.alloc (| rhs |) in
             M.read (|
               let~ ret : Ty.apply (Ty.path "alloy_primitives::bits::fixed::FixedBytes") [ N ] [] :=
-                M.copy (| M.get_constant "alloy_primitives::bits::fixed::ZERO" |) in
+                M.copy (|
+                  get_associated_constant (|
+                    Ty.apply (Ty.path "alloy_primitives::bits::fixed::FixedBytes") [ N ] [],
+                    "ZERO",
+                    Ty.apply (Ty.path "alloy_primitives::bits::fixed::FixedBytes") [ N ] []
+                  |)
+                |) in
               let~ i : Ty.path "usize" := M.alloc (| Value.Integer IntegerKind.Usize 0 |) in
               let~ _ : Ty.tuple [] :=
                 M.loop (|
@@ -7435,7 +7559,12 @@ Module bits.
                                 (M.alloc (|
                                   BinOp.lt (|
                                     M.read (| i |),
-                                    M.read (| M.get_constant "alloy_primitives::bits::fixed::N" |)
+                                    M.read (|
+                                      get_constant (|
+                                        "alloy_primitives::bits::fixed::N",
+                                        Ty.path "usize"
+                                      |)
+                                    |)
                                   |)
                                 |)) in
                             let _ :=
@@ -7507,7 +7636,7 @@ Module bits.
       
       Global Instance AssociatedFunction_bit_xor :
         forall (N : Value.t),
-        M.IsAssociatedFunction.Trait (Self N) "bit_xor" (bit_xor N).
+        M.IsAssociatedFunction.C (Self N) "bit_xor" (bit_xor N).
       Admitted.
       Global Typeclasses Opaque bit_xor.
       
@@ -7551,7 +7680,10 @@ Module bits.
                         ltac:(M.monadic
                           (let γ :=
                             M.use
-                              (M.get_constant "alloy_primitives::bits::fixed::fmt_hex::UPPER") in
+                              (get_constant (|
+                                "alloy_primitives::bits::fixed::fmt_hex::UPPER",
+                                Ty.path "bool"
+                              |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
@@ -7710,7 +7842,7 @@ Module bits.
       
       Global Instance AssociatedFunction_fmt_hex :
         forall (N : Value.t),
-        M.IsAssociatedFunction.Trait (Self N) "fmt_hex" (fmt_hex N).
+        M.IsAssociatedFunction.C (Self N) "fmt_hex" (fmt_hex N).
       Admitted.
       Global Typeclasses Opaque fmt_hex.
     End Impl_alloy_primitives_bits_fixed_FixedBytes_N.

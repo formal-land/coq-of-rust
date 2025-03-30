@@ -4,5 +4,5 @@ Require Import CoqOfRust.CoqOfRust.
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "macro_rules_variadic_interfaces::main" main.
+  M.IsFunction.C "macro_rules_variadic_interfaces::main" main.
 Admitted.

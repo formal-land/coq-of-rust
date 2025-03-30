@@ -815,7 +815,12 @@ pub(crate) fn compile_expr<'a>(
             Rc::new(Expr::Return(value))
         }
         thir::ExprKind::ConstBlock { did, .. } => {
-            Rc::new(Expr::GetConst(compile_def_id(env, *did)))
+            let return_ty = compile_type(env, &expr.span, generics, &expr.ty);
+
+            Rc::new(Expr::GetConstant {
+                path: compile_def_id(env, *did),
+                return_ty,
+            })
         }
         thir::ExprKind::Repeat { value, count } => {
             let func = Expr::local_var("repeat");
@@ -1176,23 +1181,42 @@ pub(crate) fn compile_expr<'a>(
                 }
             }
         }
-        thir::ExprKind::NamedConst { def_id, .. } => {
+        thir::ExprKind::NamedConst { def_id, args, .. } => {
             let path = compile_def_id(env, *def_id);
-            let expr = Rc::new(Expr::GetConst(path));
+            let symbol = env.tcx.def_key(*def_id).get_opt_name();
             let parent = env.tcx.opt_parent(*def_id).unwrap();
             let parent_kind = env.tcx.def_kind(parent);
+            let return_ty = compile_type(env, &expr.span, generics, &expr.ty);
 
-            if matches!(parent_kind, DefKind::Variant) {
-                return expr.alloc();
+            match parent_kind {
+                DefKind::Variant => Rc::new(Expr::GetConstant { path, return_ty }),
+                DefKind::Impl { .. } => {
+                    let parent_type = env.tcx.type_of(parent).instantiate(env.tcx, args);
+                    let ty = compile_type(env, &expr.span, generics, &parent_type);
+                    Rc::new(Expr::GetAssociatedConstant {
+                        ty,
+                        constant: symbol.unwrap().to_string(),
+                        return_ty,
+                    })
+                }
+                _ => Rc::new(Expr::GetConstant { path, return_ty }),
             }
-
-            expr
         }
         thir::ExprKind::ConstParam { def_id, .. } => {
-            Rc::new(Expr::GetConst(compile_def_id(env, *def_id)))
+            let return_ty = compile_type(env, &expr.span, generics, &expr.ty);
+
+            Rc::new(Expr::GetConstant {
+                path: compile_def_id(env, *def_id),
+                return_ty,
+            })
         }
         thir::ExprKind::StaticRef { def_id, .. } => {
-            Rc::new(Expr::GetConst(compile_def_id(env, *def_id)))
+            let return_ty = compile_type(env, &expr.span, generics, &expr.ty);
+
+            Rc::new(Expr::GetConstant {
+                path: compile_def_id(env, *def_id),
+                return_ty,
+            })
         }
         thir::ExprKind::InlineAsm(_) => Rc::new(Expr::LocalVar("InlineAssembly".to_string())),
         thir::ExprKind::OffsetOf { .. } => {
@@ -1203,7 +1227,12 @@ pub(crate) fn compile_expr<'a>(
             Rc::new(Expr::Comment(error_message.to_string(), Expr::tt()))
         }
         thir::ExprKind::ThreadLocalRef(def_id) => {
-            Rc::new(Expr::GetConst(compile_def_id(env, *def_id)))
+            let return_ty = compile_type(env, &expr.span, generics, &expr.ty);
+
+            Rc::new(Expr::GetConstant {
+                path: compile_def_id(env, *def_id),
+                return_ty,
+            })
         }
         thir::ExprKind::Yield { value } => {
             let func = Expr::local_var("yield");
@@ -1317,7 +1346,9 @@ pub(crate) fn compile_const(env: &Env, span: &rustc_span::Span, const_: &Const) 
 
             Rc::new(Expr::Call {
                 func: Expr::local_var("M.unevaluated_const"),
-                args: vec![Rc::new(Expr::GetConst(path))],
+                args: vec![Rc::new(Expr::Literal(Rc::new(Literal::String(
+                    path.to_name().as_str().to_string(),
+                ))))],
                 kind: CallKind::Pure,
             })
         }

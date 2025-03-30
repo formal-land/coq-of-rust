@@ -22,7 +22,7 @@ Module Impl_generics_new_type_idiom_Years.
   
   Parameter to_days : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_to_days : M.IsAssociatedFunction.Trait Self "to_days" to_days.
+  Global Instance AssociatedFunction_to_days : M.IsAssociatedFunction.C Self "to_days" to_days.
   Admitted.
 End Impl_generics_new_type_idiom_Years.
 
@@ -31,18 +31,17 @@ Module Impl_generics_new_type_idiom_Days.
   
   Parameter to_years : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_to_years :
-    M.IsAssociatedFunction.Trait Self "to_years" to_years.
+  Global Instance AssociatedFunction_to_years : M.IsAssociatedFunction.C Self "to_years" to_years.
   Admitted.
 End Impl_generics_new_type_idiom_Days.
 
 Parameter old_enough : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_old_enough :
-  M.IsFunction.Trait "generics_new_type_idiom::old_enough" old_enough.
+  M.IsFunction.C "generics_new_type_idiom::old_enough" old_enough.
 Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "generics_new_type_idiom::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "generics_new_type_idiom::main" main.
 Admitted.

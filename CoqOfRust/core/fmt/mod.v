@@ -674,7 +674,7 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
     (*
@@ -793,8 +793,7 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_wrap_buf :
-      M.IsAssociatedFunction.Trait Self "wrap_buf" wrap_buf.
+    Global Instance AssociatedFunction_wrap_buf : M.IsAssociatedFunction.C Self "wrap_buf" wrap_buf.
     Admitted.
     Global Typeclasses Opaque wrap_buf.
     
@@ -2322,7 +2321,7 @@ Module fmt.
       end.
     
     Global Instance AssociatedFunction_pad_integral :
-      M.IsAssociatedFunction.Trait Self "pad_integral" pad_integral.
+      M.IsAssociatedFunction.C Self "pad_integral" pad_integral.
     Admitted.
     Global Typeclasses Opaque pad_integral.
     
@@ -3045,7 +3044,7 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_pad : M.IsAssociatedFunction.Trait Self "pad" pad.
+    Global Instance AssociatedFunction_pad : M.IsAssociatedFunction.C Self "pad" pad.
     Admitted.
     Global Typeclasses Opaque pad.
     
@@ -3444,8 +3443,7 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_padding :
-      M.IsAssociatedFunction.Trait Self "padding" padding.
+    Global Instance AssociatedFunction_padding : M.IsAssociatedFunction.C Self "padding" padding.
     Admitted.
     Global Typeclasses Opaque padding.
     
@@ -4191,7 +4189,7 @@ Module fmt.
       end.
     
     Global Instance AssociatedFunction_pad_formatted_parts :
-      M.IsAssociatedFunction.Trait Self "pad_formatted_parts" pad_formatted_parts.
+      M.IsAssociatedFunction.C Self "pad_formatted_parts" pad_formatted_parts.
     Admitted.
     Global Typeclasses Opaque pad_formatted_parts.
     
@@ -4560,8 +4558,16 @@ Module fmt.
                                                                               Pointer.Kind.Ref,
                                                                               M.deref (|
                                                                                 M.read (|
-                                                                                  M.get_constant
-                                                                                    "core::fmt::write_formatted_parts::ZEROES"
+                                                                                  get_constant (|
+                                                                                    "core::fmt::write_formatted_parts::ZEROES",
+                                                                                    Ty.apply
+                                                                                      (Ty.path "&")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "str"
+                                                                                      ]
+                                                                                  |)
                                                                                 |)
                                                                               |)
                                                                             |)
@@ -4658,8 +4664,17 @@ Module fmt.
                                                                                 Pointer.Kind.Ref,
                                                                                 M.deref (|
                                                                                   M.read (|
-                                                                                    M.get_constant
-                                                                                      "core::fmt::write_formatted_parts::ZEROES"
+                                                                                    get_constant (|
+                                                                                      "core::fmt::write_formatted_parts::ZEROES",
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "&")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "str"
+                                                                                        ]
+                                                                                    |)
                                                                                   |)
                                                                                 |)
                                                                               |)
@@ -4765,8 +4780,16 @@ Module fmt.
                                                                               Pointer.Kind.Ref,
                                                                               M.deref (|
                                                                                 M.read (|
-                                                                                  M.get_constant
-                                                                                    "core::fmt::write_formatted_parts::ZEROES"
+                                                                                  get_constant (|
+                                                                                    "core::fmt::write_formatted_parts::ZEROES",
+                                                                                    Ty.apply
+                                                                                      (Ty.path "&")
+                                                                                      []
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "str"
+                                                                                      ]
+                                                                                  |)
                                                                                 |)
                                                                               |)
                                                                             |)
@@ -4925,8 +4948,17 @@ Module fmt.
                                                                                       Pointer.Kind.Ref,
                                                                                       M.deref (|
                                                                                         M.read (|
-                                                                                          M.get_constant
-                                                                                            "core::fmt::write_formatted_parts::ZEROES"
+                                                                                          get_constant (|
+                                                                                            "core::fmt::write_formatted_parts::ZEROES",
+                                                                                            Ty.apply
+                                                                                              (Ty.path
+                                                                                                "&")
+                                                                                              []
+                                                                                              [
+                                                                                                Ty.path
+                                                                                                  "str"
+                                                                                              ]
+                                                                                          |)
                                                                                         |)
                                                                                       |)
                                                                                     |);
@@ -5694,7 +5726,7 @@ Module fmt.
       end.
     
     Global Instance AssociatedFunction_write_formatted_parts :
-      M.IsAssociatedFunction.Trait Self "write_formatted_parts" write_formatted_parts.
+      M.IsAssociatedFunction.C Self "write_formatted_parts" write_formatted_parts.
     Admitted.
     Global Typeclasses Opaque write_formatted_parts.
     
@@ -5743,7 +5775,7 @@ Module fmt.
       end.
     
     Global Instance AssociatedFunction_write_str :
-      M.IsAssociatedFunction.Trait Self "write_str" write_str.
+      M.IsAssociatedFunction.C Self "write_str" write_str.
     Admitted.
     Global Typeclasses Opaque write_str.
     
@@ -5861,7 +5893,7 @@ Module fmt.
       end.
     
     Global Instance AssociatedFunction_write_fmt :
-      M.IsAssociatedFunction.Trait Self "write_fmt" write_fmt.
+      M.IsAssociatedFunction.C Self "write_fmt" write_fmt.
     Admitted.
     Global Typeclasses Opaque write_fmt.
     
@@ -5885,7 +5917,7 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_flags : M.IsAssociatedFunction.Trait Self "flags" flags.
+    Global Instance AssociatedFunction_flags : M.IsAssociatedFunction.C Self "flags" flags.
     Admitted.
     Global Typeclasses Opaque flags.
     
@@ -5909,7 +5941,7 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_fill : M.IsAssociatedFunction.Trait Self "fill" fill.
+    Global Instance AssociatedFunction_fill : M.IsAssociatedFunction.C Self "fill" fill.
     Admitted.
     Global Typeclasses Opaque fill.
     
@@ -5972,7 +6004,7 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_align : M.IsAssociatedFunction.Trait Self "align" align.
+    Global Instance AssociatedFunction_align : M.IsAssociatedFunction.C Self "align" align.
     Admitted.
     Global Typeclasses Opaque align.
     
@@ -5996,7 +6028,7 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_width : M.IsAssociatedFunction.Trait Self "width" width.
+    Global Instance AssociatedFunction_width : M.IsAssociatedFunction.C Self "width" width.
     Admitted.
     Global Typeclasses Opaque width.
     
@@ -6021,7 +6053,7 @@ Module fmt.
       end.
     
     Global Instance AssociatedFunction_precision :
-      M.IsAssociatedFunction.Trait Self "precision" precision.
+      M.IsAssociatedFunction.C Self "precision" precision.
     Admitted.
     Global Typeclasses Opaque precision.
     
@@ -6054,7 +6086,7 @@ Module fmt.
       end.
     
     Global Instance AssociatedFunction_sign_plus :
-      M.IsAssociatedFunction.Trait Self "sign_plus" sign_plus.
+      M.IsAssociatedFunction.C Self "sign_plus" sign_plus.
     Admitted.
     Global Typeclasses Opaque sign_plus.
     
@@ -6087,7 +6119,7 @@ Module fmt.
       end.
     
     Global Instance AssociatedFunction_sign_minus :
-      M.IsAssociatedFunction.Trait Self "sign_minus" sign_minus.
+      M.IsAssociatedFunction.C Self "sign_minus" sign_minus.
     Admitted.
     Global Typeclasses Opaque sign_minus.
     
@@ -6120,7 +6152,7 @@ Module fmt.
       end.
     
     Global Instance AssociatedFunction_alternate :
-      M.IsAssociatedFunction.Trait Self "alternate" alternate.
+      M.IsAssociatedFunction.C Self "alternate" alternate.
     Admitted.
     Global Typeclasses Opaque alternate.
     
@@ -6153,7 +6185,7 @@ Module fmt.
       end.
     
     Global Instance AssociatedFunction_sign_aware_zero_pad :
-      M.IsAssociatedFunction.Trait Self "sign_aware_zero_pad" sign_aware_zero_pad.
+      M.IsAssociatedFunction.C Self "sign_aware_zero_pad" sign_aware_zero_pad.
     Admitted.
     Global Typeclasses Opaque sign_aware_zero_pad.
     
@@ -6186,7 +6218,7 @@ Module fmt.
       end.
     
     Global Instance AssociatedFunction_debug_lower_hex :
-      M.IsAssociatedFunction.Trait Self "debug_lower_hex" debug_lower_hex.
+      M.IsAssociatedFunction.C Self "debug_lower_hex" debug_lower_hex.
     Admitted.
     Global Typeclasses Opaque debug_lower_hex.
     
@@ -6219,7 +6251,7 @@ Module fmt.
       end.
     
     Global Instance AssociatedFunction_debug_upper_hex :
-      M.IsAssociatedFunction.Trait Self "debug_upper_hex" debug_upper_hex.
+      M.IsAssociatedFunction.C Self "debug_upper_hex" debug_upper_hex.
     Admitted.
     Global Typeclasses Opaque debug_upper_hex.
     
@@ -6246,7 +6278,7 @@ Module fmt.
       end.
     
     Global Instance AssociatedFunction_debug_struct :
-      M.IsAssociatedFunction.Trait Self "debug_struct" debug_struct.
+      M.IsAssociatedFunction.C Self "debug_struct" debug_struct.
     Admitted.
     Global Typeclasses Opaque debug_struct.
     
@@ -6323,7 +6355,7 @@ Module fmt.
       end.
     
     Global Instance AssociatedFunction_debug_struct_field1_finish :
-      M.IsAssociatedFunction.Trait Self "debug_struct_field1_finish" debug_struct_field1_finish.
+      M.IsAssociatedFunction.C Self "debug_struct_field1_finish" debug_struct_field1_finish.
     Admitted.
     Global Typeclasses Opaque debug_struct_field1_finish.
     
@@ -6422,7 +6454,7 @@ Module fmt.
       end.
     
     Global Instance AssociatedFunction_debug_struct_field2_finish :
-      M.IsAssociatedFunction.Trait Self "debug_struct_field2_finish" debug_struct_field2_finish.
+      M.IsAssociatedFunction.C Self "debug_struct_field2_finish" debug_struct_field2_finish.
     Admitted.
     Global Typeclasses Opaque debug_struct_field2_finish.
     
@@ -6543,7 +6575,7 @@ Module fmt.
       end.
     
     Global Instance AssociatedFunction_debug_struct_field3_finish :
-      M.IsAssociatedFunction.Trait Self "debug_struct_field3_finish" debug_struct_field3_finish.
+      M.IsAssociatedFunction.C Self "debug_struct_field3_finish" debug_struct_field3_finish.
     Admitted.
     Global Typeclasses Opaque debug_struct_field3_finish.
     
@@ -6686,7 +6718,7 @@ Module fmt.
       end.
     
     Global Instance AssociatedFunction_debug_struct_field4_finish :
-      M.IsAssociatedFunction.Trait Self "debug_struct_field4_finish" debug_struct_field4_finish.
+      M.IsAssociatedFunction.C Self "debug_struct_field4_finish" debug_struct_field4_finish.
     Admitted.
     Global Typeclasses Opaque debug_struct_field4_finish.
     
@@ -6854,7 +6886,7 @@ Module fmt.
       end.
     
     Global Instance AssociatedFunction_debug_struct_field5_finish :
-      M.IsAssociatedFunction.Trait Self "debug_struct_field5_finish" debug_struct_field5_finish.
+      M.IsAssociatedFunction.C Self "debug_struct_field5_finish" debug_struct_field5_finish.
     Admitted.
     Global Typeclasses Opaque debug_struct_field5_finish.
     
@@ -7271,7 +7303,7 @@ Module fmt.
       end.
     
     Global Instance AssociatedFunction_debug_struct_fields_finish :
-      M.IsAssociatedFunction.Trait Self "debug_struct_fields_finish" debug_struct_fields_finish.
+      M.IsAssociatedFunction.C Self "debug_struct_fields_finish" debug_struct_fields_finish.
     Admitted.
     Global Typeclasses Opaque debug_struct_fields_finish.
     
@@ -7298,7 +7330,7 @@ Module fmt.
       end.
     
     Global Instance AssociatedFunction_debug_tuple :
-      M.IsAssociatedFunction.Trait Self "debug_tuple" debug_tuple.
+      M.IsAssociatedFunction.C Self "debug_tuple" debug_tuple.
     Admitted.
     Global Typeclasses Opaque debug_tuple.
     
@@ -7368,7 +7400,7 @@ Module fmt.
       end.
     
     Global Instance AssociatedFunction_debug_tuple_field1_finish :
-      M.IsAssociatedFunction.Trait Self "debug_tuple_field1_finish" debug_tuple_field1_finish.
+      M.IsAssociatedFunction.C Self "debug_tuple_field1_finish" debug_tuple_field1_finish.
     Admitted.
     Global Typeclasses Opaque debug_tuple_field1_finish.
     
@@ -7461,7 +7493,7 @@ Module fmt.
       end.
     
     Global Instance AssociatedFunction_debug_tuple_field2_finish :
-      M.IsAssociatedFunction.Trait Self "debug_tuple_field2_finish" debug_tuple_field2_finish.
+      M.IsAssociatedFunction.C Self "debug_tuple_field2_finish" debug_tuple_field2_finish.
     Admitted.
     Global Typeclasses Opaque debug_tuple_field2_finish.
     
@@ -7573,7 +7605,7 @@ Module fmt.
       end.
     
     Global Instance AssociatedFunction_debug_tuple_field3_finish :
-      M.IsAssociatedFunction.Trait Self "debug_tuple_field3_finish" debug_tuple_field3_finish.
+      M.IsAssociatedFunction.C Self "debug_tuple_field3_finish" debug_tuple_field3_finish.
     Admitted.
     Global Typeclasses Opaque debug_tuple_field3_finish.
     
@@ -7704,7 +7736,7 @@ Module fmt.
       end.
     
     Global Instance AssociatedFunction_debug_tuple_field4_finish :
-      M.IsAssociatedFunction.Trait Self "debug_tuple_field4_finish" debug_tuple_field4_finish.
+      M.IsAssociatedFunction.C Self "debug_tuple_field4_finish" debug_tuple_field4_finish.
     Admitted.
     Global Typeclasses Opaque debug_tuple_field4_finish.
     
@@ -7854,7 +7886,7 @@ Module fmt.
       end.
     
     Global Instance AssociatedFunction_debug_tuple_field5_finish :
-      M.IsAssociatedFunction.Trait Self "debug_tuple_field5_finish" debug_tuple_field5_finish.
+      M.IsAssociatedFunction.C Self "debug_tuple_field5_finish" debug_tuple_field5_finish.
     Admitted.
     Global Typeclasses Opaque debug_tuple_field5_finish.
     
@@ -8051,7 +8083,7 @@ Module fmt.
       end.
     
     Global Instance AssociatedFunction_debug_tuple_fields_finish :
-      M.IsAssociatedFunction.Trait Self "debug_tuple_fields_finish" debug_tuple_fields_finish.
+      M.IsAssociatedFunction.C Self "debug_tuple_fields_finish" debug_tuple_fields_finish.
     Admitted.
     Global Typeclasses Opaque debug_tuple_fields_finish.
     
@@ -8074,7 +8106,7 @@ Module fmt.
       end.
     
     Global Instance AssociatedFunction_debug_list :
-      M.IsAssociatedFunction.Trait Self "debug_list" debug_list.
+      M.IsAssociatedFunction.C Self "debug_list" debug_list.
     Admitted.
     Global Typeclasses Opaque debug_list.
     
@@ -8097,7 +8129,7 @@ Module fmt.
       end.
     
     Global Instance AssociatedFunction_debug_set :
-      M.IsAssociatedFunction.Trait Self "debug_set" debug_set.
+      M.IsAssociatedFunction.C Self "debug_set" debug_set.
     Admitted.
     Global Typeclasses Opaque debug_set.
     
@@ -8120,7 +8152,7 @@ Module fmt.
       end.
     
     Global Instance AssociatedFunction_debug_map :
-      M.IsAssociatedFunction.Trait Self "debug_map" debug_map.
+      M.IsAssociatedFunction.C Self "debug_map" debug_map.
     Admitted.
     Global Typeclasses Opaque debug_map.
   End Impl_core_fmt_Formatter.
@@ -8226,7 +8258,8 @@ Module fmt.
         ltac:(M.monadic
           (let pieces := M.alloc (| pieces |) in
           M.read (|
-            let~ _ : Ty.tuple [] := M.get_constant "core::fmt::new_const_discriminant" in
+            let~ _ : Ty.tuple [] :=
+              get_constant (| "core::fmt::new_const_discriminant", Ty.tuple [] |) in
             M.alloc (|
               Value.StructRecord
                 "core::fmt::Arguments"
@@ -8245,7 +8278,7 @@ Module fmt.
       end.
     
     Global Instance AssociatedFunction_new_const :
-      M.IsAssociatedFunction.Trait Self "new_const" new_const.
+      M.IsAssociatedFunction.C Self "new_const" new_const.
     Admitted.
     Global Typeclasses Opaque new_const.
     
@@ -8265,7 +8298,8 @@ Module fmt.
           (let pieces := M.alloc (| pieces |) in
           let args := M.alloc (| args |) in
           M.read (|
-            let~ _ : Ty.tuple [] := M.get_constant "core::fmt::new_v1_discriminant" in
+            let~ _ : Ty.tuple [] :=
+              get_constant (| "core::fmt::new_v1_discriminant", Ty.tuple [] |) in
             M.alloc (|
               Value.StructRecord
                 "core::fmt::Arguments"
@@ -8279,7 +8313,7 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new_v1 : M.IsAssociatedFunction.Trait Self "new_v1" new_v1.
+    Global Instance AssociatedFunction_new_v1 : M.IsAssociatedFunction.C Self "new_v1" new_v1.
     Admitted.
     Global Typeclasses Opaque new_v1.
     
@@ -8315,7 +8349,7 @@ Module fmt.
       end.
     
     Global Instance AssociatedFunction_new_v1_formatted :
-      M.IsAssociatedFunction.Trait Self "new_v1_formatted" new_v1_formatted.
+      M.IsAssociatedFunction.C Self "new_v1_formatted" new_v1_formatted.
     Admitted.
     Global Typeclasses Opaque new_v1_formatted.
     
@@ -8660,7 +8694,7 @@ Module fmt.
       end.
     
     Global Instance AssociatedFunction_estimated_capacity :
-      M.IsAssociatedFunction.Trait Self "estimated_capacity" estimated_capacity.
+      M.IsAssociatedFunction.C Self "estimated_capacity" estimated_capacity.
     Admitted.
     Global Typeclasses Opaque estimated_capacity.
     (*
@@ -8741,7 +8775,7 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_as_str : M.IsAssociatedFunction.Trait Self "as_str" as_str.
+    Global Instance AssociatedFunction_as_str : M.IsAssociatedFunction.C Self "as_str" as_str.
     Admitted.
     Global Typeclasses Opaque as_str.
     
@@ -8820,7 +8854,7 @@ Module fmt.
       end.
     
     Global Instance AssociatedFunction_as_statically_known_str :
-      M.IsAssociatedFunction.Trait Self "as_statically_known_str" as_statically_known_str.
+      M.IsAssociatedFunction.C Self "as_statically_known_str" as_statically_known_str.
     Admitted.
     Global Typeclasses Opaque as_statically_known_str.
   End Impl_core_fmt_Arguments.
@@ -10404,7 +10438,7 @@ Module fmt.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_write : M.IsFunction.Trait "core::fmt::write" write.
+  Global Instance Instance_IsFunction_write : M.IsFunction.C "core::fmt::write" write.
   Admitted.
   Global Typeclasses Opaque write.
   
@@ -10661,7 +10695,7 @@ Module fmt.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_run : M.IsFunction.Trait "core::fmt::run" run.
+  Global Instance Instance_IsFunction_run : M.IsFunction.C "core::fmt::run" run.
   Admitted.
   Global Typeclasses Opaque run.
   
@@ -10807,7 +10841,7 @@ Module fmt.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_getcount : M.IsFunction.Trait "core::fmt::getcount" getcount.
+  Global Instance Instance_IsFunction_getcount : M.IsFunction.C "core::fmt::getcount" getcount.
   Admitted.
   Global Typeclasses Opaque getcount.
   
@@ -10839,7 +10873,7 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -11095,7 +11129,7 @@ Module fmt.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_write : M.IsAssociatedFunction.Trait Self "write" write.
+    Global Instance AssociatedFunction_write : M.IsAssociatedFunction.C Self "write" write.
     Admitted.
     Global Typeclasses Opaque write.
   End Impl_core_fmt_PostPadding.
@@ -14037,7 +14071,13 @@ Module fmt.
                                         M.cast
                                           (Ty.path "usize")
                                           (BinOp.Wrap.div (|
-                                            M.read (| M.get_constant "core::num::BITS" |),
+                                            M.read (|
+                                              get_associated_constant (|
+                                                Ty.path "usize",
+                                                "BITS",
+                                                Ty.path "u32"
+                                              |)
+                                            |),
                                             Value.Integer IntegerKind.U32 4
                                           |)),
                                         Value.Integer IntegerKind.Usize 2
@@ -14127,7 +14167,7 @@ Module fmt.
     end.
   
   Global Instance Instance_IsFunction_pointer_fmt_inner :
-    M.IsFunction.Trait "core::fmt::pointer_fmt_inner" pointer_fmt_inner.
+    M.IsFunction.C "core::fmt::pointer_fmt_inner" pointer_fmt_inner.
   Admitted.
   Global Typeclasses Opaque pointer_fmt_inner.
   

@@ -4,5 +4,5 @@ Require Import CoqOfRust.CoqOfRust.
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "inline_assembly_inputs_and_outputs::main" main.
+  M.IsFunction.C "inline_assembly_inputs_and_outputs::main" main.
 Admitted.

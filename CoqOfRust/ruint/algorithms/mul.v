@@ -677,7 +677,7 @@ Module algorithms.
       end.
     
     Global Instance Instance_IsFunction_addmul_ref :
-      M.IsFunction.Trait "ruint::algorithms::mul::addmul_ref" addmul_ref.
+      M.IsFunction.C "ruint::algorithms::mul::addmul_ref" addmul_ref.
     Admitted.
     Global Typeclasses Opaque addmul_ref.
     
@@ -1627,7 +1627,7 @@ Module algorithms.
       end.
     
     Global Instance Instance_IsFunction_addmul :
-      M.IsFunction.Trait "ruint::algorithms::mul::addmul" addmul.
+      M.IsFunction.C "ruint::algorithms::mul::addmul" addmul.
     Admitted.
     Global Typeclasses Opaque addmul.
     
@@ -1858,7 +1858,7 @@ Module algorithms.
       end.
     
     Global Instance Instance_IsFunction_add_nx1 :
-      M.IsFunction.Trait "ruint::algorithms::mul::add_nx1" add_nx1.
+      M.IsFunction.C "ruint::algorithms::mul::add_nx1" add_nx1.
     Admitted.
     Global Typeclasses Opaque add_nx1.
     
@@ -2231,7 +2231,7 @@ Module algorithms.
       end.
     
     Global Instance Instance_IsFunction_addmul_n :
-      M.IsFunction.Trait "ruint::algorithms::mul::addmul_n" addmul_n.
+      M.IsFunction.C "ruint::algorithms::mul::addmul_n" addmul_n.
     Admitted.
     Global Typeclasses Opaque addmul_n.
     
@@ -2598,7 +2598,7 @@ Module algorithms.
       end.
     
     Global Instance Instance_IsFunction_addmul_1 :
-      M.IsFunction.Trait "ruint::algorithms::mul::addmul_1" addmul_1.
+      M.IsFunction.C "ruint::algorithms::mul::addmul_1" addmul_1.
     Admitted.
     Global Typeclasses Opaque addmul_1.
     
@@ -3036,7 +3036,7 @@ Module algorithms.
       end.
     
     Global Instance Instance_IsFunction_addmul_2 :
-      M.IsFunction.Trait "ruint::algorithms::mul::addmul_2" addmul_2.
+      M.IsFunction.C "ruint::algorithms::mul::addmul_2" addmul_2.
     Admitted.
     Global Typeclasses Opaque addmul_2.
     
@@ -3580,7 +3580,7 @@ Module algorithms.
       end.
     
     Global Instance Instance_IsFunction_addmul_3 :
-      M.IsFunction.Trait "ruint::algorithms::mul::addmul_3" addmul_3.
+      M.IsFunction.C "ruint::algorithms::mul::addmul_3" addmul_3.
     Admitted.
     Global Typeclasses Opaque addmul_3.
     
@@ -4265,7 +4265,7 @@ Module algorithms.
       end.
     
     Global Instance Instance_IsFunction_addmul_4 :
-      M.IsFunction.Trait "ruint::algorithms::mul::addmul_4" addmul_4.
+      M.IsFunction.C "ruint::algorithms::mul::addmul_4" addmul_4.
     Admitted.
     Global Typeclasses Opaque addmul_4.
     
@@ -4344,7 +4344,7 @@ Module algorithms.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance Instance_IsFunction_mac : M.IsFunction.Trait "ruint::algorithms::mul::mac" mac.
+    Global Instance Instance_IsFunction_mac : M.IsFunction.C "ruint::algorithms::mul::mac" mac.
     Admitted.
     Global Typeclasses Opaque mac.
     
@@ -4513,7 +4513,7 @@ Module algorithms.
       end.
     
     Global Instance Instance_IsFunction_mul_nx1 :
-      M.IsFunction.Trait "ruint::algorithms::mul::mul_nx1" mul_nx1.
+      M.IsFunction.C "ruint::algorithms::mul::mul_nx1" mul_nx1.
     Admitted.
     Global Typeclasses Opaque mul_nx1.
     
@@ -4932,7 +4932,7 @@ Module algorithms.
       end.
     
     Global Instance Instance_IsFunction_addmul_nx1 :
-      M.IsFunction.Trait "ruint::algorithms::mul::addmul_nx1" addmul_nx1.
+      M.IsFunction.C "ruint::algorithms::mul::addmul_nx1" addmul_nx1.
     Admitted.
     Global Typeclasses Opaque addmul_nx1.
     
@@ -5394,7 +5394,7 @@ Module algorithms.
       end.
     
     Global Instance Instance_IsFunction_submul_nx1 :
-      M.IsFunction.Trait "ruint::algorithms::mul::submul_nx1" submul_nx1.
+      M.IsFunction.C "ruint::algorithms::mul::submul_nx1" submul_nx1.
     Admitted.
     Global Typeclasses Opaque submul_nx1.
   End mul.

@@ -23,7 +23,7 @@ Module Impl_mutual_loop_LoopA.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
   Admitted.
   Global Typeclasses Opaque new.
   
@@ -46,7 +46,7 @@ Module Impl_mutual_loop_LoopA.
     end.
   
   Global Instance AssociatedFunction_start_loop :
-    M.IsAssociatedFunction.Trait Self "start_loop" start_loop.
+    M.IsAssociatedFunction.C Self "start_loop" start_loop.
   Admitted.
   Global Typeclasses Opaque start_loop.
 End Impl_mutual_loop_LoopA.
@@ -96,7 +96,7 @@ Module Impl_mutual_loop_LoopB.
     end.
   
   Global Instance AssociatedFunction_start_loop :
-    M.IsAssociatedFunction.Trait Self "start_loop" start_loop.
+    M.IsAssociatedFunction.C Self "start_loop" start_loop.
   Admitted.
   Global Typeclasses Opaque start_loop.
 End Impl_mutual_loop_LoopB.
@@ -135,6 +135,6 @@ Definition start_loop (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
   end.
 
 Global Instance Instance_IsFunction_start_loop :
-  M.IsFunction.Trait "mutual_loop::start_loop" start_loop.
+  M.IsFunction.C "mutual_loop::start_loop" start_loop.
 Admitted.
 Global Typeclasses Opaque start_loop.

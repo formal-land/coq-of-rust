@@ -92,7 +92,7 @@ Module collections.
         
         Global Instance AssociatedFunction_new :
           forall (T A : Ty.t),
-          M.IsAssociatedFunction.Trait (Self T A) "new" (new T A).
+          M.IsAssociatedFunction.C (Self T A) "new" (new T A).
         Admitted.
         Global Typeclasses Opaque new.
         
@@ -124,7 +124,7 @@ Module collections.
         
         Global Instance AssociatedFunction_into_vecdeque :
           forall (T A : Ty.t),
-          M.IsAssociatedFunction.Trait (Self T A) "into_vecdeque" (into_vecdeque T A).
+          M.IsAssociatedFunction.C (Self T A) "into_vecdeque" (into_vecdeque T A).
         Admitted.
         Global Typeclasses Opaque into_vecdeque.
       End Impl_alloc_collections_vec_deque_into_iter_IntoIter_T_A.
@@ -1262,8 +1262,10 @@ Module collections.
                       M.alloc (|
                         repeat (|
                           M.read (|
-                            M.get_constant
-                              "alloc::collections::vec_deque::into_iter::next_chunk_discriminant"
+                            get_constant (|
+                              "alloc::collections::vec_deque::into_iter::next_chunk_discriminant",
+                              Ty.apply (Ty.path "core::mem::maybe_uninit::MaybeUninit") [] [ T ]
+                            |)
                           |),
                           N
                         |)
@@ -1372,8 +1374,10 @@ Module collections.
                                                 ]
                                               |),
                                               M.read (|
-                                                M.get_constant
-                                                  "alloc::collections::vec_deque::into_iter::next_chunk::N"
+                                                get_constant (|
+                                                  "alloc::collections::vec_deque::into_iter::next_chunk::N",
+                                                  Ty.path "usize"
+                                                |)
                                               |)
                                             |)
                                           |)) in
@@ -1412,8 +1416,10 @@ Module collections.
                                                     |);
                                                     M.read (| raw_arr_ptr |);
                                                     M.read (|
-                                                      M.get_constant
-                                                        "alloc::collections::vec_deque::into_iter::next_chunk::N"
+                                                      get_constant (|
+                                                        "alloc::collections::vec_deque::into_iter::next_chunk::N",
+                                                        Ty.path "usize"
+                                                      |)
                                                     |)
                                                   ]
                                                 |)
@@ -1452,8 +1458,10 @@ Module collections.
                                                         |)
                                                       |);
                                                       M.read (|
-                                                        M.get_constant
-                                                          "alloc::collections::vec_deque::into_iter::next_chunk::N"
+                                                        get_constant (|
+                                                          "alloc::collections::vec_deque::into_iter::next_chunk::N",
+                                                          Ty.path "usize"
+                                                        |)
                                                       |)
                                                     ]
                                                   |)
@@ -1476,8 +1484,10 @@ Module collections.
                                                   BinOp.Wrap.sub (|
                                                     M.read (| β |),
                                                     M.read (|
-                                                      M.get_constant
-                                                        "alloc::collections::vec_deque::into_iter::next_chunk::N"
+                                                      get_constant (|
+                                                        "alloc::collections::vec_deque::into_iter::next_chunk::N",
+                                                        Ty.path "usize"
+                                                      |)
                                                     |)
                                                   |)
                                                 |)
@@ -1581,8 +1591,10 @@ Module collections.
                               M.alloc (|
                                 BinOp.Wrap.sub (|
                                   M.read (|
-                                    M.get_constant
-                                      "alloc::collections::vec_deque::into_iter::next_chunk::N"
+                                    get_constant (|
+                                      "alloc::collections::vec_deque::into_iter::next_chunk::N",
+                                      Ty.path "usize"
+                                    |)
                                   |),
                                   M.call_closure (|
                                     Ty.path "usize",
@@ -1730,8 +1742,10 @@ Module collections.
                                                 |)
                                               |);
                                               M.read (|
-                                                M.get_constant
-                                                  "alloc::collections::vec_deque::into_iter::next_chunk::N"
+                                                get_constant (|
+                                                  "alloc::collections::vec_deque::into_iter::next_chunk::N",
+                                                  Ty.path "usize"
+                                                |)
                                               |)
                                             ]
                                           |)
@@ -1754,8 +1768,10 @@ Module collections.
                                           BinOp.Wrap.sub (|
                                             M.read (| β |),
                                             M.read (|
-                                              M.get_constant
-                                                "alloc::collections::vec_deque::into_iter::next_chunk::N"
+                                              get_constant (|
+                                                "alloc::collections::vec_deque::into_iter::next_chunk::N",
+                                                Ty.path "usize"
+                                              |)
                                             |)
                                           |)
                                         |)
