@@ -69,7 +69,7 @@ Module utilities.
     end.
   
   Global Instance Instance_IsFunction_right_pad_with_offset :
-    M.IsFunction.Trait "revm_precompile::utilities::right_pad_with_offset" right_pad_with_offset.
+    M.IsFunction.C "revm_precompile::utilities::right_pad_with_offset" right_pad_with_offset.
   Admitted.
   Global Typeclasses Opaque right_pad_with_offset.
   
@@ -142,7 +142,7 @@ Module utilities.
     end.
   
   Global Instance Instance_IsFunction_right_pad_with_offset_vec :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "revm_precompile::utilities::right_pad_with_offset_vec"
       right_pad_with_offset_vec.
   Admitted.
@@ -200,7 +200,10 @@ Module utilities.
                             [
                               ("end_",
                                 M.read (|
-                                  M.get_constant "revm_precompile::utilities::right_pad::LEN"
+                                  get_constant (|
+                                    "revm_precompile::utilities::right_pad::LEN",
+                                    Ty.path "usize"
+                                  |)
                                 |))
                             ]
                         ]
@@ -345,7 +348,7 @@ Module utilities.
     end.
   
   Global Instance Instance_IsFunction_right_pad :
-    M.IsFunction.Trait "revm_precompile::utilities::right_pad" right_pad.
+    M.IsFunction.C "revm_precompile::utilities::right_pad" right_pad.
   Admitted.
   Global Typeclasses Opaque right_pad.
   
@@ -504,7 +507,7 @@ Module utilities.
     end.
   
   Global Instance Instance_IsFunction_right_pad_vec :
-    M.IsFunction.Trait "revm_precompile::utilities::right_pad_vec" right_pad_vec.
+    M.IsFunction.C "revm_precompile::utilities::right_pad_vec" right_pad_vec.
   Admitted.
   Global Typeclasses Opaque right_pad_vec.
   
@@ -560,7 +563,10 @@ Module utilities.
                             [
                               ("end_",
                                 M.read (|
-                                  M.get_constant "revm_precompile::utilities::left_pad::LEN"
+                                  get_constant (|
+                                    "revm_precompile::utilities::left_pad::LEN",
+                                    Ty.path "usize"
+                                  |)
                                 |))
                             ]
                         ]
@@ -673,8 +679,10 @@ Module utilities.
                                       ("start",
                                         BinOp.Wrap.sub (|
                                           M.read (|
-                                            M.get_constant
-                                              "revm_precompile::utilities::left_pad::LEN"
+                                            get_constant (|
+                                              "revm_precompile::utilities::left_pad::LEN",
+                                              Ty.path "usize"
+                                            |)
                                           |),
                                           M.call_closure (|
                                             Ty.path "usize",
@@ -711,7 +719,7 @@ Module utilities.
     end.
   
   Global Instance Instance_IsFunction_left_pad :
-    M.IsFunction.Trait "revm_precompile::utilities::left_pad" left_pad.
+    M.IsFunction.C "revm_precompile::utilities::left_pad" left_pad.
   Admitted.
   Global Typeclasses Opaque left_pad.
   
@@ -873,7 +881,7 @@ Module utilities.
     end.
   
   Global Instance Instance_IsFunction_left_pad_vec :
-    M.IsFunction.Trait "revm_precompile::utilities::left_pad_vec" left_pad_vec.
+    M.IsFunction.C "revm_precompile::utilities::left_pad_vec" left_pad_vec.
   Admitted.
   Global Typeclasses Opaque left_pad_vec.
   
@@ -929,7 +937,7 @@ Module utilities.
     end.
   
   Global Instance Instance_IsFunction_bool_to_bytes32 :
-    M.IsFunction.Trait "revm_precompile::utilities::bool_to_bytes32" bool_to_bytes32.
+    M.IsFunction.C "revm_precompile::utilities::bool_to_bytes32" bool_to_bytes32.
   Admitted.
   Global Typeclasses Opaque bool_to_bytes32.
   
@@ -967,9 +975,32 @@ Module utilities.
                 ltac:(M.monadic
                   (let γ := M.use value in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                  M.get_constant "revm_precompile::utilities::bool_to_b256::TRUE"));
+                  get_constant (|
+                    "revm_precompile::utilities::bool_to_b256::TRUE",
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                          [ Value.Integer IntegerKind.Usize 32 ]
+                          []
+                      ]
+                  |)));
               fun γ =>
-                ltac:(M.monadic (M.get_constant "revm_precompile::utilities::bool_to_b256::FALSE"))
+                ltac:(M.monadic
+                  (get_constant (|
+                    "revm_precompile::utilities::bool_to_b256::FALSE",
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                          [ Value.Integer IntegerKind.Usize 32 ]
+                          []
+                      ]
+                  |)))
             ]
           |)
         |)))
@@ -977,89 +1008,101 @@ Module utilities.
     end.
   
   Global Instance Instance_IsFunction_bool_to_b256 :
-    M.IsFunction.Trait "revm_precompile::utilities::bool_to_b256" bool_to_b256.
+    M.IsFunction.C "revm_precompile::utilities::bool_to_b256" bool_to_b256.
   Admitted.
   Global Typeclasses Opaque bool_to_b256.
   
   Module bool_to_b256.
-    Definition value_TRUE : Value.t :=
-      M.run_constant
-        ltac:(M.monadic
-          (M.alloc (|
-            M.borrow (|
-              Pointer.Kind.Ref,
-              M.deref (|
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.alloc (|
-                    M.call_closure (|
+    Definition value_TRUE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.alloc (|
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                      [ Value.Integer IntegerKind.Usize 32 ]
+                      [],
+                    M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
                         [ Value.Integer IntegerKind.Usize 32 ]
                         [],
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                          [ Value.Integer IntegerKind.Usize 32 ]
-                          [],
-                        "new",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (|
-                          M.get_constant "revm_precompile::utilities::bool_to_b256::TRUE::RES"
+                      "new",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (|
+                        get_constant (|
+                          "revm_precompile::utilities::bool_to_b256::TRUE::RES",
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 32 ]
+                            [ Ty.path "u8" ]
                         |)
-                      ]
-                    |)
+                      |)
+                    ]
                   |)
                 |)
               |)
             |)
-          |))).
+          |)
+        |))).
     
-    Axiom Constant_value_TRUE :
-      (M.get_constant "revm_precompile::utilities::bool_to_b256::TRUE") = value_TRUE.
-    Global Hint Rewrite Constant_value_TRUE : constant_rewrites.
+    Global Instance Instance_IsConstant_value_TRUE :
+      M.IsFunction.C "revm_precompile::utilities::bool_to_b256::TRUE" value_TRUE.
+    Admitted.
+    Global Typeclasses Opaque value_TRUE.
     
-    Definition value_FALSE : Value.t :=
-      M.run_constant
-        ltac:(M.monadic
-          (M.alloc (|
-            M.borrow (|
-              Pointer.Kind.Ref,
-              M.deref (|
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.alloc (|
-                    M.call_closure (|
+    Definition value_FALSE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          M.borrow (|
+            Pointer.Kind.Ref,
+            M.deref (|
+              M.borrow (|
+                Pointer.Kind.Ref,
+                M.alloc (|
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                      [ Value.Integer IntegerKind.Usize 32 ]
+                      [],
+                    M.get_associated_function (|
                       Ty.apply
                         (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
                         [ Value.Integer IntegerKind.Usize 32 ]
                         [],
-                      M.get_associated_function (|
-                        Ty.apply
-                          (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                          [ Value.Integer IntegerKind.Usize 32 ]
-                          [],
-                        "new",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (|
-                          M.get_constant "revm_precompile::utilities::bool_to_b256::FALSE::RES"
+                      "new",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (|
+                        get_constant (|
+                          "revm_precompile::utilities::bool_to_b256::FALSE::RES",
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 32 ]
+                            [ Ty.path "u8" ]
                         |)
-                      ]
-                    |)
+                      |)
+                    ]
                   |)
                 |)
               |)
             |)
-          |))).
+          |)
+        |))).
     
-    Axiom Constant_value_FALSE :
-      (M.get_constant "revm_precompile::utilities::bool_to_b256::FALSE") = value_FALSE.
-    Global Hint Rewrite Constant_value_FALSE : constant_rewrites.
+    Global Instance Instance_IsConstant_value_FALSE :
+      M.IsFunction.C "revm_precompile::utilities::bool_to_b256::FALSE" value_FALSE.
+    Admitted.
+    Global Typeclasses Opaque value_FALSE.
   End bool_to_b256.
 End utilities.

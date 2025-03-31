@@ -25,7 +25,7 @@ Module slice.
         end.
       
       Global Instance AssociatedFunction_is_ascii :
-        M.IsAssociatedFunction.Trait Self "is_ascii" is_ascii.
+        M.IsAssociatedFunction.C Self "is_ascii" is_ascii.
       Admitted.
       Global Typeclasses Opaque is_ascii.
       
@@ -120,7 +120,7 @@ Module slice.
         end.
       
       Global Instance AssociatedFunction_as_ascii :
-        M.IsAssociatedFunction.Trait Self "as_ascii" as_ascii.
+        M.IsAssociatedFunction.C Self "as_ascii" as_ascii.
       Admitted.
       Global Typeclasses Opaque as_ascii.
       
@@ -178,7 +178,7 @@ Module slice.
         end.
       
       Global Instance AssociatedFunction_as_ascii_unchecked :
-        M.IsAssociatedFunction.Trait Self "as_ascii_unchecked" as_ascii_unchecked.
+        M.IsAssociatedFunction.C Self "as_ascii_unchecked" as_ascii_unchecked.
       Admitted.
       Global Typeclasses Opaque as_ascii_unchecked.
       
@@ -395,7 +395,7 @@ Module slice.
         end.
       
       Global Instance AssociatedFunction_eq_ignore_ascii_case :
-        M.IsAssociatedFunction.Trait Self "eq_ignore_ascii_case" eq_ignore_ascii_case.
+        M.IsAssociatedFunction.C Self "eq_ignore_ascii_case" eq_ignore_ascii_case.
       Admitted.
       Global Typeclasses Opaque eq_ignore_ascii_case.
       
@@ -509,7 +509,7 @@ Module slice.
         end.
       
       Global Instance AssociatedFunction_make_ascii_uppercase :
-        M.IsAssociatedFunction.Trait Self "make_ascii_uppercase" make_ascii_uppercase.
+        M.IsAssociatedFunction.C Self "make_ascii_uppercase" make_ascii_uppercase.
       Admitted.
       Global Typeclasses Opaque make_ascii_uppercase.
       
@@ -623,7 +623,7 @@ Module slice.
         end.
       
       Global Instance AssociatedFunction_make_ascii_lowercase :
-        M.IsAssociatedFunction.Trait Self "make_ascii_lowercase" make_ascii_lowercase.
+        M.IsAssociatedFunction.C Self "make_ascii_lowercase" make_ascii_lowercase.
       Admitted.
       Global Typeclasses Opaque make_ascii_lowercase.
       
@@ -681,7 +681,7 @@ Module slice.
         end.
       
       Global Instance AssociatedFunction_escape_ascii :
-        M.IsAssociatedFunction.Trait Self "escape_ascii" escape_ascii.
+        M.IsAssociatedFunction.C Self "escape_ascii" escape_ascii.
       Admitted.
       Global Typeclasses Opaque escape_ascii.
       
@@ -791,7 +791,7 @@ Module slice.
         end.
       
       Global Instance AssociatedFunction_trim_ascii_start :
-        M.IsAssociatedFunction.Trait Self "trim_ascii_start" trim_ascii_start.
+        M.IsAssociatedFunction.C Self "trim_ascii_start" trim_ascii_start.
       Admitted.
       Global Typeclasses Opaque trim_ascii_start.
       
@@ -901,7 +901,7 @@ Module slice.
         end.
       
       Global Instance AssociatedFunction_trim_ascii_end :
-        M.IsAssociatedFunction.Trait Self "trim_ascii_end" trim_ascii_end.
+        M.IsAssociatedFunction.C Self "trim_ascii_end" trim_ascii_end.
       Admitted.
       Global Typeclasses Opaque trim_ascii_end.
       
@@ -953,7 +953,7 @@ Module slice.
         end.
       
       Global Instance AssociatedFunction_trim_ascii :
-        M.IsAssociatedFunction.Trait Self "trim_ascii" trim_ascii.
+        M.IsAssociatedFunction.C Self "trim_ascii" trim_ascii.
       Admitted.
       Global Typeclasses Opaque trim_ascii.
     End Impl_slice_u8.
@@ -2821,7 +2821,12 @@ Module slice.
           (let v := M.alloc (| v |) in
           BinOp.ne (|
             BinOp.bit_and
-              (M.read (| M.get_constant "core::slice::ascii::contains_nonascii::NONASCII_MASK" |))
+              (M.read (|
+                get_constant (|
+                  "core::slice::ascii::contains_nonascii::NONASCII_MASK",
+                  Ty.path "usize"
+                |)
+              |))
               (M.read (| v |)),
             Value.Integer IntegerKind.Usize 0
           |)))
@@ -2829,26 +2834,25 @@ Module slice.
       end.
     
     Global Instance Instance_IsFunction_contains_nonascii :
-      M.IsFunction.Trait "core::slice::ascii::contains_nonascii" contains_nonascii.
+      M.IsFunction.C "core::slice::ascii::contains_nonascii" contains_nonascii.
     Admitted.
     Global Typeclasses Opaque contains_nonascii.
     
     Module contains_nonascii.
-      Definition value_NONASCII_MASK : Value.t :=
-        M.run_constant
-          ltac:(M.monadic
-            (M.alloc (|
-              M.call_closure (|
-                Ty.path "usize",
-                M.get_associated_function (| Ty.path "usize", "repeat_u8", [], [] |),
-                [ Value.Integer IntegerKind.U8 128 ]
-              |)
-            |))).
+      Definition value_NONASCII_MASK (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            M.call_closure (|
+              Ty.path "usize",
+              M.get_associated_function (| Ty.path "usize", "repeat_u8", [], [] |),
+              [ Value.Integer IntegerKind.U8 128 ]
+            |)
+          |))).
       
-      Axiom Constant_value_NONASCII_MASK :
-        (M.get_constant "core::slice::ascii::contains_nonascii::NONASCII_MASK") =
-          value_NONASCII_MASK.
-      Global Hint Rewrite Constant_value_NONASCII_MASK : constant_rewrites.
+      Global Instance Instance_IsConstant_value_NONASCII_MASK :
+        M.IsFunction.C "core::slice::ascii::contains_nonascii::NONASCII_MASK" value_NONASCII_MASK.
+      Admitted.
+      Global Typeclasses Opaque value_NONASCII_MASK.
     End contains_nonascii.
     
     (*
@@ -2960,7 +2964,7 @@ Module slice.
       end.
     
     Global Instance Instance_IsFunction_is_ascii_simple :
-      M.IsFunction.Trait "core::slice::ascii::is_ascii_simple" is_ascii_simple.
+      M.IsFunction.C "core::slice::ascii::is_ascii_simple" is_ascii_simple.
     Admitted.
     Global Typeclasses Opaque is_ascii_simple.
     
@@ -3085,26 +3089,26 @@ Module slice.
       end.
     
     Global Instance Instance_IsFunction_is_ascii :
-      M.IsFunction.Trait "core::slice::ascii::is_ascii" is_ascii.
+      M.IsFunction.C "core::slice::ascii::is_ascii" is_ascii.
     Admitted.
     Global Typeclasses Opaque is_ascii.
     
     Module is_ascii.
       Module runtime.
-        Definition value_USIZE_SIZE : Value.t :=
-          M.run_constant
-            ltac:(M.monadic
-              (M.alloc (|
-                M.call_closure (|
-                  Ty.path "usize",
-                  M.get_function (| "core::mem::size_of", [], [ Ty.path "usize" ] |),
-                  []
-                |)
-              |))).
+        Definition value_USIZE_SIZE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          ltac:(M.monadic
+            (M.alloc (|
+              M.call_closure (|
+                Ty.path "usize",
+                M.get_function (| "core::mem::size_of", [], [ Ty.path "usize" ] |),
+                []
+              |)
+            |))).
         
-        Axiom Constant_value_USIZE_SIZE :
-          (M.get_constant "core::slice::ascii::is_ascii::runtime::USIZE_SIZE") = value_USIZE_SIZE.
-        Global Hint Rewrite Constant_value_USIZE_SIZE : constant_rewrites.
+        Global Instance Instance_IsConstant_value_USIZE_SIZE :
+          M.IsFunction.C "core::slice::ascii::is_ascii::runtime::USIZE_SIZE" value_USIZE_SIZE.
+        Admitted.
+        Global Typeclasses Opaque value_USIZE_SIZE.
       End runtime.
     End is_ascii.
   End ascii.

@@ -29,7 +29,7 @@ Definition multiply (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
   end.
 
 Global Instance Instance_IsFunction_multiply :
-  M.IsFunction.Trait "scoping_rules_lifetimes_coercion::multiply" multiply.
+  M.IsFunction.C "scoping_rules_lifetimes_coercion::multiply" multiply.
 Admitted.
 Global Typeclasses Opaque multiply.
 
@@ -56,7 +56,7 @@ Definition choose_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
   end.
 
 Global Instance Instance_IsFunction_choose_first :
-  M.IsFunction.Trait "scoping_rules_lifetimes_coercion::choose_first" choose_first.
+  M.IsFunction.C "scoping_rules_lifetimes_coercion::choose_first" choose_first.
 Admitted.
 Global Typeclasses Opaque choose_first.
 
@@ -267,6 +267,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "scoping_rules_lifetimes_coercion::main" main.
+  M.IsFunction.C "scoping_rules_lifetimes_coercion::main" main.
 Admitted.
 Global Typeclasses Opaque main.

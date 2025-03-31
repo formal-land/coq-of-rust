@@ -52,6 +52,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "enums_type_aliases_v1::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "enums_type_aliases_v1::main" main.
 Admitted.
 Global Typeclasses Opaque main.

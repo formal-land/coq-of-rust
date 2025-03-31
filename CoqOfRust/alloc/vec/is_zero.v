@@ -1174,7 +1174,7 @@ Module vec.
             (let self := M.alloc (| self |) in
             LogicalOp.and (|
               BinOp.le (|
-                M.read (| M.get_constant "alloc::vec::is_zero::N" |),
+                M.read (| get_constant (| "alloc::vec::is_zero::N", Ty.path "usize" |) |),
                 Value.Integer IntegerKind.Usize 16
               |),
               ltac:(M.monadic
@@ -2990,7 +2990,8 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ _ : Ty.tuple [] := M.get_constant "alloc::vec::is_zero::is_zero_discriminant" in
+              let~ _ : Ty.tuple [] :=
+                get_constant (| "alloc::vec::is_zero::is_zero_discriminant", Ty.tuple [] |) in
               M.alloc (|
                 M.call_closure (|
                   Ty.path "bool",
@@ -3034,7 +3035,8 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ _ : Ty.tuple [] := M.get_constant "alloc::vec::is_zero::is_zero_discriminant" in
+              let~ _ : Ty.tuple [] :=
+                get_constant (| "alloc::vec::is_zero::is_zero_discriminant", Ty.tuple [] |) in
               M.alloc (|
                 M.call_closure (|
                   Ty.path "bool",
@@ -3078,7 +3080,8 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ _ : Ty.tuple [] := M.get_constant "alloc::vec::is_zero::is_zero_discriminant" in
+              let~ _ : Ty.tuple [] :=
+                get_constant (| "alloc::vec::is_zero::is_zero_discriminant", Ty.tuple [] |) in
               M.alloc (|
                 M.call_closure (|
                   Ty.path "bool",
@@ -3122,7 +3125,8 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ _ : Ty.tuple [] := M.get_constant "alloc::vec::is_zero::is_zero_discriminant" in
+              let~ _ : Ty.tuple [] :=
+                get_constant (| "alloc::vec::is_zero::is_zero_discriminant", Ty.tuple [] |) in
               M.alloc (|
                 M.call_closure (|
                   Ty.path "bool",
@@ -3166,7 +3170,8 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ _ : Ty.tuple [] := M.get_constant "alloc::vec::is_zero::is_zero_discriminant" in
+              let~ _ : Ty.tuple [] :=
+                get_constant (| "alloc::vec::is_zero::is_zero_discriminant", Ty.tuple [] |) in
               M.alloc (|
                 M.call_closure (|
                   Ty.path "bool",
@@ -3210,7 +3215,8 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ _ : Ty.tuple [] := M.get_constant "alloc::vec::is_zero::is_zero_discriminant" in
+              let~ _ : Ty.tuple [] :=
+                get_constant (| "alloc::vec::is_zero::is_zero_discriminant", Ty.tuple [] |) in
               M.alloc (|
                 M.call_closure (|
                   Ty.path "bool",
@@ -3254,7 +3260,8 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ _ : Ty.tuple [] := M.get_constant "alloc::vec::is_zero::is_zero_discriminant" in
+              let~ _ : Ty.tuple [] :=
+                get_constant (| "alloc::vec::is_zero::is_zero_discriminant", Ty.tuple [] |) in
               M.alloc (|
                 M.call_closure (|
                   Ty.path "bool",
@@ -3298,7 +3305,8 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ _ : Ty.tuple [] := M.get_constant "alloc::vec::is_zero::is_zero_discriminant" in
+              let~ _ : Ty.tuple [] :=
+                get_constant (| "alloc::vec::is_zero::is_zero_discriminant", Ty.tuple [] |) in
               M.alloc (|
                 M.call_closure (|
                   Ty.path "bool",
@@ -3342,7 +3350,8 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ _ : Ty.tuple [] := M.get_constant "alloc::vec::is_zero::is_zero_discriminant" in
+              let~ _ : Ty.tuple [] :=
+                get_constant (| "alloc::vec::is_zero::is_zero_discriminant", Ty.tuple [] |) in
               M.alloc (|
                 M.call_closure (|
                   Ty.path "bool",
@@ -3386,7 +3395,8 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ _ : Ty.tuple [] := M.get_constant "alloc::vec::is_zero::is_zero_discriminant" in
+              let~ _ : Ty.tuple [] :=
+                get_constant (| "alloc::vec::is_zero::is_zero_discriminant", Ty.tuple [] |) in
               M.alloc (|
                 M.call_closure (|
                   Ty.path "bool",
@@ -3430,7 +3440,8 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ _ : Ty.tuple [] := M.get_constant "alloc::vec::is_zero::is_zero_discriminant" in
+              let~ _ : Ty.tuple [] :=
+                get_constant (| "alloc::vec::is_zero::is_zero_discriminant", Ty.tuple [] |) in
               M.alloc (|
                 M.call_closure (|
                   Ty.path "bool",
@@ -3474,7 +3485,8 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             M.read (|
-              let~ _ : Ty.tuple [] := M.get_constant "alloc::vec::is_zero::is_zero_discriminant" in
+              let~ _ : Ty.tuple [] :=
+                get_constant (| "alloc::vec::is_zero::is_zero_discriminant", Ty.tuple [] |) in
               M.alloc (|
                 M.call_closure (|
                   Ty.path "bool",

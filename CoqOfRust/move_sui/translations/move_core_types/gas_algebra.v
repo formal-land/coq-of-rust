@@ -424,7 +424,18 @@ Module gas_algebra.
                 M.read (| __deserializer |);
                 mk_str (| "GasQuantity" |);
                 M.read (|
-                  M.get_constant "move_core_types::gas_algebra::_'1::deserialize::FIELDS"
+                  get_constant (|
+                    "move_core_types::gas_algebra::_'1::deserialize::FIELDS",
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                      ]
+                  |)
                 |);
                 Value.StructRecord
                   "move_core_types::gas_algebra::_'1::deserialize::__Visitor"
@@ -522,58 +533,63 @@ Module gas_algebra.
             ]
         ]).
   
-  Definition value_BOX_ABSTRACT_SIZE : Value.t :=
-    M.run_constant
-      ltac:(M.monadic
-        (M.alloc (|
-          M.call_closure (|
+  Definition value_BOX_ABSTRACT_SIZE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic
+      (M.alloc (|
+        M.call_closure (|
+          Ty.apply
+            (Ty.path "move_core_types::gas_algebra::GasQuantity")
+            []
+            [ Ty.path "move_core_types::gas_algebra::AbstractMemoryUnit" ],
+          M.get_associated_function (|
             Ty.apply
               (Ty.path "move_core_types::gas_algebra::GasQuantity")
               []
               [ Ty.path "move_core_types::gas_algebra::AbstractMemoryUnit" ],
-            M.get_associated_function (|
-              Ty.apply
-                (Ty.path "move_core_types::gas_algebra::GasQuantity")
-                []
-                [ Ty.path "move_core_types::gas_algebra::AbstractMemoryUnit" ],
-              "new",
-              [],
-              []
-            |),
-            [ Value.Integer IntegerKind.U64 16 ]
-          |)
-        |))).
+            "new",
+            [],
+            []
+          |),
+          [ Value.Integer IntegerKind.U64 16 ]
+        |)
+      |))).
   
-  Axiom Constant_value_BOX_ABSTRACT_SIZE :
-    (M.get_constant "move_core_types::gas_algebra::BOX_ABSTRACT_SIZE") = value_BOX_ABSTRACT_SIZE.
-  Global Hint Rewrite Constant_value_BOX_ABSTRACT_SIZE : constant_rewrites.
+  Global Instance Instance_IsConstant_value_BOX_ABSTRACT_SIZE :
+    M.IsFunction.C "move_core_types::gas_algebra::BOX_ABSTRACT_SIZE" value_BOX_ABSTRACT_SIZE.
+  Admitted.
+  Global Typeclasses Opaque value_BOX_ABSTRACT_SIZE.
   
-  Definition value_ENUM_BASE_ABSTRACT_SIZE : Value.t :=
-    M.run_constant
-      ltac:(M.monadic
-        (M.alloc (|
-          M.call_closure (|
+  Definition value_ENUM_BASE_ABSTRACT_SIZE
+      (ε : list Value.t)
+      (τ : list Ty.t)
+      (α : list Value.t)
+      : M :=
+    ltac:(M.monadic
+      (M.alloc (|
+        M.call_closure (|
+          Ty.apply
+            (Ty.path "move_core_types::gas_algebra::GasQuantity")
+            []
+            [ Ty.path "move_core_types::gas_algebra::AbstractMemoryUnit" ],
+          M.get_associated_function (|
             Ty.apply
               (Ty.path "move_core_types::gas_algebra::GasQuantity")
               []
               [ Ty.path "move_core_types::gas_algebra::AbstractMemoryUnit" ],
-            M.get_associated_function (|
-              Ty.apply
-                (Ty.path "move_core_types::gas_algebra::GasQuantity")
-                []
-                [ Ty.path "move_core_types::gas_algebra::AbstractMemoryUnit" ],
-              "new",
-              [],
-              []
-            |),
-            [ Value.Integer IntegerKind.U64 8 ]
-          |)
-        |))).
+            "new",
+            [],
+            []
+          |),
+          [ Value.Integer IntegerKind.U64 8 ]
+        |)
+      |))).
   
-  Axiom Constant_value_ENUM_BASE_ABSTRACT_SIZE :
-    (M.get_constant "move_core_types::gas_algebra::ENUM_BASE_ABSTRACT_SIZE") =
+  Global Instance Instance_IsConstant_value_ENUM_BASE_ABSTRACT_SIZE :
+    M.IsFunction.C
+      "move_core_types::gas_algebra::ENUM_BASE_ABSTRACT_SIZE"
       value_ENUM_BASE_ABSTRACT_SIZE.
-  Global Hint Rewrite Constant_value_ENUM_BASE_ABSTRACT_SIZE : constant_rewrites.
+  Admitted.
+  Global Typeclasses Opaque value_ENUM_BASE_ABSTRACT_SIZE.
   
   Module Impl_move_core_types_gas_algebra_GasQuantity_U.
     Definition Self (U : Ty.t) : Ty.t :=
@@ -604,7 +620,7 @@ Module gas_algebra.
     
     Global Instance AssociatedFunction_new :
       forall (U : Ty.t),
-      M.IsAssociatedFunction.Trait (Self U) "new" (new U).
+      M.IsAssociatedFunction.C (Self U) "new" (new U).
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -633,7 +649,7 @@ Module gas_algebra.
     
     Global Instance AssociatedFunction_zero :
       forall (U : Ty.t),
-      M.IsAssociatedFunction.Trait (Self U) "zero" (zero U).
+      M.IsAssociatedFunction.C (Self U) "zero" (zero U).
     Admitted.
     Global Typeclasses Opaque zero.
     
@@ -662,7 +678,7 @@ Module gas_algebra.
     
     Global Instance AssociatedFunction_one :
       forall (U : Ty.t),
-      M.IsAssociatedFunction.Trait (Self U) "one" (one U).
+      M.IsAssociatedFunction.C (Self U) "one" (one U).
     Admitted.
     Global Typeclasses Opaque one.
     
@@ -692,7 +708,7 @@ Module gas_algebra.
     
     Global Instance AssociatedFunction_is_zero :
       forall (U : Ty.t),
-      M.IsAssociatedFunction.Trait (Self U) "is_zero" (is_zero U).
+      M.IsAssociatedFunction.C (Self U) "is_zero" (is_zero U).
     Admitted.
     Global Typeclasses Opaque is_zero.
     (*
@@ -739,7 +755,7 @@ Module gas_algebra.
     
     Global Instance AssociatedFunction_cmp_impl :
       forall (U : Ty.t),
-      M.IsAssociatedFunction.Trait (Self U) "cmp_impl" (cmp_impl U).
+      M.IsAssociatedFunction.C (Self U) "cmp_impl" (cmp_impl U).
     Admitted.
     Global Typeclasses Opaque cmp_impl.
     (*
@@ -804,7 +820,7 @@ Module gas_algebra.
     
     Global Instance AssociatedFunction_checked_sub :
       forall (U : Ty.t),
-      M.IsAssociatedFunction.Trait (Self U) "checked_sub" (checked_sub U).
+      M.IsAssociatedFunction.C (Self U) "checked_sub" (checked_sub U).
     Admitted.
     Global Typeclasses Opaque checked_sub.
     
@@ -864,7 +880,7 @@ Module gas_algebra.
     
     Global Instance AssociatedFunction_saturating_sub :
       forall (U : Ty.t),
-      M.IsAssociatedFunction.Trait (Self U) "saturating_sub" (saturating_sub U).
+      M.IsAssociatedFunction.C (Self U) "saturating_sub" (saturating_sub U).
     Admitted.
     Global Typeclasses Opaque saturating_sub.
     (*
@@ -892,7 +908,10 @@ Module gas_algebra.
                     [
                       M.borrow (|
                         Pointer.Kind.Ref,
-                        M.get_constant "move_core_types::gas_algebra::ToUnit::MULTIPLIER"
+                        get_constant (|
+                          "move_core_types::gas_algebra::ToUnit::MULTIPLIER",
+                          Ty.path "u64"
+                        |)
                       |);
                       M.borrow (| Pointer.Kind.Ref, M.alloc (| Value.Integer IntegerKind.U64 0 |) |)
                     ]
@@ -991,7 +1010,12 @@ Module gas_algebra.
                           "val"
                         |)
                       |);
-                      M.read (| M.get_constant "move_core_types::gas_algebra::ToUnit::MULTIPLIER" |)
+                      M.read (|
+                        get_constant (|
+                          "move_core_types::gas_algebra::ToUnit::MULTIPLIER",
+                          Ty.path "u64"
+                        |)
+                      |)
                     ]
                   |)
                 ]
@@ -1003,7 +1027,7 @@ Module gas_algebra.
     
     Global Instance AssociatedFunction_to_unit :
       forall (U : Ty.t),
-      M.IsAssociatedFunction.Trait (Self U) "to_unit" (to_unit U).
+      M.IsAssociatedFunction.C (Self U) "to_unit" (to_unit U).
     Admitted.
     Global Typeclasses Opaque to_unit.
     
@@ -1051,10 +1075,16 @@ Module gas_algebra.
                     |)
                   |);
                   M.read (|
-                    M.get_constant "move_core_types::gas_algebra::ToUnitFractional::NOMINATOR"
+                    get_constant (|
+                      "move_core_types::gas_algebra::ToUnitFractional::NOMINATOR",
+                      Ty.path "u64"
+                    |)
                   |);
                   M.read (|
-                    M.get_constant "move_core_types::gas_algebra::ToUnitFractional::DENOMINATOR"
+                    get_constant (|
+                      "move_core_types::gas_algebra::ToUnitFractional::DENOMINATOR",
+                      Ty.path "u64"
+                    |)
                   |)
                 ]
               |)
@@ -1065,7 +1095,7 @@ Module gas_algebra.
     
     Global Instance AssociatedFunction_to_unit_round_down :
       forall (U : Ty.t),
-      M.IsAssociatedFunction.Trait (Self U) "to_unit_round_down" (to_unit_round_down U).
+      M.IsAssociatedFunction.C (Self U) "to_unit_round_down" (to_unit_round_down U).
     Admitted.
     Global Typeclasses Opaque to_unit_round_down.
     
@@ -1109,10 +1139,16 @@ Module gas_algebra.
                     |)
                   |);
                   M.read (|
-                    M.get_constant "move_core_types::gas_algebra::ToUnitFractional::NOMINATOR"
+                    get_constant (|
+                      "move_core_types::gas_algebra::ToUnitFractional::NOMINATOR",
+                      Ty.path "u64"
+                    |)
                   |);
                   M.read (|
-                    M.get_constant "move_core_types::gas_algebra::ToUnitFractional::DENOMINATOR"
+                    get_constant (|
+                      "move_core_types::gas_algebra::ToUnitFractional::DENOMINATOR",
+                      Ty.path "u64"
+                    |)
                   |)
                 ]
               |)
@@ -1123,7 +1159,7 @@ Module gas_algebra.
     
     Global Instance AssociatedFunction_to_unit_round_up :
       forall (U : Ty.t),
-      M.IsAssociatedFunction.Trait (Self U) "to_unit_round_up" (to_unit_round_up U).
+      M.IsAssociatedFunction.C (Self U) "to_unit_round_up" (to_unit_round_up U).
     Admitted.
     Global Typeclasses Opaque to_unit_round_up.
     (*
@@ -1284,7 +1320,7 @@ Module gas_algebra.
     
     Global Instance AssociatedFunction_to_unit_with_params :
       forall (U : Ty.t),
-      M.IsAssociatedFunction.Trait (Self U) "to_unit_with_params" (to_unit_with_params U).
+      M.IsAssociatedFunction.C (Self U) "to_unit_with_params" (to_unit_with_params U).
     Admitted.
     Global Typeclasses Opaque to_unit_with_params.
     
@@ -1377,7 +1413,7 @@ Module gas_algebra.
     
     Global Instance AssociatedFunction_to_unit_round_down_with_params :
       forall (U : Ty.t),
-      M.IsAssociatedFunction.Trait
+      M.IsAssociatedFunction.C
         (Self U)
         "to_unit_round_down_with_params"
         (to_unit_round_down_with_params U).
@@ -1473,7 +1509,7 @@ Module gas_algebra.
     
     Global Instance AssociatedFunction_to_unit_round_up_with_params :
       forall (U : Ty.t),
-      M.IsAssociatedFunction.Trait
+      M.IsAssociatedFunction.C
         (Self U)
         "to_unit_round_up_with_params"
         (to_unit_round_up_with_params U).
@@ -2154,7 +2190,7 @@ Module gas_algebra.
     end.
   
   Global Instance Instance_IsFunction_mul_impl :
-    M.IsFunction.Trait "move_core_types::gas_algebra::mul_impl" mul_impl.
+    M.IsFunction.C "move_core_types::gas_algebra::mul_impl" mul_impl.
   Admitted.
   Global Typeclasses Opaque mul_impl.
   
@@ -2448,11 +2484,15 @@ Module gas_algebra.
                       (M.alloc (|
                         BinOp.gt (|
                           M.read (| res |),
-                          M.cast (Ty.path "u128") (M.read (| M.get_constant "core::num::MAX" |))
+                          M.cast
+                            (Ty.path "u128")
+                            (M.read (|
+                              get_associated_constant (| Ty.path "u64", "MAX", Ty.path "u64" |)
+                            |))
                         |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                  M.get_constant "core::num::MAX"));
+                  get_associated_constant (| Ty.path "u64", "MAX", Ty.path "u64" |)));
               fun γ => ltac:(M.monadic (M.alloc (| M.cast (Ty.path "u64") (M.read (| res |)) |)))
             ]
           |)
@@ -2461,9 +2501,7 @@ Module gas_algebra.
     end.
   
   Global Instance Instance_IsFunction_apply_ratio_round_down :
-    M.IsFunction.Trait
-      "move_core_types::gas_algebra::apply_ratio_round_down"
-      apply_ratio_round_down.
+    M.IsFunction.C "move_core_types::gas_algebra::apply_ratio_round_down" apply_ratio_round_down.
   Admitted.
   Global Typeclasses Opaque apply_ratio_round_down.
   
@@ -2699,11 +2737,15 @@ Module gas_algebra.
                       (M.alloc (|
                         BinOp.gt (|
                           M.read (| res |),
-                          M.cast (Ty.path "u128") (M.read (| M.get_constant "core::num::MAX" |))
+                          M.cast
+                            (Ty.path "u128")
+                            (M.read (|
+                              get_associated_constant (| Ty.path "u64", "MAX", Ty.path "u64" |)
+                            |))
                         |)
                       |)) in
                   let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                  M.get_constant "core::num::MAX"));
+                  get_associated_constant (| Ty.path "u64", "MAX", Ty.path "u64" |)));
               fun γ => ltac:(M.monadic (M.alloc (| M.cast (Ty.path "u64") (M.read (| res |)) |)))
             ]
           |)
@@ -2712,7 +2754,7 @@ Module gas_algebra.
     end.
   
   Global Instance Instance_IsFunction_apply_ratio_round_up :
-    M.IsFunction.Trait "move_core_types::gas_algebra::apply_ratio_round_up" apply_ratio_round_up.
+    M.IsFunction.C "move_core_types::gas_algebra::apply_ratio_round_up" apply_ratio_round_up.
   Admitted.
   Global Typeclasses Opaque apply_ratio_round_up.
   
@@ -2728,8 +2770,8 @@ Module gas_algebra.
     
     (*     const MULTIPLIER: u64 = 1024; *)
     (* Ty.path "u64" *)
-    Definition value_MULTIPLIER : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1024 |))).
+    Definition value_MULTIPLIER (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1024 |))).
     
     Axiom Implements :
       M.IsTraitInstance
@@ -2737,7 +2779,7 @@ Module gas_algebra.
         (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) [ Ty.path "move_core_types::gas_algebra::Byte" ]
         Self
-        (* Instance *) [ ("value_MULTIPLIER", InstanceField.Constant value_MULTIPLIER) ].
+        (* Instance *) [ ("value_MULTIPLIER", InstanceField.Method value_MULTIPLIER) ].
   End Impl_move_core_types_gas_algebra_ToUnit_move_core_types_gas_algebra_Byte_for_move_core_types_gas_algebra_KibiByte.
   
   Module Impl_move_core_types_gas_algebra_ToUnit_move_core_types_gas_algebra_Byte_for_move_core_types_gas_algebra_MebiByte.
@@ -2745,15 +2787,14 @@ Module gas_algebra.
     
     (*     const MULTIPLIER: u64 = 1024 * 1024; *)
     (* Ty.path "u64" *)
-    Definition value_MULTIPLIER : Value.t :=
-      M.run
-        ltac:(M.monadic
-          (M.alloc (|
-            BinOp.Wrap.mul (|
-              Value.Integer IntegerKind.U64 1024,
-              Value.Integer IntegerKind.U64 1024
-            |)
-          |))).
+    Definition value_MULTIPLIER (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          BinOp.Wrap.mul (|
+            Value.Integer IntegerKind.U64 1024,
+            Value.Integer IntegerKind.U64 1024
+          |)
+        |))).
     
     Axiom Implements :
       M.IsTraitInstance
@@ -2761,7 +2802,7 @@ Module gas_algebra.
         (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) [ Ty.path "move_core_types::gas_algebra::Byte" ]
         Self
-        (* Instance *) [ ("value_MULTIPLIER", InstanceField.Constant value_MULTIPLIER) ].
+        (* Instance *) [ ("value_MULTIPLIER", InstanceField.Method value_MULTIPLIER) ].
   End Impl_move_core_types_gas_algebra_ToUnit_move_core_types_gas_algebra_Byte_for_move_core_types_gas_algebra_MebiByte.
   
   Module Impl_move_core_types_gas_algebra_ToUnit_move_core_types_gas_algebra_Byte_for_move_core_types_gas_algebra_GibiByte.
@@ -2769,18 +2810,17 @@ Module gas_algebra.
     
     (*     const MULTIPLIER: u64 = 1024 * 1024 * 1024; *)
     (* Ty.path "u64" *)
-    Definition value_MULTIPLIER : Value.t :=
-      M.run
-        ltac:(M.monadic
-          (M.alloc (|
+    Definition value_MULTIPLIER (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          BinOp.Wrap.mul (|
             BinOp.Wrap.mul (|
-              BinOp.Wrap.mul (|
-                Value.Integer IntegerKind.U64 1024,
-                Value.Integer IntegerKind.U64 1024
-              |),
+              Value.Integer IntegerKind.U64 1024,
               Value.Integer IntegerKind.U64 1024
-            |)
-          |))).
+            |),
+            Value.Integer IntegerKind.U64 1024
+          |)
+        |))).
     
     Axiom Implements :
       M.IsTraitInstance
@@ -2788,7 +2828,7 @@ Module gas_algebra.
         (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) [ Ty.path "move_core_types::gas_algebra::Byte" ]
         Self
-        (* Instance *) [ ("value_MULTIPLIER", InstanceField.Constant value_MULTIPLIER) ].
+        (* Instance *) [ ("value_MULTIPLIER", InstanceField.Method value_MULTIPLIER) ].
   End Impl_move_core_types_gas_algebra_ToUnit_move_core_types_gas_algebra_Byte_for_move_core_types_gas_algebra_GibiByte.
   
   Module Impl_move_core_types_gas_algebra_ToUnit_move_core_types_gas_algebra_KibiByte_for_move_core_types_gas_algebra_MebiByte.
@@ -2796,8 +2836,8 @@ Module gas_algebra.
     
     (*     const MULTIPLIER: u64 = 1024; *)
     (* Ty.path "u64" *)
-    Definition value_MULTIPLIER : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1024 |))).
+    Definition value_MULTIPLIER (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1024 |))).
     
     Axiom Implements :
       M.IsTraitInstance
@@ -2805,7 +2845,7 @@ Module gas_algebra.
         (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) [ Ty.path "move_core_types::gas_algebra::KibiByte" ]
         Self
-        (* Instance *) [ ("value_MULTIPLIER", InstanceField.Constant value_MULTIPLIER) ].
+        (* Instance *) [ ("value_MULTIPLIER", InstanceField.Method value_MULTIPLIER) ].
   End Impl_move_core_types_gas_algebra_ToUnit_move_core_types_gas_algebra_KibiByte_for_move_core_types_gas_algebra_MebiByte.
   
   Module Impl_move_core_types_gas_algebra_ToUnit_move_core_types_gas_algebra_KibiByte_for_move_core_types_gas_algebra_GibiByte.
@@ -2813,15 +2853,14 @@ Module gas_algebra.
     
     (*     const MULTIPLIER: u64 = 1024 * 1024; *)
     (* Ty.path "u64" *)
-    Definition value_MULTIPLIER : Value.t :=
-      M.run
-        ltac:(M.monadic
-          (M.alloc (|
-            BinOp.Wrap.mul (|
-              Value.Integer IntegerKind.U64 1024,
-              Value.Integer IntegerKind.U64 1024
-            |)
-          |))).
+    Definition value_MULTIPLIER (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          BinOp.Wrap.mul (|
+            Value.Integer IntegerKind.U64 1024,
+            Value.Integer IntegerKind.U64 1024
+          |)
+        |))).
     
     Axiom Implements :
       M.IsTraitInstance
@@ -2829,7 +2868,7 @@ Module gas_algebra.
         (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) [ Ty.path "move_core_types::gas_algebra::KibiByte" ]
         Self
-        (* Instance *) [ ("value_MULTIPLIER", InstanceField.Constant value_MULTIPLIER) ].
+        (* Instance *) [ ("value_MULTIPLIER", InstanceField.Method value_MULTIPLIER) ].
   End Impl_move_core_types_gas_algebra_ToUnit_move_core_types_gas_algebra_KibiByte_for_move_core_types_gas_algebra_GibiByte.
   
   Module Impl_move_core_types_gas_algebra_ToUnit_move_core_types_gas_algebra_MebiByte_for_move_core_types_gas_algebra_GibiByte.
@@ -2837,8 +2876,8 @@ Module gas_algebra.
     
     (*     const MULTIPLIER: u64 = 1024; *)
     (* Ty.path "u64" *)
-    Definition value_MULTIPLIER : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1024 |))).
+    Definition value_MULTIPLIER (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1024 |))).
     
     Axiom Implements :
       M.IsTraitInstance
@@ -2846,7 +2885,7 @@ Module gas_algebra.
         (* Trait polymorphic consts *) []
         (* Trait polymorphic types *) [ Ty.path "move_core_types::gas_algebra::MebiByte" ]
         Self
-        (* Instance *) [ ("value_MULTIPLIER", InstanceField.Constant value_MULTIPLIER) ].
+        (* Instance *) [ ("value_MULTIPLIER", InstanceField.Method value_MULTIPLIER) ].
   End Impl_move_core_types_gas_algebra_ToUnit_move_core_types_gas_algebra_MebiByte_for_move_core_types_gas_algebra_GibiByte.
   
   Module Impl_move_core_types_gas_algebra_ToUnitFractional_move_core_types_gas_algebra_KibiByte_for_move_core_types_gas_algebra_Byte.
@@ -2854,13 +2893,13 @@ Module gas_algebra.
     
     (*     const NOMINATOR: u64 = 1; *)
     (* Ty.path "u64" *)
-    Definition value_NOMINATOR : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1 |))).
+    Definition value_NOMINATOR (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1 |))).
     
     (*     const DENOMINATOR: u64 = 1024; *)
     (* Ty.path "u64" *)
-    Definition value_DENOMINATOR : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1024 |))).
+    Definition value_DENOMINATOR (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1024 |))).
     
     Axiom Implements :
       M.IsTraitInstance
@@ -2870,8 +2909,8 @@ Module gas_algebra.
         Self
         (* Instance *)
         [
-          ("value_NOMINATOR", InstanceField.Constant value_NOMINATOR);
-          ("value_DENOMINATOR", InstanceField.Constant value_DENOMINATOR)
+          ("value_NOMINATOR", InstanceField.Method value_NOMINATOR);
+          ("value_DENOMINATOR", InstanceField.Method value_DENOMINATOR)
         ].
   End Impl_move_core_types_gas_algebra_ToUnitFractional_move_core_types_gas_algebra_KibiByte_for_move_core_types_gas_algebra_Byte.
   
@@ -2880,13 +2919,13 @@ Module gas_algebra.
     
     (*     const NOMINATOR: u64 = 1; *)
     (* Ty.path "u64" *)
-    Definition value_NOMINATOR : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1 |))).
+    Definition value_NOMINATOR (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1 |))).
     
     (*     const DENOMINATOR: u64 = 1024; *)
     (* Ty.path "u64" *)
-    Definition value_DENOMINATOR : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1024 |))).
+    Definition value_DENOMINATOR (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1024 |))).
     
     Axiom Implements :
       M.IsTraitInstance
@@ -2896,8 +2935,8 @@ Module gas_algebra.
         Self
         (* Instance *)
         [
-          ("value_NOMINATOR", InstanceField.Constant value_NOMINATOR);
-          ("value_DENOMINATOR", InstanceField.Constant value_DENOMINATOR)
+          ("value_NOMINATOR", InstanceField.Method value_NOMINATOR);
+          ("value_DENOMINATOR", InstanceField.Method value_DENOMINATOR)
         ].
   End Impl_move_core_types_gas_algebra_ToUnitFractional_move_core_types_gas_algebra_MebiByte_for_move_core_types_gas_algebra_KibiByte.
   
@@ -2906,20 +2945,19 @@ Module gas_algebra.
     
     (*     const NOMINATOR: u64 = 1; *)
     (* Ty.path "u64" *)
-    Definition value_NOMINATOR : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1 |))).
+    Definition value_NOMINATOR (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1 |))).
     
     (*     const DENOMINATOR: u64 = 1024 * 1024; *)
     (* Ty.path "u64" *)
-    Definition value_DENOMINATOR : Value.t :=
-      M.run
-        ltac:(M.monadic
-          (M.alloc (|
-            BinOp.Wrap.mul (|
-              Value.Integer IntegerKind.U64 1024,
-              Value.Integer IntegerKind.U64 1024
-            |)
-          |))).
+    Definition value_DENOMINATOR (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          BinOp.Wrap.mul (|
+            Value.Integer IntegerKind.U64 1024,
+            Value.Integer IntegerKind.U64 1024
+          |)
+        |))).
     
     Axiom Implements :
       M.IsTraitInstance
@@ -2929,8 +2967,8 @@ Module gas_algebra.
         Self
         (* Instance *)
         [
-          ("value_NOMINATOR", InstanceField.Constant value_NOMINATOR);
-          ("value_DENOMINATOR", InstanceField.Constant value_DENOMINATOR)
+          ("value_NOMINATOR", InstanceField.Method value_NOMINATOR);
+          ("value_DENOMINATOR", InstanceField.Method value_DENOMINATOR)
         ].
   End Impl_move_core_types_gas_algebra_ToUnitFractional_move_core_types_gas_algebra_MebiByte_for_move_core_types_gas_algebra_Byte.
   
@@ -2939,13 +2977,13 @@ Module gas_algebra.
     
     (*     const NOMINATOR: u64 = 1; *)
     (* Ty.path "u64" *)
-    Definition value_NOMINATOR : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1 |))).
+    Definition value_NOMINATOR (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1 |))).
     
     (*     const DENOMINATOR: u64 = 1024; *)
     (* Ty.path "u64" *)
-    Definition value_DENOMINATOR : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1024 |))).
+    Definition value_DENOMINATOR (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1024 |))).
     
     Axiom Implements :
       M.IsTraitInstance
@@ -2955,8 +2993,8 @@ Module gas_algebra.
         Self
         (* Instance *)
         [
-          ("value_NOMINATOR", InstanceField.Constant value_NOMINATOR);
-          ("value_DENOMINATOR", InstanceField.Constant value_DENOMINATOR)
+          ("value_NOMINATOR", InstanceField.Method value_NOMINATOR);
+          ("value_DENOMINATOR", InstanceField.Method value_DENOMINATOR)
         ].
   End Impl_move_core_types_gas_algebra_ToUnitFractional_move_core_types_gas_algebra_GibiByte_for_move_core_types_gas_algebra_MebiByte.
   
@@ -2965,20 +3003,19 @@ Module gas_algebra.
     
     (*     const NOMINATOR: u64 = 1; *)
     (* Ty.path "u64" *)
-    Definition value_NOMINATOR : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1 |))).
+    Definition value_NOMINATOR (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1 |))).
     
     (*     const DENOMINATOR: u64 = 1024 * 1024; *)
     (* Ty.path "u64" *)
-    Definition value_DENOMINATOR : Value.t :=
-      M.run
-        ltac:(M.monadic
-          (M.alloc (|
-            BinOp.Wrap.mul (|
-              Value.Integer IntegerKind.U64 1024,
-              Value.Integer IntegerKind.U64 1024
-            |)
-          |))).
+    Definition value_DENOMINATOR (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          BinOp.Wrap.mul (|
+            Value.Integer IntegerKind.U64 1024,
+            Value.Integer IntegerKind.U64 1024
+          |)
+        |))).
     
     Axiom Implements :
       M.IsTraitInstance
@@ -2988,8 +3025,8 @@ Module gas_algebra.
         Self
         (* Instance *)
         [
-          ("value_NOMINATOR", InstanceField.Constant value_NOMINATOR);
-          ("value_DENOMINATOR", InstanceField.Constant value_DENOMINATOR)
+          ("value_NOMINATOR", InstanceField.Method value_NOMINATOR);
+          ("value_DENOMINATOR", InstanceField.Method value_DENOMINATOR)
         ].
   End Impl_move_core_types_gas_algebra_ToUnitFractional_move_core_types_gas_algebra_GibiByte_for_move_core_types_gas_algebra_KibiByte.
   
@@ -2998,23 +3035,22 @@ Module gas_algebra.
     
     (*     const NOMINATOR: u64 = 1; *)
     (* Ty.path "u64" *)
-    Definition value_NOMINATOR : Value.t :=
-      M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1 |))).
+    Definition value_NOMINATOR (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1 |))).
     
     (*     const DENOMINATOR: u64 = 1024 * 1024 * 1024; *)
     (* Ty.path "u64" *)
-    Definition value_DENOMINATOR : Value.t :=
-      M.run
-        ltac:(M.monadic
-          (M.alloc (|
+    Definition value_DENOMINATOR (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          BinOp.Wrap.mul (|
             BinOp.Wrap.mul (|
-              BinOp.Wrap.mul (|
-                Value.Integer IntegerKind.U64 1024,
-                Value.Integer IntegerKind.U64 1024
-              |),
+              Value.Integer IntegerKind.U64 1024,
               Value.Integer IntegerKind.U64 1024
-            |)
-          |))).
+            |),
+            Value.Integer IntegerKind.U64 1024
+          |)
+        |))).
     
     Axiom Implements :
       M.IsTraitInstance
@@ -3024,8 +3060,8 @@ Module gas_algebra.
         Self
         (* Instance *)
         [
-          ("value_NOMINATOR", InstanceField.Constant value_NOMINATOR);
-          ("value_DENOMINATOR", InstanceField.Constant value_DENOMINATOR)
+          ("value_NOMINATOR", InstanceField.Method value_NOMINATOR);
+          ("value_DENOMINATOR", InstanceField.Method value_DENOMINATOR)
         ].
   End Impl_move_core_types_gas_algebra_ToUnitFractional_move_core_types_gas_algebra_GibiByte_for_move_core_types_gas_algebra_Byte.
   

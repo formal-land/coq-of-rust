@@ -8,40 +8,47 @@ Module char.
       
       (*     pub const MIN: char = '\0'; *)
       (* Ty.path "char" *)
-      Definition value_MIN : Value.t := M.run ltac:(M.monadic (M.alloc (| Value.UnicodeChar 0 |))).
+      Definition value_MIN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic (M.alloc (| Value.UnicodeChar 0 |))).
       
-      Global Instance AssociatedConstant_value_MIN :
-        M.IsAssociatedConstant.Trait Self "value_MIN" value_MIN.
+      Global Instance AssociatedConstant_value_MIN : M.IsAssociatedFunction.C Self "MIN" value_MIN.
       Admitted.
       Global Typeclasses Opaque value_MIN.
       
       (*     pub const MAX: char = '\u{10FFFF}'; *)
       (* Ty.path "char" *)
-      Definition value_MAX : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.UnicodeChar 1114111 |))).
+      Definition value_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic (M.alloc (| Value.UnicodeChar 1114111 |))).
       
-      Global Instance AssociatedConstant_value_MAX :
-        M.IsAssociatedConstant.Trait Self "value_MAX" value_MAX.
+      Global Instance AssociatedConstant_value_MAX : M.IsAssociatedFunction.C Self "MAX" value_MAX.
       Admitted.
       Global Typeclasses Opaque value_MAX.
       
       (*     pub const REPLACEMENT_CHARACTER: char = '\u{FFFD}'; *)
       (* Ty.path "char" *)
-      Definition value_REPLACEMENT_CHARACTER : Value.t :=
-        M.run ltac:(M.monadic (M.alloc (| Value.UnicodeChar 65533 |))).
+      Definition value_REPLACEMENT_CHARACTER
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
+        ltac:(M.monadic (M.alloc (| Value.UnicodeChar 65533 |))).
       
       Global Instance AssociatedConstant_value_REPLACEMENT_CHARACTER :
-        M.IsAssociatedConstant.Trait Self "value_REPLACEMENT_CHARACTER" value_REPLACEMENT_CHARACTER.
+        M.IsAssociatedFunction.C Self "REPLACEMENT_CHARACTER" value_REPLACEMENT_CHARACTER.
       Admitted.
       Global Typeclasses Opaque value_REPLACEMENT_CHARACTER.
       
       (*     pub const UNICODE_VERSION: (u8, u8, u8) = crate::unicode::UNICODE_VERSION; *)
       (* Ty.tuple [ Ty.path "u8"; Ty.path "u8"; Ty.path "u8" ] *)
-      Definition value_UNICODE_VERSION : Value.t :=
-        M.run ltac:(M.monadic (M.get_constant "core::unicode::UNICODE_VERSION")).
+      Definition value_UNICODE_VERSION (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (get_constant (|
+            "core::unicode::UNICODE_VERSION",
+            Ty.tuple [ Ty.path "u8"; Ty.path "u8"; Ty.path "u8" ]
+          |))).
       
       Global Instance AssociatedConstant_value_UNICODE_VERSION :
-        M.IsAssociatedConstant.Trait Self "value_UNICODE_VERSION" value_UNICODE_VERSION.
+        M.IsAssociatedFunction.C Self "UNICODE_VERSION" value_UNICODE_VERSION.
       Admitted.
       Global Typeclasses Opaque value_UNICODE_VERSION.
       
@@ -74,7 +81,7 @@ Module char.
         end.
       
       Global Instance AssociatedFunction_decode_utf16 :
-        M.IsAssociatedFunction.Trait Self "decode_utf16" decode_utf16.
+        M.IsAssociatedFunction.C Self "decode_utf16" decode_utf16.
       Admitted.
       Global Typeclasses Opaque decode_utf16.
       
@@ -97,7 +104,7 @@ Module char.
         end.
       
       Global Instance AssociatedFunction_from_u32 :
-        M.IsAssociatedFunction.Trait Self "from_u32" from_u32.
+        M.IsAssociatedFunction.C Self "from_u32" from_u32.
       Admitted.
       Global Typeclasses Opaque from_u32.
       
@@ -121,7 +128,7 @@ Module char.
         end.
       
       Global Instance AssociatedFunction_from_u32_unchecked :
-        M.IsAssociatedFunction.Trait Self "from_u32_unchecked" from_u32_unchecked.
+        M.IsAssociatedFunction.C Self "from_u32_unchecked" from_u32_unchecked.
       Admitted.
       Global Typeclasses Opaque from_u32_unchecked.
       
@@ -145,7 +152,7 @@ Module char.
         end.
       
       Global Instance AssociatedFunction_from_digit :
-        M.IsAssociatedFunction.Trait Self "from_digit" from_digit.
+        M.IsAssociatedFunction.C Self "from_digit" from_digit.
       Admitted.
       Global Typeclasses Opaque from_digit.
       
@@ -185,7 +192,7 @@ Module char.
         end.
       
       Global Instance AssociatedFunction_is_digit :
-        M.IsAssociatedFunction.Trait Self "is_digit" is_digit.
+        M.IsAssociatedFunction.C Self "is_digit" is_digit.
       Admitted.
       Global Typeclasses Opaque is_digit.
       
@@ -383,7 +390,7 @@ Module char.
         end.
       
       Global Instance AssociatedFunction_to_digit :
-        M.IsAssociatedFunction.Trait Self "to_digit" to_digit.
+        M.IsAssociatedFunction.C Self "to_digit" to_digit.
       Admitted.
       Global Typeclasses Opaque to_digit.
       
@@ -406,7 +413,7 @@ Module char.
         end.
       
       Global Instance AssociatedFunction_escape_unicode :
-        M.IsAssociatedFunction.Trait Self "escape_unicode" escape_unicode.
+        M.IsAssociatedFunction.C Self "escape_unicode" escape_unicode.
       Admitted.
       Global Typeclasses Opaque escape_unicode.
       
@@ -650,7 +657,7 @@ Module char.
         end.
       
       Global Instance AssociatedFunction_escape_debug_ext :
-        M.IsAssociatedFunction.Trait Self "escape_debug_ext" escape_debug_ext.
+        M.IsAssociatedFunction.C Self "escape_debug_ext" escape_debug_ext.
       Admitted.
       Global Typeclasses Opaque escape_debug_ext.
       
@@ -667,13 +674,22 @@ Module char.
             M.call_closure (|
               Ty.path "core::char::EscapeDebug",
               M.get_associated_function (| Ty.path "char", "escape_debug_ext", [], [] |),
-              [ M.read (| self |); M.read (| M.get_constant "core::char::methods::ESCAPE_ALL" |) ]
+              [
+                M.read (| self |);
+                M.read (|
+                  get_associated_constant (|
+                    Ty.path "core::char::methods::EscapeDebugExtArgs",
+                    "ESCAPE_ALL",
+                    Ty.path "core::char::methods::EscapeDebugExtArgs"
+                  |)
+                |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
       Global Instance AssociatedFunction_escape_debug :
-        M.IsAssociatedFunction.Trait Self "escape_debug" escape_debug.
+        M.IsAssociatedFunction.C Self "escape_debug" escape_debug.
       Admitted.
       Global Typeclasses Opaque escape_debug.
       
@@ -889,7 +905,7 @@ Module char.
         end.
       
       Global Instance AssociatedFunction_escape_default :
-        M.IsAssociatedFunction.Trait Self "escape_default" escape_default.
+        M.IsAssociatedFunction.C Self "escape_default" escape_default.
       Admitted.
       Global Typeclasses Opaque escape_default.
       
@@ -912,7 +928,7 @@ Module char.
         end.
       
       Global Instance AssociatedFunction_len_utf8 :
-        M.IsAssociatedFunction.Trait Self "len_utf8" len_utf8.
+        M.IsAssociatedFunction.C Self "len_utf8" len_utf8.
       Admitted.
       Global Typeclasses Opaque len_utf8.
       
@@ -935,7 +951,7 @@ Module char.
         end.
       
       Global Instance AssociatedFunction_len_utf16 :
-        M.IsAssociatedFunction.Trait Self "len_utf16" len_utf16.
+        M.IsAssociatedFunction.C Self "len_utf16" len_utf16.
       Admitted.
       Global Typeclasses Opaque len_utf16.
       
@@ -1003,7 +1019,7 @@ Module char.
         end.
       
       Global Instance AssociatedFunction_encode_utf8 :
-        M.IsAssociatedFunction.Trait Self "encode_utf8" encode_utf8.
+        M.IsAssociatedFunction.C Self "encode_utf8" encode_utf8.
       Admitted.
       Global Typeclasses Opaque encode_utf8.
       
@@ -1043,7 +1059,7 @@ Module char.
         end.
       
       Global Instance AssociatedFunction_encode_utf16 :
-        M.IsAssociatedFunction.Trait Self "encode_utf16" encode_utf16.
+        M.IsAssociatedFunction.C Self "encode_utf16" encode_utf16.
       Admitted.
       Global Typeclasses Opaque encode_utf16.
       
@@ -1105,7 +1121,7 @@ Module char.
         end.
       
       Global Instance AssociatedFunction_is_alphabetic :
-        M.IsAssociatedFunction.Trait Self "is_alphabetic" is_alphabetic.
+        M.IsAssociatedFunction.C Self "is_alphabetic" is_alphabetic.
       Admitted.
       Global Typeclasses Opaque is_alphabetic.
       
@@ -1153,7 +1169,7 @@ Module char.
         end.
       
       Global Instance AssociatedFunction_is_lowercase :
-        M.IsAssociatedFunction.Trait Self "is_lowercase" is_lowercase.
+        M.IsAssociatedFunction.C Self "is_lowercase" is_lowercase.
       Admitted.
       Global Typeclasses Opaque is_lowercase.
       
@@ -1201,7 +1217,7 @@ Module char.
         end.
       
       Global Instance AssociatedFunction_is_uppercase :
-        M.IsAssociatedFunction.Trait Self "is_uppercase" is_uppercase.
+        M.IsAssociatedFunction.C Self "is_uppercase" is_uppercase.
       Admitted.
       Global Typeclasses Opaque is_uppercase.
       
@@ -1270,7 +1286,7 @@ Module char.
         end.
       
       Global Instance AssociatedFunction_is_whitespace :
-        M.IsAssociatedFunction.Trait Self "is_whitespace" is_whitespace.
+        M.IsAssociatedFunction.C Self "is_whitespace" is_whitespace.
       Admitted.
       Global Typeclasses Opaque is_whitespace.
       
@@ -1301,7 +1317,7 @@ Module char.
         end.
       
       Global Instance AssociatedFunction_is_alphanumeric :
-        M.IsAssociatedFunction.Trait Self "is_alphanumeric" is_alphanumeric.
+        M.IsAssociatedFunction.C Self "is_alphanumeric" is_alphanumeric.
       Admitted.
       Global Typeclasses Opaque is_alphanumeric.
       
@@ -1324,7 +1340,7 @@ Module char.
         end.
       
       Global Instance AssociatedFunction_is_control :
-        M.IsAssociatedFunction.Trait Self "is_control" is_control.
+        M.IsAssociatedFunction.C Self "is_control" is_control.
       Admitted.
       Global Typeclasses Opaque is_control.
       
@@ -1347,7 +1363,7 @@ Module char.
         end.
       
       Global Instance AssociatedFunction_is_grapheme_extended :
-        M.IsAssociatedFunction.Trait Self "is_grapheme_extended" is_grapheme_extended.
+        M.IsAssociatedFunction.C Self "is_grapheme_extended" is_grapheme_extended.
       Admitted.
       Global Typeclasses Opaque is_grapheme_extended.
       
@@ -1391,7 +1407,7 @@ Module char.
         end.
       
       Global Instance AssociatedFunction_is_numeric :
-        M.IsAssociatedFunction.Trait Self "is_numeric" is_numeric.
+        M.IsAssociatedFunction.C Self "is_numeric" is_numeric.
       Admitted.
       Global Typeclasses Opaque is_numeric.
       
@@ -1436,7 +1452,7 @@ Module char.
         end.
       
       Global Instance AssociatedFunction_to_lowercase :
-        M.IsAssociatedFunction.Trait Self "to_lowercase" to_lowercase.
+        M.IsAssociatedFunction.C Self "to_lowercase" to_lowercase.
       Admitted.
       Global Typeclasses Opaque to_lowercase.
       
@@ -1481,7 +1497,7 @@ Module char.
         end.
       
       Global Instance AssociatedFunction_to_uppercase :
-        M.IsAssociatedFunction.Trait Self "to_uppercase" to_uppercase.
+        M.IsAssociatedFunction.C Self "to_uppercase" to_uppercase.
       Admitted.
       Global Typeclasses Opaque to_uppercase.
       
@@ -1503,7 +1519,7 @@ Module char.
         end.
       
       Global Instance AssociatedFunction_is_ascii :
-        M.IsAssociatedFunction.Trait Self "is_ascii" is_ascii.
+        M.IsAssociatedFunction.C Self "is_ascii" is_ascii.
       Admitted.
       Global Typeclasses Opaque is_ascii.
       
@@ -1570,7 +1586,7 @@ Module char.
         end.
       
       Global Instance AssociatedFunction_as_ascii :
-        M.IsAssociatedFunction.Trait Self "as_ascii" as_ascii.
+        M.IsAssociatedFunction.C Self "as_ascii" as_ascii.
       Admitted.
       Global Typeclasses Opaque as_ascii.
       
@@ -1641,7 +1657,7 @@ Module char.
         end.
       
       Global Instance AssociatedFunction_to_ascii_uppercase :
-        M.IsAssociatedFunction.Trait Self "to_ascii_uppercase" to_ascii_uppercase.
+        M.IsAssociatedFunction.C Self "to_ascii_uppercase" to_ascii_uppercase.
       Admitted.
       Global Typeclasses Opaque to_ascii_uppercase.
       
@@ -1712,7 +1728,7 @@ Module char.
         end.
       
       Global Instance AssociatedFunction_to_ascii_lowercase :
-        M.IsAssociatedFunction.Trait Self "to_ascii_lowercase" to_ascii_lowercase.
+        M.IsAssociatedFunction.C Self "to_ascii_lowercase" to_ascii_lowercase.
       Admitted.
       Global Typeclasses Opaque to_ascii_lowercase.
       
@@ -1743,7 +1759,7 @@ Module char.
         end.
       
       Global Instance AssociatedFunction_eq_ignore_ascii_case :
-        M.IsAssociatedFunction.Trait Self "eq_ignore_ascii_case" eq_ignore_ascii_case.
+        M.IsAssociatedFunction.C Self "eq_ignore_ascii_case" eq_ignore_ascii_case.
       Admitted.
       Global Typeclasses Opaque eq_ignore_ascii_case.
       
@@ -1775,7 +1791,7 @@ Module char.
         end.
       
       Global Instance AssociatedFunction_make_ascii_uppercase :
-        M.IsAssociatedFunction.Trait Self "make_ascii_uppercase" make_ascii_uppercase.
+        M.IsAssociatedFunction.C Self "make_ascii_uppercase" make_ascii_uppercase.
       Admitted.
       Global Typeclasses Opaque make_ascii_uppercase.
       
@@ -1807,7 +1823,7 @@ Module char.
         end.
       
       Global Instance AssociatedFunction_make_ascii_lowercase :
-        M.IsAssociatedFunction.Trait Self "make_ascii_lowercase" make_ascii_lowercase.
+        M.IsAssociatedFunction.C Self "make_ascii_lowercase" make_ascii_lowercase.
       Admitted.
       Global Typeclasses Opaque make_ascii_lowercase.
       
@@ -1849,7 +1865,7 @@ Module char.
         end.
       
       Global Instance AssociatedFunction_is_ascii_alphabetic :
-        M.IsAssociatedFunction.Trait Self "is_ascii_alphabetic" is_ascii_alphabetic.
+        M.IsAssociatedFunction.C Self "is_ascii_alphabetic" is_ascii_alphabetic.
       Admitted.
       Global Typeclasses Opaque is_ascii_alphabetic.
       
@@ -1877,7 +1893,7 @@ Module char.
         end.
       
       Global Instance AssociatedFunction_is_ascii_uppercase :
-        M.IsAssociatedFunction.Trait Self "is_ascii_uppercase" is_ascii_uppercase.
+        M.IsAssociatedFunction.C Self "is_ascii_uppercase" is_ascii_uppercase.
       Admitted.
       Global Typeclasses Opaque is_ascii_uppercase.
       
@@ -1905,7 +1921,7 @@ Module char.
         end.
       
       Global Instance AssociatedFunction_is_ascii_lowercase :
-        M.IsAssociatedFunction.Trait Self "is_ascii_lowercase" is_ascii_lowercase.
+        M.IsAssociatedFunction.C Self "is_ascii_lowercase" is_ascii_lowercase.
       Admitted.
       Global Typeclasses Opaque is_ascii_lowercase.
       
@@ -1955,7 +1971,7 @@ Module char.
         end.
       
       Global Instance AssociatedFunction_is_ascii_alphanumeric :
-        M.IsAssociatedFunction.Trait Self "is_ascii_alphanumeric" is_ascii_alphanumeric.
+        M.IsAssociatedFunction.C Self "is_ascii_alphanumeric" is_ascii_alphanumeric.
       Admitted.
       Global Typeclasses Opaque is_ascii_alphanumeric.
       
@@ -1983,7 +1999,7 @@ Module char.
         end.
       
       Global Instance AssociatedFunction_is_ascii_digit :
-        M.IsAssociatedFunction.Trait Self "is_ascii_digit" is_ascii_digit.
+        M.IsAssociatedFunction.C Self "is_ascii_digit" is_ascii_digit.
       Admitted.
       Global Typeclasses Opaque is_ascii_digit.
       
@@ -2011,7 +2027,7 @@ Module char.
         end.
       
       Global Instance AssociatedFunction_is_ascii_octdigit :
-        M.IsAssociatedFunction.Trait Self "is_ascii_octdigit" is_ascii_octdigit.
+        M.IsAssociatedFunction.C Self "is_ascii_octdigit" is_ascii_octdigit.
       Admitted.
       Global Typeclasses Opaque is_ascii_octdigit.
       
@@ -2061,7 +2077,7 @@ Module char.
         end.
       
       Global Instance AssociatedFunction_is_ascii_hexdigit :
-        M.IsAssociatedFunction.Trait Self "is_ascii_hexdigit" is_ascii_hexdigit.
+        M.IsAssociatedFunction.C Self "is_ascii_hexdigit" is_ascii_hexdigit.
       Admitted.
       Global Typeclasses Opaque is_ascii_hexdigit.
       
@@ -2125,7 +2141,7 @@ Module char.
         end.
       
       Global Instance AssociatedFunction_is_ascii_punctuation :
-        M.IsAssociatedFunction.Trait Self "is_ascii_punctuation" is_ascii_punctuation.
+        M.IsAssociatedFunction.C Self "is_ascii_punctuation" is_ascii_punctuation.
       Admitted.
       Global Typeclasses Opaque is_ascii_punctuation.
       
@@ -2153,7 +2169,7 @@ Module char.
         end.
       
       Global Instance AssociatedFunction_is_ascii_graphic :
-        M.IsAssociatedFunction.Trait Self "is_ascii_graphic" is_ascii_graphic.
+        M.IsAssociatedFunction.C Self "is_ascii_graphic" is_ascii_graphic.
       Admitted.
       Global Typeclasses Opaque is_ascii_graphic.
       
@@ -2233,7 +2249,7 @@ Module char.
         end.
       
       Global Instance AssociatedFunction_is_ascii_whitespace :
-        M.IsAssociatedFunction.Trait Self "is_ascii_whitespace" is_ascii_whitespace.
+        M.IsAssociatedFunction.C Self "is_ascii_whitespace" is_ascii_whitespace.
       Admitted.
       Global Typeclasses Opaque is_ascii_whitespace.
       
@@ -2282,7 +2298,7 @@ Module char.
         end.
       
       Global Instance AssociatedFunction_is_ascii_control :
-        M.IsAssociatedFunction.Trait Self "is_ascii_control" is_ascii_control.
+        M.IsAssociatedFunction.C Self "is_ascii_control" is_ascii_control.
       Admitted.
       Global Typeclasses Opaque is_ascii_control.
     End Impl_char.
@@ -2311,21 +2327,20 @@ Module char.
           };
       *)
       (* Ty.path "core::char::methods::EscapeDebugExtArgs" *)
-      Definition value_ESCAPE_ALL : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              Value.StructRecord
-                "core::char::methods::EscapeDebugExtArgs"
-                [
-                  ("escape_grapheme_extended", Value.Bool true);
-                  ("escape_single_quote", Value.Bool true);
-                  ("escape_double_quote", Value.Bool true)
-                ]
-            |))).
+      Definition value_ESCAPE_ALL (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            Value.StructRecord
+              "core::char::methods::EscapeDebugExtArgs"
+              [
+                ("escape_grapheme_extended", Value.Bool true);
+                ("escape_single_quote", Value.Bool true);
+                ("escape_double_quote", Value.Bool true)
+              ]
+          |))).
       
       Global Instance AssociatedConstant_value_ESCAPE_ALL :
-        M.IsAssociatedConstant.Trait Self "value_ESCAPE_ALL" value_ESCAPE_ALL.
+        M.IsAssociatedFunction.C Self "ESCAPE_ALL" value_ESCAPE_ALL.
       Admitted.
       Global Typeclasses Opaque value_ESCAPE_ALL.
     End Impl_core_char_methods_EscapeDebugExtArgs.
@@ -2361,7 +2376,7 @@ Module char.
       end.
     
     Global Instance Instance_IsFunction_len_utf8 :
-      M.IsFunction.Trait "core::char::methods::len_utf8" len_utf8.
+      M.IsFunction.C "core::char::methods::len_utf8" len_utf8.
     Admitted.
     Global Typeclasses Opaque len_utf8.
     
@@ -2400,7 +2415,7 @@ Module char.
       end.
     
     Global Instance Instance_IsFunction_len_utf16 :
-      M.IsFunction.Trait "core::char::methods::len_utf16" len_utf16.
+      M.IsFunction.C "core::char::methods::len_utf16" len_utf16.
     Admitted.
     Global Typeclasses Opaque len_utf16.
     
@@ -2518,7 +2533,9 @@ Module char.
                                         Value.Integer IntegerKind.I32 6
                                       |))
                                       (Value.Integer IntegerKind.U32 31)))
-                                  (M.read (| M.get_constant "core::char::TAG_TWO_B" |))
+                                  (M.read (|
+                                    get_constant (| "core::char::TAG_TWO_B", Ty.path "u8" |)
+                                  |))
                               |)
                             |) in
                           let~ _ : Ty.tuple [] :=
@@ -2531,7 +2548,9 @@ Module char.
                                     (BinOp.bit_and
                                       (M.read (| code |))
                                       (Value.Integer IntegerKind.U32 63)))
-                                  (M.read (| M.get_constant "core::char::TAG_CONT" |))
+                                  (M.read (|
+                                    get_constant (| "core::char::TAG_CONT", Ty.path "u8" |)
+                                  |))
                               |)
                             |) in
                           M.alloc (| Value.Tuple [] |)));
@@ -2565,7 +2584,9 @@ Module char.
                                         Value.Integer IntegerKind.I32 12
                                       |))
                                       (Value.Integer IntegerKind.U32 15)))
-                                  (M.read (| M.get_constant "core::char::TAG_THREE_B" |))
+                                  (M.read (|
+                                    get_constant (| "core::char::TAG_THREE_B", Ty.path "u8" |)
+                                  |))
                               |)
                             |) in
                           let~ _ : Ty.tuple [] :=
@@ -2581,7 +2602,9 @@ Module char.
                                         Value.Integer IntegerKind.I32 6
                                       |))
                                       (Value.Integer IntegerKind.U32 63)))
-                                  (M.read (| M.get_constant "core::char::TAG_CONT" |))
+                                  (M.read (|
+                                    get_constant (| "core::char::TAG_CONT", Ty.path "u8" |)
+                                  |))
                               |)
                             |) in
                           let~ _ : Ty.tuple [] :=
@@ -2594,7 +2617,9 @@ Module char.
                                     (BinOp.bit_and
                                       (M.read (| code |))
                                       (Value.Integer IntegerKind.U32 63)))
-                                  (M.read (| M.get_constant "core::char::TAG_CONT" |))
+                                  (M.read (|
+                                    get_constant (| "core::char::TAG_CONT", Ty.path "u8" |)
+                                  |))
                               |)
                             |) in
                           M.alloc (| Value.Tuple [] |)));
@@ -2630,7 +2655,9 @@ Module char.
                                         Value.Integer IntegerKind.I32 18
                                       |))
                                       (Value.Integer IntegerKind.U32 7)))
-                                  (M.read (| M.get_constant "core::char::TAG_FOUR_B" |))
+                                  (M.read (|
+                                    get_constant (| "core::char::TAG_FOUR_B", Ty.path "u8" |)
+                                  |))
                               |)
                             |) in
                           let~ _ : Ty.tuple [] :=
@@ -2646,7 +2673,9 @@ Module char.
                                         Value.Integer IntegerKind.I32 12
                                       |))
                                       (Value.Integer IntegerKind.U32 63)))
-                                  (M.read (| M.get_constant "core::char::TAG_CONT" |))
+                                  (M.read (|
+                                    get_constant (| "core::char::TAG_CONT", Ty.path "u8" |)
+                                  |))
                               |)
                             |) in
                           let~ _ : Ty.tuple [] :=
@@ -2662,7 +2691,9 @@ Module char.
                                         Value.Integer IntegerKind.I32 6
                                       |))
                                       (Value.Integer IntegerKind.U32 63)))
-                                  (M.read (| M.get_constant "core::char::TAG_CONT" |))
+                                  (M.read (|
+                                    get_constant (| "core::char::TAG_CONT", Ty.path "u8" |)
+                                  |))
                               |)
                             |) in
                           let~ _ : Ty.tuple [] :=
@@ -2675,7 +2706,9 @@ Module char.
                                     (BinOp.bit_and
                                       (M.read (| code |))
                                       (Value.Integer IntegerKind.U32 63)))
-                                  (M.read (| M.get_constant "core::char::TAG_CONT" |))
+                                  (M.read (|
+                                    get_constant (| "core::char::TAG_CONT", Ty.path "u8" |)
+                                  |))
                               |)
                             |) in
                           M.alloc (| Value.Tuple [] |)));
@@ -2758,7 +2791,7 @@ Module char.
       end.
     
     Global Instance Instance_IsFunction_encode_utf8_raw :
-      M.IsFunction.Trait "core::char::methods::encode_utf8_raw" encode_utf8_raw.
+      M.IsFunction.C "core::char::methods::encode_utf8_raw" encode_utf8_raw.
     Admitted.
     Global Typeclasses Opaque encode_utf8_raw.
     
@@ -2971,7 +3004,7 @@ Module char.
       end.
     
     Global Instance Instance_IsFunction_encode_utf16_raw :
-      M.IsFunction.Trait "core::char::methods::encode_utf16_raw" encode_utf16_raw.
+      M.IsFunction.C "core::char::methods::encode_utf16_raw" encode_utf16_raw.
     Admitted.
     Global Typeclasses Opaque encode_utf16_raw.
   End methods.

@@ -300,8 +300,10 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant
-                                          "revm_interpreter::gas::constants::EOF_CREATE_GAS"
+                                        get_constant (|
+                                          "revm_interpreter::gas::constants::EOF_CREATE_GAS",
+                                          Ty.path "u64"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -915,8 +917,10 @@ Module instructions.
                                             ]
                                           |);
                                           M.read (|
-                                            M.get_constant
-                                              "revm_interpreter::gas::constants::KECCAK256WORD"
+                                            get_constant (|
+                                              "revm_interpreter::gas::constants::KECCAK256WORD",
+                                              Ty.path "u64"
+                                            |)
                                           |)
                                         ]
                                       |)
@@ -1498,7 +1502,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_eofcreate :
-      M.IsFunction.Trait "revm_interpreter::instructions::contract::eofcreate" eofcreate.
+      M.IsFunction.C "revm_interpreter::instructions::contract::eofcreate" eofcreate.
     Admitted.
     Global Typeclasses Opaque eofcreate.
     
@@ -1817,7 +1821,11 @@ Module instructions.
                                                             M.cast
                                                               (Ty.path "u64")
                                                               (M.read (|
-                                                                M.get_constant "core::num::MAX"
+                                                                get_associated_constant (|
+                                                                  Ty.path "usize",
+                                                                  "MAX",
+                                                                  Ty.path "usize"
+                                                                |)
                                                               |))
                                                           |))
                                                           (BinOp.ne (|
@@ -2258,8 +2266,13 @@ Module instructions.
                                                                                 M.cast
                                                                                   (Ty.path "u64")
                                                                                   (M.read (|
-                                                                                    M.get_constant
-                                                                                      "core::num::MAX"
+                                                                                    get_associated_constant (|
+                                                                                      Ty.path
+                                                                                        "usize",
+                                                                                      "MAX",
+                                                                                      Ty.path
+                                                                                        "usize"
+                                                                                    |)
                                                                                   |))
                                                                               |))
                                                                               (BinOp.ne (|
@@ -3259,9 +3272,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_return_contract :
-      M.IsFunction.Trait
-        "revm_interpreter::instructions::contract::return_contract"
-        return_contract.
+      M.IsFunction.C "revm_interpreter::instructions::contract::return_contract" return_contract.
     Admitted.
     Global Typeclasses Opaque return_contract.
     
@@ -3676,7 +3687,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_extcall_input :
-      M.IsFunction.Trait "revm_interpreter::instructions::contract::extcall_input" extcall_input.
+      M.IsFunction.C "revm_interpreter::instructions::contract::extcall_input" extcall_input.
     Admitted.
     Global Typeclasses Opaque extcall_input.
     
@@ -4054,8 +4065,10 @@ Module instructions.
                                         BinOp.lt (|
                                           M.read (| gas_limit |),
                                           M.read (|
-                                            M.get_constant
-                                              "revm_interpreter::gas::constants::MIN_CALLEE_GAS"
+                                            get_constant (|
+                                              "revm_interpreter::gas::constants::MIN_CALLEE_GAS",
+                                              Ty.path "u64"
+                                            |)
                                           |)
                                         |)
                                       |)) in
@@ -4334,9 +4347,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_extcall_gas_calc :
-      M.IsFunction.Trait
-        "revm_interpreter::instructions::contract::extcall_gas_calc"
-        extcall_gas_calc.
+      M.IsFunction.C "revm_interpreter::instructions::contract::extcall_gas_calc" extcall_gas_calc.
     Admitted.
     Global Typeclasses Opaque extcall_gas_calc.
     
@@ -4672,7 +4683,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_pop_extcall_target_address :
-      M.IsFunction.Trait
+      M.IsFunction.C
         "revm_interpreter::instructions::contract::pop_extcall_target_address"
         pop_extcall_target_address.
     Admitted.
@@ -5273,7 +5284,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_extcall :
-      M.IsFunction.Trait "revm_interpreter::instructions::contract::extcall" extcall.
+      M.IsFunction.C "revm_interpreter::instructions::contract::extcall" extcall.
     Admitted.
     Global Typeclasses Opaque extcall.
     
@@ -5748,9 +5759,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_extdelegatecall :
-      M.IsFunction.Trait
-        "revm_interpreter::instructions::contract::extdelegatecall"
-        extdelegatecall.
+      M.IsFunction.C "revm_interpreter::instructions::contract::extdelegatecall" extdelegatecall.
     Admitted.
     Global Typeclasses Opaque extdelegatecall.
     
@@ -6083,7 +6092,31 @@ Module instructions.
                                                                     "revm_interpreter::interpreter_action::call_inputs::CallValue::Transfer"
                                                                     [
                                                                       M.read (|
-                                                                        M.get_constant "ruint::ZERO"
+                                                                        get_associated_constant (|
+                                                                          Ty.apply
+                                                                            (Ty.path "ruint::Uint")
+                                                                            [
+                                                                              Value.Integer
+                                                                                IntegerKind.Usize
+                                                                                256;
+                                                                              Value.Integer
+                                                                                IntegerKind.Usize
+                                                                                4
+                                                                            ]
+                                                                            [],
+                                                                          "ZERO",
+                                                                          Ty.apply
+                                                                            (Ty.path "ruint::Uint")
+                                                                            [
+                                                                              Value.Integer
+                                                                                IntegerKind.Usize
+                                                                                256;
+                                                                              Value.Integer
+                                                                                IntegerKind.Usize
+                                                                                4
+                                                                            ]
+                                                                            []
+                                                                        |)
                                                                       |)
                                                                     ]);
                                                                 ("scheme",
@@ -6129,7 +6162,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_extstaticcall :
-      M.IsFunction.Trait "revm_interpreter::instructions::contract::extstaticcall" extstaticcall.
+      M.IsFunction.C "revm_interpreter::instructions::contract::extstaticcall" extstaticcall.
     Admitted.
     Global Typeclasses Opaque extstaticcall.
     
@@ -6310,8 +6343,10 @@ Module instructions.
                         ltac:(M.monadic
                           (let γ :=
                             M.use
-                              (M.get_constant
-                                "revm_interpreter::instructions::contract::create::IS_CREATE2") in
+                              (get_constant (|
+                                "revm_interpreter::instructions::contract::create::IS_CREATE2",
+                                Ty.path "bool"
+                              |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ : Ty.tuple [] :=
@@ -6539,7 +6574,11 @@ Module instructions.
                                                             M.cast
                                                               (Ty.path "u64")
                                                               (M.read (|
-                                                                M.get_constant "core::num::MAX"
+                                                                get_associated_constant (|
+                                                                  Ty.path "usize",
+                                                                  "MAX",
+                                                                  Ty.path "usize"
+                                                                |)
                                                               |))
                                                           |))
                                                           (BinOp.ne (|
@@ -7052,8 +7091,11 @@ Module instructions.
                                                                       M.cast
                                                                         (Ty.path "u64")
                                                                         (M.read (|
-                                                                          M.get_constant
-                                                                            "core::num::MAX"
+                                                                          get_associated_constant (|
+                                                                            Ty.path "usize",
+                                                                            "MAX",
+                                                                            Ty.path "usize"
+                                                                          |)
                                                                         |))
                                                                     |))
                                                                     (BinOp.ne (|
@@ -7476,8 +7518,10 @@ Module instructions.
                                   ltac:(M.monadic
                                     (let γ :=
                                       M.use
-                                        (M.get_constant
-                                          "revm_interpreter::instructions::contract::create::IS_CREATE2") in
+                                        (get_constant (|
+                                          "revm_interpreter::instructions::contract::create::IS_CREATE2",
+                                          Ty.path "bool"
+                                        |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
                                         M.read (| γ |),
@@ -7811,8 +7855,10 @@ Module instructions.
                                                             |)
                                                           |);
                                                           M.read (|
-                                                            M.get_constant
-                                                              "revm_interpreter::gas::constants::CREATE"
+                                                            get_constant (|
+                                                              "revm_interpreter::gas::constants::CREATE",
+                                                              Ty.path "u64"
+                                                            |)
                                                           |)
                                                         ]
                                                       |)
@@ -8218,7 +8264,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_create :
-      M.IsFunction.Trait "revm_interpreter::instructions::contract::create" create.
+      M.IsFunction.C "revm_interpreter::instructions::contract::create" create.
     Admitted.
     Global Typeclasses Opaque create.
     
@@ -8424,7 +8470,9 @@ Module instructions.
                                   |),
                                   [ M.read (| local_gas_limit |) ]
                                 |);
-                                M.read (| M.get_constant "core::num::MAX" |)
+                                M.read (|
+                                  get_associated_constant (| Ty.path "u64", "MAX", Ty.path "u64" |)
+                                |)
                               ]
                             |)
                           |) in
@@ -8804,8 +8852,10 @@ Module instructions.
                                                                   [
                                                                     M.read (| gas_limit |);
                                                                     M.read (|
-                                                                      M.get_constant
-                                                                        "revm_interpreter::gas::constants::CALL_STIPEND"
+                                                                      get_constant (|
+                                                                        "revm_interpreter::gas::constants::CALL_STIPEND",
+                                                                        Ty.path "u64"
+                                                                      |)
                                                                     |)
                                                                   ]
                                                                 |)
@@ -8990,7 +9040,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_call :
-      M.IsFunction.Trait "revm_interpreter::instructions::contract::call" call.
+      M.IsFunction.C "revm_interpreter::instructions::contract::call" call.
     Admitted.
     Global Typeclasses Opaque call.
     
@@ -9209,7 +9259,9 @@ Module instructions.
                                   |),
                                   [ M.read (| local_gas_limit |) ]
                                 |);
-                                M.read (| M.get_constant "core::num::MAX" |)
+                                M.read (|
+                                  get_associated_constant (| Ty.path "u64", "MAX", Ty.path "u64" |)
+                                |)
                               ]
                             |)
                           |) in
@@ -9537,8 +9589,10 @@ Module instructions.
                                                                   [
                                                                     M.read (| gas_limit |);
                                                                     M.read (|
-                                                                      M.get_constant
-                                                                        "revm_interpreter::gas::constants::CALL_STIPEND"
+                                                                      get_constant (|
+                                                                        "revm_interpreter::gas::constants::CALL_STIPEND",
+                                                                        Ty.path "u64"
+                                                                      |)
                                                                     |)
                                                                   ]
                                                                 |)
@@ -9754,7 +9808,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_call_code :
-      M.IsFunction.Trait "revm_interpreter::instructions::contract::call_code" call_code.
+      M.IsFunction.C "revm_interpreter::instructions::contract::call_code" call_code.
     Admitted.
     Global Typeclasses Opaque call_code.
     
@@ -10064,7 +10118,9 @@ Module instructions.
                                   |),
                                   [ M.read (| local_gas_limit |) ]
                                 |);
-                                M.read (| M.get_constant "core::num::MAX" |)
+                                M.read (|
+                                  get_associated_constant (| Ty.path "u64", "MAX", Ty.path "u64" |)
+                                |)
                               ]
                             |)
                           |) in
@@ -10564,7 +10620,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_delegate_call :
-      M.IsFunction.Trait "revm_interpreter::instructions::contract::delegate_call" delegate_call.
+      M.IsFunction.C "revm_interpreter::instructions::contract::delegate_call" delegate_call.
     Admitted.
     Global Typeclasses Opaque delegate_call.
     
@@ -10873,7 +10929,9 @@ Module instructions.
                                   |),
                                   [ M.read (| local_gas_limit |) ]
                                 |);
-                                M.read (| M.get_constant "core::num::MAX" |)
+                                M.read (|
+                                  get_associated_constant (| Ty.path "u64", "MAX", Ty.path "u64" |)
+                                |)
                               ]
                             |)
                           |) in
@@ -11232,8 +11290,33 @@ Module instructions.
                                                                             "revm_interpreter::interpreter_action::call_inputs::CallValue::Transfer"
                                                                             [
                                                                               M.read (|
-                                                                                M.get_constant
-                                                                                  "ruint::ZERO"
+                                                                                get_associated_constant (|
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "ruint::Uint")
+                                                                                    [
+                                                                                      Value.Integer
+                                                                                        IntegerKind.Usize
+                                                                                        256;
+                                                                                      Value.Integer
+                                                                                        IntegerKind.Usize
+                                                                                        4
+                                                                                    ]
+                                                                                    [],
+                                                                                  "ZERO",
+                                                                                  Ty.apply
+                                                                                    (Ty.path
+                                                                                      "ruint::Uint")
+                                                                                    [
+                                                                                      Value.Integer
+                                                                                        IntegerKind.Usize
+                                                                                        256;
+                                                                                      Value.Integer
+                                                                                        IntegerKind.Usize
+                                                                                        4
+                                                                                    ]
+                                                                                    []
+                                                                                |)
                                                                               |)
                                                                             ]);
                                                                         ("scheme",
@@ -11274,7 +11357,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_static_call :
-      M.IsFunction.Trait "revm_interpreter::instructions::contract::static_call" static_call.
+      M.IsFunction.C "revm_interpreter::instructions::contract::static_call" static_call.
     Admitted.
     Global Typeclasses Opaque static_call.
   End contract.

@@ -7,6 +7,7 @@ Require Import core.links.cmp.
 Require Import core.num.links.mod.
 Require Import core.slice.links.mod.
 Require Import revm.revm_interpreter.gas.links.calc.
+Require Import revm.revm_interpreter.gas.links.constants.
 Require Import revm.revm_interpreter.instructions.system.
 Require Import revm.revm_interpreter.interpreter.links.shared_memory.
 Require Import revm.revm_interpreter.links.gas.
@@ -20,23 +21,6 @@ Import Impl_Gas.
 Import from.Impl_Uint.
 Import lib.Impl_Uint.
 Import Impl_usize.
-
-Ltac destruct_run_InterpreterTypes :=
-  cbn;
-  eapply Run.Rewrite; [
-    progress repeat erewrite IsTraitAssociatedType_eq
-      by match goal with
-      | H : InterpreterTypes.Run _ _ |- _ => apply H
-      end;
-    reflexivity
-  |];
-  progress repeat match goal with
-  | H : InterpreterTypes.Run _ _ |- _ => destruct H
-  | H : StackTrait.Run _ |- _ => destruct H
-  | H : LoopControl.Run _ |- _ => destruct H
-  | H : InputsTrait.Run _ |- _ => destruct H
-  | H : MemoryTrait.Run _ |- _ => destruct H
-  end.
 
 (*
 pub fn keccak256<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -55,7 +39,9 @@ Instance run_keccak256
     unit.
 Proof.
   constructor.
-  destruct_run_InterpreterTypes.
+  InterpreterTypes.destruct_run.
+  destruct run_StackTrait_for_Stack.
+  destruct run_LoopControl_for_Control.
   run_symbolic.
 Admitted.
 
@@ -76,7 +62,7 @@ Instance run_address
     unit.
 Proof.
   constructor.
-  destruct_run_InterpreterTypes.
+  InterpreterTypes.destruct_run.
   run_symbolic.
 Admitted.
 
@@ -177,7 +163,10 @@ Instance run_calldatasize
     unit.
 Proof.
   constructor.
-  destruct_run_InterpreterTypes.
+  InterpreterTypes.destruct_run.
+  destruct run_StackTrait_for_Stack.
+  destruct run_LoopControl_for_Control.
+  destruct run_InputsTrait_for_Input.
   run_symbolic.
 Defined.
 
@@ -198,7 +187,10 @@ Instance run_callvalue
     unit.
 Proof.
   constructor.
-  destruct_run_InterpreterTypes.
+  InterpreterTypes.destruct_run.
+  destruct run_StackTrait_for_Stack.
+  destruct run_LoopControl_for_Control.
+  destruct run_InputsTrait_for_Input.
   run_symbolic.
 Defined.
 
@@ -222,6 +214,7 @@ Instance run_memory_resize
 Proof.
   constructor.
   destruct run_InterpreterTypes_for_WIRE.
+  destruct run_LoopControl_for_Control.
   run_symbolic.
 Admitted.
 
@@ -242,7 +235,7 @@ Instance run_calldatacopy
     unit.
 Proof.
   constructor.
-  destruct_run_InterpreterTypes.
+  InterpreterTypes.destruct_run.
   run_symbolic.
 Admitted.
 
@@ -303,6 +296,11 @@ Instance run_returndataload
     unit.
 Proof.
   constructor.
+  InterpreterTypes.destruct_run.
+  destruct run_StackTrait_for_Stack.
+  destruct run_LoopControl_for_Control.
+  destruct run_RuntimeFlag_for_RuntimeFlag.
+  destruct run_ReturnData_for_ReturnData.
   run_symbolic.
 Admitted.
 
@@ -323,5 +321,8 @@ Instance run_gas
     unit.
 Proof.
   constructor.
+  InterpreterTypes.destruct_run.
+  destruct run_StackTrait_for_Stack.
+  destruct run_LoopControl_for_Control.
   run_symbolic.
-Admitted.
+Defined.

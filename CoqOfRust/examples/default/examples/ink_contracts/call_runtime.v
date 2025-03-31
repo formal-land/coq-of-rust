@@ -431,7 +431,7 @@ Module Impl_call_runtime_Env.
     end.
   
   Global Instance AssociatedFunction_call_runtime :
-    M.IsAssociatedFunction.Trait Self "call_runtime" call_runtime.
+    M.IsAssociatedFunction.C Self "call_runtime" call_runtime.
   Admitted.
   Global Typeclasses Opaque call_runtime.
 End Impl_call_runtime_Env.
@@ -458,8 +458,7 @@ Module Impl_call_runtime_RuntimeCaller.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_init_env :
-    M.IsAssociatedFunction.Trait Self "init_env" init_env.
+  Global Instance AssociatedFunction_init_env : M.IsAssociatedFunction.C Self "init_env" init_env.
   Admitted.
   Global Typeclasses Opaque init_env.
   
@@ -481,7 +480,7 @@ Module Impl_call_runtime_RuntimeCaller.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_env : M.IsAssociatedFunction.Trait Self "env" env.
+  Global Instance AssociatedFunction_env : M.IsAssociatedFunction.C Self "env" env.
   Admitted.
   Global Typeclasses Opaque env.
   
@@ -510,7 +509,7 @@ Module Impl_call_runtime_RuntimeCaller.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
   Admitted.
   Global Typeclasses Opaque new.
   
@@ -640,7 +639,7 @@ Module Impl_call_runtime_RuntimeCaller.
     end.
   
   Global Instance AssociatedFunction_transfer_through_runtime :
-    M.IsAssociatedFunction.Trait Self "transfer_through_runtime" transfer_through_runtime.
+    M.IsAssociatedFunction.C Self "transfer_through_runtime" transfer_through_runtime.
   Admitted.
   Global Typeclasses Opaque transfer_through_runtime.
   
@@ -722,7 +721,7 @@ Module Impl_call_runtime_RuntimeCaller.
     end.
   
   Global Instance AssociatedFunction_call_nonexistent_extrinsic :
-    M.IsAssociatedFunction.Trait Self "call_nonexistent_extrinsic" call_nonexistent_extrinsic.
+    M.IsAssociatedFunction.C Self "call_nonexistent_extrinsic" call_nonexistent_extrinsic.
   Admitted.
   Global Typeclasses Opaque call_nonexistent_extrinsic.
 End Impl_call_runtime_RuntimeCaller.

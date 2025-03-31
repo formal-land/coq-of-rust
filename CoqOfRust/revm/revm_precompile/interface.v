@@ -402,7 +402,7 @@ Module interface.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
   End Impl_revm_precompile_interface_PrecompileOutput.
@@ -2120,7 +2120,7 @@ Module interface.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_other : M.IsAssociatedFunction.Trait Self "other" other.
+    Global Instance AssociatedFunction_other : M.IsAssociatedFunction.C Self "other" other.
     Admitted.
     Global Typeclasses Opaque other.
     
@@ -2155,7 +2155,7 @@ Module interface.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_is_oog : M.IsAssociatedFunction.Trait Self "is_oog" is_oog.
+    Global Instance AssociatedFunction_is_oog : M.IsAssociatedFunction.C Self "is_oog" is_oog.
     Admitted.
     Global Typeclasses Opaque is_oog.
   End Impl_revm_precompile_interface_PrecompileError.

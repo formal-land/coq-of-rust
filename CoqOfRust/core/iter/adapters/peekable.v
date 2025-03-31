@@ -238,7 +238,7 @@ Module iter.
         
         Global Instance AssociatedFunction_new :
           forall (I : Ty.t),
-          M.IsAssociatedFunction.Trait (Self I) "new" (new I).
+          M.IsAssociatedFunction.C (Self I) "new" (new I).
         Admitted.
         Global Typeclasses Opaque new.
         (*
@@ -434,7 +434,7 @@ Module iter.
         
         Global Instance AssociatedFunction_peek :
           forall (I : Ty.t),
-          M.IsAssociatedFunction.Trait (Self I) "peek" (peek I).
+          M.IsAssociatedFunction.C (Self I) "peek" (peek I).
         Admitted.
         Global Typeclasses Opaque peek.
         
@@ -631,7 +631,7 @@ Module iter.
         
         Global Instance AssociatedFunction_peek_mut :
           forall (I : Ty.t),
-          M.IsAssociatedFunction.Trait (Self I) "peek_mut" (peek_mut I).
+          M.IsAssociatedFunction.C (Self I) "peek_mut" (peek_mut I).
         Admitted.
         Global Typeclasses Opaque peek_mut.
         
@@ -836,7 +836,7 @@ Module iter.
         
         Global Instance AssociatedFunction_next_if :
           forall (I : Ty.t),
-          M.IsAssociatedFunction.Trait (Self I) "next_if" (next_if I).
+          M.IsAssociatedFunction.C (Self I) "next_if" (next_if I).
         Admitted.
         Global Typeclasses Opaque next_if.
         
@@ -962,7 +962,7 @@ Module iter.
         
         Global Instance AssociatedFunction_next_if_eq :
           forall (I : Ty.t),
-          M.IsAssociatedFunction.Trait (Self I) "next_if_eq" (next_if_eq I).
+          M.IsAssociatedFunction.C (Self I) "next_if_eq" (next_if_eq I).
         Admitted.
         Global Typeclasses Opaque next_if_eq.
       End Impl_core_iter_adapters_peekable_Peekable_I.

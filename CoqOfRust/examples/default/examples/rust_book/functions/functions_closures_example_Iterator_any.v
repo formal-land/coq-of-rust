@@ -1008,6 +1008,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "functions_closures_example_Iterator_any::main" main.
+  M.IsFunction.C "functions_closures_example_Iterator_any::main" main.
 Admitted.
 Global Typeclasses Opaque main.

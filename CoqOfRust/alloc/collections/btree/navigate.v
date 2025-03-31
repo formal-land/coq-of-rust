@@ -284,7 +284,7 @@ Module collections.
         
         Global Instance AssociatedFunction_none :
           forall (BorrowType K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self BorrowType K V) "none" (none BorrowType K V).
+          M.IsAssociatedFunction.C (Self BorrowType K V) "none" (none BorrowType K V).
         Admitted.
         Global Typeclasses Opaque none.
         
@@ -379,7 +379,7 @@ Module collections.
         
         Global Instance AssociatedFunction_is_empty :
           forall (BorrowType K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self BorrowType K V) "is_empty" (is_empty BorrowType K V).
+          M.IsAssociatedFunction.C (Self BorrowType K V) "is_empty" (is_empty BorrowType K V).
         Admitted.
         Global Typeclasses Opaque is_empty.
         
@@ -989,7 +989,7 @@ Module collections.
         
         Global Instance AssociatedFunction_reborrow :
           forall (BorrowType K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self BorrowType K V) "reborrow" (reborrow BorrowType K V).
+          M.IsAssociatedFunction.C (Self BorrowType K V) "reborrow" (reborrow BorrowType K V).
         Admitted.
         Global Typeclasses Opaque reborrow.
         (*
@@ -1643,7 +1643,7 @@ Module collections.
         
         Global Instance AssociatedFunction_perform_next_checked :
           forall (BorrowType K V : Ty.t),
-          M.IsAssociatedFunction.Trait
+          M.IsAssociatedFunction.C
             (Self BorrowType K V)
             "perform_next_checked"
             (perform_next_checked BorrowType K V).
@@ -2301,7 +2301,7 @@ Module collections.
         
         Global Instance AssociatedFunction_perform_next_back_checked :
           forall (BorrowType K V : Ty.t),
-          M.IsAssociatedFunction.Trait
+          M.IsAssociatedFunction.C
             (Self BorrowType K V)
             "perform_next_back_checked"
             (perform_next_back_checked BorrowType K V).
@@ -2468,7 +2468,7 @@ Module collections.
         
         Global Instance AssociatedFunction_next_checked :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "next_checked" (next_checked K V).
+          M.IsAssociatedFunction.C (Self K V) "next_checked" (next_checked K V).
         Admitted.
         Global Typeclasses Opaque next_checked.
         
@@ -2624,7 +2624,7 @@ Module collections.
         
         Global Instance AssociatedFunction_next_back_checked :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "next_back_checked" (next_back_checked K V).
+          M.IsAssociatedFunction.C (Self K V) "next_back_checked" (next_back_checked K V).
         Admitted.
         Global Typeclasses Opaque next_back_checked.
       End Impl_alloc_collections_btree_navigate_LeafRange_alloc_collections_btree_node_marker_Immut_K_V.
@@ -2840,7 +2840,7 @@ Module collections.
         
         Global Instance AssociatedFunction_next_checked :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "next_checked" (next_checked K V).
+          M.IsAssociatedFunction.C (Self K V) "next_checked" (next_checked K V).
         Admitted.
         Global Typeclasses Opaque next_checked.
         
@@ -3048,7 +3048,7 @@ Module collections.
         
         Global Instance AssociatedFunction_next_back_checked :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "next_back_checked" (next_back_checked K V).
+          M.IsAssociatedFunction.C (Self K V) "next_back_checked" (next_back_checked K V).
         Admitted.
         Global Typeclasses Opaque next_back_checked.
       End Impl_alloc_collections_btree_navigate_LeafRange_alloc_collections_btree_node_marker_ValMut_K_V.
@@ -3325,7 +3325,7 @@ Module collections.
         
         Global Instance AssociatedFunction_reborrow :
           forall (BorrowType K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self BorrowType K V) "reborrow" (reborrow BorrowType K V).
+          M.IsAssociatedFunction.C (Self BorrowType K V) "reborrow" (reborrow BorrowType K V).
         Admitted.
         Global Typeclasses Opaque reborrow.
       End Impl_alloc_collections_btree_navigate_LazyLeafHandle_BorrowType_K_V.
@@ -3544,7 +3544,7 @@ Module collections.
         
         Global Instance AssociatedFunction_none :
           forall (BorrowType K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self BorrowType K V) "none" (none BorrowType K V).
+          M.IsAssociatedFunction.C (Self BorrowType K V) "none" (none BorrowType K V).
         Admitted.
         Global Typeclasses Opaque none.
         
@@ -3914,7 +3914,7 @@ Module collections.
         
         Global Instance AssociatedFunction_reborrow :
           forall (BorrowType K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self BorrowType K V) "reborrow" (reborrow BorrowType K V).
+          M.IsAssociatedFunction.C (Self BorrowType K V) "reborrow" (reborrow BorrowType K V).
         Admitted.
         Global Typeclasses Opaque reborrow.
         (*
@@ -4165,10 +4165,7 @@ Module collections.
         
         Global Instance AssociatedFunction_init_front :
           forall (BorrowType K V : Ty.t),
-          M.IsAssociatedFunction.Trait
-            (Self BorrowType K V)
-            "init_front"
-            (init_front BorrowType K V).
+          M.IsAssociatedFunction.C (Self BorrowType K V) "init_front" (init_front BorrowType K V).
         Admitted.
         Global Typeclasses Opaque init_front.
         
@@ -4420,7 +4417,7 @@ Module collections.
         
         Global Instance AssociatedFunction_init_back :
           forall (BorrowType K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self BorrowType K V) "init_back" (init_back BorrowType K V).
+          M.IsAssociatedFunction.C (Self BorrowType K V) "init_back" (init_back BorrowType K V).
         Admitted.
         Global Typeclasses Opaque init_back.
       End Impl_alloc_collections_btree_navigate_LazyLeafRange_BorrowType_K_V.
@@ -4575,7 +4572,7 @@ Module collections.
         
         Global Instance AssociatedFunction_next_unchecked :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "next_unchecked" (next_unchecked K V).
+          M.IsAssociatedFunction.C (Self K V) "next_unchecked" (next_unchecked K V).
         Admitted.
         Global Typeclasses Opaque next_unchecked.
         
@@ -4722,7 +4719,7 @@ Module collections.
         
         Global Instance AssociatedFunction_next_back_unchecked :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "next_back_unchecked" (next_back_unchecked K V).
+          M.IsAssociatedFunction.C (Self K V) "next_back_unchecked" (next_back_unchecked K V).
         Admitted.
         Global Typeclasses Opaque next_back_unchecked.
       End Impl_alloc_collections_btree_navigate_LazyLeafRange_alloc_collections_btree_node_marker_Immut_K_V.
@@ -4877,7 +4874,7 @@ Module collections.
         
         Global Instance AssociatedFunction_next_unchecked :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "next_unchecked" (next_unchecked K V).
+          M.IsAssociatedFunction.C (Self K V) "next_unchecked" (next_unchecked K V).
         Admitted.
         Global Typeclasses Opaque next_unchecked.
         
@@ -5024,7 +5021,7 @@ Module collections.
         
         Global Instance AssociatedFunction_next_back_unchecked :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "next_back_unchecked" (next_back_unchecked K V).
+          M.IsAssociatedFunction.C (Self K V) "next_back_unchecked" (next_back_unchecked K V).
         Admitted.
         Global Typeclasses Opaque next_back_unchecked.
       End Impl_alloc_collections_btree_navigate_LazyLeafRange_alloc_collections_btree_node_marker_ValMut_K_V.
@@ -5335,7 +5332,7 @@ Module collections.
         
         Global Instance AssociatedFunction_take_front :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "take_front" (take_front K V).
+          M.IsAssociatedFunction.C (Self K V) "take_front" (take_front K V).
         Admitted.
         Global Typeclasses Opaque take_front.
         
@@ -5602,7 +5599,7 @@ Module collections.
         
         Global Instance AssociatedFunction_deallocating_next_unchecked :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait
+          M.IsAssociatedFunction.C
             (Self K V)
             "deallocating_next_unchecked"
             (deallocating_next_unchecked K V).
@@ -5872,7 +5869,7 @@ Module collections.
         
         Global Instance AssociatedFunction_deallocating_next_back_unchecked :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait
+          M.IsAssociatedFunction.C
             (Self K V)
             "deallocating_next_back_unchecked"
             (deallocating_next_back_unchecked K V).
@@ -5984,7 +5981,7 @@ Module collections.
         
         Global Instance AssociatedFunction_deallocating_end :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "deallocating_end" (deallocating_end K V).
+          M.IsAssociatedFunction.C (Self K V) "deallocating_end" (deallocating_end K V).
         Admitted.
         Global Typeclasses Opaque deallocating_end.
       End Impl_alloc_collections_btree_navigate_LazyLeafRange_alloc_collections_btree_node_marker_Dying_K_V.
@@ -6863,7 +6860,7 @@ Module collections.
         
         Global Instance AssociatedFunction_find_leaf_edges_spanning_range :
           forall (BorrowType K V : Ty.t),
-          M.IsAssociatedFunction.Trait
+          M.IsAssociatedFunction.C
             (Self BorrowType K V)
             "find_leaf_edges_spanning_range"
             (find_leaf_edges_spanning_range BorrowType K V).
@@ -7115,7 +7112,7 @@ Module collections.
         
         Global Instance AssociatedFunction_first_leaf_edge :
           forall (BorrowType K V : Ty.t),
-          M.IsAssociatedFunction.Trait
+          M.IsAssociatedFunction.C
             (Self BorrowType K V)
             "first_leaf_edge"
             (first_leaf_edge BorrowType K V).
@@ -7368,7 +7365,7 @@ Module collections.
         
         Global Instance AssociatedFunction_last_leaf_edge :
           forall (BorrowType K V : Ty.t),
-          M.IsAssociatedFunction.Trait
+          M.IsAssociatedFunction.C
             (Self BorrowType K V)
             "last_leaf_edge"
             (last_leaf_edge BorrowType K V).
@@ -7642,10 +7639,7 @@ Module collections.
         
         Global Instance AssociatedFunction_lower_bound :
           forall (BorrowType K V : Ty.t),
-          M.IsAssociatedFunction.Trait
-            (Self BorrowType K V)
-            "lower_bound"
-            (lower_bound BorrowType K V).
+          M.IsAssociatedFunction.C (Self BorrowType K V) "lower_bound" (lower_bound BorrowType K V).
         Admitted.
         Global Typeclasses Opaque lower_bound.
         
@@ -7917,10 +7911,7 @@ Module collections.
         
         Global Instance AssociatedFunction_upper_bound :
           forall (BorrowType K V : Ty.t),
-          M.IsAssociatedFunction.Trait
-            (Self BorrowType K V)
-            "upper_bound"
-            (upper_bound BorrowType K V).
+          M.IsAssociatedFunction.C (Self BorrowType K V) "upper_bound" (upper_bound BorrowType K V).
         Admitted.
         Global Typeclasses Opaque upper_bound.
       End Impl_alloc_collections_btree_node_NodeRef_BorrowType_K_V_alloc_collections_btree_node_marker_LeafOrInternal.
@@ -7966,7 +7957,7 @@ Module collections.
         end.
       
       Global Instance Instance_IsFunction_full_range :
-        M.IsFunction.Trait "alloc::collections::btree::navigate::full_range" full_range.
+        M.IsFunction.C "alloc::collections::btree::navigate::full_range" full_range.
       Admitted.
       Global Typeclasses Opaque full_range.
       
@@ -8031,7 +8022,7 @@ Module collections.
         
         Global Instance AssociatedFunction_range_search :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "range_search" (range_search K V).
+          M.IsAssociatedFunction.C (Self K V) "range_search" (range_search K V).
         Admitted.
         Global Typeclasses Opaque range_search.
         
@@ -8068,7 +8059,7 @@ Module collections.
         
         Global Instance AssociatedFunction_full_range :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "full_range" (full_range K V).
+          M.IsAssociatedFunction.C (Self K V) "full_range" (full_range K V).
         Admitted.
         Global Typeclasses Opaque full_range.
         (*
@@ -8799,7 +8790,7 @@ Module collections.
         
         Global Instance AssociatedFunction_visit_nodes_in_order :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "visit_nodes_in_order" (visit_nodes_in_order K V).
+          M.IsAssociatedFunction.C (Self K V) "visit_nodes_in_order" (visit_nodes_in_order K V).
         Admitted.
         Global Typeclasses Opaque visit_nodes_in_order.
         
@@ -9000,7 +8991,7 @@ Module collections.
         
         Global Instance AssociatedFunction_calc_length :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "calc_length" (calc_length K V).
+          M.IsAssociatedFunction.C (Self K V) "calc_length" (calc_length K V).
         Admitted.
         Global Typeclasses Opaque calc_length.
       End Impl_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Immut_K_V_alloc_collections_btree_node_marker_LeafOrInternal.
@@ -9065,7 +9056,7 @@ Module collections.
         
         Global Instance AssociatedFunction_range_search :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "range_search" (range_search K V).
+          M.IsAssociatedFunction.C (Self K V) "range_search" (range_search K V).
         Admitted.
         Global Typeclasses Opaque range_search.
         
@@ -9153,7 +9144,7 @@ Module collections.
         
         Global Instance AssociatedFunction_full_range :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "full_range" (full_range K V).
+          M.IsAssociatedFunction.C (Self K V) "full_range" (full_range K V).
         Admitted.
         Global Typeclasses Opaque full_range.
       End Impl_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_ValMut_K_V_alloc_collections_btree_node_marker_LeafOrInternal.
@@ -9254,7 +9245,7 @@ Module collections.
         
         Global Instance AssociatedFunction_full_range :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "full_range" (full_range K V).
+          M.IsAssociatedFunction.C (Self K V) "full_range" (full_range K V).
         Admitted.
         Global Typeclasses Opaque full_range.
       End Impl_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Dying_K_V_alloc_collections_btree_node_marker_LeafOrInternal.
@@ -9700,7 +9691,7 @@ Module collections.
         
         Global Instance AssociatedFunction_next_kv :
           forall (BorrowType K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self BorrowType K V) "next_kv" (next_kv BorrowType K V).
+          M.IsAssociatedFunction.C (Self BorrowType K V) "next_kv" (next_kv BorrowType K V).
         Admitted.
         Global Typeclasses Opaque next_kv.
         
@@ -10132,7 +10123,7 @@ Module collections.
         
         Global Instance AssociatedFunction_next_back_kv :
           forall (BorrowType K V : Ty.t),
-          M.IsAssociatedFunction.Trait
+          M.IsAssociatedFunction.C
             (Self BorrowType K V)
             "next_back_kv"
             (next_back_kv BorrowType K V).
@@ -10495,7 +10486,7 @@ Module collections.
         
         Global Instance AssociatedFunction_next_kv :
           forall (BorrowType K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self BorrowType K V) "next_kv" (next_kv BorrowType K V).
+          M.IsAssociatedFunction.C (Self BorrowType K V) "next_kv" (next_kv BorrowType K V).
         Admitted.
         Global Typeclasses Opaque next_kv.
       End Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_BorrowType_K_V_alloc_collections_btree_node_marker_Internal_alloc_collections_btree_node_marker_Edge.
@@ -11072,7 +11063,7 @@ Module collections.
         
         Global Instance AssociatedFunction_deallocating_next :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "deallocating_next" (deallocating_next K V).
+          M.IsAssociatedFunction.C (Self K V) "deallocating_next" (deallocating_next K V).
         Admitted.
         Global Typeclasses Opaque deallocating_next.
         
@@ -11630,10 +11621,7 @@ Module collections.
         
         Global Instance AssociatedFunction_deallocating_next_back :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait
-            (Self K V)
-            "deallocating_next_back"
-            (deallocating_next_back K V).
+          M.IsAssociatedFunction.C (Self K V) "deallocating_next_back" (deallocating_next_back K V).
         Admitted.
         Global Typeclasses Opaque deallocating_next_back.
         
@@ -11893,7 +11881,7 @@ Module collections.
         
         Global Instance AssociatedFunction_deallocating_end :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "deallocating_end" (deallocating_end K V).
+          M.IsAssociatedFunction.C (Self K V) "deallocating_end" (deallocating_end K V).
         Admitted.
         Global Typeclasses Opaque deallocating_end.
         (*
@@ -12280,7 +12268,7 @@ Module collections.
         
         Global Instance AssociatedFunction_deallocating_next_unchecked :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait
+          M.IsAssociatedFunction.C
             (Self K V)
             "deallocating_next_unchecked"
             (deallocating_next_unchecked K V).
@@ -12671,7 +12659,7 @@ Module collections.
         
         Global Instance AssociatedFunction_deallocating_next_back_unchecked :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait
+          M.IsAssociatedFunction.C
             (Self K V)
             "deallocating_next_back_unchecked"
             (deallocating_next_back_unchecked K V).
@@ -13151,7 +13139,7 @@ Module collections.
         
         Global Instance AssociatedFunction_next_unchecked :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "next_unchecked" (next_unchecked K V).
+          M.IsAssociatedFunction.C (Self K V) "next_unchecked" (next_unchecked K V).
         Admitted.
         Global Typeclasses Opaque next_unchecked.
         
@@ -13609,7 +13597,7 @@ Module collections.
         
         Global Instance AssociatedFunction_next_back_unchecked :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "next_back_unchecked" (next_back_unchecked K V).
+          M.IsAssociatedFunction.C (Self K V) "next_back_unchecked" (next_back_unchecked K V).
         Admitted.
         Global Typeclasses Opaque next_back_unchecked.
       End Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Immut_K_V_alloc_collections_btree_node_marker_Leaf_alloc_collections_btree_node_marker_Edge.
@@ -14225,7 +14213,7 @@ Module collections.
         
         Global Instance AssociatedFunction_next_unchecked :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "next_unchecked" (next_unchecked K V).
+          M.IsAssociatedFunction.C (Self K V) "next_unchecked" (next_unchecked K V).
         Admitted.
         Global Typeclasses Opaque next_unchecked.
         
@@ -14822,7 +14810,7 @@ Module collections.
         
         Global Instance AssociatedFunction_next_back_unchecked :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "next_back_unchecked" (next_back_unchecked K V).
+          M.IsAssociatedFunction.C (Self K V) "next_back_unchecked" (next_back_unchecked K V).
         Admitted.
         Global Typeclasses Opaque next_back_unchecked.
       End Impl_alloc_collections_btree_node_Handle_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_ValMut_K_V_alloc_collections_btree_node_marker_Leaf_alloc_collections_btree_node_marker_Edge.
@@ -15189,7 +15177,7 @@ Module collections.
         
         Global Instance AssociatedFunction_next_leaf_edge :
           forall (BorrowType K V : Ty.t),
-          M.IsAssociatedFunction.Trait
+          M.IsAssociatedFunction.C
             (Self BorrowType K V)
             "next_leaf_edge"
             (next_leaf_edge BorrowType K V).
@@ -15490,7 +15478,7 @@ Module collections.
         
         Global Instance AssociatedFunction_next_back_leaf_edge :
           forall (BorrowType K V : Ty.t),
-          M.IsAssociatedFunction.Trait
+          M.IsAssociatedFunction.C
             (Self BorrowType K V)
             "next_back_leaf_edge"
             (next_back_leaf_edge BorrowType K V).

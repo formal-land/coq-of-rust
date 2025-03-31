@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Parameter matching : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_matching :
-  M.IsFunction.Trait "constructor_as_function::matching" matching.
+  M.IsFunction.C "constructor_as_function::matching" matching.
 Admitted.
 
 (* StructTuple
@@ -31,5 +31,5 @@ End Impl_core_fmt_Debug_for_constructor_as_function_Constructor.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "constructor_as_function::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "constructor_as_function::main" main.
 Admitted.

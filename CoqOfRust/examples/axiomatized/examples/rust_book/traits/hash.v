@@ -28,10 +28,10 @@ End Impl_core_hash_Hash_for_hash_Person.
 Parameter calculate_hash : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_calculate_hash :
-  M.IsFunction.Trait "hash::calculate_hash" calculate_hash.
+  M.IsFunction.C "hash::calculate_hash" calculate_hash.
 Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "hash::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "hash::main" main.
 Admitted.

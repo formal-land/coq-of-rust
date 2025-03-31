@@ -201,7 +201,7 @@ Module iter.
         
         Global Instance AssociatedFunction_new :
           forall (A B : Ty.t),
-          M.IsAssociatedFunction.Trait (Self A B) "new" (new A B).
+          M.IsAssociatedFunction.C (Self A B) "new" (new A B).
         Admitted.
         Global Typeclasses Opaque new.
       End Impl_core_iter_adapters_chain_Chain_A_B.
@@ -304,7 +304,7 @@ Module iter.
         end.
       
       Global Instance Instance_IsFunction_chain :
-        M.IsFunction.Trait "core::iter::adapters::chain::chain" chain.
+        M.IsFunction.C "core::iter::adapters::chain::chain" chain.
       Admitted.
       Global Typeclasses Opaque chain.
       
@@ -4811,7 +4811,7 @@ Module iter.
         end.
       
       Global Instance Instance_IsFunction_and_then_or_clear :
-        M.IsFunction.Trait "core::iter::adapters::chain::and_then_or_clear" and_then_or_clear.
+        M.IsFunction.C "core::iter::adapters::chain::and_then_or_clear" and_then_or_clear.
       Admitted.
       Global Typeclasses Opaque and_then_or_clear.
     End chain.

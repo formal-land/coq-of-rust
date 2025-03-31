@@ -28,7 +28,7 @@ Definition calc_linear_cost_u32 (ε : list Value.t) (τ : list Ty.t) (α : list 
   end.
 
 Global Instance Instance_IsFunction_calc_linear_cost_u32 :
-  M.IsFunction.Trait "revm_precompile::calc_linear_cost_u32" calc_linear_cost_u32.
+  M.IsFunction.C "revm_precompile::calc_linear_cost_u32" calc_linear_cost_u32.
 Admitted.
 Global Typeclasses Opaque calc_linear_cost_u32.
 
@@ -511,7 +511,7 @@ Module Impl_revm_precompile_Precompiles.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
   Admitted.
   Global Typeclasses Opaque new.
   
@@ -558,7 +558,22 @@ Module Impl_revm_precompile_Precompiles.
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.deref (| M.read (| M.get_constant "revm_precompile::homestead::INSTANCE" |) |)
+                  M.deref (|
+                    M.read (|
+                      get_constant (|
+                        "revm_precompile::homestead::INSTANCE",
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "once_cell::race::once_box::OnceBox")
+                              []
+                              [ Ty.path "revm_precompile::Precompiles" ]
+                          ]
+                      |)
+                    |)
+                  |)
                 |);
                 M.closure
                   (fun γ =>
@@ -618,17 +633,28 @@ Module Impl_revm_precompile_Precompiles.
                                             Value.Array
                                               [
                                                 M.read (|
-                                                  M.get_constant
-                                                    "revm_precompile::secp256k1::ECRECOVER"
+                                                  get_constant (|
+                                                    "revm_precompile::secp256k1::ECRECOVER",
+                                                    Ty.path "revm_precompile::PrecompileWithAddress"
+                                                  |)
                                                 |);
                                                 M.read (|
-                                                  M.get_constant "revm_precompile::hash::SHA256"
+                                                  get_constant (|
+                                                    "revm_precompile::hash::SHA256",
+                                                    Ty.path "revm_precompile::PrecompileWithAddress"
+                                                  |)
                                                 |);
                                                 M.read (|
-                                                  M.get_constant "revm_precompile::hash::RIPEMD160"
+                                                  get_constant (|
+                                                    "revm_precompile::hash::RIPEMD160",
+                                                    Ty.path "revm_precompile::PrecompileWithAddress"
+                                                  |)
                                                 |);
                                                 M.read (|
-                                                  M.get_constant "revm_precompile::identity::FUN"
+                                                  get_constant (|
+                                                    "revm_precompile::identity::FUN",
+                                                    Ty.path "revm_precompile::PrecompileWithAddress"
+                                                  |)
                                                 |)
                                               ]
                                           ]
@@ -671,7 +697,7 @@ Module Impl_revm_precompile_Precompiles.
     end.
   
   Global Instance AssociatedFunction_homestead :
-    M.IsAssociatedFunction.Trait Self "homestead" homestead.
+    M.IsAssociatedFunction.C Self "homestead" homestead.
   Admitted.
   Global Typeclasses Opaque homestead.
   
@@ -701,7 +727,7 @@ Module Impl_revm_precompile_Precompiles.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_inner : M.IsAssociatedFunction.Trait Self "inner" inner.
+  Global Instance AssociatedFunction_inner : M.IsAssociatedFunction.C Self "inner" inner.
   Admitted.
   Global Typeclasses Opaque inner.
   
@@ -751,7 +777,22 @@ Module Impl_revm_precompile_Precompiles.
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.deref (| M.read (| M.get_constant "revm_precompile::byzantium::INSTANCE" |) |)
+                  M.deref (|
+                    M.read (|
+                      get_constant (|
+                        "revm_precompile::byzantium::INSTANCE",
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "once_cell::race::once_box::OnceBox")
+                              []
+                              [ Ty.path "revm_precompile::Precompiles" ]
+                          ]
+                      |)
+                    |)
+                  |)
                 |);
                 M.closure
                   (fun γ =>
@@ -830,20 +871,28 @@ Module Impl_revm_precompile_Precompiles.
                                             Value.Array
                                               [
                                                 M.read (|
-                                                  M.get_constant
-                                                    "revm_precompile::bn128::add::BYZANTIUM"
+                                                  get_constant (|
+                                                    "revm_precompile::bn128::add::BYZANTIUM",
+                                                    Ty.path "revm_precompile::PrecompileWithAddress"
+                                                  |)
                                                 |);
                                                 M.read (|
-                                                  M.get_constant
-                                                    "revm_precompile::bn128::mul::BYZANTIUM"
+                                                  get_constant (|
+                                                    "revm_precompile::bn128::mul::BYZANTIUM",
+                                                    Ty.path "revm_precompile::PrecompileWithAddress"
+                                                  |)
                                                 |);
                                                 M.read (|
-                                                  M.get_constant
-                                                    "revm_precompile::bn128::pair::BYZANTIUM"
+                                                  get_constant (|
+                                                    "revm_precompile::bn128::pair::BYZANTIUM",
+                                                    Ty.path "revm_precompile::PrecompileWithAddress"
+                                                  |)
                                                 |);
                                                 M.read (|
-                                                  M.get_constant
-                                                    "revm_precompile::modexp::BYZANTIUM"
+                                                  get_constant (|
+                                                    "revm_precompile::modexp::BYZANTIUM",
+                                                    Ty.path "revm_precompile::PrecompileWithAddress"
+                                                  |)
                                                 |)
                                               ]
                                           ]
@@ -886,7 +935,7 @@ Module Impl_revm_precompile_Precompiles.
     end.
   
   Global Instance AssociatedFunction_byzantium :
-    M.IsAssociatedFunction.Trait Self "byzantium" byzantium.
+    M.IsAssociatedFunction.C Self "byzantium" byzantium.
   Admitted.
   Global Typeclasses Opaque byzantium.
   
@@ -935,7 +984,22 @@ Module Impl_revm_precompile_Precompiles.
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.deref (| M.read (| M.get_constant "revm_precompile::istanbul::INSTANCE" |) |)
+                  M.deref (|
+                    M.read (|
+                      get_constant (|
+                        "revm_precompile::istanbul::INSTANCE",
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "once_cell::race::once_box::OnceBox")
+                              []
+                              [ Ty.path "revm_precompile::Precompiles" ]
+                          ]
+                      |)
+                    |)
+                  |)
                 |);
                 M.closure
                   (fun γ =>
@@ -1014,19 +1078,28 @@ Module Impl_revm_precompile_Precompiles.
                                             Value.Array
                                               [
                                                 M.read (|
-                                                  M.get_constant
-                                                    "revm_precompile::bn128::add::ISTANBUL"
+                                                  get_constant (|
+                                                    "revm_precompile::bn128::add::ISTANBUL",
+                                                    Ty.path "revm_precompile::PrecompileWithAddress"
+                                                  |)
                                                 |);
                                                 M.read (|
-                                                  M.get_constant
-                                                    "revm_precompile::bn128::mul::ISTANBUL"
+                                                  get_constant (|
+                                                    "revm_precompile::bn128::mul::ISTANBUL",
+                                                    Ty.path "revm_precompile::PrecompileWithAddress"
+                                                  |)
                                                 |);
                                                 M.read (|
-                                                  M.get_constant
-                                                    "revm_precompile::bn128::pair::ISTANBUL"
+                                                  get_constant (|
+                                                    "revm_precompile::bn128::pair::ISTANBUL",
+                                                    Ty.path "revm_precompile::PrecompileWithAddress"
+                                                  |)
                                                 |);
                                                 M.read (|
-                                                  M.get_constant "revm_precompile::blake2::FUN"
+                                                  get_constant (|
+                                                    "revm_precompile::blake2::FUN",
+                                                    Ty.path "revm_precompile::PrecompileWithAddress"
+                                                  |)
                                                 |)
                                               ]
                                           ]
@@ -1068,8 +1141,7 @@ Module Impl_revm_precompile_Precompiles.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_istanbul :
-    M.IsAssociatedFunction.Trait Self "istanbul" istanbul.
+  Global Instance AssociatedFunction_istanbul : M.IsAssociatedFunction.C Self "istanbul" istanbul.
   Admitted.
   Global Typeclasses Opaque istanbul.
   
@@ -1114,7 +1186,22 @@ Module Impl_revm_precompile_Precompiles.
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.deref (| M.read (| M.get_constant "revm_precompile::berlin::INSTANCE" |) |)
+                  M.deref (|
+                    M.read (|
+                      get_constant (|
+                        "revm_precompile::berlin::INSTANCE",
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "once_cell::race::once_box::OnceBox")
+                              []
+                              [ Ty.path "revm_precompile::Precompiles" ]
+                          ]
+                      |)
+                    |)
+                  |)
                 |);
                 M.closure
                   (fun γ =>
@@ -1193,7 +1280,10 @@ Module Impl_revm_precompile_Precompiles.
                                             Value.Array
                                               [
                                                 M.read (|
-                                                  M.get_constant "revm_precompile::modexp::BERLIN"
+                                                  get_constant (|
+                                                    "revm_precompile::modexp::BERLIN",
+                                                    Ty.path "revm_precompile::PrecompileWithAddress"
+                                                  |)
                                                 |)
                                               ]
                                           ]
@@ -1235,7 +1325,7 @@ Module Impl_revm_precompile_Precompiles.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_berlin : M.IsAssociatedFunction.Trait Self "berlin" berlin.
+  Global Instance AssociatedFunction_berlin : M.IsAssociatedFunction.C Self "berlin" berlin.
   Admitted.
   Global Typeclasses Opaque berlin.
   
@@ -1291,7 +1381,22 @@ Module Impl_revm_precompile_Precompiles.
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.deref (| M.read (| M.get_constant "revm_precompile::cancun::INSTANCE" |) |)
+                  M.deref (|
+                    M.read (|
+                      get_constant (|
+                        "revm_precompile::cancun::INSTANCE",
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "once_cell::race::once_box::OnceBox")
+                              []
+                              [ Ty.path "revm_precompile::Precompiles" ]
+                          ]
+                      |)
+                    |)
+                  |)
                 |);
                 M.closure
                   (fun γ =>
@@ -1367,8 +1472,10 @@ Module Impl_revm_precompile_Precompiles.
                                           [
                                             M.borrow (|
                                               Pointer.Kind.Ref,
-                                              M.get_constant
-                                                "revm_precompile::kzg_point_evaluation::POINT_EVALUATION"
+                                              get_constant (|
+                                                "revm_precompile::kzg_point_evaluation::POINT_EVALUATION",
+                                                Ty.path "revm_precompile::PrecompileWithAddress"
+                                              |)
                                             |)
                                           ]
                                         |)
@@ -1430,7 +1537,7 @@ Module Impl_revm_precompile_Precompiles.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_cancun : M.IsAssociatedFunction.Trait Self "cancun" cancun.
+  Global Instance AssociatedFunction_cancun : M.IsAssociatedFunction.C Self "cancun" cancun.
   Admitted.
   Global Typeclasses Opaque cancun.
   
@@ -1480,7 +1587,22 @@ Module Impl_revm_precompile_Precompiles.
               [
                 M.borrow (|
                   Pointer.Kind.Ref,
-                  M.deref (| M.read (| M.get_constant "revm_precompile::prague::INSTANCE" |) |)
+                  M.deref (|
+                    M.read (|
+                      get_constant (|
+                        "revm_precompile::prague::INSTANCE",
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "once_cell::race::once_box::OnceBox")
+                              []
+                              [ Ty.path "revm_precompile::Precompiles" ]
+                          ]
+                      |)
+                    |)
+                  |)
                 |);
                 M.closure
                   (fun γ =>
@@ -1605,7 +1727,7 @@ Module Impl_revm_precompile_Precompiles.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_prague : M.IsAssociatedFunction.Trait Self "prague" prague.
+  Global Instance AssociatedFunction_prague : M.IsAssociatedFunction.C Self "prague" prague.
   Admitted.
   Global Typeclasses Opaque prague.
   
@@ -1626,7 +1748,7 @@ Module Impl_revm_precompile_Precompiles.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_latest : M.IsAssociatedFunction.Trait Self "latest" latest.
+  Global Instance AssociatedFunction_latest : M.IsAssociatedFunction.C Self "latest" latest.
   Admitted.
   Global Typeclasses Opaque latest.
   
@@ -1698,7 +1820,7 @@ Module Impl_revm_precompile_Precompiles.
     end.
   
   Global Instance AssociatedFunction_addresses :
-    M.IsAssociatedFunction.Trait Self "addresses" addresses.
+    M.IsAssociatedFunction.C Self "addresses" addresses.
   Admitted.
   Global Typeclasses Opaque addresses.
   
@@ -1769,7 +1891,7 @@ Module Impl_revm_precompile_Precompiles.
     end.
   
   Global Instance AssociatedFunction_into_addresses :
-    M.IsAssociatedFunction.Trait Self "into_addresses" into_addresses.
+    M.IsAssociatedFunction.C Self "into_addresses" into_addresses.
   Admitted.
   Global Typeclasses Opaque into_addresses.
   
@@ -1825,8 +1947,7 @@ Module Impl_revm_precompile_Precompiles.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_contains :
-    M.IsAssociatedFunction.Trait Self "contains" contains.
+  Global Instance AssociatedFunction_contains : M.IsAssociatedFunction.C Self "contains" contains.
   Admitted.
   Global Typeclasses Opaque contains.
   
@@ -1903,7 +2024,7 @@ Module Impl_revm_precompile_Precompiles.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_get : M.IsAssociatedFunction.Trait Self "get" get.
+  Global Instance AssociatedFunction_get : M.IsAssociatedFunction.C Self "get" get.
   Admitted.
   Global Typeclasses Opaque get.
   
@@ -1980,7 +2101,7 @@ Module Impl_revm_precompile_Precompiles.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_get_mut : M.IsAssociatedFunction.Trait Self "get_mut" get_mut.
+  Global Instance AssociatedFunction_get_mut : M.IsAssociatedFunction.C Self "get_mut" get_mut.
   Admitted.
   Global Typeclasses Opaque get_mut.
   
@@ -2037,8 +2158,7 @@ Module Impl_revm_precompile_Precompiles.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_is_empty :
-    M.IsAssociatedFunction.Trait Self "is_empty" is_empty.
+  Global Instance AssociatedFunction_is_empty : M.IsAssociatedFunction.C Self "is_empty" is_empty.
   Admitted.
   Global Typeclasses Opaque is_empty.
   
@@ -2092,7 +2212,7 @@ Module Impl_revm_precompile_Precompiles.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_len : M.IsAssociatedFunction.Trait Self "len" len.
+  Global Instance AssociatedFunction_len : M.IsAssociatedFunction.C Self "len" len.
   Admitted.
   Global Typeclasses Opaque len.
   
@@ -2123,7 +2243,7 @@ Module Impl_revm_precompile_Precompiles.
     end.
   
   Global Instance AssociatedFunction_addresses_set :
-    M.IsAssociatedFunction.Trait Self "addresses_set" addresses_set.
+    M.IsAssociatedFunction.C Self "addresses_set" addresses_set.
   Admitted.
   Global Typeclasses Opaque addresses_set.
   
@@ -2676,7 +2796,7 @@ Module Impl_revm_precompile_Precompiles.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_extend : M.IsAssociatedFunction.Trait Self "extend" extend.
+  Global Instance AssociatedFunction_extend : M.IsAssociatedFunction.C Self "extend" extend.
   Admitted.
   Global Typeclasses Opaque extend.
 End Impl_revm_precompile_Precompiles.
@@ -3001,7 +3121,7 @@ Module Impl_revm_precompile_PrecompileWithAddress.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_address : M.IsAssociatedFunction.Trait Self "address" address.
+  Global Instance AssociatedFunction_address : M.IsAssociatedFunction.C Self "address" address.
   Admitted.
   Global Typeclasses Opaque address.
   
@@ -3032,7 +3152,7 @@ Module Impl_revm_precompile_PrecompileWithAddress.
     end.
   
   Global Instance AssociatedFunction_precompile :
-    M.IsAssociatedFunction.Trait Self "precompile" precompile.
+    M.IsAssociatedFunction.C Self "precompile" precompile.
   Admitted.
   Global Typeclasses Opaque precompile.
 End Impl_revm_precompile_PrecompileWithAddress.
@@ -3817,7 +3937,7 @@ Module Impl_revm_precompile_PrecompileSpecId.
     end.
   
   Global Instance AssociatedFunction_from_spec_id :
-    M.IsAssociatedFunction.Trait Self "from_spec_id" from_spec_id.
+    M.IsAssociatedFunction.C Self "from_spec_id" from_spec_id.
   Admitted.
   Global Typeclasses Opaque from_spec_id.
 End Impl_revm_precompile_PrecompileSpecId.
@@ -3902,6 +4022,6 @@ Definition u64_to_address (ε : list Value.t) (τ : list Ty.t) (α : list Value.
   end.
 
 Global Instance Instance_IsFunction_u64_to_address :
-  M.IsFunction.Trait "revm_precompile::u64_to_address" u64_to_address.
+  M.IsFunction.C "revm_precompile::u64_to_address" u64_to_address.
 Admitted.
 Global Typeclasses Opaque u64_to_address.

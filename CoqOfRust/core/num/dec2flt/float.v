@@ -12,79 +12,120 @@ Module num.
         
         (*     const INFINITY: Self = f32::INFINITY; *)
         (* Ty.path "f32" *)
-        Definition value_INFINITY : Value.t :=
-          M.run ltac:(M.monadic (M.get_constant "core::f32::INFINITY")).
+        Definition value_INFINITY (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          ltac:(M.monadic (get_associated_constant (| Ty.path "f32", "INFINITY", Ty.path "f32" |))).
         
         (*     const NEG_INFINITY: Self = f32::NEG_INFINITY; *)
         (* Ty.path "f32" *)
-        Definition value_NEG_INFINITY : Value.t :=
-          M.run ltac:(M.monadic (M.get_constant "core::f32::NEG_INFINITY")).
+        Definition value_NEG_INFINITY (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          ltac:(M.monadic
+            (get_associated_constant (| Ty.path "f32", "NEG_INFINITY", Ty.path "f32" |))).
         
         (*     const NAN: Self = f32::NAN; *)
         (* Ty.path "f32" *)
-        Definition value_NAN : Value.t := M.run ltac:(M.monadic (M.get_constant "core::f32::NAN")).
+        Definition value_NAN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          ltac:(M.monadic (get_associated_constant (| Ty.path "f32", "NAN", Ty.path "f32" |))).
         
         (*     const NEG_NAN: Self = -f32::NAN; *)
         (* Ty.path "f32" *)
-        Definition value_NEG_NAN : Value.t :=
-          M.run
-            ltac:(M.monadic
-              (M.alloc (| UnOp.neg (| M.read (| M.get_constant "core::f32::NAN" |) |) |))).
+        Definition value_NEG_NAN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          ltac:(M.monadic
+            (M.alloc (|
+              UnOp.neg (|
+                M.read (| get_associated_constant (| Ty.path "f32", "NAN", Ty.path "f32" |) |)
+              |)
+            |))).
         
         (*     const MANTISSA_EXPLICIT_BITS: usize = 23; *)
         (* Ty.path "usize" *)
-        Definition value_MANTISSA_EXPLICIT_BITS : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 23 |))).
+        Definition value_MANTISSA_EXPLICIT_BITS
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 23 |))).
         
         (*     const MIN_EXPONENT_ROUND_TO_EVEN: i32 = -17; *)
         (* Ty.path "i32" *)
-        Definition value_MIN_EXPONENT_ROUND_TO_EVEN : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 (-17) |))).
+        Definition value_MIN_EXPONENT_ROUND_TO_EVEN
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 (-17) |))).
         
         (*     const MAX_EXPONENT_ROUND_TO_EVEN: i32 = 10; *)
         (* Ty.path "i32" *)
-        Definition value_MAX_EXPONENT_ROUND_TO_EVEN : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 10 |))).
+        Definition value_MAX_EXPONENT_ROUND_TO_EVEN
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 10 |))).
         
         (*     const MIN_EXPONENT_FAST_PATH: i64 = -10; *)
         (* Ty.path "i64" *)
-        Definition value_MIN_EXPONENT_FAST_PATH : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I64 (-10) |))).
+        Definition value_MIN_EXPONENT_FAST_PATH
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I64 (-10) |))).
         
         (*     const MAX_EXPONENT_FAST_PATH: i64 = 10; *)
         (* Ty.path "i64" *)
-        Definition value_MAX_EXPONENT_FAST_PATH : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I64 10 |))).
+        Definition value_MAX_EXPONENT_FAST_PATH
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I64 10 |))).
         
         (*     const MAX_EXPONENT_DISGUISED_FAST_PATH: i64 = 17; *)
         (* Ty.path "i64" *)
-        Definition value_MAX_EXPONENT_DISGUISED_FAST_PATH : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I64 17 |))).
+        Definition value_MAX_EXPONENT_DISGUISED_FAST_PATH
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I64 17 |))).
         
         (*     const MINIMUM_EXPONENT: i32 = -127; *)
         (* Ty.path "i32" *)
-        Definition value_MINIMUM_EXPONENT : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 (-127) |))).
+        Definition value_MINIMUM_EXPONENT
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 (-127) |))).
         
         (*     const INFINITE_POWER: i32 = 0xFF; *)
         (* Ty.path "i32" *)
-        Definition value_INFINITE_POWER : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 255 |))).
+        Definition value_INFINITE_POWER (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 255 |))).
         
         (*     const SIGN_INDEX: usize = 31; *)
         (* Ty.path "usize" *)
-        Definition value_SIGN_INDEX : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 31 |))).
+        Definition value_SIGN_INDEX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 31 |))).
         
         (*     const SMALLEST_POWER_OF_TEN: i32 = -65; *)
         (* Ty.path "i32" *)
-        Definition value_SMALLEST_POWER_OF_TEN : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 (-65) |))).
+        Definition value_SMALLEST_POWER_OF_TEN
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 (-65) |))).
         
         (*     const LARGEST_POWER_OF_TEN: i32 = 38; *)
         (* Ty.path "i32" *)
-        Definition value_LARGEST_POWER_OF_TEN : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 38 |))).
+        Definition value_LARGEST_POWER_OF_TEN
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 38 |))).
         
         (*
             fn from_u64(v: u64) -> Self {
@@ -122,8 +163,10 @@ Module num.
                                             BinOp.le (|
                                               M.read (| v |),
                                               M.read (|
-                                                M.get_constant
-                                                  "core::num::dec2flt::float::RawFloat::MAX_MANTISSA_FAST_PATH"
+                                                get_constant (|
+                                                  "core::num::dec2flt::float::RawFloat::MAX_MANTISSA_FAST_PATH",
+                                                  Ty.path "u64"
+                                                |)
                                               |)
                                             |)
                                           |)
@@ -195,7 +238,13 @@ Module num.
               (let exponent := M.alloc (| exponent |) in
               M.read (|
                 M.SubPointer.get_array_field (|
-                  M.get_constant "core::num::dec2flt::float::pow10_fast_path::TABLE",
+                  get_constant (|
+                    "core::num::dec2flt::float::pow10_fast_path::TABLE",
+                    Ty.apply
+                      (Ty.path "array")
+                      [ Value.Integer IntegerKind.Usize 16 ]
+                      [ Ty.path "f32" ]
+                  |),
                   BinOp.bit_and (M.read (| exponent |)) (Value.Integer IntegerKind.Usize 15)
                 |)
               |)))
@@ -352,24 +401,24 @@ Module num.
             Self
             (* Instance *)
             [
-              ("value_INFINITY", InstanceField.Constant value_INFINITY);
-              ("value_NEG_INFINITY", InstanceField.Constant value_NEG_INFINITY);
-              ("value_NAN", InstanceField.Constant value_NAN);
-              ("value_NEG_NAN", InstanceField.Constant value_NEG_NAN);
-              ("value_MANTISSA_EXPLICIT_BITS", InstanceField.Constant value_MANTISSA_EXPLICIT_BITS);
+              ("value_INFINITY", InstanceField.Method value_INFINITY);
+              ("value_NEG_INFINITY", InstanceField.Method value_NEG_INFINITY);
+              ("value_NAN", InstanceField.Method value_NAN);
+              ("value_NEG_NAN", InstanceField.Method value_NEG_NAN);
+              ("value_MANTISSA_EXPLICIT_BITS", InstanceField.Method value_MANTISSA_EXPLICIT_BITS);
               ("value_MIN_EXPONENT_ROUND_TO_EVEN",
-                InstanceField.Constant value_MIN_EXPONENT_ROUND_TO_EVEN);
+                InstanceField.Method value_MIN_EXPONENT_ROUND_TO_EVEN);
               ("value_MAX_EXPONENT_ROUND_TO_EVEN",
-                InstanceField.Constant value_MAX_EXPONENT_ROUND_TO_EVEN);
-              ("value_MIN_EXPONENT_FAST_PATH", InstanceField.Constant value_MIN_EXPONENT_FAST_PATH);
-              ("value_MAX_EXPONENT_FAST_PATH", InstanceField.Constant value_MAX_EXPONENT_FAST_PATH);
+                InstanceField.Method value_MAX_EXPONENT_ROUND_TO_EVEN);
+              ("value_MIN_EXPONENT_FAST_PATH", InstanceField.Method value_MIN_EXPONENT_FAST_PATH);
+              ("value_MAX_EXPONENT_FAST_PATH", InstanceField.Method value_MAX_EXPONENT_FAST_PATH);
               ("value_MAX_EXPONENT_DISGUISED_FAST_PATH",
-                InstanceField.Constant value_MAX_EXPONENT_DISGUISED_FAST_PATH);
-              ("value_MINIMUM_EXPONENT", InstanceField.Constant value_MINIMUM_EXPONENT);
-              ("value_INFINITE_POWER", InstanceField.Constant value_INFINITE_POWER);
-              ("value_SIGN_INDEX", InstanceField.Constant value_SIGN_INDEX);
-              ("value_SMALLEST_POWER_OF_TEN", InstanceField.Constant value_SMALLEST_POWER_OF_TEN);
-              ("value_LARGEST_POWER_OF_TEN", InstanceField.Constant value_LARGEST_POWER_OF_TEN);
+                InstanceField.Method value_MAX_EXPONENT_DISGUISED_FAST_PATH);
+              ("value_MINIMUM_EXPONENT", InstanceField.Method value_MINIMUM_EXPONENT);
+              ("value_INFINITE_POWER", InstanceField.Method value_INFINITE_POWER);
+              ("value_SIGN_INDEX", InstanceField.Method value_SIGN_INDEX);
+              ("value_SMALLEST_POWER_OF_TEN", InstanceField.Method value_SMALLEST_POWER_OF_TEN);
+              ("value_LARGEST_POWER_OF_TEN", InstanceField.Method value_LARGEST_POWER_OF_TEN);
               ("from_u64", InstanceField.Method from_u64);
               ("from_u64_bits", InstanceField.Method from_u64_bits);
               ("pow10_fast_path", InstanceField.Method pow10_fast_path);
@@ -383,79 +432,120 @@ Module num.
         
         (*     const INFINITY: Self = f64::INFINITY; *)
         (* Ty.path "f64" *)
-        Definition value_INFINITY : Value.t :=
-          M.run ltac:(M.monadic (M.get_constant "core::f64::INFINITY")).
+        Definition value_INFINITY (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          ltac:(M.monadic (get_associated_constant (| Ty.path "f64", "INFINITY", Ty.path "f64" |))).
         
         (*     const NEG_INFINITY: Self = f64::NEG_INFINITY; *)
         (* Ty.path "f64" *)
-        Definition value_NEG_INFINITY : Value.t :=
-          M.run ltac:(M.monadic (M.get_constant "core::f64::NEG_INFINITY")).
+        Definition value_NEG_INFINITY (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          ltac:(M.monadic
+            (get_associated_constant (| Ty.path "f64", "NEG_INFINITY", Ty.path "f64" |))).
         
         (*     const NAN: Self = f64::NAN; *)
         (* Ty.path "f64" *)
-        Definition value_NAN : Value.t := M.run ltac:(M.monadic (M.get_constant "core::f64::NAN")).
+        Definition value_NAN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          ltac:(M.monadic (get_associated_constant (| Ty.path "f64", "NAN", Ty.path "f64" |))).
         
         (*     const NEG_NAN: Self = -f64::NAN; *)
         (* Ty.path "f64" *)
-        Definition value_NEG_NAN : Value.t :=
-          M.run
-            ltac:(M.monadic
-              (M.alloc (| UnOp.neg (| M.read (| M.get_constant "core::f64::NAN" |) |) |))).
+        Definition value_NEG_NAN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          ltac:(M.monadic
+            (M.alloc (|
+              UnOp.neg (|
+                M.read (| get_associated_constant (| Ty.path "f64", "NAN", Ty.path "f64" |) |)
+              |)
+            |))).
         
         (*     const MANTISSA_EXPLICIT_BITS: usize = 52; *)
         (* Ty.path "usize" *)
-        Definition value_MANTISSA_EXPLICIT_BITS : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 52 |))).
+        Definition value_MANTISSA_EXPLICIT_BITS
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 52 |))).
         
         (*     const MIN_EXPONENT_ROUND_TO_EVEN: i32 = -4; *)
         (* Ty.path "i32" *)
-        Definition value_MIN_EXPONENT_ROUND_TO_EVEN : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 (-4) |))).
+        Definition value_MIN_EXPONENT_ROUND_TO_EVEN
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 (-4) |))).
         
         (*     const MAX_EXPONENT_ROUND_TO_EVEN: i32 = 23; *)
         (* Ty.path "i32" *)
-        Definition value_MAX_EXPONENT_ROUND_TO_EVEN : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 23 |))).
+        Definition value_MAX_EXPONENT_ROUND_TO_EVEN
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 23 |))).
         
         (*     const MIN_EXPONENT_FAST_PATH: i64 = -22; *)
         (* Ty.path "i64" *)
-        Definition value_MIN_EXPONENT_FAST_PATH : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I64 (-22) |))).
+        Definition value_MIN_EXPONENT_FAST_PATH
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I64 (-22) |))).
         
         (*     const MAX_EXPONENT_FAST_PATH: i64 = 22; *)
         (* Ty.path "i64" *)
-        Definition value_MAX_EXPONENT_FAST_PATH : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I64 22 |))).
+        Definition value_MAX_EXPONENT_FAST_PATH
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I64 22 |))).
         
         (*     const MAX_EXPONENT_DISGUISED_FAST_PATH: i64 = 37; *)
         (* Ty.path "i64" *)
-        Definition value_MAX_EXPONENT_DISGUISED_FAST_PATH : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I64 37 |))).
+        Definition value_MAX_EXPONENT_DISGUISED_FAST_PATH
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I64 37 |))).
         
         (*     const MINIMUM_EXPONENT: i32 = -1023; *)
         (* Ty.path "i32" *)
-        Definition value_MINIMUM_EXPONENT : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 (-1023) |))).
+        Definition value_MINIMUM_EXPONENT
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 (-1023) |))).
         
         (*     const INFINITE_POWER: i32 = 0x7FF; *)
         (* Ty.path "i32" *)
-        Definition value_INFINITE_POWER : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 2047 |))).
+        Definition value_INFINITE_POWER (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 2047 |))).
         
         (*     const SIGN_INDEX: usize = 63; *)
         (* Ty.path "usize" *)
-        Definition value_SIGN_INDEX : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 63 |))).
+        Definition value_SIGN_INDEX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+          ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 63 |))).
         
         (*     const SMALLEST_POWER_OF_TEN: i32 = -342; *)
         (* Ty.path "i32" *)
-        Definition value_SMALLEST_POWER_OF_TEN : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 (-342) |))).
+        Definition value_SMALLEST_POWER_OF_TEN
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 (-342) |))).
         
         (*     const LARGEST_POWER_OF_TEN: i32 = 308; *)
         (* Ty.path "i32" *)
-        Definition value_LARGEST_POWER_OF_TEN : Value.t :=
-          M.run ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 308 |))).
+        Definition value_LARGEST_POWER_OF_TEN
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 308 |))).
         
         (*
             fn from_u64(v: u64) -> Self {
@@ -493,8 +583,10 @@ Module num.
                                             BinOp.le (|
                                               M.read (| v |),
                                               M.read (|
-                                                M.get_constant
-                                                  "core::num::dec2flt::float::RawFloat::MAX_MANTISSA_FAST_PATH"
+                                                get_constant (|
+                                                  "core::num::dec2flt::float::RawFloat::MAX_MANTISSA_FAST_PATH",
+                                                  Ty.path "u64"
+                                                |)
                                               |)
                                             |)
                                           |)
@@ -563,7 +655,13 @@ Module num.
               (let exponent := M.alloc (| exponent |) in
               M.read (|
                 M.SubPointer.get_array_field (|
-                  M.get_constant "core::num::dec2flt::float::pow10_fast_path::TABLE",
+                  get_constant (|
+                    "core::num::dec2flt::float::pow10_fast_path::TABLE",
+                    Ty.apply
+                      (Ty.path "array")
+                      [ Value.Integer IntegerKind.Usize 32 ]
+                      [ Ty.path "f64" ]
+                  |),
                   BinOp.bit_and (M.read (| exponent |)) (Value.Integer IntegerKind.Usize 31)
                 |)
               |)))
@@ -718,24 +816,24 @@ Module num.
             Self
             (* Instance *)
             [
-              ("value_INFINITY", InstanceField.Constant value_INFINITY);
-              ("value_NEG_INFINITY", InstanceField.Constant value_NEG_INFINITY);
-              ("value_NAN", InstanceField.Constant value_NAN);
-              ("value_NEG_NAN", InstanceField.Constant value_NEG_NAN);
-              ("value_MANTISSA_EXPLICIT_BITS", InstanceField.Constant value_MANTISSA_EXPLICIT_BITS);
+              ("value_INFINITY", InstanceField.Method value_INFINITY);
+              ("value_NEG_INFINITY", InstanceField.Method value_NEG_INFINITY);
+              ("value_NAN", InstanceField.Method value_NAN);
+              ("value_NEG_NAN", InstanceField.Method value_NEG_NAN);
+              ("value_MANTISSA_EXPLICIT_BITS", InstanceField.Method value_MANTISSA_EXPLICIT_BITS);
               ("value_MIN_EXPONENT_ROUND_TO_EVEN",
-                InstanceField.Constant value_MIN_EXPONENT_ROUND_TO_EVEN);
+                InstanceField.Method value_MIN_EXPONENT_ROUND_TO_EVEN);
               ("value_MAX_EXPONENT_ROUND_TO_EVEN",
-                InstanceField.Constant value_MAX_EXPONENT_ROUND_TO_EVEN);
-              ("value_MIN_EXPONENT_FAST_PATH", InstanceField.Constant value_MIN_EXPONENT_FAST_PATH);
-              ("value_MAX_EXPONENT_FAST_PATH", InstanceField.Constant value_MAX_EXPONENT_FAST_PATH);
+                InstanceField.Method value_MAX_EXPONENT_ROUND_TO_EVEN);
+              ("value_MIN_EXPONENT_FAST_PATH", InstanceField.Method value_MIN_EXPONENT_FAST_PATH);
+              ("value_MAX_EXPONENT_FAST_PATH", InstanceField.Method value_MAX_EXPONENT_FAST_PATH);
               ("value_MAX_EXPONENT_DISGUISED_FAST_PATH",
-                InstanceField.Constant value_MAX_EXPONENT_DISGUISED_FAST_PATH);
-              ("value_MINIMUM_EXPONENT", InstanceField.Constant value_MINIMUM_EXPONENT);
-              ("value_INFINITE_POWER", InstanceField.Constant value_INFINITE_POWER);
-              ("value_SIGN_INDEX", InstanceField.Constant value_SIGN_INDEX);
-              ("value_SMALLEST_POWER_OF_TEN", InstanceField.Constant value_SMALLEST_POWER_OF_TEN);
-              ("value_LARGEST_POWER_OF_TEN", InstanceField.Constant value_LARGEST_POWER_OF_TEN);
+                InstanceField.Method value_MAX_EXPONENT_DISGUISED_FAST_PATH);
+              ("value_MINIMUM_EXPONENT", InstanceField.Method value_MINIMUM_EXPONENT);
+              ("value_INFINITE_POWER", InstanceField.Method value_INFINITE_POWER);
+              ("value_SIGN_INDEX", InstanceField.Method value_SIGN_INDEX);
+              ("value_SMALLEST_POWER_OF_TEN", InstanceField.Method value_SMALLEST_POWER_OF_TEN);
+              ("value_LARGEST_POWER_OF_TEN", InstanceField.Method value_LARGEST_POWER_OF_TEN);
               ("from_u64", InstanceField.Method from_u64);
               ("from_u64_bits", InstanceField.Method from_u64_bits);
               ("pow10_fast_path", InstanceField.Method pow10_fast_path);

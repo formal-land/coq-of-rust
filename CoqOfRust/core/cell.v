@@ -623,7 +623,7 @@ Module cell.
     
     Global Instance AssociatedFunction_new :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+      M.IsAssociatedFunction.C (Self T) "new" (new T).
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -663,7 +663,7 @@ Module cell.
     
     Global Instance AssociatedFunction_set :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "set" (set T).
+      M.IsAssociatedFunction.C (Self T) "set" (set T).
     Admitted.
     Global Typeclasses Opaque set.
     
@@ -892,7 +892,7 @@ Module cell.
     
     Global Instance AssociatedFunction_swap :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "swap" (swap T).
+      M.IsAssociatedFunction.C (Self T) "swap" (swap T).
     Admitted.
     Global Typeclasses Opaque swap.
     
@@ -956,7 +956,7 @@ Module cell.
     
     Global Instance AssociatedFunction_replace :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "replace" (replace T).
+      M.IsAssociatedFunction.C (Self T) "replace" (replace T).
     Admitted.
     Global Typeclasses Opaque replace.
     
@@ -990,7 +990,7 @@ Module cell.
     
     Global Instance AssociatedFunction_into_inner :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "into_inner" (into_inner T).
+      M.IsAssociatedFunction.C (Self T) "into_inner" (into_inner T).
     Admitted.
     Global Typeclasses Opaque into_inner.
     (*
@@ -1034,7 +1034,7 @@ Module cell.
     
     Global Instance AssociatedFunction_get :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "get" (get T).
+      M.IsAssociatedFunction.C (Self T) "get" (get T).
     Admitted.
     Global Typeclasses Opaque get.
     
@@ -1109,7 +1109,7 @@ Module cell.
     
     Global Instance AssociatedFunction_update :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "update" (update T).
+      M.IsAssociatedFunction.C (Self T) "update" (update T).
     Admitted.
     Global Typeclasses Opaque update.
     (*
@@ -1147,7 +1147,7 @@ Module cell.
     
     Global Instance AssociatedFunction_as_ptr :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "as_ptr" (as_ptr T).
+      M.IsAssociatedFunction.C (Self T) "as_ptr" (as_ptr T).
     Admitted.
     Global Typeclasses Opaque as_ptr.
     
@@ -1196,7 +1196,7 @@ Module cell.
     
     Global Instance AssociatedFunction_get_mut :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "get_mut" (get_mut T).
+      M.IsAssociatedFunction.C (Self T) "get_mut" (get_mut T).
     Admitted.
     Global Typeclasses Opaque get_mut.
     
@@ -1238,7 +1238,7 @@ Module cell.
     
     Global Instance AssociatedFunction_from_mut :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "from_mut" (from_mut T).
+      M.IsAssociatedFunction.C (Self T) "from_mut" (from_mut T).
     Admitted.
     Global Typeclasses Opaque from_mut.
     (*
@@ -1274,7 +1274,7 @@ Module cell.
     
     Global Instance AssociatedFunction_take :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "take" (take T).
+      M.IsAssociatedFunction.C (Self T) "take" (take T).
     Admitted.
     Global Typeclasses Opaque take.
   End Impl_core_cell_Cell_T.
@@ -1360,7 +1360,7 @@ Module cell.
     
     Global Instance AssociatedFunction_as_slice_of_cells :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "as_slice_of_cells" (as_slice_of_cells T).
+      M.IsAssociatedFunction.C (Self T) "as_slice_of_cells" (as_slice_of_cells T).
     Admitted.
     Global Typeclasses Opaque as_slice_of_cells.
   End Impl_core_cell_Cell_slice_T.
@@ -1418,7 +1418,7 @@ Module cell.
     
     Global Instance AssociatedFunction_as_array_of_cells :
       forall (N : Value.t) (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self N T) "as_array_of_cells" (as_array_of_cells N T).
+      M.IsAssociatedFunction.C (Self N T) "as_array_of_cells" (as_array_of_cells N T).
     Admitted.
     Global Typeclasses Opaque as_array_of_cells.
   End Impl_core_cell_Cell_array_N_T.
@@ -1724,7 +1724,7 @@ Module cell.
     end.
   
   Global Instance Instance_IsFunction_panic_already_borrowed :
-    M.IsFunction.Trait "core::cell::panic_already_borrowed" panic_already_borrowed.
+    M.IsFunction.C "core::cell::panic_already_borrowed" panic_already_borrowed.
   Admitted.
   Global Typeclasses Opaque panic_already_borrowed.
   
@@ -1800,17 +1800,19 @@ Module cell.
     end.
   
   Global Instance Instance_IsFunction_panic_already_mutably_borrowed :
-    M.IsFunction.Trait "core::cell::panic_already_mutably_borrowed" panic_already_mutably_borrowed.
+    M.IsFunction.C "core::cell::panic_already_mutably_borrowed" panic_already_mutably_borrowed.
   Admitted.
   Global Typeclasses Opaque panic_already_mutably_borrowed.
   
   Axiom BorrowFlag : (Ty.path "core::cell::BorrowFlag") = (Ty.path "isize").
   
-  Definition value_UNUSED : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Isize 0 |))).
+  Definition value_UNUSED (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Isize 0 |))).
   
-  Axiom Constant_value_UNUSED : (M.get_constant "core::cell::UNUSED") = value_UNUSED.
-  Global Hint Rewrite Constant_value_UNUSED : constant_rewrites.
+  Global Instance Instance_IsConstant_value_UNUSED :
+    M.IsFunction.C "core::cell::UNUSED" value_UNUSED.
+  Admitted.
+  Global Typeclasses Opaque value_UNUSED.
   
   (*
   fn is_writing(x: BorrowFlag) -> bool {
@@ -1822,12 +1824,15 @@ Module cell.
     | [], [], [ x ] =>
       ltac:(M.monadic
         (let x := M.alloc (| x |) in
-        BinOp.lt (| M.read (| x |), M.read (| M.get_constant "core::cell::UNUSED" |) |)))
+        BinOp.lt (|
+          M.read (| x |),
+          M.read (| get_constant (| "core::cell::UNUSED", Ty.path "isize" |) |)
+        |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Global Instance Instance_IsFunction_is_writing :
-    M.IsFunction.Trait "core::cell::is_writing" is_writing.
+    M.IsFunction.C "core::cell::is_writing" is_writing.
   Admitted.
   Global Typeclasses Opaque is_writing.
   
@@ -1841,12 +1846,15 @@ Module cell.
     | [], [], [ x ] =>
       ltac:(M.monadic
         (let x := M.alloc (| x |) in
-        BinOp.gt (| M.read (| x |), M.read (| M.get_constant "core::cell::UNUSED" |) |)))
+        BinOp.gt (|
+          M.read (| x |),
+          M.read (| get_constant (| "core::cell::UNUSED", Ty.path "isize" |) |)
+        |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Global Instance Instance_IsFunction_is_reading :
-    M.IsFunction.Trait "core::cell::is_reading" is_reading.
+    M.IsFunction.C "core::cell::is_reading" is_reading.
   Admitted.
   Global Typeclasses Opaque is_reading.
   
@@ -1892,7 +1900,7 @@ Module cell.
                     [],
                     []
                   |),
-                  [ M.read (| M.get_constant "core::cell::UNUSED" |) ]
+                  [ M.read (| get_constant (| "core::cell::UNUSED", Ty.path "isize" |) |) ]
                 |))
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1900,7 +1908,7 @@ Module cell.
     
     Global Instance AssociatedFunction_new :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+      M.IsAssociatedFunction.C (Self T) "new" (new T).
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -1936,7 +1944,7 @@ Module cell.
     
     Global Instance AssociatedFunction_into_inner :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "into_inner" (into_inner T).
+      M.IsAssociatedFunction.C (Self T) "into_inner" (into_inner T).
     Admitted.
     Global Typeclasses Opaque into_inner.
     
@@ -2003,7 +2011,7 @@ Module cell.
     
     Global Instance AssociatedFunction_replace :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "replace" (replace T).
+      M.IsAssociatedFunction.C (Self T) "replace" (replace T).
     Admitted.
     Global Typeclasses Opaque replace.
     
@@ -2095,7 +2103,7 @@ Module cell.
     
     Global Instance AssociatedFunction_replace_with :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "replace_with" (replace_with T).
+      M.IsAssociatedFunction.C (Self T) "replace_with" (replace_with T).
     Admitted.
     Global Typeclasses Opaque replace_with.
     
@@ -2201,7 +2209,7 @@ Module cell.
     
     Global Instance AssociatedFunction_swap :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "swap" (swap T).
+      M.IsAssociatedFunction.C (Self T) "swap" (swap T).
     Admitted.
     Global Typeclasses Opaque swap.
     (*
@@ -2268,7 +2276,7 @@ Module cell.
     
     Global Instance AssociatedFunction_borrow :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "borrow" (borrow T).
+      M.IsAssociatedFunction.C (Self T) "borrow" (borrow T).
     Admitted.
     Global Typeclasses Opaque borrow.
     
@@ -2401,7 +2409,7 @@ Module cell.
     
     Global Instance AssociatedFunction_try_borrow :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "try_borrow" (try_borrow T).
+      M.IsAssociatedFunction.C (Self T) "try_borrow" (try_borrow T).
     Admitted.
     Global Typeclasses Opaque try_borrow.
     
@@ -2469,7 +2477,7 @@ Module cell.
     
     Global Instance AssociatedFunction_borrow_mut :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "borrow_mut" (borrow_mut T).
+      M.IsAssociatedFunction.C (Self T) "borrow_mut" (borrow_mut T).
     Admitted.
     Global Typeclasses Opaque borrow_mut.
     
@@ -2612,7 +2620,7 @@ Module cell.
     
     Global Instance AssociatedFunction_try_borrow_mut :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "try_borrow_mut" (try_borrow_mut T).
+      M.IsAssociatedFunction.C (Self T) "try_borrow_mut" (try_borrow_mut T).
     Admitted.
     Global Typeclasses Opaque try_borrow_mut.
     
@@ -2651,7 +2659,7 @@ Module cell.
     
     Global Instance AssociatedFunction_as_ptr :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "as_ptr" (as_ptr T).
+      M.IsAssociatedFunction.C (Self T) "as_ptr" (as_ptr T).
     Admitted.
     Global Typeclasses Opaque as_ptr.
     
@@ -2700,7 +2708,7 @@ Module cell.
     
     Global Instance AssociatedFunction_get_mut :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "get_mut" (get_mut T).
+      M.IsAssociatedFunction.C (Self T) "get_mut" (get_mut T).
     Admitted.
     Global Typeclasses Opaque get_mut.
     
@@ -2744,7 +2752,7 @@ Module cell.
                           ]
                         |)
                       |),
-                      M.read (| M.get_constant "core::cell::UNUSED" |)
+                      M.read (| get_constant (| "core::cell::UNUSED", Ty.path "isize" |) |)
                     |)
                   |) in
                 M.alloc (|
@@ -2772,7 +2780,7 @@ Module cell.
     
     Global Instance AssociatedFunction_undo_leak :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "undo_leak" (undo_leak T).
+      M.IsAssociatedFunction.C (Self T) "undo_leak" (undo_leak T).
     Admitted.
     Global Typeclasses Opaque undo_leak.
     
@@ -2899,7 +2907,7 @@ Module cell.
     
     Global Instance AssociatedFunction_try_borrow_unguarded :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "try_borrow_unguarded" (try_borrow_unguarded T).
+      M.IsAssociatedFunction.C (Self T) "try_borrow_unguarded" (try_borrow_unguarded T).
     Admitted.
     Global Typeclasses Opaque try_borrow_unguarded.
     (*
@@ -2935,7 +2943,7 @@ Module cell.
     
     Global Instance AssociatedFunction_take :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "take" (take T).
+      M.IsAssociatedFunction.C (Self T) "take" (take T).
     Admitted.
     Global Typeclasses Opaque take.
   End Impl_core_cell_RefCell_T.
@@ -4035,7 +4043,7 @@ Module cell.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
   End Impl_core_cell_BorrowRef.
@@ -4280,7 +4288,13 @@ Module cell.
                             UnOp.not (|
                               BinOp.ne (|
                                 M.read (| borrow |),
-                                M.read (| M.get_constant "core::num::MAX" |)
+                                M.read (|
+                                  get_associated_constant (|
+                                    Ty.path "isize",
+                                    "MAX",
+                                    Ty.path "isize"
+                                  |)
+                                |)
                               |)
                             |)
                           |)) in
@@ -4491,7 +4505,7 @@ Module cell.
     
     Global Instance AssociatedFunction_clone :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "clone" (clone T).
+      M.IsAssociatedFunction.C (Self T) "clone" (clone T).
     Admitted.
     Global Typeclasses Opaque clone.
     
@@ -4579,7 +4593,7 @@ Module cell.
     
     Global Instance AssociatedFunction_map :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "map" (map T).
+      M.IsAssociatedFunction.C (Self T) "map" (map T).
     Admitted.
     Global Typeclasses Opaque map.
     
@@ -4710,7 +4724,7 @@ Module cell.
     
     Global Instance AssociatedFunction_filter_map :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "filter_map" (filter_map T).
+      M.IsAssociatedFunction.C (Self T) "filter_map" (filter_map T).
     Admitted.
     Global Typeclasses Opaque filter_map.
     
@@ -4870,7 +4884,7 @@ Module cell.
     
     Global Instance AssociatedFunction_map_split :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "map_split" (map_split T).
+      M.IsAssociatedFunction.C (Self T) "map_split" (map_split T).
     Admitted.
     Global Typeclasses Opaque map_split.
     
@@ -4932,7 +4946,7 @@ Module cell.
     
     Global Instance AssociatedFunction_leak :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "leak" (leak T).
+      M.IsAssociatedFunction.C (Self T) "leak" (leak T).
     Admitted.
     Global Typeclasses Opaque leak.
   End Impl_core_cell_Ref_T.
@@ -5106,7 +5120,7 @@ Module cell.
     
     Global Instance AssociatedFunction_map :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "map" (map T).
+      M.IsAssociatedFunction.C (Self T) "map" (map T).
     Admitted.
     Global Typeclasses Opaque map.
     
@@ -5247,7 +5261,7 @@ Module cell.
     
     Global Instance AssociatedFunction_filter_map :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "filter_map" (filter_map T).
+      M.IsAssociatedFunction.C (Self T) "filter_map" (filter_map T).
     Admitted.
     Global Typeclasses Opaque filter_map.
     
@@ -5411,7 +5425,7 @@ Module cell.
     
     Global Instance AssociatedFunction_map_split :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "map_split" (map_split T).
+      M.IsAssociatedFunction.C (Self T) "map_split" (map_split T).
     Admitted.
     Global Typeclasses Opaque map_split.
     
@@ -5496,7 +5510,7 @@ Module cell.
     
     Global Instance AssociatedFunction_leak :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "leak" (leak T).
+      M.IsAssociatedFunction.C (Self T) "leak" (leak T).
     Admitted.
     Global Typeclasses Opaque leak.
   End Impl_core_cell_RefMut_T.
@@ -5710,7 +5724,7 @@ Module cell.
                           [
                             M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| borrow |) |) |);
                             BinOp.Wrap.sub (|
-                              M.read (| M.get_constant "core::cell::UNUSED" |),
+                              M.read (| get_constant (| "core::cell::UNUSED", Ty.path "isize" |) |),
                               Value.Integer IntegerKind.Isize 1
                             |)
                           ]
@@ -5736,7 +5750,7 @@ Module cell.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -5843,7 +5857,13 @@ Module cell.
                             UnOp.not (|
                               BinOp.ne (|
                                 M.read (| borrow |),
-                                M.read (| M.get_constant "core::num::MIN" |)
+                                M.read (|
+                                  get_associated_constant (|
+                                    Ty.path "isize",
+                                    "MIN",
+                                    Ty.path "isize"
+                                  |)
+                                |)
                               |)
                             |)
                           |)) in
@@ -5910,7 +5930,7 @@ Module cell.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_clone : M.IsAssociatedFunction.Trait Self "clone" clone.
+    Global Instance AssociatedFunction_clone : M.IsAssociatedFunction.C Self "clone" clone.
     Admitted.
     Global Typeclasses Opaque clone.
   End Impl_core_cell_BorrowRefMut.
@@ -6173,7 +6193,7 @@ Module cell.
     
     Global Instance AssociatedFunction_new :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+      M.IsAssociatedFunction.C (Self T) "new" (new T).
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -6196,7 +6216,7 @@ Module cell.
     
     Global Instance AssociatedFunction_into_inner :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "into_inner" (into_inner T).
+      M.IsAssociatedFunction.C (Self T) "into_inner" (into_inner T).
     Admitted.
     Global Typeclasses Opaque into_inner.
     (*
@@ -6250,7 +6270,7 @@ Module cell.
     
     Global Instance AssociatedFunction_from_mut :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "from_mut" (from_mut T).
+      M.IsAssociatedFunction.C (Self T) "from_mut" (from_mut T).
     Admitted.
     Global Typeclasses Opaque from_mut.
     
@@ -6283,7 +6303,7 @@ Module cell.
     
     Global Instance AssociatedFunction_get :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "get" (get T).
+      M.IsAssociatedFunction.C (Self T) "get" (get T).
     Admitted.
     Global Typeclasses Opaque get.
     
@@ -6321,7 +6341,7 @@ Module cell.
     
     Global Instance AssociatedFunction_get_mut :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "get_mut" (get_mut T).
+      M.IsAssociatedFunction.C (Self T) "get_mut" (get_mut T).
     Admitted.
     Global Typeclasses Opaque get_mut.
     
@@ -6347,7 +6367,7 @@ Module cell.
     
     Global Instance AssociatedFunction_raw_get :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "raw_get" (raw_get T).
+      M.IsAssociatedFunction.C (Self T) "raw_get" (raw_get T).
     Admitted.
     Global Typeclasses Opaque raw_get.
   End Impl_core_cell_UnsafeCell_T.
@@ -6504,7 +6524,7 @@ Module cell.
     
     Global Instance AssociatedFunction_new :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+      M.IsAssociatedFunction.C (Self T) "new" (new T).
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -6542,7 +6562,7 @@ Module cell.
     
     Global Instance AssociatedFunction_into_inner :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "into_inner" (into_inner T).
+      M.IsAssociatedFunction.C (Self T) "into_inner" (into_inner T).
     Admitted.
     Global Typeclasses Opaque into_inner.
     (*
@@ -6580,7 +6600,7 @@ Module cell.
     
     Global Instance AssociatedFunction_get :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "get" (get T).
+      M.IsAssociatedFunction.C (Self T) "get" (get T).
     Admitted.
     Global Typeclasses Opaque get.
     
@@ -6629,7 +6649,7 @@ Module cell.
     
     Global Instance AssociatedFunction_get_mut :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "get_mut" (get_mut T).
+      M.IsAssociatedFunction.C (Self T) "get_mut" (get_mut T).
     Admitted.
     Global Typeclasses Opaque get_mut.
     
@@ -6655,7 +6675,7 @@ Module cell.
     
     Global Instance AssociatedFunction_raw_get :
       forall (T : Ty.t),
-      M.IsAssociatedFunction.Trait (Self T) "raw_get" (raw_get T).
+      M.IsAssociatedFunction.C (Self T) "raw_get" (raw_get T).
     Admitted.
     Global Typeclasses Opaque raw_get.
   End Impl_core_cell_SyncUnsafeCell_T.
@@ -6822,7 +6842,7 @@ Module cell.
     end.
   
   Global Instance Instance_IsFunction_assert_coerce_unsized :
-    M.IsFunction.Trait "core::cell::assert_coerce_unsized" assert_coerce_unsized.
+    M.IsFunction.C "core::cell::assert_coerce_unsized" assert_coerce_unsized.
   Admitted.
   Global Typeclasses Opaque assert_coerce_unsized.
   

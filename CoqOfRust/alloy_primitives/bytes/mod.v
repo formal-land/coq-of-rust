@@ -389,7 +389,14 @@ Module bytes_.
             M.deref (|
               M.borrow (|
                 Pointer.Kind.Ref,
-                M.deref (| M.read (| M.get_constant "alloy_primitives::bytes_::default::EMPTY" |) |)
+                M.deref (|
+                  M.read (|
+                    get_constant (|
+                      "alloy_primitives::bytes_::default::EMPTY",
+                      Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ]
+                    |)
+                  |)
+                |)
               |)
             |)
           |)))
@@ -2539,7 +2546,7 @@ Module bytes_.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -2571,7 +2578,7 @@ Module bytes_.
       end.
     
     Global Instance AssociatedFunction_from_static :
-      M.IsAssociatedFunction.Trait Self "from_static" from_static.
+      M.IsAssociatedFunction.C Self "from_static" from_static.
     Admitted.
     Global Typeclasses Opaque from_static.
     
@@ -2603,7 +2610,7 @@ Module bytes_.
       end.
     
     Global Instance AssociatedFunction_copy_from_slice :
-      M.IsAssociatedFunction.Trait Self "copy_from_slice" copy_from_slice.
+      M.IsAssociatedFunction.C Self "copy_from_slice" copy_from_slice.
     Admitted.
     Global Typeclasses Opaque copy_from_slice.
     
@@ -2645,7 +2652,7 @@ Module bytes_.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_slice : M.IsAssociatedFunction.Trait Self "slice" slice.
+    Global Instance AssociatedFunction_slice : M.IsAssociatedFunction.C Self "slice" slice.
     Admitted.
     Global Typeclasses Opaque slice.
     
@@ -2683,7 +2690,7 @@ Module bytes_.
       end.
     
     Global Instance AssociatedFunction_slice_ref :
-      M.IsAssociatedFunction.Trait Self "slice_ref" slice_ref.
+      M.IsAssociatedFunction.C Self "slice_ref" slice_ref.
     Admitted.
     Global Typeclasses Opaque slice_ref.
     
@@ -2721,7 +2728,7 @@ Module bytes_.
       end.
     
     Global Instance AssociatedFunction_split_off :
-      M.IsAssociatedFunction.Trait Self "split_off" split_off.
+      M.IsAssociatedFunction.C Self "split_off" split_off.
     Admitted.
     Global Typeclasses Opaque split_off.
     
@@ -2758,8 +2765,7 @@ Module bytes_.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_split_to :
-      M.IsAssociatedFunction.Trait Self "split_to" split_to.
+    Global Instance AssociatedFunction_split_to : M.IsAssociatedFunction.C Self "split_to" split_to.
     Admitted.
     Global Typeclasses Opaque split_to.
   End Impl_alloy_primitives_bytes__Bytes.

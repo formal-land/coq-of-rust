@@ -16,8 +16,7 @@ Module convert.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_identity :
-    M.IsFunction.Trait "core::convert::identity" identity.
+  Global Instance Instance_IsFunction_identity : M.IsFunction.C "core::convert::identity" identity.
   Admitted.
   Global Typeclasses Opaque identity.
   

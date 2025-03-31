@@ -3,34 +3,39 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module bls12_381.
   Module g2_msm.
-    Definition value_PRECOMPILE : Value.t :=
-      M.run_constant
-        ltac:(M.monadic
-          (M.alloc (|
-            Value.StructTuple
-              "revm_precompile::PrecompileWithAddress"
-              [
-                M.call_closure (|
-                  Ty.path "alloy_primitives::bits::address::Address",
-                  M.get_function (| "revm_precompile::u64_to_address", [], [] |),
-                  [ M.read (| M.get_constant "revm_precompile::bls12_381::g2_msm::ADDRESS" |) ]
-                |);
-                (* ReifyFnPointer *)
-                M.pointer_coercion
-                  (M.get_function (| "revm_precompile::bls12_381::g2_msm::g2_msm", [], [] |))
-              ]
-          |))).
+    Definition value_PRECOMPILE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          Value.StructTuple
+            "revm_precompile::PrecompileWithAddress"
+            [
+              M.call_closure (|
+                Ty.path "alloy_primitives::bits::address::Address",
+                M.get_function (| "revm_precompile::u64_to_address", [], [] |),
+                [
+                  M.read (|
+                    get_constant (| "revm_precompile::bls12_381::g2_msm::ADDRESS", Ty.path "u64" |)
+                  |)
+                ]
+              |);
+              (* ReifyFnPointer *)
+              M.pointer_coercion
+                (M.get_function (| "revm_precompile::bls12_381::g2_msm::g2_msm", [], [] |))
+            ]
+        |))).
     
-    Axiom Constant_value_PRECOMPILE :
-      (M.get_constant "revm_precompile::bls12_381::g2_msm::PRECOMPILE") = value_PRECOMPILE.
-    Global Hint Rewrite Constant_value_PRECOMPILE : constant_rewrites.
+    Global Instance Instance_IsConstant_value_PRECOMPILE :
+      M.IsFunction.C "revm_precompile::bls12_381::g2_msm::PRECOMPILE" value_PRECOMPILE.
+    Admitted.
+    Global Typeclasses Opaque value_PRECOMPILE.
     
-    Definition value_ADDRESS : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 16 |))).
+    Definition value_ADDRESS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 16 |))).
     
-    Axiom Constant_value_ADDRESS :
-      (M.get_constant "revm_precompile::bls12_381::g2_msm::ADDRESS") = value_ADDRESS.
-    Global Hint Rewrite Constant_value_ADDRESS : constant_rewrites.
+    Global Instance Instance_IsConstant_value_ADDRESS :
+      M.IsFunction.C "revm_precompile::bls12_381::g2_msm::ADDRESS" value_ADDRESS.
+    Admitted.
+    Global Typeclasses Opaque value_ADDRESS.
     
     (*
     pub(super) fn g2_msm(input: &Bytes, gas_limit: u64) -> PrecompileResult {
@@ -153,8 +158,10 @@ Module bls12_381.
                                       BinOp.Wrap.rem (|
                                         M.read (| input_len |),
                                         M.read (|
-                                          M.get_constant
-                                            "revm_precompile::bls12_381::g2_mul::INPUT_LENGTH"
+                                          get_constant (|
+                                            "revm_precompile::bls12_381::g2_mul::INPUT_LENGTH",
+                                            Ty.path "usize"
+                                          |)
                                         |)
                                       |),
                                       Value.Integer IntegerKind.Usize 0
@@ -258,8 +265,11 @@ Module bls12_381.
                                                                                   M.deref (|
                                                                                     M.borrow (|
                                                                                       Pointer.Kind.Ref,
-                                                                                      M.get_constant
-                                                                                        "revm_precompile::bls12_381::g2_mul::INPUT_LENGTH"
+                                                                                      get_constant (|
+                                                                                        "revm_precompile::bls12_381::g2_mul::INPUT_LENGTH",
+                                                                                        Ty.path
+                                                                                          "usize"
+                                                                                      |)
                                                                                     |)
                                                                                   |)
                                                                                 |)
@@ -316,7 +326,12 @@ Module bls12_381.
                   M.alloc (|
                     BinOp.Wrap.div (|
                       M.read (| input_len |),
-                      M.read (| M.get_constant "revm_precompile::bls12_381::g2_mul::INPUT_LENGTH" |)
+                      M.read (|
+                        get_constant (|
+                          "revm_precompile::bls12_381::g2_mul::INPUT_LENGTH",
+                          Ty.path "usize"
+                        |)
+                      |)
                     |)
                   |) in
                 let~ required_gas : Ty.path "u64" :=
@@ -331,7 +346,10 @@ Module bls12_381.
                       [
                         M.read (| k |);
                         M.read (|
-                          M.get_constant "revm_precompile::bls12_381::g2_mul::BASE_GAS_FEE"
+                          get_constant (|
+                            "revm_precompile::bls12_381::g2_mul::BASE_GAS_FEE",
+                            Ty.path "u64"
+                          |)
                         |)
                       ]
                     |)
@@ -430,7 +448,10 @@ Module bls12_381.
                         BinOp.Wrap.mul (|
                           M.read (| k |),
                           M.read (|
-                            M.get_constant "revm_precompile::bls12_381::utils::SCALAR_LENGTH"
+                            get_constant (|
+                              "revm_precompile::bls12_381::utils::SCALAR_LENGTH",
+                              Ty.path "usize"
+                            |)
                           |)
                         |)
                       ]
@@ -622,8 +643,10 @@ Module bls12_381.
                                                             BinOp.Wrap.mul (|
                                                               M.read (| i |),
                                                               M.read (|
-                                                                M.get_constant
-                                                                  "revm_precompile::bls12_381::g2_mul::INPUT_LENGTH"
+                                                                get_constant (|
+                                                                  "revm_precompile::bls12_381::g2_mul::INPUT_LENGTH",
+                                                                  Ty.path "usize"
+                                                                |)
                                                               |)
                                                             |));
                                                           ("end_",
@@ -631,13 +654,17 @@ Module bls12_381.
                                                               BinOp.Wrap.mul (|
                                                                 M.read (| i |),
                                                                 M.read (|
-                                                                  M.get_constant
-                                                                    "revm_precompile::bls12_381::g2_mul::INPUT_LENGTH"
+                                                                  get_constant (|
+                                                                    "revm_precompile::bls12_381::g2_mul::INPUT_LENGTH",
+                                                                    Ty.path "usize"
+                                                                  |)
                                                                 |)
                                                               |),
                                                               M.read (|
-                                                                M.get_constant
-                                                                  "revm_precompile::bls12_381::g2::G2_INPUT_ITEM_LENGTH"
+                                                                get_constant (|
+                                                                  "revm_precompile::bls12_381::g2::G2_INPUT_ITEM_LENGTH",
+                                                                  Ty.path "usize"
+                                                                |)
                                                               |)
                                                             |))
                                                         ]
@@ -1170,13 +1197,19 @@ Module bls12_381.
                                                                                               i
                                                                                             |),
                                                                                             M.read (|
-                                                                                              M.get_constant
-                                                                                                "revm_precompile::bls12_381::g2_mul::INPUT_LENGTH"
+                                                                                              get_constant (|
+                                                                                                "revm_precompile::bls12_381::g2_mul::INPUT_LENGTH",
+                                                                                                Ty.path
+                                                                                                  "usize"
+                                                                                              |)
                                                                                             |)
                                                                                           |),
                                                                                           M.read (|
-                                                                                            M.get_constant
-                                                                                              "revm_precompile::bls12_381::g2::G2_INPUT_ITEM_LENGTH"
+                                                                                            get_constant (|
+                                                                                              "revm_precompile::bls12_381::g2::G2_INPUT_ITEM_LENGTH",
+                                                                                              Ty.path
+                                                                                                "usize"
+                                                                                            |)
                                                                                           |)
                                                                                         |));
                                                                                       ("end_",
@@ -1187,18 +1220,27 @@ Module bls12_381.
                                                                                                 i
                                                                                               |),
                                                                                               M.read (|
-                                                                                                M.get_constant
-                                                                                                  "revm_precompile::bls12_381::g2_mul::INPUT_LENGTH"
+                                                                                                get_constant (|
+                                                                                                  "revm_precompile::bls12_381::g2_mul::INPUT_LENGTH",
+                                                                                                  Ty.path
+                                                                                                    "usize"
+                                                                                                |)
                                                                                               |)
                                                                                             |),
                                                                                             M.read (|
-                                                                                              M.get_constant
-                                                                                                "revm_precompile::bls12_381::g2::G2_INPUT_ITEM_LENGTH"
+                                                                                              get_constant (|
+                                                                                                "revm_precompile::bls12_381::g2::G2_INPUT_ITEM_LENGTH",
+                                                                                                Ty.path
+                                                                                                  "usize"
+                                                                                              |)
                                                                                             |)
                                                                                           |),
                                                                                           M.read (|
-                                                                                            M.get_constant
-                                                                                              "revm_precompile::bls12_381::utils::SCALAR_LENGTH"
+                                                                                            get_constant (|
+                                                                                              "revm_precompile::bls12_381::utils::SCALAR_LENGTH",
+                                                                                              Ty.path
+                                                                                                "usize"
+                                                                                            |)
                                                                                           |)
                                                                                         |))
                                                                                     ]
@@ -1451,7 +1493,12 @@ Module bls12_381.
                             |)
                           |)
                         |);
-                        M.read (| M.get_constant "revm_precompile::bls12_381::utils::NBITS" |)
+                        M.read (|
+                          get_constant (|
+                            "revm_precompile::bls12_381::utils::NBITS",
+                            Ty.path "usize"
+                          |)
+                        |)
                       ]
                     |)
                   |) in
@@ -1527,7 +1574,7 @@ Module bls12_381.
       end.
     
     Global Instance Instance_IsFunction_g2_msm :
-      M.IsFunction.Trait "revm_precompile::bls12_381::g2_msm::g2_msm" g2_msm.
+      M.IsFunction.C "revm_precompile::bls12_381::g2_msm::g2_msm" g2_msm.
     Admitted.
     Global Typeclasses Opaque g2_msm.
   End g2_msm.

@@ -1,10 +1,9 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import links.M.
 Require Import core.cmp.
-Require Import core.intrinsics.
+Require Import core.intrinsics.links.mod.
 Require Import core.links.option.
 Require Import core.ops.links.function.
-Require Import core.links.intrinsics.
 Require Export core.links.cmpOrdering.
 
 (*

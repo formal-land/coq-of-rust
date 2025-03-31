@@ -168,8 +168,7 @@ Module Impl_contract_ref_FlipperRef.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_init_env :
-    M.IsAssociatedFunction.Trait Self "init_env" init_env.
+  Global Instance AssociatedFunction_init_env : M.IsAssociatedFunction.C Self "init_env" init_env.
   Admitted.
   Global Typeclasses Opaque init_env.
   
@@ -191,7 +190,7 @@ Module Impl_contract_ref_FlipperRef.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_env : M.IsAssociatedFunction.Trait Self "env" env.
+  Global Instance AssociatedFunction_env : M.IsAssociatedFunction.C Self "env" env.
   Admitted.
   Global Typeclasses Opaque env.
   
@@ -209,7 +208,7 @@ Module Impl_contract_ref_FlipperRef.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
   Admitted.
   Global Typeclasses Opaque new.
   
@@ -245,7 +244,7 @@ Module Impl_contract_ref_FlipperRef.
     end.
   
   Global Instance AssociatedFunction_new_default :
-    M.IsAssociatedFunction.Trait Self "new_default" new_default.
+    M.IsAssociatedFunction.C Self "new_default" new_default.
   Admitted.
   Global Typeclasses Opaque new_default.
   
@@ -305,7 +304,7 @@ Module Impl_contract_ref_FlipperRef.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_try_new : M.IsAssociatedFunction.Trait Self "try_new" try_new.
+  Global Instance AssociatedFunction_try_new : M.IsAssociatedFunction.C Self "try_new" try_new.
   Admitted.
   Global Typeclasses Opaque try_new.
   
@@ -344,7 +343,7 @@ Module Impl_contract_ref_FlipperRef.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_flip : M.IsAssociatedFunction.Trait Self "flip" flip.
+  Global Instance AssociatedFunction_flip : M.IsAssociatedFunction.C Self "flip" flip.
   Admitted.
   Global Typeclasses Opaque flip.
   
@@ -368,7 +367,7 @@ Module Impl_contract_ref_FlipperRef.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_get : M.IsAssociatedFunction.Trait Self "get" get.
+  Global Instance AssociatedFunction_get : M.IsAssociatedFunction.C Self "get" get.
   Admitted.
   Global Typeclasses Opaque get.
 End Impl_contract_ref_FlipperRef.
@@ -432,7 +431,7 @@ Module Impl_contract_ref_ContractRef.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
   Admitted.
   Global Typeclasses Opaque new.
   
@@ -508,7 +507,7 @@ Module Impl_contract_ref_ContractRef.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_try_new : M.IsAssociatedFunction.Trait Self "try_new" try_new.
+  Global Instance AssociatedFunction_try_new : M.IsAssociatedFunction.C Self "try_new" try_new.
   Admitted.
   Global Typeclasses Opaque try_new.
   
@@ -545,7 +544,7 @@ Module Impl_contract_ref_ContractRef.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_flip : M.IsAssociatedFunction.Trait Self "flip" flip.
+  Global Instance AssociatedFunction_flip : M.IsAssociatedFunction.C Self "flip" flip.
   Admitted.
   Global Typeclasses Opaque flip.
   
@@ -576,7 +575,7 @@ Module Impl_contract_ref_ContractRef.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_get : M.IsAssociatedFunction.Trait Self "get" get.
+  Global Instance AssociatedFunction_get : M.IsAssociatedFunction.C Self "get" get.
   Admitted.
   Global Typeclasses Opaque get.
 End Impl_contract_ref_ContractRef.

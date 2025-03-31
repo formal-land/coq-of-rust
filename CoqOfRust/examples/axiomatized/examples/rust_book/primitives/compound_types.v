@@ -3,5 +3,5 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "compound_types::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "compound_types::main" main.
 Admitted.

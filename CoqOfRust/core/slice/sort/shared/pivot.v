@@ -5,13 +5,19 @@ Module slice.
   Module sort.
     Module shared.
       Module pivot.
-        Definition value_PSEUDO_MEDIAN_REC_THRESHOLD : Value.t :=
-          M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 64 |))).
+        Definition value_PSEUDO_MEDIAN_REC_THRESHOLD
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
+          ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 64 |))).
         
-        Axiom Constant_value_PSEUDO_MEDIAN_REC_THRESHOLD :
-          (M.get_constant "core::slice::sort::shared::pivot::PSEUDO_MEDIAN_REC_THRESHOLD") =
+        Global Instance Instance_IsConstant_value_PSEUDO_MEDIAN_REC_THRESHOLD :
+          M.IsFunction.C
+            "core::slice::sort::shared::pivot::PSEUDO_MEDIAN_REC_THRESHOLD"
             value_PSEUDO_MEDIAN_REC_THRESHOLD.
-        Global Hint Rewrite Constant_value_PSEUDO_MEDIAN_REC_THRESHOLD : constant_rewrites.
+        Admitted.
+        Global Typeclasses Opaque value_PSEUDO_MEDIAN_REC_THRESHOLD.
         
         (*
         pub fn choose_pivot<T, F: FnMut(&T, &T) -> bool>(v: &[T], is_less: &mut F) -> usize {
@@ -157,8 +163,10 @@ Module slice.
                               BinOp.lt (|
                                 M.read (| len |),
                                 M.read (|
-                                  M.get_constant
-                                    "core::slice::sort::shared::pivot::PSEUDO_MEDIAN_REC_THRESHOLD"
+                                  get_constant (|
+                                    "core::slice::sort::shared::pivot::PSEUDO_MEDIAN_REC_THRESHOLD",
+                                    Ty.path "usize"
+                                  |)
                                 |)
                               |)
                             |)) in
@@ -251,7 +259,7 @@ Module slice.
           end.
         
         Global Instance Instance_IsFunction_choose_pivot :
-          M.IsFunction.Trait "core::slice::sort::shared::pivot::choose_pivot" choose_pivot.
+          M.IsFunction.C "core::slice::sort::shared::pivot::choose_pivot" choose_pivot.
         Admitted.
         Global Typeclasses Opaque choose_pivot.
         
@@ -302,8 +310,10 @@ Module slice.
                                     Value.Integer IntegerKind.Usize 8
                                   |),
                                   M.read (|
-                                    M.get_constant
-                                      "core::slice::sort::shared::pivot::PSEUDO_MEDIAN_REC_THRESHOLD"
+                                    get_constant (|
+                                      "core::slice::sort::shared::pivot::PSEUDO_MEDIAN_REC_THRESHOLD",
+                                      Ty.path "usize"
+                                    |)
                                   |)
                                 |)
                               |)) in
@@ -505,7 +515,7 @@ Module slice.
           end.
         
         Global Instance Instance_IsFunction_median3_rec :
-          M.IsFunction.Trait "core::slice::sort::shared::pivot::median3_rec" median3_rec.
+          M.IsFunction.C "core::slice::sort::shared::pivot::median3_rec" median3_rec.
         Admitted.
         Global Typeclasses Opaque median3_rec.
         
@@ -674,7 +684,7 @@ Module slice.
           end.
         
         Global Instance Instance_IsFunction_median3 :
-          M.IsFunction.Trait "core::slice::sort::shared::pivot::median3" median3.
+          M.IsFunction.C "core::slice::sort::shared::pivot::median3" median3.
         Admitted.
         Global Typeclasses Opaque median3.
       End pivot.

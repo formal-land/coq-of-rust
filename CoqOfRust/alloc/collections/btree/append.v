@@ -114,7 +114,7 @@ Module collections.
         
         Global Instance AssociatedFunction_append_from_sorted_iters :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait
+          M.IsAssociatedFunction.C
             (Self K V)
             "append_from_sorted_iters"
             (append_from_sorted_iters K V).
@@ -410,8 +410,10 @@ Module collections.
                                                               ]
                                                             |),
                                                             M.read (|
-                                                              M.get_constant
-                                                                "alloc::collections::btree::node::CAPACITY"
+                                                              get_constant (|
+                                                                "alloc::collections::btree::node::CAPACITY",
+                                                                Ty.path "usize"
+                                                              |)
                                                             |)
                                                           |)
                                                         |)) in
@@ -670,8 +672,11 @@ Module collections.
                                                                                     ]
                                                                                   |),
                                                                                   M.read (|
-                                                                                    M.get_constant
-                                                                                      "alloc::collections::btree::node::CAPACITY"
+                                                                                    get_constant (|
+                                                                                      "alloc::collections::btree::node::CAPACITY",
+                                                                                      Ty.path
+                                                                                        "usize"
+                                                                                    |)
                                                                                   |)
                                                                                 |)
                                                                               |)) in
@@ -1310,7 +1315,7 @@ Module collections.
         
         Global Instance AssociatedFunction_bulk_push :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "bulk_push" (bulk_push K V).
+          M.IsAssociatedFunction.C (Self K V) "bulk_push" (bulk_push K V).
         Admitted.
         Global Typeclasses Opaque bulk_push.
       End Impl_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Owned_K_V_alloc_collections_btree_node_marker_LeafOrInternal.

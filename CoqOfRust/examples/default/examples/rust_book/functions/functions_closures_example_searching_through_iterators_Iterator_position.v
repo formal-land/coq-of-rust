@@ -487,7 +487,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait
+  M.IsFunction.C
     "functions_closures_example_searching_through_iterators_Iterator_position::main"
     main.
 Admitted.

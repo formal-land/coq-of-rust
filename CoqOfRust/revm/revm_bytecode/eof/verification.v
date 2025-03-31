@@ -34,7 +34,7 @@ Module eof.
       end.
     
     Global Instance Instance_IsFunction_validate_raw_eof :
-      M.IsFunction.Trait "revm_bytecode::eof::verification::validate_raw_eof" validate_raw_eof.
+      M.IsFunction.C "revm_bytecode::eof::verification::validate_raw_eof" validate_raw_eof.
     Admitted.
     Global Typeclasses Opaque validate_raw_eof.
     
@@ -104,8 +104,10 @@ Module eof.
                                     ]
                                   |),
                                   M.read (|
-                                    M.get_constant
-                                      "revm_specification::constants::MAX_INITCODE_SIZE"
+                                    get_constant (|
+                                      "revm_specification::constants::MAX_INITCODE_SIZE",
+                                      Ty.path "usize"
+                                    |)
                                   |)
                                 |)
                               |)) in
@@ -373,7 +375,7 @@ Module eof.
       end.
     
     Global Instance Instance_IsFunction_validate_raw_eof_inner :
-      M.IsFunction.Trait
+      M.IsFunction.C
         "revm_bytecode::eof::verification::validate_raw_eof_inner"
         validate_raw_eof_inner.
     Admitted.
@@ -407,7 +409,7 @@ Module eof.
       end.
     
     Global Instance Instance_IsFunction_validate_eof :
-      M.IsFunction.Trait "revm_bytecode::eof::verification::validate_eof" validate_eof.
+      M.IsFunction.C "revm_bytecode::eof::verification::validate_eof" validate_eof.
     Admitted.
     Global Typeclasses Opaque validate_eof.
     
@@ -1648,7 +1650,7 @@ Module eof.
       end.
     
     Global Instance Instance_IsFunction_validate_eof_inner :
-      M.IsFunction.Trait "revm_bytecode::eof::verification::validate_eof_inner" validate_eof_inner.
+      M.IsFunction.C "revm_bytecode::eof::verification::validate_eof_inner" validate_eof_inner.
     Admitted.
     Global Typeclasses Opaque validate_eof_inner.
     
@@ -3059,7 +3061,7 @@ Module eof.
       end.
     
     Global Instance Instance_IsFunction_validate_eof_codes :
-      M.IsFunction.Trait "revm_bytecode::eof::verification::validate_eof_codes" validate_eof_codes.
+      M.IsFunction.C "revm_bytecode::eof::verification::validate_eof_codes" validate_eof_codes.
     Admitted.
     Global Typeclasses Opaque validate_eof_codes.
     
@@ -6101,7 +6103,7 @@ Module eof.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -6209,7 +6211,7 @@ Module eof.
         end.
       
       Global Instance AssociatedFunction_access_code :
-        M.IsAssociatedFunction.Trait Self "access_code" access_code.
+        M.IsAssociatedFunction.C Self "access_code" access_code.
       Admitted.
       Global Typeclasses Opaque access_code.
       
@@ -6424,7 +6426,7 @@ Module eof.
         end.
       
       Global Instance AssociatedFunction_set_subcontainer_type :
-        M.IsAssociatedFunction.Trait Self "set_subcontainer_type" set_subcontainer_type.
+        M.IsAssociatedFunction.C Self "set_subcontainer_type" set_subcontainer_type.
       Admitted.
       Global Typeclasses Opaque set_subcontainer_type.
     End Impl_revm_bytecode_eof_verification_AccessTracker.
@@ -6678,7 +6680,7 @@ Module eof.
         end.
       
       Global Instance AssociatedFunction_is_initcode :
-        M.IsAssociatedFunction.Trait Self "is_initcode" is_initcode.
+        M.IsAssociatedFunction.C Self "is_initcode" is_initcode.
       Admitted.
       Global Typeclasses Opaque is_initcode.
     End Impl_revm_bytecode_eof_verification_CodeType.
@@ -7636,7 +7638,18 @@ Module eof.
                                   M.borrow (|
                                     Pointer.Kind.Ref,
                                     M.SubPointer.get_array_field (|
-                                      M.get_constant "revm_bytecode::opcode::OPCODE_INFO",
+                                      get_constant (|
+                                        "revm_bytecode::opcode::OPCODE_INFO",
+                                        Ty.apply
+                                          (Ty.path "array")
+                                          [ Value.Integer IntegerKind.Usize 256 ]
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::option::Option")
+                                              []
+                                              [ Ty.path "revm_bytecode::opcode::OpCodeInfo" ]
+                                          ]
+                                      |),
                                       M.cast (Ty.path "usize") (M.read (| op |))
                                     |)
                                   |)
@@ -9360,7 +9373,7 @@ Module eof.
       end.
     
     Global Instance Instance_IsFunction_validate_eof_code :
-      M.IsFunction.Trait "revm_bytecode::eof::verification::validate_eof_code" validate_eof_code.
+      M.IsFunction.C "revm_bytecode::eof::verification::validate_eof_code" validate_eof_code.
     Admitted.
     Global Typeclasses Opaque validate_eof_code.
     
@@ -9606,7 +9619,7 @@ Module eof.
           end.
         
         Global Instance AssociatedFunction_mark_as_immediate :
-          M.IsAssociatedFunction.Trait Self "mark_as_immediate" mark_as_immediate.
+          M.IsAssociatedFunction.C Self "mark_as_immediate" mark_as_immediate.
         Admitted.
         Global Typeclasses Opaque mark_as_immediate.
       End Impl_revm_bytecode_eof_verification_validate_eof_code_InstructionInfo.
@@ -9634,8 +9647,10 @@ Module eof.
                 [
                   ("is_immediate", Value.Bool false);
                   ("is_jumpdest", Value.Bool false);
-                  ("smallest", M.read (| M.get_constant "core::num::MAX" |));
-                  ("biggest", M.read (| M.get_constant "core::num::MIN" |))
+                  ("smallest",
+                    M.read (| get_associated_constant (| Ty.path "i32", "MAX", Ty.path "i32" |) |));
+                  ("biggest",
+                    M.read (| get_associated_constant (| Ty.path "i32", "MIN", Ty.path "i32" |) |))
                 ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.

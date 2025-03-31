@@ -71,7 +71,7 @@ Module pow.
     
     Global Instance AssociatedFunction_checked_pow :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait (Self BITS LIMBS) "checked_pow" (checked_pow BITS LIMBS).
+      M.IsAssociatedFunction.C (Self BITS LIMBS) "checked_pow" (checked_pow BITS LIMBS).
     Admitted.
     Global Typeclasses Opaque checked_pow.
     
@@ -128,7 +128,9 @@ Module pow.
                             M.use
                               (M.alloc (|
                                 BinOp.eq (|
-                                  M.read (| M.get_constant "ruint::pow::BITS" |),
+                                  M.read (|
+                                    get_constant (| "ruint::pow::BITS", Ty.path "usize" |)
+                                  |),
                                   Value.Integer IntegerKind.Usize 0
                                 |)
                               |)) in
@@ -187,7 +189,11 @@ Module pow.
                                         M.borrow (| Pointer.Kind.Ref, exp |);
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.get_constant "ruint::ZERO"
+                                          get_associated_constant (|
+                                            Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                            "ZERO",
+                                            Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                                          |)
                                         |)
                                       ]
                                     |)
@@ -362,7 +368,7 @@ Module pow.
     
     Global Instance AssociatedFunction_overflowing_pow :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait (Self BITS LIMBS) "overflowing_pow" (overflowing_pow BITS LIMBS).
+      M.IsAssociatedFunction.C (Self BITS LIMBS) "overflowing_pow" (overflowing_pow BITS LIMBS).
     Admitted.
     Global Typeclasses Opaque overflowing_pow.
     
@@ -398,7 +404,7 @@ Module pow.
     
     Global Instance AssociatedFunction_pow :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait (Self BITS LIMBS) "pow" (pow BITS LIMBS).
+      M.IsAssociatedFunction.C (Self BITS LIMBS) "pow" (pow BITS LIMBS).
     Admitted.
     Global Typeclasses Opaque pow.
     
@@ -452,7 +458,11 @@ Module pow.
                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let _ :=
                       M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool true |) in
-                    M.get_constant "ruint::MAX"))
+                    get_associated_constant (|
+                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                      "MAX",
+                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                    |)))
               ]
             |)
           |)))
@@ -461,7 +471,7 @@ Module pow.
     
     Global Instance AssociatedFunction_saturating_pow :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait (Self BITS LIMBS) "saturating_pow" (saturating_pow BITS LIMBS).
+      M.IsAssociatedFunction.C (Self BITS LIMBS) "saturating_pow" (saturating_pow BITS LIMBS).
     Admitted.
     Global Typeclasses Opaque saturating_pow.
     
@@ -512,7 +522,9 @@ Module pow.
                             M.use
                               (M.alloc (|
                                 BinOp.eq (|
-                                  M.read (| M.get_constant "ruint::pow::BITS" |),
+                                  M.read (|
+                                    get_constant (| "ruint::pow::BITS", Ty.path "usize" |)
+                                  |),
                                   Value.Integer IntegerKind.Usize 0
                                 |)
                               |)) in
@@ -565,7 +577,11 @@ Module pow.
                                         M.borrow (| Pointer.Kind.Ref, exp |);
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.get_constant "ruint::ZERO"
+                                          get_associated_constant (|
+                                            Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                            "ZERO",
+                                            Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                                          |)
                                         |)
                                       ]
                                     |)
@@ -690,7 +706,7 @@ Module pow.
     
     Global Instance AssociatedFunction_wrapping_pow :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait (Self BITS LIMBS) "wrapping_pow" (wrapping_pow BITS LIMBS).
+      M.IsAssociatedFunction.C (Self BITS LIMBS) "wrapping_pow" (wrapping_pow BITS LIMBS).
     Admitted.
     Global Typeclasses Opaque wrapping_pow.
     
@@ -763,7 +779,12 @@ Module pow.
                               (M.alloc (|
                                 BinOp.lt (|
                                   M.read (| exp |),
-                                  M.read (| M.get_constant "ruint::pow::approx_pow2::LN2_1P5" |)
+                                  M.read (|
+                                    get_constant (|
+                                      "ruint::pow::approx_pow2::LN2_1P5",
+                                      Ty.path "f64"
+                                    |)
+                                  |)
                                 |)
                               |)) in
                           let _ :=
@@ -797,7 +818,21 @@ Module pow.
                                                 M.return_ (|
                                                   Value.StructTuple
                                                     "core::option::Option::Some"
-                                                    [ M.read (| M.get_constant "ruint::ZERO" |) ]
+                                                    [
+                                                      M.read (|
+                                                        get_associated_constant (|
+                                                          Ty.apply
+                                                            (Ty.path "ruint::Uint")
+                                                            [ BITS; LIMBS ]
+                                                            [],
+                                                          "ZERO",
+                                                          Ty.apply
+                                                            (Ty.path "ruint::Uint")
+                                                            [ BITS; LIMBS ]
+                                                            []
+                                                        |)
+                                                      |)
+                                                    ]
                                                 |)
                                               |)
                                             |)
@@ -873,7 +908,13 @@ Module pow.
                                   M.read (| exp |),
                                   M.cast
                                     (Ty.path "f64")
-                                    (M.read (| M.get_constant "ruint::BITS'1" |))
+                                    (M.read (|
+                                      get_associated_constant (|
+                                        Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                        "BITS",
+                                        Ty.path "usize"
+                                      |)
+                                    |))
                                 |)
                               |)) in
                           let _ :=
@@ -916,7 +957,9 @@ Module pow.
                           M.get_associated_function (| Ty.path "f64", "exp2", [], [] |),
                           [ M.read (| fract |) ]
                         |),
-                        M.read (| M.get_constant "ruint::pow::approx_pow2::EXP2_63" |)
+                        M.read (|
+                          get_constant (| "ruint::pow::approx_pow2::EXP2_63", Ty.path "f64" |)
+                        |)
                       |))
                   |) in
                 M.match_operator (|
@@ -1319,7 +1362,7 @@ Module pow.
     
     Global Instance AssociatedFunction_approx_pow2 :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait (Self BITS LIMBS) "approx_pow2" (approx_pow2 BITS LIMBS).
+      M.IsAssociatedFunction.C (Self BITS LIMBS) "approx_pow2" (approx_pow2 BITS LIMBS).
     Admitted.
     Global Typeclasses Opaque approx_pow2.
   End Impl_ruint_Uint_BITS_LIMBS.

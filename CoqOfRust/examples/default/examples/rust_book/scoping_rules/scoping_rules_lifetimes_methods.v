@@ -38,7 +38,7 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_add_one : M.IsAssociatedFunction.Trait Self "add_one" add_one.
+  Global Instance AssociatedFunction_add_one : M.IsAssociatedFunction.C Self "add_one" add_one.
   Admitted.
   Global Typeclasses Opaque add_one.
   
@@ -129,7 +129,7 @@ Module Impl_scoping_rules_lifetimes_methods_Owner.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_print : M.IsAssociatedFunction.Trait Self "print" print.
+  Global Instance AssociatedFunction_print : M.IsAssociatedFunction.C Self "print" print.
   Admitted.
   Global Typeclasses Opaque print.
 End Impl_scoping_rules_lifetimes_methods_Owner.
@@ -185,6 +185,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "scoping_rules_lifetimes_methods::main" main.
+  M.IsFunction.C "scoping_rules_lifetimes_methods::main" main.
 Admitted.
 Global Typeclasses Opaque main.

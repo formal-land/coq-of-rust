@@ -95,5 +95,5 @@ End Impl_core_ops_arith_Add_operator_overloading_Foo_for_operator_overloading_Ba
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "operator_overloading::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "operator_overloading::main" main.
 Admitted.

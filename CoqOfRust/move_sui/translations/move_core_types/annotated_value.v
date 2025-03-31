@@ -2,27 +2,29 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module annotated_value.
-  Definition value_MOVE_STRUCT_NAME : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| mk_str (| "struct" |) |))).
+  Definition value_MOVE_STRUCT_NAME (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| mk_str (| "struct" |) |))).
   
-  Axiom Constant_value_MOVE_STRUCT_NAME :
-    (M.get_constant "move_core_types::annotated_value::MOVE_STRUCT_NAME") = value_MOVE_STRUCT_NAME.
-  Global Hint Rewrite Constant_value_MOVE_STRUCT_NAME : constant_rewrites.
+  Global Instance Instance_IsConstant_value_MOVE_STRUCT_NAME :
+    M.IsFunction.C "move_core_types::annotated_value::MOVE_STRUCT_NAME" value_MOVE_STRUCT_NAME.
+  Admitted.
+  Global Typeclasses Opaque value_MOVE_STRUCT_NAME.
   
-  Definition value_MOVE_STRUCT_TYPE : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| mk_str (| "type" |) |))).
+  Definition value_MOVE_STRUCT_TYPE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| mk_str (| "type" |) |))).
   
-  Axiom Constant_value_MOVE_STRUCT_TYPE :
-    (M.get_constant "move_core_types::annotated_value::MOVE_STRUCT_TYPE") = value_MOVE_STRUCT_TYPE.
-  Global Hint Rewrite Constant_value_MOVE_STRUCT_TYPE : constant_rewrites.
+  Global Instance Instance_IsConstant_value_MOVE_STRUCT_TYPE :
+    M.IsFunction.C "move_core_types::annotated_value::MOVE_STRUCT_TYPE" value_MOVE_STRUCT_TYPE.
+  Admitted.
+  Global Typeclasses Opaque value_MOVE_STRUCT_TYPE.
   
-  Definition value_MOVE_STRUCT_FIELDS : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| mk_str (| "fields" |) |))).
+  Definition value_MOVE_STRUCT_FIELDS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| mk_str (| "fields" |) |))).
   
-  Axiom Constant_value_MOVE_STRUCT_FIELDS :
-    (M.get_constant "move_core_types::annotated_value::MOVE_STRUCT_FIELDS") =
-      value_MOVE_STRUCT_FIELDS.
-  Global Hint Rewrite Constant_value_MOVE_STRUCT_FIELDS : constant_rewrites.
+  Global Instance Instance_IsConstant_value_MOVE_STRUCT_FIELDS :
+    M.IsFunction.C "move_core_types::annotated_value::MOVE_STRUCT_FIELDS" value_MOVE_STRUCT_FIELDS.
+  Admitted.
+  Global Typeclasses Opaque value_MOVE_STRUCT_FIELDS.
   
   (* StructRecord
     {
@@ -2369,7 +2371,18 @@ Module annotated_value.
                 M.read (| __deserializer |);
                 mk_str (| "MoveFieldLayout" |);
                 M.read (|
-                  M.get_constant "move_core_types::annotated_value::_'1::deserialize::FIELDS"
+                  get_constant (|
+                    "move_core_types::annotated_value::_'1::deserialize::FIELDS",
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                      ]
+                  |)
                 |);
                 Value.StructRecord
                   "move_core_types::annotated_value::_'1::deserialize::__Visitor"
@@ -2718,7 +2731,18 @@ Module annotated_value.
                 M.read (| __deserializer |);
                 mk_str (| "MoveStructLayout" |);
                 M.read (|
-                  M.get_constant "move_core_types::annotated_value::_'3::deserialize::FIELDS"
+                  get_constant (|
+                    "move_core_types::annotated_value::_'3::deserialize::FIELDS",
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                      ]
+                  |)
                 |);
                 Value.StructRecord
                   "move_core_types::annotated_value::_'3::deserialize::__Visitor"
@@ -3182,7 +3206,18 @@ Module annotated_value.
                 M.read (| __deserializer |);
                 mk_str (| "MoveTypeLayout" |);
                 M.read (|
-                  M.get_constant "move_core_types::annotated_value::_'5::deserialize::VARIANTS"
+                  get_constant (|
+                    "move_core_types::annotated_value::_'5::deserialize::VARIANTS",
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                      ]
+                  |)
                 |);
                 Value.StructRecord
                   "move_core_types::annotated_value::_'5::deserialize::__Visitor"
@@ -3226,7 +3261,7 @@ Module annotated_value.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
   End Impl_move_core_types_annotated_value_MoveFieldLayout.
@@ -4187,7 +4222,7 @@ Module annotated_value.
       end.
     
     Global Instance AssociatedFunction_simple_deserialize :
-      M.IsAssociatedFunction.Trait Self "simple_deserialize" simple_deserialize.
+      M.IsAssociatedFunction.C Self "simple_deserialize" simple_deserialize.
     Admitted.
     Global Typeclasses Opaque simple_deserialize.
     
@@ -4488,7 +4523,7 @@ Module annotated_value.
       end.
     
     Global Instance AssociatedFunction_visit_deserialize :
-      M.IsAssociatedFunction.Trait Self "visit_deserialize" visit_deserialize.
+      M.IsAssociatedFunction.C Self "visit_deserialize" visit_deserialize.
     Admitted.
     Global Typeclasses Opaque visit_deserialize.
     
@@ -4552,7 +4587,7 @@ Module annotated_value.
       end.
     
     Global Instance AssociatedFunction_simple_serialize :
-      M.IsAssociatedFunction.Trait Self "simple_serialize" simple_serialize.
+      M.IsAssociatedFunction.C Self "simple_serialize" simple_serialize.
     Admitted.
     Global Typeclasses Opaque simple_serialize.
     
@@ -4870,7 +4905,7 @@ Module annotated_value.
       end.
     
     Global Instance AssociatedFunction_undecorate :
-      M.IsAssociatedFunction.Trait Self "undecorate" undecorate.
+      M.IsAssociatedFunction.C Self "undecorate" undecorate.
     Admitted.
     Global Typeclasses Opaque undecorate.
   End Impl_move_core_types_annotated_value_MoveValue.
@@ -5115,7 +5150,7 @@ Module annotated_value.
     end.
   
   Global Instance Instance_IsFunction_serialize_values :
-    M.IsFunction.Trait "move_core_types::annotated_value::serialize_values" serialize_values.
+    M.IsFunction.C "move_core_types::annotated_value::serialize_values" serialize_values.
   Admitted.
   Global Typeclasses Opaque serialize_values.
   
@@ -5139,7 +5174,7 @@ Module annotated_value.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -5287,7 +5322,7 @@ Module annotated_value.
       end.
     
     Global Instance AssociatedFunction_simple_deserialize :
-      M.IsAssociatedFunction.Trait Self "simple_deserialize" simple_deserialize.
+      M.IsAssociatedFunction.C Self "simple_deserialize" simple_deserialize.
     Admitted.
     Global Typeclasses Opaque simple_deserialize.
     
@@ -5588,7 +5623,7 @@ Module annotated_value.
       end.
     
     Global Instance AssociatedFunction_visit_deserialize :
-      M.IsAssociatedFunction.Trait Self "visit_deserialize" visit_deserialize.
+      M.IsAssociatedFunction.C Self "visit_deserialize" visit_deserialize.
     Admitted.
     Global Typeclasses Opaque visit_deserialize.
     
@@ -5799,7 +5834,7 @@ Module annotated_value.
       end.
     
     Global Instance AssociatedFunction_into_fields :
-      M.IsAssociatedFunction.Trait Self "into_fields" into_fields.
+      M.IsAssociatedFunction.C Self "into_fields" into_fields.
     Admitted.
     Global Typeclasses Opaque into_fields.
     
@@ -5955,7 +5990,7 @@ Module annotated_value.
       end.
     
     Global Instance AssociatedFunction_undecorate :
-      M.IsAssociatedFunction.Trait Self "undecorate" undecorate.
+      M.IsAssociatedFunction.C Self "undecorate" undecorate.
     Admitted.
     Global Typeclasses Opaque undecorate.
   End Impl_move_core_types_annotated_value_MoveStruct.
@@ -5980,7 +6015,7 @@ Module annotated_value.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -6143,7 +6178,7 @@ Module annotated_value.
       end.
     
     Global Instance AssociatedFunction_into_fields :
-      M.IsAssociatedFunction.Trait Self "into_fields" into_fields.
+      M.IsAssociatedFunction.C Self "into_fields" into_fields.
     Admitted.
     Global Typeclasses Opaque into_fields.
   End Impl_move_core_types_annotated_value_MoveStructLayout.
@@ -10409,8 +10444,10 @@ Module annotated_value.
                               [
                                 M.read (| serializer |);
                                 M.read (|
-                                  M.get_constant
-                                    "move_core_types::annotated_value::MOVE_STRUCT_NAME"
+                                  get_constant (|
+                                    "move_core_types::annotated_value::MOVE_STRUCT_NAME",
+                                    Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                                  |)
                                 |);
                                 Value.Integer IntegerKind.Usize 2
                               ]
@@ -10566,7 +10603,10 @@ Module annotated_value.
                             [
                               M.borrow (| Pointer.Kind.MutRef, t |);
                               M.read (|
-                                M.get_constant "move_core_types::annotated_value::MOVE_STRUCT_TYPE"
+                                get_constant (|
+                                  "move_core_types::annotated_value::MOVE_STRUCT_TYPE",
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                                |)
                               |);
                               M.borrow (|
                                 Pointer.Kind.Ref,
@@ -10752,8 +10792,10 @@ Module annotated_value.
                             [
                               M.borrow (| Pointer.Kind.MutRef, t |);
                               M.read (|
-                                M.get_constant
-                                  "move_core_types::annotated_value::MOVE_STRUCT_FIELDS"
+                                get_constant (|
+                                  "move_core_types::annotated_value::MOVE_STRUCT_FIELDS",
+                                  Ty.apply (Ty.path "&") [] [ Ty.path "str" ]
+                                |)
                               |);
                               M.borrow (|
                                 Pointer.Kind.Ref,

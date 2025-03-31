@@ -100,7 +100,7 @@ Module panicking.
     end.
   
   Global Instance Instance_IsFunction_panic_fmt :
-    M.IsFunction.Trait "core::panicking::panic_fmt" panic_fmt.
+    M.IsFunction.C "core::panicking::panic_fmt" panic_fmt.
   Admitted.
   Global Typeclasses Opaque panic_fmt.
   
@@ -108,7 +108,7 @@ Module panicking.
     Parameter panic_impl : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
     
     Global Instance Instance_IsFunction_panic_impl :
-      M.IsFunction.Trait "core::panicking::panic_fmt::panic_impl" panic_impl.
+      M.IsFunction.C "core::panicking::panic_fmt::panic_impl" panic_impl.
     Admitted.
   End panic_fmt.
   
@@ -173,7 +173,7 @@ Module panicking.
     end.
   
   Global Instance Instance_IsFunction_panic_nounwind_fmt :
-    M.IsFunction.Trait "core::panicking::panic_nounwind_fmt" panic_nounwind_fmt.
+    M.IsFunction.C "core::panicking::panic_nounwind_fmt" panic_nounwind_fmt.
   Admitted.
   Global Typeclasses Opaque panic_nounwind_fmt.
   
@@ -182,7 +182,7 @@ Module panicking.
       Parameter panic_impl : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
       
       Global Instance Instance_IsFunction_panic_impl :
-        M.IsFunction.Trait "core::panicking::panic_nounwind_fmt::runtime::panic_impl" panic_impl.
+        M.IsFunction.C "core::panicking::panic_nounwind_fmt::runtime::panic_impl" panic_impl.
       Admitted.
     End runtime.
   End panic_nounwind_fmt.
@@ -234,7 +234,7 @@ Module panicking.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_panic : M.IsFunction.Trait "core::panicking::panic" panic.
+  Global Instance Instance_IsFunction_panic : M.IsFunction.C "core::panicking::panic" panic.
   Admitted.
   Global Typeclasses Opaque panic.
   
@@ -284,7 +284,7 @@ Module panicking.
       end.
     
     Global Instance Instance_IsFunction_panic_const_add_overflow :
-      M.IsFunction.Trait
+      M.IsFunction.C
         "core::panicking::panic_const::panic_const_add_overflow"
         panic_const_add_overflow.
     Admitted.
@@ -337,7 +337,7 @@ Module panicking.
       end.
     
     Global Instance Instance_IsFunction_panic_const_sub_overflow :
-      M.IsFunction.Trait
+      M.IsFunction.C
         "core::panicking::panic_const::panic_const_sub_overflow"
         panic_const_sub_overflow.
     Admitted.
@@ -390,7 +390,7 @@ Module panicking.
       end.
     
     Global Instance Instance_IsFunction_panic_const_mul_overflow :
-      M.IsFunction.Trait
+      M.IsFunction.C
         "core::panicking::panic_const::panic_const_mul_overflow"
         panic_const_mul_overflow.
     Admitted.
@@ -441,7 +441,7 @@ Module panicking.
       end.
     
     Global Instance Instance_IsFunction_panic_const_div_overflow :
-      M.IsFunction.Trait
+      M.IsFunction.C
         "core::panicking::panic_const::panic_const_div_overflow"
         panic_const_div_overflow.
     Admitted.
@@ -495,7 +495,7 @@ Module panicking.
       end.
     
     Global Instance Instance_IsFunction_panic_const_rem_overflow :
-      M.IsFunction.Trait
+      M.IsFunction.C
         "core::panicking::panic_const::panic_const_rem_overflow"
         panic_const_rem_overflow.
     Admitted.
@@ -546,7 +546,7 @@ Module panicking.
       end.
     
     Global Instance Instance_IsFunction_panic_const_neg_overflow :
-      M.IsFunction.Trait
+      M.IsFunction.C
         "core::panicking::panic_const::panic_const_neg_overflow"
         panic_const_neg_overflow.
     Admitted.
@@ -599,7 +599,7 @@ Module panicking.
       end.
     
     Global Instance Instance_IsFunction_panic_const_shr_overflow :
-      M.IsFunction.Trait
+      M.IsFunction.C
         "core::panicking::panic_const::panic_const_shr_overflow"
         panic_const_shr_overflow.
     Admitted.
@@ -652,7 +652,7 @@ Module panicking.
       end.
     
     Global Instance Instance_IsFunction_panic_const_shl_overflow :
-      M.IsFunction.Trait
+      M.IsFunction.C
         "core::panicking::panic_const::panic_const_shl_overflow"
         panic_const_shl_overflow.
     Admitted.
@@ -703,7 +703,7 @@ Module panicking.
       end.
     
     Global Instance Instance_IsFunction_panic_const_div_by_zero :
-      M.IsFunction.Trait
+      M.IsFunction.C
         "core::panicking::panic_const::panic_const_div_by_zero"
         panic_const_div_by_zero.
     Admitted.
@@ -761,7 +761,7 @@ Module panicking.
       end.
     
     Global Instance Instance_IsFunction_panic_const_rem_by_zero :
-      M.IsFunction.Trait
+      M.IsFunction.C
         "core::panicking::panic_const::panic_const_rem_by_zero"
         panic_const_rem_by_zero.
     Admitted.
@@ -818,7 +818,7 @@ Module panicking.
       end.
     
     Global Instance Instance_IsFunction_panic_const_coroutine_resumed :
-      M.IsFunction.Trait
+      M.IsFunction.C
         "core::panicking::panic_const::panic_const_coroutine_resumed"
         panic_const_coroutine_resumed.
     Admitted.
@@ -875,7 +875,7 @@ Module panicking.
       end.
     
     Global Instance Instance_IsFunction_panic_const_async_fn_resumed :
-      M.IsFunction.Trait
+      M.IsFunction.C
         "core::panicking::panic_const::panic_const_async_fn_resumed"
         panic_const_async_fn_resumed.
     Admitted.
@@ -932,7 +932,7 @@ Module panicking.
       end.
     
     Global Instance Instance_IsFunction_panic_const_async_gen_fn_resumed :
-      M.IsFunction.Trait
+      M.IsFunction.C
         "core::panicking::panic_const::panic_const_async_gen_fn_resumed"
         panic_const_async_gen_fn_resumed.
     Admitted.
@@ -990,7 +990,7 @@ Module panicking.
       end.
     
     Global Instance Instance_IsFunction_panic_const_gen_fn_none :
-      M.IsFunction.Trait
+      M.IsFunction.C
         "core::panicking::panic_const::panic_const_gen_fn_none"
         panic_const_gen_fn_none.
     Admitted.
@@ -1047,7 +1047,7 @@ Module panicking.
       end.
     
     Global Instance Instance_IsFunction_panic_const_coroutine_resumed_panic :
-      M.IsFunction.Trait
+      M.IsFunction.C
         "core::panicking::panic_const::panic_const_coroutine_resumed_panic"
         panic_const_coroutine_resumed_panic.
     Admitted.
@@ -1104,7 +1104,7 @@ Module panicking.
       end.
     
     Global Instance Instance_IsFunction_panic_const_async_fn_resumed_panic :
-      M.IsFunction.Trait
+      M.IsFunction.C
         "core::panicking::panic_const::panic_const_async_fn_resumed_panic"
         panic_const_async_fn_resumed_panic.
     Admitted.
@@ -1161,7 +1161,7 @@ Module panicking.
       end.
     
     Global Instance Instance_IsFunction_panic_const_async_gen_fn_resumed_panic :
-      M.IsFunction.Trait
+      M.IsFunction.C
         "core::panicking::panic_const::panic_const_async_gen_fn_resumed_panic"
         panic_const_async_gen_fn_resumed_panic.
     Admitted.
@@ -1223,7 +1223,7 @@ Module panicking.
       end.
     
     Global Instance Instance_IsFunction_panic_const_gen_fn_none_panic :
-      M.IsFunction.Trait
+      M.IsFunction.C
         "core::panicking::panic_const::panic_const_gen_fn_none_panic"
         panic_const_gen_fn_none_panic.
     Admitted.
@@ -1268,7 +1268,7 @@ Module panicking.
     end.
   
   Global Instance Instance_IsFunction_panic_nounwind :
-    M.IsFunction.Trait "core::panicking::panic_nounwind" panic_nounwind.
+    M.IsFunction.C "core::panicking::panic_nounwind" panic_nounwind.
   Admitted.
   Global Typeclasses Opaque panic_nounwind.
   
@@ -1310,7 +1310,7 @@ Module panicking.
     end.
   
   Global Instance Instance_IsFunction_panic_nounwind_nobacktrace :
-    M.IsFunction.Trait "core::panicking::panic_nounwind_nobacktrace" panic_nounwind_nobacktrace.
+    M.IsFunction.C "core::panicking::panic_nounwind_nobacktrace" panic_nounwind_nobacktrace.
   Admitted.
   Global Typeclasses Opaque panic_nounwind_nobacktrace.
   
@@ -1343,7 +1343,7 @@ Module panicking.
     end.
   
   Global Instance Instance_IsFunction_panic_explicit :
-    M.IsFunction.Trait "core::panicking::panic_explicit" panic_explicit.
+    M.IsFunction.C "core::panicking::panic_explicit" panic_explicit.
   Admitted.
   Global Typeclasses Opaque panic_explicit.
   
@@ -1419,7 +1419,7 @@ Module panicking.
     end.
   
   Global Instance Instance_IsFunction_unreachable_display :
-    M.IsFunction.Trait "core::panicking::unreachable_display" unreachable_display.
+    M.IsFunction.C "core::panicking::unreachable_display" unreachable_display.
   Admitted.
   Global Typeclasses Opaque unreachable_display.
   
@@ -1446,7 +1446,7 @@ Module panicking.
     end.
   
   Global Instance Instance_IsFunction_panic_str_2015 :
-    M.IsFunction.Trait "core::panicking::panic_str_2015" panic_str_2015.
+    M.IsFunction.C "core::panicking::panic_str_2015" panic_str_2015.
   Admitted.
   Global Typeclasses Opaque panic_str_2015.
   
@@ -1517,7 +1517,7 @@ Module panicking.
     end.
   
   Global Instance Instance_IsFunction_panic_display :
-    M.IsFunction.Trait "core::panicking::panic_display" panic_display.
+    M.IsFunction.C "core::panicking::panic_display" panic_display.
   Admitted.
   Global Typeclasses Opaque panic_display.
   
@@ -1640,7 +1640,7 @@ Module panicking.
     end.
   
   Global Instance Instance_IsFunction_panic_bounds_check :
-    M.IsFunction.Trait "core::panicking::panic_bounds_check" panic_bounds_check.
+    M.IsFunction.C "core::panicking::panic_bounds_check" panic_bounds_check.
   Admitted.
   Global Typeclasses Opaque panic_bounds_check.
   
@@ -1832,7 +1832,7 @@ Module panicking.
     end.
   
   Global Instance Instance_IsFunction_panic_misaligned_pointer_dereference :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "core::panicking::panic_misaligned_pointer_dereference"
       panic_misaligned_pointer_dereference.
   Admitted.
@@ -1857,7 +1857,7 @@ Module panicking.
     end.
   
   Global Instance Instance_IsFunction_panic_cannot_unwind :
-    M.IsFunction.Trait "core::panicking::panic_cannot_unwind" panic_cannot_unwind.
+    M.IsFunction.C "core::panicking::panic_cannot_unwind" panic_cannot_unwind.
   Admitted.
   Global Typeclasses Opaque panic_cannot_unwind.
   
@@ -1880,7 +1880,7 @@ Module panicking.
     end.
   
   Global Instance Instance_IsFunction_panic_in_cleanup :
-    M.IsFunction.Trait "core::panicking::panic_in_cleanup" panic_in_cleanup.
+    M.IsFunction.C "core::panicking::panic_in_cleanup" panic_in_cleanup.
   Admitted.
   Global Typeclasses Opaque panic_in_cleanup.
   
@@ -1964,7 +1964,7 @@ Module panicking.
     end.
   
   Global Instance Instance_IsFunction_const_panic_fmt :
-    M.IsFunction.Trait "core::panicking::const_panic_fmt" const_panic_fmt.
+    M.IsFunction.C "core::panicking::const_panic_fmt" const_panic_fmt.
   Admitted.
   Global Typeclasses Opaque const_panic_fmt.
   
@@ -2092,7 +2092,7 @@ Module panicking.
     end.
   
   Global Instance Instance_IsFunction_assert_failed :
-    M.IsFunction.Trait "core::panicking::assert_failed" assert_failed.
+    M.IsFunction.C "core::panicking::assert_failed" assert_failed.
   Admitted.
   Global Typeclasses Opaque assert_failed.
   
@@ -2145,7 +2145,7 @@ Module panicking.
     end.
   
   Global Instance Instance_IsFunction_assert_matches_failed :
-    M.IsFunction.Trait "core::panicking::assert_matches_failed" assert_matches_failed.
+    M.IsFunction.C "core::panicking::assert_matches_failed" assert_matches_failed.
   Admitted.
   Global Typeclasses Opaque assert_matches_failed.
   
@@ -2515,7 +2515,7 @@ Module panicking.
     end.
   
   Global Instance Instance_IsFunction_assert_failed_inner :
-    M.IsFunction.Trait "core::panicking::assert_failed_inner" assert_failed_inner.
+    M.IsFunction.C "core::panicking::assert_failed_inner" assert_failed_inner.
   Admitted.
   Global Typeclasses Opaque assert_failed_inner.
 End panicking.

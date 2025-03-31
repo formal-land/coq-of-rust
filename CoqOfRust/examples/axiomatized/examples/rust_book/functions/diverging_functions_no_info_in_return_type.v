@@ -4,11 +4,11 @@ Require Import CoqOfRust.CoqOfRust.
 Parameter some_fn : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_some_fn :
-  M.IsFunction.Trait "diverging_functions_no_info_in_return_type::some_fn" some_fn.
+  M.IsFunction.C "diverging_functions_no_info_in_return_type::some_fn" some_fn.
 Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "diverging_functions_no_info_in_return_type::main" main.
+  M.IsFunction.C "diverging_functions_no_info_in_return_type::main" main.
 Admitted.

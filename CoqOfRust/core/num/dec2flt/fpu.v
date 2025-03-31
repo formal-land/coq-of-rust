@@ -13,7 +13,7 @@ Module num.
           end.
         
         Global Instance Instance_IsFunction_set_precision :
-          M.IsFunction.Trait "core::num::dec2flt::fpu::fpu_precision::set_precision" set_precision.
+          M.IsFunction.C "core::num::dec2flt::fpu::fpu_precision::set_precision" set_precision.
         Admitted.
         Global Typeclasses Opaque set_precision.
       End fpu_precision.

@@ -1223,7 +1223,7 @@ Module instruction_result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_is_ok : M.IsAssociatedFunction.Trait Self "is_ok" is_ok.
+    Global Instance AssociatedFunction_is_ok : M.IsAssociatedFunction.C Self "is_ok" is_ok.
     Admitted.
     Global Typeclasses Opaque is_ok.
     
@@ -1377,7 +1377,7 @@ Module instruction_result.
       end.
     
     Global Instance AssociatedFunction_is_ok_or_revert :
-      M.IsAssociatedFunction.Trait Self "is_ok_or_revert" is_ok_or_revert.
+      M.IsAssociatedFunction.C Self "is_ok_or_revert" is_ok_or_revert.
     Admitted.
     Global Typeclasses Opaque is_ok_or_revert.
     
@@ -1412,7 +1412,7 @@ Module instruction_result.
       end.
     
     Global Instance AssociatedFunction_is_continue :
-      M.IsAssociatedFunction.Trait Self "is_continue" is_continue.
+      M.IsAssociatedFunction.C Self "is_continue" is_continue.
     Admitted.
     Global Typeclasses Opaque is_continue.
     
@@ -1500,7 +1500,7 @@ Module instruction_result.
       end.
     
     Global Instance AssociatedFunction_is_revert :
-      M.IsAssociatedFunction.Trait Self "is_revert" is_revert.
+      M.IsAssociatedFunction.C Self "is_revert" is_revert.
     Admitted.
     Global Typeclasses Opaque is_revert.
     
@@ -1771,8 +1771,7 @@ Module instruction_result.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_is_error :
-      M.IsAssociatedFunction.Trait Self "is_error" is_error.
+    Global Instance AssociatedFunction_is_error : M.IsAssociatedFunction.C Self "is_error" is_error.
     Admitted.
     Global Typeclasses Opaque is_error.
   End Impl_revm_interpreter_instruction_result_InstructionResult.
@@ -3484,7 +3483,7 @@ Module instruction_result.
     
     Global Instance AssociatedFunction_is_success :
       forall (HaltReasonT : Ty.t),
-      M.IsAssociatedFunction.Trait (Self HaltReasonT) "is_success" (is_success HaltReasonT).
+      M.IsAssociatedFunction.C (Self HaltReasonT) "is_success" (is_success HaltReasonT).
     Admitted.
     Global Typeclasses Opaque is_success.
     
@@ -3538,7 +3537,7 @@ Module instruction_result.
     
     Global Instance AssociatedFunction_to_success :
       forall (HaltReasonT : Ty.t),
-      M.IsAssociatedFunction.Trait (Self HaltReasonT) "to_success" (to_success HaltReasonT).
+      M.IsAssociatedFunction.C (Self HaltReasonT) "to_success" (to_success HaltReasonT).
     Admitted.
     Global Typeclasses Opaque to_success.
     
@@ -3580,7 +3579,7 @@ Module instruction_result.
     
     Global Instance AssociatedFunction_is_revert :
       forall (HaltReasonT : Ty.t),
-      M.IsAssociatedFunction.Trait (Self HaltReasonT) "is_revert" (is_revert HaltReasonT).
+      M.IsAssociatedFunction.C (Self HaltReasonT) "is_revert" (is_revert HaltReasonT).
     Admitted.
     Global Typeclasses Opaque is_revert.
     
@@ -3623,7 +3622,7 @@ Module instruction_result.
     
     Global Instance AssociatedFunction_is_halt :
       forall (HaltReasonT : Ty.t),
-      M.IsAssociatedFunction.Trait (Self HaltReasonT) "is_halt" (is_halt HaltReasonT).
+      M.IsAssociatedFunction.C (Self HaltReasonT) "is_halt" (is_halt HaltReasonT).
     Admitted.
     Global Typeclasses Opaque is_halt.
     
@@ -3673,7 +3672,7 @@ Module instruction_result.
     
     Global Instance AssociatedFunction_to_halt :
       forall (HaltReasonT : Ty.t),
-      M.IsAssociatedFunction.Trait (Self HaltReasonT) "to_halt" (to_halt HaltReasonT).
+      M.IsAssociatedFunction.C (Self HaltReasonT) "to_halt" (to_halt HaltReasonT).
     Admitted.
     Global Typeclasses Opaque to_halt.
   End Impl_revm_interpreter_instruction_result_SuccessOrHalt_HaltReasonT.

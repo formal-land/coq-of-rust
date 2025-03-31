@@ -5176,17 +5176,30 @@ Module bits.
       
       (*             pub const ZERO: Self = Self($crate::FixedBytes::ZERO); *)
       (* Ty.path "alloy_primitives::bits::address::Address" *)
-      Definition value_ZERO : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              Value.StructTuple
-                "alloy_primitives::bits::address::Address"
-                [ M.read (| M.get_constant "alloy_primitives::bits::fixed::ZERO" |) ]
-            |))).
+      Definition value_ZERO (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            Value.StructTuple
+              "alloy_primitives::bits::address::Address"
+              [
+                M.read (|
+                  get_associated_constant (|
+                    Ty.apply
+                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                      [ Value.Integer IntegerKind.Usize 20 ]
+                      [],
+                    "ZERO",
+                    Ty.apply
+                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                      [ Value.Integer IntegerKind.Usize 20 ]
+                      []
+                  |)
+                |)
+              ]
+          |))).
       
       Global Instance AssociatedConstant_value_ZERO :
-        M.IsAssociatedConstant.Trait Self "value_ZERO" value_ZERO.
+        M.IsAssociatedFunction.C Self "ZERO" value_ZERO.
       Admitted.
       Global Typeclasses Opaque value_ZERO.
       
@@ -5207,7 +5220,7 @@ Module bits.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -5245,7 +5258,7 @@ Module bits.
         end.
       
       Global Instance AssociatedFunction_with_last_byte :
-        M.IsAssociatedFunction.Trait Self "with_last_byte" with_last_byte.
+        M.IsAssociatedFunction.C Self "with_last_byte" with_last_byte.
       Admitted.
       Global Typeclasses Opaque with_last_byte.
       
@@ -5283,7 +5296,7 @@ Module bits.
         end.
       
       Global Instance AssociatedFunction_repeat_byte :
-        M.IsAssociatedFunction.Trait Self "repeat_byte" repeat_byte.
+        M.IsAssociatedFunction.C Self "repeat_byte" repeat_byte.
       Admitted.
       Global Typeclasses Opaque repeat_byte.
       
@@ -5299,7 +5312,7 @@ Module bits.
         end.
       
       Global Instance AssociatedFunction_len_bytes :
-        M.IsAssociatedFunction.Trait Self "len_bytes" len_bytes.
+        M.IsAssociatedFunction.C Self "len_bytes" len_bytes.
       Admitted.
       Global Typeclasses Opaque len_bytes.
       
@@ -5458,7 +5471,7 @@ Module bits.
         end.
       
       Global Instance AssociatedFunction_from_slice :
-        M.IsAssociatedFunction.Trait Self "from_slice" from_slice.
+        M.IsAssociatedFunction.C Self "from_slice" from_slice.
       Admitted.
       Global Typeclasses Opaque from_slice.
       
@@ -5496,7 +5509,7 @@ Module bits.
         end.
       
       Global Instance AssociatedFunction_left_padding_from :
-        M.IsAssociatedFunction.Trait Self "left_padding_from" left_padding_from.
+        M.IsAssociatedFunction.C Self "left_padding_from" left_padding_from.
       Admitted.
       Global Typeclasses Opaque left_padding_from.
       
@@ -5534,7 +5547,7 @@ Module bits.
         end.
       
       Global Instance AssociatedFunction_right_padding_from :
-        M.IsAssociatedFunction.Trait Self "right_padding_from" right_padding_from.
+        M.IsAssociatedFunction.C Self "right_padding_from" right_padding_from.
       Admitted.
       Global Typeclasses Opaque right_padding_from.
       
@@ -5563,7 +5576,7 @@ Module bits.
         end.
       
       Global Instance AssociatedFunction_into_array :
-        M.IsAssociatedFunction.Trait Self "into_array" into_array.
+        M.IsAssociatedFunction.C Self "into_array" into_array.
       Admitted.
       Global Typeclasses Opaque into_array.
       
@@ -5623,7 +5636,7 @@ Module bits.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_covers : M.IsAssociatedFunction.Trait Self "covers" covers.
+      Global Instance AssociatedFunction_covers : M.IsAssociatedFunction.C Self "covers" covers.
       Admitted.
       Global Typeclasses Opaque covers.
       
@@ -5677,7 +5690,7 @@ Module bits.
         end.
       
       Global Instance AssociatedFunction_const_eq :
-        M.IsAssociatedFunction.Trait Self "const_eq" const_eq.
+        M.IsAssociatedFunction.C Self "const_eq" const_eq.
       Admitted.
       Global Typeclasses Opaque const_eq.
       
@@ -5730,8 +5743,7 @@ Module bits.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_bit_and :
-        M.IsAssociatedFunction.Trait Self "bit_and" bit_and.
+      Global Instance AssociatedFunction_bit_and : M.IsAssociatedFunction.C Self "bit_and" bit_and.
       Admitted.
       Global Typeclasses Opaque bit_and.
       
@@ -5784,7 +5796,7 @@ Module bits.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_bit_or : M.IsAssociatedFunction.Trait Self "bit_or" bit_or.
+      Global Instance AssociatedFunction_bit_or : M.IsAssociatedFunction.C Self "bit_or" bit_or.
       Admitted.
       Global Typeclasses Opaque bit_or.
       
@@ -5837,8 +5849,7 @@ Module bits.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_bit_xor :
-        M.IsAssociatedFunction.Trait Self "bit_xor" bit_xor.
+      Global Instance AssociatedFunction_bit_xor : M.IsAssociatedFunction.C Self "bit_xor" bit_xor.
       Admitted.
       Global Typeclasses Opaque bit_xor.
     End Impl_alloy_primitives_bits_address_Address.
@@ -11090,17 +11101,30 @@ Module bits.
       
       (*             pub const ZERO: Self = Self($crate::FixedBytes::ZERO); *)
       (* Ty.path "alloy_primitives::bits::bloom::Bloom" *)
-      Definition value_ZERO : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              Value.StructTuple
-                "alloy_primitives::bits::bloom::Bloom"
-                [ M.read (| M.get_constant "alloy_primitives::bits::fixed::ZERO" |) ]
-            |))).
+      Definition value_ZERO (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            Value.StructTuple
+              "alloy_primitives::bits::bloom::Bloom"
+              [
+                M.read (|
+                  get_associated_constant (|
+                    Ty.apply
+                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                      [ Value.Integer IntegerKind.Usize 256 ]
+                      [],
+                    "ZERO",
+                    Ty.apply
+                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                      [ Value.Integer IntegerKind.Usize 256 ]
+                      []
+                  |)
+                |)
+              ]
+          |))).
       
       Global Instance AssociatedConstant_value_ZERO :
-        M.IsAssociatedConstant.Trait Self "value_ZERO" value_ZERO.
+        M.IsAssociatedFunction.C Self "ZERO" value_ZERO.
       Admitted.
       Global Typeclasses Opaque value_ZERO.
       
@@ -11121,7 +11145,7 @@ Module bits.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -11159,7 +11183,7 @@ Module bits.
         end.
       
       Global Instance AssociatedFunction_with_last_byte :
-        M.IsAssociatedFunction.Trait Self "with_last_byte" with_last_byte.
+        M.IsAssociatedFunction.C Self "with_last_byte" with_last_byte.
       Admitted.
       Global Typeclasses Opaque with_last_byte.
       
@@ -11197,7 +11221,7 @@ Module bits.
         end.
       
       Global Instance AssociatedFunction_repeat_byte :
-        M.IsAssociatedFunction.Trait Self "repeat_byte" repeat_byte.
+        M.IsAssociatedFunction.C Self "repeat_byte" repeat_byte.
       Admitted.
       Global Typeclasses Opaque repeat_byte.
       
@@ -11213,7 +11237,7 @@ Module bits.
         end.
       
       Global Instance AssociatedFunction_len_bytes :
-        M.IsAssociatedFunction.Trait Self "len_bytes" len_bytes.
+        M.IsAssociatedFunction.C Self "len_bytes" len_bytes.
       Admitted.
       Global Typeclasses Opaque len_bytes.
       
@@ -11372,7 +11396,7 @@ Module bits.
         end.
       
       Global Instance AssociatedFunction_from_slice :
-        M.IsAssociatedFunction.Trait Self "from_slice" from_slice.
+        M.IsAssociatedFunction.C Self "from_slice" from_slice.
       Admitted.
       Global Typeclasses Opaque from_slice.
       
@@ -11410,7 +11434,7 @@ Module bits.
         end.
       
       Global Instance AssociatedFunction_left_padding_from :
-        M.IsAssociatedFunction.Trait Self "left_padding_from" left_padding_from.
+        M.IsAssociatedFunction.C Self "left_padding_from" left_padding_from.
       Admitted.
       Global Typeclasses Opaque left_padding_from.
       
@@ -11448,7 +11472,7 @@ Module bits.
         end.
       
       Global Instance AssociatedFunction_right_padding_from :
-        M.IsAssociatedFunction.Trait Self "right_padding_from" right_padding_from.
+        M.IsAssociatedFunction.C Self "right_padding_from" right_padding_from.
       Admitted.
       Global Typeclasses Opaque right_padding_from.
       
@@ -11477,7 +11501,7 @@ Module bits.
         end.
       
       Global Instance AssociatedFunction_into_array :
-        M.IsAssociatedFunction.Trait Self "into_array" into_array.
+        M.IsAssociatedFunction.C Self "into_array" into_array.
       Admitted.
       Global Typeclasses Opaque into_array.
       
@@ -11536,7 +11560,7 @@ Module bits.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_covers : M.IsAssociatedFunction.Trait Self "covers" covers.
+      Global Instance AssociatedFunction_covers : M.IsAssociatedFunction.C Self "covers" covers.
       Admitted.
       Global Typeclasses Opaque covers.
       
@@ -11590,7 +11614,7 @@ Module bits.
         end.
       
       Global Instance AssociatedFunction_const_eq :
-        M.IsAssociatedFunction.Trait Self "const_eq" const_eq.
+        M.IsAssociatedFunction.C Self "const_eq" const_eq.
       Admitted.
       Global Typeclasses Opaque const_eq.
       
@@ -11643,8 +11667,7 @@ Module bits.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_bit_and :
-        M.IsAssociatedFunction.Trait Self "bit_and" bit_and.
+      Global Instance AssociatedFunction_bit_and : M.IsAssociatedFunction.C Self "bit_and" bit_and.
       Admitted.
       Global Typeclasses Opaque bit_and.
       
@@ -11697,7 +11720,7 @@ Module bits.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_bit_or : M.IsAssociatedFunction.Trait Self "bit_or" bit_or.
+      Global Instance AssociatedFunction_bit_or : M.IsAssociatedFunction.C Self "bit_or" bit_or.
       Admitted.
       Global Typeclasses Opaque bit_or.
       
@@ -11750,8 +11773,7 @@ Module bits.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_bit_xor :
-        M.IsAssociatedFunction.Trait Self "bit_xor" bit_xor.
+      Global Instance AssociatedFunction_bit_xor : M.IsAssociatedFunction.C Self "bit_xor" bit_xor.
       Admitted.
       Global Typeclasses Opaque bit_xor.
     End Impl_alloy_primitives_bits_bloom_Bloom.
@@ -19363,17 +19385,30 @@ Module bits.
       
       (*             pub const ZERO: Self = Self($crate::FixedBytes::ZERO); *)
       (* Ty.path "alloy_primitives::bits::function::Function" *)
-      Definition value_ZERO : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              Value.StructTuple
-                "alloy_primitives::bits::function::Function"
-                [ M.read (| M.get_constant "alloy_primitives::bits::fixed::ZERO" |) ]
-            |))).
+      Definition value_ZERO (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            Value.StructTuple
+              "alloy_primitives::bits::function::Function"
+              [
+                M.read (|
+                  get_associated_constant (|
+                    Ty.apply
+                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                      [ Value.Integer IntegerKind.Usize 24 ]
+                      [],
+                    "ZERO",
+                    Ty.apply
+                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                      [ Value.Integer IntegerKind.Usize 24 ]
+                      []
+                  |)
+                |)
+              ]
+          |))).
       
       Global Instance AssociatedConstant_value_ZERO :
-        M.IsAssociatedConstant.Trait Self "value_ZERO" value_ZERO.
+        M.IsAssociatedFunction.C Self "ZERO" value_ZERO.
       Admitted.
       Global Typeclasses Opaque value_ZERO.
       
@@ -19394,7 +19429,7 @@ Module bits.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -19432,7 +19467,7 @@ Module bits.
         end.
       
       Global Instance AssociatedFunction_with_last_byte :
-        M.IsAssociatedFunction.Trait Self "with_last_byte" with_last_byte.
+        M.IsAssociatedFunction.C Self "with_last_byte" with_last_byte.
       Admitted.
       Global Typeclasses Opaque with_last_byte.
       
@@ -19470,7 +19505,7 @@ Module bits.
         end.
       
       Global Instance AssociatedFunction_repeat_byte :
-        M.IsAssociatedFunction.Trait Self "repeat_byte" repeat_byte.
+        M.IsAssociatedFunction.C Self "repeat_byte" repeat_byte.
       Admitted.
       Global Typeclasses Opaque repeat_byte.
       
@@ -19486,7 +19521,7 @@ Module bits.
         end.
       
       Global Instance AssociatedFunction_len_bytes :
-        M.IsAssociatedFunction.Trait Self "len_bytes" len_bytes.
+        M.IsAssociatedFunction.C Self "len_bytes" len_bytes.
       Admitted.
       Global Typeclasses Opaque len_bytes.
       
@@ -19645,7 +19680,7 @@ Module bits.
         end.
       
       Global Instance AssociatedFunction_from_slice :
-        M.IsAssociatedFunction.Trait Self "from_slice" from_slice.
+        M.IsAssociatedFunction.C Self "from_slice" from_slice.
       Admitted.
       Global Typeclasses Opaque from_slice.
       
@@ -19683,7 +19718,7 @@ Module bits.
         end.
       
       Global Instance AssociatedFunction_left_padding_from :
-        M.IsAssociatedFunction.Trait Self "left_padding_from" left_padding_from.
+        M.IsAssociatedFunction.C Self "left_padding_from" left_padding_from.
       Admitted.
       Global Typeclasses Opaque left_padding_from.
       
@@ -19721,7 +19756,7 @@ Module bits.
         end.
       
       Global Instance AssociatedFunction_right_padding_from :
-        M.IsAssociatedFunction.Trait Self "right_padding_from" right_padding_from.
+        M.IsAssociatedFunction.C Self "right_padding_from" right_padding_from.
       Admitted.
       Global Typeclasses Opaque right_padding_from.
       
@@ -19750,7 +19785,7 @@ Module bits.
         end.
       
       Global Instance AssociatedFunction_into_array :
-        M.IsAssociatedFunction.Trait Self "into_array" into_array.
+        M.IsAssociatedFunction.C Self "into_array" into_array.
       Admitted.
       Global Typeclasses Opaque into_array.
       
@@ -19810,7 +19845,7 @@ Module bits.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_covers : M.IsAssociatedFunction.Trait Self "covers" covers.
+      Global Instance AssociatedFunction_covers : M.IsAssociatedFunction.C Self "covers" covers.
       Admitted.
       Global Typeclasses Opaque covers.
       
@@ -19864,7 +19899,7 @@ Module bits.
         end.
       
       Global Instance AssociatedFunction_const_eq :
-        M.IsAssociatedFunction.Trait Self "const_eq" const_eq.
+        M.IsAssociatedFunction.C Self "const_eq" const_eq.
       Admitted.
       Global Typeclasses Opaque const_eq.
       
@@ -19917,8 +19952,7 @@ Module bits.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_bit_and :
-        M.IsAssociatedFunction.Trait Self "bit_and" bit_and.
+      Global Instance AssociatedFunction_bit_and : M.IsAssociatedFunction.C Self "bit_and" bit_and.
       Admitted.
       Global Typeclasses Opaque bit_and.
       
@@ -19971,7 +20005,7 @@ Module bits.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_bit_or : M.IsAssociatedFunction.Trait Self "bit_or" bit_or.
+      Global Instance AssociatedFunction_bit_or : M.IsAssociatedFunction.C Self "bit_or" bit_or.
       Admitted.
       Global Typeclasses Opaque bit_or.
       
@@ -20024,8 +20058,7 @@ Module bits.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_bit_xor :
-        M.IsAssociatedFunction.Trait Self "bit_xor" bit_xor.
+      Global Instance AssociatedFunction_bit_xor : M.IsAssociatedFunction.C Self "bit_xor" bit_xor.
       Admitted.
       Global Typeclasses Opaque bit_xor.
     End Impl_alloy_primitives_bits_function_Function.

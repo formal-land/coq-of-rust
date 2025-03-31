@@ -109,7 +109,7 @@ Definition multiply (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
   end.
 
 Global Instance Instance_IsFunction_multiply :
-  M.IsFunction.Trait "map_in_result_via_match::multiply" multiply.
+  M.IsFunction.C "map_in_result_via_match::multiply" multiply.
 Admitted.
 Global Typeclasses Opaque multiply.
 
@@ -271,8 +271,7 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_print :
-  M.IsFunction.Trait "map_in_result_via_match::print" print.
+Global Instance Instance_IsFunction_print : M.IsFunction.C "map_in_result_via_match::print" print.
 Admitted.
 Global Typeclasses Opaque print.
 
@@ -349,6 +348,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "map_in_result_via_match::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "map_in_result_via_match::main" main.
 Admitted.
 Global Typeclasses Opaque main.

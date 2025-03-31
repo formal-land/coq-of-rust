@@ -670,7 +670,20 @@ Module metadata.
               [
                 M.read (| __deserializer |);
                 mk_str (| "Metadata" |);
-                M.read (| M.get_constant "move_core_types::metadata::_'1::deserialize::FIELDS" |);
+                M.read (|
+                  get_constant (|
+                    "move_core_types::metadata::_'1::deserialize::FIELDS",
+                    Ty.apply
+                      (Ty.path "&")
+                      []
+                      [
+                        Ty.apply
+                          (Ty.path "slice")
+                          []
+                          [ Ty.apply (Ty.path "&") [] [ Ty.path "str" ] ]
+                      ]
+                  |)
+                |);
                 Value.StructRecord
                   "move_core_types::metadata::_'1::deserialize::__Visitor"
                   [

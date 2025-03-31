@@ -35,7 +35,7 @@ Definition reg_fn (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_reg_fn : M.IsFunction.Trait "generics_functions::reg_fn" reg_fn.
+Global Instance Instance_IsFunction_reg_fn : M.IsFunction.C "generics_functions::reg_fn" reg_fn.
 Admitted.
 Global Typeclasses Opaque reg_fn.
 
@@ -50,7 +50,7 @@ Definition gen_spec_t (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
   end.
 
 Global Instance Instance_IsFunction_gen_spec_t :
-  M.IsFunction.Trait "generics_functions::gen_spec_t" gen_spec_t.
+  M.IsFunction.C "generics_functions::gen_spec_t" gen_spec_t.
 Admitted.
 Global Typeclasses Opaque gen_spec_t.
 
@@ -65,7 +65,7 @@ Definition gen_spec_i32 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
   end.
 
 Global Instance Instance_IsFunction_gen_spec_i32 :
-  M.IsFunction.Trait "generics_functions::gen_spec_i32" gen_spec_i32.
+  M.IsFunction.C "generics_functions::gen_spec_i32" gen_spec_i32.
 Admitted.
 Global Typeclasses Opaque gen_spec_i32.
 
@@ -79,8 +79,7 @@ Definition generic (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_generic :
-  M.IsFunction.Trait "generics_functions::generic" generic.
+Global Instance Instance_IsFunction_generic : M.IsFunction.C "generics_functions::generic" generic.
 Admitted.
 Global Typeclasses Opaque generic.
 
@@ -156,6 +155,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "generics_functions::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "generics_functions::main" main.
 Admitted.
 Global Typeclasses Opaque main.

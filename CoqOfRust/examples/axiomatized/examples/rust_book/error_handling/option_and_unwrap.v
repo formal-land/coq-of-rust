@@ -4,15 +4,15 @@ Require Import CoqOfRust.CoqOfRust.
 Parameter give_adult : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_give_adult :
-  M.IsFunction.Trait "option_and_unwrap::give_adult" give_adult.
+  M.IsFunction.C "option_and_unwrap::give_adult" give_adult.
 Admitted.
 
 Parameter drink : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_drink : M.IsFunction.Trait "option_and_unwrap::drink" drink.
+Global Instance Instance_IsFunction_drink : M.IsFunction.C "option_and_unwrap::drink" drink.
 Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "option_and_unwrap::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "option_and_unwrap::main" main.
 Admitted.

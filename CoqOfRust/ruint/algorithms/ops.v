@@ -82,7 +82,7 @@ Module algorithms.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance Instance_IsFunction_adc : M.IsFunction.Trait "ruint::algorithms::ops::adc" adc.
+    Global Instance Instance_IsFunction_adc : M.IsFunction.C "ruint::algorithms::ops::adc" adc.
     Admitted.
     Global Typeclasses Opaque adc.
     
@@ -197,7 +197,7 @@ Module algorithms.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance Instance_IsFunction_sbb : M.IsFunction.Trait "ruint::algorithms::ops::sbb" sbb.
+    Global Instance Instance_IsFunction_sbb : M.IsFunction.C "ruint::algorithms::ops::sbb" sbb.
     Admitted.
     Global Typeclasses Opaque sbb.
   End ops.

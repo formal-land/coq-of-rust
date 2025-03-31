@@ -680,7 +680,7 @@ Module collections.
         
         Global Instance AssociatedFunction_calc_split_length :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "calc_split_length" (calc_split_length K V).
+          M.IsAssociatedFunction.C (Self K V) "calc_split_length" (calc_split_length K V).
         Admitted.
         Global Typeclasses Opaque calc_split_length.
         
@@ -1396,7 +1396,7 @@ Module collections.
         
         Global Instance AssociatedFunction_split_off :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "split_off" (split_off K V).
+          M.IsAssociatedFunction.C (Self K V) "split_off" (split_off K V).
         Admitted.
         Global Typeclasses Opaque split_off.
         
@@ -1622,7 +1622,7 @@ Module collections.
         
         Global Instance AssociatedFunction_new_pillar :
           forall (K V : Ty.t),
-          M.IsAssociatedFunction.Trait (Self K V) "new_pillar" (new_pillar K V).
+          M.IsAssociatedFunction.C (Self K V) "new_pillar" (new_pillar K V).
         Admitted.
         Global Typeclasses Opaque new_pillar.
       End Impl_alloc_collections_btree_node_NodeRef_alloc_collections_btree_node_marker_Owned_K_V_alloc_collections_btree_node_marker_LeafOrInternal.

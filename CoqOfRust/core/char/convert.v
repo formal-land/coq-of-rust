@@ -51,7 +51,7 @@ Module char.
       end.
     
     Global Instance Instance_IsFunction_from_u32 :
-      M.IsFunction.Trait "core::char::convert::from_u32" from_u32.
+      M.IsFunction.C "core::char::convert::from_u32" from_u32.
     Admitted.
     Global Typeclasses Opaque from_u32.
     
@@ -123,7 +123,7 @@ Module char.
       end.
     
     Global Instance Instance_IsFunction_from_u32_unchecked :
-      M.IsFunction.Trait "core::char::convert::from_u32_unchecked" from_u32_unchecked.
+      M.IsFunction.C "core::char::convert::from_u32_unchecked" from_u32_unchecked.
     Admitted.
     Global Typeclasses Opaque from_u32_unchecked.
     
@@ -1218,7 +1218,7 @@ Module char.
       end.
     
     Global Instance Instance_IsFunction_char_try_from_u32 :
-      M.IsFunction.Trait "core::char::convert::char_try_from_u32" char_try_from_u32.
+      M.IsFunction.C "core::char::convert::char_try_from_u32" char_try_from_u32.
     Admitted.
     Global Typeclasses Opaque char_try_from_u32.
     
@@ -1637,7 +1637,7 @@ Module char.
       end.
     
     Global Instance Instance_IsFunction_from_digit :
-      M.IsFunction.Trait "core::char::convert::from_digit" from_digit.
+      M.IsFunction.C "core::char::convert::from_digit" from_digit.
     Admitted.
     Global Typeclasses Opaque from_digit.
   End convert.

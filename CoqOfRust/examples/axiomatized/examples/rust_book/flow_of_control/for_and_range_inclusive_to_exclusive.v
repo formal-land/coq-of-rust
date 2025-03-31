@@ -4,5 +4,5 @@ Require Import CoqOfRust.CoqOfRust.
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "for_and_range_inclusive_to_exclusive::main" main.
+  M.IsFunction.C "for_and_range_inclusive_to_exclusive::main" main.
 Admitted.

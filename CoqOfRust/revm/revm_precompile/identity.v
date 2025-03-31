@@ -2,40 +2,43 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module identity.
-  Definition value_FUN : Value.t :=
-    M.run_constant
-      ltac:(M.monadic
-        (M.alloc (|
-          Value.StructTuple
-            "revm_precompile::PrecompileWithAddress"
-            [
-              M.call_closure (|
-                Ty.path "alloy_primitives::bits::address::Address",
-                M.get_function (| "revm_precompile::u64_to_address", [], [] |),
-                [ Value.Integer IntegerKind.U64 4 ]
-              |);
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (| "revm_precompile::identity::identity_run", [], [] |))
-            ]
-        |))).
+  Definition value_FUN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic
+      (M.alloc (|
+        Value.StructTuple
+          "revm_precompile::PrecompileWithAddress"
+          [
+            M.call_closure (|
+              Ty.path "alloy_primitives::bits::address::Address",
+              M.get_function (| "revm_precompile::u64_to_address", [], [] |),
+              [ Value.Integer IntegerKind.U64 4 ]
+            |);
+            (* ReifyFnPointer *)
+            M.pointer_coercion
+              (M.get_function (| "revm_precompile::identity::identity_run", [], [] |))
+          ]
+      |))).
   
-  Axiom Constant_value_FUN : (M.get_constant "revm_precompile::identity::FUN") = value_FUN.
-  Global Hint Rewrite Constant_value_FUN : constant_rewrites.
+  Global Instance Instance_IsConstant_value_FUN :
+    M.IsFunction.C "revm_precompile::identity::FUN" value_FUN.
+  Admitted.
+  Global Typeclasses Opaque value_FUN.
   
-  Definition value_IDENTITY_BASE : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 15 |))).
+  Definition value_IDENTITY_BASE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 15 |))).
   
-  Axiom Constant_value_IDENTITY_BASE :
-    (M.get_constant "revm_precompile::identity::IDENTITY_BASE") = value_IDENTITY_BASE.
-  Global Hint Rewrite Constant_value_IDENTITY_BASE : constant_rewrites.
+  Global Instance Instance_IsConstant_value_IDENTITY_BASE :
+    M.IsFunction.C "revm_precompile::identity::IDENTITY_BASE" value_IDENTITY_BASE.
+  Admitted.
+  Global Typeclasses Opaque value_IDENTITY_BASE.
   
-  Definition value_IDENTITY_PER_WORD : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 3 |))).
+  Definition value_IDENTITY_PER_WORD (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 3 |))).
   
-  Axiom Constant_value_IDENTITY_PER_WORD :
-    (M.get_constant "revm_precompile::identity::IDENTITY_PER_WORD") = value_IDENTITY_PER_WORD.
-  Global Hint Rewrite Constant_value_IDENTITY_PER_WORD : constant_rewrites.
+  Global Instance Instance_IsConstant_value_IDENTITY_PER_WORD :
+    M.IsFunction.C "revm_precompile::identity::IDENTITY_PER_WORD" value_IDENTITY_PER_WORD.
+  Admitted.
+  Global Typeclasses Opaque value_IDENTITY_PER_WORD.
   
   (*
   pub fn identity_run(input: &Bytes, gas_limit: u64) -> PrecompileResult {
@@ -91,8 +94,15 @@ Module identity.
                           |)
                         ]
                       |);
-                      M.read (| M.get_constant "revm_precompile::identity::IDENTITY_BASE" |);
-                      M.read (| M.get_constant "revm_precompile::identity::IDENTITY_PER_WORD" |)
+                      M.read (|
+                        get_constant (| "revm_precompile::identity::IDENTITY_BASE", Ty.path "u64" |)
+                      |);
+                      M.read (|
+                        get_constant (|
+                          "revm_precompile::identity::IDENTITY_PER_WORD",
+                          Ty.path "u64"
+                        |)
+                      |)
                     ]
                   |)
                 |) in
@@ -179,7 +189,7 @@ Module identity.
     end.
   
   Global Instance Instance_IsFunction_identity_run :
-    M.IsFunction.Trait "revm_precompile::identity::identity_run" identity_run.
+    M.IsFunction.C "revm_precompile::identity::identity_run" identity_run.
   Admitted.
   Global Typeclasses Opaque identity_run.
 End identity.

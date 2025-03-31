@@ -1011,7 +1011,7 @@ Module bits.
         end.
       
       Global Instance AssociatedFunction_from_word :
-        M.IsAssociatedFunction.Trait Self "from_word" from_word.
+        M.IsAssociatedFunction.C Self "from_word" from_word.
       Admitted.
       Global Typeclasses Opaque from_word.
       
@@ -1145,7 +1145,7 @@ Module bits.
         end.
       
       Global Instance AssociatedFunction_into_word :
-        M.IsAssociatedFunction.Trait Self "into_word" into_word.
+        M.IsAssociatedFunction.C Self "into_word" into_word.
       Admitted.
       Global Typeclasses Opaque into_word.
       
@@ -1212,7 +1212,7 @@ Module bits.
         end.
       
       Global Instance AssociatedFunction_parse_checksummed :
-        M.IsAssociatedFunction.Trait Self "parse_checksummed" parse_checksummed.
+        M.IsAssociatedFunction.C Self "parse_checksummed" parse_checksummed.
       Admitted.
       Global Typeclasses Opaque parse_checksummed.
       
@@ -1279,7 +1279,7 @@ Module bits.
         end.
       
       Global Instance AssociatedFunction_to_checksum :
-        M.IsAssociatedFunction.Trait Self "to_checksum" to_checksum.
+        M.IsAssociatedFunction.C Self "to_checksum" to_checksum.
       Admitted.
       Global Typeclasses Opaque to_checksum.
       
@@ -1436,7 +1436,7 @@ Module bits.
         end.
       
       Global Instance AssociatedFunction_to_checksum_raw :
-        M.IsAssociatedFunction.Trait Self "to_checksum_raw" to_checksum_raw.
+        M.IsAssociatedFunction.C Self "to_checksum_raw" to_checksum_raw.
       Admitted.
       Global Typeclasses Opaque to_checksum_raw.
       
@@ -1491,7 +1491,7 @@ Module bits.
         end.
       
       Global Instance AssociatedFunction_to_checksum_buffer :
-        M.IsAssociatedFunction.Trait Self "to_checksum_buffer" to_checksum_buffer.
+        M.IsAssociatedFunction.C Self "to_checksum_buffer" to_checksum_buffer.
       Admitted.
       Global Typeclasses Opaque to_checksum_buffer.
       
@@ -2062,7 +2062,7 @@ Module bits.
         end.
       
       Global Instance AssociatedFunction_to_checksum_inner :
-        M.IsAssociatedFunction.Trait Self "to_checksum_inner" to_checksum_inner.
+        M.IsAssociatedFunction.C Self "to_checksum_inner" to_checksum_inner.
       Admitted.
       Global Typeclasses Opaque to_checksum_inner.
       
@@ -2178,7 +2178,7 @@ Module bits.
         end.
       
       Global Instance AssociatedFunction_create2_from_code :
-        M.IsAssociatedFunction.Trait Self "create2_from_code" create2_from_code.
+        M.IsAssociatedFunction.C Self "create2_from_code" create2_from_code.
       Admitted.
       Global Typeclasses Opaque create2_from_code.
       
@@ -2276,8 +2276,7 @@ Module bits.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_create2 :
-        M.IsAssociatedFunction.Trait Self "create2" create2.
+      Global Instance AssociatedFunction_create2 : M.IsAssociatedFunction.C Self "create2" create2.
       Admitted.
       Global Typeclasses Opaque create2.
       
@@ -2554,7 +2553,7 @@ Module bits.
         end.
       
       Global Instance AssociatedFunction__create2 :
-        M.IsAssociatedFunction.Trait Self "_create2" _create2.
+        M.IsAssociatedFunction.C Self "_create2" _create2.
       Admitted.
       Global Typeclasses Opaque _create2.
       
@@ -2780,7 +2779,7 @@ Module bits.
         end.
       
       Global Instance AssociatedFunction_from_raw_public_key :
-        M.IsAssociatedFunction.Trait Self "from_raw_public_key" from_raw_public_key.
+        M.IsAssociatedFunction.C Self "from_raw_public_key" from_raw_public_key.
       Admitted.
       Global Typeclasses Opaque from_raw_public_key.
     End Impl_alloy_primitives_bits_address_Address.
@@ -3014,7 +3013,7 @@ Module bits.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -3119,7 +3118,7 @@ Module bits.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_format : M.IsAssociatedFunction.Trait Self "format" format.
+      Global Instance AssociatedFunction_format : M.IsAssociatedFunction.C Self "format" format.
       Admitted.
       Global Typeclasses Opaque format.
       
@@ -3187,7 +3186,7 @@ Module bits.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_as_str : M.IsAssociatedFunction.Trait Self "as_str" as_str.
+      Global Instance AssociatedFunction_as_str : M.IsAssociatedFunction.C Self "as_str" as_str.
       Admitted.
       Global Typeclasses Opaque as_str.
       
@@ -3270,7 +3269,7 @@ Module bits.
         end.
       
       Global Instance AssociatedFunction_as_mut_str :
-        M.IsAssociatedFunction.Trait Self "as_mut_str" as_mut_str.
+        M.IsAssociatedFunction.C Self "as_mut_str" as_mut_str.
       Admitted.
       Global Typeclasses Opaque as_mut_str.
       
@@ -3317,7 +3316,7 @@ Module bits.
         end.
       
       Global Instance AssociatedFunction_to_string :
-        M.IsAssociatedFunction.Trait Self "to_string" to_string.
+        M.IsAssociatedFunction.C Self "to_string" to_string.
       Admitted.
       Global Typeclasses Opaque to_string.
       
@@ -3361,7 +3360,7 @@ Module bits.
         end.
       
       Global Instance AssociatedFunction_into_inner :
-        M.IsAssociatedFunction.Trait Self "into_inner" into_inner.
+        M.IsAssociatedFunction.C Self "into_inner" into_inner.
       Admitted.
       Global Typeclasses Opaque into_inner.
     End Impl_alloy_primitives_bits_address_AddressChecksumBuffer.

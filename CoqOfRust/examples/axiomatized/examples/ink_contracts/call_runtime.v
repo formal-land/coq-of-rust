@@ -271,7 +271,7 @@ Module Impl_call_runtime_Env.
   Parameter call_runtime : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_call_runtime :
-    M.IsAssociatedFunction.Trait Self "call_runtime" call_runtime.
+    M.IsAssociatedFunction.C Self "call_runtime" call_runtime.
   Admitted.
 End Impl_call_runtime_Env.
 
@@ -280,29 +280,28 @@ Module Impl_call_runtime_RuntimeCaller.
   
   Parameter init_env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_init_env :
-    M.IsAssociatedFunction.Trait Self "init_env" init_env.
+  Global Instance AssociatedFunction_init_env : M.IsAssociatedFunction.C Self "init_env" init_env.
   Admitted.
   
   Parameter env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_env : M.IsAssociatedFunction.Trait Self "env" env.
+  Global Instance AssociatedFunction_env : M.IsAssociatedFunction.C Self "env" env.
   Admitted.
   
   Parameter new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
   Admitted.
   
   Parameter transfer_through_runtime : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_transfer_through_runtime :
-    M.IsAssociatedFunction.Trait Self "transfer_through_runtime" transfer_through_runtime.
+    M.IsAssociatedFunction.C Self "transfer_through_runtime" transfer_through_runtime.
   Admitted.
   
   Parameter call_nonexistent_extrinsic : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_call_nonexistent_extrinsic :
-    M.IsAssociatedFunction.Trait Self "call_nonexistent_extrinsic" call_nonexistent_extrinsic.
+    M.IsAssociatedFunction.C Self "call_nonexistent_extrinsic" call_nonexistent_extrinsic.
   Admitted.
 End Impl_call_runtime_RuntimeCaller.

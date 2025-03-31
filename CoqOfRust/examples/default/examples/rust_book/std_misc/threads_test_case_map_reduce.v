@@ -971,7 +971,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "threads_test_case_map_reduce::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "threads_test_case_map_reduce::main" main.
 Admitted.
 Global Typeclasses Opaque main.

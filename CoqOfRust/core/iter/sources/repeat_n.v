@@ -77,7 +77,7 @@ Module iter.
         end.
       
       Global Instance Instance_IsFunction_repeat_n :
-        M.IsFunction.Trait "core::iter::sources::repeat_n::repeat_n" repeat_n.
+        M.IsFunction.C "core::iter::sources::repeat_n::repeat_n" repeat_n.
       Admitted.
       Global Typeclasses Opaque repeat_n.
       
@@ -189,7 +189,7 @@ Module iter.
         
         Global Instance AssociatedFunction_element_ref :
           forall (A : Ty.t),
-          M.IsAssociatedFunction.Trait (Self A) "element_ref" (element_ref A).
+          M.IsAssociatedFunction.C (Self A) "element_ref" (element_ref A).
         Admitted.
         Global Typeclasses Opaque element_ref.
         
@@ -325,7 +325,7 @@ Module iter.
         
         Global Instance AssociatedFunction_take_element :
           forall (A : Ty.t),
-          M.IsAssociatedFunction.Trait (Self A) "take_element" (take_element A).
+          M.IsAssociatedFunction.C (Self A) "take_element" (take_element A).
         Admitted.
         Global Typeclasses Opaque take_element.
       End Impl_core_iter_sources_repeat_n_RepeatN_A.

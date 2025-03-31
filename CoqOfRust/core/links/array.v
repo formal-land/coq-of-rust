@@ -38,6 +38,64 @@ Proof.
 Defined.
 Smpl Add apply of_value_1 : of_value.
 
+(** This lemma is useful when the [repeat_nat] construct (used to build array with repetition)
+    appears and to switch it with the [φ] on its parameters. *)
+Lemma repeat_nat_φ_eq {A : Set} `{Link A} (times : Z) (value : A) :
+  Value.Array (repeat_nat (Z.to_nat times) (φ value)) =
+  φ ({| value := repeat_nat (Z.to_nat times) value |} : t A {| Integer.value := times |}).
+Proof.
+  with_strategy transparent [φ] cbn.
+  set (nat_times := Z.to_nat times).
+  induction nat_times; cbn; congruence.
+Qed.
+
+Lemma repeat_φ_eq {A : Set} `{Link A} (times : Z) (value : A) :
+  repeat (φ value) (Value.Integer IntegerKind.Usize times) =
+  M.pure (φ ({| value := repeat_nat (Z.to_nat times) value |} : t A {| Integer.value := times |})).
+Proof.
+  with_strategy transparent [φ repeat] cbn.
+  rewrite repeat_nat_φ_eq.
+  reflexivity.
+Qed.
+
+Lemma of_value_with_repeat {A : Set} `{Link A}
+    (times : Z)
+    (value' : Value.t) (value : A) :
+  value' = φ value ->
+  Value.Array (repeat_nat (Z.to_nat times) value') =
+  φ ({| value := repeat_nat (Z.to_nat times) value |} : t A {| Integer.value := times |}).
+Proof.
+  intros; subst.
+  now rewrite repeat_nat_φ_eq.
+Qed.
+Smpl Add eapply of_value_with_repeat : of_value.
+
+Definition of_value_repeat (times : Z) (value' : Value.t) :
+  OfValue.t value' ->
+  OfValue.t (Value.Array (repeat_nat (Z.to_nat times) value')).
+Proof.
+  intros [A ? value].
+  eapply OfValue.Make with
+    (A := t A {| Integer.value := times |})
+    (value := {| value := repeat_nat (Z.to_nat times) value |}).
+  subst.
+  apply repeat_nat_φ_eq.
+Defined.
+Smpl Add apply of_value_repeat : of_value.
+
+(* Definition of_value_repeat (times : nat) (value' : Value.t) :
+  OfValue.t value' ->
+  OfValue.t (Value.Array (repeat_nat times value')).
+Proof.
+  intros [A ? value].
+  eapply OfValue.Make with
+    (A := t A {| Integer.value := Z.of_nat times |})
+    (value := {| value := repeat_nat times value |}).
+  subst.
+  apply repeat_nat_φ_eq.
+Defined.
+Smpl Add apply of_value_repeat : of_value. *)
+
 Module SubPointer.
   Definition get_index (A : Set) `{Link A} (length : Usize.t) (index : Z) :
     SubPointer.Runner.t (t A length) (Pointer.Index.Array index) :=
@@ -61,22 +119,3 @@ Module SubPointer.
   Qed.
   Smpl Add eapply get_index_is_valid : run_sub_pointer.
 End SubPointer.
-
-(** This lemma is useful when the [repeat_nat] construct (used to build array with repetition)
-    appears and to switch it with the [φ] on its parameters. *)
-Lemma repeat_nat_φ_eq {A : Set} `{Link A} (times : nat) (value : A) :
-  Value.Array (repeat_nat times (φ value)) =
-  φ ({| value := repeat_nat times value |} : t A {| Integer.value := Z.of_nat times |}).
-Proof.
-  with_strategy transparent [φ] cbn.
-  induction times; cbn; congruence.
-Qed.
-
-Lemma repeat_φ_eq {A : Set} `{Link A} (times : Z) (value : A) :
-  repeat (φ value) (Value.Integer IntegerKind.Usize times) =
-  M.pure (φ ({| value := repeat_nat (Z.to_nat times) value |} : t A {| Integer.value := times |})).
-Proof.
-  with_strategy transparent [φ repeat] cbn.
-  rewrite repeat_nat_φ_eq.
-  reflexivity.
-Qed.

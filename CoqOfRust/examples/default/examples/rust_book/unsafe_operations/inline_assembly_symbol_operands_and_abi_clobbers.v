@@ -37,7 +37,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "inline_assembly_symbol_operands_and_abi_clobbers::main" main.
+  M.IsFunction.C "inline_assembly_symbol_operands_and_abi_clobbers::main" main.
 Admitted.
 Global Typeclasses Opaque main.
 
@@ -120,7 +120,7 @@ Module main.
     end.
   
   Global Instance Instance_IsFunction_foo :
-    M.IsFunction.Trait "inline_assembly_symbol_operands_and_abi_clobbers::main::foo" foo.
+    M.IsFunction.C "inline_assembly_symbol_operands_and_abi_clobbers::main::foo" foo.
   Admitted.
   Global Typeclasses Opaque foo.
   
@@ -158,7 +158,7 @@ Module main.
     end.
   
   Global Instance Instance_IsFunction_call_foo :
-    M.IsFunction.Trait "inline_assembly_symbol_operands_and_abi_clobbers::main::call_foo" call_foo.
+    M.IsFunction.C "inline_assembly_symbol_operands_and_abi_clobbers::main::call_foo" call_foo.
   Admitted.
   Global Typeclasses Opaque call_foo.
 End main.

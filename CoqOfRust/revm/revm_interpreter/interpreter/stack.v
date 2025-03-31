@@ -3,12 +3,13 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module interpreter.
   Module stack.
-    Definition value_STACK_LIMIT : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 1024 |))).
+    Definition value_STACK_LIMIT (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 1024 |))).
     
-    Axiom Constant_value_STACK_LIMIT :
-      (M.get_constant "revm_interpreter::interpreter::stack::STACK_LIMIT") = value_STACK_LIMIT.
-    Global Hint Rewrite Constant_value_STACK_LIMIT : constant_rewrites.
+    Global Instance Instance_IsConstant_value_STACK_LIMIT :
+      M.IsFunction.C "revm_interpreter::interpreter::stack::STACK_LIMIT" value_STACK_LIMIT.
+    Admitted.
+    Global Typeclasses Opaque value_STACK_LIMIT.
     
     (* StructRecord
       {
@@ -1304,7 +1305,10 @@ Module interpreter.
                                       ]
                                     |),
                                     M.read (|
-                                      M.get_constant "revm_interpreter::interpreter::stack::popn::N"
+                                      get_constant (|
+                                        "revm_interpreter::interpreter::stack::popn::N",
+                                        Ty.path "usize"
+                                      |)
                                     |)
                                   |)
                                 |)) in
@@ -1397,8 +1401,10 @@ Module interpreter.
                                     |),
                                     BinOp.Wrap.add (|
                                       M.read (|
-                                        M.get_constant
-                                          "revm_interpreter::interpreter::stack::popn_top::POPN"
+                                        get_constant (|
+                                          "revm_interpreter::interpreter::stack::popn_top::POPN",
+                                          Ty.path "usize"
+                                        |)
                                       |),
                                       Value.Integer IntegerKind.Usize 1
                                     |)
@@ -1609,7 +1615,10 @@ Module interpreter.
                     |),
                     [
                       M.read (|
-                        M.get_constant "revm_interpreter::interpreter::stack::STACK_LIMIT"
+                        get_constant (|
+                          "revm_interpreter::interpreter::stack::STACK_LIMIT",
+                          Ty.path "usize"
+                        |)
                       |)
                     ]
                   |))
@@ -1617,7 +1626,7 @@ Module interpreter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -1662,7 +1671,7 @@ Module interpreter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_len : M.IsAssociatedFunction.Trait Self "len" len.
+      Global Instance AssociatedFunction_len : M.IsAssociatedFunction.C Self "len" len.
       Admitted.
       Global Typeclasses Opaque len.
       
@@ -1708,7 +1717,7 @@ Module interpreter.
         end.
       
       Global Instance AssociatedFunction_is_empty :
-        M.IsAssociatedFunction.Trait Self "is_empty" is_empty.
+        M.IsAssociatedFunction.C Self "is_empty" is_empty.
       Admitted.
       Global Typeclasses Opaque is_empty.
       
@@ -1738,7 +1747,7 @@ Module interpreter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_data : M.IsAssociatedFunction.Trait Self "data" data.
+      Global Instance AssociatedFunction_data : M.IsAssociatedFunction.C Self "data" data.
       Admitted.
       Global Typeclasses Opaque data.
       
@@ -1774,7 +1783,7 @@ Module interpreter.
         end.
       
       Global Instance AssociatedFunction_data_mut :
-        M.IsAssociatedFunction.Trait Self "data_mut" data_mut.
+        M.IsAssociatedFunction.C Self "data_mut" data_mut.
       Admitted.
       Global Typeclasses Opaque data_mut.
       
@@ -1799,7 +1808,7 @@ Module interpreter.
         end.
       
       Global Instance AssociatedFunction_into_data :
-        M.IsAssociatedFunction.Trait Self "into_data" into_data.
+        M.IsAssociatedFunction.C Self "into_data" into_data.
       Admitted.
       Global Typeclasses Opaque into_data.
       
@@ -1883,7 +1892,7 @@ Module interpreter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_pop : M.IsAssociatedFunction.Trait Self "pop" pop.
+      Global Instance AssociatedFunction_pop : M.IsAssociatedFunction.C Self "pop" pop.
       Admitted.
       Global Typeclasses Opaque pop.
       
@@ -1959,7 +1968,7 @@ Module interpreter.
         end.
       
       Global Instance AssociatedFunction_pop_unsafe :
-        M.IsAssociatedFunction.Trait Self "pop_unsafe" pop_unsafe.
+        M.IsAssociatedFunction.C Self "pop_unsafe" pop_unsafe.
       Admitted.
       Global Typeclasses Opaque pop_unsafe.
       
@@ -2115,7 +2124,7 @@ Module interpreter.
         end.
       
       Global Instance AssociatedFunction_top_unsafe :
-        M.IsAssociatedFunction.Trait Self "top_unsafe" top_unsafe.
+        M.IsAssociatedFunction.C Self "top_unsafe" top_unsafe.
       Admitted.
       Global Typeclasses Opaque top_unsafe.
       
@@ -2151,7 +2160,10 @@ Module interpreter.
                                 (M.alloc (|
                                   BinOp.eq (|
                                     M.read (|
-                                      M.get_constant "revm_interpreter::interpreter::stack::popn::N"
+                                      get_constant (|
+                                        "revm_interpreter::interpreter::stack::popn::N",
+                                        Ty.path "usize"
+                                      |)
                                     |),
                                     Value.Integer IntegerKind.Usize 0
                                   |)
@@ -2162,7 +2174,28 @@ Module interpreter.
                               M.never_to_any (|
                                 M.read (|
                                   M.return_ (|
-                                    repeat (| M.read (| M.get_constant "ruint::ZERO" |), N |)
+                                    repeat (|
+                                      M.read (|
+                                        get_associated_constant (|
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [
+                                              Value.Integer IntegerKind.Usize 256;
+                                              Value.Integer IntegerKind.Usize 4
+                                            ]
+                                            [],
+                                          "ZERO",
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [
+                                              Value.Integer IntegerKind.Usize 256;
+                                              Value.Integer IntegerKind.Usize 4
+                                            ]
+                                            []
+                                        |)
+                                      |),
+                                      N
+                                    |)
                                   |)
                                 |)
                               |)
@@ -2181,7 +2214,30 @@ Module interpreter.
                             ]
                             []
                         ] :=
-                    M.alloc (| repeat (| M.read (| M.get_constant "ruint::ZERO" |), N |) |) in
+                    M.alloc (|
+                      repeat (|
+                        M.read (|
+                          get_associated_constant (|
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [
+                                Value.Integer IntegerKind.Usize 256;
+                                Value.Integer IntegerKind.Usize 4
+                              ]
+                              [],
+                            "ZERO",
+                            Ty.apply
+                              (Ty.path "ruint::Uint")
+                              [
+                                Value.Integer IntegerKind.Usize 256;
+                                Value.Integer IntegerKind.Usize 4
+                              ]
+                              []
+                          |)
+                        |),
+                        N
+                      |)
+                    |) in
                   let~ _ : Ty.tuple [] :=
                     M.use
                       (M.match_operator (|
@@ -2424,7 +2480,7 @@ Module interpreter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_popn : M.IsAssociatedFunction.Trait Self "popn" popn.
+      Global Instance AssociatedFunction_popn : M.IsAssociatedFunction.C Self "popn" popn.
       Admitted.
       Global Typeclasses Opaque popn.
       
@@ -2513,7 +2569,7 @@ Module interpreter.
         end.
       
       Global Instance AssociatedFunction_popn_top :
-        M.IsAssociatedFunction.Trait Self "popn_top" popn_top.
+        M.IsAssociatedFunction.C Self "popn_top" popn_top.
       Admitted.
       Global Typeclasses Opaque popn_top.
       
@@ -2581,8 +2637,10 @@ Module interpreter.
                                         ]
                                       |),
                                       M.read (|
-                                        M.get_constant
-                                          "revm_interpreter::interpreter::stack::STACK_LIMIT"
+                                        get_constant (|
+                                          "revm_interpreter::interpreter::stack::STACK_LIMIT",
+                                          Ty.path "usize"
+                                        |)
                                       |)
                                     |)
                                   |)
@@ -2755,8 +2813,10 @@ Module interpreter.
                                       ]
                                     |),
                                     M.read (|
-                                      M.get_constant
-                                        "revm_interpreter::interpreter::stack::STACK_LIMIT"
+                                      get_constant (|
+                                        "revm_interpreter::interpreter::stack::STACK_LIMIT",
+                                        Ty.path "usize"
+                                      |)
                                     |)
                                   |)
                                 |)) in
@@ -2809,7 +2869,7 @@ Module interpreter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_push : M.IsAssociatedFunction.Trait Self "push" push.
+      Global Instance AssociatedFunction_push : M.IsAssociatedFunction.C Self "push" push.
       Admitted.
       Global Typeclasses Opaque push.
       
@@ -2993,7 +3053,7 @@ Module interpreter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_peek : M.IsAssociatedFunction.Trait Self "peek" peek.
+      Global Instance AssociatedFunction_peek : M.IsAssociatedFunction.C Self "peek" peek.
       Admitted.
       Global Typeclasses Opaque peek.
       
@@ -3204,8 +3264,10 @@ Module interpreter.
                                     Value.Integer IntegerKind.Usize 1
                                   |),
                                   M.read (|
-                                    M.get_constant
-                                      "revm_interpreter::interpreter::stack::STACK_LIMIT"
+                                    get_constant (|
+                                      "revm_interpreter::interpreter::stack::STACK_LIMIT",
+                                      Ty.path "usize"
+                                    |)
                                   |)
                                 |)))
                             |)
@@ -3409,7 +3471,7 @@ Module interpreter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_dup : M.IsAssociatedFunction.Trait Self "dup" dup.
+      Global Instance AssociatedFunction_dup : M.IsAssociatedFunction.C Self "dup" dup.
       Admitted.
       Global Typeclasses Opaque dup.
       
@@ -3441,7 +3503,7 @@ Module interpreter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_swap : M.IsAssociatedFunction.Trait Self "swap" swap.
+      Global Instance AssociatedFunction_swap : M.IsAssociatedFunction.C Self "swap" swap.
       Admitted.
       Global Typeclasses Opaque swap.
       
@@ -3856,7 +3918,7 @@ Module interpreter.
         end.
       
       Global Instance AssociatedFunction_exchange :
-        M.IsAssociatedFunction.Trait Self "exchange" exchange.
+        M.IsAssociatedFunction.C Self "exchange" exchange.
       Admitted.
       Global Typeclasses Opaque exchange.
       
@@ -4041,8 +4103,10 @@ Module interpreter.
                                   BinOp.gt (|
                                     M.read (| new_len |),
                                     M.read (|
-                                      M.get_constant
-                                        "revm_interpreter::interpreter::stack::STACK_LIMIT"
+                                      get_constant (|
+                                        "revm_interpreter::interpreter::stack::STACK_LIMIT",
+                                        Ty.path "usize"
+                                      |)
                                     |)
                                   |)
                                 |)) in
@@ -5363,7 +5427,7 @@ Module interpreter.
         end.
       
       Global Instance AssociatedFunction_push_slice :
-        M.IsAssociatedFunction.Trait Self "push_slice" push_slice.
+        M.IsAssociatedFunction.C Self "push_slice" push_slice.
       Admitted.
       Global Typeclasses Opaque push_slice.
       
@@ -5547,7 +5611,7 @@ Module interpreter.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_set : M.IsAssociatedFunction.Trait Self "set" set.
+      Global Instance AssociatedFunction_set : M.IsAssociatedFunction.C Self "set" set.
       Admitted.
       Global Typeclasses Opaque set.
     End Impl_revm_interpreter_interpreter_stack_Stack.

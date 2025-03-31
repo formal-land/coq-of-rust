@@ -86,7 +86,11 @@ Module log.
                                         M.borrow (| Pointer.Kind.Ref, self |);
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.get_constant "ruint::ZERO"
+                                          get_associated_constant (|
+                                            Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                            "ZERO",
+                                            Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                                          |)
                                         |)
                                       ]
                                     |)))
@@ -127,7 +131,7 @@ Module log.
     
     Global Instance AssociatedFunction_checked_log :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait (Self BITS LIMBS) "checked_log" (checked_log BITS LIMBS).
+      M.IsAssociatedFunction.C (Self BITS LIMBS) "checked_log" (checked_log BITS LIMBS).
     Admitted.
     Global Typeclasses Opaque checked_log.
     
@@ -174,7 +178,7 @@ Module log.
     
     Global Instance AssociatedFunction_checked_log10 :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait (Self BITS LIMBS) "checked_log10" (checked_log10 BITS LIMBS).
+      M.IsAssociatedFunction.C (Self BITS LIMBS) "checked_log10" (checked_log10 BITS LIMBS).
     Admitted.
     Global Typeclasses Opaque checked_log10.
     
@@ -221,7 +225,7 @@ Module log.
     
     Global Instance AssociatedFunction_checked_log2 :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait (Self BITS LIMBS) "checked_log2" (checked_log2 BITS LIMBS).
+      M.IsAssociatedFunction.C (Self BITS LIMBS) "checked_log2" (checked_log2 BITS LIMBS).
     Admitted.
     Global Typeclasses Opaque checked_log2.
     
@@ -311,7 +315,14 @@ Module log.
                                     |),
                                     [
                                       M.borrow (| Pointer.Kind.Ref, self |);
-                                      M.borrow (| Pointer.Kind.Ref, M.get_constant "ruint::ZERO" |)
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        get_associated_constant (|
+                                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                          "ZERO",
+                                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                                        |)
+                                      |)
                                     ]
                                   |)
                                 |)
@@ -711,7 +722,17 @@ Module log.
                                                                     |);
                                                                     M.borrow (|
                                                                       Pointer.Kind.Ref,
-                                                                      M.get_constant "ruint::ZERO"
+                                                                      get_associated_constant (|
+                                                                        Ty.apply
+                                                                          (Ty.path "ruint::Uint")
+                                                                          [ BITS; LIMBS ]
+                                                                          [],
+                                                                        "ZERO",
+                                                                        Ty.apply
+                                                                          (Ty.path "ruint::Uint")
+                                                                          [ BITS; LIMBS ]
+                                                                          []
+                                                                      |)
                                                                     |)
                                                                   ]
                                                                 |)
@@ -1019,7 +1040,7 @@ Module log.
     
     Global Instance AssociatedFunction_log :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait (Self BITS LIMBS) "log" (log BITS LIMBS).
+      M.IsAssociatedFunction.C (Self BITS LIMBS) "log" (log BITS LIMBS).
     Admitted.
     Global Typeclasses Opaque log.
     
@@ -1066,7 +1087,7 @@ Module log.
     
     Global Instance AssociatedFunction_log10 :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait (Self BITS LIMBS) "log10" (log10 BITS LIMBS).
+      M.IsAssociatedFunction.C (Self BITS LIMBS) "log10" (log10 BITS LIMBS).
     Admitted.
     Global Typeclasses Opaque log10.
     
@@ -1113,7 +1134,7 @@ Module log.
     
     Global Instance AssociatedFunction_log2 :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait (Self BITS LIMBS) "log2" (log2 BITS LIMBS).
+      M.IsAssociatedFunction.C (Self BITS LIMBS) "log2" (log2 BITS LIMBS).
     Admitted.
     Global Typeclasses Opaque log2.
     
@@ -1156,7 +1177,7 @@ Module log.
     
     Global Instance AssociatedFunction_approx_log :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait (Self BITS LIMBS) "approx_log" (approx_log BITS LIMBS).
+      M.IsAssociatedFunction.C (Self BITS LIMBS) "approx_log" (approx_log BITS LIMBS).
     Admitted.
     Global Typeclasses Opaque approx_log.
     
@@ -1228,7 +1249,7 @@ Module log.
     
     Global Instance AssociatedFunction_approx_log2 :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait (Self BITS LIMBS) "approx_log2" (approx_log2 BITS LIMBS).
+      M.IsAssociatedFunction.C (Self BITS LIMBS) "approx_log2" (approx_log2 BITS LIMBS).
     Admitted.
     Global Typeclasses Opaque approx_log2.
     
@@ -1259,14 +1280,14 @@ Module log.
               |),
               [ M.read (| self |) ]
             |),
-            M.read (| M.get_constant "core::f64::consts::LOG2_10" |)
+            M.read (| get_constant (| "core::f64::consts::LOG2_10", Ty.path "f64" |) |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Global Instance AssociatedFunction_approx_log10 :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait (Self BITS LIMBS) "approx_log10" (approx_log10 BITS LIMBS).
+      M.IsAssociatedFunction.C (Self BITS LIMBS) "approx_log10" (approx_log10 BITS LIMBS).
     Admitted.
     Global Typeclasses Opaque approx_log10.
   End Impl_ruint_Uint_BITS_LIMBS.

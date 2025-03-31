@@ -165,7 +165,14 @@ Module cmp.
             |),
             [
               M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-              M.borrow (| Pointer.Kind.Ref, M.get_constant "ruint::ZERO" |)
+              M.borrow (|
+                Pointer.Kind.Ref,
+                get_associated_constant (|
+                  Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                  "ZERO",
+                  Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                |)
+              |)
             ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -173,7 +180,7 @@ Module cmp.
     
     Global Instance AssociatedFunction_is_zero :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait (Self BITS LIMBS) "is_zero" (is_zero BITS LIMBS).
+      M.IsAssociatedFunction.C (Self BITS LIMBS) "is_zero" (is_zero BITS LIMBS).
     Admitted.
     Global Typeclasses Opaque is_zero.
   End Impl_ruint_Uint_BITS_LIMBS.

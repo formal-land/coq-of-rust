@@ -16,7 +16,9 @@ Module transaction.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             BinOp.Wrap.mul (|
-              M.read (| M.get_constant "revm_specification::eip4844::GAS_PER_BLOB" |),
+              M.read (|
+                get_constant (| "revm_specification::eip4844::GAS_PER_BLOB", Ty.path "u64" |)
+              |),
               M.cast
                 (Ty.path "u64")
                 (M.call_closure (|

@@ -47,7 +47,7 @@ Module Impl_generics_new_type_idiom_Years.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_to_days : M.IsAssociatedFunction.Trait Self "to_days" to_days.
+  Global Instance AssociatedFunction_to_days : M.IsAssociatedFunction.C Self "to_days" to_days.
   Admitted.
   Global Typeclasses Opaque to_days.
 End Impl_generics_new_type_idiom_Years.
@@ -82,8 +82,7 @@ Module Impl_generics_new_type_idiom_Days.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_to_years :
-    M.IsAssociatedFunction.Trait Self "to_years" to_years.
+  Global Instance AssociatedFunction_to_years : M.IsAssociatedFunction.C Self "to_years" to_years.
   Admitted.
   Global Typeclasses Opaque to_years.
 End Impl_generics_new_type_idiom_Days.
@@ -112,7 +111,7 @@ Definition old_enough (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
   end.
 
 Global Instance Instance_IsFunction_old_enough :
-  M.IsFunction.Trait "generics_new_type_idiom::old_enough" old_enough.
+  M.IsFunction.C "generics_new_type_idiom::old_enough" old_enough.
 Admitted.
 Global Typeclasses Opaque old_enough.
 
@@ -341,6 +340,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "generics_new_type_idiom::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "generics_new_type_idiom::main" main.
 Admitted.
 Global Typeclasses Opaque main.

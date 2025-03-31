@@ -4,16 +4,16 @@ Require Import CoqOfRust.CoqOfRust.
 Parameter eat_box_i32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_eat_box_i32 :
-  M.IsFunction.Trait "scoping_rules_borrowing::eat_box_i32" eat_box_i32.
+  M.IsFunction.C "scoping_rules_borrowing::eat_box_i32" eat_box_i32.
 Admitted.
 
 Parameter borrow_i32 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_borrow_i32 :
-  M.IsFunction.Trait "scoping_rules_borrowing::borrow_i32" borrow_i32.
+  M.IsFunction.C "scoping_rules_borrowing::borrow_i32" borrow_i32.
 Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "scoping_rules_borrowing::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "scoping_rules_borrowing::main" main.
 Admitted.

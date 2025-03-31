@@ -4,11 +4,11 @@ Require Import CoqOfRust.CoqOfRust.
 Parameter double_first : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_double_first :
-  M.IsFunction.Trait "pulling_results_out_of_options::double_first" double_first.
+  M.IsFunction.C "pulling_results_out_of_options::double_first" double_first.
 Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "pulling_results_out_of_options::main" main.
+  M.IsFunction.C "pulling_results_out_of_options::main" main.
 Admitted.

@@ -197,7 +197,7 @@ Definition read_lines (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
   end.
 
 Global Instance Instance_IsFunction_read_lines :
-  M.IsFunction.Trait "file_io_read_lines_efficient_method::read_lines" read_lines.
+  M.IsFunction.C "file_io_read_lines_efficient_method::read_lines" read_lines.
 Admitted.
 Global Typeclasses Opaque read_lines.
 
@@ -469,6 +469,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "file_io_read_lines_efficient_method::main" main.
+  M.IsFunction.C "file_io_read_lines_efficient_method::main" main.
 Admitted.
 Global Typeclasses Opaque main.

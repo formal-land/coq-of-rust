@@ -133,7 +133,7 @@ Module fmt.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
       Admitted.
       Global Typeclasses Opaque new.
     End Impl_core_fmt_rt_Placeholder.
@@ -697,7 +697,7 @@ Module fmt.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -725,7 +725,7 @@ Module fmt.
         end.
       
       Global Instance AssociatedFunction_new_display :
-        M.IsAssociatedFunction.Trait Self "new_display" new_display.
+        M.IsAssociatedFunction.C Self "new_display" new_display.
       Admitted.
       Global Typeclasses Opaque new_display.
       
@@ -753,7 +753,7 @@ Module fmt.
         end.
       
       Global Instance AssociatedFunction_new_debug :
-        M.IsAssociatedFunction.Trait Self "new_debug" new_debug.
+        M.IsAssociatedFunction.C Self "new_debug" new_debug.
       Admitted.
       Global Typeclasses Opaque new_debug.
       
@@ -837,7 +837,7 @@ Module fmt.
         end.
       
       Global Instance AssociatedFunction_new_debug_noop :
-        M.IsAssociatedFunction.Trait Self "new_debug_noop" new_debug_noop.
+        M.IsAssociatedFunction.C Self "new_debug_noop" new_debug_noop.
       Admitted.
       Global Typeclasses Opaque new_debug_noop.
       
@@ -865,7 +865,7 @@ Module fmt.
         end.
       
       Global Instance AssociatedFunction_new_octal :
-        M.IsAssociatedFunction.Trait Self "new_octal" new_octal.
+        M.IsAssociatedFunction.C Self "new_octal" new_octal.
       Admitted.
       Global Typeclasses Opaque new_octal.
       
@@ -893,7 +893,7 @@ Module fmt.
         end.
       
       Global Instance AssociatedFunction_new_lower_hex :
-        M.IsAssociatedFunction.Trait Self "new_lower_hex" new_lower_hex.
+        M.IsAssociatedFunction.C Self "new_lower_hex" new_lower_hex.
       Admitted.
       Global Typeclasses Opaque new_lower_hex.
       
@@ -921,7 +921,7 @@ Module fmt.
         end.
       
       Global Instance AssociatedFunction_new_upper_hex :
-        M.IsAssociatedFunction.Trait Self "new_upper_hex" new_upper_hex.
+        M.IsAssociatedFunction.C Self "new_upper_hex" new_upper_hex.
       Admitted.
       Global Typeclasses Opaque new_upper_hex.
       
@@ -949,7 +949,7 @@ Module fmt.
         end.
       
       Global Instance AssociatedFunction_new_pointer :
-        M.IsAssociatedFunction.Trait Self "new_pointer" new_pointer.
+        M.IsAssociatedFunction.C Self "new_pointer" new_pointer.
       Admitted.
       Global Typeclasses Opaque new_pointer.
       
@@ -977,7 +977,7 @@ Module fmt.
         end.
       
       Global Instance AssociatedFunction_new_binary :
-        M.IsAssociatedFunction.Trait Self "new_binary" new_binary.
+        M.IsAssociatedFunction.C Self "new_binary" new_binary.
       Admitted.
       Global Typeclasses Opaque new_binary.
       
@@ -1005,7 +1005,7 @@ Module fmt.
         end.
       
       Global Instance AssociatedFunction_new_lower_exp :
-        M.IsAssociatedFunction.Trait Self "new_lower_exp" new_lower_exp.
+        M.IsAssociatedFunction.C Self "new_lower_exp" new_lower_exp.
       Admitted.
       Global Typeclasses Opaque new_lower_exp.
       
@@ -1033,7 +1033,7 @@ Module fmt.
         end.
       
       Global Instance AssociatedFunction_new_upper_exp :
-        M.IsAssociatedFunction.Trait Self "new_upper_exp" new_upper_exp.
+        M.IsAssociatedFunction.C Self "new_upper_exp" new_upper_exp.
       Admitted.
       Global Typeclasses Opaque new_upper_exp.
       
@@ -1059,7 +1059,7 @@ Module fmt.
         end.
       
       Global Instance AssociatedFunction_from_usize :
-        M.IsAssociatedFunction.Trait Self "from_usize" from_usize.
+        M.IsAssociatedFunction.C Self "from_usize" from_usize.
       Admitted.
       Global Typeclasses Opaque from_usize.
       
@@ -1150,7 +1150,7 @@ Module fmt.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_fmt : M.IsAssociatedFunction.Trait Self "fmt" fmt.
+      Global Instance AssociatedFunction_fmt : M.IsAssociatedFunction.C Self "fmt" fmt.
       Admitted.
       Global Typeclasses Opaque fmt.
       
@@ -1200,7 +1200,7 @@ Module fmt.
         end.
       
       Global Instance AssociatedFunction_as_usize :
-        M.IsAssociatedFunction.Trait Self "as_usize" as_usize.
+        M.IsAssociatedFunction.C Self "as_usize" as_usize.
       Admitted.
       Global Typeclasses Opaque as_usize.
       
@@ -1215,7 +1215,7 @@ Module fmt.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_none : M.IsAssociatedFunction.Trait Self "none" none.
+      Global Instance AssociatedFunction_none : M.IsAssociatedFunction.C Self "none" none.
       Admitted.
       Global Typeclasses Opaque none.
     End Impl_core_fmt_rt_Argument.
@@ -1244,7 +1244,7 @@ Module fmt.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
       Admitted.
       Global Typeclasses Opaque new.
     End Impl_core_fmt_rt_UnsafeArg.

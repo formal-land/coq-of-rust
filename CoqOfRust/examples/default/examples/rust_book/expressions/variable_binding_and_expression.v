@@ -28,6 +28,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "variable_binding_and_expression::main" main.
+  M.IsFunction.C "variable_binding_and_expression::main" main.
 Admitted.
 Global Typeclasses Opaque main.

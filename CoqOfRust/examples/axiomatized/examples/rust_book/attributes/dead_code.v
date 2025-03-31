@@ -4,22 +4,22 @@ Require Import CoqOfRust.CoqOfRust.
 Parameter used_function : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_used_function :
-  M.IsFunction.Trait "dead_code::used_function" used_function.
+  M.IsFunction.C "dead_code::used_function" used_function.
 Admitted.
 
 Parameter unused_function : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_unused_function :
-  M.IsFunction.Trait "dead_code::unused_function" unused_function.
+  M.IsFunction.C "dead_code::unused_function" unused_function.
 Admitted.
 
 Parameter noisy_unused_function : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_noisy_unused_function :
-  M.IsFunction.Trait "dead_code::noisy_unused_function" noisy_unused_function.
+  M.IsFunction.C "dead_code::noisy_unused_function" noisy_unused_function.
 Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "dead_code::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "dead_code::main" main.
 Admitted.

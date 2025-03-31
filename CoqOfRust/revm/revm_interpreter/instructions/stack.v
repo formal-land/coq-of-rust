@@ -78,7 +78,10 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant "revm_interpreter::gas::constants::BASE"
+                                        get_constant (|
+                                          "revm_interpreter::gas::constants::BASE",
+                                          Ty.path "u64"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -196,7 +199,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_pop :
-      M.IsFunction.Trait "revm_interpreter::instructions::stack::pop" pop.
+      M.IsFunction.C "revm_interpreter::instructions::stack::pop" pop.
     Admitted.
     Global Typeclasses Opaque pop.
     
@@ -374,7 +377,10 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant "revm_interpreter::gas::constants::BASE"
+                                        get_constant (|
+                                          "revm_interpreter::gas::constants::BASE",
+                                          Ty.path "u64"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -461,7 +467,25 @@ Module instructions.
                                           "stack"
                                         |)
                                       |);
-                                      M.read (| M.get_constant "ruint::ZERO" |)
+                                      M.read (|
+                                        get_associated_constant (|
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [
+                                              Value.Integer IntegerKind.Usize 256;
+                                              Value.Integer IntegerKind.Usize 4
+                                            ]
+                                            [],
+                                          "ZERO",
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [
+                                              Value.Integer IntegerKind.Usize 256;
+                                              Value.Integer IntegerKind.Usize 4
+                                            ]
+                                            []
+                                        |)
+                                      |)
                                     ]
                                   |)
                                 |)
@@ -518,7 +542,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_push0 :
-      M.IsFunction.Trait "revm_interpreter::instructions::stack::push0" push0.
+      M.IsFunction.C "revm_interpreter::instructions::stack::push0" push0.
     Admitted.
     Global Typeclasses Opaque push0.
     
@@ -604,7 +628,10 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant "revm_interpreter::gas::constants::VERYLOW"
+                                        get_constant (|
+                                          "revm_interpreter::gas::constants::VERYLOW",
+                                          Ty.path "u64"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -691,7 +718,25 @@ Module instructions.
                                           "stack"
                                         |)
                                       |);
-                                      M.read (| M.get_constant "ruint::ZERO" |)
+                                      M.read (|
+                                        get_associated_constant (|
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [
+                                              Value.Integer IntegerKind.Usize 256;
+                                              Value.Integer IntegerKind.Usize 4
+                                            ]
+                                            [],
+                                          "ZERO",
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [
+                                              Value.Integer IntegerKind.Usize 256;
+                                              Value.Integer IntegerKind.Usize 4
+                                            ]
+                                            []
+                                        |)
+                                      |)
                                     ]
                                   |)
                                 |)
@@ -850,7 +895,10 @@ Module instructions.
                                   |)
                                 |);
                                 M.read (|
-                                  M.get_constant "revm_interpreter::instructions::stack::push::N"
+                                  get_constant (|
+                                    "revm_interpreter::instructions::stack::push::N",
+                                    Ty.path "usize"
+                                  |)
                                 |)
                               ]
                             |)
@@ -900,7 +948,10 @@ Module instructions.
                                 M.cast
                                   (Ty.path "isize")
                                   (M.read (|
-                                    M.get_constant "revm_interpreter::instructions::stack::push::N"
+                                    get_constant (|
+                                      "revm_interpreter::instructions::stack::push::N",
+                                      Ty.path "usize"
+                                    |)
                                   |))
                               ]
                             |)
@@ -914,7 +965,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_push :
-      M.IsFunction.Trait "revm_interpreter::instructions::stack::push" push.
+      M.IsFunction.C "revm_interpreter::instructions::stack::push" push.
     Admitted.
     Global Typeclasses Opaque push.
     
@@ -996,7 +1047,10 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant "revm_interpreter::gas::constants::VERYLOW"
+                                        get_constant (|
+                                          "revm_interpreter::gas::constants::VERYLOW",
+                                          Ty.path "u64"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -1083,7 +1137,10 @@ Module instructions.
                                       |)
                                     |);
                                     M.read (|
-                                      M.get_constant "revm_interpreter::instructions::stack::dup::N"
+                                      get_constant (|
+                                        "revm_interpreter::instructions::stack::dup::N",
+                                        Ty.path "usize"
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -1134,7 +1191,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_dup :
-      M.IsFunction.Trait "revm_interpreter::instructions::stack::dup" dup.
+      M.IsFunction.C "revm_interpreter::instructions::stack::dup" dup.
     Admitted.
     Global Typeclasses Opaque dup.
     
@@ -1217,7 +1274,10 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant "revm_interpreter::gas::constants::VERYLOW"
+                                        get_constant (|
+                                          "revm_interpreter::gas::constants::VERYLOW",
+                                          Ty.path "u64"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -1281,8 +1341,10 @@ Module instructions.
                                 UnOp.not (|
                                   BinOp.ne (|
                                     M.read (|
-                                      M.get_constant
-                                        "revm_interpreter::instructions::stack::swap::N"
+                                      get_constant (|
+                                        "revm_interpreter::instructions::stack::swap::N",
+                                        Ty.path "usize"
+                                      |)
                                     |),
                                     Value.Integer IntegerKind.Usize 0
                                   |)
@@ -1339,8 +1401,10 @@ Module instructions.
                                     |);
                                     Value.Integer IntegerKind.Usize 0;
                                     M.read (|
-                                      M.get_constant
-                                        "revm_interpreter::instructions::stack::swap::N"
+                                      get_constant (|
+                                        "revm_interpreter::instructions::stack::swap::N",
+                                        Ty.path "usize"
+                                      |)
                                     |)
                                   ]
                                 |)
@@ -1391,7 +1455,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_swap :
-      M.IsFunction.Trait "revm_interpreter::instructions::stack::swap" swap.
+      M.IsFunction.C "revm_interpreter::instructions::stack::swap" swap.
     Admitted.
     Global Typeclasses Opaque swap.
     
@@ -1561,7 +1625,10 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant "revm_interpreter::gas::constants::VERYLOW"
+                                        get_constant (|
+                                          "revm_interpreter::gas::constants::VERYLOW",
+                                          Ty.path "u64"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -1763,7 +1830,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_dupn :
-      M.IsFunction.Trait "revm_interpreter::instructions::stack::dupn" dupn.
+      M.IsFunction.C "revm_interpreter::instructions::stack::dupn" dupn.
     Admitted.
     Global Typeclasses Opaque dupn.
     
@@ -1933,7 +2000,10 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant "revm_interpreter::gas::constants::VERYLOW"
+                                        get_constant (|
+                                          "revm_interpreter::gas::constants::VERYLOW",
+                                          Ty.path "u64"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -2136,7 +2206,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_swapn :
-      M.IsFunction.Trait "revm_interpreter::instructions::stack::swapn" swapn.
+      M.IsFunction.C "revm_interpreter::instructions::stack::swapn" swapn.
     Admitted.
     Global Typeclasses Opaque swapn.
     
@@ -2308,7 +2378,10 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant "revm_interpreter::gas::constants::VERYLOW"
+                                        get_constant (|
+                                          "revm_interpreter::gas::constants::VERYLOW",
+                                          Ty.path "u64"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -2522,7 +2595,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_exchange :
-      M.IsFunction.Trait "revm_interpreter::instructions::stack::exchange" exchange.
+      M.IsFunction.C "revm_interpreter::instructions::stack::exchange" exchange.
     Admitted.
     Global Typeclasses Opaque exchange.
   End stack.

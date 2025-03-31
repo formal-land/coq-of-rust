@@ -189,7 +189,7 @@ Module ptr.
       end.
     
     Global Instance Instance_IsFunction__alignment_can_be_structurally_matched :
-      M.IsFunction.Trait
+      M.IsFunction.C
         "core::ptr::alignment::_alignment_can_be_structurally_matched"
         _alignment_can_be_structurally_matched.
     Admitted.
@@ -200,17 +200,15 @@ Module ptr.
       
       (*     pub const MIN: Self = Self(AlignmentEnum::_Align1Shl0); *)
       (* Ty.path "core::ptr::alignment::Alignment" *)
-      Definition value_MIN : Value.t :=
-        M.run
-          ltac:(M.monadic
-            (M.alloc (|
-              Value.StructTuple
-                "core::ptr::alignment::Alignment"
-                [ Value.StructTuple "core::ptr::alignment::AlignmentEnum::_Align1Shl0" [] ]
-            |))).
+      Definition value_MIN (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+        ltac:(M.monadic
+          (M.alloc (|
+            Value.StructTuple
+              "core::ptr::alignment::Alignment"
+              [ Value.StructTuple "core::ptr::alignment::AlignmentEnum::_Align1Shl0" [] ]
+          |))).
       
-      Global Instance AssociatedConstant_value_MIN :
-        M.IsAssociatedConstant.Trait Self "value_MIN" value_MIN.
+      Global Instance AssociatedConstant_value_MIN : M.IsAssociatedFunction.C Self "MIN" value_MIN.
       Admitted.
       Global Typeclasses Opaque value_MIN.
       
@@ -243,7 +241,7 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_of : M.IsAssociatedFunction.Trait Self "of" of.
+      Global Instance AssociatedFunction_of : M.IsAssociatedFunction.C Self "of" of.
       Admitted.
       Global Typeclasses Opaque of.
       
@@ -313,7 +311,7 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+      Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -387,7 +385,7 @@ Module ptr.
         end.
       
       Global Instance AssociatedFunction_new_unchecked :
-        M.IsAssociatedFunction.Trait Self "new_unchecked" new_unchecked.
+        M.IsAssociatedFunction.C Self "new_unchecked" new_unchecked.
       Admitted.
       Global Typeclasses Opaque new_unchecked.
       
@@ -410,7 +408,7 @@ Module ptr.
         end.
       
       Global Instance AssociatedFunction_as_usize :
-        M.IsAssociatedFunction.Trait Self "as_usize" as_usize.
+        M.IsAssociatedFunction.C Self "as_usize" as_usize.
       Admitted.
       Global Typeclasses Opaque as_usize.
       
@@ -450,7 +448,7 @@ Module ptr.
         end.
       
       Global Instance AssociatedFunction_as_nonzero :
-        M.IsAssociatedFunction.Trait Self "as_nonzero" as_nonzero.
+        M.IsAssociatedFunction.C Self "as_nonzero" as_nonzero.
       Admitted.
       Global Typeclasses Opaque as_nonzero.
       
@@ -488,7 +486,7 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_log2 : M.IsAssociatedFunction.Trait Self "log2" log2.
+      Global Instance AssociatedFunction_log2 : M.IsAssociatedFunction.C Self "log2" log2.
       Admitted.
       Global Typeclasses Opaque log2.
       
@@ -525,7 +523,7 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_mask : M.IsAssociatedFunction.Trait Self "mask" mask.
+      Global Instance AssociatedFunction_mask : M.IsAssociatedFunction.C Self "mask" mask.
       Admitted.
       Global Typeclasses Opaque mask.
       
@@ -582,7 +580,7 @@ Module ptr.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_max : M.IsAssociatedFunction.Trait Self "max" max.
+      Global Instance AssociatedFunction_max : M.IsAssociatedFunction.C Self "max" max.
       Admitted.
       Global Typeclasses Opaque max.
     End Impl_core_ptr_alignment_Alignment.
@@ -1127,7 +1125,15 @@ Module ptr.
       *)
       Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         match ε, τ, α with
-        | [], [], [] => ltac:(M.monadic (M.read (| M.get_constant "core::ptr::alignment::MIN" |)))
+        | [], [], [] =>
+          ltac:(M.monadic
+            (M.read (|
+              get_associated_constant (|
+                Ty.path "core::ptr::alignment::Alignment",
+                "MIN",
+                Ty.path "core::ptr::alignment::Alignment"
+              |)
+            |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       

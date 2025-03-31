@@ -46,7 +46,7 @@ Definition checked_division (ε : list Value.t) (τ : list Ty.t) (α : list Valu
   end.
 
 Global Instance Instance_IsFunction_checked_division :
-  M.IsFunction.Trait "option::checked_division" checked_division.
+  M.IsFunction.C "option::checked_division" checked_division.
 Admitted.
 Global Typeclasses Opaque checked_division.
 
@@ -279,7 +279,7 @@ Definition try_division (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
   end.
 
 Global Instance Instance_IsFunction_try_division :
-  M.IsFunction.Trait "option::try_division" try_division.
+  M.IsFunction.C "option::try_division" try_division.
 Admitted.
 Global Typeclasses Opaque try_division.
 
@@ -545,6 +545,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "option::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "option::main" main.
 Admitted.
 Global Typeclasses Opaque main.

@@ -93,7 +93,7 @@ Module ascii.
     end.
   
   Global Instance Instance_IsFunction_escape_default :
-    M.IsFunction.Trait "core::ascii::escape_default" escape_default.
+    M.IsFunction.C "core::ascii::escape_default" escape_default.
   Admitted.
   Global Typeclasses Opaque escape_default.
   
@@ -133,7 +133,7 @@ Module ascii.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -169,7 +169,7 @@ Module ascii.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_empty : M.IsAssociatedFunction.Trait Self "empty" empty.
+    Global Instance AssociatedFunction_empty : M.IsAssociatedFunction.C Self "empty" empty.
     Admitted.
     Global Typeclasses Opaque empty.
     
@@ -213,7 +213,7 @@ Module ascii.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_as_str : M.IsAssociatedFunction.Trait Self "as_str" as_str.
+    Global Instance AssociatedFunction_as_str : M.IsAssociatedFunction.C Self "as_str" as_str.
     Admitted.
     Global Typeclasses Opaque as_str.
   End Impl_core_ascii_EscapeDefault.

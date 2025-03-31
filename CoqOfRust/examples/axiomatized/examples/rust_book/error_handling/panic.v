@@ -3,10 +3,10 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter drink : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_drink : M.IsFunction.Trait "panic::drink" drink.
+Global Instance Instance_IsFunction_drink : M.IsFunction.C "panic::drink" drink.
 Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "panic::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "panic::main" main.
 Admitted.

@@ -3,314 +3,405 @@ Require Import CoqOfRust.CoqOfRust.
 
 Module gas.
   Module constants.
-    Definition value_ZERO : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 0 |))).
+    Definition value_ZERO (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 0 |))).
     
-    Axiom Constant_value_ZERO :
-      (M.get_constant "revm_interpreter::gas::constants::ZERO") = value_ZERO.
-    Global Hint Rewrite Constant_value_ZERO : constant_rewrites.
+    Global Instance Instance_IsConstant_value_ZERO :
+      M.IsFunction.C "revm_interpreter::gas::constants::ZERO" value_ZERO.
+    Admitted.
+    Global Typeclasses Opaque value_ZERO.
     
-    Definition value_BASE : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 2 |))).
+    Definition value_BASE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 2 |))).
     
-    Axiom Constant_value_BASE :
-      (M.get_constant "revm_interpreter::gas::constants::BASE") = value_BASE.
-    Global Hint Rewrite Constant_value_BASE : constant_rewrites.
+    Global Instance Instance_IsConstant_value_BASE :
+      M.IsFunction.C "revm_interpreter::gas::constants::BASE" value_BASE.
+    Admitted.
+    Global Typeclasses Opaque value_BASE.
     
-    Definition value_VERYLOW : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 3 |))).
+    Definition value_VERYLOW (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 3 |))).
     
-    Axiom Constant_value_VERYLOW :
-      (M.get_constant "revm_interpreter::gas::constants::VERYLOW") = value_VERYLOW.
-    Global Hint Rewrite Constant_value_VERYLOW : constant_rewrites.
+    Global Instance Instance_IsConstant_value_VERYLOW :
+      M.IsFunction.C "revm_interpreter::gas::constants::VERYLOW" value_VERYLOW.
+    Admitted.
+    Global Typeclasses Opaque value_VERYLOW.
     
-    Definition value_DATA_LOADN_GAS : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 3 |))).
+    Definition value_DATA_LOADN_GAS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 3 |))).
     
-    Axiom Constant_value_DATA_LOADN_GAS :
-      (M.get_constant "revm_interpreter::gas::constants::DATA_LOADN_GAS") = value_DATA_LOADN_GAS.
-    Global Hint Rewrite Constant_value_DATA_LOADN_GAS : constant_rewrites.
+    Global Instance Instance_IsConstant_value_DATA_LOADN_GAS :
+      M.IsFunction.C "revm_interpreter::gas::constants::DATA_LOADN_GAS" value_DATA_LOADN_GAS.
+    Admitted.
+    Global Typeclasses Opaque value_DATA_LOADN_GAS.
     
-    Definition value_CONDITION_JUMP_GAS : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 4 |))).
+    Definition value_CONDITION_JUMP_GAS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 4 |))).
     
-    Axiom Constant_value_CONDITION_JUMP_GAS :
-      (M.get_constant "revm_interpreter::gas::constants::CONDITION_JUMP_GAS") =
+    Global Instance Instance_IsConstant_value_CONDITION_JUMP_GAS :
+      M.IsFunction.C
+        "revm_interpreter::gas::constants::CONDITION_JUMP_GAS"
         value_CONDITION_JUMP_GAS.
-    Global Hint Rewrite Constant_value_CONDITION_JUMP_GAS : constant_rewrites.
+    Admitted.
+    Global Typeclasses Opaque value_CONDITION_JUMP_GAS.
     
-    Definition value_RETF_GAS : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 3 |))).
+    Definition value_RETF_GAS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 3 |))).
     
-    Axiom Constant_value_RETF_GAS :
-      (M.get_constant "revm_interpreter::gas::constants::RETF_GAS") = value_RETF_GAS.
-    Global Hint Rewrite Constant_value_RETF_GAS : constant_rewrites.
+    Global Instance Instance_IsConstant_value_RETF_GAS :
+      M.IsFunction.C "revm_interpreter::gas::constants::RETF_GAS" value_RETF_GAS.
+    Admitted.
+    Global Typeclasses Opaque value_RETF_GAS.
     
-    Definition value_DATA_LOAD_GAS : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 4 |))).
+    Definition value_DATA_LOAD_GAS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 4 |))).
     
-    Axiom Constant_value_DATA_LOAD_GAS :
-      (M.get_constant "revm_interpreter::gas::constants::DATA_LOAD_GAS") = value_DATA_LOAD_GAS.
-    Global Hint Rewrite Constant_value_DATA_LOAD_GAS : constant_rewrites.
+    Global Instance Instance_IsConstant_value_DATA_LOAD_GAS :
+      M.IsFunction.C "revm_interpreter::gas::constants::DATA_LOAD_GAS" value_DATA_LOAD_GAS.
+    Admitted.
+    Global Typeclasses Opaque value_DATA_LOAD_GAS.
     
-    Definition value_LOW : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 5 |))).
+    Definition value_LOW (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 5 |))).
     
-    Axiom Constant_value_LOW : (M.get_constant "revm_interpreter::gas::constants::LOW") = value_LOW.
-    Global Hint Rewrite Constant_value_LOW : constant_rewrites.
+    Global Instance Instance_IsConstant_value_LOW :
+      M.IsFunction.C "revm_interpreter::gas::constants::LOW" value_LOW.
+    Admitted.
+    Global Typeclasses Opaque value_LOW.
     
-    Definition value_MID : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 8 |))).
+    Definition value_MID (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 8 |))).
     
-    Axiom Constant_value_MID : (M.get_constant "revm_interpreter::gas::constants::MID") = value_MID.
-    Global Hint Rewrite Constant_value_MID : constant_rewrites.
+    Global Instance Instance_IsConstant_value_MID :
+      M.IsFunction.C "revm_interpreter::gas::constants::MID" value_MID.
+    Admitted.
+    Global Typeclasses Opaque value_MID.
     
-    Definition value_HIGH : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 10 |))).
+    Definition value_HIGH (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 10 |))).
     
-    Axiom Constant_value_HIGH :
-      (M.get_constant "revm_interpreter::gas::constants::HIGH") = value_HIGH.
-    Global Hint Rewrite Constant_value_HIGH : constant_rewrites.
+    Global Instance Instance_IsConstant_value_HIGH :
+      M.IsFunction.C "revm_interpreter::gas::constants::HIGH" value_HIGH.
+    Admitted.
+    Global Typeclasses Opaque value_HIGH.
     
-    Definition value_JUMPDEST : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1 |))).
+    Definition value_JUMPDEST (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1 |))).
     
-    Axiom Constant_value_JUMPDEST :
-      (M.get_constant "revm_interpreter::gas::constants::JUMPDEST") = value_JUMPDEST.
-    Global Hint Rewrite Constant_value_JUMPDEST : constant_rewrites.
+    Global Instance Instance_IsConstant_value_JUMPDEST :
+      M.IsFunction.C "revm_interpreter::gas::constants::JUMPDEST" value_JUMPDEST.
+    Admitted.
+    Global Typeclasses Opaque value_JUMPDEST.
     
-    Definition value_SELFDESTRUCT : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I64 24000 |))).
+    Definition value_SELFDESTRUCT (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I64 24000 |))).
     
-    Axiom Constant_value_SELFDESTRUCT :
-      (M.get_constant "revm_interpreter::gas::constants::SELFDESTRUCT") = value_SELFDESTRUCT.
-    Global Hint Rewrite Constant_value_SELFDESTRUCT : constant_rewrites.
+    Global Instance Instance_IsConstant_value_SELFDESTRUCT :
+      M.IsFunction.C "revm_interpreter::gas::constants::SELFDESTRUCT" value_SELFDESTRUCT.
+    Admitted.
+    Global Typeclasses Opaque value_SELFDESTRUCT.
     
-    Definition value_CREATE : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 32000 |))).
+    Definition value_CREATE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 32000 |))).
     
-    Axiom Constant_value_CREATE :
-      (M.get_constant "revm_interpreter::gas::constants::CREATE") = value_CREATE.
-    Global Hint Rewrite Constant_value_CREATE : constant_rewrites.
+    Global Instance Instance_IsConstant_value_CREATE :
+      M.IsFunction.C "revm_interpreter::gas::constants::CREATE" value_CREATE.
+    Admitted.
+    Global Typeclasses Opaque value_CREATE.
     
-    Definition value_CALLVALUE : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 9000 |))).
+    Definition value_CALLVALUE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 9000 |))).
     
-    Axiom Constant_value_CALLVALUE :
-      (M.get_constant "revm_interpreter::gas::constants::CALLVALUE") = value_CALLVALUE.
-    Global Hint Rewrite Constant_value_CALLVALUE : constant_rewrites.
+    Global Instance Instance_IsConstant_value_CALLVALUE :
+      M.IsFunction.C "revm_interpreter::gas::constants::CALLVALUE" value_CALLVALUE.
+    Admitted.
+    Global Typeclasses Opaque value_CALLVALUE.
     
-    Definition value_NEWACCOUNT : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 25000 |))).
+    Definition value_NEWACCOUNT (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 25000 |))).
     
-    Axiom Constant_value_NEWACCOUNT :
-      (M.get_constant "revm_interpreter::gas::constants::NEWACCOUNT") = value_NEWACCOUNT.
-    Global Hint Rewrite Constant_value_NEWACCOUNT : constant_rewrites.
+    Global Instance Instance_IsConstant_value_NEWACCOUNT :
+      M.IsFunction.C "revm_interpreter::gas::constants::NEWACCOUNT" value_NEWACCOUNT.
+    Admitted.
+    Global Typeclasses Opaque value_NEWACCOUNT.
     
-    Definition value_EXP : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 10 |))).
+    Definition value_EXP (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 10 |))).
     
-    Axiom Constant_value_EXP : (M.get_constant "revm_interpreter::gas::constants::EXP") = value_EXP.
-    Global Hint Rewrite Constant_value_EXP : constant_rewrites.
+    Global Instance Instance_IsConstant_value_EXP :
+      M.IsFunction.C "revm_interpreter::gas::constants::EXP" value_EXP.
+    Admitted.
+    Global Typeclasses Opaque value_EXP.
     
-    Definition value_MEMORY : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 3 |))).
+    Definition value_MEMORY (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 3 |))).
     
-    Axiom Constant_value_MEMORY :
-      (M.get_constant "revm_interpreter::gas::constants::MEMORY") = value_MEMORY.
-    Global Hint Rewrite Constant_value_MEMORY : constant_rewrites.
+    Global Instance Instance_IsConstant_value_MEMORY :
+      M.IsFunction.C "revm_interpreter::gas::constants::MEMORY" value_MEMORY.
+    Admitted.
+    Global Typeclasses Opaque value_MEMORY.
     
-    Definition value_LOG : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 375 |))).
+    Definition value_LOG (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 375 |))).
     
-    Axiom Constant_value_LOG : (M.get_constant "revm_interpreter::gas::constants::LOG") = value_LOG.
-    Global Hint Rewrite Constant_value_LOG : constant_rewrites.
+    Global Instance Instance_IsConstant_value_LOG :
+      M.IsFunction.C "revm_interpreter::gas::constants::LOG" value_LOG.
+    Admitted.
+    Global Typeclasses Opaque value_LOG.
     
-    Definition value_LOGDATA : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 8 |))).
+    Definition value_LOGDATA (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 8 |))).
     
-    Axiom Constant_value_LOGDATA :
-      (M.get_constant "revm_interpreter::gas::constants::LOGDATA") = value_LOGDATA.
-    Global Hint Rewrite Constant_value_LOGDATA : constant_rewrites.
+    Global Instance Instance_IsConstant_value_LOGDATA :
+      M.IsFunction.C "revm_interpreter::gas::constants::LOGDATA" value_LOGDATA.
+    Admitted.
+    Global Typeclasses Opaque value_LOGDATA.
     
-    Definition value_LOGTOPIC : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 375 |))).
+    Definition value_LOGTOPIC (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 375 |))).
     
-    Axiom Constant_value_LOGTOPIC :
-      (M.get_constant "revm_interpreter::gas::constants::LOGTOPIC") = value_LOGTOPIC.
-    Global Hint Rewrite Constant_value_LOGTOPIC : constant_rewrites.
+    Global Instance Instance_IsConstant_value_LOGTOPIC :
+      M.IsFunction.C "revm_interpreter::gas::constants::LOGTOPIC" value_LOGTOPIC.
+    Admitted.
+    Global Typeclasses Opaque value_LOGTOPIC.
     
-    Definition value_KECCAK256 : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 30 |))).
+    Definition value_KECCAK256 (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 30 |))).
     
-    Axiom Constant_value_KECCAK256 :
-      (M.get_constant "revm_interpreter::gas::constants::KECCAK256") = value_KECCAK256.
-    Global Hint Rewrite Constant_value_KECCAK256 : constant_rewrites.
+    Global Instance Instance_IsConstant_value_KECCAK256 :
+      M.IsFunction.C "revm_interpreter::gas::constants::KECCAK256" value_KECCAK256.
+    Admitted.
+    Global Typeclasses Opaque value_KECCAK256.
     
-    Definition value_KECCAK256WORD : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 6 |))).
+    Definition value_KECCAK256WORD (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 6 |))).
     
-    Axiom Constant_value_KECCAK256WORD :
-      (M.get_constant "revm_interpreter::gas::constants::KECCAK256WORD") = value_KECCAK256WORD.
-    Global Hint Rewrite Constant_value_KECCAK256WORD : constant_rewrites.
+    Global Instance Instance_IsConstant_value_KECCAK256WORD :
+      M.IsFunction.C "revm_interpreter::gas::constants::KECCAK256WORD" value_KECCAK256WORD.
+    Admitted.
+    Global Typeclasses Opaque value_KECCAK256WORD.
     
-    Definition value_COPY : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 3 |))).
+    Definition value_COPY (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 3 |))).
     
-    Axiom Constant_value_COPY :
-      (M.get_constant "revm_interpreter::gas::constants::COPY") = value_COPY.
-    Global Hint Rewrite Constant_value_COPY : constant_rewrites.
+    Global Instance Instance_IsConstant_value_COPY :
+      M.IsFunction.C "revm_interpreter::gas::constants::COPY" value_COPY.
+    Admitted.
+    Global Typeclasses Opaque value_COPY.
     
-    Definition value_BLOCKHASH : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 20 |))).
+    Definition value_BLOCKHASH (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 20 |))).
     
-    Axiom Constant_value_BLOCKHASH :
-      (M.get_constant "revm_interpreter::gas::constants::BLOCKHASH") = value_BLOCKHASH.
-    Global Hint Rewrite Constant_value_BLOCKHASH : constant_rewrites.
+    Global Instance Instance_IsConstant_value_BLOCKHASH :
+      M.IsFunction.C "revm_interpreter::gas::constants::BLOCKHASH" value_BLOCKHASH.
+    Admitted.
+    Global Typeclasses Opaque value_BLOCKHASH.
     
-    Definition value_CODEDEPOSIT : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 200 |))).
+    Definition value_CODEDEPOSIT (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 200 |))).
     
-    Axiom Constant_value_CODEDEPOSIT :
-      (M.get_constant "revm_interpreter::gas::constants::CODEDEPOSIT") = value_CODEDEPOSIT.
-    Global Hint Rewrite Constant_value_CODEDEPOSIT : constant_rewrites.
+    Global Instance Instance_IsConstant_value_CODEDEPOSIT :
+      M.IsFunction.C "revm_interpreter::gas::constants::CODEDEPOSIT" value_CODEDEPOSIT.
+    Admitted.
+    Global Typeclasses Opaque value_CODEDEPOSIT.
     
-    Definition value_ISTANBUL_SLOAD_GAS : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 800 |))).
+    Definition value_ISTANBUL_SLOAD_GAS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 800 |))).
     
-    Axiom Constant_value_ISTANBUL_SLOAD_GAS :
-      (M.get_constant "revm_interpreter::gas::constants::ISTANBUL_SLOAD_GAS") =
+    Global Instance Instance_IsConstant_value_ISTANBUL_SLOAD_GAS :
+      M.IsFunction.C
+        "revm_interpreter::gas::constants::ISTANBUL_SLOAD_GAS"
         value_ISTANBUL_SLOAD_GAS.
-    Global Hint Rewrite Constant_value_ISTANBUL_SLOAD_GAS : constant_rewrites.
+    Admitted.
+    Global Typeclasses Opaque value_ISTANBUL_SLOAD_GAS.
     
-    Definition value_SSTORE_SET : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 20000 |))).
+    Definition value_SSTORE_SET (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 20000 |))).
     
-    Axiom Constant_value_SSTORE_SET :
-      (M.get_constant "revm_interpreter::gas::constants::SSTORE_SET") = value_SSTORE_SET.
-    Global Hint Rewrite Constant_value_SSTORE_SET : constant_rewrites.
+    Global Instance Instance_IsConstant_value_SSTORE_SET :
+      M.IsFunction.C "revm_interpreter::gas::constants::SSTORE_SET" value_SSTORE_SET.
+    Admitted.
+    Global Typeclasses Opaque value_SSTORE_SET.
     
-    Definition value_SSTORE_RESET : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 5000 |))).
+    Definition value_SSTORE_RESET (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 5000 |))).
     
-    Axiom Constant_value_SSTORE_RESET :
-      (M.get_constant "revm_interpreter::gas::constants::SSTORE_RESET") = value_SSTORE_RESET.
-    Global Hint Rewrite Constant_value_SSTORE_RESET : constant_rewrites.
+    Global Instance Instance_IsConstant_value_SSTORE_RESET :
+      M.IsFunction.C "revm_interpreter::gas::constants::SSTORE_RESET" value_SSTORE_RESET.
+    Admitted.
+    Global Typeclasses Opaque value_SSTORE_RESET.
     
-    Definition value_REFUND_SSTORE_CLEARS : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I64 15000 |))).
+    Definition value_REFUND_SSTORE_CLEARS
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I64 15000 |))).
     
-    Axiom Constant_value_REFUND_SSTORE_CLEARS :
-      (M.get_constant "revm_interpreter::gas::constants::REFUND_SSTORE_CLEARS") =
+    Global Instance Instance_IsConstant_value_REFUND_SSTORE_CLEARS :
+      M.IsFunction.C
+        "revm_interpreter::gas::constants::REFUND_SSTORE_CLEARS"
         value_REFUND_SSTORE_CLEARS.
-    Global Hint Rewrite Constant_value_REFUND_SSTORE_CLEARS : constant_rewrites.
+    Admitted.
+    Global Typeclasses Opaque value_REFUND_SSTORE_CLEARS.
     
-    Definition value_TRANSACTION_ZERO_DATA : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 4 |))).
+    Definition value_TRANSACTION_ZERO_DATA
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 4 |))).
     
-    Axiom Constant_value_TRANSACTION_ZERO_DATA :
-      (M.get_constant "revm_interpreter::gas::constants::TRANSACTION_ZERO_DATA") =
+    Global Instance Instance_IsConstant_value_TRANSACTION_ZERO_DATA :
+      M.IsFunction.C
+        "revm_interpreter::gas::constants::TRANSACTION_ZERO_DATA"
         value_TRANSACTION_ZERO_DATA.
-    Global Hint Rewrite Constant_value_TRANSACTION_ZERO_DATA : constant_rewrites.
+    Admitted.
+    Global Typeclasses Opaque value_TRANSACTION_ZERO_DATA.
     
-    Definition value_TRANSACTION_NON_ZERO_DATA_INIT : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 16 |))).
+    Definition value_TRANSACTION_NON_ZERO_DATA_INIT
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 16 |))).
     
-    Axiom Constant_value_TRANSACTION_NON_ZERO_DATA_INIT :
-      (M.get_constant "revm_interpreter::gas::constants::TRANSACTION_NON_ZERO_DATA_INIT") =
+    Global Instance Instance_IsConstant_value_TRANSACTION_NON_ZERO_DATA_INIT :
+      M.IsFunction.C
+        "revm_interpreter::gas::constants::TRANSACTION_NON_ZERO_DATA_INIT"
         value_TRANSACTION_NON_ZERO_DATA_INIT.
-    Global Hint Rewrite Constant_value_TRANSACTION_NON_ZERO_DATA_INIT : constant_rewrites.
+    Admitted.
+    Global Typeclasses Opaque value_TRANSACTION_NON_ZERO_DATA_INIT.
     
-    Definition value_TRANSACTION_NON_ZERO_DATA_FRONTIER : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 68 |))).
+    Definition value_TRANSACTION_NON_ZERO_DATA_FRONTIER
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 68 |))).
     
-    Axiom Constant_value_TRANSACTION_NON_ZERO_DATA_FRONTIER :
-      (M.get_constant "revm_interpreter::gas::constants::TRANSACTION_NON_ZERO_DATA_FRONTIER") =
+    Global Instance Instance_IsConstant_value_TRANSACTION_NON_ZERO_DATA_FRONTIER :
+      M.IsFunction.C
+        "revm_interpreter::gas::constants::TRANSACTION_NON_ZERO_DATA_FRONTIER"
         value_TRANSACTION_NON_ZERO_DATA_FRONTIER.
-    Global Hint Rewrite Constant_value_TRANSACTION_NON_ZERO_DATA_FRONTIER : constant_rewrites.
+    Admitted.
+    Global Typeclasses Opaque value_TRANSACTION_NON_ZERO_DATA_FRONTIER.
     
-    Definition value_EOF_CREATE_GAS : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 32000 |))).
+    Definition value_EOF_CREATE_GAS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 32000 |))).
     
-    Axiom Constant_value_EOF_CREATE_GAS :
-      (M.get_constant "revm_interpreter::gas::constants::EOF_CREATE_GAS") = value_EOF_CREATE_GAS.
-    Global Hint Rewrite Constant_value_EOF_CREATE_GAS : constant_rewrites.
+    Global Instance Instance_IsConstant_value_EOF_CREATE_GAS :
+      M.IsFunction.C "revm_interpreter::gas::constants::EOF_CREATE_GAS" value_EOF_CREATE_GAS.
+    Admitted.
+    Global Typeclasses Opaque value_EOF_CREATE_GAS.
     
-    Definition value_ACCESS_LIST_ADDRESS : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 2400 |))).
+    Definition value_ACCESS_LIST_ADDRESS
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 2400 |))).
     
-    Axiom Constant_value_ACCESS_LIST_ADDRESS :
-      (M.get_constant "revm_interpreter::gas::constants::ACCESS_LIST_ADDRESS") =
+    Global Instance Instance_IsConstant_value_ACCESS_LIST_ADDRESS :
+      M.IsFunction.C
+        "revm_interpreter::gas::constants::ACCESS_LIST_ADDRESS"
         value_ACCESS_LIST_ADDRESS.
-    Global Hint Rewrite Constant_value_ACCESS_LIST_ADDRESS : constant_rewrites.
+    Admitted.
+    Global Typeclasses Opaque value_ACCESS_LIST_ADDRESS.
     
-    Definition value_ACCESS_LIST_STORAGE_KEY : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1900 |))).
+    Definition value_ACCESS_LIST_STORAGE_KEY
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1900 |))).
     
-    Axiom Constant_value_ACCESS_LIST_STORAGE_KEY :
-      (M.get_constant "revm_interpreter::gas::constants::ACCESS_LIST_STORAGE_KEY") =
+    Global Instance Instance_IsConstant_value_ACCESS_LIST_STORAGE_KEY :
+      M.IsFunction.C
+        "revm_interpreter::gas::constants::ACCESS_LIST_STORAGE_KEY"
         value_ACCESS_LIST_STORAGE_KEY.
-    Global Hint Rewrite Constant_value_ACCESS_LIST_STORAGE_KEY : constant_rewrites.
+    Admitted.
+    Global Typeclasses Opaque value_ACCESS_LIST_STORAGE_KEY.
     
-    Definition value_COLD_SLOAD_COST : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 2100 |))).
+    Definition value_COLD_SLOAD_COST (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 2100 |))).
     
-    Axiom Constant_value_COLD_SLOAD_COST :
-      (M.get_constant "revm_interpreter::gas::constants::COLD_SLOAD_COST") = value_COLD_SLOAD_COST.
-    Global Hint Rewrite Constant_value_COLD_SLOAD_COST : constant_rewrites.
+    Global Instance Instance_IsConstant_value_COLD_SLOAD_COST :
+      M.IsFunction.C "revm_interpreter::gas::constants::COLD_SLOAD_COST" value_COLD_SLOAD_COST.
+    Admitted.
+    Global Typeclasses Opaque value_COLD_SLOAD_COST.
     
-    Definition value_COLD_ACCOUNT_ACCESS_COST : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 2600 |))).
+    Definition value_COLD_ACCOUNT_ACCESS_COST
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 2600 |))).
     
-    Axiom Constant_value_COLD_ACCOUNT_ACCESS_COST :
-      (M.get_constant "revm_interpreter::gas::constants::COLD_ACCOUNT_ACCESS_COST") =
+    Global Instance Instance_IsConstant_value_COLD_ACCOUNT_ACCESS_COST :
+      M.IsFunction.C
+        "revm_interpreter::gas::constants::COLD_ACCOUNT_ACCESS_COST"
         value_COLD_ACCOUNT_ACCESS_COST.
-    Global Hint Rewrite Constant_value_COLD_ACCOUNT_ACCESS_COST : constant_rewrites.
+    Admitted.
+    Global Typeclasses Opaque value_COLD_ACCOUNT_ACCESS_COST.
     
-    Definition value_WARM_STORAGE_READ_COST : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 100 |))).
+    Definition value_WARM_STORAGE_READ_COST
+        (ε : list Value.t)
+        (τ : list Ty.t)
+        (α : list Value.t)
+        : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 100 |))).
     
-    Axiom Constant_value_WARM_STORAGE_READ_COST :
-      (M.get_constant "revm_interpreter::gas::constants::WARM_STORAGE_READ_COST") =
+    Global Instance Instance_IsConstant_value_WARM_STORAGE_READ_COST :
+      M.IsFunction.C
+        "revm_interpreter::gas::constants::WARM_STORAGE_READ_COST"
         value_WARM_STORAGE_READ_COST.
-    Global Hint Rewrite Constant_value_WARM_STORAGE_READ_COST : constant_rewrites.
+    Admitted.
+    Global Typeclasses Opaque value_WARM_STORAGE_READ_COST.
     
-    Definition value_WARM_SSTORE_RESET : Value.t :=
-      M.run_constant
-        ltac:(M.monadic
-          (M.alloc (|
-            BinOp.Wrap.sub (|
-              M.read (| M.get_constant "revm_interpreter::gas::constants::SSTORE_RESET" |),
-              M.read (| M.get_constant "revm_interpreter::gas::constants::COLD_SLOAD_COST" |)
+    Definition value_WARM_SSTORE_RESET (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          BinOp.Wrap.sub (|
+            M.read (|
+              get_constant (| "revm_interpreter::gas::constants::SSTORE_RESET", Ty.path "u64" |)
+            |),
+            M.read (|
+              get_constant (| "revm_interpreter::gas::constants::COLD_SLOAD_COST", Ty.path "u64" |)
             |)
-          |))).
+          |)
+        |))).
     
-    Axiom Constant_value_WARM_SSTORE_RESET :
-      (M.get_constant "revm_interpreter::gas::constants::WARM_SSTORE_RESET") =
-        value_WARM_SSTORE_RESET.
-    Global Hint Rewrite Constant_value_WARM_SSTORE_RESET : constant_rewrites.
+    Global Instance Instance_IsConstant_value_WARM_SSTORE_RESET :
+      M.IsFunction.C "revm_interpreter::gas::constants::WARM_SSTORE_RESET" value_WARM_SSTORE_RESET.
+    Admitted.
+    Global Typeclasses Opaque value_WARM_SSTORE_RESET.
     
-    Definition value_INITCODE_WORD_COST : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 2 |))).
+    Definition value_INITCODE_WORD_COST (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 2 |))).
     
-    Axiom Constant_value_INITCODE_WORD_COST :
-      (M.get_constant "revm_interpreter::gas::constants::INITCODE_WORD_COST") =
+    Global Instance Instance_IsConstant_value_INITCODE_WORD_COST :
+      M.IsFunction.C
+        "revm_interpreter::gas::constants::INITCODE_WORD_COST"
         value_INITCODE_WORD_COST.
-    Global Hint Rewrite Constant_value_INITCODE_WORD_COST : constant_rewrites.
+    Admitted.
+    Global Typeclasses Opaque value_INITCODE_WORD_COST.
     
-    Definition value_CALL_STIPEND : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 2300 |))).
+    Definition value_CALL_STIPEND (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 2300 |))).
     
-    Axiom Constant_value_CALL_STIPEND :
-      (M.get_constant "revm_interpreter::gas::constants::CALL_STIPEND") = value_CALL_STIPEND.
-    Global Hint Rewrite Constant_value_CALL_STIPEND : constant_rewrites.
+    Global Instance Instance_IsConstant_value_CALL_STIPEND :
+      M.IsFunction.C "revm_interpreter::gas::constants::CALL_STIPEND" value_CALL_STIPEND.
+    Admitted.
+    Global Typeclasses Opaque value_CALL_STIPEND.
     
-    Definition value_MIN_CALLEE_GAS : Value.t :=
-      M.run_constant
-        ltac:(M.monadic (M.get_constant "revm_interpreter::gas::constants::CALL_STIPEND")).
+    Definition value_MIN_CALLEE_GAS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (get_constant (| "revm_interpreter::gas::constants::CALL_STIPEND", Ty.path "u64" |))).
     
-    Axiom Constant_value_MIN_CALLEE_GAS :
-      (M.get_constant "revm_interpreter::gas::constants::MIN_CALLEE_GAS") = value_MIN_CALLEE_GAS.
-    Global Hint Rewrite Constant_value_MIN_CALLEE_GAS : constant_rewrites.
+    Global Instance Instance_IsConstant_value_MIN_CALLEE_GAS :
+      M.IsFunction.C "revm_interpreter::gas::constants::MIN_CALLEE_GAS" value_MIN_CALLEE_GAS.
+    Admitted.
+    Global Typeclasses Opaque value_MIN_CALLEE_GAS.
   End constants.
 End gas.

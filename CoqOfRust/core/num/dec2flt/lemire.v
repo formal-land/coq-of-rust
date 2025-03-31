@@ -129,7 +129,10 @@ Module num.
                         |),
                         [
                           M.read (|
-                            M.get_constant "core::num::dec2flt::float::RawFloat::INFINITE_POWER"
+                            get_constant (|
+                              "core::num::dec2flt::float::RawFloat::INFINITE_POWER",
+                              Ty.path "i32"
+                            |)
                           |)
                         ]
                       |)
@@ -165,8 +168,10 @@ Module num.
                                         M.cast
                                           (Ty.path "i64")
                                           (M.read (|
-                                            M.get_constant
-                                              "core::num::dec2flt::float::RawFloat::SMALLEST_POWER_OF_TEN"
+                                            get_constant (|
+                                              "core::num::dec2flt::float::RawFloat::SMALLEST_POWER_OF_TEN",
+                                              Ty.path "i32"
+                                            |)
                                           |))
                                       |)))
                                   |)
@@ -192,8 +197,10 @@ Module num.
                                             M.cast
                                               (Ty.path "i64")
                                               (M.read (|
-                                                M.get_constant
-                                                  "core::num::dec2flt::float::RawFloat::LARGEST_POWER_OF_TEN"
+                                                get_constant (|
+                                                  "core::num::dec2flt::float::RawFloat::LARGEST_POWER_OF_TEN",
+                                                  Ty.path "i32"
+                                                |)
                                               |))
                                           |)
                                         |)) in
@@ -240,8 +247,10 @@ Module num.
                           M.read (| w |);
                           BinOp.Wrap.add (|
                             M.read (|
-                              M.get_constant
-                                "core::num::dec2flt::float::RawFloat::MANTISSA_EXPLICIT_BITS"
+                              get_constant (|
+                                "core::num::dec2flt::float::RawFloat::MANTISSA_EXPLICIT_BITS",
+                                Ty.path "usize"
+                              |)
                             |),
                             Value.Integer IntegerKind.Usize 3
                           |)
@@ -338,8 +347,10 @@ Module num.
                                     M.cast
                                       (Ty.path "i32")
                                       (M.read (|
-                                        M.get_constant
-                                          "core::num::dec2flt::float::RawFloat::MANTISSA_EXPLICIT_BITS"
+                                        get_constant (|
+                                          "core::num::dec2flt::float::RawFloat::MANTISSA_EXPLICIT_BITS",
+                                          Ty.path "usize"
+                                        |)
                                       |))
                                   |),
                                   Value.Integer IntegerKind.I32 3
@@ -365,8 +376,10 @@ Module num.
                                   M.cast (Ty.path "i32") (M.read (| lz |))
                                 |),
                                 M.read (|
-                                  M.get_constant
-                                    "core::num::dec2flt::float::RawFloat::MINIMUM_EXPONENT"
+                                  get_constant (|
+                                    "core::num::dec2flt::float::RawFloat::MINIMUM_EXPONENT",
+                                    Ty.path "i32"
+                                  |)
                                 |)
                               |)
                             |) in
@@ -476,8 +489,10 @@ Module num.
                                                     BinOp.Wrap.shl (|
                                                       Value.Integer IntegerKind.U64 1,
                                                       M.read (|
-                                                        M.get_constant
-                                                          "core::num::dec2flt::float::RawFloat::MANTISSA_EXPLICIT_BITS"
+                                                        get_constant (|
+                                                          "core::num::dec2flt::float::RawFloat::MANTISSA_EXPLICIT_BITS",
+                                                          Ty.path "usize"
+                                                        |)
                                                       |)
                                                     |)
                                                   |))
@@ -521,8 +536,10 @@ Module num.
                                                       M.cast
                                                         (Ty.path "i64")
                                                         (M.read (|
-                                                          M.get_constant
-                                                            "core::num::dec2flt::float::RawFloat::MIN_EXPONENT_ROUND_TO_EVEN"
+                                                          get_constant (|
+                                                            "core::num::dec2flt::float::RawFloat::MIN_EXPONENT_ROUND_TO_EVEN",
+                                                            Ty.path "i32"
+                                                          |)
                                                         |))
                                                     |)))
                                                 |),
@@ -532,8 +549,10 @@ Module num.
                                                     M.cast
                                                       (Ty.path "i64")
                                                       (M.read (|
-                                                        M.get_constant
-                                                          "core::num::dec2flt::float::RawFloat::MAX_EXPONENT_ROUND_TO_EVEN"
+                                                        get_constant (|
+                                                          "core::num::dec2flt::float::RawFloat::MAX_EXPONENT_ROUND_TO_EVEN",
+                                                          Ty.path "i32"
+                                                        |)
                                                       |))
                                                   |)))
                                               |),
@@ -558,8 +577,10 @@ Module num.
                                                       M.cast
                                                         (Ty.path "i32")
                                                         (M.read (|
-                                                          M.get_constant
-                                                            "core::num::dec2flt::float::RawFloat::MANTISSA_EXPLICIT_BITS"
+                                                          get_constant (|
+                                                            "core::num::dec2flt::float::RawFloat::MANTISSA_EXPLICIT_BITS",
+                                                            Ty.path "usize"
+                                                          |)
                                                         |))
                                                     |),
                                                     Value.Integer IntegerKind.I32 3
@@ -624,8 +645,10 @@ Module num.
                                             BinOp.Wrap.shl (|
                                               Value.Integer IntegerKind.U64 2,
                                               M.read (|
-                                                M.get_constant
-                                                  "core::num::dec2flt::float::RawFloat::MANTISSA_EXPLICIT_BITS"
+                                                get_constant (|
+                                                  "core::num::dec2flt::float::RawFloat::MANTISSA_EXPLICIT_BITS",
+                                                  Ty.path "usize"
+                                                |)
                                               |)
                                             |)
                                           |)
@@ -642,8 +665,10 @@ Module num.
                                           BinOp.Wrap.shl (|
                                             Value.Integer IntegerKind.U64 1,
                                             M.read (|
-                                              M.get_constant
-                                                "core::num::dec2flt::float::RawFloat::MANTISSA_EXPLICIT_BITS"
+                                              get_constant (|
+                                                "core::num::dec2flt::float::RawFloat::MANTISSA_EXPLICIT_BITS",
+                                                Ty.path "usize"
+                                              |)
                                             |)
                                           |)
                                         |)
@@ -674,8 +699,10 @@ Module num.
                                     BinOp.Wrap.shl (|
                                       Value.Integer IntegerKind.U64 1,
                                       M.read (|
-                                        M.get_constant
-                                          "core::num::dec2flt::float::RawFloat::MANTISSA_EXPLICIT_BITS"
+                                        get_constant (|
+                                          "core::num::dec2flt::float::RawFloat::MANTISSA_EXPLICIT_BITS",
+                                          Ty.path "usize"
+                                        |)
                                       |)
                                     |)
                                   |))
@@ -694,8 +721,10 @@ Module num.
                                           BinOp.ge (|
                                             M.read (| power2 |),
                                             M.read (|
-                                              M.get_constant
-                                                "core::num::dec2flt::float::RawFloat::INFINITE_POWER"
+                                              get_constant (|
+                                                "core::num::dec2flt::float::RawFloat::INFINITE_POWER",
+                                                Ty.path "i32"
+                                              |)
                                             |)
                                           |)
                                         |)) in
@@ -725,7 +754,7 @@ Module num.
         end.
       
       Global Instance Instance_IsFunction_compute_float :
-        M.IsFunction.Trait "core::num::dec2flt::lemire::compute_float" compute_float.
+        M.IsFunction.C "core::num::dec2flt::lemire::compute_float" compute_float.
       Admitted.
       Global Typeclasses Opaque compute_float.
       
@@ -760,7 +789,7 @@ Module num.
         end.
       
       Global Instance Instance_IsFunction_power :
-        M.IsFunction.Trait "core::num::dec2flt::lemire::power" power.
+        M.IsFunction.C "core::num::dec2flt::lemire::power" power.
       Admitted.
       Global Typeclasses Opaque power.
       
@@ -798,7 +827,7 @@ Module num.
         end.
       
       Global Instance Instance_IsFunction_full_multiplication :
-        M.IsFunction.Trait "core::num::dec2flt::lemire::full_multiplication" full_multiplication.
+        M.IsFunction.C "core::num::dec2flt::lemire::full_multiplication" full_multiplication.
       Admitted.
       Global Typeclasses Opaque full_multiplication.
       
@@ -872,8 +901,10 @@ Module num.
                                             M.cast
                                               (Ty.path "i64")
                                               (M.read (|
-                                                M.get_constant
-                                                  "core::num::dec2flt::table::SMALLEST_POWER_OF_FIVE"
+                                                get_constant (|
+                                                  "core::num::dec2flt::table::SMALLEST_POWER_OF_FIVE",
+                                                  Ty.path "i32"
+                                                |)
                                               |))
                                           |)
                                         |)
@@ -929,8 +960,10 @@ Module num.
                                             M.cast
                                               (Ty.path "i64")
                                               (M.read (|
-                                                M.get_constant
-                                                  "core::num::dec2flt::table::LARGEST_POWER_OF_FIVE"
+                                                get_constant (|
+                                                  "core::num::dec2flt::table::LARGEST_POWER_OF_FIVE",
+                                                  Ty.path "i32"
+                                                |)
                                               |))
                                           |)
                                         |)
@@ -1047,7 +1080,10 @@ Module num.
                       M.cast
                         (Ty.path "i64")
                         (M.read (|
-                          M.get_constant "core::num::dec2flt::table::SMALLEST_POWER_OF_FIVE"
+                          get_constant (|
+                            "core::num::dec2flt::table::SMALLEST_POWER_OF_FIVE",
+                            Ty.path "i32"
+                          |)
                         |))
                     |))
                 |) in
@@ -1055,7 +1091,20 @@ Module num.
                 None,
                 M.SubPointer.get_array_field (|
                   M.deref (|
-                    M.read (| M.get_constant "core::num::dec2flt::table::POWER_OF_FIVE_128" |)
+                    M.read (|
+                      get_constant (|
+                        "core::num::dec2flt::table::POWER_OF_FIVE_128",
+                        Ty.apply
+                          (Ty.path "&")
+                          []
+                          [
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 651 ]
+                              [ Ty.tuple [ Ty.path "u64"; Ty.path "u64" ] ]
+                          ]
+                      |)
+                    |)
                   |),
                   M.read (| index |)
                 |),
@@ -1201,9 +1250,7 @@ Module num.
         end.
       
       Global Instance Instance_IsFunction_compute_product_approx :
-        M.IsFunction.Trait
-          "core::num::dec2flt::lemire::compute_product_approx"
-          compute_product_approx.
+        M.IsFunction.C "core::num::dec2flt::lemire::compute_product_approx" compute_product_approx.
       Admitted.
       Global Typeclasses Opaque compute_product_approx.
     End lemire.

@@ -32,7 +32,7 @@ Module Impl_trait_incrementer_Incrementer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
   Admitted.
   Global Typeclasses Opaque new.
   
@@ -63,7 +63,7 @@ Module Impl_trait_incrementer_Incrementer.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_inc_by : M.IsAssociatedFunction.Trait Self "inc_by" inc_by.
+  Global Instance AssociatedFunction_inc_by : M.IsAssociatedFunction.C Self "inc_by" inc_by.
   Admitted.
   Global Typeclasses Opaque inc_by.
 End Impl_trait_incrementer_Incrementer.

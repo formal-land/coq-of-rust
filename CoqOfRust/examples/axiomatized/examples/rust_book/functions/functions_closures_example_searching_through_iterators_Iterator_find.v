@@ -4,7 +4,5 @@ Require Import CoqOfRust.CoqOfRust.
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait
-    "functions_closures_example_searching_through_iterators_Iterator_find::main"
-    main.
+  M.IsFunction.C "functions_closures_example_searching_through_iterators_Iterator_find::main" main.
 Admitted.

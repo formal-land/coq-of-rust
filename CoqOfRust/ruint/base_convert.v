@@ -773,7 +773,7 @@ Module base_convert.
     
     Global Instance AssociatedFunction_to_base_le :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait (Self BITS LIMBS) "to_base_le" (to_base_le BITS LIMBS).
+      M.IsAssociatedFunction.C (Self BITS LIMBS) "to_base_le" (to_base_le BITS LIMBS).
     Admitted.
     Global Typeclasses Opaque to_base_le.
     
@@ -886,7 +886,7 @@ Module base_convert.
     
     Global Instance AssociatedFunction_to_base_be :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait (Self BITS LIMBS) "to_base_be" (to_base_be BITS LIMBS).
+      M.IsAssociatedFunction.C (Self BITS LIMBS) "to_base_be" (to_base_be BITS LIMBS).
     Admitted.
     Global Typeclasses Opaque to_base_be.
     
@@ -1000,7 +1000,9 @@ Module base_convert.
                             M.use
                               (M.alloc (|
                                 BinOp.eq (|
-                                  M.read (| M.get_constant "ruint::base_convert::BITS" |),
+                                  M.read (|
+                                    get_constant (| "ruint::base_convert::BITS", Ty.path "usize" |)
+                                  |),
                                   Value.Integer IntegerKind.Usize 0
                                 |)
                               |)) in
@@ -1195,7 +1197,15 @@ Module base_convert.
                                 M.return_ (|
                                   Value.StructTuple
                                     "core::result::Result::Ok"
-                                    [ M.read (| M.get_constant "ruint::ZERO" |) ]
+                                    [
+                                      M.read (|
+                                        get_associated_constant (|
+                                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                          "ZERO",
+                                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                                        |)
+                                      |)
+                                    ]
                                 |)
                               |)
                             |)
@@ -1231,7 +1241,13 @@ Module base_convert.
                     |)
                   |) in
                 let~ result : Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] :=
-                  M.copy (| M.get_constant "ruint::ZERO" |) in
+                  M.copy (|
+                    get_associated_constant (|
+                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                      "ZERO",
+                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                    |)
+                  |) in
                 let~ power : Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] :=
                   M.alloc (|
                     M.call_closure (|
@@ -1497,8 +1513,10 @@ Module base_convert.
                                                                     |),
                                                                     BinOp.Wrap.sub (|
                                                                       M.read (|
-                                                                        M.get_constant
-                                                                          "ruint::base_convert::LIMBS"
+                                                                        get_constant (|
+                                                                          "ruint::base_convert::LIMBS",
+                                                                          Ty.path "usize"
+                                                                        |)
                                                                       |),
                                                                       Value.Integer
                                                                         IntegerKind.Usize
@@ -1507,7 +1525,14 @@ Module base_convert.
                                                                   |)
                                                                 |),
                                                                 M.read (|
-                                                                  M.get_constant "ruint::MASK"
+                                                                  get_associated_constant (|
+                                                                    Ty.apply
+                                                                      (Ty.path "ruint::Uint")
+                                                                      [ BITS; LIMBS ]
+                                                                      [],
+                                                                    "MASK",
+                                                                    Ty.path "u64"
+                                                                  |)
                                                                 |)
                                                               |)))
                                                           |)
@@ -1588,8 +1613,10 @@ Module base_convert.
                                                                   |),
                                                                   BinOp.Wrap.sub (|
                                                                     M.read (|
-                                                                      M.get_constant
-                                                                        "ruint::base_convert::LIMBS"
+                                                                      get_constant (|
+                                                                        "ruint::base_convert::LIMBS",
+                                                                        Ty.path "usize"
+                                                                      |)
                                                                     |),
                                                                     Value.Integer
                                                                       IntegerKind.Usize
@@ -1598,7 +1625,14 @@ Module base_convert.
                                                                 |)
                                                               |),
                                                               M.read (|
-                                                                M.get_constant "ruint::MASK"
+                                                                get_associated_constant (|
+                                                                  Ty.apply
+                                                                    (Ty.path "ruint::Uint")
+                                                                    [ BITS; LIMBS ]
+                                                                    [],
+                                                                  "MASK",
+                                                                  Ty.path "u64"
+                                                                |)
                                                               |)
                                                             |)))
                                                         |)
@@ -1802,7 +1836,7 @@ Module base_convert.
     
     Global Instance AssociatedFunction_from_base_le :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait (Self BITS LIMBS) "from_base_le" (from_base_le BITS LIMBS).
+      M.IsAssociatedFunction.C (Self BITS LIMBS) "from_base_le" (from_base_le BITS LIMBS).
     Admitted.
     Global Typeclasses Opaque from_base_le.
     
@@ -1889,7 +1923,13 @@ Module base_convert.
                     ]
                   |) in
                 let~ result : Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] :=
-                  M.copy (| M.get_constant "ruint::ZERO" |) in
+                  M.copy (|
+                    get_associated_constant (|
+                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                      "ZERO",
+                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                    |)
+                  |) in
                 let~ _ : Ty.tuple [] :=
                   M.use
                     (M.match_operator (|
@@ -2234,8 +2274,10 @@ Module base_convert.
                                                             (LogicalOp.and (|
                                                               BinOp.ne (|
                                                                 M.read (|
-                                                                  M.get_constant
-                                                                    "ruint::base_convert::LIMBS"
+                                                                  get_constant (|
+                                                                    "ruint::base_convert::LIMBS",
+                                                                    Ty.path "usize"
+                                                                  |)
                                                                 |),
                                                                 Value.Integer IntegerKind.Usize 0
                                                               |),
@@ -2250,8 +2292,10 @@ Module base_convert.
                                                                       |),
                                                                       BinOp.Wrap.sub (|
                                                                         M.read (|
-                                                                          M.get_constant
-                                                                            "ruint::base_convert::LIMBS"
+                                                                          get_constant (|
+                                                                            "ruint::base_convert::LIMBS",
+                                                                            Ty.path "usize"
+                                                                          |)
                                                                         |),
                                                                         Value.Integer
                                                                           IntegerKind.Usize
@@ -2260,7 +2304,14 @@ Module base_convert.
                                                                     |)
                                                                   |),
                                                                   M.read (|
-                                                                    M.get_constant "ruint::MASK"
+                                                                    get_associated_constant (|
+                                                                      Ty.apply
+                                                                        (Ty.path "ruint::Uint")
+                                                                        [ BITS; LIMBS ]
+                                                                        [],
+                                                                      "MASK",
+                                                                      Ty.path "u64"
+                                                                    |)
                                                                   |)
                                                                 |)))
                                                             |)))
@@ -2304,7 +2355,7 @@ Module base_convert.
     
     Global Instance AssociatedFunction_from_base_be :
       forall (BITS LIMBS : Value.t),
-      M.IsAssociatedFunction.Trait (Self BITS LIMBS) "from_base_be" (from_base_be BITS LIMBS).
+      M.IsAssociatedFunction.C (Self BITS LIMBS) "from_base_be" (from_base_be BITS LIMBS).
     Admitted.
     Global Typeclasses Opaque from_base_be.
   End Impl_ruint_Uint_BITS_LIMBS.

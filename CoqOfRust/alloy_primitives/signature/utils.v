@@ -25,7 +25,7 @@ Module signature.
       end.
     
     Global Instance Instance_IsFunction_to_eip155_v :
-      M.IsFunction.Trait "alloy_primitives::signature::utils::to_eip155_v" to_eip155_v.
+      M.IsFunction.C "alloy_primitives::signature::utils::to_eip155_v" to_eip155_v.
     Admitted.
     Global Typeclasses Opaque to_eip155_v.
     
@@ -114,7 +114,7 @@ Module signature.
       end.
     
     Global Instance Instance_IsFunction_normalize_v :
-      M.IsFunction.Trait "alloy_primitives::signature::utils::normalize_v" normalize_v.
+      M.IsFunction.C "alloy_primitives::signature::utils::normalize_v" normalize_v.
     Admitted.
     Global Typeclasses Opaque normalize_v.
     
@@ -195,7 +195,7 @@ Module signature.
       end.
     
     Global Instance Instance_IsFunction_is_valid_v :
-      M.IsFunction.Trait "alloy_primitives::signature::utils::is_valid_v" is_valid_v.
+      M.IsFunction.C "alloy_primitives::signature::utils::is_valid_v" is_valid_v.
     Admitted.
     Global Typeclasses Opaque is_valid_v.
     
@@ -255,9 +255,7 @@ Module signature.
       end.
     
     Global Instance Instance_IsFunction_normalize_v_to_byte :
-      M.IsFunction.Trait
-        "alloy_primitives::signature::utils::normalize_v_to_byte"
-        normalize_v_to_byte.
+      M.IsFunction.C "alloy_primitives::signature::utils::normalize_v_to_byte" normalize_v_to_byte.
     Admitted.
     Global Typeclasses Opaque normalize_v_to_byte.
   End utils.

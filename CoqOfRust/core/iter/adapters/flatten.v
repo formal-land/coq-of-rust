@@ -99,7 +99,7 @@ Module iter.
         
         Global Instance AssociatedFunction_new :
           forall (I U F : Ty.t),
-          M.IsAssociatedFunction.Trait (Self I U F) "new" (new I U F).
+          M.IsAssociatedFunction.C (Self I U F) "new" (new I U F).
         Admitted.
         Global Typeclasses Opaque new.
         
@@ -206,7 +206,7 @@ Module iter.
         
         Global Instance AssociatedFunction_into_parts :
           forall (I U F : Ty.t),
-          M.IsAssociatedFunction.Trait (Self I U F) "into_parts" (into_parts I U F).
+          M.IsAssociatedFunction.C (Self I U F) "into_parts" (into_parts I U F).
         Admitted.
         Global Typeclasses Opaque into_parts.
       End Impl_core_iter_adapters_flatten_FlatMap_I_U_F.
@@ -1099,22 +1099,42 @@ Module iter.
           (Ty.path "core::option::Option")
           []
           [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ] *)
-        Definition value_EXPAND_BY (I U F : Ty.t) : Value.t :=
+        Definition value_EXPAND_BY
+            (I U F : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self I U F in
-          M.run
-            ltac:(M.monadic
-              (M.get_constant "core::iter::adapters::flatten::EXPAND_BY_discriminant")).
+          ltac:(M.monadic
+            (get_constant (|
+              "core::iter::adapters::flatten::EXPAND_BY_discriminant",
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
+            |))).
         
         (*     const MERGE_BY: Option<NonZero<usize>> = I::MERGE_BY; *)
         (* Ty.apply
           (Ty.path "core::option::Option")
           []
           [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ] *)
-        Definition value_MERGE_BY (I U F : Ty.t) : Value.t :=
+        Definition value_MERGE_BY
+            (I U F : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self I U F in
-          M.run
-            ltac:(M.monadic
-              (M.get_constant "core::iter::traits::marker::InPlaceIterable::MERGE_BY")).
+          ltac:(M.monadic
+            (get_constant (|
+              "core::iter::traits::marker::InPlaceIterable::MERGE_BY",
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
+            |))).
         
         Axiom Implements :
           forall (I U F : Ty.t),
@@ -1125,8 +1145,8 @@ Module iter.
             (Self I U F)
             (* Instance *)
             [
-              ("value_EXPAND_BY", InstanceField.Constant (value_EXPAND_BY I U F));
-              ("value_MERGE_BY", InstanceField.Constant (value_MERGE_BY I U F))
+              ("value_EXPAND_BY", InstanceField.Method (value_EXPAND_BY I U F));
+              ("value_MERGE_BY", InstanceField.Method (value_MERGE_BY I U F))
             ].
       End Impl_core_iter_traits_marker_InPlaceIterable_where_core_iter_traits_marker_InPlaceIterable_I_where_core_iter_adapters_flatten_BoundedSize_U_where_core_iter_traits_collect_IntoIterator_U_for_core_iter_adapters_flatten_FlatMap_I_U_F.
       
@@ -1323,25 +1343,34 @@ Module iter.
           (Ty.path "core::option::Option")
           []
           [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ] *)
-        Definition value_UPPER_BOUND (N : Value.t) (T : Ty.t) : Value.t :=
+        Definition value_UPPER_BOUND
+            (N : Value.t)
+            (T : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self N T in
-          M.run
-            ltac:(M.monadic
-              (M.alloc (|
-                M.call_closure (|
-                  Ty.apply
-                    (Ty.path "core::option::Option")
-                    []
-                    [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
-                    "new",
-                    [],
-                    []
-                  |),
-                  [ M.read (| M.get_constant "core::iter::adapters::flatten::N" |) ]
-                |)
-              |))).
+          ltac:(M.monadic
+            (M.alloc (|
+              M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
+                M.get_associated_function (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
+                  "new",
+                  [],
+                  []
+                |),
+                [
+                  M.read (|
+                    get_constant (| "core::iter::adapters::flatten::N", Ty.path "usize" |)
+                  |)
+                ]
+              |)
+            |))).
         
         Axiom Implements :
           forall (N : Value.t) (T : Ty.t),
@@ -1350,8 +1379,7 @@ Module iter.
             (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
             (Self N T)
-            (* Instance *)
-            [ ("value_UPPER_BOUND", InstanceField.Constant (value_UPPER_BOUND N T)) ].
+            (* Instance *) [ ("value_UPPER_BOUND", InstanceField.Method (value_UPPER_BOUND N T)) ].
       End Impl_core_iter_adapters_flatten_BoundedSize_for_array_N_T.
       
       Module Impl_core_iter_adapters_flatten_BoundedSize_for_core_array_iter_IntoIter_N_T.
@@ -1363,25 +1391,34 @@ Module iter.
           (Ty.path "core::option::Option")
           []
           [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ] *)
-        Definition value_UPPER_BOUND (N : Value.t) (T : Ty.t) : Value.t :=
+        Definition value_UPPER_BOUND
+            (N : Value.t)
+            (T : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self N T in
-          M.run
-            ltac:(M.monadic
-              (M.alloc (|
-                M.call_closure (|
-                  Ty.apply
-                    (Ty.path "core::option::Option")
-                    []
-                    [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
-                    "new",
-                    [],
-                    []
-                  |),
-                  [ M.read (| M.get_constant "core::iter::adapters::flatten::N" |) ]
-                |)
-              |))).
+          ltac:(M.monadic
+            (M.alloc (|
+              M.call_closure (|
+                Ty.apply
+                  (Ty.path "core::option::Option")
+                  []
+                  [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ],
+                M.get_associated_function (|
+                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
+                  "new",
+                  [],
+                  []
+                |),
+                [
+                  M.read (|
+                    get_constant (| "core::iter::adapters::flatten::N", Ty.path "usize" |)
+                  |)
+                ]
+              |)
+            |))).
         
         Axiom Implements :
           forall (N : Value.t) (T : Ty.t),
@@ -1390,8 +1427,7 @@ Module iter.
             (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
             (Self N T)
-            (* Instance *)
-            [ ("value_UPPER_BOUND", InstanceField.Constant (value_UPPER_BOUND N T)) ].
+            (* Instance *) [ ("value_UPPER_BOUND", InstanceField.Method (value_UPPER_BOUND N T)) ].
       End Impl_core_iter_adapters_flatten_BoundedSize_for_core_array_iter_IntoIter_N_T.
       
       Module Impl_core_iter_adapters_flatten_BoundedSize_where_core_iter_adapters_flatten_BoundedSize_I_for_core_iter_adapters_filter_Filter_I_P.
@@ -1403,11 +1439,21 @@ Module iter.
           (Ty.path "core::option::Option")
           []
           [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ] *)
-        Definition value_UPPER_BOUND (I P : Ty.t) : Value.t :=
+        Definition value_UPPER_BOUND
+            (I P : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self I P in
-          M.run
-            ltac:(M.monadic
-              (M.get_constant "core::iter::adapters::flatten::BoundedSize::UPPER_BOUND")).
+          ltac:(M.monadic
+            (get_constant (|
+              "core::iter::adapters::flatten::BoundedSize::UPPER_BOUND",
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
+            |))).
         
         Axiom Implements :
           forall (I P : Ty.t),
@@ -1416,8 +1462,7 @@ Module iter.
             (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
             (Self I P)
-            (* Instance *)
-            [ ("value_UPPER_BOUND", InstanceField.Constant (value_UPPER_BOUND I P)) ].
+            (* Instance *) [ ("value_UPPER_BOUND", InstanceField.Method (value_UPPER_BOUND I P)) ].
       End Impl_core_iter_adapters_flatten_BoundedSize_where_core_iter_adapters_flatten_BoundedSize_I_for_core_iter_adapters_filter_Filter_I_P.
       
       Module Impl_core_iter_adapters_flatten_BoundedSize_where_core_iter_adapters_flatten_BoundedSize_I_for_core_iter_adapters_filter_map_FilterMap_I_P.
@@ -1429,11 +1474,21 @@ Module iter.
           (Ty.path "core::option::Option")
           []
           [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ] *)
-        Definition value_UPPER_BOUND (I P : Ty.t) : Value.t :=
+        Definition value_UPPER_BOUND
+            (I P : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self I P in
-          M.run
-            ltac:(M.monadic
-              (M.get_constant "core::iter::adapters::flatten::BoundedSize::UPPER_BOUND")).
+          ltac:(M.monadic
+            (get_constant (|
+              "core::iter::adapters::flatten::BoundedSize::UPPER_BOUND",
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
+            |))).
         
         Axiom Implements :
           forall (I P : Ty.t),
@@ -1442,8 +1497,7 @@ Module iter.
             (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
             (Self I P)
-            (* Instance *)
-            [ ("value_UPPER_BOUND", InstanceField.Constant (value_UPPER_BOUND I P)) ].
+            (* Instance *) [ ("value_UPPER_BOUND", InstanceField.Method (value_UPPER_BOUND I P)) ].
       End Impl_core_iter_adapters_flatten_BoundedSize_where_core_iter_adapters_flatten_BoundedSize_I_for_core_iter_adapters_filter_map_FilterMap_I_P.
       
       Module Impl_core_iter_adapters_flatten_BoundedSize_where_core_iter_adapters_flatten_BoundedSize_I_for_core_iter_adapters_map_Map_I_F.
@@ -1455,11 +1509,21 @@ Module iter.
           (Ty.path "core::option::Option")
           []
           [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ] *)
-        Definition value_UPPER_BOUND (I F : Ty.t) : Value.t :=
+        Definition value_UPPER_BOUND
+            (I F : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self I F in
-          M.run
-            ltac:(M.monadic
-              (M.get_constant "core::iter::adapters::flatten::BoundedSize::UPPER_BOUND")).
+          ltac:(M.monadic
+            (get_constant (|
+              "core::iter::adapters::flatten::BoundedSize::UPPER_BOUND",
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
+            |))).
         
         Axiom Implements :
           forall (I F : Ty.t),
@@ -1468,8 +1532,7 @@ Module iter.
             (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
             (Self I F)
-            (* Instance *)
-            [ ("value_UPPER_BOUND", InstanceField.Constant (value_UPPER_BOUND I F)) ].
+            (* Instance *) [ ("value_UPPER_BOUND", InstanceField.Method (value_UPPER_BOUND I F)) ].
       End Impl_core_iter_adapters_flatten_BoundedSize_where_core_iter_adapters_flatten_BoundedSize_I_for_core_iter_adapters_map_Map_I_F.
       
       Module Impl_core_iter_adapters_flatten_BoundedSize_where_core_iter_adapters_flatten_BoundedSize_I_for_core_iter_adapters_copied_Copied_I.
@@ -1481,11 +1544,21 @@ Module iter.
           (Ty.path "core::option::Option")
           []
           [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ] *)
-        Definition value_UPPER_BOUND (I : Ty.t) : Value.t :=
+        Definition value_UPPER_BOUND
+            (I : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self I in
-          M.run
-            ltac:(M.monadic
-              (M.get_constant "core::iter::adapters::flatten::BoundedSize::UPPER_BOUND")).
+          ltac:(M.monadic
+            (get_constant (|
+              "core::iter::adapters::flatten::BoundedSize::UPPER_BOUND",
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
+            |))).
         
         Axiom Implements :
           forall (I : Ty.t),
@@ -1494,7 +1567,7 @@ Module iter.
             (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
             (Self I)
-            (* Instance *) [ ("value_UPPER_BOUND", InstanceField.Constant (value_UPPER_BOUND I)) ].
+            (* Instance *) [ ("value_UPPER_BOUND", InstanceField.Method (value_UPPER_BOUND I)) ].
       End Impl_core_iter_adapters_flatten_BoundedSize_where_core_iter_adapters_flatten_BoundedSize_I_for_core_iter_adapters_copied_Copied_I.
       
       Module Impl_core_iter_adapters_flatten_BoundedSize_where_core_iter_adapters_flatten_BoundedSize_I_for_core_iter_adapters_cloned_Cloned_I.
@@ -1506,11 +1579,21 @@ Module iter.
           (Ty.path "core::option::Option")
           []
           [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ] *)
-        Definition value_UPPER_BOUND (I : Ty.t) : Value.t :=
+        Definition value_UPPER_BOUND
+            (I : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self I in
-          M.run
-            ltac:(M.monadic
-              (M.get_constant "core::iter::adapters::flatten::BoundedSize::UPPER_BOUND")).
+          ltac:(M.monadic
+            (get_constant (|
+              "core::iter::adapters::flatten::BoundedSize::UPPER_BOUND",
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
+            |))).
         
         Axiom Implements :
           forall (I : Ty.t),
@@ -1519,7 +1602,7 @@ Module iter.
             (* Trait polymorphic consts *) []
             (* Trait polymorphic types *) []
             (Self I)
-            (* Instance *) [ ("value_UPPER_BOUND", InstanceField.Constant (value_UPPER_BOUND I)) ].
+            (* Instance *) [ ("value_UPPER_BOUND", InstanceField.Method (value_UPPER_BOUND I)) ].
       End Impl_core_iter_adapters_flatten_BoundedSize_where_core_iter_adapters_flatten_BoundedSize_I_for_core_iter_adapters_cloned_Cloned_I.
       
       (* StructRecord
@@ -1617,7 +1700,7 @@ Module iter.
         
         Global Instance AssociatedFunction_new :
           forall (I : Ty.t),
-          M.IsAssociatedFunction.Trait (Self I) "new" (new I).
+          M.IsAssociatedFunction.C (Self I) "new" (new I).
         Admitted.
         Global Typeclasses Opaque new.
       End Impl_core_iter_adapters_flatten_Flatten_I.
@@ -2352,22 +2435,42 @@ Module iter.
           (Ty.path "core::option::Option")
           []
           [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ] *)
-        Definition value_EXPAND_BY (I : Ty.t) : Value.t :=
+        Definition value_EXPAND_BY
+            (I : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self I in
-          M.run
-            ltac:(M.monadic
-              (M.get_constant "core::iter::adapters::flatten::EXPAND_BY_discriminant")).
+          ltac:(M.monadic
+            (get_constant (|
+              "core::iter::adapters::flatten::EXPAND_BY_discriminant",
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
+            |))).
         
         (*     const MERGE_BY: Option<NonZero<usize>> = I::MERGE_BY; *)
         (* Ty.apply
           (Ty.path "core::option::Option")
           []
           [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ] *)
-        Definition value_MERGE_BY (I : Ty.t) : Value.t :=
+        Definition value_MERGE_BY
+            (I : Ty.t)
+            (ε : list Value.t)
+            (τ : list Ty.t)
+            (α : list Value.t)
+            : M :=
           let Self : Ty.t := Self I in
-          M.run
-            ltac:(M.monadic
-              (M.get_constant "core::iter::traits::marker::InPlaceIterable::MERGE_BY")).
+          ltac:(M.monadic
+            (get_constant (|
+              "core::iter::traits::marker::InPlaceIterable::MERGE_BY",
+              Ty.apply
+                (Ty.path "core::option::Option")
+                []
+                [ Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ] ]
+            |))).
         
         Axiom Implements :
           forall (I : Ty.t),
@@ -2378,8 +2481,8 @@ Module iter.
             (Self I)
             (* Instance *)
             [
-              ("value_EXPAND_BY", InstanceField.Constant (value_EXPAND_BY I));
-              ("value_MERGE_BY", InstanceField.Constant (value_MERGE_BY I))
+              ("value_EXPAND_BY", InstanceField.Method (value_EXPAND_BY I));
+              ("value_MERGE_BY", InstanceField.Method (value_MERGE_BY I))
             ].
       End Impl_core_iter_traits_marker_InPlaceIterable_where_core_iter_traits_marker_InPlaceIterable_I_where_core_iter_traits_iterator_Iterator_I_where_core_iter_traits_collect_IntoIterator_associated_in_trait_core_iter_traits_iterator_Iterator___I_Item_where_core_iter_adapters_flatten_BoundedSize_associated_in_trait_core_iter_traits_iterator_Iterator___I_Item_for_core_iter_adapters_flatten_Flatten_I.
       
@@ -2772,7 +2875,7 @@ Module iter.
         
         Global Instance AssociatedFunction_new :
           forall (I U : Ty.t),
-          M.IsAssociatedFunction.Trait (Self I U) "new" (new I U).
+          M.IsAssociatedFunction.C (Self I U) "new" (new I U).
         Admitted.
         Global Typeclasses Opaque new.
         (*
@@ -2951,7 +3054,7 @@ Module iter.
         
         Global Instance AssociatedFunction_iter_fold :
           forall (I U : Ty.t),
-          M.IsAssociatedFunction.Trait (Self I U) "iter_fold" (iter_fold I U).
+          M.IsAssociatedFunction.C (Self I U) "iter_fold" (iter_fold I U).
         Admitted.
         Global Typeclasses Opaque iter_fold.
         
@@ -3483,7 +3586,7 @@ Module iter.
         
         Global Instance AssociatedFunction_iter_try_fold :
           forall (I U : Ty.t),
-          M.IsAssociatedFunction.Trait (Self I U) "iter_try_fold" (iter_try_fold I U).
+          M.IsAssociatedFunction.C (Self I U) "iter_try_fold" (iter_try_fold I U).
         Admitted.
         Global Typeclasses Opaque iter_try_fold.
         (*
@@ -3662,7 +3765,7 @@ Module iter.
         
         Global Instance AssociatedFunction_iter_rfold :
           forall (I U : Ty.t),
-          M.IsAssociatedFunction.Trait (Self I U) "iter_rfold" (iter_rfold I U).
+          M.IsAssociatedFunction.C (Self I U) "iter_rfold" (iter_rfold I U).
         Admitted.
         Global Typeclasses Opaque iter_rfold.
         
@@ -4194,7 +4297,7 @@ Module iter.
         
         Global Instance AssociatedFunction_iter_try_rfold :
           forall (I U : Ty.t),
-          M.IsAssociatedFunction.Trait (Self I U) "iter_try_rfold" (iter_try_rfold I U).
+          M.IsAssociatedFunction.C (Self I U) "iter_try_rfold" (iter_try_rfold I U).
         Admitted.
         Global Typeclasses Opaque iter_try_rfold.
       End Impl_core_iter_adapters_flatten_FlattenCompat_I_U.
@@ -6754,7 +6857,11 @@ Module iter.
             ltac:(M.monadic
               (Value.StructTuple
                 "core::option::Option::Some"
-                [ M.read (| M.get_constant "core::iter::adapters::flatten::N" |) ]))
+                [
+                  M.read (|
+                    get_constant (| "core::iter::adapters::flatten::N", Ty.path "usize" |)
+                  |)
+                ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
@@ -6790,7 +6897,11 @@ Module iter.
             ltac:(M.monadic
               (Value.StructTuple
                 "core::option::Option::Some"
-                [ M.read (| M.get_constant "core::iter::adapters::flatten::N" |) ]))
+                [
+                  M.read (|
+                    get_constant (| "core::iter::adapters::flatten::N", Ty.path "usize" |)
+                  |)
+                ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
@@ -6826,7 +6937,11 @@ Module iter.
             ltac:(M.monadic
               (Value.StructTuple
                 "core::option::Option::Some"
-                [ M.read (| M.get_constant "core::iter::adapters::flatten::N" |) ]))
+                [
+                  M.read (|
+                    get_constant (| "core::iter::adapters::flatten::N", Ty.path "usize" |)
+                  |)
+                ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
@@ -7034,7 +7149,7 @@ Module iter.
         end.
       
       Global Instance Instance_IsFunction_and_then_or_clear :
-        M.IsFunction.Trait "core::iter::adapters::flatten::and_then_or_clear" and_then_or_clear.
+        M.IsFunction.C "core::iter::adapters::flatten::and_then_or_clear" and_then_or_clear.
       Admitted.
       Global Typeclasses Opaque and_then_or_clear.
       
@@ -7341,7 +7456,7 @@ Module iter.
         end.
       
       Global Instance Instance_IsFunction_into_item :
-        M.IsFunction.Trait "core::iter::adapters::flatten::into_item" into_item.
+        M.IsFunction.C "core::iter::adapters::flatten::into_item" into_item.
       Admitted.
       Global Typeclasses Opaque into_item.
       
@@ -7498,7 +7613,7 @@ Module iter.
         end.
       
       Global Instance Instance_IsFunction_flatten_one :
-        M.IsFunction.Trait "core::iter::adapters::flatten::flatten_one" flatten_one.
+        M.IsFunction.C "core::iter::adapters::flatten::flatten_one" flatten_one.
       Admitted.
       Global Typeclasses Opaque flatten_one.
       
@@ -7669,7 +7784,7 @@ Module iter.
         end.
       
       Global Instance Instance_IsFunction_try_flatten_one :
-        M.IsFunction.Trait "core::iter::adapters::flatten::try_flatten_one" try_flatten_one.
+        M.IsFunction.C "core::iter::adapters::flatten::try_flatten_one" try_flatten_one.
       Admitted.
       Global Typeclasses Opaque try_flatten_one.
       
@@ -7810,7 +7925,7 @@ Module iter.
         end.
       
       Global Instance Instance_IsFunction_advance_by_one :
-        M.IsFunction.Trait "core::iter::adapters::flatten::advance_by_one" advance_by_one.
+        M.IsFunction.C "core::iter::adapters::flatten::advance_by_one" advance_by_one.
       Admitted.
       Global Typeclasses Opaque advance_by_one.
       

@@ -100,7 +100,7 @@ Module slice.
       end.
     
     Global Instance Instance_IsFunction_from_raw_parts :
-      M.IsFunction.Trait "core::slice::raw::from_raw_parts" from_raw_parts.
+      M.IsFunction.C "core::slice::raw::from_raw_parts" from_raw_parts.
     Admitted.
     Global Typeclasses Opaque from_raw_parts.
     
@@ -226,7 +226,7 @@ Module slice.
       end.
     
     Global Instance Instance_IsFunction_from_raw_parts_mut :
-      M.IsFunction.Trait "core::slice::raw::from_raw_parts_mut" from_raw_parts_mut.
+      M.IsFunction.C "core::slice::raw::from_raw_parts_mut" from_raw_parts_mut.
     Admitted.
     Global Typeclasses Opaque from_raw_parts_mut.
     
@@ -257,7 +257,7 @@ Module slice.
       end.
     
     Global Instance Instance_IsFunction_from_ref :
-      M.IsFunction.Trait "core::slice::raw::from_ref" from_ref.
+      M.IsFunction.C "core::slice::raw::from_ref" from_ref.
     Admitted.
     Global Typeclasses Opaque from_ref.
     
@@ -293,7 +293,7 @@ Module slice.
       end.
     
     Global Instance Instance_IsFunction_from_mut :
-      M.IsFunction.Trait "core::slice::raw::from_mut" from_mut.
+      M.IsFunction.C "core::slice::raw::from_mut" from_mut.
     Admitted.
     Global Typeclasses Opaque from_mut.
     
@@ -355,7 +355,7 @@ Module slice.
       end.
     
     Global Instance Instance_IsFunction_from_ptr_range :
-      M.IsFunction.Trait "core::slice::raw::from_ptr_range" from_ptr_range.
+      M.IsFunction.C "core::slice::raw::from_ptr_range" from_ptr_range.
     Admitted.
     Global Typeclasses Opaque from_ptr_range.
     
@@ -429,7 +429,7 @@ Module slice.
       end.
     
     Global Instance Instance_IsFunction_from_mut_ptr_range :
-      M.IsFunction.Trait "core::slice::raw::from_mut_ptr_range" from_mut_ptr_range.
+      M.IsFunction.C "core::slice::raw::from_mut_ptr_range" from_mut_ptr_range.
     Admitted.
     Global Typeclasses Opaque from_mut_ptr_range.
   End raw.

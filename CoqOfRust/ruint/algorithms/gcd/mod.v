@@ -113,7 +113,14 @@ Module algorithms.
                                   |),
                                   [
                                     M.borrow (| Pointer.Kind.Ref, b |);
-                                    M.borrow (| Pointer.Kind.Ref, M.get_constant "ruint::ZERO" |)
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      get_associated_constant (|
+                                        Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                        "ZERO",
+                                        Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                                      |)
+                                    |)
                                   ]
                                 |)
                               |)) in
@@ -231,8 +238,11 @@ Module algorithms.
                                             M.borrow (| Pointer.Kind.Ref, m |);
                                             M.borrow (|
                                               Pointer.Kind.Ref,
-                                              M.get_constant
-                                                "ruint::algorithms::gcd::matrix::IDENTITY"
+                                              get_associated_constant (|
+                                                Ty.path "ruint::algorithms::gcd::matrix::Matrix",
+                                                "IDENTITY",
+                                                Ty.path "ruint::algorithms::gcd::matrix::Matrix"
+                                              |)
                                             |)
                                           ]
                                         |)
@@ -327,7 +337,7 @@ Module algorithms.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance Instance_IsFunction_gcd : M.IsFunction.Trait "ruint::algorithms::gcd::gcd" gcd.
+    Global Instance Instance_IsFunction_gcd : M.IsFunction.C "ruint::algorithms::gcd::gcd" gcd.
     Admitted.
     Global Typeclasses Opaque gcd.
     
@@ -413,7 +423,10 @@ Module algorithms.
                               (M.alloc (|
                                 BinOp.eq (|
                                   M.read (|
-                                    M.get_constant "ruint::algorithms::gcd::gcd_extended::BITS"
+                                    get_constant (|
+                                      "ruint::algorithms::gcd::gcd_extended::BITS",
+                                      Ty.path "usize"
+                                    |)
                                   |),
                                   Value.Integer IntegerKind.Usize 0
                                 |)
@@ -426,9 +439,27 @@ Module algorithms.
                                 M.return_ (|
                                   Value.Tuple
                                     [
-                                      M.read (| M.get_constant "ruint::ZERO" |);
-                                      M.read (| M.get_constant "ruint::ZERO" |);
-                                      M.read (| M.get_constant "ruint::ZERO" |);
+                                      M.read (|
+                                        get_associated_constant (|
+                                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                          "ZERO",
+                                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                                        |)
+                                      |);
+                                      M.read (|
+                                        get_associated_constant (|
+                                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                          "ZERO",
+                                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                                        |)
+                                      |);
+                                      M.read (|
+                                        get_associated_constant (|
+                                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                          "ZERO",
+                                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                                        |)
+                                      |);
                                       Value.Bool false
                                     ]
                                 |)
@@ -503,9 +534,21 @@ Module algorithms.
                     |)
                   |) in
                 let~ s1 : Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] :=
-                  M.copy (| M.get_constant "ruint::ZERO" |) in
+                  M.copy (|
+                    get_associated_constant (|
+                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                      "ZERO",
+                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                    |)
+                  |) in
                 let~ t0 : Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] :=
-                  M.copy (| M.get_constant "ruint::ZERO" |) in
+                  M.copy (|
+                    get_associated_constant (|
+                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                      "ZERO",
+                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                    |)
+                  |) in
                 let~ t1 : Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] :=
                   M.alloc (|
                     M.call_closure (|
@@ -548,7 +591,11 @@ Module algorithms.
                                         M.borrow (| Pointer.Kind.Ref, b |);
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.get_constant "ruint::ZERO"
+                                          get_associated_constant (|
+                                            Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                            "ZERO",
+                                            Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                                          |)
                                         |)
                                       ]
                                     |)
@@ -672,8 +719,12 @@ Module algorithms.
                                                 M.borrow (| Pointer.Kind.Ref, m |);
                                                 M.borrow (|
                                                   Pointer.Kind.Ref,
-                                                  M.get_constant
-                                                    "ruint::algorithms::gcd::matrix::IDENTITY"
+                                                  get_associated_constant (|
+                                                    Ty.path
+                                                      "ruint::algorithms::gcd::matrix::Matrix",
+                                                    "IDENTITY",
+                                                    Ty.path "ruint::algorithms::gcd::matrix::Matrix"
+                                                  |)
                                                 |)
                                               ]
                                             |)
@@ -1025,7 +1076,16 @@ Module algorithms.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| M.get_constant "ruint::ZERO" |); M.read (| t0 |) ]
+                                  [
+                                    M.read (|
+                                      get_associated_constant (|
+                                        Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                        "ZERO",
+                                        Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                                      |)
+                                    |);
+                                    M.read (| t0 |)
+                                  ]
                                 |)
                               |)
                             |) in
@@ -1047,7 +1107,16 @@ Module algorithms.
                                     [],
                                     []
                                   |),
-                                  [ M.read (| M.get_constant "ruint::ZERO" |); M.read (| s0 |) ]
+                                  [
+                                    M.read (|
+                                      get_associated_constant (|
+                                        Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                        "ZERO",
+                                        Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                                      |)
+                                    |);
+                                    M.read (| s0 |)
+                                  ]
                                 |)
                               |)
                             |) in
@@ -1101,7 +1170,7 @@ Module algorithms.
       end.
     
     Global Instance Instance_IsFunction_gcd_extended :
-      M.IsFunction.Trait "ruint::algorithms::gcd::gcd_extended" gcd_extended.
+      M.IsFunction.C "ruint::algorithms::gcd::gcd_extended" gcd_extended.
     Admitted.
     Global Typeclasses Opaque gcd_extended.
     
@@ -1174,7 +1243,10 @@ Module algorithms.
                                 LogicalOp.or (|
                                   BinOp.eq (|
                                     M.read (|
-                                      M.get_constant "ruint::algorithms::gcd::inv_mod::BITS"
+                                      get_constant (|
+                                        "ruint::algorithms::gcd::inv_mod::BITS",
+                                        Ty.path "usize"
+                                      |)
                                     |),
                                     Value.Integer IntegerKind.Usize 0
                                   |),
@@ -1194,7 +1266,11 @@ Module algorithms.
                                         M.borrow (| Pointer.Kind.Ref, modulus |);
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.get_constant "ruint::ZERO"
+                                          get_associated_constant (|
+                                            Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                            "ZERO",
+                                            Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                                          |)
                                         |)
                                       ]
                                     |)))
@@ -1287,7 +1363,14 @@ Module algorithms.
                                   |),
                                   [
                                     M.borrow (| Pointer.Kind.Ref, b |);
-                                    M.borrow (| Pointer.Kind.Ref, M.get_constant "ruint::ZERO" |)
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      get_associated_constant (|
+                                        Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                        "ZERO",
+                                        Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                                      |)
+                                    |)
                                   ]
                                 |)
                               |)) in
@@ -1304,7 +1387,13 @@ Module algorithms.
                     ]
                   |) in
                 let~ t0 : Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] :=
-                  M.copy (| M.get_constant "ruint::ZERO" |) in
+                  M.copy (|
+                    get_associated_constant (|
+                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                      "ZERO",
+                      Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                    |)
+                  |) in
                 let~ t1 : Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [] :=
                   M.alloc (|
                     M.call_closure (|
@@ -1347,7 +1436,11 @@ Module algorithms.
                                         M.borrow (| Pointer.Kind.Ref, b |);
                                         M.borrow (|
                                           Pointer.Kind.Ref,
-                                          M.get_constant "ruint::ZERO"
+                                          get_associated_constant (|
+                                            Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                            "ZERO",
+                                            Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] []
+                                          |)
                                         |)
                                       ]
                                     |)
@@ -1471,8 +1564,12 @@ Module algorithms.
                                                 M.borrow (| Pointer.Kind.Ref, m |);
                                                 M.borrow (|
                                                   Pointer.Kind.Ref,
-                                                  M.get_constant
-                                                    "ruint::algorithms::gcd::matrix::IDENTITY"
+                                                  get_associated_constant (|
+                                                    Ty.path
+                                                      "ruint::algorithms::gcd::matrix::Matrix",
+                                                    "IDENTITY",
+                                                    Ty.path "ruint::algorithms::gcd::matrix::Matrix"
+                                                  |)
                                                 |)
                                               ]
                                             |)
@@ -1810,7 +1907,7 @@ Module algorithms.
       end.
     
     Global Instance Instance_IsFunction_inv_mod :
-      M.IsFunction.Trait "ruint::algorithms::gcd::inv_mod" inv_mod.
+      M.IsFunction.C "ruint::algorithms::gcd::inv_mod" inv_mod.
     Admitted.
     Global Typeclasses Opaque inv_mod.
   End gcd.

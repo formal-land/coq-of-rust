@@ -4,17 +4,17 @@ Require Import CoqOfRust.CoqOfRust.
 Parameter multiply : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_multiply :
-  M.IsFunction.Trait "map_in_result_via_combinators::multiply" multiply.
+  M.IsFunction.C "map_in_result_via_combinators::multiply" multiply.
 Admitted.
 
 Parameter print : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_print :
-  M.IsFunction.Trait "map_in_result_via_combinators::print" print.
+  M.IsFunction.C "map_in_result_via_combinators::print" print.
 Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "map_in_result_via_combinators::main" main.
+  M.IsFunction.C "map_in_result_via_combinators::main" main.
 Admitted.

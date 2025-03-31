@@ -4,7 +4,7 @@ Require Import CoqOfRust.CoqOfRust.
 Parameter double_first : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_double_first :
-  M.IsFunction.Trait
+  M.IsFunction.C
     "pulling_results_out_of_options_with_stop_error_processing::double_first"
     double_first.
 Admitted.
@@ -12,5 +12,5 @@ Admitted.
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "pulling_results_out_of_options_with_stop_error_processing::main" main.
+  M.IsFunction.C "pulling_results_out_of_options_with_stop_error_processing::main" main.
 Admitted.

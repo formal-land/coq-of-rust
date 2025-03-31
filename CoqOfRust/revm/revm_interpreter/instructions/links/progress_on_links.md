@@ -106,7 +106,7 @@
 ## Stack
 
 - [x] `pop`
-- [ ] `push0`
+- [x] `push0`
 - [ ] `push`
 - [ ] `dup`
 - [ ] `swap`
@@ -129,7 +129,7 @@
 - [ ] `returndatasize`
 - [ ] `returndatacopy`
 - [ ] `returndataload`
-- [ ] `gas`
+- [x] `gas`
 
 ## Tx_info
 
@@ -144,6 +144,6 @@
 ## Summary
 
 - Total: 103
-- Admitted: 81
-- Defined: 22
-- Percentage: 21.36%
+- Admitted: 79
+- Defined: 24
+- Percentage: 23.30%

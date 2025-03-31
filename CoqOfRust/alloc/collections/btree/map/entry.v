@@ -1149,7 +1149,7 @@ Module collections.
           
           Global Instance AssociatedFunction_or_insert :
             forall (K V A : Ty.t),
-            M.IsAssociatedFunction.Trait (Self K V A) "or_insert" (or_insert K V A).
+            M.IsAssociatedFunction.C (Self K V A) "or_insert" (or_insert K V A).
           Admitted.
           Global Typeclasses Opaque or_insert.
           
@@ -1271,7 +1271,7 @@ Module collections.
           
           Global Instance AssociatedFunction_or_insert_with :
             forall (K V A : Ty.t),
-            M.IsAssociatedFunction.Trait (Self K V A) "or_insert_with" (or_insert_with K V A).
+            M.IsAssociatedFunction.C (Self K V A) "or_insert_with" (or_insert_with K V A).
           Admitted.
           Global Typeclasses Opaque or_insert_with.
           
@@ -1421,10 +1421,7 @@ Module collections.
           
           Global Instance AssociatedFunction_or_insert_with_key :
             forall (K V A : Ty.t),
-            M.IsAssociatedFunction.Trait
-              (Self K V A)
-              "or_insert_with_key"
-              (or_insert_with_key K V A).
+            M.IsAssociatedFunction.C (Self K V A) "or_insert_with_key" (or_insert_with_key K V A).
           Admitted.
           Global Typeclasses Opaque or_insert_with_key.
           
@@ -1530,7 +1527,7 @@ Module collections.
           
           Global Instance AssociatedFunction_key :
             forall (K V A : Ty.t),
-            M.IsAssociatedFunction.Trait (Self K V A) "key" (key K V A).
+            M.IsAssociatedFunction.C (Self K V A) "key" (key K V A).
           Admitted.
           Global Typeclasses Opaque key.
           
@@ -1645,7 +1642,7 @@ Module collections.
           
           Global Instance AssociatedFunction_and_modify :
             forall (K V A : Ty.t),
-            M.IsAssociatedFunction.Trait (Self K V A) "and_modify" (and_modify K V A).
+            M.IsAssociatedFunction.C (Self K V A) "and_modify" (and_modify K V A).
           Admitted.
           Global Typeclasses Opaque and_modify.
           
@@ -1742,7 +1739,7 @@ Module collections.
           
           Global Instance AssociatedFunction_insert_entry :
             forall (K V A : Ty.t),
-            M.IsAssociatedFunction.Trait (Self K V A) "insert_entry" (insert_entry K V A).
+            M.IsAssociatedFunction.C (Self K V A) "insert_entry" (insert_entry K V A).
           Admitted.
           Global Typeclasses Opaque insert_entry.
           (*
@@ -1862,7 +1859,7 @@ Module collections.
           
           Global Instance AssociatedFunction_or_default :
             forall (K V A : Ty.t),
-            M.IsAssociatedFunction.Trait (Self K V A) "or_default" (or_default K V A).
+            M.IsAssociatedFunction.C (Self K V A) "or_default" (or_default K V A).
           Admitted.
           Global Typeclasses Opaque or_default.
         End Impl_alloc_collections_btree_map_entry_Entry_K_V_A.
@@ -1901,7 +1898,7 @@ Module collections.
           
           Global Instance AssociatedFunction_key :
             forall (K V A : Ty.t),
-            M.IsAssociatedFunction.Trait (Self K V A) "key" (key K V A).
+            M.IsAssociatedFunction.C (Self K V A) "key" (key K V A).
           Admitted.
           Global Typeclasses Opaque key.
           
@@ -1933,7 +1930,7 @@ Module collections.
           
           Global Instance AssociatedFunction_into_key :
             forall (K V A : Ty.t),
-            M.IsAssociatedFunction.Trait (Self K V A) "into_key" (into_key K V A).
+            M.IsAssociatedFunction.C (Self K V A) "into_key" (into_key K V A).
           Admitted.
           Global Typeclasses Opaque into_key.
           
@@ -1999,7 +1996,7 @@ Module collections.
           
           Global Instance AssociatedFunction_insert :
             forall (K V A : Ty.t),
-            M.IsAssociatedFunction.Trait (Self K V A) "insert" (insert K V A).
+            M.IsAssociatedFunction.C (Self K V A) "insert" (insert K V A).
           Admitted.
           Global Typeclasses Opaque insert.
           
@@ -3006,7 +3003,7 @@ Module collections.
           
           Global Instance AssociatedFunction_insert_entry :
             forall (K V A : Ty.t),
-            M.IsAssociatedFunction.Trait (Self K V A) "insert_entry" (insert_entry K V A).
+            M.IsAssociatedFunction.C (Self K V A) "insert_entry" (insert_entry K V A).
           Admitted.
           Global Typeclasses Opaque insert_entry.
         End Impl_alloc_collections_btree_map_entry_VacantEntry_K_V_A.
@@ -3122,7 +3119,7 @@ Module collections.
           
           Global Instance AssociatedFunction_key :
             forall (K V A : Ty.t),
-            M.IsAssociatedFunction.Trait (Self K V A) "key" (key K V A).
+            M.IsAssociatedFunction.C (Self K V A) "key" (key K V A).
           Admitted.
           Global Typeclasses Opaque key.
           
@@ -3196,7 +3193,7 @@ Module collections.
           
           Global Instance AssociatedFunction_into_key :
             forall (K V A : Ty.t),
-            M.IsAssociatedFunction.Trait (Self K V A) "into_key" (into_key K V A).
+            M.IsAssociatedFunction.C (Self K V A) "into_key" (into_key K V A).
           Admitted.
           Global Typeclasses Opaque into_key.
           
@@ -3234,7 +3231,7 @@ Module collections.
           
           Global Instance AssociatedFunction_remove_entry :
             forall (K V A : Ty.t),
-            M.IsAssociatedFunction.Trait (Self K V A) "remove_entry" (remove_entry K V A).
+            M.IsAssociatedFunction.C (Self K V A) "remove_entry" (remove_entry K V A).
           Admitted.
           Global Typeclasses Opaque remove_entry.
           
@@ -3342,7 +3339,7 @@ Module collections.
           
           Global Instance AssociatedFunction_get :
             forall (K V A : Ty.t),
-            M.IsAssociatedFunction.Trait (Self K V A) "get" (get K V A).
+            M.IsAssociatedFunction.C (Self K V A) "get" (get K V A).
           Admitted.
           Global Typeclasses Opaque get.
           
@@ -3422,7 +3419,7 @@ Module collections.
           
           Global Instance AssociatedFunction_get_mut :
             forall (K V A : Ty.t),
-            M.IsAssociatedFunction.Trait (Self K V A) "get_mut" (get_mut K V A).
+            M.IsAssociatedFunction.C (Self K V A) "get_mut" (get_mut K V A).
           Admitted.
           Global Typeclasses Opaque get_mut.
           
@@ -3490,7 +3487,7 @@ Module collections.
           
           Global Instance AssociatedFunction_into_mut :
             forall (K V A : Ty.t),
-            M.IsAssociatedFunction.Trait (Self K V A) "into_mut" (into_mut K V A).
+            M.IsAssociatedFunction.C (Self K V A) "into_mut" (into_mut K V A).
           Admitted.
           Global Typeclasses Opaque into_mut.
           
@@ -3541,7 +3538,7 @@ Module collections.
           
           Global Instance AssociatedFunction_insert :
             forall (K V A : Ty.t),
-            M.IsAssociatedFunction.Trait (Self K V A) "insert" (insert K V A).
+            M.IsAssociatedFunction.C (Self K V A) "insert" (insert K V A).
           Admitted.
           Global Typeclasses Opaque insert.
           
@@ -3586,7 +3583,7 @@ Module collections.
           
           Global Instance AssociatedFunction_remove :
             forall (K V A : Ty.t),
-            M.IsAssociatedFunction.Trait (Self K V A) "remove" (remove K V A).
+            M.IsAssociatedFunction.C (Self K V A) "remove" (remove K V A).
           Admitted.
           Global Typeclasses Opaque remove.
           
@@ -3967,7 +3964,7 @@ Module collections.
           
           Global Instance AssociatedFunction_remove_kv :
             forall (K V A : Ty.t),
-            M.IsAssociatedFunction.Trait (Self K V A) "remove_kv" (remove_kv K V A).
+            M.IsAssociatedFunction.C (Self K V A) "remove_kv" (remove_kv K V A).
           Admitted.
           Global Typeclasses Opaque remove_kv.
         End Impl_alloc_collections_btree_map_entry_OccupiedEntry_K_V_A.

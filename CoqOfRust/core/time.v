@@ -2,68 +2,77 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module time.
-  Definition value_NANOS_PER_SEC : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 1000000000 |))).
+  Definition value_NANOS_PER_SEC (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 1000000000 |))).
   
-  Axiom Constant_value_NANOS_PER_SEC :
-    (M.get_constant "core::time::NANOS_PER_SEC") = value_NANOS_PER_SEC.
-  Global Hint Rewrite Constant_value_NANOS_PER_SEC : constant_rewrites.
+  Global Instance Instance_IsConstant_value_NANOS_PER_SEC :
+    M.IsFunction.C "core::time::NANOS_PER_SEC" value_NANOS_PER_SEC.
+  Admitted.
+  Global Typeclasses Opaque value_NANOS_PER_SEC.
   
-  Definition value_NANOS_PER_MILLI : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 1000000 |))).
+  Definition value_NANOS_PER_MILLI (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 1000000 |))).
   
-  Axiom Constant_value_NANOS_PER_MILLI :
-    (M.get_constant "core::time::NANOS_PER_MILLI") = value_NANOS_PER_MILLI.
-  Global Hint Rewrite Constant_value_NANOS_PER_MILLI : constant_rewrites.
+  Global Instance Instance_IsConstant_value_NANOS_PER_MILLI :
+    M.IsFunction.C "core::time::NANOS_PER_MILLI" value_NANOS_PER_MILLI.
+  Admitted.
+  Global Typeclasses Opaque value_NANOS_PER_MILLI.
   
-  Definition value_NANOS_PER_MICRO : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 1000 |))).
+  Definition value_NANOS_PER_MICRO (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U32 1000 |))).
   
-  Axiom Constant_value_NANOS_PER_MICRO :
-    (M.get_constant "core::time::NANOS_PER_MICRO") = value_NANOS_PER_MICRO.
-  Global Hint Rewrite Constant_value_NANOS_PER_MICRO : constant_rewrites.
+  Global Instance Instance_IsConstant_value_NANOS_PER_MICRO :
+    M.IsFunction.C "core::time::NANOS_PER_MICRO" value_NANOS_PER_MICRO.
+  Admitted.
+  Global Typeclasses Opaque value_NANOS_PER_MICRO.
   
-  Definition value_MILLIS_PER_SEC : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1000 |))).
+  Definition value_MILLIS_PER_SEC (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1000 |))).
   
-  Axiom Constant_value_MILLIS_PER_SEC :
-    (M.get_constant "core::time::MILLIS_PER_SEC") = value_MILLIS_PER_SEC.
-  Global Hint Rewrite Constant_value_MILLIS_PER_SEC : constant_rewrites.
+  Global Instance Instance_IsConstant_value_MILLIS_PER_SEC :
+    M.IsFunction.C "core::time::MILLIS_PER_SEC" value_MILLIS_PER_SEC.
+  Admitted.
+  Global Typeclasses Opaque value_MILLIS_PER_SEC.
   
-  Definition value_MICROS_PER_SEC : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1000000 |))).
+  Definition value_MICROS_PER_SEC (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 1000000 |))).
   
-  Axiom Constant_value_MICROS_PER_SEC :
-    (M.get_constant "core::time::MICROS_PER_SEC") = value_MICROS_PER_SEC.
-  Global Hint Rewrite Constant_value_MICROS_PER_SEC : constant_rewrites.
+  Global Instance Instance_IsConstant_value_MICROS_PER_SEC :
+    M.IsFunction.C "core::time::MICROS_PER_SEC" value_MICROS_PER_SEC.
+  Admitted.
+  Global Typeclasses Opaque value_MICROS_PER_SEC.
   
-  Definition value_SECS_PER_MINUTE : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 60 |))).
+  Definition value_SECS_PER_MINUTE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 60 |))).
   
-  Axiom Constant_value_SECS_PER_MINUTE :
-    (M.get_constant "core::time::SECS_PER_MINUTE") = value_SECS_PER_MINUTE.
-  Global Hint Rewrite Constant_value_SECS_PER_MINUTE : constant_rewrites.
+  Global Instance Instance_IsConstant_value_SECS_PER_MINUTE :
+    M.IsFunction.C "core::time::SECS_PER_MINUTE" value_SECS_PER_MINUTE.
+  Admitted.
+  Global Typeclasses Opaque value_SECS_PER_MINUTE.
   
-  Definition value_MINS_PER_HOUR : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 60 |))).
+  Definition value_MINS_PER_HOUR (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 60 |))).
   
-  Axiom Constant_value_MINS_PER_HOUR :
-    (M.get_constant "core::time::MINS_PER_HOUR") = value_MINS_PER_HOUR.
-  Global Hint Rewrite Constant_value_MINS_PER_HOUR : constant_rewrites.
+  Global Instance Instance_IsConstant_value_MINS_PER_HOUR :
+    M.IsFunction.C "core::time::MINS_PER_HOUR" value_MINS_PER_HOUR.
+  Admitted.
+  Global Typeclasses Opaque value_MINS_PER_HOUR.
   
-  Definition value_HOURS_PER_DAY : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 24 |))).
+  Definition value_HOURS_PER_DAY (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 24 |))).
   
-  Axiom Constant_value_HOURS_PER_DAY :
-    (M.get_constant "core::time::HOURS_PER_DAY") = value_HOURS_PER_DAY.
-  Global Hint Rewrite Constant_value_HOURS_PER_DAY : constant_rewrites.
+  Global Instance Instance_IsConstant_value_HOURS_PER_DAY :
+    M.IsFunction.C "core::time::HOURS_PER_DAY" value_HOURS_PER_DAY.
+  Admitted.
+  Global Typeclasses Opaque value_HOURS_PER_DAY.
   
-  Definition value_DAYS_PER_WEEK : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 7 |))).
+  Definition value_DAYS_PER_WEEK (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 7 |))).
   
-  Axiom Constant_value_DAYS_PER_WEEK :
-    (M.get_constant "core::time::DAYS_PER_WEEK") = value_DAYS_PER_WEEK.
-  Global Hint Rewrite Constant_value_DAYS_PER_WEEK : constant_rewrites.
+  Global Instance Instance_IsConstant_value_DAYS_PER_WEEK :
+    M.IsFunction.C "core::time::DAYS_PER_WEEK" value_DAYS_PER_WEEK.
+  Admitted.
+  Global Typeclasses Opaque value_DAYS_PER_WEEK.
   
   (* StructTuple
     {
@@ -359,15 +368,13 @@ Module time.
     
     (*     const ZERO: Self = unsafe { Nanoseconds(0) }; *)
     (* Ty.path "core::time::Nanoseconds" *)
-    Definition value_ZERO : Value.t :=
-      M.run
-        ltac:(M.monadic
-          (M.alloc (|
-            Value.StructTuple "core::time::Nanoseconds" [ Value.Integer IntegerKind.U32 0 ]
-          |))).
+    Definition value_ZERO (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          Value.StructTuple "core::time::Nanoseconds" [ Value.Integer IntegerKind.U32 0 ]
+        |))).
     
-    Global Instance AssociatedConstant_value_ZERO :
-      M.IsAssociatedConstant.Trait Self "value_ZERO" value_ZERO.
+    Global Instance AssociatedConstant_value_ZERO : M.IsAssociatedFunction.C Self "ZERO" value_ZERO.
     Admitted.
     Global Typeclasses Opaque value_ZERO.
   End Impl_core_time_Nanoseconds.
@@ -382,7 +389,15 @@ Module time.
     *)
     Definition default (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       match ε, τ, α with
-      | [], [], [] => ltac:(M.monadic (M.read (| M.get_constant "core::time::ZERO" |)))
+      | [], [], [] =>
+        ltac:(M.monadic
+          (M.read (|
+            get_associated_constant (|
+              Ty.path "core::time::Nanoseconds",
+              "ZERO",
+              Ty.path "core::time::Nanoseconds"
+            |)
+          |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -958,115 +973,107 @@ Module time.
     
     (*     pub const SECOND: Duration = Duration::from_secs(1); *)
     (* Ty.path "core::time::Duration" *)
-    Definition value_SECOND : Value.t :=
-      M.run
-        ltac:(M.monadic
-          (M.alloc (|
-            M.call_closure (|
-              Ty.path "core::time::Duration",
-              M.get_associated_function (| Ty.path "core::time::Duration", "from_secs", [], [] |),
-              [ Value.Integer IntegerKind.U64 1 ]
-            |)
-          |))).
+    Definition value_SECOND (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          M.call_closure (|
+            Ty.path "core::time::Duration",
+            M.get_associated_function (| Ty.path "core::time::Duration", "from_secs", [], [] |),
+            [ Value.Integer IntegerKind.U64 1 ]
+          |)
+        |))).
     
     Global Instance AssociatedConstant_value_SECOND :
-      M.IsAssociatedConstant.Trait Self "value_SECOND" value_SECOND.
+      M.IsAssociatedFunction.C Self "SECOND" value_SECOND.
     Admitted.
     Global Typeclasses Opaque value_SECOND.
     
     (*     pub const MILLISECOND: Duration = Duration::from_millis(1); *)
     (* Ty.path "core::time::Duration" *)
-    Definition value_MILLISECOND : Value.t :=
-      M.run
-        ltac:(M.monadic
-          (M.alloc (|
-            M.call_closure (|
-              Ty.path "core::time::Duration",
-              M.get_associated_function (| Ty.path "core::time::Duration", "from_millis", [], [] |),
-              [ Value.Integer IntegerKind.U64 1 ]
-            |)
-          |))).
+    Definition value_MILLISECOND (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          M.call_closure (|
+            Ty.path "core::time::Duration",
+            M.get_associated_function (| Ty.path "core::time::Duration", "from_millis", [], [] |),
+            [ Value.Integer IntegerKind.U64 1 ]
+          |)
+        |))).
     
     Global Instance AssociatedConstant_value_MILLISECOND :
-      M.IsAssociatedConstant.Trait Self "value_MILLISECOND" value_MILLISECOND.
+      M.IsAssociatedFunction.C Self "MILLISECOND" value_MILLISECOND.
     Admitted.
     Global Typeclasses Opaque value_MILLISECOND.
     
     (*     pub const MICROSECOND: Duration = Duration::from_micros(1); *)
     (* Ty.path "core::time::Duration" *)
-    Definition value_MICROSECOND : Value.t :=
-      M.run
-        ltac:(M.monadic
-          (M.alloc (|
-            M.call_closure (|
-              Ty.path "core::time::Duration",
-              M.get_associated_function (| Ty.path "core::time::Duration", "from_micros", [], [] |),
-              [ Value.Integer IntegerKind.U64 1 ]
-            |)
-          |))).
+    Definition value_MICROSECOND (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          M.call_closure (|
+            Ty.path "core::time::Duration",
+            M.get_associated_function (| Ty.path "core::time::Duration", "from_micros", [], [] |),
+            [ Value.Integer IntegerKind.U64 1 ]
+          |)
+        |))).
     
     Global Instance AssociatedConstant_value_MICROSECOND :
-      M.IsAssociatedConstant.Trait Self "value_MICROSECOND" value_MICROSECOND.
+      M.IsAssociatedFunction.C Self "MICROSECOND" value_MICROSECOND.
     Admitted.
     Global Typeclasses Opaque value_MICROSECOND.
     
     (*     pub const NANOSECOND: Duration = Duration::from_nanos(1); *)
     (* Ty.path "core::time::Duration" *)
-    Definition value_NANOSECOND : Value.t :=
-      M.run
-        ltac:(M.monadic
-          (M.alloc (|
-            M.call_closure (|
-              Ty.path "core::time::Duration",
-              M.get_associated_function (| Ty.path "core::time::Duration", "from_nanos", [], [] |),
-              [ Value.Integer IntegerKind.U64 1 ]
-            |)
-          |))).
+    Definition value_NANOSECOND (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          M.call_closure (|
+            Ty.path "core::time::Duration",
+            M.get_associated_function (| Ty.path "core::time::Duration", "from_nanos", [], [] |),
+            [ Value.Integer IntegerKind.U64 1 ]
+          |)
+        |))).
     
     Global Instance AssociatedConstant_value_NANOSECOND :
-      M.IsAssociatedConstant.Trait Self "value_NANOSECOND" value_NANOSECOND.
+      M.IsAssociatedFunction.C Self "NANOSECOND" value_NANOSECOND.
     Admitted.
     Global Typeclasses Opaque value_NANOSECOND.
     
     (*     pub const ZERO: Duration = Duration::from_nanos(0); *)
     (* Ty.path "core::time::Duration" *)
-    Definition value_ZERO : Value.t :=
-      M.run
-        ltac:(M.monadic
-          (M.alloc (|
-            M.call_closure (|
-              Ty.path "core::time::Duration",
-              M.get_associated_function (| Ty.path "core::time::Duration", "from_nanos", [], [] |),
-              [ Value.Integer IntegerKind.U64 0 ]
-            |)
-          |))).
+    Definition value_ZERO (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          M.call_closure (|
+            Ty.path "core::time::Duration",
+            M.get_associated_function (| Ty.path "core::time::Duration", "from_nanos", [], [] |),
+            [ Value.Integer IntegerKind.U64 0 ]
+          |)
+        |))).
     
-    Global Instance AssociatedConstant_value_ZERO :
-      M.IsAssociatedConstant.Trait Self "value_ZERO" value_ZERO.
+    Global Instance AssociatedConstant_value_ZERO : M.IsAssociatedFunction.C Self "ZERO" value_ZERO.
     Admitted.
     Global Typeclasses Opaque value_ZERO.
     
     (*     pub const MAX: Duration = Duration::new(u64::MAX, NANOS_PER_SEC - 1); *)
     (* Ty.path "core::time::Duration" *)
-    Definition value_MAX : Value.t :=
-      M.run
-        ltac:(M.monadic
-          (M.alloc (|
-            M.call_closure (|
-              Ty.path "core::time::Duration",
-              M.get_associated_function (| Ty.path "core::time::Duration", "new", [], [] |),
-              [
-                M.read (| M.get_constant "core::num::MAX" |);
-                BinOp.Wrap.sub (|
-                  M.read (| M.get_constant "core::time::NANOS_PER_SEC" |),
-                  Value.Integer IntegerKind.U32 1
-                |)
-              ]
-            |)
-          |))).
+    Definition value_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic
+        (M.alloc (|
+          M.call_closure (|
+            Ty.path "core::time::Duration",
+            M.get_associated_function (| Ty.path "core::time::Duration", "new", [], [] |),
+            [
+              M.read (| get_associated_constant (| Ty.path "u64", "MAX", Ty.path "u64" |) |);
+              BinOp.Wrap.sub (|
+                M.read (| get_constant (| "core::time::NANOS_PER_SEC", Ty.path "u32" |) |),
+                Value.Integer IntegerKind.U32 1
+              |)
+            ]
+          |)
+        |))).
     
-    Global Instance AssociatedConstant_value_MAX :
-      M.IsAssociatedConstant.Trait Self "value_MAX" value_MAX.
+    Global Instance AssociatedConstant_value_MAX : M.IsAssociatedFunction.C Self "MAX" value_MAX.
     Admitted.
     Global Typeclasses Opaque value_MAX.
     
@@ -1103,7 +1110,9 @@ Module time.
                         (M.alloc (|
                           BinOp.lt (|
                             M.read (| nanos |),
-                            M.read (| M.get_constant "core::time::NANOS_PER_SEC" |)
+                            M.read (|
+                              get_constant (| "core::time::NANOS_PER_SEC", Ty.path "u32" |)
+                            |)
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1138,7 +1147,9 @@ Module time.
                                   (Ty.path "u64")
                                   (BinOp.Wrap.div (|
                                     M.read (| nanos |),
-                                    M.read (| M.get_constant "core::time::NANOS_PER_SEC" |)
+                                    M.read (|
+                                      get_constant (| "core::time::NANOS_PER_SEC", Ty.path "u32" |)
+                                    |)
                                   |))
                               ]
                             |);
@@ -1153,7 +1164,7 @@ Module time.
                       M.alloc (|
                         BinOp.Wrap.rem (|
                           M.read (| nanos |),
-                          M.read (| M.get_constant "core::time::NANOS_PER_SEC" |)
+                          M.read (| get_constant (| "core::time::NANOS_PER_SEC", Ty.path "u32" |) |)
                         |)
                       |) in
                     M.alloc (|
@@ -1171,7 +1182,7 @@ Module time.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -1187,13 +1198,22 @@ Module time.
           (let secs := M.alloc (| secs |) in
           Value.StructRecord
             "core::time::Duration"
-            [ ("secs", M.read (| secs |)); ("nanos", M.read (| M.get_constant "core::time::ZERO" |))
+            [
+              ("secs", M.read (| secs |));
+              ("nanos",
+                M.read (|
+                  get_associated_constant (|
+                    Ty.path "core::time::Nanoseconds",
+                    "ZERO",
+                    Ty.path "core::time::Nanoseconds"
+                  |)
+                |))
             ]))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Global Instance AssociatedFunction_from_secs :
-      M.IsAssociatedFunction.Trait Self "from_secs" from_secs.
+      M.IsAssociatedFunction.C Self "from_secs" from_secs.
     Admitted.
     Global Typeclasses Opaque from_secs.
     
@@ -1218,7 +1238,7 @@ Module time.
               M.alloc (|
                 BinOp.Wrap.div (|
                   M.read (| millis |),
-                  M.read (| M.get_constant "core::time::MILLIS_PER_SEC" |)
+                  M.read (| get_constant (| "core::time::MILLIS_PER_SEC", Ty.path "u64" |) |)
                 |)
               |) in
             let~ subsec_millis : Ty.path "u32" :=
@@ -1227,7 +1247,7 @@ Module time.
                   (Ty.path "u32")
                   (BinOp.Wrap.rem (|
                     M.read (| millis |),
-                    M.read (| M.get_constant "core::time::MILLIS_PER_SEC" |)
+                    M.read (| get_constant (| "core::time::MILLIS_PER_SEC", Ty.path "u64" |) |)
                   |))
               |) in
             let~ subsec_nanos : Ty.path "core::time::Nanoseconds" :=
@@ -1237,7 +1257,7 @@ Module time.
                   [
                     BinOp.Wrap.mul (|
                       M.read (| subsec_millis |),
-                      M.read (| M.get_constant "core::time::NANOS_PER_MILLI" |)
+                      M.read (| get_constant (| "core::time::NANOS_PER_MILLI", Ty.path "u32" |) |)
                     |)
                   ]
               |) in
@@ -1251,7 +1271,7 @@ Module time.
       end.
     
     Global Instance AssociatedFunction_from_millis :
-      M.IsAssociatedFunction.Trait Self "from_millis" from_millis.
+      M.IsAssociatedFunction.C Self "from_millis" from_millis.
     Admitted.
     Global Typeclasses Opaque from_millis.
     
@@ -1276,7 +1296,7 @@ Module time.
               M.alloc (|
                 BinOp.Wrap.div (|
                   M.read (| micros |),
-                  M.read (| M.get_constant "core::time::MICROS_PER_SEC" |)
+                  M.read (| get_constant (| "core::time::MICROS_PER_SEC", Ty.path "u64" |) |)
                 |)
               |) in
             let~ subsec_micros : Ty.path "u32" :=
@@ -1285,7 +1305,7 @@ Module time.
                   (Ty.path "u32")
                   (BinOp.Wrap.rem (|
                     M.read (| micros |),
-                    M.read (| M.get_constant "core::time::MICROS_PER_SEC" |)
+                    M.read (| get_constant (| "core::time::MICROS_PER_SEC", Ty.path "u64" |) |)
                   |))
               |) in
             let~ subsec_nanos : Ty.path "core::time::Nanoseconds" :=
@@ -1295,7 +1315,7 @@ Module time.
                   [
                     BinOp.Wrap.mul (|
                       M.read (| subsec_micros |),
-                      M.read (| M.get_constant "core::time::NANOS_PER_MICRO" |)
+                      M.read (| get_constant (| "core::time::NANOS_PER_MICRO", Ty.path "u32" |) |)
                     |)
                   ]
               |) in
@@ -1309,7 +1329,7 @@ Module time.
       end.
     
     Global Instance AssociatedFunction_from_micros :
-      M.IsAssociatedFunction.Trait Self "from_micros" from_micros.
+      M.IsAssociatedFunction.C Self "from_micros" from_micros.
     Admitted.
     Global Typeclasses Opaque from_micros.
     
@@ -1334,7 +1354,9 @@ Module time.
               M.alloc (|
                 BinOp.Wrap.div (|
                   M.read (| nanos |),
-                  M.read (| M.get_constant "core::time::from_nanos::NANOS_PER_SEC" |)
+                  M.read (|
+                    get_constant (| "core::time::from_nanos::NANOS_PER_SEC", Ty.path "u64" |)
+                  |)
                 |)
               |) in
             let~ subsec_nanos : Ty.path "u32" :=
@@ -1343,7 +1365,9 @@ Module time.
                   (Ty.path "u32")
                   (BinOp.Wrap.rem (|
                     M.read (| nanos |),
-                    M.read (| M.get_constant "core::time::from_nanos::NANOS_PER_SEC" |)
+                    M.read (|
+                      get_constant (| "core::time::from_nanos::NANOS_PER_SEC", Ty.path "u64" |)
+                    |)
                   |))
               |) in
             let~ subsec_nanos : Ty.path "core::time::Nanoseconds" :=
@@ -1360,7 +1384,7 @@ Module time.
       end.
     
     Global Instance AssociatedFunction_from_nanos :
-      M.IsAssociatedFunction.Trait Self "from_nanos" from_nanos.
+      M.IsAssociatedFunction.C Self "from_nanos" from_nanos.
     Admitted.
     Global Typeclasses Opaque from_nanos.
     
@@ -1392,16 +1416,32 @@ Module time.
                             BinOp.gt (|
                               M.read (| weeks |),
                               BinOp.Wrap.div (|
-                                M.read (| M.get_constant "core::num::MAX" |),
+                                M.read (|
+                                  get_associated_constant (| Ty.path "u64", "MAX", Ty.path "u64" |)
+                                |),
                                 BinOp.Wrap.mul (|
                                   BinOp.Wrap.mul (|
                                     BinOp.Wrap.mul (|
-                                      M.read (| M.get_constant "core::time::SECS_PER_MINUTE" |),
-                                      M.read (| M.get_constant "core::time::MINS_PER_HOUR" |)
+                                      M.read (|
+                                        get_constant (|
+                                          "core::time::SECS_PER_MINUTE",
+                                          Ty.path "u64"
+                                        |)
+                                      |),
+                                      M.read (|
+                                        get_constant (|
+                                          "core::time::MINS_PER_HOUR",
+                                          Ty.path "u64"
+                                        |)
+                                      |)
                                     |),
-                                    M.read (| M.get_constant "core::time::HOURS_PER_DAY" |)
+                                    M.read (|
+                                      get_constant (| "core::time::HOURS_PER_DAY", Ty.path "u64" |)
+                                    |)
                                   |),
-                                  M.read (| M.get_constant "core::time::DAYS_PER_WEEK" |)
+                                  M.read (|
+                                    get_constant (| "core::time::DAYS_PER_WEEK", Ty.path "u64" |)
+                                  |)
                                 |)
                               |)
                             |)
@@ -1453,13 +1493,13 @@ Module time.
                       BinOp.Wrap.mul (|
                         BinOp.Wrap.mul (|
                           M.read (| weeks |),
-                          M.read (| M.get_constant "core::time::MINS_PER_HOUR" |)
+                          M.read (| get_constant (| "core::time::MINS_PER_HOUR", Ty.path "u64" |) |)
                         |),
-                        M.read (| M.get_constant "core::time::SECS_PER_MINUTE" |)
+                        M.read (| get_constant (| "core::time::SECS_PER_MINUTE", Ty.path "u64" |) |)
                       |),
-                      M.read (| M.get_constant "core::time::HOURS_PER_DAY" |)
+                      M.read (| get_constant (| "core::time::HOURS_PER_DAY", Ty.path "u64" |) |)
                     |),
-                    M.read (| M.get_constant "core::time::DAYS_PER_WEEK" |)
+                    M.read (| get_constant (| "core::time::DAYS_PER_WEEK", Ty.path "u64" |) |)
                   |)
                 ]
               |)
@@ -1469,7 +1509,7 @@ Module time.
       end.
     
     Global Instance AssociatedFunction_from_weeks :
-      M.IsAssociatedFunction.Trait Self "from_weeks" from_weeks.
+      M.IsAssociatedFunction.C Self "from_weeks" from_weeks.
     Admitted.
     Global Typeclasses Opaque from_weeks.
     
@@ -1501,13 +1541,24 @@ Module time.
                             BinOp.gt (|
                               M.read (| days |),
                               BinOp.Wrap.div (|
-                                M.read (| M.get_constant "core::num::MAX" |),
+                                M.read (|
+                                  get_associated_constant (| Ty.path "u64", "MAX", Ty.path "u64" |)
+                                |),
                                 BinOp.Wrap.mul (|
                                   BinOp.Wrap.mul (|
-                                    M.read (| M.get_constant "core::time::SECS_PER_MINUTE" |),
-                                    M.read (| M.get_constant "core::time::MINS_PER_HOUR" |)
+                                    M.read (|
+                                      get_constant (|
+                                        "core::time::SECS_PER_MINUTE",
+                                        Ty.path "u64"
+                                      |)
+                                    |),
+                                    M.read (|
+                                      get_constant (| "core::time::MINS_PER_HOUR", Ty.path "u64" |)
+                                    |)
                                   |),
-                                  M.read (| M.get_constant "core::time::HOURS_PER_DAY" |)
+                                  M.read (|
+                                    get_constant (| "core::time::HOURS_PER_DAY", Ty.path "u64" |)
+                                  |)
                                 |)
                               |)
                             |)
@@ -1558,11 +1609,11 @@ Module time.
                     BinOp.Wrap.mul (|
                       BinOp.Wrap.mul (|
                         M.read (| days |),
-                        M.read (| M.get_constant "core::time::MINS_PER_HOUR" |)
+                        M.read (| get_constant (| "core::time::MINS_PER_HOUR", Ty.path "u64" |) |)
                       |),
-                      M.read (| M.get_constant "core::time::SECS_PER_MINUTE" |)
+                      M.read (| get_constant (| "core::time::SECS_PER_MINUTE", Ty.path "u64" |) |)
                     |),
-                    M.read (| M.get_constant "core::time::HOURS_PER_DAY" |)
+                    M.read (| get_constant (| "core::time::HOURS_PER_DAY", Ty.path "u64" |) |)
                   |)
                 ]
               |)
@@ -1572,7 +1623,7 @@ Module time.
       end.
     
     Global Instance AssociatedFunction_from_days :
-      M.IsAssociatedFunction.Trait Self "from_days" from_days.
+      M.IsAssociatedFunction.C Self "from_days" from_days.
     Admitted.
     Global Typeclasses Opaque from_days.
     
@@ -1604,10 +1655,16 @@ Module time.
                             BinOp.gt (|
                               M.read (| hours |),
                               BinOp.Wrap.div (|
-                                M.read (| M.get_constant "core::num::MAX" |),
+                                M.read (|
+                                  get_associated_constant (| Ty.path "u64", "MAX", Ty.path "u64" |)
+                                |),
                                 BinOp.Wrap.mul (|
-                                  M.read (| M.get_constant "core::time::SECS_PER_MINUTE" |),
-                                  M.read (| M.get_constant "core::time::MINS_PER_HOUR" |)
+                                  M.read (|
+                                    get_constant (| "core::time::SECS_PER_MINUTE", Ty.path "u64" |)
+                                  |),
+                                  M.read (|
+                                    get_constant (| "core::time::MINS_PER_HOUR", Ty.path "u64" |)
+                                  |)
                                 |)
                               |)
                             |)
@@ -1657,9 +1714,9 @@ Module time.
                   BinOp.Wrap.mul (|
                     BinOp.Wrap.mul (|
                       M.read (| hours |),
-                      M.read (| M.get_constant "core::time::MINS_PER_HOUR" |)
+                      M.read (| get_constant (| "core::time::MINS_PER_HOUR", Ty.path "u64" |) |)
                     |),
-                    M.read (| M.get_constant "core::time::SECS_PER_MINUTE" |)
+                    M.read (| get_constant (| "core::time::SECS_PER_MINUTE", Ty.path "u64" |) |)
                   |)
                 ]
               |)
@@ -1669,7 +1726,7 @@ Module time.
       end.
     
     Global Instance AssociatedFunction_from_hours :
-      M.IsAssociatedFunction.Trait Self "from_hours" from_hours.
+      M.IsAssociatedFunction.C Self "from_hours" from_hours.
     Admitted.
     Global Typeclasses Opaque from_hours.
     
@@ -1701,8 +1758,12 @@ Module time.
                             BinOp.gt (|
                               M.read (| mins |),
                               BinOp.Wrap.div (|
-                                M.read (| M.get_constant "core::num::MAX" |),
-                                M.read (| M.get_constant "core::time::SECS_PER_MINUTE" |)
+                                M.read (|
+                                  get_associated_constant (| Ty.path "u64", "MAX", Ty.path "u64" |)
+                                |),
+                                M.read (|
+                                  get_constant (| "core::time::SECS_PER_MINUTE", Ty.path "u64" |)
+                                |)
                               |)
                             |)
                           |)) in
@@ -1750,7 +1811,7 @@ Module time.
                 [
                   BinOp.Wrap.mul (|
                     M.read (| mins |),
-                    M.read (| M.get_constant "core::time::SECS_PER_MINUTE" |)
+                    M.read (| get_constant (| "core::time::SECS_PER_MINUTE", Ty.path "u64" |) |)
                   |)
                 ]
               |)
@@ -1760,7 +1821,7 @@ Module time.
       end.
     
     Global Instance AssociatedFunction_from_mins :
-      M.IsAssociatedFunction.Trait Self "from_mins" from_mins.
+      M.IsAssociatedFunction.C Self "from_mins" from_mins.
     Admitted.
     Global Typeclasses Opaque from_mins.
     
@@ -1804,8 +1865,7 @@ Module time.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_is_zero :
-      M.IsAssociatedFunction.Trait Self "is_zero" is_zero.
+    Global Instance AssociatedFunction_is_zero : M.IsAssociatedFunction.C Self "is_zero" is_zero.
     Admitted.
     Global Typeclasses Opaque is_zero.
     
@@ -1829,8 +1889,7 @@ Module time.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_as_secs :
-      M.IsAssociatedFunction.Trait Self "as_secs" as_secs.
+    Global Instance AssociatedFunction_as_secs : M.IsAssociatedFunction.C Self "as_secs" as_secs.
     Admitted.
     Global Typeclasses Opaque as_secs.
     
@@ -1856,13 +1915,13 @@ Module time.
                 0
               |)
             |),
-            M.read (| M.get_constant "core::time::NANOS_PER_MILLI" |)
+            M.read (| get_constant (| "core::time::NANOS_PER_MILLI", Ty.path "u32" |) |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Global Instance AssociatedFunction_subsec_millis :
-      M.IsAssociatedFunction.Trait Self "subsec_millis" subsec_millis.
+      M.IsAssociatedFunction.C Self "subsec_millis" subsec_millis.
     Admitted.
     Global Typeclasses Opaque subsec_millis.
     
@@ -1888,13 +1947,13 @@ Module time.
                 0
               |)
             |),
-            M.read (| M.get_constant "core::time::NANOS_PER_MICRO" |)
+            M.read (| get_constant (| "core::time::NANOS_PER_MICRO", Ty.path "u32" |) |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Global Instance AssociatedFunction_subsec_micros :
-      M.IsAssociatedFunction.Trait Self "subsec_micros" subsec_micros.
+      M.IsAssociatedFunction.C Self "subsec_micros" subsec_micros.
     Admitted.
     Global Typeclasses Opaque subsec_micros.
     
@@ -1923,7 +1982,7 @@ Module time.
       end.
     
     Global Instance AssociatedFunction_subsec_nanos :
-      M.IsAssociatedFunction.Trait Self "subsec_nanos" subsec_nanos.
+      M.IsAssociatedFunction.C Self "subsec_nanos" subsec_nanos.
     Admitted.
     Global Typeclasses Opaque subsec_nanos.
     
@@ -1948,7 +2007,9 @@ Module time.
                     "secs"
                   |)
                 |)),
-              M.cast (Ty.path "u128") (M.read (| M.get_constant "core::time::MILLIS_PER_SEC" |))
+              M.cast
+                (Ty.path "u128")
+                (M.read (| get_constant (| "core::time::MILLIS_PER_SEC", Ty.path "u64" |) |))
             |),
             M.cast
               (Ty.path "u128")
@@ -1964,14 +2025,14 @@ Module time.
                     0
                   |)
                 |),
-                M.read (| M.get_constant "core::time::NANOS_PER_MILLI" |)
+                M.read (| get_constant (| "core::time::NANOS_PER_MILLI", Ty.path "u32" |) |)
               |))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Global Instance AssociatedFunction_as_millis :
-      M.IsAssociatedFunction.Trait Self "as_millis" as_millis.
+      M.IsAssociatedFunction.C Self "as_millis" as_millis.
     Admitted.
     Global Typeclasses Opaque as_millis.
     
@@ -1996,7 +2057,9 @@ Module time.
                     "secs"
                   |)
                 |)),
-              M.cast (Ty.path "u128") (M.read (| M.get_constant "core::time::MICROS_PER_SEC" |))
+              M.cast
+                (Ty.path "u128")
+                (M.read (| get_constant (| "core::time::MICROS_PER_SEC", Ty.path "u64" |) |))
             |),
             M.cast
               (Ty.path "u128")
@@ -2012,14 +2075,14 @@ Module time.
                     0
                   |)
                 |),
-                M.read (| M.get_constant "core::time::NANOS_PER_MICRO" |)
+                M.read (| get_constant (| "core::time::NANOS_PER_MICRO", Ty.path "u32" |) |)
               |))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Global Instance AssociatedFunction_as_micros :
-      M.IsAssociatedFunction.Trait Self "as_micros" as_micros.
+      M.IsAssociatedFunction.C Self "as_micros" as_micros.
     Admitted.
     Global Typeclasses Opaque as_micros.
     
@@ -2044,7 +2107,9 @@ Module time.
                     "secs"
                   |)
                 |)),
-              M.cast (Ty.path "u128") (M.read (| M.get_constant "core::time::NANOS_PER_SEC" |))
+              M.cast
+                (Ty.path "u128")
+                (M.read (| get_constant (| "core::time::NANOS_PER_SEC", Ty.path "u32" |) |))
             |),
             M.cast
               (Ty.path "u128")
@@ -2063,8 +2128,7 @@ Module time.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_as_nanos :
-      M.IsAssociatedFunction.Trait Self "as_nanos" as_nanos.
+    Global Instance AssociatedFunction_as_nanos : M.IsAssociatedFunction.C Self "as_nanos" as_nanos.
     Admitted.
     Global Typeclasses Opaque as_nanos.
     
@@ -2147,8 +2211,7 @@ Module time.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_abs_diff :
-      M.IsAssociatedFunction.Trait Self "abs_diff" abs_diff.
+    Global Instance AssociatedFunction_abs_diff : M.IsAssociatedFunction.C Self "abs_diff" abs_diff.
     Admitted.
     Global Typeclasses Opaque abs_diff.
     
@@ -2259,7 +2322,12 @@ Module time.
                                       (M.alloc (|
                                         BinOp.ge (|
                                           M.read (| nanos |),
-                                          M.read (| M.get_constant "core::time::NANOS_PER_SEC" |)
+                                          M.read (|
+                                            get_constant (|
+                                              "core::time::NANOS_PER_SEC",
+                                              Ty.path "u32"
+                                            |)
+                                          |)
                                         |)
                                       |)) in
                                   let _ :=
@@ -2274,7 +2342,12 @@ Module time.
                                         β,
                                         BinOp.Wrap.sub (|
                                           M.read (| β |),
-                                          M.read (| M.get_constant "core::time::NANOS_PER_SEC" |)
+                                          M.read (|
+                                            get_constant (|
+                                              "core::time::NANOS_PER_SEC",
+                                              Ty.path "u32"
+                                            |)
+                                          |)
                                         |)
                                       |)
                                     |) in
@@ -2356,7 +2429,10 @@ Module time.
                                                     BinOp.lt (|
                                                       M.read (| nanos |),
                                                       M.read (|
-                                                        M.get_constant "core::time::NANOS_PER_SEC"
+                                                        get_constant (|
+                                                          "core::time::NANOS_PER_SEC",
+                                                          Ty.path "u32"
+                                                        |)
                                                       |)
                                                     |)
                                                   |)
@@ -2417,7 +2493,7 @@ Module time.
       end.
     
     Global Instance AssociatedFunction_checked_add :
-      M.IsAssociatedFunction.Trait Self "checked_add" checked_add.
+      M.IsAssociatedFunction.C Self "checked_add" checked_add.
     Admitted.
     Global Typeclasses Opaque checked_add.
     
@@ -2464,7 +2540,11 @@ Module time.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.get_constant "core::time::MAX"))
+                    get_associated_constant (|
+                      Ty.path "core::time::Duration",
+                      "MAX",
+                      Ty.path "core::time::Duration"
+                    |)))
               ]
             |)
           |)))
@@ -2472,7 +2552,7 @@ Module time.
       end.
     
     Global Instance AssociatedFunction_saturating_add :
-      M.IsAssociatedFunction.Trait Self "saturating_add" saturating_add.
+      M.IsAssociatedFunction.C Self "saturating_add" saturating_add.
     Admitted.
     Global Typeclasses Opaque saturating_add.
     
@@ -2663,7 +2743,10 @@ Module time.
                                                     |)
                                                   |),
                                                   M.read (|
-                                                    M.get_constant "core::time::NANOS_PER_SEC"
+                                                    get_constant (|
+                                                      "core::time::NANOS_PER_SEC",
+                                                      Ty.path "u32"
+                                                    |)
                                                   |)
                                                 |),
                                                 M.read (|
@@ -2724,7 +2807,10 @@ Module time.
                                                     BinOp.lt (|
                                                       M.read (| nanos |),
                                                       M.read (|
-                                                        M.get_constant "core::time::NANOS_PER_SEC"
+                                                        get_constant (|
+                                                          "core::time::NANOS_PER_SEC",
+                                                          Ty.path "u32"
+                                                        |)
                                                       |)
                                                     |)
                                                   |)
@@ -2785,7 +2871,7 @@ Module time.
       end.
     
     Global Instance AssociatedFunction_checked_sub :
-      M.IsAssociatedFunction.Trait Self "checked_sub" checked_sub.
+      M.IsAssociatedFunction.C Self "checked_sub" checked_sub.
     Admitted.
     Global Typeclasses Opaque checked_sub.
     
@@ -2832,7 +2918,11 @@ Module time.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.get_constant "core::time::ZERO"))
+                    get_associated_constant (|
+                      Ty.path "core::time::Duration",
+                      "ZERO",
+                      Ty.path "core::time::Duration"
+                    |)))
               ]
             |)
           |)))
@@ -2840,7 +2930,7 @@ Module time.
       end.
     
     Global Instance AssociatedFunction_saturating_sub :
-      M.IsAssociatedFunction.Trait Self "saturating_sub" saturating_sub.
+      M.IsAssociatedFunction.C Self "saturating_sub" saturating_sub.
     Admitted.
     Global Typeclasses Opaque saturating_sub.
     
@@ -2894,7 +2984,7 @@ Module time.
                       M.read (| total_nanos |),
                       M.cast
                         (Ty.path "u64")
-                        (M.read (| M.get_constant "core::time::NANOS_PER_SEC" |))
+                        (M.read (| get_constant (| "core::time::NANOS_PER_SEC", Ty.path "u32" |) |))
                     |)
                   |) in
                 let~ nanos : Ty.path "u32" :=
@@ -2905,7 +2995,9 @@ Module time.
                         M.read (| total_nanos |),
                         M.cast
                           (Ty.path "u64")
-                          (M.read (| M.get_constant "core::time::NANOS_PER_SEC" |))
+                          (M.read (|
+                            get_constant (| "core::time::NANOS_PER_SEC", Ty.path "u32" |)
+                          |))
                       |))
                   |) in
                 let~ _ : Ty.tuple [] :=
@@ -3003,8 +3095,10 @@ Module time.
                                                                     BinOp.lt (|
                                                                       M.read (| nanos |),
                                                                       M.read (|
-                                                                        M.get_constant
-                                                                          "core::time::NANOS_PER_SEC"
+                                                                        get_constant (|
+                                                                          "core::time::NANOS_PER_SEC",
+                                                                          Ty.path "u32"
+                                                                        |)
                                                                       |)
                                                                     |)
                                                                   |)
@@ -3073,7 +3167,7 @@ Module time.
       end.
     
     Global Instance AssociatedFunction_checked_mul :
-      M.IsAssociatedFunction.Trait Self "checked_mul" checked_mul.
+      M.IsAssociatedFunction.C Self "checked_mul" checked_mul.
     Admitted.
     Global Typeclasses Opaque checked_mul.
     
@@ -3120,7 +3214,11 @@ Module time.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ := M.is_struct_tuple (| γ, "core::option::Option::None" |) in
-                    M.get_constant "core::time::MAX"))
+                    get_associated_constant (|
+                      Ty.path "core::time::Duration",
+                      "MAX",
+                      Ty.path "core::time::Duration"
+                    |)))
               ]
             |)
           |)))
@@ -3128,7 +3226,7 @@ Module time.
       end.
     
     Global Instance AssociatedFunction_saturating_mul :
-      M.IsAssociatedFunction.Trait Self "saturating_mul" saturating_mul.
+      M.IsAssociatedFunction.C Self "saturating_mul" saturating_mul.
     Admitted.
     Global Typeclasses Opaque saturating_mul.
     
@@ -3258,7 +3356,10 @@ Module time.
                                                     M.cast
                                                       (Ty.path "u64")
                                                       (M.read (|
-                                                        M.get_constant "core::time::NANOS_PER_SEC"
+                                                        get_constant (|
+                                                          "core::time::NANOS_PER_SEC",
+                                                          Ty.path "u32"
+                                                        |)
                                                       |))
                                                   |),
                                                   M.cast (Ty.path "u64") (M.read (| extra_nanos |))
@@ -3295,8 +3396,10 @@ Module time.
                                                                 BinOp.lt (|
                                                                   M.read (| nanos |),
                                                                   M.read (|
-                                                                    M.get_constant
-                                                                      "core::time::NANOS_PER_SEC"
+                                                                    get_constant (|
+                                                                      "core::time::NANOS_PER_SEC",
+                                                                      Ty.path "u32"
+                                                                    |)
                                                                   |)
                                                                 |)
                                                               |)
@@ -3361,7 +3464,7 @@ Module time.
       end.
     
     Global Instance AssociatedFunction_checked_div :
-      M.IsAssociatedFunction.Trait Self "checked_div" checked_div.
+      M.IsAssociatedFunction.C Self "checked_div" checked_div.
     Admitted.
     Global Typeclasses Opaque checked_div.
     
@@ -3399,14 +3502,16 @@ Module time.
                     0
                   |)
                 |)),
-              M.cast (Ty.path "f64") (M.read (| M.get_constant "core::time::NANOS_PER_SEC" |))
+              M.cast
+                (Ty.path "f64")
+                (M.read (| get_constant (| "core::time::NANOS_PER_SEC", Ty.path "u32" |) |))
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Global Instance AssociatedFunction_as_secs_f64 :
-      M.IsAssociatedFunction.Trait Self "as_secs_f64" as_secs_f64.
+      M.IsAssociatedFunction.C Self "as_secs_f64" as_secs_f64.
     Admitted.
     Global Typeclasses Opaque as_secs_f64.
     
@@ -3444,14 +3549,16 @@ Module time.
                     0
                   |)
                 |)),
-              M.cast (Ty.path "f32") (M.read (| M.get_constant "core::time::NANOS_PER_SEC" |))
+              M.cast
+                (Ty.path "f32")
+                (M.read (| get_constant (| "core::time::NANOS_PER_SEC", Ty.path "u32" |) |))
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Global Instance AssociatedFunction_as_secs_f32 :
-      M.IsAssociatedFunction.Trait Self "as_secs_f32" as_secs_f32.
+      M.IsAssociatedFunction.C Self "as_secs_f32" as_secs_f32.
     Admitted.
     Global Typeclasses Opaque as_secs_f32.
     
@@ -3477,7 +3584,9 @@ Module time.
                     "secs"
                   |)
                 |)),
-              M.cast (Ty.path "f64") (M.read (| M.get_constant "core::time::MILLIS_PER_SEC" |))
+              M.cast
+                (Ty.path "f64")
+                (M.read (| get_constant (| "core::time::MILLIS_PER_SEC", Ty.path "u64" |) |))
             |),
             BinOp.Wrap.div (|
               M.cast
@@ -3493,14 +3602,16 @@ Module time.
                     0
                   |)
                 |)),
-              M.cast (Ty.path "f64") (M.read (| M.get_constant "core::time::NANOS_PER_MILLI" |))
+              M.cast
+                (Ty.path "f64")
+                (M.read (| get_constant (| "core::time::NANOS_PER_MILLI", Ty.path "u32" |) |))
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Global Instance AssociatedFunction_as_millis_f64 :
-      M.IsAssociatedFunction.Trait Self "as_millis_f64" as_millis_f64.
+      M.IsAssociatedFunction.C Self "as_millis_f64" as_millis_f64.
     Admitted.
     Global Typeclasses Opaque as_millis_f64.
     
@@ -3526,7 +3637,9 @@ Module time.
                     "secs"
                   |)
                 |)),
-              M.cast (Ty.path "f32") (M.read (| M.get_constant "core::time::MILLIS_PER_SEC" |))
+              M.cast
+                (Ty.path "f32")
+                (M.read (| get_constant (| "core::time::MILLIS_PER_SEC", Ty.path "u64" |) |))
             |),
             BinOp.Wrap.div (|
               M.cast
@@ -3542,14 +3655,16 @@ Module time.
                     0
                   |)
                 |)),
-              M.cast (Ty.path "f32") (M.read (| M.get_constant "core::time::NANOS_PER_MILLI" |))
+              M.cast
+                (Ty.path "f32")
+                (M.read (| get_constant (| "core::time::NANOS_PER_MILLI", Ty.path "u32" |) |))
             |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
     Global Instance AssociatedFunction_as_millis_f32 :
-      M.IsAssociatedFunction.Trait Self "as_millis_f32" as_millis_f32.
+      M.IsAssociatedFunction.C Self "as_millis_f32" as_millis_f32.
     Admitted.
     Global Typeclasses Opaque as_millis_f32.
     
@@ -3638,7 +3753,7 @@ Module time.
       end.
     
     Global Instance AssociatedFunction_from_secs_f64 :
-      M.IsAssociatedFunction.Trait Self "from_secs_f64" from_secs_f64.
+      M.IsAssociatedFunction.C Self "from_secs_f64" from_secs_f64.
     Admitted.
     Global Typeclasses Opaque from_secs_f64.
     
@@ -3727,7 +3842,7 @@ Module time.
       end.
     
     Global Instance AssociatedFunction_from_secs_f32 :
-      M.IsAssociatedFunction.Trait Self "from_secs_f32" from_secs_f32.
+      M.IsAssociatedFunction.C Self "from_secs_f32" from_secs_f32.
     Admitted.
     Global Typeclasses Opaque from_secs_f32.
     
@@ -3764,8 +3879,7 @@ Module time.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_mul_f64 :
-      M.IsAssociatedFunction.Trait Self "mul_f64" mul_f64.
+    Global Instance AssociatedFunction_mul_f64 : M.IsAssociatedFunction.C Self "mul_f64" mul_f64.
     Admitted.
     Global Typeclasses Opaque mul_f64.
     
@@ -3802,8 +3916,7 @@ Module time.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_mul_f32 :
-      M.IsAssociatedFunction.Trait Self "mul_f32" mul_f32.
+    Global Instance AssociatedFunction_mul_f32 : M.IsAssociatedFunction.C Self "mul_f32" mul_f32.
     Admitted.
     Global Typeclasses Opaque mul_f32.
     
@@ -3840,8 +3953,7 @@ Module time.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_div_f64 :
-      M.IsAssociatedFunction.Trait Self "div_f64" div_f64.
+    Global Instance AssociatedFunction_div_f64 : M.IsAssociatedFunction.C Self "div_f64" div_f64.
     Admitted.
     Global Typeclasses Opaque div_f64.
     
@@ -3878,8 +3990,7 @@ Module time.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_div_f32 :
-      M.IsAssociatedFunction.Trait Self "div_f32" div_f32.
+    Global Instance AssociatedFunction_div_f32 : M.IsAssociatedFunction.C Self "div_f32" div_f32.
     Admitted.
     Global Typeclasses Opaque div_f32.
     
@@ -3910,7 +4021,9 @@ Module time.
                           "secs"
                         |)
                       |)),
-                    M.cast (Ty.path "f64") (M.read (| M.get_constant "core::time::NANOS_PER_SEC" |))
+                    M.cast
+                      (Ty.path "f64")
+                      (M.read (| get_constant (| "core::time::NANOS_PER_SEC", Ty.path "u32" |) |))
                   |),
                   M.cast
                     (Ty.path "f64")
@@ -3940,7 +4053,9 @@ Module time.
                           "secs"
                         |)
                       |)),
-                    M.cast (Ty.path "f64") (M.read (| M.get_constant "core::time::NANOS_PER_SEC" |))
+                    M.cast
+                      (Ty.path "f64")
+                      (M.read (| get_constant (| "core::time::NANOS_PER_SEC", Ty.path "u32" |) |))
                   |),
                   M.cast
                     (Ty.path "f64")
@@ -3963,7 +4078,7 @@ Module time.
       end.
     
     Global Instance AssociatedFunction_div_duration_f64 :
-      M.IsAssociatedFunction.Trait Self "div_duration_f64" div_duration_f64.
+      M.IsAssociatedFunction.C Self "div_duration_f64" div_duration_f64.
     Admitted.
     Global Typeclasses Opaque div_duration_f64.
     
@@ -3994,7 +4109,9 @@ Module time.
                           "secs"
                         |)
                       |)),
-                    M.cast (Ty.path "f32") (M.read (| M.get_constant "core::time::NANOS_PER_SEC" |))
+                    M.cast
+                      (Ty.path "f32")
+                      (M.read (| get_constant (| "core::time::NANOS_PER_SEC", Ty.path "u32" |) |))
                   |),
                   M.cast
                     (Ty.path "f32")
@@ -4024,7 +4141,9 @@ Module time.
                           "secs"
                         |)
                       |)),
-                    M.cast (Ty.path "f32") (M.read (| M.get_constant "core::time::NANOS_PER_SEC" |))
+                    M.cast
+                      (Ty.path "f32")
+                      (M.read (| get_constant (| "core::time::NANOS_PER_SEC", Ty.path "u32" |) |))
                   |),
                   M.cast
                     (Ty.path "f32")
@@ -4047,7 +4166,7 @@ Module time.
       end.
     
     Global Instance AssociatedFunction_div_duration_f32 :
-      M.IsAssociatedFunction.Trait Self "div_duration_f32" div_duration_f32.
+      M.IsAssociatedFunction.C Self "div_duration_f32" div_duration_f32.
     Admitted.
     Global Typeclasses Opaque div_duration_f32.
     (*
@@ -4120,9 +4239,19 @@ Module time.
                     BinOp.bit_or
                       (BinOp.bit_and
                         (M.read (| bits |))
-                        (M.read (| M.get_constant "core::time::try_from_secs_f32::MANT_MASK" |)))
+                        (M.read (|
+                          get_constant (|
+                            "core::time::try_from_secs_f32::MANT_MASK",
+                            Ty.path "u32"
+                          |)
+                        |)))
                       (BinOp.Wrap.add (|
-                        M.read (| M.get_constant "core::time::try_from_secs_f32::MANT_MASK" |),
+                        M.read (|
+                          get_constant (|
+                            "core::time::try_from_secs_f32::MANT_MASK",
+                            Ty.path "u32"
+                          |)
+                        |),
                         Value.Integer IntegerKind.U32 1
                       |))
                   |) in
@@ -4133,8 +4262,15 @@ Module time.
                         (Ty.path "i16")
                         (BinOp.bit_and
                           (BinOp.Wrap.shr (| M.read (| bits |), Value.Integer IntegerKind.I32 23 |))
-                          (M.read (| M.get_constant "core::time::try_from_secs_f32::EXP_MASK" |))),
-                      M.read (| M.get_constant "core::time::try_from_secs_f32::MIN_EXP" |)
+                          (M.read (|
+                            get_constant (|
+                              "core::time::try_from_secs_f32::EXP_MASK",
+                              Ty.path "u32"
+                            |)
+                          |))),
+                      M.read (|
+                        get_constant (| "core::time::try_from_secs_f32::MIN_EXP", Ty.path "i16" |)
+                      |)
                     |)
                   |) in
                 M.match_operator (|
@@ -4220,7 +4356,13 @@ Module time.
                                             [],
                                             []
                                           |),
-                                          [ M.read (| M.get_constant "core::time::NANOS_PER_SEC" |)
+                                          [
+                                            M.read (|
+                                              get_constant (|
+                                                "core::time::NANOS_PER_SEC",
+                                                Ty.path "u32"
+                                              |)
+                                            |)
                                           ]
                                         |),
                                         M.call_closure (|
@@ -4331,7 +4473,10 @@ Module time.
                                                     (BinOp.ne (|
                                                       M.read (| nanos |),
                                                       M.read (|
-                                                        M.get_constant "core::time::NANOS_PER_SEC"
+                                                        get_constant (|
+                                                          "core::time::NANOS_PER_SEC",
+                                                          Ty.path "u32"
+                                                        |)
                                                       |)
                                                     |)))
                                                 |)
@@ -4422,8 +4567,10 @@ Module time.
                                                       M.read (| exp |)
                                                     |))
                                                     (M.read (|
-                                                      M.get_constant
-                                                        "core::time::try_from_secs_f32::MANT_MASK"
+                                                      get_constant (|
+                                                        "core::time::try_from_secs_f32::MANT_MASK",
+                                                        Ty.path "u32"
+                                                      |)
                                                     |))
                                                 ]
                                               |)
@@ -4446,7 +4593,10 @@ Module time.
                                                   |),
                                                   [
                                                     M.read (|
-                                                      M.get_constant "core::time::NANOS_PER_SEC"
+                                                      get_constant (|
+                                                        "core::time::NANOS_PER_SEC",
+                                                        Ty.path "u32"
+                                                      |)
                                                     |)
                                                   ]
                                                 |),
@@ -4551,8 +4701,10 @@ Module time.
                                                             (BinOp.ne (|
                                                               M.read (| nanos |),
                                                               M.read (|
-                                                                M.get_constant
-                                                                  "core::time::NANOS_PER_SEC"
+                                                                get_constant (|
+                                                                  "core::time::NANOS_PER_SEC",
+                                                                  Ty.path "u32"
+                                                                |)
                                                               |)
                                                             |)))
                                                         |)
@@ -4691,7 +4843,7 @@ Module time.
       end.
     
     Global Instance AssociatedFunction_try_from_secs_f32 :
-      M.IsAssociatedFunction.Trait Self "try_from_secs_f32" try_from_secs_f32.
+      M.IsAssociatedFunction.C Self "try_from_secs_f32" try_from_secs_f32.
     Admitted.
     Global Typeclasses Opaque try_from_secs_f32.
     
@@ -4765,9 +4917,19 @@ Module time.
                     BinOp.bit_or
                       (BinOp.bit_and
                         (M.read (| bits |))
-                        (M.read (| M.get_constant "core::time::try_from_secs_f64::MANT_MASK" |)))
+                        (M.read (|
+                          get_constant (|
+                            "core::time::try_from_secs_f64::MANT_MASK",
+                            Ty.path "u64"
+                          |)
+                        |)))
                       (BinOp.Wrap.add (|
-                        M.read (| M.get_constant "core::time::try_from_secs_f64::MANT_MASK" |),
+                        M.read (|
+                          get_constant (|
+                            "core::time::try_from_secs_f64::MANT_MASK",
+                            Ty.path "u64"
+                          |)
+                        |),
                         Value.Integer IntegerKind.U64 1
                       |))
                   |) in
@@ -4778,8 +4940,15 @@ Module time.
                         (Ty.path "i16")
                         (BinOp.bit_and
                           (BinOp.Wrap.shr (| M.read (| bits |), Value.Integer IntegerKind.I32 52 |))
-                          (M.read (| M.get_constant "core::time::try_from_secs_f64::EXP_MASK" |))),
-                      M.read (| M.get_constant "core::time::try_from_secs_f64::MIN_EXP" |)
+                          (M.read (|
+                            get_constant (|
+                              "core::time::try_from_secs_f64::EXP_MASK",
+                              Ty.path "u64"
+                            |)
+                          |))),
+                      M.read (|
+                        get_constant (| "core::time::try_from_secs_f64::MIN_EXP", Ty.path "i16" |)
+                      |)
                     |)
                   |) in
                 M.match_operator (|
@@ -4865,7 +5034,13 @@ Module time.
                                             [],
                                             []
                                           |),
-                                          [ M.read (| M.get_constant "core::time::NANOS_PER_SEC" |)
+                                          [
+                                            M.read (|
+                                              get_constant (|
+                                                "core::time::NANOS_PER_SEC",
+                                                Ty.path "u32"
+                                              |)
+                                            |)
                                           ]
                                         |),
                                         M.call_closure (|
@@ -4976,7 +5151,10 @@ Module time.
                                                     (BinOp.ne (|
                                                       M.read (| nanos |),
                                                       M.read (|
-                                                        M.get_constant "core::time::NANOS_PER_SEC"
+                                                        get_constant (|
+                                                          "core::time::NANOS_PER_SEC",
+                                                          Ty.path "u32"
+                                                        |)
                                                       |)
                                                     |)))
                                                 |)
@@ -5067,8 +5245,10 @@ Module time.
                                                       M.read (| exp |)
                                                     |))
                                                     (M.read (|
-                                                      M.get_constant
-                                                        "core::time::try_from_secs_f64::MANT_MASK"
+                                                      get_constant (|
+                                                        "core::time::try_from_secs_f64::MANT_MASK",
+                                                        Ty.path "u64"
+                                                      |)
                                                     |))
                                                 ]
                                               |)
@@ -5091,7 +5271,10 @@ Module time.
                                                   |),
                                                   [
                                                     M.read (|
-                                                      M.get_constant "core::time::NANOS_PER_SEC"
+                                                      get_constant (|
+                                                        "core::time::NANOS_PER_SEC",
+                                                        Ty.path "u32"
+                                                      |)
                                                     |)
                                                   ]
                                                 |),
@@ -5196,8 +5379,10 @@ Module time.
                                                             (BinOp.ne (|
                                                               M.read (| nanos |),
                                                               M.read (|
-                                                                M.get_constant
-                                                                  "core::time::NANOS_PER_SEC"
+                                                                get_constant (|
+                                                                  "core::time::NANOS_PER_SEC",
+                                                                  Ty.path "u32"
+                                                                |)
                                                               |)
                                                             |)))
                                                         |)
@@ -5336,7 +5521,7 @@ Module time.
       end.
     
     Global Instance AssociatedFunction_try_from_secs_f64 :
-      M.IsAssociatedFunction.Trait Self "try_from_secs_f64" try_from_secs_f64.
+      M.IsAssociatedFunction.C Self "try_from_secs_f64" try_from_secs_f64.
     Admitted.
     Global Typeclasses Opaque try_from_secs_f64.
   End Impl_core_time_Duration.
@@ -6015,8 +6200,10 @@ Module time.
                                                                       M.cast
                                                                         (Ty.path "u64")
                                                                         (M.read (|
-                                                                          M.get_constant
-                                                                            "core::time::NANOS_PER_SEC"
+                                                                          get_constant (|
+                                                                            "core::time::NANOS_PER_SEC",
+                                                                            Ty.path "u32"
+                                                                          |)
                                                                         |))
                                                                     |)
                                                                   ]
@@ -6040,8 +6227,10 @@ Module time.
                                                             M.cast
                                                               (Ty.path "u64")
                                                               (M.read (|
-                                                                M.get_constant
-                                                                  "core::time::NANOS_PER_SEC"
+                                                                get_constant (|
+                                                                  "core::time::NANOS_PER_SEC",
+                                                                  Ty.path "u32"
+                                                                |)
                                                               |))
                                                           |),
                                                           M.cast
@@ -6093,7 +6282,9 @@ Module time.
                             M.read (| total_nanos |),
                             M.cast
                               (Ty.path "u64")
-                              (M.read (| M.get_constant "core::time::NANOS_PER_SEC" |))
+                              (M.read (|
+                                get_constant (| "core::time::NANOS_PER_SEC", Ty.path "u32" |)
+                              |))
                           |)
                         ]
                       |);
@@ -6111,7 +6302,9 @@ Module time.
                   total_nanos,
                   BinOp.Wrap.rem (|
                     M.read (| total_nanos |),
-                    M.cast (Ty.path "u64") (M.read (| M.get_constant "core::time::NANOS_PER_SEC" |))
+                    M.cast
+                      (Ty.path "u64")
+                      (M.read (| get_constant (| "core::time::NANOS_PER_SEC", Ty.path "u32" |) |))
                   |)
                 |)
               |) in
@@ -6360,8 +6553,10 @@ Module time.
                                                                       M.cast
                                                                         (Ty.path "u64")
                                                                         (M.read (|
-                                                                          M.get_constant
-                                                                            "core::time::NANOS_PER_SEC"
+                                                                          get_constant (|
+                                                                            "core::time::NANOS_PER_SEC",
+                                                                            Ty.path "u32"
+                                                                          |)
                                                                         |))
                                                                     |)
                                                                   ]
@@ -6385,8 +6580,10 @@ Module time.
                                                             M.cast
                                                               (Ty.path "u64")
                                                               (M.read (|
-                                                                M.get_constant
-                                                                  "core::time::NANOS_PER_SEC"
+                                                                get_constant (|
+                                                                  "core::time::NANOS_PER_SEC",
+                                                                  Ty.path "u32"
+                                                                |)
                                                               |))
                                                           |),
                                                           M.cast
@@ -6438,7 +6635,9 @@ Module time.
                             M.read (| total_nanos |),
                             M.cast
                               (Ty.path "u64")
-                              (M.read (| M.get_constant "core::time::NANOS_PER_SEC" |))
+                              (M.read (|
+                                get_constant (| "core::time::NANOS_PER_SEC", Ty.path "u32" |)
+                              |))
                           |)
                         ]
                       |);
@@ -6456,7 +6655,9 @@ Module time.
                   total_nanos,
                   BinOp.Wrap.rem (|
                     M.read (| total_nanos |),
-                    M.cast (Ty.path "u64") (M.read (| M.get_constant "core::time::NANOS_PER_SEC" |))
+                    M.cast
+                      (Ty.path "u64")
+                      (M.read (| get_constant (| "core::time::NANOS_PER_SEC", Ty.path "u32" |) |))
                   |)
                 |)
               |) in
@@ -6766,7 +6967,9 @@ Module time.
                             |)
                           |);
                           BinOp.Wrap.div (|
-                            M.read (| M.get_constant "core::time::NANOS_PER_SEC" |),
+                            M.read (|
+                              get_constant (| "core::time::NANOS_PER_SEC", Ty.path "u32" |)
+                            |),
                             Value.Integer IntegerKind.U32 10
                           |);
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| prefix |) |) |);
@@ -6801,7 +7004,12 @@ Module time.
                                         0
                                       |)
                                     |),
-                                    M.read (| M.get_constant "core::time::NANOS_PER_MILLI" |)
+                                    M.read (|
+                                      get_constant (|
+                                        "core::time::NANOS_PER_MILLI",
+                                        Ty.path "u32"
+                                      |)
+                                    |)
                                   |)
                                 |)) in
                             let _ :=
@@ -6829,7 +7037,12 @@ Module time.
                                           0
                                         |)
                                       |),
-                                      M.read (| M.get_constant "core::time::NANOS_PER_MILLI" |)
+                                      M.read (|
+                                        get_constant (|
+                                          "core::time::NANOS_PER_MILLI",
+                                          Ty.path "u32"
+                                        |)
+                                      |)
                                     |));
                                   BinOp.Wrap.rem (|
                                     M.read (|
@@ -6843,10 +7056,20 @@ Module time.
                                         0
                                       |)
                                     |),
-                                    M.read (| M.get_constant "core::time::NANOS_PER_MILLI" |)
+                                    M.read (|
+                                      get_constant (|
+                                        "core::time::NANOS_PER_MILLI",
+                                        Ty.path "u32"
+                                      |)
+                                    |)
                                   |);
                                   BinOp.Wrap.div (|
-                                    M.read (| M.get_constant "core::time::NANOS_PER_MILLI" |),
+                                    M.read (|
+                                      get_constant (|
+                                        "core::time::NANOS_PER_MILLI",
+                                        Ty.path "u32"
+                                      |)
+                                    |),
                                     Value.Integer IntegerKind.U32 10
                                   |);
                                   M.borrow (|
@@ -6885,7 +7108,10 @@ Module time.
                                               |)
                                             |),
                                             M.read (|
-                                              M.get_constant "core::time::NANOS_PER_MICRO"
+                                              get_constant (|
+                                                "core::time::NANOS_PER_MICRO",
+                                                Ty.path "u32"
+                                              |)
                                             |)
                                           |)
                                         |)) in
@@ -6926,7 +7152,10 @@ Module time.
                                                 |)
                                               |),
                                               M.read (|
-                                                M.get_constant "core::time::NANOS_PER_MICRO"
+                                                get_constant (|
+                                                  "core::time::NANOS_PER_MICRO",
+                                                  Ty.path "u32"
+                                                |)
                                               |)
                                             |));
                                           BinOp.Wrap.rem (|
@@ -6942,12 +7171,18 @@ Module time.
                                               |)
                                             |),
                                             M.read (|
-                                              M.get_constant "core::time::NANOS_PER_MICRO"
+                                              get_constant (|
+                                                "core::time::NANOS_PER_MICRO",
+                                                Ty.path "u32"
+                                              |)
                                             |)
                                           |);
                                           BinOp.Wrap.div (|
                                             M.read (|
-                                              M.get_constant "core::time::NANOS_PER_MICRO"
+                                              get_constant (|
+                                                "core::time::NANOS_PER_MICRO",
+                                                Ty.path "u32"
+                                              |)
                                             |),
                                             Value.Integer IntegerKind.U32 10
                                           |);
@@ -7299,7 +7534,7 @@ Module time.
       end.
     
     Global Instance AssociatedFunction_description :
-      M.IsAssociatedFunction.Trait Self "description" description.
+      M.IsAssociatedFunction.C Self "description" description.
     Admitted.
     Global Typeclasses Opaque description.
   End Impl_core_time_TryFromFloatSecsError.

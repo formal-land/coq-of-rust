@@ -488,7 +488,7 @@ Module cmp.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_is_eq : M.IsAssociatedFunction.Trait Self "is_eq" is_eq.
+    Global Instance AssociatedFunction_is_eq : M.IsAssociatedFunction.C Self "is_eq" is_eq.
     Admitted.
     Global Typeclasses Opaque is_eq.
     
@@ -520,7 +520,7 @@ Module cmp.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_is_ne : M.IsAssociatedFunction.Trait Self "is_ne" is_ne.
+    Global Instance AssociatedFunction_is_ne : M.IsAssociatedFunction.C Self "is_ne" is_ne.
     Admitted.
     Global Typeclasses Opaque is_ne.
     
@@ -550,7 +550,7 @@ Module cmp.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_is_lt : M.IsAssociatedFunction.Trait Self "is_lt" is_lt.
+    Global Instance AssociatedFunction_is_lt : M.IsAssociatedFunction.C Self "is_lt" is_lt.
     Admitted.
     Global Typeclasses Opaque is_lt.
     
@@ -580,7 +580,7 @@ Module cmp.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_is_gt : M.IsAssociatedFunction.Trait Self "is_gt" is_gt.
+    Global Instance AssociatedFunction_is_gt : M.IsAssociatedFunction.C Self "is_gt" is_gt.
     Admitted.
     Global Typeclasses Opaque is_gt.
     
@@ -612,7 +612,7 @@ Module cmp.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_is_le : M.IsAssociatedFunction.Trait Self "is_le" is_le.
+    Global Instance AssociatedFunction_is_le : M.IsAssociatedFunction.C Self "is_le" is_le.
     Admitted.
     Global Typeclasses Opaque is_le.
     
@@ -644,7 +644,7 @@ Module cmp.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_is_ge : M.IsAssociatedFunction.Trait Self "is_ge" is_ge.
+    Global Instance AssociatedFunction_is_ge : M.IsAssociatedFunction.C Self "is_ge" is_ge.
     Admitted.
     Global Typeclasses Opaque is_ge.
     
@@ -685,8 +685,7 @@ Module cmp.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_reverse :
-      M.IsAssociatedFunction.Trait Self "reverse" reverse.
+    Global Instance AssociatedFunction_reverse : M.IsAssociatedFunction.C Self "reverse" reverse.
     Admitted.
     Global Typeclasses Opaque reverse.
     
@@ -720,7 +719,7 @@ Module cmp.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_then_ : M.IsAssociatedFunction.Trait Self "then_" then_.
+    Global Instance AssociatedFunction_then_ : M.IsAssociatedFunction.C Self "then" then_.
     Admitted.
     Global Typeclasses Opaque then_.
     
@@ -769,7 +768,7 @@ Module cmp.
       end.
     
     Global Instance AssociatedFunction_then_with :
-      M.IsAssociatedFunction.Trait Self "then_with" then_with.
+      M.IsAssociatedFunction.C Self "then_with" then_with.
     Admitted.
     Global Typeclasses Opaque then_with.
   End Impl_core_cmp_Ordering.
@@ -1807,7 +1806,7 @@ Module cmp.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_min : M.IsFunction.Trait "core::cmp::min" min.
+  Global Instance Instance_IsFunction_min : M.IsFunction.C "core::cmp::min" min.
   Admitted.
   Global Typeclasses Opaque min.
   
@@ -1889,7 +1888,7 @@ Module cmp.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_min_by : M.IsFunction.Trait "core::cmp::min_by" min_by.
+  Global Instance Instance_IsFunction_min_by : M.IsFunction.C "core::cmp::min_by" min_by.
   Admitted.
   Global Typeclasses Opaque min_by.
   
@@ -2041,7 +2040,7 @@ Module cmp.
     end.
   
   Global Instance Instance_IsFunction_min_by_key :
-    M.IsFunction.Trait "core::cmp::min_by_key" min_by_key.
+    M.IsFunction.C "core::cmp::min_by_key" min_by_key.
   Admitted.
   Global Typeclasses Opaque min_by_key.
   
@@ -2064,7 +2063,7 @@ Module cmp.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_max : M.IsFunction.Trait "core::cmp::max" max.
+  Global Instance Instance_IsFunction_max : M.IsFunction.C "core::cmp::max" max.
   Admitted.
   Global Typeclasses Opaque max.
   
@@ -2146,7 +2145,7 @@ Module cmp.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_max_by : M.IsFunction.Trait "core::cmp::max_by" max_by.
+  Global Instance Instance_IsFunction_max_by : M.IsFunction.C "core::cmp::max_by" max_by.
   Admitted.
   Global Typeclasses Opaque max_by.
   
@@ -2298,7 +2297,7 @@ Module cmp.
     end.
   
   Global Instance Instance_IsFunction_max_by_key :
-    M.IsFunction.Trait "core::cmp::max_by_key" max_by_key.
+    M.IsFunction.C "core::cmp::max_by_key" max_by_key.
   Admitted.
   Global Typeclasses Opaque max_by_key.
   
@@ -2351,7 +2350,7 @@ Module cmp.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_minmax : M.IsFunction.Trait "core::cmp::minmax" minmax.
+  Global Instance Instance_IsFunction_minmax : M.IsFunction.C "core::cmp::minmax" minmax.
   Admitted.
   Global Typeclasses Opaque minmax.
   
@@ -2434,8 +2433,7 @@ Module cmp.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_minmax_by :
-    M.IsFunction.Trait "core::cmp::minmax_by" minmax_by.
+  Global Instance Instance_IsFunction_minmax_by : M.IsFunction.C "core::cmp::minmax_by" minmax_by.
   Admitted.
   Global Typeclasses Opaque minmax_by.
   
@@ -2591,7 +2589,7 @@ Module cmp.
     end.
   
   Global Instance Instance_IsFunction_minmax_by_key :
-    M.IsFunction.Trait "core::cmp::minmax_by_key" minmax_by_key.
+    M.IsFunction.C "core::cmp::minmax_by_key" minmax_by_key.
   Admitted.
   Global Typeclasses Opaque minmax_by_key.
   

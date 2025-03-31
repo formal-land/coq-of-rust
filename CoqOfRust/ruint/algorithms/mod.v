@@ -770,7 +770,7 @@ Module algorithms.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_cmp : M.IsFunction.Trait "ruint::algorithms::cmp" cmp.
+  Global Instance Instance_IsFunction_cmp : M.IsFunction.C "ruint::algorithms::cmp" cmp.
   Admitted.
   Global Typeclasses Opaque cmp.
 End algorithms.

@@ -78,7 +78,10 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant "revm_interpreter::gas::constants::VERYLOW"
+                                        get_constant (|
+                                          "revm_interpreter::gas::constants::VERYLOW",
+                                          Ty.path "u64"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -276,7 +279,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_lt :
-      M.IsFunction.Trait "revm_interpreter::instructions::bitwise::lt" lt.
+      M.IsFunction.C "revm_interpreter::instructions::bitwise::lt" lt.
     Admitted.
     Global Typeclasses Opaque lt.
     
@@ -356,7 +359,10 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant "revm_interpreter::gas::constants::VERYLOW"
+                                        get_constant (|
+                                          "revm_interpreter::gas::constants::VERYLOW",
+                                          Ty.path "u64"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -554,7 +560,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_gt :
-      M.IsFunction.Trait "revm_interpreter::instructions::bitwise::gt" gt.
+      M.IsFunction.C "revm_interpreter::instructions::bitwise::gt" gt.
     Admitted.
     Global Typeclasses Opaque gt.
     
@@ -634,7 +640,10 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant "revm_interpreter::gas::constants::VERYLOW"
+                                        get_constant (|
+                                          "revm_interpreter::gas::constants::VERYLOW",
+                                          Ty.path "u64"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -842,7 +851,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_slt :
-      M.IsFunction.Trait "revm_interpreter::instructions::bitwise::slt" slt.
+      M.IsFunction.C "revm_interpreter::instructions::bitwise::slt" slt.
     Admitted.
     Global Typeclasses Opaque slt.
     
@@ -922,7 +931,10 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant "revm_interpreter::gas::constants::VERYLOW"
+                                        get_constant (|
+                                          "revm_interpreter::gas::constants::VERYLOW",
+                                          Ty.path "u64"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -1130,7 +1142,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_sgt :
-      M.IsFunction.Trait "revm_interpreter::instructions::bitwise::sgt" sgt.
+      M.IsFunction.C "revm_interpreter::instructions::bitwise::sgt" sgt.
     Admitted.
     Global Typeclasses Opaque sgt.
     
@@ -1210,7 +1222,10 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant "revm_interpreter::gas::constants::VERYLOW"
+                                        get_constant (|
+                                          "revm_interpreter::gas::constants::VERYLOW",
+                                          Ty.path "u64"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -1408,7 +1423,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_eq :
-      M.IsFunction.Trait "revm_interpreter::instructions::bitwise::eq" eq.
+      M.IsFunction.C "revm_interpreter::instructions::bitwise::eq" eq.
     Admitted.
     Global Typeclasses Opaque eq.
     
@@ -1487,7 +1502,10 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant "revm_interpreter::gas::constants::VERYLOW"
+                                        get_constant (|
+                                          "revm_interpreter::gas::constants::VERYLOW",
+                                          Ty.path "u64"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -1671,7 +1689,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_iszero :
-      M.IsFunction.Trait "revm_interpreter::instructions::bitwise::iszero" iszero.
+      M.IsFunction.C "revm_interpreter::instructions::bitwise::iszero" iszero.
     Admitted.
     Global Typeclasses Opaque iszero.
     
@@ -1750,7 +1768,10 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant "revm_interpreter::gas::constants::VERYLOW"
+                                        get_constant (|
+                                          "revm_interpreter::gas::constants::VERYLOW",
+                                          Ty.path "u64"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -1925,7 +1946,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_bitand :
-      M.IsFunction.Trait "revm_interpreter::instructions::bitwise::bitand" bitand.
+      M.IsFunction.C "revm_interpreter::instructions::bitwise::bitand" bitand.
     Admitted.
     Global Typeclasses Opaque bitand.
     
@@ -2005,7 +2026,10 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant "revm_interpreter::gas::constants::VERYLOW"
+                                        get_constant (|
+                                          "revm_interpreter::gas::constants::VERYLOW",
+                                          Ty.path "u64"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -2180,7 +2204,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_bitor :
-      M.IsFunction.Trait "revm_interpreter::instructions::bitwise::bitor" bitor.
+      M.IsFunction.C "revm_interpreter::instructions::bitwise::bitor" bitor.
     Admitted.
     Global Typeclasses Opaque bitor.
     
@@ -2260,7 +2284,10 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant "revm_interpreter::gas::constants::VERYLOW"
+                                        get_constant (|
+                                          "revm_interpreter::gas::constants::VERYLOW",
+                                          Ty.path "u64"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -2435,7 +2462,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_bitxor :
-      M.IsFunction.Trait "revm_interpreter::instructions::bitwise::bitxor" bitxor.
+      M.IsFunction.C "revm_interpreter::instructions::bitwise::bitxor" bitxor.
     Admitted.
     Global Typeclasses Opaque bitxor.
     
@@ -2515,7 +2542,10 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant "revm_interpreter::gas::constants::VERYLOW"
+                                        get_constant (|
+                                          "revm_interpreter::gas::constants::VERYLOW",
+                                          Ty.path "u64"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -2680,7 +2710,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_not :
-      M.IsFunction.Trait "revm_interpreter::instructions::bitwise::not" not.
+      M.IsFunction.C "revm_interpreter::instructions::bitwise::not" not.
     Admitted.
     Global Typeclasses Opaque not.
     
@@ -2766,7 +2796,10 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant "revm_interpreter::gas::constants::VERYLOW"
+                                        get_constant (|
+                                          "revm_interpreter::gas::constants::VERYLOW",
+                                          Ty.path "u64"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -3012,7 +3045,11 @@ Module instructions.
                                                       |)));
                                                   fun γ =>
                                                     ltac:(M.monadic
-                                                      (M.get_constant "core::num::MAX"))
+                                                      (get_associated_constant (|
+                                                        Ty.path "u64",
+                                                        "MAX",
+                                                        Ty.path "u64"
+                                                      |)))
                                                 ]
                                               |)))
                                         ]
@@ -3020,7 +3057,13 @@ Module instructions.
                                     |)
                                   ]
                                 |);
-                                M.read (| M.get_constant "core::num::MAX" |)
+                                M.read (|
+                                  get_associated_constant (|
+                                    Ty.path "usize",
+                                    "MAX",
+                                    Ty.path "usize"
+                                  |)
+                                |)
                               ]
                             |)
                           |) in
@@ -3105,7 +3148,25 @@ Module instructions.
                                             ]
                                           |)
                                         |)));
-                                    fun γ => ltac:(M.monadic (M.get_constant "ruint::ZERO"))
+                                    fun γ =>
+                                      ltac:(M.monadic
+                                        (get_associated_constant (|
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [
+                                              Value.Integer IntegerKind.Usize 256;
+                                              Value.Integer IntegerKind.Usize 4
+                                            ]
+                                            [],
+                                          "ZERO",
+                                          Ty.apply
+                                            (Ty.path "ruint::Uint")
+                                            [
+                                              Value.Integer IntegerKind.Usize 256;
+                                              Value.Integer IntegerKind.Usize 4
+                                            ]
+                                            []
+                                        |)))
                                   ]
                                 |)
                               |)
@@ -3120,7 +3181,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_byte :
-      M.IsFunction.Trait "revm_interpreter::instructions::bitwise::byte" byte.
+      M.IsFunction.C "revm_interpreter::instructions::bitwise::byte" byte.
     Admitted.
     Global Typeclasses Opaque byte.
     
@@ -3305,7 +3366,10 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant "revm_interpreter::gas::constants::VERYLOW"
+                                        get_constant (|
+                                          "revm_interpreter::gas::constants::VERYLOW",
+                                          Ty.path "u64"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -3551,7 +3615,11 @@ Module instructions.
                                                       |)));
                                                   fun γ =>
                                                     ltac:(M.monadic
-                                                      (M.get_constant "core::num::MAX"))
+                                                      (get_associated_constant (|
+                                                        Ty.path "u64",
+                                                        "MAX",
+                                                        Ty.path "u64"
+                                                      |)))
                                                 ]
                                               |)))
                                         ]
@@ -3559,7 +3627,13 @@ Module instructions.
                                     |)
                                   ]
                                 |);
-                                M.read (| M.get_constant "core::num::MAX" |)
+                                M.read (|
+                                  get_associated_constant (|
+                                    Ty.path "usize",
+                                    "MAX",
+                                    Ty.path "usize"
+                                  |)
+                                |)
                               ]
                             |)
                           |) in
@@ -3623,7 +3697,25 @@ Module instructions.
                                           ]
                                         |)
                                       |)));
-                                  fun γ => ltac:(M.monadic (M.get_constant "ruint::ZERO"))
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (get_associated_constant (|
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [
+                                            Value.Integer IntegerKind.Usize 256;
+                                            Value.Integer IntegerKind.Usize 4
+                                          ]
+                                          [],
+                                        "ZERO",
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [
+                                            Value.Integer IntegerKind.Usize 256;
+                                            Value.Integer IntegerKind.Usize 4
+                                          ]
+                                          []
+                                      |)))
                                 ]
                               |)
                             |)
@@ -3637,7 +3729,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_shl :
-      M.IsFunction.Trait "revm_interpreter::instructions::bitwise::shl" shl.
+      M.IsFunction.C "revm_interpreter::instructions::bitwise::shl" shl.
     Admitted.
     Global Typeclasses Opaque shl.
     
@@ -3822,7 +3914,10 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant "revm_interpreter::gas::constants::VERYLOW"
+                                        get_constant (|
+                                          "revm_interpreter::gas::constants::VERYLOW",
+                                          Ty.path "u64"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -4068,7 +4163,11 @@ Module instructions.
                                                       |)));
                                                   fun γ =>
                                                     ltac:(M.monadic
-                                                      (M.get_constant "core::num::MAX"))
+                                                      (get_associated_constant (|
+                                                        Ty.path "u64",
+                                                        "MAX",
+                                                        Ty.path "u64"
+                                                      |)))
                                                 ]
                                               |)))
                                         ]
@@ -4076,7 +4175,13 @@ Module instructions.
                                     |)
                                   ]
                                 |);
-                                M.read (| M.get_constant "core::num::MAX" |)
+                                M.read (|
+                                  get_associated_constant (|
+                                    Ty.path "usize",
+                                    "MAX",
+                                    Ty.path "usize"
+                                  |)
+                                |)
                               ]
                             |)
                           |) in
@@ -4140,7 +4245,25 @@ Module instructions.
                                           ]
                                         |)
                                       |)));
-                                  fun γ => ltac:(M.monadic (M.get_constant "ruint::ZERO"))
+                                  fun γ =>
+                                    ltac:(M.monadic
+                                      (get_associated_constant (|
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [
+                                            Value.Integer IntegerKind.Usize 256;
+                                            Value.Integer IntegerKind.Usize 4
+                                          ]
+                                          [],
+                                        "ZERO",
+                                        Ty.apply
+                                          (Ty.path "ruint::Uint")
+                                          [
+                                            Value.Integer IntegerKind.Usize 256;
+                                            Value.Integer IntegerKind.Usize 4
+                                          ]
+                                          []
+                                      |)))
                                 ]
                               |)
                             |)
@@ -4154,7 +4277,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_shr :
-      M.IsFunction.Trait "revm_interpreter::instructions::bitwise::shr" shr.
+      M.IsFunction.C "revm_interpreter::instructions::bitwise::shr" shr.
     Admitted.
     Global Typeclasses Opaque shr.
     
@@ -4341,7 +4464,10 @@ Module instructions.
                                         |)
                                       |);
                                       M.read (|
-                                        M.get_constant "revm_interpreter::gas::constants::VERYLOW"
+                                        get_constant (|
+                                          "revm_interpreter::gas::constants::VERYLOW",
+                                          Ty.path "u64"
+                                        |)
                                       |)
                                     ]
                                   |)
@@ -4587,7 +4713,11 @@ Module instructions.
                                                       |)));
                                                   fun γ =>
                                                     ltac:(M.monadic
-                                                      (M.get_constant "core::num::MAX"))
+                                                      (get_associated_constant (|
+                                                        Ty.path "u64",
+                                                        "MAX",
+                                                        Ty.path "u64"
+                                                      |)))
                                                 ]
                                               |)))
                                         ]
@@ -4595,7 +4725,13 @@ Module instructions.
                                     |)
                                   ]
                                 |);
-                                M.read (| M.get_constant "core::num::MAX" |)
+                                M.read (|
+                                  get_associated_constant (|
+                                    Ty.path "usize",
+                                    "MAX",
+                                    Ty.path "usize"
+                                  |)
+                                |)
                               ]
                             |)
                           |) in
@@ -4703,8 +4839,42 @@ Module instructions.
                                                     M.read (| γ |),
                                                     Value.Bool true
                                                   |) in
-                                                M.get_constant "ruint::MAX"));
-                                            fun γ => ltac:(M.monadic (M.get_constant "ruint::ZERO"))
+                                                get_associated_constant (|
+                                                  Ty.apply
+                                                    (Ty.path "ruint::Uint")
+                                                    [
+                                                      Value.Integer IntegerKind.Usize 256;
+                                                      Value.Integer IntegerKind.Usize 4
+                                                    ]
+                                                    [],
+                                                  "MAX",
+                                                  Ty.apply
+                                                    (Ty.path "ruint::Uint")
+                                                    [
+                                                      Value.Integer IntegerKind.Usize 256;
+                                                      Value.Integer IntegerKind.Usize 4
+                                                    ]
+                                                    []
+                                                |)));
+                                            fun γ =>
+                                              ltac:(M.monadic
+                                                (get_associated_constant (|
+                                                  Ty.apply
+                                                    (Ty.path "ruint::Uint")
+                                                    [
+                                                      Value.Integer IntegerKind.Usize 256;
+                                                      Value.Integer IntegerKind.Usize 4
+                                                    ]
+                                                    [],
+                                                  "ZERO",
+                                                  Ty.apply
+                                                    (Ty.path "ruint::Uint")
+                                                    [
+                                                      Value.Integer IntegerKind.Usize 256;
+                                                      Value.Integer IntegerKind.Usize 4
+                                                    ]
+                                                    []
+                                                |)))
                                           ]
                                         |)))
                                   ]
@@ -4721,7 +4891,7 @@ Module instructions.
       end.
     
     Global Instance Instance_IsFunction_sar :
-      M.IsFunction.Trait "revm_interpreter::instructions::bitwise::sar" sar.
+      M.IsFunction.C "revm_interpreter::instructions::bitwise::sar" sar.
     Admitted.
     Global Typeclasses Opaque sar.
   End bitwise.

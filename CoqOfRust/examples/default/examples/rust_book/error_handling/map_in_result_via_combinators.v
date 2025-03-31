@@ -138,7 +138,7 @@ Definition multiply (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
   end.
 
 Global Instance Instance_IsFunction_multiply :
-  M.IsFunction.Trait "map_in_result_via_combinators::multiply" multiply.
+  M.IsFunction.C "map_in_result_via_combinators::multiply" multiply.
 Admitted.
 Global Typeclasses Opaque multiply.
 
@@ -301,7 +301,7 @@ Definition print (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Global Instance Instance_IsFunction_print :
-  M.IsFunction.Trait "map_in_result_via_combinators::print" print.
+  M.IsFunction.C "map_in_result_via_combinators::print" print.
 Admitted.
 Global Typeclasses Opaque print.
 
@@ -379,6 +379,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "map_in_result_via_combinators::main" main.
+  M.IsFunction.C "map_in_result_via_combinators::main" main.
 Admitted.
 Global Typeclasses Opaque main.

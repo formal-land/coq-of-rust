@@ -125,7 +125,7 @@ Module collections.
         
         Global Instance AssociatedFunction_new :
           forall (T : Ty.t),
-          M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+          M.IsAssociatedFunction.C (Self T) "new" (new T).
         Admitted.
         Global Typeclasses Opaque new.
         
@@ -184,7 +184,7 @@ Module collections.
         
         Global Instance AssociatedFunction_awaken :
           forall (T : Ty.t),
-          M.IsAssociatedFunction.Trait (Self T) "awaken" (awaken T).
+          M.IsAssociatedFunction.C (Self T) "awaken" (awaken T).
         Admitted.
         Global Typeclasses Opaque awaken.
         
@@ -243,7 +243,7 @@ Module collections.
         
         Global Instance AssociatedFunction_reborrow :
           forall (T : Ty.t),
-          M.IsAssociatedFunction.Trait (Self T) "reborrow" (reborrow T).
+          M.IsAssociatedFunction.C (Self T) "reborrow" (reborrow T).
         Admitted.
         Global Typeclasses Opaque reborrow.
         
@@ -297,7 +297,7 @@ Module collections.
         
         Global Instance AssociatedFunction_reborrow_shared :
           forall (T : Ty.t),
-          M.IsAssociatedFunction.Trait (Self T) "reborrow_shared" (reborrow_shared T).
+          M.IsAssociatedFunction.C (Self T) "reborrow_shared" (reborrow_shared T).
         Admitted.
         Global Typeclasses Opaque reborrow_shared.
       End Impl_alloc_collections_btree_borrow_DormantMutRef_T.

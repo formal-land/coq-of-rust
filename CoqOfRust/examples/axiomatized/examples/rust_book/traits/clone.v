@@ -91,5 +91,5 @@ End Impl_core_fmt_Debug_for_clone_Pair.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "clone::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "clone::main" main.
 Admitted.

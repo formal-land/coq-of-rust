@@ -41,8 +41,7 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance Instance_IsFunction_add :
-      M.IsFunction.Trait "core::num::overflow_panic::add" add.
+    Global Instance Instance_IsFunction_add : M.IsFunction.C "core::num::overflow_panic::add" add.
     Admitted.
     Global Typeclasses Opaque add.
     
@@ -86,8 +85,7 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance Instance_IsFunction_sub :
-      M.IsFunction.Trait "core::num::overflow_panic::sub" sub.
+    Global Instance Instance_IsFunction_sub : M.IsFunction.C "core::num::overflow_panic::sub" sub.
     Admitted.
     Global Typeclasses Opaque sub.
     
@@ -131,8 +129,7 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance Instance_IsFunction_mul :
-      M.IsFunction.Trait "core::num::overflow_panic::mul" mul.
+    Global Instance Instance_IsFunction_mul : M.IsFunction.C "core::num::overflow_panic::mul" mul.
     Admitted.
     Global Typeclasses Opaque mul.
     
@@ -174,8 +171,7 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance Instance_IsFunction_div :
-      M.IsFunction.Trait "core::num::overflow_panic::div" div.
+    Global Instance Instance_IsFunction_div : M.IsFunction.C "core::num::overflow_panic::div" div.
     Admitted.
     Global Typeclasses Opaque div.
     
@@ -220,8 +216,7 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance Instance_IsFunction_rem :
-      M.IsFunction.Trait "core::num::overflow_panic::rem" rem.
+    Global Instance Instance_IsFunction_rem : M.IsFunction.C "core::num::overflow_panic::rem" rem.
     Admitted.
     Global Typeclasses Opaque rem.
     
@@ -263,8 +258,7 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance Instance_IsFunction_neg :
-      M.IsFunction.Trait "core::num::overflow_panic::neg" neg.
+    Global Instance Instance_IsFunction_neg : M.IsFunction.C "core::num::overflow_panic::neg" neg.
     Admitted.
     Global Typeclasses Opaque neg.
     
@@ -308,8 +302,7 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance Instance_IsFunction_shr :
-      M.IsFunction.Trait "core::num::overflow_panic::shr" shr.
+    Global Instance Instance_IsFunction_shr : M.IsFunction.C "core::num::overflow_panic::shr" shr.
     Admitted.
     Global Typeclasses Opaque shr.
     
@@ -353,8 +346,7 @@ Module num.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance Instance_IsFunction_shl :
-      M.IsFunction.Trait "core::num::overflow_panic::shl" shl.
+    Global Instance Instance_IsFunction_shl : M.IsFunction.C "core::num::overflow_panic::shl" shl.
     Admitted.
     Global Typeclasses Opaque shl.
   End overflow_panic.

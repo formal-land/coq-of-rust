@@ -4,11 +4,11 @@ Require Import CoqOfRust.CoqOfRust.
 Parameter some_number : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_some_number :
-  M.IsFunction.Trait "match_binding_destructure_enum_variants::some_number" some_number.
+  M.IsFunction.C "match_binding_destructure_enum_variants::some_number" some_number.
 Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "match_binding_destructure_enum_variants::main" main.
+  M.IsFunction.C "match_binding_destructure_enum_variants::main" main.
 Admitted.

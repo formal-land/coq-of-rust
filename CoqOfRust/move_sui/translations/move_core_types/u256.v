@@ -2,33 +2,37 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module u256.
-  Definition value_NUM_BITS_PER_BYTE : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 8 |))).
+  Definition value_NUM_BITS_PER_BYTE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 8 |))).
   
-  Axiom Constant_value_NUM_BITS_PER_BYTE :
-    (M.get_constant "move_core_types::u256::NUM_BITS_PER_BYTE") = value_NUM_BITS_PER_BYTE.
-  Global Hint Rewrite Constant_value_NUM_BITS_PER_BYTE : constant_rewrites.
+  Global Instance Instance_IsConstant_value_NUM_BITS_PER_BYTE :
+    M.IsFunction.C "move_core_types::u256::NUM_BITS_PER_BYTE" value_NUM_BITS_PER_BYTE.
+  Admitted.
+  Global Typeclasses Opaque value_NUM_BITS_PER_BYTE.
   
-  Definition value_U256_NUM_BITS : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 256 |))).
+  Definition value_U256_NUM_BITS (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 256 |))).
   
-  Axiom Constant_value_U256_NUM_BITS :
-    (M.get_constant "move_core_types::u256::U256_NUM_BITS") = value_U256_NUM_BITS.
-  Global Hint Rewrite Constant_value_U256_NUM_BITS : constant_rewrites.
+  Global Instance Instance_IsConstant_value_U256_NUM_BITS :
+    M.IsFunction.C "move_core_types::u256::U256_NUM_BITS" value_U256_NUM_BITS.
+  Admitted.
+  Global Typeclasses Opaque value_U256_NUM_BITS.
   
-  Definition value_U256_NUM_BYTES : Value.t :=
-    M.run_constant
-      ltac:(M.monadic
-        (M.alloc (|
-          BinOp.Wrap.div (|
-            M.read (| M.get_constant "move_core_types::u256::U256_NUM_BITS" |),
-            M.read (| M.get_constant "move_core_types::u256::NUM_BITS_PER_BYTE" |)
+  Definition value_U256_NUM_BYTES (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic
+      (M.alloc (|
+        BinOp.Wrap.div (|
+          M.read (| get_constant (| "move_core_types::u256::U256_NUM_BITS", Ty.path "usize" |) |),
+          M.read (|
+            get_constant (| "move_core_types::u256::NUM_BITS_PER_BYTE", Ty.path "usize" |)
           |)
-        |))).
+        |)
+      |))).
   
-  Axiom Constant_value_U256_NUM_BYTES :
-    (M.get_constant "move_core_types::u256::U256_NUM_BYTES") = value_U256_NUM_BYTES.
-  Global Hint Rewrite Constant_value_U256_NUM_BYTES : constant_rewrites.
+  Global Instance Instance_IsConstant_value_U256_NUM_BYTES :
+    M.IsFunction.C "move_core_types::u256::U256_NUM_BYTES" value_U256_NUM_BYTES.
+  Admitted.
+  Global Typeclasses Opaque value_U256_NUM_BYTES.
   
   (* StructTuple
     {
@@ -547,7 +551,7 @@ Module u256.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
   End Impl_move_core_types_u256_U256CastError.
@@ -2885,7 +2889,7 @@ Module u256.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_zero : M.IsAssociatedFunction.Trait Self "zero" zero.
+    Global Instance AssociatedFunction_zero : M.IsAssociatedFunction.C Self "zero" zero.
     Admitted.
     Global Typeclasses Opaque zero.
     
@@ -2910,7 +2914,7 @@ Module u256.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_one : M.IsAssociatedFunction.Trait Self "one" one.
+    Global Instance AssociatedFunction_one : M.IsAssociatedFunction.C Self "one" one.
     Admitted.
     Global Typeclasses Opaque one.
     
@@ -2941,7 +2945,7 @@ Module u256.
       end.
     
     Global Instance AssociatedFunction_max_value :
-      M.IsAssociatedFunction.Trait Self "max_value" max_value.
+      M.IsAssociatedFunction.C Self "max_value" max_value.
     Admitted.
     Global Typeclasses Opaque max_value.
     
@@ -3044,7 +3048,7 @@ Module u256.
       end.
     
     Global Instance AssociatedFunction_from_str_radix :
-      M.IsAssociatedFunction.Trait Self "from_str_radix" from_str_radix.
+      M.IsAssociatedFunction.C Self "from_str_radix" from_str_radix.
     Admitted.
     Global Typeclasses Opaque from_str_radix.
     
@@ -3076,7 +3080,7 @@ Module u256.
       end.
     
     Global Instance AssociatedFunction_from_le_bytes :
-      M.IsAssociatedFunction.Trait Self "from_le_bytes" from_le_bytes.
+      M.IsAssociatedFunction.C Self "from_le_bytes" from_le_bytes.
     Admitted.
     Global Typeclasses Opaque from_le_bytes.
     
@@ -3133,7 +3137,7 @@ Module u256.
       end.
     
     Global Instance AssociatedFunction_to_le_bytes :
-      M.IsAssociatedFunction.Trait Self "to_le_bytes" to_le_bytes.
+      M.IsAssociatedFunction.C Self "to_le_bytes" to_le_bytes.
     Admitted.
     Global Typeclasses Opaque to_le_bytes.
     
@@ -3170,7 +3174,7 @@ Module u256.
       end.
     
     Global Instance AssociatedFunction_leading_zeros :
-      M.IsAssociatedFunction.Trait Self "leading_zeros" leading_zeros.
+      M.IsAssociatedFunction.C Self "leading_zeros" leading_zeros.
     Admitted.
     Global Typeclasses Opaque leading_zeros.
     
@@ -3204,7 +3208,7 @@ Module u256.
       end.
     
     Global Instance AssociatedFunction_unchecked_as_u8 :
-      M.IsAssociatedFunction.Trait Self "unchecked_as_u8" unchecked_as_u8.
+      M.IsAssociatedFunction.C Self "unchecked_as_u8" unchecked_as_u8.
     Admitted.
     Global Typeclasses Opaque unchecked_as_u8.
     
@@ -3238,7 +3242,7 @@ Module u256.
       end.
     
     Global Instance AssociatedFunction_unchecked_as_u16 :
-      M.IsAssociatedFunction.Trait Self "unchecked_as_u16" unchecked_as_u16.
+      M.IsAssociatedFunction.C Self "unchecked_as_u16" unchecked_as_u16.
     Admitted.
     Global Typeclasses Opaque unchecked_as_u16.
     
@@ -3272,7 +3276,7 @@ Module u256.
       end.
     
     Global Instance AssociatedFunction_unchecked_as_u32 :
-      M.IsAssociatedFunction.Trait Self "unchecked_as_u32" unchecked_as_u32.
+      M.IsAssociatedFunction.C Self "unchecked_as_u32" unchecked_as_u32.
     Admitted.
     Global Typeclasses Opaque unchecked_as_u32.
     
@@ -3306,7 +3310,7 @@ Module u256.
       end.
     
     Global Instance AssociatedFunction_unchecked_as_u64 :
-      M.IsAssociatedFunction.Trait Self "unchecked_as_u64" unchecked_as_u64.
+      M.IsAssociatedFunction.C Self "unchecked_as_u64" unchecked_as_u64.
     Admitted.
     Global Typeclasses Opaque unchecked_as_u64.
     
@@ -3338,7 +3342,7 @@ Module u256.
       end.
     
     Global Instance AssociatedFunction_unchecked_as_u128 :
-      M.IsAssociatedFunction.Trait Self "unchecked_as_u128" unchecked_as_u128.
+      M.IsAssociatedFunction.C Self "unchecked_as_u128" unchecked_as_u128.
     Admitted.
     Global Typeclasses Opaque unchecked_as_u128.
     
@@ -3391,7 +3395,7 @@ Module u256.
       end.
     
     Global Instance AssociatedFunction_checked_add :
-      M.IsAssociatedFunction.Trait Self "checked_add" checked_add.
+      M.IsAssociatedFunction.C Self "checked_add" checked_add.
     Admitted.
     Global Typeclasses Opaque checked_add.
     
@@ -3444,7 +3448,7 @@ Module u256.
       end.
     
     Global Instance AssociatedFunction_checked_sub :
-      M.IsAssociatedFunction.Trait Self "checked_sub" checked_sub.
+      M.IsAssociatedFunction.C Self "checked_sub" checked_sub.
     Admitted.
     Global Typeclasses Opaque checked_sub.
     
@@ -3497,7 +3501,7 @@ Module u256.
       end.
     
     Global Instance AssociatedFunction_checked_mul :
-      M.IsAssociatedFunction.Trait Self "checked_mul" checked_mul.
+      M.IsAssociatedFunction.C Self "checked_mul" checked_mul.
     Admitted.
     Global Typeclasses Opaque checked_mul.
     
@@ -3550,7 +3554,7 @@ Module u256.
       end.
     
     Global Instance AssociatedFunction_checked_div :
-      M.IsAssociatedFunction.Trait Self "checked_div" checked_div.
+      M.IsAssociatedFunction.C Self "checked_div" checked_div.
     Admitted.
     Global Typeclasses Opaque checked_div.
     
@@ -3603,7 +3607,7 @@ Module u256.
       end.
     
     Global Instance AssociatedFunction_checked_rem :
-      M.IsAssociatedFunction.Trait Self "checked_rem" checked_rem.
+      M.IsAssociatedFunction.C Self "checked_rem" checked_rem.
     Admitted.
     Global Typeclasses Opaque checked_rem.
     
@@ -3639,7 +3643,10 @@ Module u256.
                                   M.cast
                                     (Ty.path "u32")
                                     (M.read (|
-                                      M.get_constant "move_core_types::u256::U256_NUM_BITS"
+                                      get_constant (|
+                                        "move_core_types::u256::U256_NUM_BITS",
+                                        Ty.path "usize"
+                                      |)
                                     |))
                                 |)
                               |)) in
@@ -3693,7 +3700,7 @@ Module u256.
       end.
     
     Global Instance AssociatedFunction_checked_shl :
-      M.IsAssociatedFunction.Trait Self "checked_shl" checked_shl.
+      M.IsAssociatedFunction.C Self "checked_shl" checked_shl.
     Admitted.
     Global Typeclasses Opaque checked_shl.
     
@@ -3729,7 +3736,10 @@ Module u256.
                                   M.cast
                                     (Ty.path "u32")
                                     (M.read (|
-                                      M.get_constant "move_core_types::u256::U256_NUM_BITS"
+                                      get_constant (|
+                                        "move_core_types::u256::U256_NUM_BITS",
+                                        Ty.path "usize"
+                                      |)
                                     |))
                                 |)
                               |)) in
@@ -3783,7 +3793,7 @@ Module u256.
       end.
     
     Global Instance AssociatedFunction_checked_shr :
-      M.IsAssociatedFunction.Trait Self "checked_shr" checked_shr.
+      M.IsAssociatedFunction.C Self "checked_shr" checked_shr.
     Admitted.
     Global Typeclasses Opaque checked_shr.
     
@@ -3842,7 +3852,10 @@ Module u256.
                               Value.Integer IntegerKind.U128 1,
                               BinOp.Wrap.mul (|
                                 M.read (|
-                                  M.get_constant "move_core_types::u256::NUM_BITS_PER_BYTE"
+                                  get_constant (|
+                                    "move_core_types::u256::NUM_BITS_PER_BYTE",
+                                    Ty.path "usize"
+                                  |)
                                 |),
                                 M.read (| type_size |)
                               |)
@@ -3850,7 +3863,9 @@ Module u256.
                             Value.Integer IntegerKind.U128 1
                           |)
                         |)));
-                    fun γ => ltac:(M.monadic (M.get_constant "core::num::MAX"))
+                    fun γ =>
+                      ltac:(M.monadic
+                        (get_associated_constant (| Ty.path "u128", "MAX", Ty.path "u128" |)))
                   ]
                 |)
               |) in
@@ -3954,7 +3969,7 @@ Module u256.
       end.
     
     Global Instance AssociatedFunction_down_cast_lossy :
-      M.IsAssociatedFunction.Trait Self "down_cast_lossy" down_cast_lossy.
+      M.IsAssociatedFunction.C Self "down_cast_lossy" down_cast_lossy.
     Admitted.
     Global Typeclasses Opaque down_cast_lossy.
     
@@ -4009,7 +4024,7 @@ Module u256.
       end.
     
     Global Instance AssociatedFunction_wrapping_add :
-      M.IsAssociatedFunction.Trait Self "wrapping_add" wrapping_add.
+      M.IsAssociatedFunction.C Self "wrapping_add" wrapping_add.
     Admitted.
     Global Typeclasses Opaque wrapping_add.
     
@@ -4064,7 +4079,7 @@ Module u256.
       end.
     
     Global Instance AssociatedFunction_wrapping_sub :
-      M.IsAssociatedFunction.Trait Self "wrapping_sub" wrapping_sub.
+      M.IsAssociatedFunction.C Self "wrapping_sub" wrapping_sub.
     Admitted.
     Global Typeclasses Opaque wrapping_sub.
     
@@ -4119,7 +4134,7 @@ Module u256.
       end.
     
     Global Instance AssociatedFunction_wrapping_mul :
-      M.IsAssociatedFunction.Trait Self "wrapping_mul" wrapping_mul.
+      M.IsAssociatedFunction.C Self "wrapping_mul" wrapping_mul.
     Admitted.
     Global Typeclasses Opaque wrapping_mul.
     
@@ -4597,7 +4612,7 @@ Module u256.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_wmul : M.IsAssociatedFunction.Trait Self "wmul" wmul.
+    Global Instance AssociatedFunction_wmul : M.IsAssociatedFunction.C Self "wmul" wmul.
     Admitted.
     Global Typeclasses Opaque wmul.
   End Impl_move_core_types_u256_U256.
@@ -5103,7 +5118,11 @@ Module u256.
                         (M.alloc (|
                           BinOp.gt (|
                             M.read (| n |),
-                            M.cast (Ty.path "u64") (M.read (| M.get_constant "core::num::MAX" |))
+                            M.cast
+                              (Ty.path "u64")
+                              (M.read (|
+                                get_associated_constant (| Ty.path "u8", "MAX", Ty.path "u8" |)
+                              |))
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5206,7 +5225,11 @@ Module u256.
                         (M.alloc (|
                           BinOp.gt (|
                             M.read (| n |),
-                            M.cast (Ty.path "u64") (M.read (| M.get_constant "core::num::MAX" |))
+                            M.cast
+                              (Ty.path "u64")
+                              (M.read (|
+                                get_associated_constant (| Ty.path "u16", "MAX", Ty.path "u16" |)
+                              |))
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5309,7 +5332,11 @@ Module u256.
                         (M.alloc (|
                           BinOp.gt (|
                             M.read (| n |),
-                            M.cast (Ty.path "u64") (M.read (| M.get_constant "core::num::MAX" |))
+                            M.cast
+                              (Ty.path "u64")
+                              (M.read (|
+                                get_associated_constant (| Ty.path "u32", "MAX", Ty.path "u32" |)
+                              |))
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5412,7 +5439,11 @@ Module u256.
                         (M.alloc (|
                           BinOp.gt (|
                             M.read (| n |),
-                            M.cast (Ty.path "u128") (M.read (| M.get_constant "core::num::MAX" |))
+                            M.cast
+                              (Ty.path "u128")
+                              (M.read (|
+                                get_associated_constant (| Ty.path "u64", "MAX", Ty.path "u64" |)
+                              |))
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5521,7 +5552,15 @@ Module u256.
                                       [],
                                       []
                                     |),
-                                    [ M.read (| M.get_constant "core::num::MAX" |) ]
+                                    [
+                                      M.read (|
+                                        get_associated_constant (|
+                                          Ty.path "u128",
+                                          "MAX",
+                                          Ty.path "u128"
+                                        |)
+                                      |)
+                                    ]
                                   |)
                                 |)
                               |)

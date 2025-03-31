@@ -3,6 +3,5 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "loop_returning_from_loops::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "loop_returning_from_loops::main" main.
 Admitted.

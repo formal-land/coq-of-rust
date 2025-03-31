@@ -35,42 +35,42 @@ Module Impl_erc721_Mapping_K_V.
   
   Global Instance AssociatedFunction_contains :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction.Trait (Self K V) "contains" (contains K V).
+    M.IsAssociatedFunction.C (Self K V) "contains" (contains K V).
   Admitted.
   
   Parameter get : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_get :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction.Trait (Self K V) "get" (get K V).
+    M.IsAssociatedFunction.C (Self K V) "get" (get K V).
   Admitted.
   
   Parameter insert : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_insert :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction.Trait (Self K V) "insert" (insert K V).
+    M.IsAssociatedFunction.C (Self K V) "insert" (insert K V).
   Admitted.
   
   Parameter remove : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_remove :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction.Trait (Self K V) "remove" (remove K V).
+    M.IsAssociatedFunction.C (Self K V) "remove" (remove K V).
   Admitted.
   
   Parameter size : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_size :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction.Trait (Self K V) "size" (size K V).
+    M.IsAssociatedFunction.C (Self K V) "size" (size K V).
   Admitted.
   
   Parameter take : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_take :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction.Trait (Self K V) "take" (take K V).
+    M.IsAssociatedFunction.C (Self K V) "take" (take K V).
   Admitted.
 End Impl_erc721_Mapping_K_V.
 
@@ -395,13 +395,13 @@ Module Impl_erc721_Env.
   
   Parameter caller : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_caller : M.IsAssociatedFunction.Trait Self "caller" caller.
+  Global Instance AssociatedFunction_caller : M.IsAssociatedFunction.C Self "caller" caller.
   Admitted.
   
   Parameter emit_event : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_emit_event :
-    M.IsAssociatedFunction.Trait Self "emit_event" emit_event.
+    M.IsAssociatedFunction.C Self "emit_event" emit_event.
   Admitted.
 End Impl_erc721_Env.
 
@@ -410,133 +410,130 @@ Module Impl_erc721_Erc721.
   
   Parameter init_env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_init_env :
-    M.IsAssociatedFunction.Trait Self "init_env" init_env.
+  Global Instance AssociatedFunction_init_env : M.IsAssociatedFunction.C Self "init_env" init_env.
   Admitted.
   
   Parameter env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_env : M.IsAssociatedFunction.Trait Self "env" env.
+  Global Instance AssociatedFunction_env : M.IsAssociatedFunction.C Self "env" env.
   Admitted.
   
   Parameter new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
   Admitted.
   
   Parameter balance_of_or_zero : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_balance_of_or_zero :
-    M.IsAssociatedFunction.Trait Self "balance_of_or_zero" balance_of_or_zero.
+    M.IsAssociatedFunction.C Self "balance_of_or_zero" balance_of_or_zero.
   Admitted.
   
   Parameter clear_approval : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_clear_approval :
-    M.IsAssociatedFunction.Trait Self "clear_approval" clear_approval.
+    M.IsAssociatedFunction.C Self "clear_approval" clear_approval.
   Admitted.
   
   Parameter approved_for_all : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_approved_for_all :
-    M.IsAssociatedFunction.Trait Self "approved_for_all" approved_for_all.
+    M.IsAssociatedFunction.C Self "approved_for_all" approved_for_all.
   Admitted.
   
   Parameter owner_of : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_owner_of :
-    M.IsAssociatedFunction.Trait Self "owner_of" owner_of.
+  Global Instance AssociatedFunction_owner_of : M.IsAssociatedFunction.C Self "owner_of" owner_of.
   Admitted.
   
   Parameter approved_or_owner : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_approved_or_owner :
-    M.IsAssociatedFunction.Trait Self "approved_or_owner" approved_or_owner.
+    M.IsAssociatedFunction.C Self "approved_or_owner" approved_or_owner.
   Admitted.
   
   Parameter exists_ : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_exists_ : M.IsAssociatedFunction.Trait Self "exists_" exists_.
+  Global Instance AssociatedFunction_exists_ : M.IsAssociatedFunction.C Self "exists" exists_.
   Admitted.
   
   Parameter balance_of : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_balance_of :
-    M.IsAssociatedFunction.Trait Self "balance_of" balance_of.
+    M.IsAssociatedFunction.C Self "balance_of" balance_of.
   Admitted.
   
   Parameter get_approved : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_get_approved :
-    M.IsAssociatedFunction.Trait Self "get_approved" get_approved.
+    M.IsAssociatedFunction.C Self "get_approved" get_approved.
   Admitted.
   
   Parameter is_approved_for_all : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_is_approved_for_all :
-    M.IsAssociatedFunction.Trait Self "is_approved_for_all" is_approved_for_all.
+    M.IsAssociatedFunction.C Self "is_approved_for_all" is_approved_for_all.
   Admitted.
   
   Parameter approve_for_all : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_approve_for_all :
-    M.IsAssociatedFunction.Trait Self "approve_for_all" approve_for_all.
+    M.IsAssociatedFunction.C Self "approve_for_all" approve_for_all.
   Admitted.
   
   Parameter set_approval_for_all : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_set_approval_for_all :
-    M.IsAssociatedFunction.Trait Self "set_approval_for_all" set_approval_for_all.
+    M.IsAssociatedFunction.C Self "set_approval_for_all" set_approval_for_all.
   Admitted.
   
   Parameter approve_for : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_approve_for :
-    M.IsAssociatedFunction.Trait Self "approve_for" approve_for.
+    M.IsAssociatedFunction.C Self "approve_for" approve_for.
   Admitted.
   
   Parameter approve : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_approve : M.IsAssociatedFunction.Trait Self "approve" approve.
+  Global Instance AssociatedFunction_approve : M.IsAssociatedFunction.C Self "approve" approve.
   Admitted.
   
   Parameter remove_token_from : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_remove_token_from :
-    M.IsAssociatedFunction.Trait Self "remove_token_from" remove_token_from.
+    M.IsAssociatedFunction.C Self "remove_token_from" remove_token_from.
   Admitted.
   
   Parameter add_token_to : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_add_token_to :
-    M.IsAssociatedFunction.Trait Self "add_token_to" add_token_to.
+    M.IsAssociatedFunction.C Self "add_token_to" add_token_to.
   Admitted.
   
   Parameter transfer_token_from : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_transfer_token_from :
-    M.IsAssociatedFunction.Trait Self "transfer_token_from" transfer_token_from.
+    M.IsAssociatedFunction.C Self "transfer_token_from" transfer_token_from.
   Admitted.
   
   Parameter transfer : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_transfer :
-    M.IsAssociatedFunction.Trait Self "transfer" transfer.
+  Global Instance AssociatedFunction_transfer : M.IsAssociatedFunction.C Self "transfer" transfer.
   Admitted.
   
   Parameter transfer_from : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_transfer_from :
-    M.IsAssociatedFunction.Trait Self "transfer_from" transfer_from.
+    M.IsAssociatedFunction.C Self "transfer_from" transfer_from.
   Admitted.
   
   Parameter mint : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_mint : M.IsAssociatedFunction.Trait Self "mint" mint.
+  Global Instance AssociatedFunction_mint : M.IsAssociatedFunction.C Self "mint" mint.
   Admitted.
   
   Parameter burn : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_burn : M.IsAssociatedFunction.Trait Self "burn" burn.
+  Global Instance AssociatedFunction_burn : M.IsAssociatedFunction.C Self "burn" burn.
   Admitted.
 End Impl_erc721_Erc721.

@@ -5173,7 +5173,7 @@ Module str.
     end.
   
   Global Instance Instance_IsFunction_join_generic_copy :
-    M.IsFunction.Trait "alloc::str::join_generic_copy" join_generic_copy.
+    M.IsFunction.C "alloc::str::join_generic_copy" join_generic_copy.
   Admitted.
   Global Typeclasses Opaque join_generic_copy.
   
@@ -5441,7 +5441,7 @@ Module str.
       end.
     
     Global Instance AssociatedFunction_into_boxed_bytes :
-      M.IsAssociatedFunction.Trait Self "into_boxed_bytes" into_boxed_bytes.
+      M.IsAssociatedFunction.C Self "into_boxed_bytes" into_boxed_bytes.
     Admitted.
     Global Typeclasses Opaque into_boxed_bytes.
     
@@ -6116,8 +6116,7 @@ Module str.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_replace :
-      M.IsAssociatedFunction.Trait Self "replace" replace.
+    Global Instance AssociatedFunction_replace : M.IsAssociatedFunction.C Self "replace" replace.
     Admitted.
     Global Typeclasses Opaque replace.
     
@@ -6431,8 +6430,7 @@ Module str.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_replacen :
-      M.IsAssociatedFunction.Trait Self "replacen" replacen.
+    Global Instance AssociatedFunction_replacen : M.IsAssociatedFunction.C Self "replacen" replacen.
     Admitted.
     Global Typeclasses Opaque replacen.
     
@@ -6928,7 +6926,7 @@ Module str.
       end.
     
     Global Instance AssociatedFunction_to_lowercase :
-      M.IsAssociatedFunction.Trait Self "to_lowercase" to_lowercase.
+      M.IsAssociatedFunction.C Self "to_lowercase" to_lowercase.
     Admitted.
     Global Typeclasses Opaque to_lowercase.
     
@@ -7233,7 +7231,7 @@ Module str.
       end.
     
     Global Instance AssociatedFunction_to_uppercase :
-      M.IsAssociatedFunction.Trait Self "to_uppercase" to_uppercase.
+      M.IsAssociatedFunction.C Self "to_uppercase" to_uppercase.
     Admitted.
     Global Typeclasses Opaque to_uppercase.
     
@@ -7316,7 +7314,7 @@ Module str.
       end.
     
     Global Instance AssociatedFunction_into_string :
-      M.IsAssociatedFunction.Trait Self "into_string" into_string.
+      M.IsAssociatedFunction.C Self "into_string" into_string.
     Admitted.
     Global Typeclasses Opaque into_string.
     
@@ -7373,7 +7371,7 @@ Module str.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_repeat : M.IsAssociatedFunction.Trait Self "repeat" repeat.
+    Global Instance AssociatedFunction_repeat : M.IsAssociatedFunction.C Self "repeat" repeat.
     Admitted.
     Global Typeclasses Opaque repeat.
     
@@ -7439,7 +7437,7 @@ Module str.
       end.
     
     Global Instance AssociatedFunction_to_ascii_uppercase :
-      M.IsAssociatedFunction.Trait Self "to_ascii_uppercase" to_ascii_uppercase.
+      M.IsAssociatedFunction.C Self "to_ascii_uppercase" to_ascii_uppercase.
     Admitted.
     Global Typeclasses Opaque to_ascii_uppercase.
     
@@ -7505,7 +7503,7 @@ Module str.
       end.
     
     Global Instance AssociatedFunction_to_ascii_lowercase :
-      M.IsAssociatedFunction.Trait Self "to_ascii_lowercase" to_ascii_lowercase.
+      M.IsAssociatedFunction.C Self "to_ascii_lowercase" to_ascii_lowercase.
     Admitted.
     Global Typeclasses Opaque to_ascii_lowercase.
   End Impl_str.
@@ -7557,7 +7555,7 @@ Module str.
     end.
   
   Global Instance Instance_IsFunction_from_boxed_utf8_unchecked :
-    M.IsFunction.Trait "alloc::str::from_boxed_utf8_unchecked" from_boxed_utf8_unchecked.
+    M.IsFunction.C "alloc::str::from_boxed_utf8_unchecked" from_boxed_utf8_unchecked.
   Admitted.
   Global Typeclasses Opaque from_boxed_utf8_unchecked.
   
@@ -7759,7 +7757,12 @@ Module str.
                                     |)
                                   ]
                                 |),
-                                M.read (| M.get_constant "alloc::str::convert_while_ascii::N" |)
+                                M.read (|
+                                  get_constant (|
+                                    "alloc::str::convert_while_ascii::N",
+                                    Ty.path "usize"
+                                  |)
+                                |)
                               |)
                             |)) in
                         let _ :=
@@ -7793,7 +7796,10 @@ Module str.
                                   [
                                     ("end_",
                                       M.read (|
-                                        M.get_constant "alloc::str::convert_while_ascii::N"
+                                        get_constant (|
+                                          "alloc::str::convert_while_ascii::N",
+                                          Ty.path "usize"
+                                        |)
                                       |))
                                   ]
                               ]
@@ -7862,7 +7868,10 @@ Module str.
                                       [
                                         ("end_",
                                           M.read (|
-                                            M.get_constant "alloc::str::convert_while_ascii::N"
+                                            get_constant (|
+                                              "alloc::str::convert_while_ascii::N",
+                                              Ty.path "usize"
+                                            |)
                                           |))
                                       ]
                                   ]
@@ -7899,7 +7908,10 @@ Module str.
                                         ("start", Value.Integer IntegerKind.Usize 0);
                                         ("end_",
                                           M.read (|
-                                            M.get_constant "alloc::str::convert_while_ascii::N"
+                                            get_constant (|
+                                              "alloc::str::convert_while_ascii::N",
+                                              Ty.path "usize"
+                                            |)
                                           |))
                                       ]
                                   ]
@@ -8136,7 +8148,10 @@ Module str.
                                               ]
                                             |)),
                                           M.read (|
-                                            M.get_constant "alloc::str::convert_while_ascii::N"
+                                            get_constant (|
+                                              "alloc::str::convert_while_ascii::N",
+                                              Ty.path "usize"
+                                            |)
                                           |)
                                         |)
                                       |)) in
@@ -8178,7 +8193,10 @@ Module str.
                                         ("start", Value.Integer IntegerKind.Usize 0);
                                         ("end_",
                                           M.read (|
-                                            M.get_constant "alloc::str::convert_while_ascii::N"
+                                            get_constant (|
+                                              "alloc::str::convert_while_ascii::N",
+                                              Ty.path "usize"
+                                            |)
                                           |))
                                       ]
                                   ]
@@ -8304,7 +8322,12 @@ Module str.
                               β,
                               BinOp.Wrap.add (|
                                 M.read (| β |),
-                                M.read (| M.get_constant "alloc::str::convert_while_ascii::N" |)
+                                M.read (|
+                                  get_constant (|
+                                    "alloc::str::convert_while_ascii::N",
+                                    Ty.path "usize"
+                                  |)
+                                |)
                               |)
                             |)
                           |) in
@@ -8341,7 +8364,10 @@ Module str.
                                         [
                                           ("start",
                                             M.read (|
-                                              M.get_constant "alloc::str::convert_while_ascii::N"
+                                              get_constant (|
+                                                "alloc::str::convert_while_ascii::N",
+                                                Ty.path "usize"
+                                              |)
                                             |))
                                         ]
                                     ]
@@ -8404,8 +8430,10 @@ Module str.
                                             [
                                               ("start",
                                                 M.read (|
-                                                  M.get_constant
-                                                    "alloc::str::convert_while_ascii::N"
+                                                  get_constant (|
+                                                    "alloc::str::convert_while_ascii::N",
+                                                    Ty.path "usize"
+                                                  |)
                                                 |))
                                             ]
                                         ]
@@ -8733,16 +8761,18 @@ Module str.
     end.
   
   Global Instance Instance_IsFunction_convert_while_ascii :
-    M.IsFunction.Trait "alloc::str::convert_while_ascii" convert_while_ascii.
+    M.IsFunction.C "alloc::str::convert_while_ascii" convert_while_ascii.
   Admitted.
   Global Typeclasses Opaque convert_while_ascii.
   
   Module convert_while_ascii.
-    Definition value_N : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 16 |))).
+    Definition value_N (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.Usize 16 |))).
     
-    Axiom Constant_value_N : (M.get_constant "alloc::str::convert_while_ascii::N") = value_N.
-    Global Hint Rewrite Constant_value_N : constant_rewrites.
+    Global Instance Instance_IsConstant_value_N :
+      M.IsFunction.C "alloc::str::convert_while_ascii::N" value_N.
+    Admitted.
+    Global Typeclasses Opaque value_N.
   End convert_while_ascii.
   
   (*
@@ -8897,7 +8927,7 @@ Module str.
     end.
   
   Global Instance Instance_IsFunction_replace_ascii :
-    M.IsFunction.Trait "alloc::str::replace_ascii" replace_ascii.
+    M.IsFunction.C "alloc::str::replace_ascii" replace_ascii.
   Admitted.
   Global Typeclasses Opaque replace_ascii.
 End str.

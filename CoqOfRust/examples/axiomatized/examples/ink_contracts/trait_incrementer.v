@@ -20,12 +20,12 @@ Module Impl_trait_incrementer_Incrementer.
   
   Parameter new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
   Admitted.
   
   Parameter inc_by : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_inc_by : M.IsAssociatedFunction.Trait Self "inc_by" inc_by.
+  Global Instance AssociatedFunction_inc_by : M.IsAssociatedFunction.C Self "inc_by" inc_by.
   Admitted.
 End Impl_trait_incrementer_Incrementer.
 

@@ -352,7 +352,7 @@ Module iter.
         
         Global Instance AssociatedFunction_new :
           forall (I : Ty.t),
-          M.IsAssociatedFunction.Trait (Self I) "new" (new I).
+          M.IsAssociatedFunction.C (Self I) "new" (new I).
         Admitted.
         Global Typeclasses Opaque new.
       End Impl_core_iter_adapters_intersperse_Intersperse_I.
@@ -1339,7 +1339,7 @@ Module iter.
         
         Global Instance AssociatedFunction_new :
           forall (I G : Ty.t),
-          M.IsAssociatedFunction.Trait (Self I G) "new" (new I G).
+          M.IsAssociatedFunction.C (Self I G) "new" (new I G).
         Admitted.
         Global Typeclasses Opaque new.
       End Impl_core_iter_adapters_intersperse_IntersperseWith_I_G.
@@ -2030,7 +2030,7 @@ Module iter.
         end.
       
       Global Instance Instance_IsFunction_intersperse_size_hint :
-        M.IsFunction.Trait
+        M.IsFunction.C
           "core::iter::adapters::intersperse::intersperse_size_hint"
           intersperse_size_hint.
       Admitted.
@@ -2407,7 +2407,7 @@ Module iter.
         end.
       
       Global Instance Instance_IsFunction_intersperse_fold :
-        M.IsFunction.Trait "core::iter::adapters::intersperse::intersperse_fold" intersperse_fold.
+        M.IsFunction.C "core::iter::adapters::intersperse::intersperse_fold" intersperse_fold.
       Admitted.
       Global Typeclasses Opaque intersperse_fold.
     End intersperse.

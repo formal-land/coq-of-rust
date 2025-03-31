@@ -3,11 +3,10 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter gen_range : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_gen_range :
-  M.IsFunction.Trait "guessing_game::gen_range" gen_range.
+Global Instance Instance_IsFunction_gen_range : M.IsFunction.C "guessing_game::gen_range" gen_range.
 Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "guessing_game::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "guessing_game::main" main.
 Admitted.

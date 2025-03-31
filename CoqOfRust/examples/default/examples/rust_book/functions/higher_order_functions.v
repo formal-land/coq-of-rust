@@ -18,8 +18,7 @@ Definition is_odd (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_is_odd :
-  M.IsFunction.Trait "higher_order_functions::is_odd" is_odd.
+Global Instance Instance_IsFunction_is_odd : M.IsFunction.C "higher_order_functions::is_odd" is_odd.
 Admitted.
 Global Typeclasses Opaque is_odd.
 
@@ -615,6 +614,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "higher_order_functions::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "higher_order_functions::main" main.
 Admitted.
 Global Typeclasses Opaque main.

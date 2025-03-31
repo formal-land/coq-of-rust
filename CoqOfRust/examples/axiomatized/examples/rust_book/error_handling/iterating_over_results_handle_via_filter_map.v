@@ -4,5 +4,5 @@ Require Import CoqOfRust.CoqOfRust.
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "iterating_over_results_handle_via_filter_map::main" main.
+  M.IsFunction.C "iterating_over_results_handle_via_filter_map::main" main.
 Admitted.

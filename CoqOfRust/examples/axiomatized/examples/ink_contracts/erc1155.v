@@ -35,42 +35,42 @@ Module Impl_erc1155_Mapping_K_V.
   
   Global Instance AssociatedFunction_contains :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction.Trait (Self K V) "contains" (contains K V).
+    M.IsAssociatedFunction.C (Self K V) "contains" (contains K V).
   Admitted.
   
   Parameter get : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_get :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction.Trait (Self K V) "get" (get K V).
+    M.IsAssociatedFunction.C (Self K V) "get" (get K V).
   Admitted.
   
   Parameter insert : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_insert :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction.Trait (Self K V) "insert" (insert K V).
+    M.IsAssociatedFunction.C (Self K V) "insert" (insert K V).
   Admitted.
   
   Parameter remove : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_remove :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction.Trait (Self K V) "remove" (remove K V).
+    M.IsAssociatedFunction.C (Self K V) "remove" (remove K V).
   Admitted.
   
   Parameter size : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_size :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction.Trait (Self K V) "size" (size K V).
+    M.IsAssociatedFunction.C (Self K V) "size" (size K V).
   Admitted.
   
   Parameter take : forall (K V : Ty.t), (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_take :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction.Trait (Self K V) "take" (take K V).
+    M.IsAssociatedFunction.C (Self K V) "take" (take K V).
   Admitted.
 End Impl_erc1155_Mapping_K_V.
 
@@ -176,21 +176,22 @@ Axiom Balance : (Ty.path "erc1155::Balance") = (Ty.path "u128").
 Parameter zero_address : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_zero_address :
-  M.IsFunction.Trait "erc1155::zero_address" zero_address.
+  M.IsFunction.C "erc1155::zero_address" zero_address.
 Admitted.
 
-Parameter value_ON_ERC_1155_RECEIVED_SELECTOR : Value.t.
+Parameter value_ON_ERC_1155_RECEIVED_SELECTOR : PolymorphicFunction.t.
 
-Axiom Constant_value_ON_ERC_1155_RECEIVED_SELECTOR :
-  (M.get_constant "erc1155::ON_ERC_1155_RECEIVED_SELECTOR") = value_ON_ERC_1155_RECEIVED_SELECTOR.
-Global Hint Rewrite Constant_value_ON_ERC_1155_RECEIVED_SELECTOR : constant_rewrites.
+Global Instance Instance_IsConstant_value_ON_ERC_1155_RECEIVED_SELECTOR :
+  M.IsFunction.C "erc1155::ON_ERC_1155_RECEIVED_SELECTOR" value_ON_ERC_1155_RECEIVED_SELECTOR.
+Admitted.
 
-Parameter _ON_ERC_1155_BATCH_RECEIVED_SELECTOR : Value.t.
+Parameter _ON_ERC_1155_BATCH_RECEIVED_SELECTOR : PolymorphicFunction.t.
 
-Axiom Constant__ON_ERC_1155_BATCH_RECEIVED_SELECTOR :
-  (M.get_constant "erc1155::_ON_ERC_1155_BATCH_RECEIVED_SELECTOR") =
+Global Instance Instance_IsConstant__ON_ERC_1155_BATCH_RECEIVED_SELECTOR :
+  M.IsFunction.C
+    "erc1155::_ON_ERC_1155_BATCH_RECEIVED_SELECTOR"
     _ON_ERC_1155_BATCH_RECEIVED_SELECTOR.
-Global Hint Rewrite Constant__ON_ERC_1155_BATCH_RECEIVED_SELECTOR : constant_rewrites.
+Admitted.
 
 Axiom TokenId : (Ty.path "erc1155::TokenId") = (Ty.path "u128").
 
@@ -363,13 +364,13 @@ Module Impl_erc1155_Env.
   
   Parameter caller : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_caller : M.IsAssociatedFunction.Trait Self "caller" caller.
+  Global Instance AssociatedFunction_caller : M.IsAssociatedFunction.C Self "caller" caller.
   Admitted.
   
   Parameter emit_event : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_emit_event :
-    M.IsAssociatedFunction.Trait Self "emit_event" emit_event.
+    M.IsAssociatedFunction.C Self "emit_event" emit_event.
   Admitted.
 End Impl_erc1155_Env.
 
@@ -414,40 +415,39 @@ Module Impl_erc1155_Contract.
   
   Parameter init_env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_init_env :
-    M.IsAssociatedFunction.Trait Self "init_env" init_env.
+  Global Instance AssociatedFunction_init_env : M.IsAssociatedFunction.C Self "init_env" init_env.
   Admitted.
   
   Parameter env : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_env : M.IsAssociatedFunction.Trait Self "env" env.
+  Global Instance AssociatedFunction_env : M.IsAssociatedFunction.C Self "env" env.
   Admitted.
   
   Parameter new : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
   Admitted.
   
   Parameter create : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_create : M.IsAssociatedFunction.Trait Self "create" create.
+  Global Instance AssociatedFunction_create : M.IsAssociatedFunction.C Self "create" create.
   Admitted.
   
   Parameter mint : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance AssociatedFunction_mint : M.IsAssociatedFunction.Trait Self "mint" mint.
+  Global Instance AssociatedFunction_mint : M.IsAssociatedFunction.C Self "mint" mint.
   Admitted.
   
   Parameter perform_transfer : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_perform_transfer :
-    M.IsAssociatedFunction.Trait Self "perform_transfer" perform_transfer.
+    M.IsAssociatedFunction.C Self "perform_transfer" perform_transfer.
   Admitted.
   
   Parameter transfer_acceptance_check : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
   Global Instance AssociatedFunction_transfer_acceptance_check :
-    M.IsAssociatedFunction.Trait Self "transfer_acceptance_check" transfer_acceptance_check.
+    M.IsAssociatedFunction.C Self "transfer_acceptance_check" transfer_acceptance_check.
   Admitted.
 End Impl_erc1155_Contract.
 

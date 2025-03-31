@@ -55,26 +55,26 @@ Module checked.
   
   Parameter div : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance Instance_IsFunction_div : M.IsFunction.Trait "result::checked::div" div.
+  Global Instance Instance_IsFunction_div : M.IsFunction.C "result::checked::div" div.
   Admitted.
   
   Parameter sqrt : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance Instance_IsFunction_sqrt : M.IsFunction.Trait "result::checked::sqrt" sqrt.
+  Global Instance Instance_IsFunction_sqrt : M.IsFunction.C "result::checked::sqrt" sqrt.
   Admitted.
   
   Parameter ln : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
   
-  Global Instance Instance_IsFunction_ln : M.IsFunction.Trait "result::checked::ln" ln.
+  Global Instance Instance_IsFunction_ln : M.IsFunction.C "result::checked::ln" ln.
   Admitted.
 End checked.
 
 Parameter op : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_op : M.IsFunction.Trait "result::op" op.
+Global Instance Instance_IsFunction_op : M.IsFunction.C "result::op" op.
 Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "result::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "result::main" main.
 Admitted.

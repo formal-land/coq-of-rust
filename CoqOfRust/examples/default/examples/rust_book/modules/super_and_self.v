@@ -48,8 +48,7 @@ Definition function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_function :
-  M.IsFunction.Trait "super_and_self::function" function.
+Global Instance Instance_IsFunction_function : M.IsFunction.C "super_and_self::function" function.
 Admitted.
 Global Typeclasses Opaque function.
 
@@ -104,7 +103,7 @@ Module cool.
     end.
   
   Global Instance Instance_IsFunction_function :
-    M.IsFunction.Trait "super_and_self::cool::function" function.
+    M.IsFunction.C "super_and_self::cool::function" function.
   Admitted.
   Global Typeclasses Opaque function.
 End cool.
@@ -158,7 +157,7 @@ Module my.
     end.
   
   Global Instance Instance_IsFunction_function :
-    M.IsFunction.Trait "super_and_self::my::function" function.
+    M.IsFunction.C "super_and_self::my::function" function.
   Admitted.
   Global Typeclasses Opaque function.
   
@@ -213,7 +212,7 @@ Module my.
       end.
     
     Global Instance Instance_IsFunction_function :
-      M.IsFunction.Trait "super_and_self::my::cool::function" function.
+      M.IsFunction.C "super_and_self::my::cool::function" function.
     Admitted.
     Global Typeclasses Opaque function.
   End cool.
@@ -328,7 +327,7 @@ Module my.
     end.
   
   Global Instance Instance_IsFunction_indirect_call :
-    M.IsFunction.Trait "super_and_self::my::indirect_call" indirect_call.
+    M.IsFunction.C "super_and_self::my::indirect_call" indirect_call.
   Admitted.
   Global Typeclasses Opaque indirect_call.
 End my.
@@ -356,6 +355,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "super_and_self::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "super_and_self::main" main.
 Admitted.
 Global Typeclasses Opaque main.

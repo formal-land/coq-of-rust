@@ -21,7 +21,7 @@ Definition decode_input (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
   end.
 
 Global Instance Instance_IsFunction_decode_input :
-  M.IsFunction.Trait "wildcard_selector::decode_input" decode_input.
+  M.IsFunction.C "wildcard_selector::decode_input" decode_input.
 Admitted.
 Global Typeclasses Opaque decode_input.
 
@@ -47,7 +47,7 @@ Module Impl_wildcard_selector_WildcardSelector.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
   Admitted.
   Global Typeclasses Opaque new.
   
@@ -237,8 +237,7 @@ Module Impl_wildcard_selector_WildcardSelector.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_wildcard :
-    M.IsAssociatedFunction.Trait Self "wildcard" wildcard.
+  Global Instance AssociatedFunction_wildcard : M.IsAssociatedFunction.C Self "wildcard" wildcard.
   Admitted.
   Global Typeclasses Opaque wildcard.
   
@@ -323,7 +322,7 @@ Module Impl_wildcard_selector_WildcardSelector.
     end.
   
   Global Instance AssociatedFunction_wildcard_complement :
-    M.IsAssociatedFunction.Trait Self "wildcard_complement" wildcard_complement.
+    M.IsAssociatedFunction.C Self "wildcard_complement" wildcard_complement.
   Admitted.
   Global Typeclasses Opaque wildcard_complement.
 End Impl_wildcard_selector_WildcardSelector.

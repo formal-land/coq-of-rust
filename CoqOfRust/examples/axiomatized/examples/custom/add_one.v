@@ -3,5 +3,5 @@ Require Import CoqOfRust.CoqOfRust.
 
 Parameter add_one : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_add_one : M.IsFunction.Trait "add_one::add_one" add_one.
+Global Instance Instance_IsFunction_add_one : M.IsFunction.C "add_one::add_one" add_one.
 Admitted.

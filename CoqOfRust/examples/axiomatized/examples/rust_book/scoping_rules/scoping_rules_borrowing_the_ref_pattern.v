@@ -38,5 +38,5 @@ End Impl_core_marker_Copy_for_scoping_rules_borrowing_the_ref_pattern_Point.
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "scoping_rules_borrowing_the_ref_pattern::main" main.
+  M.IsFunction.C "scoping_rules_borrowing_the_ref_pattern::main" main.
 Admitted.

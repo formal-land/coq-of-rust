@@ -179,7 +179,7 @@ Module checked.
     end.
   
   Global Instance Instance_IsFunction_div :
-    M.IsFunction.Trait "result_chaining_with_question_mark::checked::div" div.
+    M.IsFunction.C "result_chaining_with_question_mark::checked::div" div.
   Admitted.
   Global Typeclasses Opaque div.
   
@@ -244,7 +244,7 @@ Module checked.
     end.
   
   Global Instance Instance_IsFunction_sqrt :
-    M.IsFunction.Trait "result_chaining_with_question_mark::checked::sqrt" sqrt.
+    M.IsFunction.C "result_chaining_with_question_mark::checked::sqrt" sqrt.
   Admitted.
   Global Typeclasses Opaque sqrt.
   
@@ -309,7 +309,7 @@ Module checked.
     end.
   
   Global Instance Instance_IsFunction_ln :
-    M.IsFunction.Trait "result_chaining_with_question_mark::checked::ln" ln.
+    M.IsFunction.C "result_chaining_with_question_mark::checked::ln" ln.
   Admitted.
   Global Typeclasses Opaque ln.
   
@@ -592,7 +592,7 @@ Module checked.
     end.
   
   Global Instance Instance_IsFunction_op_ :
-    M.IsFunction.Trait "result_chaining_with_question_mark::checked::op_" op_.
+    M.IsFunction.C "result_chaining_with_question_mark::checked::op_" op_.
   Admitted.
   Global Typeclasses Opaque op_.
   
@@ -775,7 +775,7 @@ Module checked.
     end.
   
   Global Instance Instance_IsFunction_op :
-    M.IsFunction.Trait "result_chaining_with_question_mark::checked::op" op.
+    M.IsFunction.C "result_chaining_with_question_mark::checked::op" op.
   Admitted.
   Global Typeclasses Opaque op.
 End checked.
@@ -804,6 +804,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   end.
 
 Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "result_chaining_with_question_mark::main" main.
+  M.IsFunction.C "result_chaining_with_question_mark::main" main.
 Admitted.
 Global Typeclasses Opaque main.

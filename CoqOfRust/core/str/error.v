@@ -282,7 +282,7 @@ Module str.
         end.
       
       Global Instance AssociatedFunction_valid_up_to :
-        M.IsAssociatedFunction.Trait Self "valid_up_to" valid_up_to.
+        M.IsAssociatedFunction.C Self "valid_up_to" valid_up_to.
       Admitted.
       Global Typeclasses Opaque valid_up_to.
       
@@ -334,7 +334,7 @@ Module str.
         end.
       
       Global Instance AssociatedFunction_error_len :
-        M.IsAssociatedFunction.Trait Self "error_len" error_len.
+        M.IsAssociatedFunction.C Self "error_len" error_len.
       Admitted.
       Global Typeclasses Opaque error_len.
     End Impl_core_str_error_Utf8Error.

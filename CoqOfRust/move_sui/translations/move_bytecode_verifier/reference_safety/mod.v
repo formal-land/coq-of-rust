@@ -99,7 +99,7 @@ Module reference_safety.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -440,7 +440,7 @@ Module reference_safety.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_push : M.IsAssociatedFunction.Trait Self "push" push.
+    Global Instance AssociatedFunction_push : M.IsAssociatedFunction.C Self "push" push.
     Admitted.
     Global Typeclasses Opaque push.
     
@@ -783,7 +783,7 @@ Module reference_safety.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_push_n : M.IsAssociatedFunction.Trait Self "push_n" push_n.
+    Global Instance AssociatedFunction_push_n : M.IsAssociatedFunction.C Self "push_n" push_n.
     Admitted.
     Global Typeclasses Opaque push_n.
   End Impl_move_bytecode_verifier_reference_safety_ReferenceSafetyAnalysis.
@@ -870,7 +870,7 @@ Module reference_safety.
     end.
   
   Global Instance Instance_IsFunction_verify :
-    M.IsFunction.Trait "move_bytecode_verifier::reference_safety::verify" verify.
+    M.IsFunction.C "move_bytecode_verifier::reference_safety::verify" verify.
   Admitted.
   Global Typeclasses Opaque verify.
   
@@ -2150,7 +2150,7 @@ Module reference_safety.
     end.
   
   Global Instance Instance_IsFunction_call :
-    M.IsFunction.Trait "move_bytecode_verifier::reference_safety::call" call.
+    M.IsFunction.C "move_bytecode_verifier::reference_safety::call" call.
   Admitted.
   Global Typeclasses Opaque call.
   
@@ -2225,7 +2225,7 @@ Module reference_safety.
     end.
   
   Global Instance Instance_IsFunction_num_fields :
-    M.IsFunction.Trait "move_bytecode_verifier::reference_safety::num_fields" num_fields.
+    M.IsFunction.C "move_bytecode_verifier::reference_safety::num_fields" num_fields.
   Admitted.
   Global Typeclasses Opaque num_fields.
   
@@ -3127,7 +3127,7 @@ Module reference_safety.
     end.
   
   Global Instance Instance_IsFunction_pack :
-    M.IsFunction.Trait "move_bytecode_verifier::reference_safety::pack" pack.
+    M.IsFunction.C "move_bytecode_verifier::reference_safety::pack" pack.
   Admitted.
   Global Typeclasses Opaque pack.
   
@@ -3874,7 +3874,7 @@ Module reference_safety.
     end.
   
   Global Instance Instance_IsFunction_unpack :
-    M.IsFunction.Trait "move_bytecode_verifier::reference_safety::unpack" unpack.
+    M.IsFunction.C "move_bytecode_verifier::reference_safety::unpack" unpack.
   Admitted.
   Global Typeclasses Opaque unpack.
   
@@ -4055,9 +4055,7 @@ Module reference_safety.
     end.
   
   Global Instance Instance_IsFunction_vec_element_type :
-    M.IsFunction.Trait
-      "move_bytecode_verifier::reference_safety::vec_element_type"
-      vec_element_type.
+    M.IsFunction.C "move_bytecode_verifier::reference_safety::vec_element_type" vec_element_type.
   Admitted.
   Global Typeclasses Opaque vec_element_type.
   
@@ -4399,8 +4397,10 @@ Module reference_safety.
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| meter |) |) |);
                             Value.StructTuple "move_bytecode_verifier_meter::Scope::Function" [];
                             M.read (|
-                              M.get_constant
-                                "move_bytecode_verifier::reference_safety::abstract_state::STEP_BASE_COST"
+                              get_constant (|
+                                "move_bytecode_verifier::reference_safety::abstract_state::STEP_BASE_COST",
+                                Ty.path "u128"
+                              |)
                             |)
                           ]
                         |)
@@ -4519,8 +4519,10 @@ Module reference_safety.
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| meter |) |) |);
                             Value.StructTuple "move_bytecode_verifier_meter::Scope::Function" [];
                             M.read (|
-                              M.get_constant
-                                "move_bytecode_verifier::reference_safety::abstract_state::STEP_PER_LOCAL_COST"
+                              get_constant (|
+                                "move_bytecode_verifier::reference_safety::abstract_state::STEP_PER_LOCAL_COST",
+                                Ty.path "u128"
+                              |)
                             |);
                             M.call_closure (|
                               Ty.path "usize",
@@ -4650,8 +4652,10 @@ Module reference_safety.
                             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| meter |) |) |);
                             Value.StructTuple "move_bytecode_verifier_meter::Scope::Function" [];
                             M.read (|
-                              M.get_constant
-                                "move_bytecode_verifier::reference_safety::abstract_state::STEP_PER_GRAPH_ITEM_COST"
+                              get_constant (|
+                                "move_bytecode_verifier::reference_safety::abstract_state::STEP_PER_GRAPH_ITEM_COST",
+                                Ty.path "u128"
+                              |)
                             |);
                             M.call_closure (|
                               Ty.path "usize",
@@ -35296,7 +35300,7 @@ Module reference_safety.
     end.
   
   Global Instance Instance_IsFunction_execute_inner :
-    M.IsFunction.Trait "move_bytecode_verifier::reference_safety::execute_inner" execute_inner.
+    M.IsFunction.C "move_bytecode_verifier::reference_safety::execute_inner" execute_inner.
   Admitted.
   Global Typeclasses Opaque execute_inner.
   

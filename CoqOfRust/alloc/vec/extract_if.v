@@ -188,7 +188,7 @@ Module vec.
       
       Global Instance AssociatedFunction_allocator :
         forall (T F A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T F A) "allocator" (allocator T F A).
+        M.IsAssociatedFunction.C (Self T F A) "allocator" (allocator T F A).
       Admitted.
       Global Typeclasses Opaque allocator.
     End Impl_alloc_vec_extract_if_ExtractIf_T_F_A.

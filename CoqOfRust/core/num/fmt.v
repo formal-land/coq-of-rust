@@ -661,7 +661,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_len : M.IsAssociatedFunction.Trait Self "len" len.
+      Global Instance AssociatedFunction_len : M.IsAssociatedFunction.C Self "len" len.
       Admitted.
       Global Typeclasses Opaque len.
       
@@ -1207,7 +1207,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_write : M.IsAssociatedFunction.Trait Self "write" write.
+      Global Instance AssociatedFunction_write : M.IsAssociatedFunction.C Self "write" write.
       Admitted.
       Global Typeclasses Opaque write.
     End Impl_core_num_fmt_Part.
@@ -1492,7 +1492,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_len : M.IsAssociatedFunction.Trait Self "len" len.
+      Global Instance AssociatedFunction_len : M.IsAssociatedFunction.C Self "len" len.
       Admitted.
       Global Typeclasses Opaque len.
       
@@ -1983,7 +1983,7 @@ Module num.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_write : M.IsAssociatedFunction.Trait Self "write" write.
+      Global Instance AssociatedFunction_write : M.IsAssociatedFunction.C Self "write" write.
       Admitted.
       Global Typeclasses Opaque write.
     End Impl_core_num_fmt_Formatted.

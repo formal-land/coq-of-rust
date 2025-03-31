@@ -2,27 +2,27 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module secp256k1.
-  Definition value_ECRECOVER : Value.t :=
-    M.run_constant
-      ltac:(M.monadic
-        (M.alloc (|
-          Value.StructTuple
-            "revm_precompile::PrecompileWithAddress"
-            [
-              M.call_closure (|
-                Ty.path "alloy_primitives::bits::address::Address",
-                M.get_function (| "revm_precompile::u64_to_address", [], [] |),
-                [ Value.Integer IntegerKind.U64 1 ]
-              |);
-              (* ReifyFnPointer *)
-              M.pointer_coercion
-                (M.get_function (| "revm_precompile::secp256k1::ec_recover_run", [], [] |))
-            ]
-        |))).
+  Definition value_ECRECOVER (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic
+      (M.alloc (|
+        Value.StructTuple
+          "revm_precompile::PrecompileWithAddress"
+          [
+            M.call_closure (|
+              Ty.path "alloy_primitives::bits::address::Address",
+              M.get_function (| "revm_precompile::u64_to_address", [], [] |),
+              [ Value.Integer IntegerKind.U64 1 ]
+            |);
+            (* ReifyFnPointer *)
+            M.pointer_coercion
+              (M.get_function (| "revm_precompile::secp256k1::ec_recover_run", [], [] |))
+          ]
+      |))).
   
-  Axiom Constant_value_ECRECOVER :
-    (M.get_constant "revm_precompile::secp256k1::ECRECOVER") = value_ECRECOVER.
-  Global Hint Rewrite Constant_value_ECRECOVER : constant_rewrites.
+  Global Instance Instance_IsConstant_value_ECRECOVER :
+    M.IsFunction.C "revm_precompile::secp256k1::ECRECOVER" value_ECRECOVER.
+  Admitted.
+  Global Typeclasses Opaque value_ECRECOVER.
   
   Module secp256k1.
     (*
@@ -331,8 +331,21 @@ Module secp256k1.
                                             M.read (|
                                               M.deref (|
                                                 M.read (|
-                                                  M.get_constant
-                                                    "secp256k1::context::global::SECP256K1"
+                                                  get_constant (|
+                                                    "secp256k1::context::global::SECP256K1",
+                                                    Ty.apply
+                                                      (Ty.path "&")
+                                                      []
+                                                      [
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [
+                                                            Ty.path
+                                                              "secp256k1::context::global::GlobalContext"
+                                                          ]
+                                                      ]
+                                                  |)
                                                 |)
                                               |)
                                             |)
@@ -557,7 +570,7 @@ Module secp256k1.
       end.
     
     Global Instance Instance_IsFunction_ecrecover :
-      M.IsFunction.Trait "revm_precompile::secp256k1::secp256k1::ecrecover" ecrecover.
+      M.IsFunction.C "revm_precompile::secp256k1::secp256k1::ecrecover" ecrecover.
     Admitted.
     Global Typeclasses Opaque ecrecover.
   End secp256k1.
@@ -608,8 +621,10 @@ Module secp256k1.
                             (M.alloc (|
                               BinOp.gt (|
                                 M.read (|
-                                  M.get_constant
-                                    "revm_precompile::secp256k1::ec_recover_run::ECRECOVER_BASE"
+                                  get_constant (|
+                                    "revm_precompile::secp256k1::ec_recover_run::ECRECOVER_BASE",
+                                    Ty.path "u64"
+                                  |)
                                 |),
                                 M.read (| gas_limit |)
                               |)
@@ -991,8 +1006,10 @@ Module secp256k1.
                                       |),
                                       [
                                         M.read (|
-                                          M.get_constant
-                                            "revm_precompile::secp256k1::ec_recover_run::ECRECOVER_BASE"
+                                          get_constant (|
+                                            "revm_precompile::secp256k1::ec_recover_run::ECRECOVER_BASE",
+                                            Ty.path "u64"
+                                          |)
                                         |);
                                         M.call_closure (|
                                           Ty.path "alloy_primitives::bytes_::Bytes",
@@ -1549,8 +1566,10 @@ Module secp256k1.
                       |),
                       [
                         M.read (|
-                          M.get_constant
-                            "revm_precompile::secp256k1::ec_recover_run::ECRECOVER_BASE"
+                          get_constant (|
+                            "revm_precompile::secp256k1::ec_recover_run::ECRECOVER_BASE",
+                            Ty.path "u64"
+                          |)
                         |);
                         M.read (| out |)
                       ]
@@ -1563,17 +1582,19 @@ Module secp256k1.
     end.
   
   Global Instance Instance_IsFunction_ec_recover_run :
-    M.IsFunction.Trait "revm_precompile::secp256k1::ec_recover_run" ec_recover_run.
+    M.IsFunction.C "revm_precompile::secp256k1::ec_recover_run" ec_recover_run.
   Admitted.
   Global Typeclasses Opaque ec_recover_run.
   
   Module ec_recover_run.
-    Definition value_ECRECOVER_BASE : Value.t :=
-      M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 3000 |))).
+    Definition value_ECRECOVER_BASE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+      ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 3000 |))).
     
-    Axiom Constant_value_ECRECOVER_BASE :
-      (M.get_constant "revm_precompile::secp256k1::ec_recover_run::ECRECOVER_BASE") =
+    Global Instance Instance_IsConstant_value_ECRECOVER_BASE :
+      M.IsFunction.C
+        "revm_precompile::secp256k1::ec_recover_run::ECRECOVER_BASE"
         value_ECRECOVER_BASE.
-    Global Hint Rewrite Constant_value_ECRECOVER_BASE : constant_rewrites.
+    Admitted.
+    Global Typeclasses Opaque value_ECRECOVER_BASE.
   End ec_recover_run.
 End secp256k1.

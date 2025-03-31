@@ -49,7 +49,7 @@ Module Impl_functions_order_SomeType.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_meth1 : M.IsAssociatedFunction.Trait Self "meth1" meth1.
+  Global Instance AssociatedFunction_meth1 : M.IsAssociatedFunction.C Self "meth1" meth1.
   Admitted.
   Global Typeclasses Opaque meth1.
   
@@ -63,7 +63,7 @@ Module Impl_functions_order_SomeType.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_meth2 : M.IsAssociatedFunction.Trait Self "meth2" meth2.
+  Global Instance AssociatedFunction_meth2 : M.IsAssociatedFunction.C Self "meth2" meth2.
   Admitted.
   Global Typeclasses Opaque meth2.
 End Impl_functions_order_SomeType.
@@ -129,7 +129,7 @@ Definition depends_on_trait_impl (ε : list Value.t) (τ : list Ty.t) (α : list
   end.
 
 Global Instance Instance_IsFunction_depends_on_trait_impl :
-  M.IsFunction.Trait "functions_order::depends_on_trait_impl" depends_on_trait_impl.
+  M.IsFunction.C "functions_order::depends_on_trait_impl" depends_on_trait_impl.
 Admitted.
 Global Typeclasses Opaque depends_on_trait_impl.
 
@@ -249,8 +249,7 @@ Module inner_mod.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_bar :
-    M.IsFunction.Trait "functions_order::inner_mod::bar" bar.
+  Global Instance Instance_IsFunction_bar : M.IsFunction.C "functions_order::inner_mod::bar" bar.
   Admitted.
   Global Typeclasses Opaque bar.
   
@@ -261,8 +260,7 @@ Module inner_mod.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance Instance_IsFunction_tar :
-    M.IsFunction.Trait "functions_order::inner_mod::tar" tar.
+  Global Instance Instance_IsFunction_tar : M.IsFunction.C "functions_order::inner_mod::tar" tar.
   Admitted.
   Global Typeclasses Opaque tar.
   
@@ -291,7 +289,7 @@ Module inner_mod.
       end.
     
     Global Instance Instance_IsFunction_tick :
-      M.IsFunction.Trait "functions_order::inner_mod::nested_mod::tick" tick.
+      M.IsFunction.C "functions_order::inner_mod::nested_mod::tick" tick.
     Admitted.
     Global Typeclasses Opaque tick.
     
@@ -303,7 +301,7 @@ Module inner_mod.
       end.
     
     Global Instance Instance_IsFunction_tack :
-      M.IsFunction.Trait "functions_order::inner_mod::nested_mod::tack" tack.
+      M.IsFunction.C "functions_order::inner_mod::nested_mod::tack" tack.
     Admitted.
     Global Typeclasses Opaque tack.
   End nested_mod.
@@ -351,7 +349,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "functions_order::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "functions_order::main" main.
 Admitted.
 Global Typeclasses Opaque main.
 
@@ -362,6 +360,6 @@ Definition foo (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_foo : M.IsFunction.Trait "functions_order::foo" foo.
+Global Instance Instance_IsFunction_foo : M.IsFunction.C "functions_order::foo" foo.
 Admitted.
 Global Typeclasses Opaque foo.

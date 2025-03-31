@@ -138,7 +138,7 @@ Definition combine_vecs_explicit_return_type
   end.
 
 Global Instance Instance_IsFunction_combine_vecs_explicit_return_type :
-  M.IsFunction.Trait
+  M.IsFunction.C
     "impl_trait_as_return_type::combine_vecs_explicit_return_type"
     combine_vecs_explicit_return_type.
 Admitted.
@@ -274,7 +274,7 @@ Definition combine_vecs (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
   end.
 
 Global Instance Instance_IsFunction_combine_vecs :
-  M.IsFunction.Trait "impl_trait_as_return_type::combine_vecs" combine_vecs.
+  M.IsFunction.C "impl_trait_as_return_type::combine_vecs" combine_vecs.
 Admitted.
 Global Typeclasses Opaque combine_vecs.
 
@@ -1162,7 +1162,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "impl_trait_as_return_type::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "impl_trait_as_return_type::main" main.
 Admitted.
 Global Typeclasses Opaque main.

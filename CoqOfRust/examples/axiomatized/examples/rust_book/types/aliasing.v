@@ -9,5 +9,5 @@ Axiom U64 : (Ty.path "aliasing::U64") = (Ty.path "u64").
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "aliasing::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "aliasing::main" main.
 Admitted.

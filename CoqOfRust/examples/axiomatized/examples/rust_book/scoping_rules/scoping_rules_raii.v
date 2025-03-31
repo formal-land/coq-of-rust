@@ -4,10 +4,10 @@ Require Import CoqOfRust.CoqOfRust.
 Parameter create_box : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_create_box :
-  M.IsFunction.Trait "scoping_rules_raii::create_box" create_box.
+  M.IsFunction.C "scoping_rules_raii::create_box" create_box.
 Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "scoping_rules_raii::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "scoping_rules_raii::main" main.
 Admitted.

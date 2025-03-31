@@ -1054,7 +1054,7 @@ Module signature.
         end.
       
       Global Instance AssociatedFunction_chain_id :
-        M.IsAssociatedFunction.Trait Self "chain_id" chain_id.
+        M.IsAssociatedFunction.C Self "chain_id" chain_id.
       Admitted.
       Global Typeclasses Opaque chain_id.
       
@@ -1098,7 +1098,7 @@ Module signature.
         end.
       
       Global Instance AssociatedFunction_has_eip155_value :
-        M.IsAssociatedFunction.Trait Self "has_eip155_value" has_eip155_value.
+        M.IsAssociatedFunction.C Self "has_eip155_value" has_eip155_value.
       Admitted.
       Global Typeclasses Opaque has_eip155_value.
       
@@ -1203,7 +1203,7 @@ Module signature.
         end.
       
       Global Instance AssociatedFunction_y_parity :
-        M.IsAssociatedFunction.Trait Self "y_parity" y_parity.
+        M.IsAssociatedFunction.C Self "y_parity" y_parity.
       Admitted.
       Global Typeclasses Opaque y_parity.
       
@@ -1233,7 +1233,7 @@ Module signature.
         end.
       
       Global Instance AssociatedFunction_y_parity_byte :
-        M.IsAssociatedFunction.Trait Self "y_parity_byte" y_parity_byte.
+        M.IsAssociatedFunction.C Self "y_parity_byte" y_parity_byte.
       Admitted.
       Global Typeclasses Opaque y_parity_byte.
       
@@ -1317,7 +1317,7 @@ Module signature.
         end.
       
       Global Instance AssociatedFunction_y_parity_byte_non_eip155 :
-        M.IsAssociatedFunction.Trait Self "y_parity_byte_non_eip155" y_parity_byte_non_eip155.
+        M.IsAssociatedFunction.C Self "y_parity_byte_non_eip155" y_parity_byte_non_eip155.
       Admitted.
       Global Typeclasses Opaque y_parity_byte_non_eip155.
       
@@ -1386,7 +1386,7 @@ Module signature.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_to_u64 : M.IsAssociatedFunction.Trait Self "to_u64" to_u64.
+      Global Instance AssociatedFunction_to_u64 : M.IsAssociatedFunction.C Self "to_u64" to_u64.
       Admitted.
       Global Typeclasses Opaque to_u64.
       
@@ -1533,7 +1533,7 @@ Module signature.
         end.
       
       Global Instance AssociatedFunction_inverted :
-        M.IsAssociatedFunction.Trait Self "inverted" inverted.
+        M.IsAssociatedFunction.C Self "inverted" inverted.
       Admitted.
       Global Typeclasses Opaque inverted.
       
@@ -1585,7 +1585,7 @@ Module signature.
         end.
       
       Global Instance AssociatedFunction_strip_chain_id :
-        M.IsAssociatedFunction.Trait Self "strip_chain_id" strip_chain_id.
+        M.IsAssociatedFunction.C Self "strip_chain_id" strip_chain_id.
       Admitted.
       Global Typeclasses Opaque strip_chain_id.
       
@@ -1691,7 +1691,7 @@ Module signature.
         end.
       
       Global Instance AssociatedFunction_with_chain_id :
-        M.IsAssociatedFunction.Trait Self "with_chain_id" with_chain_id.
+        M.IsAssociatedFunction.C Self "with_chain_id" with_chain_id.
       Admitted.
       Global Typeclasses Opaque with_chain_id.
       
@@ -1723,7 +1723,7 @@ Module signature.
         end.
       
       Global Instance AssociatedFunction_to_parity_bool :
-        M.IsAssociatedFunction.Trait Self "to_parity_bool" to_parity_bool.
+        M.IsAssociatedFunction.C Self "to_parity_bool" to_parity_bool.
       Admitted.
       Global Typeclasses Opaque to_parity_bool.
     End Impl_alloy_primitives_signature_parity_Parity.

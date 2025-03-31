@@ -94,7 +94,7 @@ Module Impl_mother_Mapping_K_V.
   
   Global Instance AssociatedFunction_get :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction.Trait (Self K V) "get" (get K V).
+    M.IsAssociatedFunction.C (Self K V) "get" (get K V).
   Admitted.
   Global Typeclasses Opaque get.
   
@@ -123,7 +123,7 @@ Module Impl_mother_Mapping_K_V.
   
   Global Instance AssociatedFunction_insert :
     forall (K V : Ty.t),
-    M.IsAssociatedFunction.Trait (Self K V) "insert" (insert K V).
+    M.IsAssociatedFunction.C (Self K V) "insert" (insert K V).
   Admitted.
   Global Typeclasses Opaque insert.
 End Impl_mother_Mapping_K_V.
@@ -2107,7 +2107,7 @@ Module Impl_mother_Env.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_caller : M.IsAssociatedFunction.Trait Self "caller" caller.
+  Global Instance AssociatedFunction_caller : M.IsAssociatedFunction.C Self "caller" caller.
   Admitted.
   Global Typeclasses Opaque caller.
   
@@ -2133,7 +2133,7 @@ Module Impl_mother_Env.
     end.
   
   Global Instance AssociatedFunction_emit_event :
-    M.IsAssociatedFunction.Trait Self "emit_event" emit_event.
+    M.IsAssociatedFunction.C Self "emit_event" emit_event.
   Admitted.
   Global Typeclasses Opaque emit_event.
 End Impl_mother_Env.
@@ -2231,8 +2231,7 @@ Module Impl_mother_Mother.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_init_env :
-    M.IsAssociatedFunction.Trait Self "init_env" init_env.
+  Global Instance AssociatedFunction_init_env : M.IsAssociatedFunction.C Self "init_env" init_env.
   Admitted.
   Global Typeclasses Opaque init_env.
   
@@ -2254,7 +2253,7 @@ Module Impl_mother_Mother.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_env : M.IsAssociatedFunction.Trait Self "env" env.
+  Global Instance AssociatedFunction_env : M.IsAssociatedFunction.C Self "env" env.
   Admitted.
   Global Typeclasses Opaque env.
   
@@ -2299,7 +2298,7 @@ Module Impl_mother_Mother.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
   Admitted.
   Global Typeclasses Opaque new.
   
@@ -2329,7 +2328,7 @@ Module Impl_mother_Mother.
     end.
   
   Global Instance AssociatedFunction_new_default :
-    M.IsAssociatedFunction.Trait Self "new_default" new_default.
+    M.IsAssociatedFunction.C Self "new_default" new_default.
   Admitted.
   Global Typeclasses Opaque new_default.
   
@@ -2416,7 +2415,7 @@ Module Impl_mother_Mother.
     end.
   
   Global Instance AssociatedFunction_failed_new :
-    M.IsAssociatedFunction.Trait Self "failed_new" failed_new.
+    M.IsAssociatedFunction.C Self "failed_new" failed_new.
   Admitted.
   Global Typeclasses Opaque failed_new.
   
@@ -2482,7 +2481,7 @@ Module Impl_mother_Mother.
     end.
   
   Global Instance AssociatedFunction_echo_auction :
-    M.IsAssociatedFunction.Trait Self "echo_auction" echo_auction.
+    M.IsAssociatedFunction.C Self "echo_auction" echo_auction.
   Admitted.
   Global Typeclasses Opaque echo_auction.
   
@@ -2577,7 +2576,7 @@ Module Impl_mother_Mother.
     end.
   
   Global Instance AssociatedFunction_revert_or_trap :
-    M.IsAssociatedFunction.Trait Self "revert_or_trap" revert_or_trap.
+    M.IsAssociatedFunction.C Self "revert_or_trap" revert_or_trap.
   Admitted.
   Global Typeclasses Opaque revert_or_trap.
   
@@ -2661,7 +2660,7 @@ Module Impl_mother_Mother.
     end.
   
   Global Instance AssociatedFunction_debug_log :
-    M.IsAssociatedFunction.Trait Self "debug_log" debug_log.
+    M.IsAssociatedFunction.C Self "debug_log" debug_log.
   Admitted.
   Global Typeclasses Opaque debug_log.
 End Impl_mother_Mother.

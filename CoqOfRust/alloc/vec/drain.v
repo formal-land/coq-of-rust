@@ -171,7 +171,7 @@ Module vec.
       
       Global Instance AssociatedFunction_as_slice :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "as_slice" (as_slice T A).
+        M.IsAssociatedFunction.C (Self T A) "as_slice" (as_slice T A).
       Admitted.
       Global Typeclasses Opaque as_slice.
       
@@ -237,7 +237,7 @@ Module vec.
       
       Global Instance AssociatedFunction_allocator :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "allocator" (allocator T A).
+        M.IsAssociatedFunction.C (Self T A) "allocator" (allocator T A).
       Admitted.
       Global Typeclasses Opaque allocator.
       
@@ -534,7 +534,12 @@ Module vec.
                           M.use
                             (M.alloc (|
                               UnOp.not (|
-                                M.read (| M.get_constant "core::mem::SizedTypeProperties::IS_ZST" |)
+                                M.read (|
+                                  get_constant (|
+                                    "core::mem::SizedTypeProperties::IS_ZST",
+                                    Ty.path "bool"
+                                  |)
+                                |)
                               |)
                             |)) in
                         let _ :=
@@ -783,7 +788,7 @@ Module vec.
       
       Global Instance AssociatedFunction_keep_rest :
         forall (T A : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T A) "keep_rest" (keep_rest T A).
+        M.IsAssociatedFunction.C (Self T A) "keep_rest" (keep_rest T A).
       Admitted.
       Global Typeclasses Opaque keep_rest.
     End Impl_alloc_vec_drain_Drain_T_A.
@@ -1233,7 +1238,11 @@ Module vec.
                         fun γ =>
                           ltac:(M.monadic
                             (let γ :=
-                              M.use (M.get_constant "core::mem::SizedTypeProperties::IS_ZST") in
+                              M.use
+                                (get_constant (|
+                                  "core::mem::SizedTypeProperties::IS_ZST",
+                                  Ty.path "bool"
+                                |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|

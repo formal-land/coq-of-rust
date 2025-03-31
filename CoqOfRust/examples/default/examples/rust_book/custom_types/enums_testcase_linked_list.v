@@ -46,7 +46,7 @@ Module Impl_enums_testcase_linked_list_List.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+  Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
   Admitted.
   Global Typeclasses Opaque new.
   
@@ -86,7 +86,7 @@ Module Impl_enums_testcase_linked_list_List.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_prepend : M.IsAssociatedFunction.Trait Self "prepend" prepend.
+  Global Instance AssociatedFunction_prepend : M.IsAssociatedFunction.C Self "prepend" prepend.
   Admitted.
   Global Typeclasses Opaque prepend.
   
@@ -163,7 +163,7 @@ Module Impl_enums_testcase_linked_list_List.
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
-  Global Instance AssociatedFunction_len : M.IsAssociatedFunction.Trait Self "len" len.
+  Global Instance AssociatedFunction_len : M.IsAssociatedFunction.C Self "len" len.
   Admitted.
   Global Typeclasses Opaque len.
   
@@ -383,7 +383,7 @@ Module Impl_enums_testcase_linked_list_List.
     end.
   
   Global Instance AssociatedFunction_stringify :
-    M.IsAssociatedFunction.Trait Self "stringify" stringify.
+    M.IsAssociatedFunction.C Self "stringify" stringify.
   Admitted.
   Global Typeclasses Opaque stringify.
 End Impl_enums_testcase_linked_list_List.
@@ -629,7 +629,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main :
-  M.IsFunction.Trait "enums_testcase_linked_list::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "enums_testcase_linked_list::main" main.
 Admitted.
 Global Typeclasses Opaque main.

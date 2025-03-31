@@ -2,45 +2,50 @@
 Require Import CoqOfRust.CoqOfRust.
 
 Module eip7702.
-  Definition value_EIP7702_MAGIC : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U16 61185 |))).
+  Definition value_EIP7702_MAGIC (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U16 61185 |))).
   
-  Axiom Constant_value_EIP7702_MAGIC :
-    (M.get_constant "revm_bytecode::eip7702::EIP7702_MAGIC") = value_EIP7702_MAGIC.
-  Global Hint Rewrite Constant_value_EIP7702_MAGIC : constant_rewrites.
+  Global Instance Instance_IsConstant_value_EIP7702_MAGIC :
+    M.IsFunction.C "revm_bytecode::eip7702::EIP7702_MAGIC" value_EIP7702_MAGIC.
+  Admitted.
+  Global Typeclasses Opaque value_EIP7702_MAGIC.
   
-  Definition value_EIP7702_MAGIC_BYTES : Value.t :=
-    M.run_constant
-      ltac:(M.monadic
-        (M.alloc (|
-          M.alloc (|
-            M.call_closure (|
+  Definition value_EIP7702_MAGIC_BYTES (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic
+      (M.alloc (|
+        M.alloc (|
+          M.call_closure (|
+            Ty.path "alloy_primitives::bytes_::Bytes",
+            M.get_associated_function (|
               Ty.path "alloy_primitives::bytes_::Bytes",
-              M.get_associated_function (|
-                Ty.path "alloy_primitives::bytes_::Bytes",
-                "from_static",
-                [],
-                []
-              |),
-              [
-                M.read (|
-                  M.get_constant "revm_bytecode::eip7702::EIP7702_MAGIC_BYTES::STATIC_BYTES"
+              "from_static",
+              [],
+              []
+            |),
+            [
+              M.read (|
+                get_constant (|
+                  "revm_bytecode::eip7702::EIP7702_MAGIC_BYTES::STATIC_BYTES",
+                  Ty.apply (Ty.path "&") [] [ Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ] ]
                 |)
-              ]
-            |)
+              |)
+            ]
           |)
-        |))).
+        |)
+      |))).
   
-  Axiom Constant_value_EIP7702_MAGIC_BYTES :
-    (M.get_constant "revm_bytecode::eip7702::EIP7702_MAGIC_BYTES") = value_EIP7702_MAGIC_BYTES.
-  Global Hint Rewrite Constant_value_EIP7702_MAGIC_BYTES : constant_rewrites.
+  Global Instance Instance_IsConstant_value_EIP7702_MAGIC_BYTES :
+    M.IsFunction.C "revm_bytecode::eip7702::EIP7702_MAGIC_BYTES" value_EIP7702_MAGIC_BYTES.
+  Admitted.
+  Global Typeclasses Opaque value_EIP7702_MAGIC_BYTES.
   
-  Definition value_EIP7702_VERSION : Value.t :=
-    M.run_constant ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 0 |))).
+  Definition value_EIP7702_VERSION (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
+    ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U8 0 |))).
   
-  Axiom Constant_value_EIP7702_VERSION :
-    (M.get_constant "revm_bytecode::eip7702::EIP7702_VERSION") = value_EIP7702_VERSION.
-  Global Hint Rewrite Constant_value_EIP7702_VERSION : constant_rewrites.
+  Global Instance Instance_IsConstant_value_EIP7702_VERSION :
+    M.IsFunction.C "revm_bytecode::eip7702::EIP7702_VERSION" value_EIP7702_VERSION.
+  Admitted.
+  Global Typeclasses Opaque value_EIP7702_VERSION.
   
   (* StructRecord
     {
@@ -1104,8 +1109,16 @@ Module eip7702.
                                                             Pointer.Kind.Ref,
                                                             M.deref (|
                                                               M.read (|
-                                                                M.get_constant
-                                                                  "revm_bytecode::eip7702::EIP7702_MAGIC_BYTES"
+                                                                get_constant (|
+                                                                  "revm_bytecode::eip7702::EIP7702_MAGIC_BYTES",
+                                                                  Ty.apply
+                                                                    (Ty.path "&")
+                                                                    []
+                                                                    [
+                                                                      Ty.path
+                                                                        "alloy_primitives::bytes_::Bytes"
+                                                                    ]
+                                                                |)
                                                               |)
                                                             |)
                                                           |)
@@ -1200,7 +1213,10 @@ Module eip7702.
                                     |)
                                   |),
                                   M.read (|
-                                    M.get_constant "revm_bytecode::eip7702::EIP7702_VERSION"
+                                    get_constant (|
+                                      "revm_bytecode::eip7702::EIP7702_VERSION",
+                                      Ty.path "u8"
+                                    |)
                                   |)
                                 |)
                               |)) in
@@ -1378,7 +1394,12 @@ Module eip7702.
                               ]
                             |));
                           ("version",
-                            M.read (| M.get_constant "revm_bytecode::eip7702::EIP7702_VERSION" |));
+                            M.read (|
+                              get_constant (|
+                                "revm_bytecode::eip7702::EIP7702_VERSION",
+                                Ty.path "u8"
+                              |)
+                            |));
                           ("raw", M.read (| raw |))
                         ]
                     ]
@@ -1388,8 +1409,7 @@ Module eip7702.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new_raw :
-      M.IsAssociatedFunction.Trait Self "new_raw" new_raw.
+    Global Instance AssociatedFunction_new_raw : M.IsAssociatedFunction.C Self "new_raw" new_raw.
     Admitted.
     Global Typeclasses Opaque new_raw.
     
@@ -1466,8 +1486,13 @@ Module eip7702.
                                       Pointer.Kind.Ref,
                                       M.deref (|
                                         M.read (|
-                                          M.get_constant
-                                            "revm_bytecode::eip7702::EIP7702_MAGIC_BYTES"
+                                          get_constant (|
+                                            "revm_bytecode::eip7702::EIP7702_MAGIC_BYTES",
+                                            Ty.apply
+                                              (Ty.path "&")
+                                              []
+                                              [ Ty.path "alloy_primitives::bytes_::Bytes" ]
+                                          |)
                                         |)
                                       |)
                                     |)
@@ -1497,7 +1522,9 @@ Module eip7702.
                   |),
                   [
                     M.borrow (| Pointer.Kind.MutRef, raw |);
-                    M.read (| M.get_constant "revm_bytecode::eip7702::EIP7702_VERSION" |)
+                    M.read (|
+                      get_constant (| "revm_bytecode::eip7702::EIP7702_VERSION", Ty.path "u8" |)
+                    |)
                   ]
                 |)
               |) in
@@ -1534,7 +1561,9 @@ Module eip7702.
                 [
                   ("delegated_address", M.read (| address |));
                   ("version",
-                    M.read (| M.get_constant "revm_bytecode::eip7702::EIP7702_VERSION" |));
+                    M.read (|
+                      get_constant (| "revm_bytecode::eip7702::EIP7702_VERSION", Ty.path "u8" |)
+                    |));
                   ("raw",
                     M.call_closure (|
                       Ty.path "alloy_primitives::bytes_::Bytes",
@@ -1558,7 +1587,7 @@ Module eip7702.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
     
@@ -1588,7 +1617,7 @@ Module eip7702.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_raw : M.IsAssociatedFunction.Trait Self "raw" raw.
+    Global Instance AssociatedFunction_raw : M.IsAssociatedFunction.C Self "raw" raw.
     Admitted.
     Global Typeclasses Opaque raw.
     
@@ -1612,8 +1641,7 @@ Module eip7702.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_address :
-      M.IsAssociatedFunction.Trait Self "address" address.
+    Global Instance AssociatedFunction_address : M.IsAssociatedFunction.C Self "address" address.
     Admitted.
     Global Typeclasses Opaque address.
   End Impl_revm_bytecode_eip7702_Eip7702Bytecode.

@@ -61,7 +61,7 @@ Module deserializer.
       end.
     
     Global Instance AssociatedFunction_deserialize_with_defaults :
-      M.IsAssociatedFunction.Trait Self "deserialize_with_defaults" deserialize_with_defaults.
+      M.IsAssociatedFunction.C Self "deserialize_with_defaults" deserialize_with_defaults.
     Admitted.
     Global Typeclasses Opaque deserialize_with_defaults.
     
@@ -330,7 +330,7 @@ Module deserializer.
       end.
     
     Global Instance AssociatedFunction_deserialize_with_config :
-      M.IsAssociatedFunction.Trait Self "deserialize_with_config" deserialize_with_config.
+      M.IsAssociatedFunction.C Self "deserialize_with_config" deserialize_with_config.
     Admitted.
     Global Typeclasses Opaque deserialize_with_config.
     
@@ -389,7 +389,7 @@ Module deserializer.
       end.
     
     Global Instance AssociatedFunction_deserialize_no_check_bounds :
-      M.IsAssociatedFunction.Trait Self "deserialize_no_check_bounds" deserialize_no_check_bounds.
+      M.IsAssociatedFunction.C Self "deserialize_no_check_bounds" deserialize_no_check_bounds.
     Admitted.
     Global Typeclasses Opaque deserialize_no_check_bounds.
   End Impl_move_binary_format_file_format_CompiledModule.
@@ -630,7 +630,7 @@ Module deserializer.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.Trait Self "new" new.
+    Global Instance AssociatedFunction_new : M.IsAssociatedFunction.C Self "new" new.
     Admitted.
     Global Typeclasses Opaque new.
   End Impl_move_binary_format_deserializer_Table.
@@ -856,7 +856,7 @@ Module deserializer.
     end.
   
   Global Instance Instance_IsFunction_read_u16_internal :
-    M.IsFunction.Trait "move_binary_format::deserializer::read_u16_internal" read_u16_internal.
+    M.IsFunction.C "move_binary_format::deserializer::read_u16_internal" read_u16_internal.
   Admitted.
   Global Typeclasses Opaque read_u16_internal.
   
@@ -1081,7 +1081,7 @@ Module deserializer.
     end.
   
   Global Instance Instance_IsFunction_read_u32_internal :
-    M.IsFunction.Trait "move_binary_format::deserializer::read_u32_internal" read_u32_internal.
+    M.IsFunction.C "move_binary_format::deserializer::read_u32_internal" read_u32_internal.
   Admitted.
   Global Typeclasses Opaque read_u32_internal.
   
@@ -1306,7 +1306,7 @@ Module deserializer.
     end.
   
   Global Instance Instance_IsFunction_read_u64_internal :
-    M.IsFunction.Trait "move_binary_format::deserializer::read_u64_internal" read_u64_internal.
+    M.IsFunction.C "move_binary_format::deserializer::read_u64_internal" read_u64_internal.
   Admitted.
   Global Typeclasses Opaque read_u64_internal.
   
@@ -1531,7 +1531,7 @@ Module deserializer.
     end.
   
   Global Instance Instance_IsFunction_read_u128_internal :
-    M.IsFunction.Trait "move_binary_format::deserializer::read_u128_internal" read_u128_internal.
+    M.IsFunction.C "move_binary_format::deserializer::read_u128_internal" read_u128_internal.
   Admitted.
   Global Typeclasses Opaque read_u128_internal.
   
@@ -1768,7 +1768,7 @@ Module deserializer.
     end.
   
   Global Instance Instance_IsFunction_read_u256_internal :
-    M.IsFunction.Trait "move_binary_format::deserializer::read_u256_internal" read_u256_internal.
+    M.IsFunction.C "move_binary_format::deserializer::read_u256_internal" read_u256_internal.
   Admitted.
   Global Typeclasses Opaque read_u256_internal.
   
@@ -2231,7 +2231,7 @@ Module deserializer.
     end.
   
   Global Instance Instance_IsFunction_read_uleb_internal :
-    M.IsFunction.Trait "move_binary_format::deserializer::read_uleb_internal" read_uleb_internal.
+    M.IsFunction.C "move_binary_format::deserializer::read_uleb_internal" read_uleb_internal.
   Admitted.
   Global Typeclasses Opaque read_uleb_internal.
   
@@ -2309,8 +2309,10 @@ Module deserializer.
                                     M.deref (| M.read (| cursor |) |)
                                   |);
                                   M.read (|
-                                    M.get_constant
-                                      "move_binary_format::file_format_common::SIGNATURE_INDEX_MAX"
+                                    get_constant (|
+                                      "move_binary_format::file_format_common::SIGNATURE_INDEX_MAX",
+                                      Ty.path "u64"
+                                    |)
                                   |)
                                 ]
                               |)
@@ -2390,9 +2392,7 @@ Module deserializer.
     end.
   
   Global Instance Instance_IsFunction_load_signature_index :
-    M.IsFunction.Trait
-      "move_binary_format::deserializer::load_signature_index"
-      load_signature_index.
+    M.IsFunction.C "move_binary_format::deserializer::load_signature_index" load_signature_index.
   Admitted.
   Global Typeclasses Opaque load_signature_index.
   
@@ -2470,8 +2470,10 @@ Module deserializer.
                                     M.deref (| M.read (| cursor |) |)
                                   |);
                                   M.read (|
-                                    M.get_constant
-                                      "move_binary_format::file_format_common::MODULE_HANDLE_INDEX_MAX"
+                                    get_constant (|
+                                      "move_binary_format::file_format_common::MODULE_HANDLE_INDEX_MAX",
+                                      Ty.path "u64"
+                                    |)
                                   |)
                                 ]
                               |)
@@ -2551,7 +2553,7 @@ Module deserializer.
     end.
   
   Global Instance Instance_IsFunction_load_module_handle_index :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "move_binary_format::deserializer::load_module_handle_index"
       load_module_handle_index.
   Admitted.
@@ -2631,8 +2633,10 @@ Module deserializer.
                                     M.deref (| M.read (| cursor |) |)
                                   |);
                                   M.read (|
-                                    M.get_constant
-                                      "move_binary_format::file_format_common::IDENTIFIER_INDEX_MAX"
+                                    get_constant (|
+                                      "move_binary_format::file_format_common::IDENTIFIER_INDEX_MAX",
+                                      Ty.path "u64"
+                                    |)
                                   |)
                                 ]
                               |)
@@ -2712,9 +2716,7 @@ Module deserializer.
     end.
   
   Global Instance Instance_IsFunction_load_identifier_index :
-    M.IsFunction.Trait
-      "move_binary_format::deserializer::load_identifier_index"
-      load_identifier_index.
+    M.IsFunction.C "move_binary_format::deserializer::load_identifier_index" load_identifier_index.
   Admitted.
   Global Typeclasses Opaque load_identifier_index.
   
@@ -2792,8 +2794,10 @@ Module deserializer.
                                     M.deref (| M.read (| cursor |) |)
                                   |);
                                   M.read (|
-                                    M.get_constant
-                                      "move_binary_format::file_format_common::STRUCT_HANDLE_INDEX_MAX"
+                                    get_constant (|
+                                      "move_binary_format::file_format_common::STRUCT_HANDLE_INDEX_MAX",
+                                      Ty.path "u64"
+                                    |)
                                   |)
                                 ]
                               |)
@@ -2873,7 +2877,7 @@ Module deserializer.
     end.
   
   Global Instance Instance_IsFunction_load_struct_handle_index :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "move_binary_format::deserializer::load_struct_handle_index"
       load_struct_handle_index.
   Admitted.
@@ -2959,8 +2963,10 @@ Module deserializer.
                                     M.deref (| M.read (| cursor |) |)
                                   |);
                                   M.read (|
-                                    M.get_constant
-                                      "move_binary_format::file_format_common::ADDRESS_INDEX_MAX"
+                                    get_constant (|
+                                      "move_binary_format::file_format_common::ADDRESS_INDEX_MAX",
+                                      Ty.path "u64"
+                                    |)
                                   |)
                                 ]
                               |)
@@ -3040,7 +3046,7 @@ Module deserializer.
     end.
   
   Global Instance Instance_IsFunction_load_address_identifier_index :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "move_binary_format::deserializer::load_address_identifier_index"
       load_address_identifier_index.
   Admitted.
@@ -3122,8 +3128,10 @@ Module deserializer.
                                     M.deref (| M.read (| cursor |) |)
                                   |);
                                   M.read (|
-                                    M.get_constant
-                                      "move_binary_format::file_format_common::STRUCT_DEF_INDEX_MAX"
+                                    get_constant (|
+                                      "move_binary_format::file_format_common::STRUCT_DEF_INDEX_MAX",
+                                      Ty.path "u64"
+                                    |)
                                   |)
                                 ]
                               |)
@@ -3203,9 +3211,7 @@ Module deserializer.
     end.
   
   Global Instance Instance_IsFunction_load_struct_def_index :
-    M.IsFunction.Trait
-      "move_binary_format::deserializer::load_struct_def_index"
-      load_struct_def_index.
+    M.IsFunction.C "move_binary_format::deserializer::load_struct_def_index" load_struct_def_index.
   Admitted.
   Global Typeclasses Opaque load_struct_def_index.
   
@@ -3285,8 +3291,10 @@ Module deserializer.
                                     M.deref (| M.read (| cursor |) |)
                                   |);
                                   M.read (|
-                                    M.get_constant
-                                      "move_binary_format::file_format_common::FUNCTION_HANDLE_INDEX_MAX"
+                                    get_constant (|
+                                      "move_binary_format::file_format_common::FUNCTION_HANDLE_INDEX_MAX",
+                                      Ty.path "u64"
+                                    |)
                                   |)
                                 ]
                               |)
@@ -3366,7 +3374,7 @@ Module deserializer.
     end.
   
   Global Instance Instance_IsFunction_load_function_handle_index :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "move_binary_format::deserializer::load_function_handle_index"
       load_function_handle_index.
   Admitted.
@@ -3446,8 +3454,10 @@ Module deserializer.
                                     M.deref (| M.read (| cursor |) |)
                                   |);
                                   M.read (|
-                                    M.get_constant
-                                      "move_binary_format::file_format_common::FIELD_HANDLE_INDEX_MAX"
+                                    get_constant (|
+                                      "move_binary_format::file_format_common::FIELD_HANDLE_INDEX_MAX",
+                                      Ty.path "u64"
+                                    |)
                                   |)
                                 ]
                               |)
@@ -3527,7 +3537,7 @@ Module deserializer.
     end.
   
   Global Instance Instance_IsFunction_load_field_handle_index :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "move_binary_format::deserializer::load_field_handle_index"
       load_field_handle_index.
   Admitted.
@@ -3609,8 +3619,10 @@ Module deserializer.
                                     M.deref (| M.read (| cursor |) |)
                                   |);
                                   M.read (|
-                                    M.get_constant
-                                      "move_binary_format::file_format_common::FIELD_INST_INDEX_MAX"
+                                    get_constant (|
+                                      "move_binary_format::file_format_common::FIELD_INST_INDEX_MAX",
+                                      Ty.path "u64"
+                                    |)
                                   |)
                                 ]
                               |)
@@ -3690,9 +3702,7 @@ Module deserializer.
     end.
   
   Global Instance Instance_IsFunction_load_field_inst_index :
-    M.IsFunction.Trait
-      "move_binary_format::deserializer::load_field_inst_index"
-      load_field_inst_index.
+    M.IsFunction.C "move_binary_format::deserializer::load_field_inst_index" load_field_inst_index.
   Admitted.
   Global Typeclasses Opaque load_field_inst_index.
   
@@ -3772,8 +3782,10 @@ Module deserializer.
                                     M.deref (| M.read (| cursor |) |)
                                   |);
                                   M.read (|
-                                    M.get_constant
-                                      "move_binary_format::file_format_common::FUNCTION_INST_INDEX_MAX"
+                                    get_constant (|
+                                      "move_binary_format::file_format_common::FUNCTION_INST_INDEX_MAX",
+                                      Ty.path "u64"
+                                    |)
                                   |)
                                 ]
                               |)
@@ -3853,7 +3865,7 @@ Module deserializer.
     end.
   
   Global Instance Instance_IsFunction_load_function_inst_index :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "move_binary_format::deserializer::load_function_inst_index"
       load_function_inst_index.
   Admitted.
@@ -3935,8 +3947,10 @@ Module deserializer.
                                     M.deref (| M.read (| cursor |) |)
                                   |);
                                   M.read (|
-                                    M.get_constant
-                                      "move_binary_format::file_format_common::STRUCT_DEF_INST_INDEX_MAX"
+                                    get_constant (|
+                                      "move_binary_format::file_format_common::STRUCT_DEF_INST_INDEX_MAX",
+                                      Ty.path "u64"
+                                    |)
                                   |)
                                 ]
                               |)
@@ -4016,7 +4030,7 @@ Module deserializer.
     end.
   
   Global Instance Instance_IsFunction_load_struct_def_inst_index :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "move_binary_format::deserializer::load_struct_def_inst_index"
       load_struct_def_inst_index.
   Admitted.
@@ -4096,8 +4110,10 @@ Module deserializer.
                                     M.deref (| M.read (| cursor |) |)
                                   |);
                                   M.read (|
-                                    M.get_constant
-                                      "move_binary_format::file_format_common::CONSTANT_INDEX_MAX"
+                                    get_constant (|
+                                      "move_binary_format::file_format_common::CONSTANT_INDEX_MAX",
+                                      Ty.path "u64"
+                                    |)
                                   |)
                                 ]
                               |)
@@ -4177,7 +4193,7 @@ Module deserializer.
     end.
   
   Global Instance Instance_IsFunction_load_constant_pool_index :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "move_binary_format::deserializer::load_constant_pool_index"
       load_constant_pool_index.
   Admitted.
@@ -4205,14 +4221,19 @@ Module deserializer.
           |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |);
-            M.read (| M.get_constant "move_binary_format::file_format_common::BYTECODE_COUNT_MAX" |)
+            M.read (|
+              get_constant (|
+                "move_binary_format::file_format_common::BYTECODE_COUNT_MAX",
+                Ty.path "u64"
+              |)
+            |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Global Instance Instance_IsFunction_load_bytecode_count :
-    M.IsFunction.Trait "move_binary_format::deserializer::load_bytecode_count" load_bytecode_count.
+    M.IsFunction.C "move_binary_format::deserializer::load_bytecode_count" load_bytecode_count.
   Admitted.
   Global Typeclasses Opaque load_bytecode_count.
   
@@ -4238,14 +4259,19 @@ Module deserializer.
           |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |);
-            M.read (| M.get_constant "move_binary_format::file_format_common::BYTECODE_INDEX_MAX" |)
+            M.read (|
+              get_constant (|
+                "move_binary_format::file_format_common::BYTECODE_INDEX_MAX",
+                Ty.path "u64"
+              |)
+            |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Global Instance Instance_IsFunction_load_bytecode_index :
-    M.IsFunction.Trait "move_binary_format::deserializer::load_bytecode_index" load_bytecode_index.
+    M.IsFunction.C "move_binary_format::deserializer::load_bytecode_index" load_bytecode_index.
   Admitted.
   Global Typeclasses Opaque load_bytecode_index.
   
@@ -4271,14 +4297,19 @@ Module deserializer.
           |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |);
-            M.read (| M.get_constant "move_binary_format::file_format_common::ACQUIRES_COUNT_MAX" |)
+            M.read (|
+              get_constant (|
+                "move_binary_format::file_format_common::ACQUIRES_COUNT_MAX",
+                Ty.path "u64"
+              |)
+            |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Global Instance Instance_IsFunction_load_acquires_count :
-    M.IsFunction.Trait "move_binary_format::deserializer::load_acquires_count" load_acquires_count.
+    M.IsFunction.C "move_binary_format::deserializer::load_acquires_count" load_acquires_count.
   Admitted.
   Global Typeclasses Opaque load_acquires_count.
   
@@ -4304,14 +4335,19 @@ Module deserializer.
           |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |);
-            M.read (| M.get_constant "move_binary_format::file_format_common::FIELD_COUNT_MAX" |)
+            M.read (|
+              get_constant (|
+                "move_binary_format::file_format_common::FIELD_COUNT_MAX",
+                Ty.path "u64"
+              |)
+            |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Global Instance Instance_IsFunction_load_field_count :
-    M.IsFunction.Trait "move_binary_format::deserializer::load_field_count" load_field_count.
+    M.IsFunction.C "move_binary_format::deserializer::load_field_count" load_field_count.
   Admitted.
   Global Typeclasses Opaque load_field_count.
   
@@ -4338,7 +4374,10 @@ Module deserializer.
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |);
             M.read (|
-              M.get_constant "move_binary_format::file_format_common::TYPE_PARAMETER_COUNT_MAX"
+              get_constant (|
+                "move_binary_format::file_format_common::TYPE_PARAMETER_COUNT_MAX",
+                Ty.path "u64"
+              |)
             |)
           ]
         |)))
@@ -4346,7 +4385,7 @@ Module deserializer.
     end.
   
   Global Instance Instance_IsFunction_load_type_parameter_count :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "move_binary_format::deserializer::load_type_parameter_count"
       load_type_parameter_count.
   Admitted.
@@ -4374,14 +4413,19 @@ Module deserializer.
           |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |);
-            M.read (| M.get_constant "move_binary_format::file_format_common::SIGNATURE_SIZE_MAX" |)
+            M.read (|
+              get_constant (|
+                "move_binary_format::file_format_common::SIGNATURE_SIZE_MAX",
+                Ty.path "u64"
+              |)
+            |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Global Instance Instance_IsFunction_load_signature_size :
-    M.IsFunction.Trait "move_binary_format::deserializer::load_signature_size" load_signature_size.
+    M.IsFunction.C "move_binary_format::deserializer::load_signature_size" load_signature_size.
   Admitted.
   Global Typeclasses Opaque load_signature_size.
   
@@ -4407,14 +4451,19 @@ Module deserializer.
           |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |);
-            M.read (| M.get_constant "move_binary_format::file_format_common::CONSTANT_SIZE_MAX" |)
+            M.read (|
+              get_constant (|
+                "move_binary_format::file_format_common::CONSTANT_SIZE_MAX",
+                Ty.path "u64"
+              |)
+            |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Global Instance Instance_IsFunction_load_constant_size :
-    M.IsFunction.Trait "move_binary_format::deserializer::load_constant_size" load_constant_size.
+    M.IsFunction.C "move_binary_format::deserializer::load_constant_size" load_constant_size.
   Admitted.
   Global Typeclasses Opaque load_constant_size.
   
@@ -4441,7 +4490,10 @@ Module deserializer.
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |);
             M.read (|
-              M.get_constant "move_binary_format::file_format_common::METADATA_KEY_SIZE_MAX"
+              get_constant (|
+                "move_binary_format::file_format_common::METADATA_KEY_SIZE_MAX",
+                Ty.path "u64"
+              |)
             |)
           ]
         |)))
@@ -4449,7 +4501,7 @@ Module deserializer.
     end.
   
   Global Instance Instance_IsFunction_load_metadata_key_size :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "move_binary_format::deserializer::load_metadata_key_size"
       load_metadata_key_size.
   Admitted.
@@ -4478,7 +4530,10 @@ Module deserializer.
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |);
             M.read (|
-              M.get_constant "move_binary_format::file_format_common::METADATA_VALUE_SIZE_MAX"
+              get_constant (|
+                "move_binary_format::file_format_common::METADATA_VALUE_SIZE_MAX",
+                Ty.path "u64"
+              |)
             |)
           ]
         |)))
@@ -4486,7 +4541,7 @@ Module deserializer.
     end.
   
   Global Instance Instance_IsFunction_load_metadata_value_size :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "move_binary_format::deserializer::load_metadata_value_size"
       load_metadata_value_size.
   Admitted.
@@ -4515,7 +4570,10 @@ Module deserializer.
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |);
             M.read (|
-              M.get_constant "move_binary_format::file_format_common::IDENTIFIER_SIZE_MAX"
+              get_constant (|
+                "move_binary_format::file_format_common::IDENTIFIER_SIZE_MAX",
+                Ty.path "u64"
+              |)
             |)
           ]
         |)))
@@ -4523,9 +4581,7 @@ Module deserializer.
     end.
   
   Global Instance Instance_IsFunction_load_identifier_size :
-    M.IsFunction.Trait
-      "move_binary_format::deserializer::load_identifier_size"
-      load_identifier_size.
+    M.IsFunction.C "move_binary_format::deserializer::load_identifier_size" load_identifier_size.
   Admitted.
   Global Typeclasses Opaque load_identifier_size.
   
@@ -4552,7 +4608,10 @@ Module deserializer.
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |);
             M.read (|
-              M.get_constant "move_binary_format::file_format_common::TYPE_PARAMETER_INDEX_MAX"
+              get_constant (|
+                "move_binary_format::file_format_common::TYPE_PARAMETER_INDEX_MAX",
+                Ty.path "u64"
+              |)
             |)
           ]
         |)))
@@ -4560,7 +4619,7 @@ Module deserializer.
     end.
   
   Global Instance Instance_IsFunction_load_type_parameter_index :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "move_binary_format::deserializer::load_type_parameter_index"
       load_type_parameter_index.
   Admitted.
@@ -4588,14 +4647,19 @@ Module deserializer.
           |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |);
-            M.read (| M.get_constant "move_binary_format::file_format_common::FIELD_OFFSET_MAX" |)
+            M.read (|
+              get_constant (|
+                "move_binary_format::file_format_common::FIELD_OFFSET_MAX",
+                Ty.path "u64"
+              |)
+            |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Global Instance Instance_IsFunction_load_field_offset :
-    M.IsFunction.Trait "move_binary_format::deserializer::load_field_offset" load_field_offset.
+    M.IsFunction.C "move_binary_format::deserializer::load_field_offset" load_field_offset.
   Admitted.
   Global Typeclasses Opaque load_field_offset.
   
@@ -4621,14 +4685,19 @@ Module deserializer.
           |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |);
-            M.read (| M.get_constant "move_binary_format::file_format_common::TABLE_COUNT_MAX" |)
+            M.read (|
+              get_constant (|
+                "move_binary_format::file_format_common::TABLE_COUNT_MAX",
+                Ty.path "u64"
+              |)
+            |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Global Instance Instance_IsFunction_load_table_count :
-    M.IsFunction.Trait "move_binary_format::deserializer::load_table_count" load_table_count.
+    M.IsFunction.C "move_binary_format::deserializer::load_table_count" load_table_count.
   Admitted.
   Global Typeclasses Opaque load_table_count.
   
@@ -4654,14 +4723,19 @@ Module deserializer.
           |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |);
-            M.read (| M.get_constant "move_binary_format::file_format_common::TABLE_OFFSET_MAX" |)
+            M.read (|
+              get_constant (|
+                "move_binary_format::file_format_common::TABLE_OFFSET_MAX",
+                Ty.path "u64"
+              |)
+            |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Global Instance Instance_IsFunction_load_table_offset :
-    M.IsFunction.Trait "move_binary_format::deserializer::load_table_offset" load_table_offset.
+    M.IsFunction.C "move_binary_format::deserializer::load_table_offset" load_table_offset.
   Admitted.
   Global Typeclasses Opaque load_table_offset.
   
@@ -4687,14 +4761,19 @@ Module deserializer.
           |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |);
-            M.read (| M.get_constant "move_binary_format::file_format_common::TABLE_SIZE_MAX" |)
+            M.read (|
+              get_constant (|
+                "move_binary_format::file_format_common::TABLE_SIZE_MAX",
+                Ty.path "u64"
+              |)
+            |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Global Instance Instance_IsFunction_load_table_size :
-    M.IsFunction.Trait "move_binary_format::deserializer::load_table_size" load_table_size.
+    M.IsFunction.C "move_binary_format::deserializer::load_table_size" load_table_size.
   Admitted.
   Global Typeclasses Opaque load_table_size.
   
@@ -4720,14 +4799,19 @@ Module deserializer.
           |),
           [
             M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| cursor |) |) |);
-            M.read (| M.get_constant "move_binary_format::file_format_common::LOCAL_INDEX_MAX" |)
+            M.read (|
+              get_constant (|
+                "move_binary_format::file_format_common::LOCAL_INDEX_MAX",
+                Ty.path "u64"
+              |)
+            |)
           ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
   
   Global Instance Instance_IsFunction_load_local_index :
-    M.IsFunction.Trait "move_binary_format::deserializer::load_local_index" load_local_index.
+    M.IsFunction.C "move_binary_format::deserializer::load_local_index" load_local_index.
   Admitted.
   Global Typeclasses Opaque load_local_index.
   
@@ -5193,7 +5277,7 @@ Module deserializer.
     end.
   
   Global Instance Instance_IsFunction_deserialize_compiled_module :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "move_binary_format::deserializer::deserialize_compiled_module"
       deserialize_compiled_module.
   Admitted.
@@ -5473,7 +5557,7 @@ Module deserializer.
     end.
   
   Global Instance Instance_IsFunction_read_tables :
-    M.IsFunction.Trait "move_binary_format::deserializer::read_tables" read_tables.
+    M.IsFunction.C "move_binary_format::deserializer::read_tables" read_tables.
   Admitted.
   Global Typeclasses Opaque read_tables.
   
@@ -5965,7 +6049,7 @@ Module deserializer.
     end.
   
   Global Instance Instance_IsFunction_read_table :
-    M.IsFunction.Trait "move_binary_format::deserializer::read_table" read_table.
+    M.IsFunction.C "move_binary_format::deserializer::read_table" read_table.
   Admitted.
   Global Typeclasses Opaque read_table.
   
@@ -6638,7 +6722,7 @@ Module deserializer.
     end.
   
   Global Instance Instance_IsFunction_check_tables :
-    M.IsFunction.Trait "move_binary_format::deserializer::check_tables" check_tables.
+    M.IsFunction.C "move_binary_format::deserializer::check_tables" check_tables.
   Admitted.
   Global Typeclasses Opaque check_tables.
   
@@ -7205,9 +7289,7 @@ Module deserializer.
     end.
   
   Global Instance Instance_IsFunction_build_compiled_module :
-    M.IsFunction.Trait
-      "move_binary_format::deserializer::build_compiled_module"
-      build_compiled_module.
+    M.IsFunction.C "move_binary_format::deserializer::build_compiled_module" build_compiled_module.
   Admitted.
   Global Typeclasses Opaque build_compiled_module.
   
@@ -10685,8 +10767,10 @@ Module deserializer.
                                                                                 ]
                                                                               |),
                                                                               M.read (|
-                                                                                M.get_constant
-                                                                                  "move_binary_format::file_format_common::VERSION_5"
+                                                                                get_constant (|
+                                                                                  "move_binary_format::file_format_common::VERSION_5",
+                                                                                  Ty.path "u32"
+                                                                                |)
                                                                               |)
                                                                             |)))
                                                                         |)
@@ -12172,8 +12256,10 @@ Module deserializer.
                                                                           ]
                                                                         |),
                                                                         M.read (|
-                                                                          M.get_constant
-                                                                            "move_binary_format::file_format_common::VERSION_2"
+                                                                          get_constant (|
+                                                                            "move_binary_format::file_format_common::VERSION_2",
+                                                                            Ty.path "u32"
+                                                                          |)
                                                                         |)
                                                                       |)
                                                                     |)) in
@@ -12270,7 +12356,7 @@ Module deserializer.
     end.
   
   Global Instance Instance_IsFunction_build_common_tables :
-    M.IsFunction.Trait "move_binary_format::deserializer::build_common_tables" build_common_tables.
+    M.IsFunction.C "move_binary_format::deserializer::build_common_tables" build_common_tables.
   Admitted.
   Global Typeclasses Opaque build_common_tables.
   
@@ -15642,7 +15728,7 @@ Module deserializer.
     end.
   
   Global Instance Instance_IsFunction_build_module_tables :
-    M.IsFunction.Trait "move_binary_format::deserializer::build_module_tables" build_module_tables.
+    M.IsFunction.C "move_binary_format::deserializer::build_module_tables" build_module_tables.
   Admitted.
   Global Typeclasses Opaque build_module_tables.
   
@@ -16069,7 +16155,7 @@ Module deserializer.
     end.
   
   Global Instance Instance_IsFunction_load_module_handles :
-    M.IsFunction.Trait "move_binary_format::deserializer::load_module_handles" load_module_handles.
+    M.IsFunction.C "move_binary_format::deserializer::load_module_handles" load_module_handles.
   Admitted.
   Global Typeclasses Opaque load_module_handles.
   
@@ -16798,7 +16884,7 @@ Module deserializer.
     end.
   
   Global Instance Instance_IsFunction_load_struct_handles :
-    M.IsFunction.Trait "move_binary_format::deserializer::load_struct_handles" load_struct_handles.
+    M.IsFunction.C "move_binary_format::deserializer::load_struct_handles" load_struct_handles.
   Admitted.
   Global Typeclasses Opaque load_struct_handles.
   
@@ -17662,9 +17748,7 @@ Module deserializer.
     end.
   
   Global Instance Instance_IsFunction_load_function_handles :
-    M.IsFunction.Trait
-      "move_binary_format::deserializer::load_function_handles"
-      load_function_handles.
+    M.IsFunction.C "move_binary_format::deserializer::load_function_handles" load_function_handles.
   Admitted.
   Global Typeclasses Opaque load_function_handles.
   
@@ -18096,7 +18180,7 @@ Module deserializer.
     end.
   
   Global Instance Instance_IsFunction_load_struct_instantiations :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "move_binary_format::deserializer::load_struct_instantiations"
       load_struct_instantiations.
   Admitted.
@@ -18533,7 +18617,7 @@ Module deserializer.
     end.
   
   Global Instance Instance_IsFunction_load_function_instantiations :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "move_binary_format::deserializer::load_function_instantiations"
       load_function_instantiations.
   Admitted.
@@ -19255,7 +19339,7 @@ Module deserializer.
     end.
   
   Global Instance Instance_IsFunction_load_identifiers :
-    M.IsFunction.Trait "move_binary_format::deserializer::load_identifiers" load_identifiers.
+    M.IsFunction.C "move_binary_format::deserializer::load_identifiers" load_identifiers.
   Admitted.
   Global Typeclasses Opaque load_identifiers.
   
@@ -19328,7 +19412,11 @@ Module deserializer.
                                       |)
                                     |)),
                                   M.read (|
-                                    M.get_constant "move_core_types::account_address::LENGTH"
+                                    get_associated_constant (|
+                                      Ty.path "move_core_types::account_address::AccountAddress",
+                                      "LENGTH",
+                                      Ty.path "usize"
+                                    |)
                                   |)
                                 |),
                                 Value.Integer IntegerKind.Usize 0
@@ -19429,7 +19517,11 @@ Module deserializer.
                                       |)
                                     |)),
                                   M.read (|
-                                    M.get_constant "move_core_types::account_address::LENGTH"
+                                    get_associated_constant (|
+                                      Ty.path "move_core_types::account_address::AccountAddress",
+                                      "LENGTH",
+                                      Ty.path "usize"
+                                    |)
                                   |)
                                 |))
                             ]
@@ -19494,8 +19586,12 @@ Module deserializer.
                                             BinOp.Wrap.add (|
                                               M.read (| start |),
                                               M.read (|
-                                                M.get_constant
-                                                  "move_core_types::account_address::LENGTH"
+                                                get_associated_constant (|
+                                                  Ty.path
+                                                    "move_core_types::account_address::AccountAddress",
+                                                  "LENGTH",
+                                                  Ty.path "usize"
+                                                |)
                                               |)
                                             |)
                                           |) in
@@ -19735,7 +19831,7 @@ Module deserializer.
     end.
   
   Global Instance Instance_IsFunction_load_address_identifiers :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "move_binary_format::deserializer::load_address_identifiers"
       load_address_identifiers.
   Admitted.
@@ -20032,7 +20128,7 @@ Module deserializer.
     end.
   
   Global Instance Instance_IsFunction_load_constant_pool :
-    M.IsFunction.Trait "move_binary_format::deserializer::load_constant_pool" load_constant_pool.
+    M.IsFunction.C "move_binary_format::deserializer::load_constant_pool" load_constant_pool.
   Admitted.
   Global Typeclasses Opaque load_constant_pool.
   
@@ -20341,7 +20437,7 @@ Module deserializer.
     end.
   
   Global Instance Instance_IsFunction_load_constant :
-    M.IsFunction.Trait "move_binary_format::deserializer::load_constant" load_constant.
+    M.IsFunction.C "move_binary_format::deserializer::load_constant" load_constant.
   Admitted.
   Global Typeclasses Opaque load_constant.
   
@@ -20635,7 +20731,7 @@ Module deserializer.
     end.
   
   Global Instance Instance_IsFunction_load_metadata :
-    M.IsFunction.Trait "move_binary_format::deserializer::load_metadata" load_metadata.
+    M.IsFunction.C "move_binary_format::deserializer::load_metadata" load_metadata.
   Admitted.
   Global Typeclasses Opaque load_metadata.
   
@@ -20983,7 +21079,7 @@ Module deserializer.
     end.
   
   Global Instance Instance_IsFunction_load_metadata_entry :
-    M.IsFunction.Trait "move_binary_format::deserializer::load_metadata_entry" load_metadata_entry.
+    M.IsFunction.C "move_binary_format::deserializer::load_metadata_entry" load_metadata_entry.
   Admitted.
   Global Typeclasses Opaque load_metadata_entry.
   
@@ -21501,7 +21597,7 @@ Module deserializer.
     end.
   
   Global Instance Instance_IsFunction_load_byte_blob :
-    M.IsFunction.Trait "move_binary_format::deserializer::load_byte_blob" load_byte_blob.
+    M.IsFunction.C "move_binary_format::deserializer::load_byte_blob" load_byte_blob.
   Admitted.
   Global Typeclasses Opaque load_byte_blob.
   
@@ -21832,7 +21928,7 @@ Module deserializer.
     end.
   
   Global Instance Instance_IsFunction_load_signatures :
-    M.IsFunction.Trait "move_binary_format::deserializer::load_signatures" load_signatures.
+    M.IsFunction.C "move_binary_format::deserializer::load_signatures" load_signatures.
   Admitted.
   Global Typeclasses Opaque load_signatures.
   
@@ -22280,9 +22376,7 @@ Module deserializer.
     end.
   
   Global Instance Instance_IsFunction_load_signature_tokens :
-    M.IsFunction.Trait
-      "move_binary_format::deserializer::load_signature_tokens"
-      load_signature_tokens.
+    M.IsFunction.C "move_binary_format::deserializer::load_signature_tokens" load_signature_tokens.
   Admitted.
   Global Typeclasses Opaque load_signature_tokens.
   
@@ -22727,8 +22821,10 @@ Module deserializer.
                                                                           ]
                                                                         |),
                                                                         M.read (|
-                                                                          M.get_constant
-                                                                            "move_binary_format::file_format_common::VERSION_6"
+                                                                          get_constant (|
+                                                                            "move_binary_format::file_format_common::VERSION_6",
+                                                                            Ty.path "u32"
+                                                                          |)
                                                                         |)
                                                                       |)
                                                                     |) in
@@ -24366,8 +24462,10 @@ Module deserializer.
                                             [ M.borrow (| Pointer.Kind.Ref, stack |) ]
                                           |),
                                           M.read (|
-                                            M.get_constant
-                                              "move_binary_format::file_format_common::SIGNATURE_TOKEN_DEPTH_MAX"
+                                            get_constant (|
+                                              "move_binary_format::file_format_common::SIGNATURE_TOKEN_DEPTH_MAX",
+                                              Ty.path "usize"
+                                            |)
                                           |)
                                         |)
                                       |)) in
@@ -24893,9 +24991,7 @@ Module deserializer.
     end.
   
   Global Instance Instance_IsFunction_load_signature_token :
-    M.IsFunction.Trait
-      "move_binary_format::deserializer::load_signature_token"
-      load_signature_token.
+    M.IsFunction.C "move_binary_format::deserializer::load_signature_token" load_signature_token.
   Admitted.
   Global Typeclasses Opaque load_signature_token.
   
@@ -25350,7 +25446,7 @@ Module deserializer.
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
-      Global Instance AssociatedFunction_apply : M.IsAssociatedFunction.Trait Self "apply" apply.
+      Global Instance AssociatedFunction_apply : M.IsAssociatedFunction.C Self "apply" apply.
       Admitted.
       Global Typeclasses Opaque apply.
       
@@ -25387,7 +25483,7 @@ Module deserializer.
         end.
       
       Global Instance AssociatedFunction_is_saturated :
-        M.IsAssociatedFunction.Trait Self "is_saturated" is_saturated.
+        M.IsAssociatedFunction.C Self "is_saturated" is_saturated.
       Admitted.
       Global Typeclasses Opaque is_saturated.
       
@@ -25491,7 +25587,7 @@ Module deserializer.
         end.
       
       Global Instance AssociatedFunction_unwrap_saturated :
-        M.IsAssociatedFunction.Trait Self "unwrap_saturated" unwrap_saturated.
+        M.IsAssociatedFunction.C Self "unwrap_saturated" unwrap_saturated.
       Admitted.
       Global Typeclasses Opaque unwrap_saturated.
     End Impl_move_binary_format_deserializer_load_signature_token_TypeBuilder.
@@ -25974,8 +26070,13 @@ Module deserializer.
                                                       |),
                                                       [
                                                         M.read (|
-                                                          M.get_constant
-                                                            "move_binary_format::file_format::EMPTY"
+                                                          get_associated_constant (|
+                                                            Ty.path
+                                                              "move_binary_format::file_format::AbilitySet",
+                                                            "EMPTY",
+                                                            Ty.path
+                                                              "move_binary_format::file_format::AbilitySet"
+                                                          |)
                                                         |);
                                                         Value.StructTuple
                                                           "move_binary_format::file_format::Ability::Store"
@@ -26048,8 +26149,13 @@ Module deserializer.
                                                           |),
                                                           [
                                                             M.read (|
-                                                              M.get_constant
-                                                                "move_binary_format::file_format::EMPTY"
+                                                              get_associated_constant (|
+                                                                Ty.path
+                                                                  "move_binary_format::file_format::AbilitySet",
+                                                                "EMPTY",
+                                                                Ty.path
+                                                                  "move_binary_format::file_format::AbilitySet"
+                                                              |)
                                                             |);
                                                             Value.StructTuple
                                                               "move_binary_format::file_format::Ability::Store"
@@ -26246,8 +26352,13 @@ Module deserializer.
                                                         γ,
                                                         "move_binary_format::deserializer::DeprecatedKind::ALL"
                                                       |) in
-                                                    M.get_constant
-                                                      "move_binary_format::file_format::EMPTY"));
+                                                    get_associated_constant (|
+                                                      Ty.path
+                                                        "move_binary_format::file_format::AbilitySet",
+                                                      "EMPTY",
+                                                      Ty.path
+                                                        "move_binary_format::file_format::AbilitySet"
+                                                    |)));
                                                 fun γ =>
                                                   ltac:(M.monadic
                                                     (let _ :=
@@ -26291,8 +26402,13 @@ Module deserializer.
                                                             |),
                                                             [
                                                               M.read (|
-                                                                M.get_constant
-                                                                  "move_binary_format::file_format::EMPTY"
+                                                                get_associated_constant (|
+                                                                  Ty.path
+                                                                    "move_binary_format::file_format::AbilitySet",
+                                                                  "EMPTY",
+                                                                  Ty.path
+                                                                    "move_binary_format::file_format::AbilitySet"
+                                                                |)
                                                               |);
                                                               Value.StructTuple
                                                                 "move_binary_format::file_format::Ability::Copy"
@@ -26331,8 +26447,13 @@ Module deserializer.
                                                         |),
                                                         [
                                                           M.read (|
-                                                            M.get_constant
-                                                              "move_binary_format::file_format::EMPTY"
+                                                            get_associated_constant (|
+                                                              Ty.path
+                                                                "move_binary_format::file_format::AbilitySet",
+                                                              "EMPTY",
+                                                              Ty.path
+                                                                "move_binary_format::file_format::AbilitySet"
+                                                            |)
                                                           |);
                                                           Value.StructTuple
                                                             "move_binary_format::file_format::Ability::Key"
@@ -26495,7 +26616,13 @@ Module deserializer.
                                           |),
                                           [
                                             M.read (|
-                                              M.get_constant "move_binary_format::file_format::ALL"
+                                              get_associated_constant (|
+                                                Ty.path
+                                                  "move_binary_format::file_format::AbilitySet",
+                                                "ALL",
+                                                Ty.path
+                                                  "move_binary_format::file_format::AbilitySet"
+                                              |)
                                             |)
                                           ]
                                         |))
@@ -26644,7 +26771,7 @@ Module deserializer.
     end.
   
   Global Instance Instance_IsFunction_load_ability_set :
-    M.IsFunction.Trait "move_binary_format::deserializer::load_ability_set" load_ability_set.
+    M.IsFunction.C "move_binary_format::deserializer::load_ability_set" load_ability_set.
   Admitted.
   Global Typeclasses Opaque load_ability_set.
   
@@ -27100,7 +27227,7 @@ Module deserializer.
     end.
   
   Global Instance Instance_IsFunction_load_ability_sets :
-    M.IsFunction.Trait "move_binary_format::deserializer::load_ability_sets" load_ability_sets.
+    M.IsFunction.C "move_binary_format::deserializer::load_ability_sets" load_ability_sets.
   Admitted.
   Global Typeclasses Opaque load_ability_sets.
   
@@ -27561,7 +27688,7 @@ Module deserializer.
     end.
   
   Global Instance Instance_IsFunction_load_struct_type_parameters :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "move_binary_format::deserializer::load_struct_type_parameters"
       load_struct_type_parameters.
   Admitted.
@@ -27744,8 +27871,10 @@ Module deserializer.
                                     ]
                                   |),
                                   M.read (|
-                                    M.get_constant
-                                      "move_binary_format::file_format_common::VERSION_3"
+                                    get_constant (|
+                                      "move_binary_format::file_format_common::VERSION_3",
+                                      Ty.path "u32"
+                                    |)
                                   |)
                                 |)
                               |)) in
@@ -27906,7 +28035,7 @@ Module deserializer.
     end.
   
   Global Instance Instance_IsFunction_load_struct_type_parameter :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "move_binary_format::deserializer::load_struct_type_parameter"
       load_struct_type_parameter.
   Admitted.
@@ -28674,7 +28803,7 @@ Module deserializer.
     end.
   
   Global Instance Instance_IsFunction_load_struct_defs :
-    M.IsFunction.Trait "move_binary_format::deserializer::load_struct_defs" load_struct_defs.
+    M.IsFunction.C "move_binary_format::deserializer::load_struct_defs" load_struct_defs.
   Admitted.
   Global Typeclasses Opaque load_struct_defs.
   
@@ -29124,7 +29253,7 @@ Module deserializer.
     end.
   
   Global Instance Instance_IsFunction_load_field_defs :
-    M.IsFunction.Trait "move_binary_format::deserializer::load_field_defs" load_field_defs.
+    M.IsFunction.C "move_binary_format::deserializer::load_field_defs" load_field_defs.
   Admitted.
   Global Typeclasses Opaque load_field_defs.
   
@@ -29405,7 +29534,7 @@ Module deserializer.
     end.
   
   Global Instance Instance_IsFunction_load_field_def :
-    M.IsFunction.Trait "move_binary_format::deserializer::load_field_def" load_field_def.
+    M.IsFunction.C "move_binary_format::deserializer::load_field_def" load_field_def.
   Admitted.
   Global Typeclasses Opaque load_field_def.
   
@@ -29708,7 +29837,7 @@ Module deserializer.
     end.
   
   Global Instance Instance_IsFunction_load_function_defs :
-    M.IsFunction.Trait "move_binary_format::deserializer::load_function_defs" load_function_defs.
+    M.IsFunction.C "move_binary_format::deserializer::load_function_defs" load_function_defs.
   Admitted.
   Global Typeclasses Opaque load_function_defs.
   
@@ -30132,7 +30261,7 @@ Module deserializer.
     end.
   
   Global Instance Instance_IsFunction_load_field_handles :
-    M.IsFunction.Trait "move_binary_format::deserializer::load_field_handles" load_field_handles.
+    M.IsFunction.C "move_binary_format::deserializer::load_field_handles" load_field_handles.
   Admitted.
   Global Typeclasses Opaque load_field_handles.
   
@@ -30557,7 +30686,7 @@ Module deserializer.
     end.
   
   Global Instance Instance_IsFunction_load_field_instantiations :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "move_binary_format::deserializer::load_field_instantiations"
       load_field_instantiations.
   Admitted.
@@ -31011,7 +31140,10 @@ Module deserializer.
                                   ]
                                 |),
                                 M.read (|
-                                  M.get_constant "move_binary_format::file_format_common::VERSION_1"
+                                  get_constant (|
+                                    "move_binary_format::file_format_common::VERSION_1",
+                                    Ty.path "u32"
+                                  |)
                                 |)
                               |)
                             |)) in
@@ -31032,8 +31164,12 @@ Module deserializer.
                                             BinOp.bit_and
                                               (M.read (| flags |))
                                               (M.read (|
-                                                M.get_constant
-                                                  "move_binary_format::file_format::DEPRECATED_PUBLIC_BIT"
+                                                get_associated_constant (|
+                                                  Ty.path
+                                                    "move_binary_format::file_format::FunctionDefinition",
+                                                  "DEPRECATED_PUBLIC_BIT",
+                                                  Ty.path "u8"
+                                                |)
                                               |)),
                                             Value.Integer IntegerKind.U8 0
                                           |)
@@ -31051,8 +31187,12 @@ Module deserializer.
                                           BinOp.bit_xor
                                             (M.read (| β |))
                                             (M.read (|
-                                              M.get_constant
-                                                "move_binary_format::file_format::DEPRECATED_PUBLIC_BIT"
+                                              get_associated_constant (|
+                                                Ty.path
+                                                  "move_binary_format::file_format::FunctionDefinition",
+                                                "DEPRECATED_PUBLIC_BIT",
+                                                Ty.path "u8"
+                                              |)
                                             |))
                                         |)
                                       |) in
@@ -31109,8 +31249,10 @@ Module deserializer.
                                           ]
                                         |),
                                         M.read (|
-                                          M.get_constant
-                                            "move_binary_format::file_format_common::VERSION_5"
+                                          get_constant (|
+                                            "move_binary_format::file_format_common::VERSION_5",
+                                            Ty.path "u32"
+                                          |)
                                         |)
                                       |)
                                     |)) in
@@ -31138,8 +31280,12 @@ Module deserializer.
                                                 BinOp.eq (|
                                                   M.read (| flags |),
                                                   M.read (|
-                                                    M.get_constant
-                                                      "move_binary_format::file_format::DEPRECATED_SCRIPT"
+                                                    get_associated_constant (|
+                                                      Ty.path
+                                                        "move_binary_format::file_format::Visibility",
+                                                      "DEPRECATED_SCRIPT",
+                                                      Ty.path "u8"
+                                                    |)
                                                   |)
                                                 |)
                                               |)) in
@@ -32145,7 +32291,12 @@ Module deserializer.
                                       BinOp.bit_and
                                         (M.read (| extra_flags |))
                                         (M.read (|
-                                          M.get_constant "move_binary_format::file_format::ENTRY"
+                                          get_associated_constant (|
+                                            Ty.path
+                                              "move_binary_format::file_format::FunctionDefinition",
+                                            "ENTRY",
+                                            Ty.path "u8"
+                                          |)
                                         |)),
                                       Value.Integer IntegerKind.U8 0
                                     |)
@@ -32171,8 +32322,12 @@ Module deserializer.
                                                 BinOp.bit_xor
                                                   (M.read (| β |))
                                                   (M.read (|
-                                                    M.get_constant
-                                                      "move_binary_format::file_format::ENTRY"
+                                                    get_associated_constant (|
+                                                      Ty.path
+                                                        "move_binary_format::file_format::FunctionDefinition",
+                                                      "ENTRY",
+                                                      Ty.path "u8"
+                                                    |)
                                                   |))
                                               |)
                                             |) in
@@ -32385,8 +32540,12 @@ Module deserializer.
                                           BinOp.bit_and
                                             (M.read (| extra_flags |))
                                             (M.read (|
-                                              M.get_constant
-                                                "move_binary_format::file_format::NATIVE"
+                                              get_associated_constant (|
+                                                Ty.path
+                                                  "move_binary_format::file_format::FunctionDefinition",
+                                                "NATIVE",
+                                                Ty.path "u8"
+                                              |)
                                             |)),
                                           Value.Integer IntegerKind.U8 0
                                         |)
@@ -32404,7 +32563,12 @@ Module deserializer.
                                         BinOp.bit_xor
                                           (M.read (| β |))
                                           (M.read (|
-                                            M.get_constant "move_binary_format::file_format::NATIVE"
+                                            get_associated_constant (|
+                                              Ty.path
+                                                "move_binary_format::file_format::FunctionDefinition",
+                                              "NATIVE",
+                                              Ty.path "u8"
+                                            |)
                                           |))
                                       |)
                                     |) in
@@ -32628,7 +32792,7 @@ Module deserializer.
     end.
   
   Global Instance Instance_IsFunction_load_function_def :
-    M.IsFunction.Trait "move_binary_format::deserializer::load_function_def" load_function_def.
+    M.IsFunction.C "move_binary_format::deserializer::load_function_def" load_function_def.
   Admitted.
   Global Typeclasses Opaque load_function_def.
   
@@ -33082,7 +33246,7 @@ Module deserializer.
     end.
   
   Global Instance Instance_IsFunction_load_struct_definition_indices :
-    M.IsFunction.Trait
+    M.IsFunction.C
       "move_binary_format::deserializer::load_struct_definition_indices"
       load_struct_definition_indices.
   Admitted.
@@ -33389,7 +33553,7 @@ Module deserializer.
     end.
   
   Global Instance Instance_IsFunction_load_code_unit :
-    M.IsFunction.Trait "move_binary_format::deserializer::load_code_unit" load_code_unit.
+    M.IsFunction.C "move_binary_format::deserializer::load_code_unit" load_code_unit.
   Admitted.
   Global Typeclasses Opaque load_code_unit.
   
@@ -34198,8 +34362,10 @@ Module deserializer.
                                                                   ]
                                                                 |),
                                                                 M.read (|
-                                                                  M.get_constant
-                                                                    "move_binary_format::file_format_common::VERSION_4"
+                                                                  get_constant (|
+                                                                    "move_binary_format::file_format_common::VERSION_4",
+                                                                    Ty.path "u32"
+                                                                  |)
                                                                 |)
                                                               |)
                                                             |)) in
@@ -34329,8 +34495,11 @@ Module deserializer.
                                                                                                             M.deref (|
                                                                                                               M.borrow (|
                                                                                                                 Pointer.Kind.Ref,
-                                                                                                                M.get_constant
-                                                                                                                  "move_binary_format::file_format_common::VERSION_4"
+                                                                                                                get_constant (|
+                                                                                                                  "move_binary_format::file_format_common::VERSION_4",
+                                                                                                                  Ty.path
+                                                                                                                    "u32"
+                                                                                                                |)
                                                                                                               |)
                                                                                                             |)
                                                                                                           |)
@@ -34452,8 +34621,10 @@ Module deserializer.
                                                         ]
                                                       |),
                                                       M.read (|
-                                                        M.get_constant
-                                                          "move_binary_format::file_format_common::VERSION_6"
+                                                        get_constant (|
+                                                          "move_binary_format::file_format_common::VERSION_6",
+                                                          Ty.path "u32"
+                                                        |)
                                                       |)
                                                     |)
                                                   |) in
@@ -41831,7 +42002,7 @@ Module deserializer.
     end.
   
   Global Instance Instance_IsFunction_load_code :
-    M.IsFunction.Trait "move_binary_format::deserializer::load_code" load_code.
+    M.IsFunction.C "move_binary_format::deserializer::load_code" load_code.
   Admitted.
   Global Typeclasses Opaque load_code.
   
@@ -42145,8 +42316,7 @@ Module deserializer.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_from_u8 :
-      M.IsAssociatedFunction.Trait Self "from_u8" from_u8.
+    Global Instance AssociatedFunction_from_u8 : M.IsAssociatedFunction.C Self "from_u8" from_u8.
     Admitted.
     Global Typeclasses Opaque from_u8.
   End Impl_move_binary_format_file_format_common_TableType.
@@ -42461,8 +42631,7 @@ Module deserializer.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_from_u8 :
-      M.IsAssociatedFunction.Trait Self "from_u8" from_u8.
+    Global Instance AssociatedFunction_from_u8 : M.IsAssociatedFunction.C Self "from_u8" from_u8.
     Admitted.
     Global Typeclasses Opaque from_u8.
   End Impl_move_binary_format_file_format_common_SerializedType.
@@ -42690,8 +42859,7 @@ Module deserializer.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_from_u8 :
-      M.IsAssociatedFunction.Trait Self "from_u8" from_u8.
+    Global Instance AssociatedFunction_from_u8 : M.IsAssociatedFunction.C Self "from_u8" from_u8.
     Admitted.
     Global Typeclasses Opaque from_u8.
   End Impl_move_binary_format_deserializer_DeprecatedNominalResourceFlag.
@@ -42832,8 +43000,7 @@ Module deserializer.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_from_u8 :
-      M.IsAssociatedFunction.Trait Self "from_u8" from_u8.
+    Global Instance AssociatedFunction_from_u8 : M.IsAssociatedFunction.C Self "from_u8" from_u8.
     Admitted.
     Global Typeclasses Opaque from_u8.
   End Impl_move_binary_format_deserializer_DeprecatedKind.
@@ -42928,8 +43095,7 @@ Module deserializer.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_from_u8 :
-      M.IsAssociatedFunction.Trait Self "from_u8" from_u8.
+    Global Instance AssociatedFunction_from_u8 : M.IsAssociatedFunction.C Self "from_u8" from_u8.
     Admitted.
     Global Typeclasses Opaque from_u8.
   End Impl_move_binary_format_file_format_common_SerializedNativeStructFlag.
@@ -44280,8 +44446,7 @@ Module deserializer.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_from_u8 :
-      M.IsAssociatedFunction.Trait Self "from_u8" from_u8.
+    Global Instance AssociatedFunction_from_u8 : M.IsAssociatedFunction.C Self "from_u8" from_u8.
     Admitted.
     Global Typeclasses Opaque from_u8.
   End Impl_move_binary_format_file_format_common_Opcodes.
@@ -44798,8 +44963,12 @@ Module deserializer.
                                           BinOp.ne (|
                                             M.read (| count |),
                                             M.read (|
-                                              M.get_constant
-                                                "move_binary_format::file_format_common::MOVE_MAGIC_SIZE"
+                                              get_associated_constant (|
+                                                Ty.path
+                                                  "move_binary_format::file_format_common::BinaryConstants",
+                                                "MOVE_MAGIC_SIZE",
+                                                Ty.path "usize"
+                                              |)
                                             |)
                                           |),
                                           ltac:(M.monadic
@@ -44826,8 +44995,15 @@ Module deserializer.
                                                 M.borrow (| Pointer.Kind.Ref, magic |);
                                                 M.borrow (|
                                                   Pointer.Kind.Ref,
-                                                  M.get_constant
-                                                    "move_binary_format::file_format_common::MOVE_MAGIC"
+                                                  get_associated_constant (|
+                                                    Ty.path
+                                                      "move_binary_format::file_format_common::BinaryConstants",
+                                                    "MOVE_MAGIC",
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ Value.Integer IntegerKind.Usize 4 ]
+                                                      [ Ty.path "u8" ]
+                                                  |)
                                                 |)
                                               ]
                                             |)))
@@ -45067,8 +45243,10 @@ Module deserializer.
                                             |)
                                           |);
                                           M.read (|
-                                            M.get_constant
-                                              "move_binary_format::file_format_common::VERSION_MAX"
+                                            get_constant (|
+                                              "move_binary_format::file_format_common::VERSION_MAX",
+                                              Ty.path "u32"
+                                            |)
                                           |)
                                         ]
                                       |)
@@ -45818,7 +45996,7 @@ Module deserializer.
       end.
     
     Global Instance AssociatedFunction_initialize :
-      M.IsAssociatedFunction.Trait Self "initialize" initialize.
+      M.IsAssociatedFunction.C Self "initialize" initialize.
     Admitted.
     Global Typeclasses Opaque initialize.
     
@@ -45842,8 +46020,7 @@ Module deserializer.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_version :
-      M.IsAssociatedFunction.Trait Self "version" version.
+    Global Instance AssociatedFunction_version : M.IsAssociatedFunction.C Self "version" version.
     Admitted.
     Global Typeclasses Opaque version.
     
@@ -45868,7 +46045,7 @@ Module deserializer.
       end.
     
     Global Instance AssociatedFunction_module_idx :
-      M.IsAssociatedFunction.Trait Self "module_idx" module_idx.
+      M.IsAssociatedFunction.C Self "module_idx" module_idx.
     Admitted.
     Global Typeclasses Opaque module_idx.
     
@@ -45893,7 +46070,7 @@ Module deserializer.
       end.
     
     Global Instance AssociatedFunction_binary_end_offset :
-      M.IsAssociatedFunction.Trait Self "binary_end_offset" binary_end_offset.
+      M.IsAssociatedFunction.C Self "binary_end_offset" binary_end_offset.
     Admitted.
     Global Typeclasses Opaque binary_end_offset.
     
@@ -46021,7 +46198,7 @@ Module deserializer.
       end.
     
     Global Instance AssociatedFunction_new_cursor :
-      M.IsAssociatedFunction.Trait Self "new_cursor" new_cursor.
+      M.IsAssociatedFunction.C Self "new_cursor" new_cursor.
     Admitted.
     Global Typeclasses Opaque new_cursor.
     
@@ -46102,7 +46279,7 @@ Module deserializer.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_slice : M.IsAssociatedFunction.Trait Self "slice" slice.
+    Global Instance AssociatedFunction_slice : M.IsAssociatedFunction.C Self "slice" slice.
     Admitted.
     Global Typeclasses Opaque slice.
     
@@ -46139,7 +46316,7 @@ Module deserializer.
       end.
     
     Global Instance AssociatedFunction_check_no_extraneous_bytes :
-      M.IsAssociatedFunction.Trait Self "check_no_extraneous_bytes" check_no_extraneous_bytes.
+      M.IsAssociatedFunction.C Self "check_no_extraneous_bytes" check_no_extraneous_bytes.
     Admitted.
     Global Typeclasses Opaque check_no_extraneous_bytes.
   End Impl_move_binary_format_deserializer_VersionedBinary.
@@ -46167,8 +46344,7 @@ Module deserializer.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_version :
-      M.IsAssociatedFunction.Trait Self "version" version.
+    Global Instance AssociatedFunction_version : M.IsAssociatedFunction.C Self "version" version.
     Admitted.
     Global Typeclasses Opaque version.
     
@@ -46207,8 +46383,7 @@ Module deserializer.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_position :
-      M.IsAssociatedFunction.Trait Self "position" position.
+    Global Instance AssociatedFunction_position : M.IsAssociatedFunction.C Self "position" position.
     Admitted.
     Global Typeclasses Opaque position.
     
@@ -46244,8 +46419,7 @@ Module deserializer.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_read_u8 :
-      M.IsAssociatedFunction.Trait Self "read_u8" read_u8.
+    Global Instance AssociatedFunction_read_u8 : M.IsAssociatedFunction.C Self "read_u8" read_u8.
     Admitted.
     Global Typeclasses Opaque read_u8.
     
@@ -46294,7 +46468,7 @@ Module deserializer.
       end.
     
     Global Instance AssociatedFunction_set_position :
-      M.IsAssociatedFunction.Trait Self "set_position" set_position.
+      M.IsAssociatedFunction.C Self "set_position" set_position.
     Admitted.
     Global Typeclasses Opaque set_position.
     
@@ -46330,8 +46504,7 @@ Module deserializer.
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
-    Global Instance AssociatedFunction_read_u32 :
-      M.IsAssociatedFunction.Trait Self "read_u32" read_u32.
+    Global Instance AssociatedFunction_read_u32 : M.IsAssociatedFunction.C Self "read_u32" read_u32.
     Admitted.
     Global Typeclasses Opaque read_u32.
     
@@ -46372,7 +46545,7 @@ Module deserializer.
       end.
     
     Global Instance AssociatedFunction_read_uleb128_as_u64 :
-      M.IsAssociatedFunction.Trait Self "read_uleb128_as_u64" read_uleb128_as_u64.
+      M.IsAssociatedFunction.C Self "read_uleb128_as_u64" read_uleb128_as_u64.
     Admitted.
     Global Typeclasses Opaque read_uleb128_as_u64.
   End Impl_move_binary_format_deserializer_VersionedCursor.

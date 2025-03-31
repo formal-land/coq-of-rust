@@ -329,7 +329,11 @@ Module slice.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
-                            M.use (M.get_constant "core::mem::SizedTypeProperties::IS_ZST") in
+                            M.use
+                              (get_constant (|
+                                "core::mem::SizedTypeProperties::IS_ZST",
+                                Ty.path "bool"
+                              |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
@@ -385,7 +389,7 @@ Module slice.
       
       Global Instance AssociatedFunction_new :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+        M.IsAssociatedFunction.C (Self T) "new" (new T).
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -420,7 +424,7 @@ Module slice.
       
       Global Instance AssociatedFunction_as_slice :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "as_slice" (as_slice T).
+        M.IsAssociatedFunction.C (Self T) "as_slice" (as_slice T).
       Admitted.
       Global Typeclasses Opaque as_slice.
     End Impl_core_slice_iter_Iter_T.
@@ -761,7 +765,11 @@ Module slice.
                       fun γ =>
                         ltac:(M.monadic
                           (let γ :=
-                            M.use (M.get_constant "core::mem::SizedTypeProperties::IS_ZST") in
+                            M.use
+                              (get_constant (|
+                                "core::mem::SizedTypeProperties::IS_ZST",
+                                Ty.path "bool"
+                              |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
@@ -815,7 +823,7 @@ Module slice.
       
       Global Instance AssociatedFunction_new :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+        M.IsAssociatedFunction.C (Self T) "new" (new T).
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -873,8 +881,10 @@ Module slice.
                                     ltac:(M.monadic
                                       (let γ :=
                                         M.use
-                                          (M.get_constant
-                                            "core::mem::SizedTypeProperties::IS_ZST") in
+                                          (get_constant (|
+                                            "core::mem::SizedTypeProperties::IS_ZST",
+                                            Ty.path "bool"
+                                          |)) in
                                       let _ :=
                                         M.is_constant_or_break_match (|
                                           M.read (| γ |),
@@ -988,7 +998,7 @@ Module slice.
       
       Global Instance AssociatedFunction_into_slice :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "into_slice" (into_slice T).
+        M.IsAssociatedFunction.C (Self T) "into_slice" (into_slice T).
       Admitted.
       Global Typeclasses Opaque into_slice.
       
@@ -1023,7 +1033,7 @@ Module slice.
       
       Global Instance AssociatedFunction_as_slice :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "as_slice" (as_slice T).
+        M.IsAssociatedFunction.C (Self T) "as_slice" (as_slice T).
       Admitted.
       Global Typeclasses Opaque as_slice.
       
@@ -1086,8 +1096,10 @@ Module slice.
                                     ltac:(M.monadic
                                       (let γ :=
                                         M.use
-                                          (M.get_constant
-                                            "core::mem::SizedTypeProperties::IS_ZST") in
+                                          (get_constant (|
+                                            "core::mem::SizedTypeProperties::IS_ZST",
+                                            Ty.path "bool"
+                                          |)) in
                                       let _ :=
                                         M.is_constant_or_break_match (|
                                           M.read (| γ |),
@@ -1201,7 +1213,7 @@ Module slice.
       
       Global Instance AssociatedFunction_as_mut_slice :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "as_mut_slice" (as_mut_slice T).
+        M.IsAssociatedFunction.C (Self T) "as_mut_slice" (as_mut_slice T).
       Admitted.
       Global Typeclasses Opaque as_mut_slice.
     End Impl_core_slice_iter_IterMut_T.
@@ -1292,7 +1304,7 @@ Module slice.
       
       Global Instance AssociatedFunction_new :
         forall (T P : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T P) "new" (new T P).
+        M.IsAssociatedFunction.C (Self T P) "new" (new T P).
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -1359,7 +1371,7 @@ Module slice.
       
       Global Instance AssociatedFunction_as_slice :
         forall (T P : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T P) "as_slice" (as_slice T P).
+        M.IsAssociatedFunction.C (Self T P) "as_slice" (as_slice T P).
       Admitted.
       Global Typeclasses Opaque as_slice.
     End Impl_core_slice_iter_Split_T_P.
@@ -2485,7 +2497,7 @@ Module slice.
       
       Global Instance AssociatedFunction_new :
         forall (T P : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T P) "new" (new T P).
+        M.IsAssociatedFunction.C (Self T P) "new" (new T P).
       Admitted.
       Global Typeclasses Opaque new.
     End Impl_core_slice_iter_SplitInclusive_T_P.
@@ -3728,7 +3740,7 @@ Module slice.
       
       Global Instance AssociatedFunction_new :
         forall (T P : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T P) "new" (new T P).
+        M.IsAssociatedFunction.C (Self T P) "new" (new T P).
       Admitted.
       Global Typeclasses Opaque new.
     End Impl_core_slice_iter_SplitMut_T_P.
@@ -4868,7 +4880,7 @@ Module slice.
       
       Global Instance AssociatedFunction_new :
         forall (T P : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T P) "new" (new T P).
+        M.IsAssociatedFunction.C (Self T P) "new" (new T P).
       Admitted.
       Global Typeclasses Opaque new.
     End Impl_core_slice_iter_SplitInclusiveMut_T_P.
@@ -6016,7 +6028,7 @@ Module slice.
       
       Global Instance AssociatedFunction_new :
         forall (T P : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T P) "new" (new T P).
+        M.IsAssociatedFunction.C (Self T P) "new" (new T P).
       Admitted.
       Global Typeclasses Opaque new.
     End Impl_core_slice_iter_RSplit_T_P.
@@ -6484,7 +6496,7 @@ Module slice.
       
       Global Instance AssociatedFunction_new :
         forall (T P : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T P) "new" (new T P).
+        M.IsAssociatedFunction.C (Self T P) "new" (new T P).
       Admitted.
       Global Typeclasses Opaque new.
     End Impl_core_slice_iter_RSplitMut_T_P.
@@ -7270,7 +7282,7 @@ Module slice.
       
       Global Instance AssociatedFunction_new :
         forall (T P : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T P) "new" (new T P).
+        M.IsAssociatedFunction.C (Self T P) "new" (new T P).
       Admitted.
       Global Typeclasses Opaque new.
     End Impl_core_slice_iter_SplitN_T_P.
@@ -7410,7 +7422,7 @@ Module slice.
       
       Global Instance AssociatedFunction_new :
         forall (T P : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T P) "new" (new T P).
+        M.IsAssociatedFunction.C (Self T P) "new" (new T P).
       Admitted.
       Global Typeclasses Opaque new.
     End Impl_core_slice_iter_RSplitN_T_P.
@@ -7553,7 +7565,7 @@ Module slice.
       
       Global Instance AssociatedFunction_new :
         forall (T P : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T P) "new" (new T P).
+        M.IsAssociatedFunction.C (Self T P) "new" (new T P).
       Admitted.
       Global Typeclasses Opaque new.
     End Impl_core_slice_iter_SplitNMut_T_P.
@@ -7696,7 +7708,7 @@ Module slice.
       
       Global Instance AssociatedFunction_new :
         forall (T P : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T P) "new" (new T P).
+        M.IsAssociatedFunction.C (Self T P) "new" (new T P).
       Admitted.
       Global Typeclasses Opaque new.
     End Impl_core_slice_iter_RSplitNMut_T_P.
@@ -7903,7 +7915,7 @@ Module slice.
       
       Global Instance AssociatedFunction_new :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+        M.IsAssociatedFunction.C (Self T) "new" (new T).
       Admitted.
       Global Typeclasses Opaque new.
     End Impl_core_slice_iter_Windows_T.
@@ -9553,9 +9565,14 @@ Module slice.
       
       (*     const MAY_HAVE_SIDE_EFFECT: bool = false; *)
       (* Ty.path "bool" *)
-      Definition value_MAY_HAVE_SIDE_EFFECT (T : Ty.t) : Value.t :=
+      Definition value_MAY_HAVE_SIDE_EFFECT
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        M.run ltac:(M.monadic (M.alloc (| Value.Bool false |))).
+        ltac:(M.monadic (M.alloc (| Value.Bool false |))).
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -9565,7 +9582,7 @@ Module slice.
           (* Trait polymorphic types *) []
           (Self T)
           (* Instance *)
-          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant (value_MAY_HAVE_SIDE_EFFECT T)) ].
+          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Method (value_MAY_HAVE_SIDE_EFFECT T)) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_slice_iter_Windows_T.
     
     (* StructRecord
@@ -9676,7 +9693,7 @@ Module slice.
       
       Global Instance AssociatedFunction_new :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+        M.IsAssociatedFunction.C (Self T) "new" (new T).
       Admitted.
       Global Typeclasses Opaque new.
     End Impl_core_slice_iter_Chunks_T.
@@ -11404,9 +11421,14 @@ Module slice.
       
       (*     const MAY_HAVE_SIDE_EFFECT: bool = false; *)
       (* Ty.path "bool" *)
-      Definition value_MAY_HAVE_SIDE_EFFECT (T : Ty.t) : Value.t :=
+      Definition value_MAY_HAVE_SIDE_EFFECT
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        M.run ltac:(M.monadic (M.alloc (| Value.Bool false |))).
+        ltac:(M.monadic (M.alloc (| Value.Bool false |))).
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -11416,7 +11438,7 @@ Module slice.
           (* Trait polymorphic types *) []
           (Self T)
           (* Instance *)
-          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant (value_MAY_HAVE_SIDE_EFFECT T)) ].
+          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Method (value_MAY_HAVE_SIDE_EFFECT T)) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_slice_iter_Chunks_T.
     
     (* StructRecord
@@ -11552,7 +11574,7 @@ Module slice.
       
       Global Instance AssociatedFunction_new :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+        M.IsAssociatedFunction.C (Self T) "new" (new T).
       Admitted.
       Global Typeclasses Opaque new.
     End Impl_core_slice_iter_ChunksMut_T.
@@ -13247,9 +13269,14 @@ Module slice.
       
       (*     const MAY_HAVE_SIDE_EFFECT: bool = false; *)
       (* Ty.path "bool" *)
-      Definition value_MAY_HAVE_SIDE_EFFECT (T : Ty.t) : Value.t :=
+      Definition value_MAY_HAVE_SIDE_EFFECT
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        M.run ltac:(M.monadic (M.alloc (| Value.Bool false |))).
+        ltac:(M.monadic (M.alloc (| Value.Bool false |))).
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -13259,7 +13286,7 @@ Module slice.
           (* Trait polymorphic types *) []
           (Self T)
           (* Instance *)
-          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant (value_MAY_HAVE_SIDE_EFFECT T)) ].
+          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Method (value_MAY_HAVE_SIDE_EFFECT T)) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_slice_iter_ChunksMut_T.
     
     Module Impl_core_marker_Send_where_core_marker_Send_T_for_core_slice_iter_ChunksMut_T.
@@ -13490,7 +13517,7 @@ Module slice.
       
       Global Instance AssociatedFunction_new :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+        M.IsAssociatedFunction.C (Self T) "new" (new T).
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -13517,7 +13544,7 @@ Module slice.
       
       Global Instance AssociatedFunction_remainder :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "remainder" (remainder T).
+        M.IsAssociatedFunction.C (Self T) "remainder" (remainder T).
       Admitted.
       Global Typeclasses Opaque remainder.
     End Impl_core_slice_iter_ChunksExact_T.
@@ -14673,9 +14700,14 @@ Module slice.
       
       (*     const MAY_HAVE_SIDE_EFFECT: bool = false; *)
       (* Ty.path "bool" *)
-      Definition value_MAY_HAVE_SIDE_EFFECT (T : Ty.t) : Value.t :=
+      Definition value_MAY_HAVE_SIDE_EFFECT
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        M.run ltac:(M.monadic (M.alloc (| Value.Bool false |))).
+        ltac:(M.monadic (M.alloc (| Value.Bool false |))).
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -14685,7 +14717,7 @@ Module slice.
           (* Trait polymorphic types *) []
           (Self T)
           (* Instance *)
-          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant (value_MAY_HAVE_SIDE_EFFECT T)) ].
+          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Method (value_MAY_HAVE_SIDE_EFFECT T)) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_slice_iter_ChunksExact_T.
     
     (* StructRecord
@@ -14912,7 +14944,7 @@ Module slice.
       
       Global Instance AssociatedFunction_new :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+        M.IsAssociatedFunction.C (Self T) "new" (new T).
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -14954,7 +14986,7 @@ Module slice.
       
       Global Instance AssociatedFunction_into_remainder :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "into_remainder" (into_remainder T).
+        M.IsAssociatedFunction.C (Self T) "into_remainder" (into_remainder T).
       Admitted.
       Global Typeclasses Opaque into_remainder.
     End Impl_core_slice_iter_ChunksExactMut_T.
@@ -16101,9 +16133,14 @@ Module slice.
       
       (*     const MAY_HAVE_SIDE_EFFECT: bool = false; *)
       (* Ty.path "bool" *)
-      Definition value_MAY_HAVE_SIDE_EFFECT (T : Ty.t) : Value.t :=
+      Definition value_MAY_HAVE_SIDE_EFFECT
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        M.run ltac:(M.monadic (M.alloc (| Value.Bool false |))).
+        ltac:(M.monadic (M.alloc (| Value.Bool false |))).
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -16113,7 +16150,7 @@ Module slice.
           (* Trait polymorphic types *) []
           (Self T)
           (* Instance *)
-          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant (value_MAY_HAVE_SIDE_EFFECT T)) ].
+          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Method (value_MAY_HAVE_SIDE_EFFECT T)) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_slice_iter_ChunksExactMut_T.
     
     Module Impl_core_marker_Send_where_core_marker_Send_T_for_core_slice_iter_ChunksExactMut_T.
@@ -16433,7 +16470,7 @@ Module slice.
                         [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |) ]
                       |);
                       BinOp.Wrap.sub (|
-                        M.read (| M.get_constant "core::slice::iter::N" |),
+                        M.read (| get_constant (| "core::slice::iter::N", Ty.path "usize" |) |),
                         Value.Integer IntegerKind.Usize 1
                       |)
                     ]
@@ -16464,7 +16501,7 @@ Module slice.
       
       Global Instance AssociatedFunction_new :
         forall (N : Value.t) (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self N T) "new" (new N T).
+        M.IsAssociatedFunction.C (Self N T) "new" (new N T).
       Admitted.
       Global Typeclasses Opaque new.
     End Impl_core_slice_iter_ArrayWindows_N_T.
@@ -17563,7 +17600,7 @@ Module slice.
       
       Global Instance AssociatedFunction_new :
         forall (N : Value.t) (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self N T) "new" (new N T).
+        M.IsAssociatedFunction.C (Self N T) "new" (new N T).
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -17596,7 +17633,7 @@ Module slice.
       
       Global Instance AssociatedFunction_remainder :
         forall (N : Value.t) (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self N T) "remainder" (remainder N T).
+        M.IsAssociatedFunction.C (Self N T) "remainder" (remainder N T).
       Admitted.
       Global Typeclasses Opaque remainder.
     End Impl_core_slice_iter_ArrayChunks_N_T.
@@ -18216,9 +18253,15 @@ Module slice.
       
       (*     const MAY_HAVE_SIDE_EFFECT: bool = false; *)
       (* Ty.path "bool" *)
-      Definition value_MAY_HAVE_SIDE_EFFECT (N : Value.t) (T : Ty.t) : Value.t :=
+      Definition value_MAY_HAVE_SIDE_EFFECT
+          (N : Value.t)
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self N T in
-        M.run ltac:(M.monadic (M.alloc (| Value.Bool false |))).
+        ltac:(M.monadic (M.alloc (| Value.Bool false |))).
       
       Axiom Implements :
         forall (N : Value.t) (T : Ty.t),
@@ -18228,8 +18271,7 @@ Module slice.
           (* Trait polymorphic types *) []
           (Self N T)
           (* Instance *)
-          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant (value_MAY_HAVE_SIDE_EFFECT N T))
-          ].
+          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Method (value_MAY_HAVE_SIDE_EFFECT N T)) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_slice_iter_ArrayChunks_N_T.
     
     (* StructRecord
@@ -18418,7 +18460,7 @@ Module slice.
       
       Global Instance AssociatedFunction_new :
         forall (N : Value.t) (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self N T) "new" (new N T).
+        M.IsAssociatedFunction.C (Self N T) "new" (new N T).
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -18461,7 +18503,7 @@ Module slice.
       
       Global Instance AssociatedFunction_into_remainder :
         forall (N : Value.t) (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self N T) "into_remainder" (into_remainder N T).
+        M.IsAssociatedFunction.C (Self N T) "into_remainder" (into_remainder N T).
       Admitted.
       Global Typeclasses Opaque into_remainder.
     End Impl_core_slice_iter_ArrayChunksMut_N_T.
@@ -19016,9 +19058,15 @@ Module slice.
       
       (*     const MAY_HAVE_SIDE_EFFECT: bool = false; *)
       (* Ty.path "bool" *)
-      Definition value_MAY_HAVE_SIDE_EFFECT (N : Value.t) (T : Ty.t) : Value.t :=
+      Definition value_MAY_HAVE_SIDE_EFFECT
+          (N : Value.t)
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self N T in
-        M.run ltac:(M.monadic (M.alloc (| Value.Bool false |))).
+        ltac:(M.monadic (M.alloc (| Value.Bool false |))).
       
       Axiom Implements :
         forall (N : Value.t) (T : Ty.t),
@@ -19028,8 +19076,7 @@ Module slice.
           (* Trait polymorphic types *) []
           (Self N T)
           (* Instance *)
-          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant (value_MAY_HAVE_SIDE_EFFECT N T))
-          ].
+          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Method (value_MAY_HAVE_SIDE_EFFECT N T)) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_slice_iter_ArrayChunksMut_N_T.
     
     (* StructRecord
@@ -19140,7 +19187,7 @@ Module slice.
       
       Global Instance AssociatedFunction_new :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+        M.IsAssociatedFunction.C (Self T) "new" (new T).
       Admitted.
       Global Typeclasses Opaque new.
     End Impl_core_slice_iter_RChunks_T.
@@ -20796,9 +20843,14 @@ Module slice.
       
       (*     const MAY_HAVE_SIDE_EFFECT: bool = false; *)
       (* Ty.path "bool" *)
-      Definition value_MAY_HAVE_SIDE_EFFECT (T : Ty.t) : Value.t :=
+      Definition value_MAY_HAVE_SIDE_EFFECT
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        M.run ltac:(M.monadic (M.alloc (| Value.Bool false |))).
+        ltac:(M.monadic (M.alloc (| Value.Bool false |))).
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -20808,7 +20860,7 @@ Module slice.
           (* Trait polymorphic types *) []
           (Self T)
           (* Instance *)
-          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant (value_MAY_HAVE_SIDE_EFFECT T)) ].
+          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Method (value_MAY_HAVE_SIDE_EFFECT T)) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_slice_iter_RChunks_T.
     
     (* StructRecord
@@ -20944,7 +20996,7 @@ Module slice.
       
       Global Instance AssociatedFunction_new :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+        M.IsAssociatedFunction.C (Self T) "new" (new T).
       Admitted.
       Global Typeclasses Opaque new.
     End Impl_core_slice_iter_RChunksMut_T.
@@ -22594,9 +22646,14 @@ Module slice.
       
       (*     const MAY_HAVE_SIDE_EFFECT: bool = false; *)
       (* Ty.path "bool" *)
-      Definition value_MAY_HAVE_SIDE_EFFECT (T : Ty.t) : Value.t :=
+      Definition value_MAY_HAVE_SIDE_EFFECT
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        M.run ltac:(M.monadic (M.alloc (| Value.Bool false |))).
+        ltac:(M.monadic (M.alloc (| Value.Bool false |))).
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -22606,7 +22663,7 @@ Module slice.
           (* Trait polymorphic types *) []
           (Self T)
           (* Instance *)
-          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant (value_MAY_HAVE_SIDE_EFFECT T)) ].
+          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Method (value_MAY_HAVE_SIDE_EFFECT T)) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_slice_iter_RChunksMut_T.
     
     Module Impl_core_marker_Send_where_core_marker_Send_T_for_core_slice_iter_RChunksMut_T.
@@ -22820,7 +22877,7 @@ Module slice.
       
       Global Instance AssociatedFunction_new :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+        M.IsAssociatedFunction.C (Self T) "new" (new T).
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -22847,7 +22904,7 @@ Module slice.
       
       Global Instance AssociatedFunction_remainder :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "remainder" (remainder T).
+        M.IsAssociatedFunction.C (Self T) "remainder" (remainder T).
       Admitted.
       Global Typeclasses Opaque remainder.
     End Impl_core_slice_iter_RChunksExact_T.
@@ -24093,9 +24150,14 @@ Module slice.
       
       (*     const MAY_HAVE_SIDE_EFFECT: bool = false; *)
       (* Ty.path "bool" *)
-      Definition value_MAY_HAVE_SIDE_EFFECT (T : Ty.t) : Value.t :=
+      Definition value_MAY_HAVE_SIDE_EFFECT
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        M.run ltac:(M.monadic (M.alloc (| Value.Bool false |))).
+        ltac:(M.monadic (M.alloc (| Value.Bool false |))).
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -24105,7 +24167,7 @@ Module slice.
           (* Trait polymorphic types *) []
           (Self T)
           (* Instance *)
-          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant (value_MAY_HAVE_SIDE_EFFECT T)) ].
+          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Method (value_MAY_HAVE_SIDE_EFFECT T)) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_slice_iter_RChunksExact_T.
     
     (* StructRecord
@@ -24295,7 +24357,7 @@ Module slice.
       
       Global Instance AssociatedFunction_new :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "new" (new T).
+        M.IsAssociatedFunction.C (Self T) "new" (new T).
       Admitted.
       Global Typeclasses Opaque new.
       
@@ -24337,7 +24399,7 @@ Module slice.
       
       Global Instance AssociatedFunction_into_remainder :
         forall (T : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T) "into_remainder" (into_remainder T).
+        M.IsAssociatedFunction.C (Self T) "into_remainder" (into_remainder T).
       Admitted.
       Global Typeclasses Opaque into_remainder.
     End Impl_core_slice_iter_RChunksExactMut_T.
@@ -25535,9 +25597,14 @@ Module slice.
       
       (*     const MAY_HAVE_SIDE_EFFECT: bool = false; *)
       (* Ty.path "bool" *)
-      Definition value_MAY_HAVE_SIDE_EFFECT (T : Ty.t) : Value.t :=
+      Definition value_MAY_HAVE_SIDE_EFFECT
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        M.run ltac:(M.monadic (M.alloc (| Value.Bool false |))).
+        ltac:(M.monadic (M.alloc (| Value.Bool false |))).
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -25547,7 +25614,7 @@ Module slice.
           (* Trait polymorphic types *) []
           (Self T)
           (* Instance *)
-          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant (value_MAY_HAVE_SIDE_EFFECT T)) ].
+          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Method (value_MAY_HAVE_SIDE_EFFECT T)) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_slice_iter_RChunksExactMut_T.
     
     Module Impl_core_marker_Send_where_core_marker_Send_T_for_core_slice_iter_RChunksExactMut_T.
@@ -25596,9 +25663,14 @@ Module slice.
       
       (*     const MAY_HAVE_SIDE_EFFECT: bool = false; *)
       (* Ty.path "bool" *)
-      Definition value_MAY_HAVE_SIDE_EFFECT (T : Ty.t) : Value.t :=
+      Definition value_MAY_HAVE_SIDE_EFFECT
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        M.run ltac:(M.monadic (M.alloc (| Value.Bool false |))).
+        ltac:(M.monadic (M.alloc (| Value.Bool false |))).
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -25608,7 +25680,7 @@ Module slice.
           (* Trait polymorphic types *) []
           (Self T)
           (* Instance *)
-          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant (value_MAY_HAVE_SIDE_EFFECT T)) ].
+          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Method (value_MAY_HAVE_SIDE_EFFECT T)) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_slice_iter_Iter_T.
     
     Module Impl_core_iter_adapters_zip_TrustedRandomAccess_for_core_slice_iter_IterMut_T.
@@ -25629,9 +25701,14 @@ Module slice.
       
       (*     const MAY_HAVE_SIDE_EFFECT: bool = false; *)
       (* Ty.path "bool" *)
-      Definition value_MAY_HAVE_SIDE_EFFECT (T : Ty.t) : Value.t :=
+      Definition value_MAY_HAVE_SIDE_EFFECT
+          (T : Ty.t)
+          (ε : list Value.t)
+          (τ : list Ty.t)
+          (α : list Value.t)
+          : M :=
         let Self : Ty.t := Self T in
-        M.run ltac:(M.monadic (M.alloc (| Value.Bool false |))).
+        ltac:(M.monadic (M.alloc (| Value.Bool false |))).
       
       Axiom Implements :
         forall (T : Ty.t),
@@ -25641,7 +25718,7 @@ Module slice.
           (* Trait polymorphic types *) []
           (Self T)
           (* Instance *)
-          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Constant (value_MAY_HAVE_SIDE_EFFECT T)) ].
+          [ ("value_MAY_HAVE_SIDE_EFFECT", InstanceField.Method (value_MAY_HAVE_SIDE_EFFECT T)) ].
     End Impl_core_iter_adapters_zip_TrustedRandomAccessNoCoerce_for_core_slice_iter_IterMut_T.
     
     (* StructRecord
@@ -25683,7 +25760,7 @@ Module slice.
       
       Global Instance AssociatedFunction_new :
         forall (T P : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T P) "new" (new T P).
+        M.IsAssociatedFunction.C (Self T P) "new" (new T P).
       Admitted.
       Global Typeclasses Opaque new.
     End Impl_core_slice_iter_ChunkBy_T_P.
@@ -26613,7 +26690,7 @@ Module slice.
       
       Global Instance AssociatedFunction_new :
         forall (T P : Ty.t),
-        M.IsAssociatedFunction.Trait (Self T P) "new" (new T P).
+        M.IsAssociatedFunction.C (Self T P) "new" (new T P).
       Admitted.
       Global Typeclasses Opaque new.
     End Impl_core_slice_iter_ChunkByMut_T_P.

@@ -86,33 +86,33 @@ End Impl_core_fmt_Debug_for_combinators_and_then_Day.
 Parameter have_ingredients : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_have_ingredients :
-  M.IsFunction.Trait "combinators_and_then::have_ingredients" have_ingredients.
+  M.IsFunction.C "combinators_and_then::have_ingredients" have_ingredients.
 Admitted.
 
 Parameter have_recipe : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_have_recipe :
-  M.IsFunction.Trait "combinators_and_then::have_recipe" have_recipe.
+  M.IsFunction.C "combinators_and_then::have_recipe" have_recipe.
 Admitted.
 
 Parameter cookable_v1 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_cookable_v1 :
-  M.IsFunction.Trait "combinators_and_then::cookable_v1" cookable_v1.
+  M.IsFunction.C "combinators_and_then::cookable_v1" cookable_v1.
 Admitted.
 
 Parameter cookable_v2 : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_cookable_v2 :
-  M.IsFunction.Trait "combinators_and_then::cookable_v2" cookable_v2.
+  M.IsFunction.C "combinators_and_then::cookable_v2" cookable_v2.
 Admitted.
 
 Parameter eat : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_eat : M.IsFunction.Trait "combinators_and_then::eat" eat.
+Global Instance Instance_IsFunction_eat : M.IsFunction.C "combinators_and_then::eat" eat.
 Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "combinators_and_then::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "combinators_and_then::main" main.
 Admitted.

@@ -27,8 +27,7 @@ Definition sum (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_sum :
-  M.IsFunction.Trait "pattern_in_function_parameters::sum" sum.
+Global Instance Instance_IsFunction_sum : M.IsFunction.C "pattern_in_function_parameters::sum" sum.
 Admitted.
 Global Typeclasses Opaque sum.
 
@@ -230,6 +229,6 @@ Definition steps_between (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
   end.
 
 Global Instance Instance_IsFunction_steps_between :
-  M.IsFunction.Trait "pattern_in_function_parameters::steps_between" steps_between.
+  M.IsFunction.C "pattern_in_function_parameters::steps_between" steps_between.
 Admitted.
 Global Typeclasses Opaque steps_between.

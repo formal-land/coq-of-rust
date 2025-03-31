@@ -562,7 +562,7 @@ Module collections.
         
         Global Instance AssociatedFunction_new :
           forall (I : Ty.t),
-          M.IsAssociatedFunction.Trait (Self I) "new" (new I).
+          M.IsAssociatedFunction.C (Self I) "new" (new I).
         Admitted.
         Global Typeclasses Opaque new.
         
@@ -1149,7 +1149,7 @@ Module collections.
         
         Global Instance AssociatedFunction_nexts :
           forall (I : Ty.t),
-          M.IsAssociatedFunction.Trait (Self I) "nexts" (nexts I).
+          M.IsAssociatedFunction.C (Self I) "nexts" (nexts I).
         Admitted.
         Global Typeclasses Opaque nexts.
         
@@ -1371,7 +1371,7 @@ Module collections.
         
         Global Instance AssociatedFunction_lens :
           forall (I : Ty.t),
-          M.IsAssociatedFunction.Trait (Self I) "lens" (lens I).
+          M.IsAssociatedFunction.C (Self I) "lens" (lens I).
         Admitted.
         Global Typeclasses Opaque lens.
       End Impl_alloc_collections_btree_merge_iter_MergeIterInner_I.

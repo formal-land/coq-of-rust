@@ -1,15 +1,18 @@
 Require Import CoqOfRust.CoqOfRust.
 Require Import CoqOfRust.links.M.
 Require Import core.links.cmp.
+Require Import revm.revm_interpreter.gas.links.constants.
 Require Import revm.revm_interpreter.instructions.links.utility.
 Require Import revm.revm_interpreter.instructions.stack.
 Require Import revm.revm_interpreter.links.gas.
 Require Import revm.revm_interpreter.links.interpreter.
 Require Import revm.revm_interpreter.links.interpreter_types.
 Require Import revm.revm_specification.links.hardfork.
+Require Import ruint.links.lib.
 
 Import Impl_Gas.
 Import Impl_SpecId.
+Import Impl_Uint.
 
 (*
 pub fn pop<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -66,8 +69,7 @@ Proof.
   destruct run_StackTrait_for_Stack.
   destruct run_RuntimeFlag_for_RuntimeFlag.
   run_symbolic.
-  (* Constant ruint::ZERO *)
-Admitted.
+Defined.
 
 
 (*
@@ -99,7 +101,7 @@ Proof.
   destruct run_Jumps_for_Bytecode.
   destruct run_Immediates_for_Bytecode.
   run_symbolic.
-  (* Constant ruint::ZERO *)
+  (* Constant N *)
 Admitted.
 
 

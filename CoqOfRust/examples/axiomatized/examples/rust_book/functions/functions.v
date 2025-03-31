@@ -4,21 +4,21 @@ Require Import CoqOfRust.CoqOfRust.
 Parameter is_divisible_by : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_is_divisible_by :
-  M.IsFunction.Trait "functions::is_divisible_by" is_divisible_by.
+  M.IsFunction.C "functions::is_divisible_by" is_divisible_by.
 Admitted.
 
 Parameter fizzbuzz : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_fizzbuzz : M.IsFunction.Trait "functions::fizzbuzz" fizzbuzz.
+Global Instance Instance_IsFunction_fizzbuzz : M.IsFunction.C "functions::fizzbuzz" fizzbuzz.
 Admitted.
 
 Parameter fizzbuzz_to : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
 Global Instance Instance_IsFunction_fizzbuzz_to :
-  M.IsFunction.Trait "functions::fizzbuzz_to" fizzbuzz_to.
+  M.IsFunction.C "functions::fizzbuzz_to" fizzbuzz_to.
 Admitted.
 
 Parameter main : (list Value.t) -> (list Ty.t) -> (list Value.t) -> M.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "functions::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "functions::main" main.
 Admitted.

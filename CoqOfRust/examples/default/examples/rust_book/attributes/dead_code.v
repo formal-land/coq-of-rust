@@ -9,7 +9,7 @@ Definition used_function (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
   end.
 
 Global Instance Instance_IsFunction_used_function :
-  M.IsFunction.Trait "dead_code::used_function" used_function.
+  M.IsFunction.C "dead_code::used_function" used_function.
 Admitted.
 Global Typeclasses Opaque used_function.
 
@@ -21,7 +21,7 @@ Definition unused_function (ε : list Value.t) (τ : list Ty.t) (α : list Value
   end.
 
 Global Instance Instance_IsFunction_unused_function :
-  M.IsFunction.Trait "dead_code::unused_function" unused_function.
+  M.IsFunction.C "dead_code::unused_function" unused_function.
 Admitted.
 Global Typeclasses Opaque unused_function.
 
@@ -33,7 +33,7 @@ Definition noisy_unused_function (ε : list Value.t) (τ : list Ty.t) (α : list
   end.
 
 Global Instance Instance_IsFunction_noisy_unused_function :
-  M.IsFunction.Trait "dead_code::noisy_unused_function" noisy_unused_function.
+  M.IsFunction.C "dead_code::noisy_unused_function" noisy_unused_function.
 Admitted.
 Global Typeclasses Opaque noisy_unused_function.
 
@@ -60,6 +60,6 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 
-Global Instance Instance_IsFunction_main : M.IsFunction.Trait "dead_code::main" main.
+Global Instance Instance_IsFunction_main : M.IsFunction.C "dead_code::main" main.
 Admitted.
 Global Typeclasses Opaque main.

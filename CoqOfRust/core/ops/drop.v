@@ -25,7 +25,7 @@ Module ops.
       end.
     
     Global Instance Instance_IsFunction_fallback_surface_drop :
-      M.IsFunction.Trait "core::ops::drop::fallback_surface_drop" fallback_surface_drop.
+      M.IsFunction.C "core::ops::drop::fallback_surface_drop" fallback_surface_drop.
     Admitted.
     Global Typeclasses Opaque fallback_surface_drop.
   End drop.
