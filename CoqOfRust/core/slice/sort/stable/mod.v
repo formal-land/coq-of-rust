@@ -663,9 +663,7 @@ Module slice.
                     let~ len : Ty.path "usize" :=
                       M.alloc (|
                         BinOp.Wrap.div (|
-                          M.read (|
-                            get_constant (| "core::slice::sort::stable::N", Ty.path "usize" |)
-                          |),
+                          N,
                           M.call_closure (|
                             Ty.path "usize",
                             M.get_function (| "core::mem::size_of", [], [ T ] |),

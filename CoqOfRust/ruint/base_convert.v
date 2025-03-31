@@ -999,12 +999,7 @@ Module base_convert.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.eq (|
-                                  M.read (|
-                                    get_constant (| "ruint::base_convert::BITS", Ty.path "usize" |)
-                                  |),
-                                  Value.Integer IntegerKind.Usize 0
-                                |)
+                                BinOp.eq (| BITS, Value.Integer IntegerKind.Usize 0 |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1512,12 +1507,7 @@ Module base_convert.
                                                                       "limbs"
                                                                     |),
                                                                     BinOp.Wrap.sub (|
-                                                                      M.read (|
-                                                                        get_constant (|
-                                                                          "ruint::base_convert::LIMBS",
-                                                                          Ty.path "usize"
-                                                                        |)
-                                                                      |),
+                                                                      LIMBS,
                                                                       Value.Integer
                                                                         IntegerKind.Usize
                                                                         1
@@ -1612,12 +1602,7 @@ Module base_convert.
                                                                     "limbs"
                                                                   |),
                                                                   BinOp.Wrap.sub (|
-                                                                    M.read (|
-                                                                      get_constant (|
-                                                                        "ruint::base_convert::LIMBS",
-                                                                        Ty.path "usize"
-                                                                      |)
-                                                                    |),
+                                                                    LIMBS,
                                                                     Value.Integer
                                                                       IntegerKind.Usize
                                                                       1
@@ -2273,12 +2258,7 @@ Module base_convert.
                                                           ltac:(M.monadic
                                                             (LogicalOp.and (|
                                                               BinOp.ne (|
-                                                                M.read (|
-                                                                  get_constant (|
-                                                                    "ruint::base_convert::LIMBS",
-                                                                    Ty.path "usize"
-                                                                  |)
-                                                                |),
+                                                                LIMBS,
                                                                 Value.Integer IntegerKind.Usize 0
                                                               |),
                                                               ltac:(M.monadic
@@ -2291,12 +2271,7 @@ Module base_convert.
                                                                         "limbs"
                                                                       |),
                                                                       BinOp.Wrap.sub (|
-                                                                        M.read (|
-                                                                          get_constant (|
-                                                                            "ruint::base_convert::LIMBS",
-                                                                            Ty.path "usize"
-                                                                          |)
-                                                                        |),
+                                                                        LIMBS,
                                                                         Value.Integer
                                                                           IntegerKind.Usize
                                                                           1

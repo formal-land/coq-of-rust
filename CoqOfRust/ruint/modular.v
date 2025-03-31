@@ -415,12 +415,7 @@ Module modular.
                     M.call_closure (|
                       Ty.path "usize",
                       M.get_function (| "ruint::nlimbs", [], [] |),
-                      [
-                        BinOp.Wrap.mul (|
-                          Value.Integer IntegerKind.Usize 2,
-                          M.read (| get_constant (| "ruint::modular::BITS", Ty.path "usize" |) |)
-                        |)
-                      ]
+                      [ BinOp.Wrap.mul (| Value.Integer IntegerKind.Usize 2, BITS |) ]
                     |)
                   |) in
                 let~ _ : Ty.tuple [] :=
@@ -447,12 +442,7 @@ Module modular.
                                             BinOp.ge (|
                                               BinOp.Wrap.mul (|
                                                 Value.Integer IntegerKind.Usize 2,
-                                                M.read (|
-                                                  get_constant (|
-                                                    "ruint::modular::LIMBS",
-                                                    Ty.path "usize"
-                                                  |)
-                                                |)
+                                                LIMBS
                                               |),
                                               M.read (| product_len |)
                                             |)
@@ -1059,12 +1049,7 @@ Module modular.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.eq (|
-                                  M.read (|
-                                    get_constant (| "ruint::modular::BITS", Ty.path "usize" |)
-                                  |),
-                                  Value.Integer IntegerKind.Usize 0
-                                |)
+                                BinOp.eq (| BITS, Value.Integer IntegerKind.Usize 0 |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in

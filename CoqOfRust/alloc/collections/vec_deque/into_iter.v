@@ -1373,12 +1373,7 @@ Module collections.
                                                   |)
                                                 ]
                                               |),
-                                              M.read (|
-                                                get_constant (|
-                                                  "alloc::collections::vec_deque::into_iter::next_chunk::N",
-                                                  Ty.path "usize"
-                                                |)
-                                              |)
+                                              N
                                             |)
                                           |)) in
                                       let _ :=
@@ -1415,12 +1410,7 @@ Module collections.
                                                       ]
                                                     |);
                                                     M.read (| raw_arr_ptr |);
-                                                    M.read (|
-                                                      get_constant (|
-                                                        "alloc::collections::vec_deque::into_iter::next_chunk::N",
-                                                        Ty.path "usize"
-                                                      |)
-                                                    |)
+                                                    N
                                                   ]
                                                 |)
                                               |) in
@@ -1457,12 +1447,7 @@ Module collections.
                                                           "inner"
                                                         |)
                                                       |);
-                                                      M.read (|
-                                                        get_constant (|
-                                                          "alloc::collections::vec_deque::into_iter::next_chunk::N",
-                                                          Ty.path "usize"
-                                                        |)
-                                                      |)
+                                                      N
                                                     ]
                                                   |)
                                                 |)
@@ -1481,15 +1466,7 @@ Module collections.
                                                   |) in
                                                 M.write (|
                                                   β,
-                                                  BinOp.Wrap.sub (|
-                                                    M.read (| β |),
-                                                    M.read (|
-                                                      get_constant (|
-                                                        "alloc::collections::vec_deque::into_iter::next_chunk::N",
-                                                        Ty.path "usize"
-                                                      |)
-                                                    |)
-                                                  |)
+                                                  BinOp.Wrap.sub (| M.read (| β |), N |)
                                                 |)
                                               |) in
                                             M.return_ (|
@@ -1590,12 +1567,7 @@ Module collections.
                             let~ remaining : Ty.path "usize" :=
                               M.alloc (|
                                 BinOp.Wrap.sub (|
-                                  M.read (|
-                                    get_constant (|
-                                      "alloc::collections::vec_deque::into_iter::next_chunk::N",
-                                      Ty.path "usize"
-                                    |)
-                                  |),
+                                  N,
                                   M.call_closure (|
                                     Ty.path "usize",
                                     M.get_associated_function (|
@@ -1741,12 +1713,7 @@ Module collections.
                                                   "inner"
                                                 |)
                                               |);
-                                              M.read (|
-                                                get_constant (|
-                                                  "alloc::collections::vec_deque::into_iter::next_chunk::N",
-                                                  Ty.path "usize"
-                                                |)
-                                              |)
+                                              N
                                             ]
                                           |)
                                         |)
@@ -1763,18 +1730,7 @@ Module collections.
                                             "alloc::collections::vec_deque::VecDeque",
                                             "len"
                                           |) in
-                                        M.write (|
-                                          β,
-                                          BinOp.Wrap.sub (|
-                                            M.read (| β |),
-                                            M.read (|
-                                              get_constant (|
-                                                "alloc::collections::vec_deque::into_iter::next_chunk::N",
-                                                Ty.path "usize"
-                                              |)
-                                            |)
-                                          |)
-                                        |)
+                                        M.write (| β, BinOp.Wrap.sub (| M.read (| β |), N |) |)
                                       |) in
                                     M.alloc (|
                                       Value.StructTuple

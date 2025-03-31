@@ -755,13 +755,7 @@ Module map.
                                       |)
                                     |)
                                   |);
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    get_constant (|
-                                      "alloy_primitives::map::fixed::N",
-                                      Ty.path "usize"
-                                    |)
-                                  |)
+                                  M.borrow (| Pointer.Kind.Ref, M.alloc (| N |) |)
                                 ]
                             |),
                             [
@@ -875,12 +869,7 @@ Module map.
                                             |)
                                           ]
                                         |),
-                                        M.read (|
-                                          get_constant (|
-                                            "alloy_primitives::map::fixed::N",
-                                            Ty.path "usize"
-                                          |)
-                                        |)
+                                        N
                                       |)
                                     |)) in
                                 let _ :=
@@ -914,17 +903,7 @@ Module map.
                     ltac:(M.monadic
                       (let γ :=
                         M.use
-                          (M.alloc (|
-                            BinOp.gt (|
-                              M.read (|
-                                get_constant (|
-                                  "alloy_primitives::map::fixed::N",
-                                  Ty.path "usize"
-                                |)
-                              |),
-                              Value.Integer IntegerKind.Usize 32
-                            |)
-                          |)) in
+                          (M.alloc (| BinOp.gt (| N, Value.Integer IntegerKind.Usize 32 |) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ : Ty.tuple [] :=
                         M.alloc (|
@@ -1024,13 +1003,7 @@ Module map.
                               Value.Tuple
                                 [
                                   M.borrow (| Pointer.Kind.Ref, i |);
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    get_constant (|
-                                      "alloy_primitives::map::fixed::N",
-                                      Ty.path "usize"
-                                    |)
-                                  |)
+                                  M.borrow (| Pointer.Kind.Ref, M.alloc (| N |) |)
                                 ]
                             |),
                             [

@@ -944,9 +944,7 @@ Module slice.
                               |),
                               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |),
-                            M.read (|
-                              get_constant (| "core::slice::first_chunk::N", Ty.path "usize" |)
-                            |)
+                            N
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1058,9 +1056,7 @@ Module slice.
                               |),
                               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |),
-                            M.read (|
-                              get_constant (| "core::slice::first_chunk_mut::N", Ty.path "usize" |)
-                            |)
+                            N
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1185,12 +1181,7 @@ Module slice.
                               |),
                               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |),
-                            M.read (|
-                              get_constant (|
-                                "core::slice::split_first_chunk::N",
-                                Ty.path "usize"
-                              |)
-                            |)
+                            N
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1212,15 +1203,7 @@ Module slice.
                             [],
                             []
                           |),
-                          [
-                            M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |);
-                            M.read (|
-                              get_constant (|
-                                "core::slice::split_first_chunk::N",
-                                Ty.path "usize"
-                              |)
-                            |)
-                          ]
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |); N ]
                         |)
                       |),
                       [
@@ -1355,12 +1338,7 @@ Module slice.
                               |),
                               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |),
-                            M.read (|
-                              get_constant (|
-                                "core::slice::split_first_chunk_mut::N",
-                                Ty.path "usize"
-                              |)
-                            |)
+                            N
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1382,15 +1360,7 @@ Module slice.
                             [],
                             []
                           |),
-                          [
-                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
-                            M.read (|
-                              get_constant (|
-                                "core::slice::split_first_chunk_mut::N",
-                                Ty.path "usize"
-                              |)
-                            |)
-                          ]
+                          [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |); N ]
                         |)
                       |),
                       [
@@ -1527,9 +1497,7 @@ Module slice.
                               |),
                               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |),
-                            M.read (|
-                              get_constant (| "core::slice::split_last_chunk::N", Ty.path "usize" |)
-                            |)
+                            N
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1564,12 +1532,7 @@ Module slice.
                                 |),
                                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                               |),
-                              M.read (|
-                                get_constant (|
-                                  "core::slice::split_last_chunk::N",
-                                  Ty.path "usize"
-                                |)
-                              |)
+                              N
                             |)
                           ]
                         |)
@@ -1706,12 +1669,7 @@ Module slice.
                               |),
                               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |),
-                            M.read (|
-                              get_constant (|
-                                "core::slice::split_last_chunk_mut::N",
-                                Ty.path "usize"
-                              |)
-                            |)
+                            N
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1746,12 +1704,7 @@ Module slice.
                                 |),
                                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                               |),
-                              M.read (|
-                                get_constant (|
-                                  "core::slice::split_last_chunk_mut::N",
-                                  Ty.path "usize"
-                                |)
-                              |)
+                              N
                             |)
                           ]
                         |)
@@ -1880,9 +1833,7 @@ Module slice.
                               |),
                               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |),
-                            M.read (|
-                              get_constant (| "core::slice::last_chunk::N", Ty.path "usize" |)
-                            |)
+                            N
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1924,9 +1875,7 @@ Module slice.
                                       |)
                                     ]
                                   |),
-                                  M.read (|
-                                    get_constant (| "core::slice::last_chunk::N", Ty.path "usize" |)
-                                  |)
+                                  N
                                 |)
                               ]
                             |)
@@ -2043,9 +1992,7 @@ Module slice.
                               |),
                               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |),
-                            M.read (|
-                              get_constant (| "core::slice::last_chunk_mut::N", Ty.path "usize" |)
-                            |)
+                            N
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2100,12 +2047,7 @@ Module slice.
                                             |)
                                           ]
                                         |),
-                                        M.read (|
-                                          get_constant (|
-                                            "core::slice::last_chunk_mut::N",
-                                            Ty.path "usize"
-                                          |)
-                                        |)
+                                        N
                                       |)
                                     ]
                                   |)
@@ -2681,9 +2623,7 @@ Module slice.
                               |),
                               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |),
-                            M.read (|
-                              get_constant (| "core::slice::as_array::N", Ty.path "usize" |)
-                            |)
+                            N
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -2774,9 +2714,7 @@ Module slice.
                               |),
                               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |),
-                            M.read (|
-                              get_constant (| "core::slice::as_mut_array::N", Ty.path "usize" |)
-                            |)
+                            N
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -3751,12 +3689,7 @@ Module slice.
                               []
                             |),
                             [
-                              M.read (|
-                                get_constant (|
-                                  "core::slice::as_chunks_unchecked::N",
-                                  Ty.path "usize"
-                                |)
-                              |);
+                              N;
                               M.call_closure (|
                                 Ty.path "usize",
                                 M.get_associated_function (|
@@ -3790,9 +3723,7 @@ Module slice.
                       |),
                       [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                     |);
-                    M.read (|
-                      get_constant (| "core::slice::as_chunks_unchecked::N", Ty.path "usize" |)
-                    |)
+                    N
                   ]
                 |)
               |) in
@@ -3878,14 +3809,7 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.not (|
-                              BinOp.ne (|
-                                M.read (|
-                                  get_constant (| "core::slice::as_chunks::N", Ty.path "usize" |)
-                                |),
-                                Value.Integer IntegerKind.Usize 0
-                              |)
-                            |)
+                            UnOp.not (| BinOp.ne (| N, Value.Integer IntegerKind.Usize 0 |) |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -3937,9 +3861,9 @@ Module slice.
                       |),
                       [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                     |),
-                    M.read (| get_constant (| "core::slice::as_chunks::N", Ty.path "usize" |) |)
+                    N
                   |),
-                  M.read (| get_constant (| "core::slice::as_chunks::N", Ty.path "usize" |) |)
+                  N
                 |)
               |) in
             M.match_operator (|
@@ -4048,14 +3972,7 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.not (|
-                              BinOp.ne (|
-                                M.read (|
-                                  get_constant (| "core::slice::as_rchunks::N", Ty.path "usize" |)
-                                |),
-                                Value.Integer IntegerKind.Usize 0
-                              |)
-                            |)
+                            UnOp.not (| BinOp.ne (| N, Value.Integer IntegerKind.Usize 0 |) |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -4106,7 +4023,7 @@ Module slice.
                     |),
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |),
-                  M.read (| get_constant (| "core::slice::as_rchunks::N", Ty.path "usize" |) |)
+                  N
                 |)
               |) in
             M.match_operator (|
@@ -4137,12 +4054,7 @@ Module slice.
                         |),
                         [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                       |),
-                      BinOp.Wrap.mul (|
-                        M.read (| len |),
-                        M.read (|
-                          get_constant (| "core::slice::as_rchunks::N", Ty.path "usize" |)
-                        |)
-                      |)
+                      BinOp.Wrap.mul (| M.read (| len |), N |)
                     |)
                   ]
                 |)
@@ -4227,14 +4139,7 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.not (|
-                              BinOp.ne (|
-                                M.read (|
-                                  get_constant (| "core::slice::array_chunks::N", Ty.path "usize" |)
-                                |),
-                                Value.Integer IntegerKind.Usize 0
-                              |)
-                            |)
+                            UnOp.not (| BinOp.ne (| N, Value.Integer IntegerKind.Usize 0 |) |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -4352,12 +4257,7 @@ Module slice.
                                   []
                                 |),
                                 [
-                                  M.read (|
-                                    get_constant (|
-                                      "core::slice::as_chunks_unchecked_mut::N",
-                                      Ty.path "usize"
-                                    |)
-                                  |);
+                                  N;
                                   M.call_closure (|
                                     Ty.path "usize",
                                     M.get_associated_function (|
@@ -4396,12 +4296,7 @@ Module slice.
                           |),
                           [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                         |);
-                        M.read (|
-                          get_constant (|
-                            "core::slice::as_chunks_unchecked_mut::N",
-                            Ty.path "usize"
-                          |)
-                        |)
+                        N
                       ]
                     |)
                   |) in
@@ -4507,17 +4402,7 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.not (|
-                              BinOp.ne (|
-                                M.read (|
-                                  get_constant (|
-                                    "core::slice::as_chunks_mut::N",
-                                    Ty.path "usize"
-                                  |)
-                                |),
-                                Value.Integer IntegerKind.Usize 0
-                              |)
-                            |)
+                            UnOp.not (| BinOp.ne (| N, Value.Integer IntegerKind.Usize 0 |) |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -4569,9 +4454,9 @@ Module slice.
                       |),
                       [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                     |),
-                    M.read (| get_constant (| "core::slice::as_chunks_mut::N", Ty.path "usize" |) |)
+                    N
                   |),
-                  M.read (| get_constant (| "core::slice::as_chunks_mut::N", Ty.path "usize" |) |)
+                  N
                 |)
               |) in
             M.match_operator (|
@@ -4693,17 +4578,7 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.not (|
-                              BinOp.ne (|
-                                M.read (|
-                                  get_constant (|
-                                    "core::slice::as_rchunks_mut::N",
-                                    Ty.path "usize"
-                                  |)
-                                |),
-                                Value.Integer IntegerKind.Usize 0
-                              |)
-                            |)
+                            UnOp.not (| BinOp.ne (| N, Value.Integer IntegerKind.Usize 0 |) |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -4754,7 +4629,7 @@ Module slice.
                     |),
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                   |),
-                  M.read (| get_constant (| "core::slice::as_rchunks_mut::N", Ty.path "usize" |) |)
+                  N
                 |)
               |) in
             M.match_operator (|
@@ -4785,12 +4660,7 @@ Module slice.
                         |),
                         [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                       |),
-                      BinOp.Wrap.mul (|
-                        M.read (| len |),
-                        M.read (|
-                          get_constant (| "core::slice::as_rchunks_mut::N", Ty.path "usize" |)
-                        |)
-                      |)
+                      BinOp.Wrap.mul (| M.read (| len |), N |)
                     |)
                   ]
                 |)
@@ -4885,17 +4755,7 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.not (|
-                              BinOp.ne (|
-                                M.read (|
-                                  get_constant (|
-                                    "core::slice::array_chunks_mut::N",
-                                    Ty.path "usize"
-                                  |)
-                                |),
-                                Value.Integer IntegerKind.Usize 0
-                              |)
-                            |)
+                            UnOp.not (| BinOp.ne (| N, Value.Integer IntegerKind.Usize 0 |) |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -4978,17 +4838,7 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            UnOp.not (|
-                              BinOp.ne (|
-                                M.read (|
-                                  get_constant (|
-                                    "core::slice::array_windows::N",
-                                    Ty.path "usize"
-                                  |)
-                                |),
-                                Value.Integer IntegerKind.Usize 0
-                              |)
-                            |)
+                            UnOp.not (| BinOp.ne (| N, Value.Integer IntegerKind.Usize 0 |) |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
@@ -14794,16 +14644,7 @@ Module slice.
                       [
                         Value.StructRecord
                           "core::ops::range::Range"
-                          [
-                            ("start", Value.Integer IntegerKind.Usize 0);
-                            ("end_",
-                              M.read (|
-                                get_constant (|
-                                  "core::slice::get_many_unchecked_mut::N",
-                                  Ty.path "usize"
-                                |)
-                              |))
-                          ]
+                          [ ("start", Value.Integer IntegerKind.Usize 0); ("end_", N) ]
                       ]
                     |)
                   |),
@@ -15853,7 +15694,7 @@ Module slice.
                                       |)
                                     ]
                                   |);
-                                  M.read (| get_constant (| "core::slice::N", Ty.path "usize" |) |)
+                                  N
                                 ]
                               |);
                               M.borrow (|
@@ -15888,7 +15729,7 @@ Module slice.
                                 |),
                                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                               |);
-                              M.read (| get_constant (| "core::slice::N", Ty.path "usize" |) |)
+                              N
                             ]
                           |)
                         |)))
@@ -16031,9 +15872,7 @@ Module slice.
                                           |)
                                         ]
                                       |);
-                                      M.read (|
-                                        get_constant (| "core::slice::N", Ty.path "usize" |)
-                                      |)
+                                      N
                                     ]
                                   |);
                                   M.borrow (|
@@ -16073,7 +15912,7 @@ Module slice.
                                       |)
                                     ]
                                   |);
-                                  M.read (| get_constant (| "core::slice::N", Ty.path "usize" |) |)
+                                  N
                                 ]
                               |)
                             |)))

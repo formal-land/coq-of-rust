@@ -1173,10 +1173,7 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             LogicalOp.and (|
-              BinOp.le (|
-                M.read (| get_constant (| "alloc::vec::is_zero::N", Ty.path "usize" |) |),
-                Value.Integer IntegerKind.Usize 16
-              |),
+              BinOp.le (| N, Value.Integer IntegerKind.Usize 16 |),
               ltac:(M.monadic
                 (M.call_closure (|
                   Ty.path "bool",

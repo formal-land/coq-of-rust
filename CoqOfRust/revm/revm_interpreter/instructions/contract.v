@@ -6341,12 +6341,7 @@ Module instructions.
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ :=
-                            M.use
-                              (get_constant (|
-                                "revm_interpreter::instructions::contract::create::IS_CREATE2",
-                                Ty.path "bool"
-                              |)) in
+                          (let γ := M.use (M.alloc (| IS_CREATE2 |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ : Ty.tuple [] :=
@@ -7516,12 +7511,7 @@ Module instructions.
                               [
                                 fun γ =>
                                   ltac:(M.monadic
-                                    (let γ :=
-                                      M.use
-                                        (get_constant (|
-                                          "revm_interpreter::instructions::contract::create::IS_CREATE2",
-                                          Ty.path "bool"
-                                        |)) in
+                                    (let γ := M.use (M.alloc (| IS_CREATE2 |)) in
                                     let _ :=
                                       M.is_constant_or_break_match (|
                                         M.read (| γ |),

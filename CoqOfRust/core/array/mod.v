@@ -23,10 +23,7 @@ Module array.
             M.call_closure (|
               Ty.apply (Ty.path "core::iter::sources::repeat_n::RepeatN") [] [ T ],
               M.get_function (| "core::iter::sources::repeat_n::repeat_n", [], [ T ] |),
-              [
-                M.read (| val |);
-                M.read (| get_constant (| "core::array::repeat::N", Ty.path "usize" |) |)
-              ]
+              [ M.read (| val |); N ]
             |)
           ]
         |)))
@@ -6181,14 +6178,7 @@ Module array.
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ :=
-                            M.use
-                              (M.alloc (|
-                                BinOp.lt (|
-                                  M.read (| i |),
-                                  M.read (| get_constant (| "core::array::N", Ty.path "usize" |) |)
-                                |)
-                              |)) in
+                          (let γ := M.use (M.alloc (| BinOp.lt (| M.read (| i |), N |) |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ : Ty.tuple [] :=
@@ -6305,14 +6295,7 @@ Module array.
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ :=
-                            M.use
-                              (M.alloc (|
-                                BinOp.lt (|
-                                  M.read (| i |),
-                                  M.read (| get_constant (| "core::array::N", Ty.path "usize" |) |)
-                                |)
-                              |)) in
+                          (let γ := M.use (M.alloc (| BinOp.lt (| M.read (| i |), N |) |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ : Ty.tuple [] :=
@@ -6908,12 +6891,7 @@ Module array.
                                   0
                                 |)
                               |),
-                              M.read (|
-                                get_constant (|
-                                  "core::array::try_from_trusted_iterator::N",
-                                  Ty.path "usize"
-                                |)
-                              |)
+                              N
                             |)
                           |)
                         |)) in

@@ -16469,10 +16469,7 @@ Module slice.
                         |),
                         [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |) ]
                       |);
-                      BinOp.Wrap.sub (|
-                        M.read (| get_constant (| "core::slice::iter::N", Ty.path "usize" |) |),
-                        Value.Integer IntegerKind.Usize 1
-                      |)
+                      BinOp.Wrap.sub (| N, Value.Integer IntegerKind.Usize 1 |)
                     ]
                   |)
                 |) in

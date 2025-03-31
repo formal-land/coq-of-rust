@@ -140,15 +140,7 @@ Module signed.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.eq (|
-                                  M.read (|
-                                    get_constant (|
-                                      "alloy_primitives::signed::utils::twos_complement::BITS",
-                                      Ty.path "usize"
-                                    |)
-                                  |),
-                                  Value.Integer IntegerKind.Usize 0
-                                |)
+                                BinOp.eq (| BITS, Value.Integer IntegerKind.Usize 0 |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -248,15 +240,7 @@ Module signed.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.eq (|
-                                  M.read (|
-                                    get_constant (|
-                                      "alloy_primitives::signed::utils::const_eq::BITS",
-                                      Ty.path "usize"
-                                    |)
-                                  |),
-                                  Value.Integer IntegerKind.Usize 0
-                                |)
+                                BinOp.eq (| BITS, Value.Integer IntegerKind.Usize 0 |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -336,18 +320,7 @@ Module signed.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
-                                M.use
-                                  (M.alloc (|
-                                    BinOp.lt (|
-                                      M.read (| i |),
-                                      M.read (|
-                                        get_constant (|
-                                          "alloy_primitives::signed::utils::const_eq::LIMBS",
-                                          Ty.path "usize"
-                                        |)
-                                      |)
-                                    |)
-                                  |)) in
+                                M.use (M.alloc (| BinOp.lt (| M.read (| i |), LIMBS |) |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ |),
@@ -459,15 +432,7 @@ Module signed.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.eq (|
-                                  M.read (|
-                                    get_constant (|
-                                      "alloy_primitives::signed::utils::max::LIMBS",
-                                      Ty.path "usize"
-                                    |)
-                                  |),
-                                  Value.Integer IntegerKind.Usize 0
-                                |)
+                                BinOp.eq (| LIMBS, Value.Integer IntegerKind.Usize 0 |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -508,15 +473,7 @@ Module signed.
                     let β :=
                       M.SubPointer.get_array_field (|
                         limbs,
-                        BinOp.Wrap.sub (|
-                          M.read (|
-                            get_constant (|
-                              "alloy_primitives::signed::utils::max::LIMBS",
-                              Ty.path "usize"
-                            |)
-                          |),
-                          Value.Integer IntegerKind.Usize 1
-                        |)
+                        BinOp.Wrap.sub (| LIMBS, Value.Integer IntegerKind.Usize 1 |)
                       |) in
                     M.write (|
                       β,
@@ -539,15 +496,7 @@ Module signed.
                     let β :=
                       M.SubPointer.get_array_field (|
                         limbs,
-                        BinOp.Wrap.sub (|
-                          M.read (|
-                            get_constant (|
-                              "alloy_primitives::signed::utils::max::LIMBS",
-                              Ty.path "usize"
-                            |)
-                          |),
-                          Value.Integer IntegerKind.Usize 1
-                        |)
+                        BinOp.Wrap.sub (| LIMBS, Value.Integer IntegerKind.Usize 1 |)
                       |) in
                     M.write (|
                       β,
@@ -621,15 +570,7 @@ Module signed.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.eq (|
-                                  M.read (|
-                                    get_constant (|
-                                      "alloy_primitives::signed::utils::min::LIMBS",
-                                      Ty.path "usize"
-                                    |)
-                                  |),
-                                  Value.Integer IntegerKind.Usize 0
-                                |)
+                                BinOp.eq (| LIMBS, Value.Integer IntegerKind.Usize 0 |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -663,15 +604,7 @@ Module signed.
                     M.write (|
                       M.SubPointer.get_array_field (|
                         limbs,
-                        BinOp.Wrap.sub (|
-                          M.read (|
-                            get_constant (|
-                              "alloy_primitives::signed::utils::min::LIMBS",
-                              Ty.path "usize"
-                            |)
-                          |),
-                          Value.Integer IntegerKind.Usize 1
-                        |)
+                        BinOp.Wrap.sub (| LIMBS, Value.Integer IntegerKind.Usize 1 |)
                       |),
                       M.read (|
                         get_associated_constant (|
@@ -777,15 +710,7 @@ Module signed.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.eq (|
-                                  M.read (|
-                                    get_constant (|
-                                      "alloy_primitives::signed::utils::one::LIMBS",
-                                      Ty.path "usize"
-                                    |)
-                                  |),
-                                  Value.Integer IntegerKind.Usize 0
-                                |)
+                                BinOp.eq (| LIMBS, Value.Integer IntegerKind.Usize 0 |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in

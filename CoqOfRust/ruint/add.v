@@ -333,12 +333,7 @@ Module add.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.eq (|
-                                  M.read (|
-                                    get_constant (| "ruint::add::BITS", Ty.path "usize" |)
-                                  |),
-                                  Value.Integer IntegerKind.Usize 0
-                                |)
+                                BinOp.eq (| BITS, Value.Integer IntegerKind.Usize 0 |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -377,15 +372,7 @@ Module add.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
-                                M.use
-                                  (M.alloc (|
-                                    BinOp.lt (|
-                                      M.read (| i |),
-                                      M.read (|
-                                        get_constant (| "ruint::add::LIMBS", Ty.path "usize" |)
-                                      |)
-                                    |)
-                                  |)) in
+                                M.use (M.alloc (| BinOp.lt (| M.read (| i |), LIMBS |) |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ |),
@@ -495,12 +482,7 @@ Module add.
                                 "ruint::Uint",
                                 "limbs"
                               |),
-                              BinOp.Wrap.sub (|
-                                M.read (|
-                                  get_constant (| "ruint::add::LIMBS", Ty.path "usize" |)
-                                |),
-                                Value.Integer IntegerKind.Usize 1
-                              |)
+                              BinOp.Wrap.sub (| LIMBS, Value.Integer IntegerKind.Usize 1 |)
                             |)
                           |),
                           M.read (|
@@ -518,10 +500,7 @@ Module add.
                     let β :=
                       M.SubPointer.get_array_field (|
                         M.SubPointer.get_struct_record_field (| self, "ruint::Uint", "limbs" |),
-                        BinOp.Wrap.sub (|
-                          M.read (| get_constant (| "ruint::add::LIMBS", Ty.path "usize" |) |),
-                          Value.Integer IntegerKind.Usize 1
-                        |)
+                        BinOp.Wrap.sub (| LIMBS, Value.Integer IntegerKind.Usize 1 |)
                       |) in
                     M.write (|
                       β,
@@ -641,12 +620,7 @@ Module add.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.eq (|
-                                  M.read (|
-                                    get_constant (| "ruint::add::BITS", Ty.path "usize" |)
-                                  |),
-                                  Value.Integer IntegerKind.Usize 0
-                                |)
+                                BinOp.eq (| BITS, Value.Integer IntegerKind.Usize 0 |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -685,15 +659,7 @@ Module add.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
-                                M.use
-                                  (M.alloc (|
-                                    BinOp.lt (|
-                                      M.read (| i |),
-                                      M.read (|
-                                        get_constant (| "ruint::add::LIMBS", Ty.path "usize" |)
-                                      |)
-                                    |)
-                                  |)) in
+                                M.use (M.alloc (| BinOp.lt (| M.read (| i |), LIMBS |) |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ |),
@@ -803,12 +769,7 @@ Module add.
                                 "ruint::Uint",
                                 "limbs"
                               |),
-                              BinOp.Wrap.sub (|
-                                M.read (|
-                                  get_constant (| "ruint::add::LIMBS", Ty.path "usize" |)
-                                |),
-                                Value.Integer IntegerKind.Usize 1
-                              |)
+                              BinOp.Wrap.sub (| LIMBS, Value.Integer IntegerKind.Usize 1 |)
                             |)
                           |),
                           M.read (|
@@ -826,10 +787,7 @@ Module add.
                     let β :=
                       M.SubPointer.get_array_field (|
                         M.SubPointer.get_struct_record_field (| self, "ruint::Uint", "limbs" |),
-                        BinOp.Wrap.sub (|
-                          M.read (| get_constant (| "ruint::add::LIMBS", Ty.path "usize" |) |),
-                          Value.Integer IntegerKind.Usize 1
-                        |)
+                        BinOp.Wrap.sub (| LIMBS, Value.Integer IntegerKind.Usize 1 |)
                       |) in
                     M.write (|
                       β,

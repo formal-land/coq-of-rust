@@ -37,16 +37,7 @@ Module bits.
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ :=
-                            M.use
-                              (M.alloc (|
-                                BinOp.ge (|
-                                  M.read (| index |),
-                                  M.read (|
-                                    get_constant (| "ruint::bits::BITS", Ty.path "usize" |)
-                                  |)
-                                |)
-                              |)) in
+                          (let γ := M.use (M.alloc (| BinOp.ge (| M.read (| index |), BITS |) |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
@@ -140,16 +131,7 @@ Module bits.
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ :=
-                            M.use
-                              (M.alloc (|
-                                BinOp.ge (|
-                                  M.read (| index |),
-                                  M.read (|
-                                    get_constant (| "ruint::bits::BITS", Ty.path "usize" |)
-                                  |)
-                                |)
-                              |)) in
+                          (let γ := M.use (M.alloc (| BinOp.ge (| M.read (| index |), BITS |) |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
@@ -457,12 +439,7 @@ Module bits.
                         M.use
                           (M.alloc (|
                             BinOp.ne (|
-                              BinOp.Wrap.rem (|
-                                M.read (|
-                                  get_constant (| "ruint::bits::BITS", Ty.path "usize" |)
-                                |),
-                                Value.Integer IntegerKind.Usize 64
-                              |),
+                              BinOp.Wrap.rem (| BITS, Value.Integer IntegerKind.Usize 64 |),
                               Value.Integer IntegerKind.Usize 0
                             |)
                           |)) in
@@ -484,12 +461,7 @@ Module bits.
                               M.borrow (| Pointer.Kind.MutRef, self |);
                               BinOp.Wrap.sub (|
                                 Value.Integer IntegerKind.Usize 64,
-                                BinOp.Wrap.rem (|
-                                  M.read (|
-                                    get_constant (| "ruint::bits::BITS", Ty.path "usize" |)
-                                  |),
-                                  Value.Integer IntegerKind.Usize 64
-                                |)
+                                BinOp.Wrap.rem (| BITS, Value.Integer IntegerKind.Usize 64 |)
                               |)
                             ]
                           |)
@@ -645,7 +617,7 @@ Module bits.
                         end))
                 ]
               |);
-              M.read (| get_constant (| "ruint::bits::BITS", Ty.path "usize" |) |);
+              BITS;
               M.closure
                 (fun γ =>
                   ltac:(M.monadic
@@ -734,15 +706,7 @@ Module bits.
                                                   |)
                                                 |),
                                                 BinOp.Wrap.sub (|
-                                                  BinOp.Wrap.sub (|
-                                                    M.read (|
-                                                      get_constant (|
-                                                        "ruint::bits::LIMBS",
-                                                        Ty.path "usize"
-                                                      |)
-                                                    |),
-                                                    M.read (| n |)
-                                                  |),
+                                                  BinOp.Wrap.sub (| LIMBS, M.read (| n |) |),
                                                   Value.Integer IntegerKind.Usize 1
                                                 |)
                                               |)
@@ -936,7 +900,7 @@ Module bits.
                         end))
                 ]
               |);
-              M.read (| get_constant (| "ruint::bits::BITS", Ty.path "usize" |) |);
+              BITS;
               M.closure
                 (fun γ =>
                   ltac:(M.monadic
@@ -1130,7 +1094,7 @@ Module bits.
                         end))
                 ]
               |);
-              M.read (| get_constant (| "ruint::bits::BITS", Ty.path "usize" |) |);
+              BITS;
               M.closure
                 (fun γ =>
                   ltac:(M.monadic
@@ -1366,7 +1330,7 @@ Module bits.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           BinOp.Wrap.sub (|
-            M.read (| get_constant (| "ruint::bits::BITS", Ty.path "usize" |) |),
+            BITS,
             M.call_closure (|
               Ty.path "usize",
               M.get_associated_function (|
@@ -1404,7 +1368,7 @@ Module bits.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           BinOp.Wrap.sub (|
-            M.read (| get_constant (| "ruint::bits::BITS", Ty.path "usize" |) |),
+            BITS,
             M.call_closure (|
               Ty.path "usize",
               M.get_associated_function (|
@@ -2024,14 +1988,7 @@ Module bits.
                                 ltac:(M.monadic
                                   (let γ :=
                                     M.use
-                                      (M.alloc (|
-                                        BinOp.ge (|
-                                          M.read (| limbs |),
-                                          M.read (|
-                                            get_constant (| "ruint::bits::LIMBS", Ty.path "usize" |)
-                                          |)
-                                        |)
-                                      |)) in
+                                      (M.alloc (| BinOp.ge (| M.read (| limbs |), LIMBS |) |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
                                       M.read (| γ |),
@@ -2154,21 +2111,10 @@ Module bits.
                                                       [
                                                         ("start",
                                                           BinOp.Wrap.sub (|
-                                                            M.read (|
-                                                              get_constant (|
-                                                                "ruint::bits::LIMBS",
-                                                                Ty.path "usize"
-                                                              |)
-                                                            |),
+                                                            LIMBS,
                                                             M.read (| limbs |)
                                                           |));
-                                                        ("end_",
-                                                          M.read (|
-                                                            get_constant (|
-                                                              "ruint::bits::LIMBS",
-                                                              Ty.path "usize"
-                                                            |)
-                                                          |))
+                                                        ("end_", LIMBS)
                                                       ]
                                                   ]
                                                 |)
@@ -2288,12 +2234,7 @@ Module bits.
                                                               |),
                                                               BinOp.Wrap.sub (|
                                                                 BinOp.Wrap.sub (|
-                                                                  M.read (|
-                                                                    get_constant (|
-                                                                      "ruint::bits::LIMBS",
-                                                                      Ty.path "usize"
-                                                                    |)
-                                                                  |),
+                                                                  LIMBS,
                                                                   M.read (| limbs |)
                                                                 |),
                                                                 Value.Integer IntegerKind.Usize 1
@@ -2386,13 +2327,7 @@ Module bits.
                                                           "core::ops::range::Range"
                                                           [
                                                             ("start", M.read (| limbs |));
-                                                            ("end_",
-                                                              M.read (|
-                                                                get_constant (|
-                                                                  "ruint::bits::LIMBS",
-                                                                  Ty.path "usize"
-                                                                |)
-                                                              |))
+                                                            ("end_", LIMBS)
                                                           ]
                                                       ]
                                                     |)
@@ -2499,13 +2434,7 @@ Module bits.
                                                                                               limbs
                                                                                             |)
                                                                                           |),
-                                                                                          M.read (|
-                                                                                            get_constant (|
-                                                                                              "ruint::bits::LIMBS",
-                                                                                              Ty.path
-                                                                                                "usize"
-                                                                                            |)
-                                                                                          |)
+                                                                                          LIMBS
                                                                                         |)))
                                                                                     |)
                                                                                   |)
@@ -2778,12 +2707,7 @@ Module bits.
                                                   "limbs"
                                                 |),
                                                 BinOp.Wrap.sub (|
-                                                  M.read (|
-                                                    get_constant (|
-                                                      "ruint::bits::LIMBS",
-                                                      Ty.path "usize"
-                                                    |)
-                                                  |),
+                                                  LIMBS,
                                                   Value.Integer IntegerKind.Usize 1
                                                 |)
                                               |) in
@@ -2839,20 +2763,8 @@ Module bits.
                                     Value.StructRecord
                                       "core::ops::range::Range"
                                       [
-                                        ("start",
-                                          BinOp.Wrap.sub (|
-                                            M.read (|
-                                              get_constant (|
-                                                "ruint::bits::LIMBS",
-                                                Ty.path "usize"
-                                              |)
-                                            |),
-                                            M.read (| limbs |)
-                                          |));
-                                        ("end_",
-                                          M.read (|
-                                            get_constant (| "ruint::bits::LIMBS", Ty.path "usize" |)
-                                          |))
+                                        ("start", BinOp.Wrap.sub (| LIMBS, M.read (| limbs |) |));
+                                        ("end_", LIMBS)
                                       ]
                                   ]
                                 |)
@@ -2964,15 +2876,7 @@ Module bits.
                                                   "limbs"
                                                 |),
                                                 BinOp.Wrap.sub (|
-                                                  BinOp.Wrap.sub (|
-                                                    M.read (|
-                                                      get_constant (|
-                                                        "ruint::bits::LIMBS",
-                                                        Ty.path "usize"
-                                                      |)
-                                                    |),
-                                                    M.read (| limbs |)
-                                                  |),
+                                                  BinOp.Wrap.sub (| LIMBS, M.read (| limbs |) |),
                                                   Value.Integer IntegerKind.Usize 1
                                                 |)
                                               |)
@@ -3016,15 +2920,7 @@ Module bits.
                                                   "limbs"
                                                 |),
                                                 BinOp.Wrap.sub (|
-                                                  BinOp.Wrap.sub (|
-                                                    M.read (|
-                                                      get_constant (|
-                                                        "ruint::bits::LIMBS",
-                                                        Ty.path "usize"
-                                                      |)
-                                                    |),
-                                                    M.read (| limbs |)
-                                                  |),
+                                                  BinOp.Wrap.sub (| LIMBS, M.read (| limbs |) |),
                                                   Value.Integer IntegerKind.Usize 1
                                                 |)
                                               |)
@@ -3115,13 +3011,7 @@ Module bits.
                                                 M.read (| limbs |),
                                                 Value.Integer IntegerKind.Usize 1
                                               |));
-                                            ("end_",
-                                              M.read (|
-                                                get_constant (|
-                                                  "ruint::bits::LIMBS",
-                                                  Ty.path "usize"
-                                                |)
-                                              |))
+                                            ("end_", LIMBS)
                                           ]
                                       ]
                                     |)
@@ -3208,12 +3098,7 @@ Module bits.
                                                                           M.read (| i |),
                                                                           M.read (| limbs |)
                                                                         |),
-                                                                        M.read (|
-                                                                          get_constant (|
-                                                                            "ruint::bits::LIMBS",
-                                                                            Ty.path "usize"
-                                                                          |)
-                                                                        |)
+                                                                        LIMBS
                                                                       |),
                                                                       ltac:(M.monadic
                                                                         (BinOp.lt (|
@@ -3226,12 +3111,7 @@ Module bits.
                                                                               IntegerKind.Usize
                                                                               1
                                                                           |),
-                                                                          M.read (|
-                                                                            get_constant (|
-                                                                              "ruint::bits::LIMBS",
-                                                                              Ty.path "usize"
-                                                                            |)
-                                                                          |)
+                                                                          LIMBS
                                                                         |)))
                                                                     |)
                                                                   |)
@@ -3544,12 +3424,7 @@ Module bits.
                                   "ruint::Uint",
                                   "limbs"
                                 |),
-                                BinOp.Wrap.sub (|
-                                  M.read (|
-                                    get_constant (| "ruint::bits::LIMBS", Ty.path "usize" |)
-                                  |),
-                                  Value.Integer IntegerKind.Usize 1
-                                |)
+                                BinOp.Wrap.sub (| LIMBS, Value.Integer IntegerKind.Usize 1 |)
                               |) in
                             M.write (|
                               β,
@@ -3760,14 +3635,7 @@ Module bits.
                                 ltac:(M.monadic
                                   (let γ :=
                                     M.use
-                                      (M.alloc (|
-                                        BinOp.ge (|
-                                          M.read (| limbs |),
-                                          M.read (|
-                                            get_constant (| "ruint::bits::LIMBS", Ty.path "usize" |)
-                                          |)
-                                        |)
-                                      |)) in
+                                      (M.alloc (| BinOp.ge (| M.read (| limbs |), LIMBS |) |)) in
                                   let _ :=
                                     M.is_constant_or_break_match (|
                                       M.read (| γ |),
@@ -4020,12 +3888,7 @@ Module bits.
                                                           Value.Integer IntegerKind.Usize 0);
                                                         ("end_",
                                                           BinOp.Wrap.sub (|
-                                                            M.read (|
-                                                              get_constant (|
-                                                                "ruint::bits::LIMBS",
-                                                                Ty.path "usize"
-                                                              |)
-                                                            |),
+                                                            LIMBS,
                                                             M.read (| limbs |)
                                                           |))
                                                       ]
@@ -4184,12 +4047,7 @@ Module bits.
                                                           [
                                                             ("start",
                                                               BinOp.Wrap.sub (|
-                                                                M.read (|
-                                                                  get_constant (|
-                                                                    "ruint::bits::LIMBS",
-                                                                    Ty.path "usize"
-                                                                  |)
-                                                                |),
+                                                                LIMBS,
                                                                 M.read (| limbs |)
                                                               |))
                                                           ]
@@ -4223,12 +4081,7 @@ Module bits.
                                         "limbs"
                                       |),
                                       BinOp.Wrap.sub (|
-                                        BinOp.Wrap.sub (|
-                                          M.read (|
-                                            get_constant (| "ruint::bits::LIMBS", Ty.path "usize" |)
-                                          |),
-                                          M.read (| limbs |)
-                                        |),
+                                        BinOp.Wrap.sub (| LIMBS, M.read (| limbs |) |),
                                         Value.Integer IntegerKind.Usize 1
                                       |)
                                     |)
@@ -4271,15 +4124,7 @@ Module bits.
                                         ("start", Value.Integer IntegerKind.Usize 0);
                                         ("end_",
                                           BinOp.Wrap.sub (|
-                                            BinOp.Wrap.sub (|
-                                              M.read (|
-                                                get_constant (|
-                                                  "ruint::bits::LIMBS",
-                                                  Ty.path "usize"
-                                                |)
-                                              |),
-                                              M.read (| limbs |)
-                                            |),
+                                            BinOp.Wrap.sub (| LIMBS, M.read (| limbs |) |),
                                             Value.Integer IntegerKind.Usize 1
                                           |))
                                       ]
@@ -4361,12 +4206,7 @@ Module bits.
                                                                           M.read (| i |),
                                                                           M.read (| limbs |)
                                                                         |),
-                                                                        M.read (|
-                                                                          get_constant (|
-                                                                            "ruint::bits::LIMBS",
-                                                                            Ty.path "usize"
-                                                                          |)
-                                                                        |)
+                                                                        LIMBS
                                                                       |),
                                                                       ltac:(M.monadic
                                                                         (BinOp.lt (|
@@ -4379,12 +4219,7 @@ Module bits.
                                                                               IntegerKind.Usize
                                                                               1
                                                                           |),
-                                                                          M.read (|
-                                                                            get_constant (|
-                                                                              "ruint::bits::LIMBS",
-                                                                              Ty.path "usize"
-                                                                            |)
-                                                                          |)
+                                                                          LIMBS
                                                                         |)))
                                                                     |)
                                                                   |)
@@ -4619,12 +4454,7 @@ Module bits.
                                   "limbs"
                                 |),
                                 BinOp.Wrap.sub (|
-                                  BinOp.Wrap.sub (|
-                                    M.read (|
-                                      get_constant (| "ruint::bits::LIMBS", Ty.path "usize" |)
-                                    |),
-                                    M.read (| limbs |)
-                                  |),
+                                  BinOp.Wrap.sub (| LIMBS, M.read (| limbs |) |),
                                   Value.Integer IntegerKind.Usize 1
                                 |)
                               |),
@@ -4636,12 +4466,7 @@ Module bits.
                                       "ruint::Uint",
                                       "limbs"
                                     |),
-                                    BinOp.Wrap.sub (|
-                                      M.read (|
-                                        get_constant (| "ruint::bits::LIMBS", Ty.path "usize" |)
-                                      |),
-                                      Value.Integer IntegerKind.Usize 1
-                                    |)
+                                    BinOp.Wrap.sub (| LIMBS, Value.Integer IntegerKind.Usize 1 |)
                                   |)
                                 |),
                                 M.read (| bits |)
@@ -4694,15 +4519,7 @@ Module bits.
                                           "core::ops::range::RangeFrom"
                                           [
                                             ("start",
-                                              BinOp.Wrap.sub (|
-                                                M.read (|
-                                                  get_constant (|
-                                                    "ruint::bits::LIMBS",
-                                                    Ty.path "usize"
-                                                  |)
-                                                |),
-                                                M.read (| limbs |)
-                                              |))
+                                              BinOp.Wrap.sub (| LIMBS, M.read (| limbs |) |))
                                           ]
                                       ]
                                     |)
@@ -4807,12 +4624,7 @@ Module bits.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.eq (|
-                                  M.read (|
-                                    get_constant (| "ruint::bits::BITS", Ty.path "usize" |)
-                                  |),
-                                  Value.Integer IntegerKind.Usize 0
-                                |)
+                                BinOp.eq (| BITS, Value.Integer IntegerKind.Usize 0 |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4846,10 +4658,7 @@ Module bits.
                       |),
                       [
                         M.borrow (| Pointer.Kind.Ref, self |);
-                        BinOp.Wrap.sub (|
-                          M.read (| get_constant (| "ruint::bits::BITS", Ty.path "usize" |) |),
-                          Value.Integer IntegerKind.Usize 1
-                        |)
+                        BinOp.Wrap.sub (| BITS, Value.Integer IntegerKind.Usize 1 |)
                       ]
                     |)
                   |) in
@@ -4921,12 +4730,7 @@ Module bits.
                                           [],
                                           []
                                         |),
-                                        [
-                                          M.read (|
-                                            get_constant (| "ruint::bits::BITS", Ty.path "usize" |)
-                                          |);
-                                          M.read (| rhs |)
-                                        ]
+                                        [ BITS; M.read (| rhs |) ]
                                       |)
                                     ]
                                   |)
@@ -4983,12 +4787,7 @@ Module bits.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.eq (|
-                                  M.read (|
-                                    get_constant (| "ruint::bits::BITS", Ty.path "usize" |)
-                                  |),
-                                  Value.Integer IntegerKind.Usize 0
-                                |)
+                                BinOp.eq (| BITS, Value.Integer IntegerKind.Usize 0 |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5011,12 +4810,7 @@ Module bits.
                     ]
                   |) in
                 let~ rhs : Ty.path "usize" :=
-                  M.alloc (|
-                    BinOp.Wrap.rem (|
-                      M.read (| rhs |),
-                      M.read (| get_constant (| "ruint::bits::BITS", Ty.path "usize" |) |)
-                    |)
-                  |) in
+                  M.alloc (| BinOp.Wrap.rem (| M.read (| rhs |), BITS |) |) in
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
@@ -5054,13 +4848,7 @@ Module bits.
                           [],
                           []
                         |),
-                        [
-                          M.read (| self |);
-                          BinOp.Wrap.sub (|
-                            M.read (| get_constant (| "ruint::bits::BITS", Ty.path "usize" |) |),
-                            M.read (| rhs |)
-                          |)
-                        ]
+                        [ M.read (| self |); BinOp.Wrap.sub (| BITS, M.read (| rhs |) |) ]
                       |)
                     ]
                   |)
@@ -5110,12 +4898,7 @@ Module bits.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.eq (|
-                                  M.read (|
-                                    get_constant (| "ruint::bits::BITS", Ty.path "usize" |)
-                                  |),
-                                  Value.Integer IntegerKind.Usize 0
-                                |)
+                                BinOp.eq (| BITS, Value.Integer IntegerKind.Usize 0 |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5138,12 +4921,7 @@ Module bits.
                     ]
                   |) in
                 let~ rhs : Ty.path "usize" :=
-                  M.alloc (|
-                    BinOp.Wrap.rem (|
-                      M.read (| rhs |),
-                      M.read (| get_constant (| "ruint::bits::BITS", Ty.path "usize" |) |)
-                    |)
-                  |) in
+                  M.alloc (| BinOp.Wrap.rem (| M.read (| rhs |), BITS |) |) in
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
@@ -5153,13 +4931,7 @@ Module bits.
                       [],
                       []
                     |),
-                    [
-                      M.read (| self |);
-                      BinOp.Wrap.sub (|
-                        M.read (| get_constant (| "ruint::bits::BITS", Ty.path "usize" |) |),
-                        M.read (| rhs |)
-                      |)
-                    ]
+                    [ M.read (| self |); BinOp.Wrap.sub (| BITS, M.read (| rhs |) |) ]
                   |)
                 |)
               |)))
@@ -5218,12 +4990,7 @@ Module bits.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.eq (|
-                                  M.read (|
-                                    get_constant (| "ruint::bits::BITS", Ty.path "usize" |)
-                                  |),
-                                  Value.Integer IntegerKind.Usize 0
-                                |)
+                                BinOp.eq (| BITS, Value.Integer IntegerKind.Usize 0 |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5363,10 +5130,7 @@ Module bits.
                     let β :=
                       M.SubPointer.get_array_field (|
                         M.SubPointer.get_struct_record_field (| self, "ruint::Uint", "limbs" |),
-                        BinOp.Wrap.sub (|
-                          M.read (| get_constant (| "ruint::bits::LIMBS", Ty.path "usize" |) |),
-                          Value.Integer IntegerKind.Usize 1
-                        |)
+                        BinOp.Wrap.sub (| LIMBS, Value.Integer IntegerKind.Usize 1 |)
                       |) in
                     M.write (|
                       β,
@@ -5558,11 +5322,7 @@ Module bits.
                     [
                       Value.StructRecord
                         "core::ops::range::Range"
-                        [
-                          ("start", Value.Integer IntegerKind.Usize 0);
-                          ("end_",
-                            M.read (| get_constant (| "ruint::bits::LIMBS", Ty.path "usize" |) |))
-                        ]
+                        [ ("start", Value.Integer IntegerKind.Usize 0); ("end_", LIMBS) ]
                     ]
                   |)
                 |),
@@ -6050,11 +5810,7 @@ Module bits.
                     [
                       Value.StructRecord
                         "core::ops::range::Range"
-                        [
-                          ("start", Value.Integer IntegerKind.Usize 0);
-                          ("end_",
-                            M.read (| get_constant (| "ruint::bits::LIMBS", Ty.path "usize" |) |))
-                        ]
+                        [ ("start", Value.Integer IntegerKind.Usize 0); ("end_", LIMBS) ]
                     ]
                   |)
                 |),
@@ -6542,11 +6298,7 @@ Module bits.
                     [
                       Value.StructRecord
                         "core::ops::range::Range"
-                        [
-                          ("start", Value.Integer IntegerKind.Usize 0);
-                          ("end_",
-                            M.read (| get_constant (| "ruint::bits::LIMBS", Ty.path "usize" |) |))
-                        ]
+                        [ ("start", Value.Integer IntegerKind.Usize 0); ("end_", LIMBS) ]
                     ]
                   |)
                 |),
@@ -6977,12 +6729,7 @@ Module bits.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.eq (|
-                                  M.read (|
-                                    get_constant (| "ruint::bits::BITS", Ty.path "usize" |)
-                                  |),
-                                  Value.Integer IntegerKind.Usize 0
-                                |)
+                                BinOp.eq (| BITS, Value.Integer IntegerKind.Usize 0 |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -7149,12 +6896,7 @@ Module bits.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.eq (|
-                                  M.read (|
-                                    get_constant (| "ruint::bits::BITS", Ty.path "usize" |)
-                                  |),
-                                  Value.Integer IntegerKind.Usize 0
-                                |)
+                                BinOp.eq (| BITS, Value.Integer IntegerKind.Usize 0 |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in

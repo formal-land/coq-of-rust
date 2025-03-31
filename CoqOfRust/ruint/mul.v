@@ -165,12 +165,7 @@ Module mul.
                     ltac:(M.monadic
                       (let γ :=
                         M.use
-                          (M.alloc (|
-                            BinOp.gt (|
-                              M.read (| get_constant (| "ruint::mul::BITS", Ty.path "usize" |) |),
-                              Value.Integer IntegerKind.Usize 0
-                            |)
-                          |)) in
+                          (M.alloc (| BinOp.gt (| BITS, Value.Integer IntegerKind.Usize 0 |) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ : Ty.tuple [] :=
                         M.alloc (|
@@ -187,12 +182,7 @@ Module mul.
                                       "ruint::Uint",
                                       "limbs"
                                     |),
-                                    BinOp.Wrap.sub (|
-                                      M.read (|
-                                        get_constant (| "ruint::mul::LIMBS", Ty.path "usize" |)
-                                      |),
-                                      Value.Integer IntegerKind.Usize 1
-                                    |)
+                                    BinOp.Wrap.sub (| LIMBS, Value.Integer IntegerKind.Usize 1 |)
                                   |)
                                 |),
                                 M.read (|
@@ -214,12 +204,7 @@ Module mul.
                                 "ruint::Uint",
                                 "limbs"
                               |),
-                              BinOp.Wrap.sub (|
-                                M.read (|
-                                  get_constant (| "ruint::mul::LIMBS", Ty.path "usize" |)
-                                |),
-                                Value.Integer IntegerKind.Usize 1
-                              |)
+                              BinOp.Wrap.sub (| LIMBS, Value.Integer IntegerKind.Usize 1 |)
                             |) in
                           M.write (|
                             β,
@@ -406,12 +391,7 @@ Module mul.
                     ltac:(M.monadic
                       (let γ :=
                         M.use
-                          (M.alloc (|
-                            BinOp.gt (|
-                              M.read (| get_constant (| "ruint::mul::BITS", Ty.path "usize" |) |),
-                              Value.Integer IntegerKind.Usize 0
-                            |)
-                          |)) in
+                          (M.alloc (| BinOp.gt (| BITS, Value.Integer IntegerKind.Usize 0 |) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ : Ty.tuple [] :=
                         M.alloc (|
@@ -422,12 +402,7 @@ Module mul.
                                 "ruint::Uint",
                                 "limbs"
                               |),
-                              BinOp.Wrap.sub (|
-                                M.read (|
-                                  get_constant (| "ruint::mul::LIMBS", Ty.path "usize" |)
-                                |),
-                                Value.Integer IntegerKind.Usize 1
-                              |)
+                              BinOp.Wrap.sub (| LIMBS, Value.Integer IntegerKind.Usize 1 |)
                             |) in
                           M.write (|
                             β,
@@ -514,12 +489,7 @@ Module mul.
                             M.use
                               (M.alloc (|
                                 LogicalOp.or (|
-                                  BinOp.eq (|
-                                    M.read (|
-                                      get_constant (| "ruint::mul::BITS", Ty.path "usize" |)
-                                    |),
-                                    Value.Integer IntegerKind.Usize 0
-                                  |),
+                                  BinOp.eq (| BITS, Value.Integer IntegerKind.Usize 0 |),
                                   ltac:(M.monadic
                                     (BinOp.eq (|
                                       BinOp.bit_and
@@ -1171,12 +1141,7 @@ Module mul.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.lt (|
-                                      M.read (| correct_limbs |),
-                                      M.read (|
-                                        get_constant (| "ruint::mul::LIMBS", Ty.path "usize" |)
-                                      |)
-                                    |)
+                                    BinOp.lt (| M.read (| correct_limbs |), LIMBS |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
@@ -1272,10 +1237,7 @@ Module mul.
                     let β :=
                       M.SubPointer.get_array_field (|
                         M.SubPointer.get_struct_record_field (| result, "ruint::Uint", "limbs" |),
-                        BinOp.Wrap.sub (|
-                          M.read (| get_constant (| "ruint::mul::LIMBS", Ty.path "usize" |) |),
-                          Value.Integer IntegerKind.Usize 1
-                        |)
+                        BinOp.Wrap.sub (| LIMBS, Value.Integer IntegerKind.Usize 1 |)
                       |) in
                     M.write (|
                       β,
@@ -1342,23 +1304,10 @@ Module mul.
                 M.alloc (|
                   Value.Tuple
                     [
+                      M.borrow (| Pointer.Kind.Ref, M.alloc (| BITS_RES |) |);
                       M.borrow (|
                         Pointer.Kind.Ref,
-                        get_constant (| "ruint::mul::widening_mul::BITS_RES", Ty.path "usize" |)
-                      |);
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.alloc (|
-                          BinOp.Wrap.add (|
-                            M.read (| get_constant (| "ruint::mul::BITS", Ty.path "usize" |) |),
-                            M.read (|
-                              get_constant (|
-                                "ruint::mul::widening_mul::BITS_RHS",
-                                Ty.path "usize"
-                              |)
-                            |)
-                          |)
-                        |)
+                        M.alloc (| BinOp.Wrap.add (| BITS, BITS_RHS |) |)
                       |)
                     ]
                 |),
@@ -1443,24 +1392,14 @@ Module mul.
                 M.alloc (|
                   Value.Tuple
                     [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        get_constant (| "ruint::mul::widening_mul::LIMBS_RES", Ty.path "usize" |)
-                      |);
+                      M.borrow (| Pointer.Kind.Ref, M.alloc (| LIMBS_RES |) |);
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
                           M.call_closure (|
                             Ty.path "usize",
                             M.get_function (| "ruint::nlimbs", [], [] |),
-                            [
-                              M.read (|
-                                get_constant (|
-                                  "ruint::mul::widening_mul::BITS_RES",
-                                  Ty.path "usize"
-                                |)
-                              |)
-                            ]
+                            [ BITS_RES ]
                           |)
                         |)
                       |)
@@ -1613,15 +1552,7 @@ Module mul.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.gt (|
-                              M.read (|
-                                get_constant (|
-                                  "ruint::mul::widening_mul::LIMBS_RES",
-                                  Ty.path "usize"
-                                |)
-                              |),
-                              Value.Integer IntegerKind.Usize 0
-                            |)
+                            BinOp.gt (| LIMBS_RES, Value.Integer IntegerKind.Usize 0 |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ : Ty.tuple [] :=
@@ -1657,12 +1588,7 @@ Module mul.
                                                           "limbs"
                                                         |),
                                                         BinOp.Wrap.sub (|
-                                                          M.read (|
-                                                            get_constant (|
-                                                              "ruint::mul::widening_mul::LIMBS_RES",
-                                                              Ty.path "usize"
-                                                            |)
-                                                          |),
+                                                          LIMBS_RES,
                                                           Value.Integer IntegerKind.Usize 1
                                                         |)
                                                       |)
@@ -1764,12 +1690,7 @@ Module mul.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.eq (|
-                                  M.read (|
-                                    get_constant (| "ruint::mul::BITS", Ty.path "usize" |)
-                                  |),
-                                  Value.Integer IntegerKind.Usize 0
-                                |)
+                                BinOp.eq (| BITS, Value.Integer IntegerKind.Usize 0 |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1886,12 +1807,7 @@ Module mul.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.eq (|
-                                  M.read (|
-                                    get_constant (| "ruint::mul::BITS", Ty.path "usize" |)
-                                  |),
-                                  Value.Integer IntegerKind.Usize 0
-                                |)
+                                BinOp.eq (| BITS, Value.Integer IntegerKind.Usize 0 |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in

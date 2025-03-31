@@ -179,16 +179,7 @@ Module special.
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ :=
-                            M.use
-                              (M.alloc (|
-                                BinOp.ge (|
-                                  M.read (| exp |),
-                                  M.read (|
-                                    get_constant (| "ruint::special::BITS", Ty.path "usize" |)
-                                  |)
-                                |)
-                              |)) in
+                          (let γ := M.use (M.alloc (| BinOp.ge (| M.read (| exp |), BITS |) |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|

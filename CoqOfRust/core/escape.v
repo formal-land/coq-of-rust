@@ -907,12 +907,7 @@ Module escape.
                   "core::ops::range::Range"
                   [
                     ("start", M.cast (Ty.path "u8") (M.read (| start |)));
-                    ("end_",
-                      M.cast
-                        (Ty.path "u8")
-                        (M.read (|
-                          get_constant (| "core::escape::escape_unicode::N", Ty.path "usize" |)
-                        |)))
+                    ("end_", M.cast (Ty.path "u8") N)
                   ]
               ]
           |)
