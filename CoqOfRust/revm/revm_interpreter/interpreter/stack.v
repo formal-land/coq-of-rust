@@ -1304,12 +1304,7 @@ Module interpreter.
                                         |)
                                       ]
                                     |),
-                                    M.read (|
-                                      get_constant (|
-                                        "revm_interpreter::interpreter::stack::popn::N",
-                                        Ty.path "usize"
-                                      |)
-                                    |)
+                                    N
                                   |)
                                 |)) in
                             let _ :=
@@ -1399,15 +1394,7 @@ Module interpreter.
                                         |)
                                       ]
                                     |),
-                                    BinOp.Wrap.add (|
-                                      M.read (|
-                                        get_constant (|
-                                          "revm_interpreter::interpreter::stack::popn_top::POPN",
-                                          Ty.path "usize"
-                                        |)
-                                      |),
-                                      Value.Integer IntegerKind.Usize 1
-                                    |)
+                                    BinOp.Wrap.add (| POPN, Value.Integer IntegerKind.Usize 1 |)
                                   |)
                                 |)) in
                             let _ :=
@@ -2158,15 +2145,7 @@ Module interpreter.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.eq (|
-                                    M.read (|
-                                      get_constant (|
-                                        "revm_interpreter::interpreter::stack::popn::N",
-                                        Ty.path "usize"
-                                      |)
-                                    |),
-                                    Value.Integer IntegerKind.Usize 0
-                                  |)
+                                  BinOp.eq (| N, Value.Integer IntegerKind.Usize 0 |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in

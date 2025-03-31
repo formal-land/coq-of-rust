@@ -17655,7 +17655,7 @@ Module sync.
                                 |)
                               ]
                             |),
-                            M.read (| get_constant (| "alloc::sync::N", Ty.path "usize" |) |)
+                            N
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in

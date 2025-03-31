@@ -931,13 +931,7 @@ Module boxed.
                                     |)
                                   |)
                                 |);
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  get_constant (|
-                                    "alloc::boxed::convert::boxed_slice_as_array_unchecked::N",
-                                    Ty.path "usize"
-                                  |)
-                                |)
+                                M.borrow (| Pointer.Kind.Ref, M.alloc (| N |) |)
                               ]
                           |),
                           [
@@ -1161,9 +1155,7 @@ Module boxed.
                                   |)
                                 ]
                               |),
-                              M.read (|
-                                get_constant (| "alloc::boxed::convert::N", Ty.path "usize" |)
-                              |)
+                              N
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1286,9 +1278,7 @@ Module boxed.
                                 |),
                                 [ M.borrow (| Pointer.Kind.Ref, vec |) ]
                               |),
-                              M.read (|
-                                get_constant (| "alloc::boxed::convert::N", Ty.path "usize" |)
-                              |)
+                              N
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in

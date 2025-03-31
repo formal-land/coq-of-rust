@@ -18,10 +18,7 @@ Module bytes.
       ltac:(M.monadic
         (M.alloc (|
           BinOp.Wrap.div (|
-            BinOp.Wrap.add (|
-              M.read (| get_constant (| "ruint::bytes::BITS", Ty.path "usize" |) |),
-              Value.Integer IntegerKind.Usize 7
-            |),
+            BinOp.Wrap.add (| BITS, Value.Integer IntegerKind.Usize 7 |),
             Value.Integer IntegerKind.Usize 8
           |)
         |))).
@@ -447,12 +444,7 @@ Module bytes.
                                 (M.alloc (|
                                   UnOp.not (|
                                     BinOp.eq (|
-                                      M.read (|
-                                        get_constant (|
-                                          "ruint::bytes::to_le_bytes::BYTES",
-                                          Ty.path "usize"
-                                        |)
-                                      |),
+                                      BYTES,
                                       M.read (|
                                         get_associated_constant (|
                                           Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
@@ -1045,12 +1037,7 @@ Module bytes.
                           (M.alloc (|
                             UnOp.not (|
                               BinOp.eq (|
-                                M.read (|
-                                  get_constant (|
-                                    "ruint::bytes::from_be_bytes::BYTES",
-                                    Ty.path "usize"
-                                  |)
-                                |),
+                                BYTES,
                                 M.read (|
                                   get_associated_constant (|
                                     Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
@@ -1416,15 +1403,7 @@ Module bytes.
                                               (let γ :=
                                                 M.use
                                                   (M.alloc (|
-                                                    BinOp.lt (|
-                                                      M.read (| i |),
-                                                      M.read (|
-                                                        get_constant (|
-                                                          "ruint::bytes::LIMBS",
-                                                          Ty.path "usize"
-                                                        |)
-                                                      |)
-                                                    |)
+                                                    BinOp.lt (| M.read (| i |), LIMBS |)
                                                   |)) in
                                               let _ :=
                                                 M.is_constant_or_break_match (|
@@ -1815,12 +1794,7 @@ Module bytes.
                           (M.alloc (|
                             UnOp.not (|
                               BinOp.eq (|
-                                M.read (|
-                                  get_constant (|
-                                    "ruint::bytes::from_le_bytes::BYTES",
-                                    Ty.path "usize"
-                                  |)
-                                |),
+                                BYTES,
                                 M.read (|
                                   get_associated_constant (|
                                     Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
@@ -2159,15 +2133,7 @@ Module bytes.
                                               (let γ :=
                                                 M.use
                                                   (M.alloc (|
-                                                    BinOp.lt (|
-                                                      M.read (| i |),
-                                                      M.read (|
-                                                        get_constant (|
-                                                          "ruint::bytes::LIMBS",
-                                                          Ty.path "usize"
-                                                        |)
-                                                      |)
-                                                    |)
+                                                    BinOp.lt (| M.read (| i |), LIMBS |)
                                                   |)) in
                                               let _ :=
                                                 M.is_constant_or_break_match (|

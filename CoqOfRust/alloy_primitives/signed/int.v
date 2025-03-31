@@ -915,15 +915,7 @@ Module signed.
         let Self : Ty.t := Self BITS LIMBS in
         ltac:(M.monadic
           (M.alloc (|
-            M.call_closure (|
-              Ty.path "u64",
-              M.get_function (| "ruint::mask", [], [] |),
-              [
-                M.read (|
-                  get_constant (| "alloy_primitives::signed::int::BITS", Ty.path "usize" |)
-                |)
-              ]
-            |)
+            M.call_closure (| Ty.path "u64", M.get_function (| "ruint::mask", [], [] |), [ BITS ] |)
           |))).
       
       Global Instance AssociatedConstant_value_MASK :
@@ -946,11 +938,7 @@ Module signed.
             M.call_closure (|
               Ty.path "u64",
               M.get_function (| "alloy_primitives::signed::utils::sign_bit", [], [] |),
-              [
-                M.read (|
-                  get_constant (| "alloy_primitives::signed::int::BITS", Ty.path "usize" |)
-                |)
-              ]
+              [ BITS ]
             |)
           |))).
       
@@ -969,8 +957,7 @@ Module signed.
           (α : list Value.t)
           : M :=
         let Self : Ty.t := Self BITS LIMBS in
-        ltac:(M.monadic
-          (get_constant (| "alloy_primitives::signed::int::BITS", Ty.path "usize" |))).
+        ltac:(M.monadic (M.alloc (| BITS |))).
       
       Global Instance AssociatedConstant_value_BITS :
         forall (BITS LIMBS : Value.t),
@@ -1525,17 +1512,7 @@ Module signed.
                     ltac:(M.monadic
                       (let γ :=
                         M.use
-                          (M.alloc (|
-                            BinOp.eq (|
-                              M.read (|
-                                get_constant (|
-                                  "alloy_primitives::signed::int::BITS",
-                                  Ty.path "usize"
-                                |)
-                              |),
-                              Value.Integer IntegerKind.Usize 0
-                            |)
-                          |)) in
+                          (M.alloc (| BinOp.eq (| BITS, Value.Integer IntegerKind.Usize 0 |) |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.Bool false |)));
                   fun γ =>

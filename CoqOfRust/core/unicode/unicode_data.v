@@ -71,29 +71,9 @@ Module unicode.
                       (BinOp.Wrap.div (| M.read (| needle |), Value.Integer IntegerKind.U32 64 |))
                   |) in
                 let~ chunk_map_idx : Ty.path "usize" :=
-                  M.alloc (|
-                    BinOp.Wrap.div (|
-                      M.read (| bucket_idx |),
-                      M.read (|
-                        get_constant (|
-                          "core::unicode::unicode_data::bitset_search::CHUNK_SIZE",
-                          Ty.path "usize"
-                        |)
-                      |)
-                    |)
-                  |) in
+                  M.alloc (| BinOp.Wrap.div (| M.read (| bucket_idx |), CHUNK_SIZE |) |) in
                 let~ chunk_piece : Ty.path "usize" :=
-                  M.alloc (|
-                    BinOp.Wrap.rem (|
-                      M.read (| bucket_idx |),
-                      M.read (|
-                        get_constant (|
-                          "core::unicode::unicode_data::bitset_search::CHUNK_SIZE",
-                          Ty.path "usize"
-                        |)
-                      |)
-                    |)
-                  |) in
+                  M.alloc (| BinOp.Wrap.rem (| M.read (| bucket_idx |), CHUNK_SIZE |) |) in
                 let~ chunk_idx : Ty.path "u8" :=
                   M.copy (|
                     M.match_operator (|

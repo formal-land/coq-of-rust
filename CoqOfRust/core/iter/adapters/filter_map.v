@@ -991,12 +991,7 @@ Module iter.
                                                                 "initialized"
                                                               |)
                                                             |),
-                                                            M.read (|
-                                                              get_constant (|
-                                                                "core::iter::adapters::filter_map::next_chunk::N",
-                                                                Ty.path "usize"
-                                                              |)
-                                                            |)
+                                                            N
                                                           |)
                                                         |)) in
                                                     let _ :=

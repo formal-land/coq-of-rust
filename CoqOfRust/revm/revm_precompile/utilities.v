@@ -195,17 +195,7 @@ Module utilities.
                         |),
                         [
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |);
-                          Value.StructRecord
-                            "core::ops::range::RangeTo"
-                            [
-                              ("end_",
-                                M.read (|
-                                  get_constant (|
-                                    "revm_precompile::utilities::right_pad::LEN",
-                                    Ty.path "usize"
-                                  |)
-                                |))
-                            ]
+                          Value.StructRecord "core::ops::range::RangeTo" [ ("end_", LEN) ]
                         ]
                       |)
                     |) in
@@ -558,17 +548,7 @@ Module utilities.
                         |),
                         [
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| data |) |) |);
-                          Value.StructRecord
-                            "core::ops::range::RangeTo"
-                            [
-                              ("end_",
-                                M.read (|
-                                  get_constant (|
-                                    "revm_precompile::utilities::left_pad::LEN",
-                                    Ty.path "usize"
-                                  |)
-                                |))
-                            ]
+                          Value.StructRecord "core::ops::range::RangeTo" [ ("end_", LEN) ]
                         ]
                       |)
                     |) in
@@ -678,12 +658,7 @@ Module utilities.
                                     [
                                       ("start",
                                         BinOp.Wrap.sub (|
-                                          M.read (|
-                                            get_constant (|
-                                              "revm_precompile::utilities::left_pad::LEN",
-                                              Ty.path "usize"
-                                            |)
-                                          |),
+                                          LEN,
                                           M.call_closure (|
                                             Ty.path "usize",
                                             M.get_associated_function (|

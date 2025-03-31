@@ -92,15 +92,7 @@ Module signed.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.eq (|
-                                    M.read (|
-                                      get_constant (|
-                                        "alloy_primitives::signed::ops::BITS",
-                                        Ty.path "usize"
-                                      |)
-                                    |),
-                                    Value.Integer IntegerKind.Usize 0
-                                  |)
+                                  BinOp.eq (| BITS, Value.Integer IntegerKind.Usize 0 |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -491,15 +483,7 @@ Module signed.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.eq (|
-                                    M.read (|
-                                      get_constant (|
-                                        "alloy_primitives::signed::ops::BITS",
-                                        Ty.path "usize"
-                                      |)
-                                    |),
-                                    Value.Integer IntegerKind.Usize 0
-                                  |)
+                                  BinOp.eq (| BITS, Value.Integer IntegerKind.Usize 0 |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -4556,12 +4540,7 @@ Module signed.
               let~ is_exp_odd : Ty.path "bool" :=
                 M.alloc (|
                   LogicalOp.and (|
-                    BinOp.ne (|
-                      M.read (|
-                        get_constant (| "alloy_primitives::signed::ops::BITS", Ty.path "usize" |)
-                      |),
-                      Value.Integer IntegerKind.Usize 0
-                    |),
+                    BinOp.ne (| BITS, Value.Integer IntegerKind.Usize 0 |),
                     ltac:(M.monadic
                       (BinOp.eq (|
                         BinOp.Wrap.rem (|
@@ -4823,15 +4802,7 @@ Module signed.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.eq (|
-                                    M.read (|
-                                      get_constant (|
-                                        "alloy_primitives::signed::ops::BITS",
-                                        Ty.path "usize"
-                                      |)
-                                    |),
-                                    Value.Integer IntegerKind.Usize 0
-                                  |)
+                                  BinOp.eq (| BITS, Value.Integer IntegerKind.Usize 0 |)
                                 |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -5777,15 +5748,7 @@ Module signed.
                                       Value.Integer IntegerKind.Usize 0
                                     |),
                                     ltac:(M.monadic
-                                      (BinOp.eq (|
-                                        M.read (|
-                                          get_constant (|
-                                            "alloy_primitives::signed::ops::BITS",
-                                            Ty.path "usize"
-                                          |)
-                                        |),
-                                        Value.Integer IntegerKind.Usize 0
-                                      |)))
+                                      (BinOp.eq (| BITS, Value.Integer IntegerKind.Usize 0 |)))
                                   |)
                                 |)) in
                             let _ :=
@@ -5808,15 +5771,7 @@ Module signed.
                                 (M.alloc (|
                                   BinOp.ge (|
                                     M.read (| rhs |),
-                                    BinOp.Wrap.sub (|
-                                      M.read (|
-                                        get_constant (|
-                                          "alloy_primitives::signed::ops::BITS",
-                                          Ty.path "usize"
-                                        |)
-                                      |),
-                                      Value.Integer IntegerKind.Usize 1
-                                    |)
+                                    BinOp.Wrap.sub (| BITS, Value.Integer IntegerKind.Usize 1 |)
                                   |)
                                 |)) in
                             let _ :=
@@ -6033,17 +5988,7 @@ Module signed.
                                                   [],
                                                   [ Ty.path "usize" ]
                                                 |),
-                                                [
-                                                  BinOp.Wrap.sub (|
-                                                    M.read (|
-                                                      get_constant (|
-                                                        "alloy_primitives::signed::ops::BITS",
-                                                        Ty.path "usize"
-                                                      |)
-                                                    |),
-                                                    M.read (| rhs |)
-                                                  |)
-                                                ]
+                                                [ BinOp.Wrap.sub (| BITS, M.read (| rhs |) |) ]
                                               |)
                                             ]
                                           |);
@@ -6166,15 +6111,7 @@ Module signed.
                             LogicalOp.or (|
                               BinOp.eq (| M.read (| rhs |), Value.Integer IntegerKind.Usize 0 |),
                               ltac:(M.monadic
-                                (BinOp.eq (|
-                                  M.read (|
-                                    get_constant (|
-                                      "alloy_primitives::signed::ops::BITS",
-                                      Ty.path "usize"
-                                    |)
-                                  |),
-                                  Value.Integer IntegerKind.Usize 0
-                                |)))
+                                (BinOp.eq (| BITS, Value.Integer IntegerKind.Usize 0 |)))
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in

@@ -6499,16 +6499,7 @@ Module instructions.
                                   [],
                                   []
                                 |),
-                                [
-                                  M.cast
-                                    (Ty.path "u8")
-                                    (M.read (|
-                                      get_constant (|
-                                        "revm_interpreter::instructions::host::log::N",
-                                        Ty.path "usize"
-                                      |)
-                                    |));
-                                  M.cast (Ty.path "u64") (M.read (| len |))
+                                [ M.cast (Ty.path "u8") N; M.cast (Ty.path "u64") (M.read (| len |))
                                 ]
                               |)
                             |),
@@ -7230,12 +7221,7 @@ Module instructions.
                                               |)
                                             ]
                                           |),
-                                          M.read (|
-                                            get_constant (|
-                                              "revm_interpreter::instructions::host::log::N",
-                                              Ty.path "usize"
-                                            |)
-                                          |)
+                                          N
                                         |)
                                       |)) in
                                   let _ :=

@@ -2557,12 +2557,7 @@ Module ptr.
                                 |),
                                 [ M.read (| self |) ]
                               |),
-                              M.read (|
-                                get_constant (|
-                                  "core::ptr::const_ptr::as_array::N",
-                                  Ty.path "usize"
-                                |)
-                              |)
+                              N
                             |)
                           |)) in
                       let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in

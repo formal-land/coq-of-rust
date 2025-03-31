@@ -7451,15 +7451,7 @@ Module collections.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.eq (|
-                                      M.read (|
-                                        get_constant (|
-                                          "alloc::collections::btree::set::N",
-                                          Ty.path "usize"
-                                        |)
-                                      |),
-                                      Value.Integer IntegerKind.Usize 0
-                                    |)
+                                    BinOp.eq (| N, Value.Integer IntegerKind.Usize 0 |)
                                   |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|

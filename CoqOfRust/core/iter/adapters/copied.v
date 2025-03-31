@@ -1410,15 +1410,7 @@ Module iter.
                                               (let γ :=
                                                 M.use
                                                   (M.alloc (|
-                                                    BinOp.lt (|
-                                                      M.read (| len |),
-                                                      M.read (|
-                                                        get_constant (|
-                                                          "core::iter::adapters::copied::N",
-                                                          Ty.path "usize"
-                                                        |)
-                                                      |)
-                                                    |)
+                                                    BinOp.lt (| M.read (| len |), N |)
                                                   |)) in
                                               let _ :=
                                                 M.is_constant_or_break_match (|
@@ -1538,12 +1530,7 @@ Module iter.
                                               Pointer.Kind.MutRef,
                                               M.deref (| M.read (| self |) |)
                                             |);
-                                            M.read (|
-                                              get_constant (|
-                                                "core::iter::adapters::copied::N",
-                                                Ty.path "usize"
-                                              |)
-                                            |)
+                                            N
                                           ]
                                         |)
                                       |),
@@ -1585,19 +1572,7 @@ Module iter.
                         [
                           fun γ =>
                             ltac:(M.monadic
-                              (let γ :=
-                                M.use
-                                  (M.alloc (|
-                                    BinOp.lt (|
-                                      M.read (| len |),
-                                      M.read (|
-                                        get_constant (|
-                                          "core::iter::adapters::copied::N",
-                                          Ty.path "usize"
-                                        |)
-                                      |)
-                                    |)
-                                  |)) in
+                              (let γ := M.use (M.alloc (| BinOp.lt (| M.read (| len |), N |) |)) in
                               let _ :=
                                 M.is_constant_or_break_match (|
                                   M.read (| γ |),
@@ -1833,9 +1808,7 @@ Module iter.
                                 |),
                                 [ M.borrow (| Pointer.Kind.MutRef, raw_array |) ]
                               |));
-                            M.read (|
-                              get_constant (| "core::iter::adapters::copied::N", Ty.path "usize" |)
-                            |)
+                            N
                           ]
                         |)
                       |) in
@@ -1862,12 +1835,7 @@ Module iter.
                             [],
                             []
                           |),
-                          [
-                            M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |);
-                            M.read (|
-                              get_constant (| "core::iter::adapters::copied::N", Ty.path "usize" |)
-                            |)
-                          ]
+                          [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| self |) |) |); N ]
                         |)
                       |),
                       [

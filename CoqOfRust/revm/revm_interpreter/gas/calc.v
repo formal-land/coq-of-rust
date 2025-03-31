@@ -2389,10 +2389,7 @@ Module gas.
                           |)
                         |)) in
                     let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                    get_constant (|
-                      "revm_interpreter::gas::calc::istanbul_sstore_cost::SLOAD_GAS",
-                      Ty.path "u64"
-                    |)));
+                    M.alloc (| SLOAD_GAS |)));
                 fun γ =>
                   ltac:(M.monadic
                     (M.match_operator (|
@@ -2476,16 +2473,8 @@ Module gas.
                                         M.read (| γ |),
                                         Value.Bool true
                                       |) in
-                                    get_constant (|
-                                      "revm_interpreter::gas::calc::istanbul_sstore_cost::SSTORE_RESET_GAS",
-                                      Ty.path "u64"
-                                    |)));
-                                fun γ =>
-                                  ltac:(M.monadic
-                                    (get_constant (|
-                                      "revm_interpreter::gas::calc::istanbul_sstore_cost::SLOAD_GAS",
-                                      Ty.path "u64"
-                                    |)))
+                                    M.alloc (| SSTORE_RESET_GAS |)));
+                                fun γ => ltac:(M.monadic (M.alloc (| SLOAD_GAS |)))
                               ]
                             |)))
                       ]

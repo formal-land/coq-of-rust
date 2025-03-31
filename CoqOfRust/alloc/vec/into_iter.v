@@ -1928,15 +1928,7 @@ Module vec.
                                             (let γ :=
                                               M.use
                                                 (M.alloc (|
-                                                  BinOp.lt (|
-                                                    M.read (| len |),
-                                                    M.read (|
-                                                      get_constant (|
-                                                        "alloc::vec::into_iter::next_chunk::N",
-                                                        Ty.path "usize"
-                                                      |)
-                                                    |)
-                                                  |)
+                                                  BinOp.lt (| M.read (| len |), N |)
                                                 |)) in
                                             let _ :=
                                               M.is_constant_or_break_match (|
@@ -2032,12 +2024,7 @@ Module vec.
                                                 "end"
                                               |)
                                             |);
-                                            M.read (|
-                                              get_constant (|
-                                                "alloc::vec::into_iter::next_chunk::N",
-                                                Ty.path "usize"
-                                              |)
-                                            |)
+                                            N
                                           ]
                                         |)
                                       |)
@@ -2097,19 +2084,7 @@ Module vec.
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  BinOp.lt (|
-                                    M.read (| len |),
-                                    M.read (|
-                                      get_constant (|
-                                        "alloc::vec::into_iter::next_chunk::N",
-                                        Ty.path "usize"
-                                      |)
-                                    |)
-                                  |)
-                                |)) in
+                            (let γ := M.use (M.alloc (| BinOp.lt (| M.read (| len |), N |) |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
@@ -2288,12 +2263,7 @@ Module vec.
                               |),
                               [ M.borrow (| Pointer.Kind.MutRef, raw_ary |) ]
                             |));
-                          M.read (|
-                            get_constant (|
-                              "alloc::vec::into_iter::next_chunk::N",
-                              Ty.path "usize"
-                            |)
-                          |)
+                          N
                         ]
                       |)
                     |) in
@@ -2321,12 +2291,7 @@ Module vec.
                                 "ptr"
                               |)
                             |);
-                            M.read (|
-                              get_constant (|
-                                "alloc::vec::into_iter::next_chunk::N",
-                                Ty.path "usize"
-                              |)
-                            |)
+                            N
                           ]
                         |)
                       |)

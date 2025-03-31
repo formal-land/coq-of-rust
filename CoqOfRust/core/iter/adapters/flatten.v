@@ -1364,11 +1364,7 @@ Module iter.
                   [],
                   []
                 |),
-                [
-                  M.read (|
-                    get_constant (| "core::iter::adapters::flatten::N", Ty.path "usize" |)
-                  |)
-                ]
+                [ N ]
               |)
             |))).
         
@@ -1412,11 +1408,7 @@ Module iter.
                   [],
                   []
                 |),
-                [
-                  M.read (|
-                    get_constant (| "core::iter::adapters::flatten::N", Ty.path "usize" |)
-                  |)
-                ]
+                [ N ]
               |)
             |))).
         
@@ -6853,15 +6845,7 @@ Module iter.
             : M :=
           let Self : Ty.t := Self N T in
           match ε, τ, α with
-          | [], [], [] =>
-            ltac:(M.monadic
-              (Value.StructTuple
-                "core::option::Option::Some"
-                [
-                  M.read (|
-                    get_constant (| "core::iter::adapters::flatten::N", Ty.path "usize" |)
-                  |)
-                ]))
+          | [], [], [] => ltac:(M.monadic (Value.StructTuple "core::option::Option::Some" [ N ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
@@ -6893,15 +6877,7 @@ Module iter.
             : M :=
           let Self : Ty.t := Self N T in
           match ε, τ, α with
-          | [], [], [] =>
-            ltac:(M.monadic
-              (Value.StructTuple
-                "core::option::Option::Some"
-                [
-                  M.read (|
-                    get_constant (| "core::iter::adapters::flatten::N", Ty.path "usize" |)
-                  |)
-                ]))
+          | [], [], [] => ltac:(M.monadic (Value.StructTuple "core::option::Option::Some" [ N ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         
@@ -6933,15 +6909,7 @@ Module iter.
             : M :=
           let Self : Ty.t := Self N T in
           match ε, τ, α with
-          | [], [], [] =>
-            ltac:(M.monadic
-              (Value.StructTuple
-                "core::option::Option::Some"
-                [
-                  M.read (|
-                    get_constant (| "core::iter::adapters::flatten::N", Ty.path "usize" |)
-                  |)
-                ]))
+          | [], [], [] => ltac:(M.monadic (Value.StructTuple "core::option::Option::Some" [ N ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
         

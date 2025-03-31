@@ -109,17 +109,7 @@ Module iter.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.not (|
-                                  BinOp.ne (|
-                                    M.read (|
-                                      get_constant (|
-                                        "core::iter::adapters::map_windows::N",
-                                        Ty.path "usize"
-                                      |)
-                                    |),
-                                    Value.Integer IntegerKind.Usize 0
-                                  |)
-                                |)
+                                UnOp.not (| BinOp.ne (| N, Value.Integer IntegerKind.Usize 0 |) |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -232,15 +222,7 @@ Module iter.
                                                         [],
                                                         []
                                                       |),
-                                                      [
-                                                        M.read (|
-                                                          get_constant (|
-                                                            "core::iter::adapters::map_windows::N",
-                                                            Ty.path "usize"
-                                                          |)
-                                                        |);
-                                                        Value.Integer IntegerKind.Usize 2
-                                                      ]
+                                                      [ N; Value.Integer IntegerKind.Usize 2 ]
                                                     |)
                                                   |)
                                                 |)
@@ -1127,12 +1109,7 @@ Module iter.
                                                 [
                                                   M.read (| lo |);
                                                   BinOp.Wrap.sub (|
-                                                    M.read (|
-                                                      get_constant (|
-                                                        "core::iter::adapters::map_windows::N",
-                                                        Ty.path "usize"
-                                                      |)
-                                                    |),
+                                                    N,
                                                     Value.Integer IntegerKind.Usize 1
                                                   |)
                                                 ]
@@ -1185,12 +1162,7 @@ Module iter.
                                                                       [
                                                                         M.read (| hi |);
                                                                         BinOp.Wrap.sub (|
-                                                                          M.read (|
-                                                                            get_constant (|
-                                                                              "core::iter::adapters::map_windows::N",
-                                                                              Ty.path "usize"
-                                                                            |)
-                                                                          |),
+                                                                          N,
                                                                           Value.Integer
                                                                             IntegerKind.Usize
                                                                             1
@@ -1690,21 +1662,11 @@ Module iter.
                                                     "start"
                                                   |)
                                                 |),
-                                                M.read (|
-                                                  get_constant (|
-                                                    "core::iter::adapters::map_windows::N",
-                                                    Ty.path "usize"
-                                                  |)
-                                                |)
+                                                N
                                               |),
                                               BinOp.Wrap.mul (|
                                                 Value.Integer IntegerKind.Usize 2,
-                                                M.read (|
-                                                  get_constant (|
-                                                    "core::iter::adapters::map_windows::N",
-                                                    Ty.path "usize"
-                                                  |)
-                                                |)
+                                                N
                                               |)
                                             |)
                                           |)
@@ -1888,21 +1850,11 @@ Module iter.
                                                         "start"
                                                       |)
                                                     |),
-                                                    M.read (|
-                                                      get_constant (|
-                                                        "core::iter::adapters::map_windows::N",
-                                                        Ty.path "usize"
-                                                      |)
-                                                    |)
+                                                    N
                                                   |),
                                                   BinOp.Wrap.mul (|
                                                     Value.Integer IntegerKind.Usize 2,
-                                                    M.read (|
-                                                      get_constant (|
-                                                        "core::iter::adapters::map_windows::N",
-                                                        Ty.path "usize"
-                                                      |)
-                                                    |)
+                                                    N
                                                   |)
                                                 |)
                                               |)
@@ -2175,21 +2127,11 @@ Module iter.
                                                     "start"
                                                   |)
                                                 |),
-                                                M.read (|
-                                                  get_constant (|
-                                                    "core::iter::adapters::map_windows::N",
-                                                    Ty.path "usize"
-                                                  |)
-                                                |)
+                                                N
                                               |),
                                               BinOp.Wrap.mul (|
                                                 Value.Integer IntegerKind.Usize 2,
-                                                M.read (|
-                                                  get_constant (|
-                                                    "core::iter::adapters::map_windows::N",
-                                                    Ty.path "usize"
-                                                  |)
-                                                |)
+                                                N
                                               |)
                                             |)
                                           |)
@@ -2243,12 +2185,7 @@ Module iter.
                                         "start"
                                       |)
                                     |),
-                                    M.read (|
-                                      get_constant (|
-                                        "core::iter::adapters::map_windows::N",
-                                        Ty.path "usize"
-                                      |)
-                                    |)
+                                    N
                                   |)
                                 |)) in
                             let _ :=
@@ -2320,15 +2257,7 @@ Module iter.
                                             ]
                                           |));
                                         M.read (| buffer_mut_ptr |);
-                                        BinOp.Wrap.sub (|
-                                          M.read (|
-                                            get_constant (|
-                                              "core::iter::adapters::map_windows::N",
-                                              Ty.path "usize"
-                                            |)
-                                          |),
-                                          Value.Integer IntegerKind.Usize 1
-                                        |)
+                                        BinOp.Wrap.sub (| N, Value.Integer IntegerKind.Usize 1 |)
                                       ]
                                     |)
                                   |) in
@@ -2377,12 +2306,7 @@ Module iter.
                                               [
                                                 M.read (| buffer_mut_ptr |);
                                                 BinOp.Wrap.sub (|
-                                                  M.read (|
-                                                    get_constant (|
-                                                      "core::iter::adapters::map_windows::N",
-                                                      Ty.path "usize"
-                                                    |)
-                                                  |),
+                                                  N,
                                                   Value.Integer IntegerKind.Usize 1
                                                 |)
                                               ]
@@ -2508,12 +2432,7 @@ Module iter.
                                                       "start"
                                                     |)
                                                   |),
-                                                  M.read (|
-                                                    get_constant (|
-                                                      "core::iter::adapters::map_windows::N",
-                                                      Ty.path "usize"
-                                                    |)
-                                                  |)
+                                                  N
                                                 |)
                                               ]
                                             |)
@@ -3003,9 +2922,7 @@ Module iter.
                             |)
                           ]
                         |);
-                        M.read (|
-                          get_constant (| "core::iter::adapters::map_windows::N", Ty.path "usize" |)
-                        |)
+                        N
                       ]
                     |)
                   |) in

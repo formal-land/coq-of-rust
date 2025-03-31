@@ -894,12 +894,7 @@ Module instructions.
                                     "bytecode"
                                   |)
                                 |);
-                                M.read (|
-                                  get_constant (|
-                                    "revm_interpreter::instructions::stack::push::N",
-                                    Ty.path "usize"
-                                  |)
-                                |)
+                                N
                               ]
                             |)
                           |) in
@@ -945,14 +940,7 @@ Module instructions.
                                     "bytecode"
                                   |)
                                 |);
-                                M.cast
-                                  (Ty.path "isize")
-                                  (M.read (|
-                                    get_constant (|
-                                      "revm_interpreter::instructions::stack::push::N",
-                                      Ty.path "usize"
-                                    |)
-                                  |))
+                                M.cast (Ty.path "isize") N
                               ]
                             |)
                           |) in
@@ -1136,12 +1124,7 @@ Module instructions.
                                         "stack"
                                       |)
                                     |);
-                                    M.read (|
-                                      get_constant (|
-                                        "revm_interpreter::instructions::stack::dup::N",
-                                        Ty.path "usize"
-                                      |)
-                                    |)
+                                    N
                                   ]
                                 |)
                               |)
@@ -1338,17 +1321,7 @@ Module instructions.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.not (|
-                                  BinOp.ne (|
-                                    M.read (|
-                                      get_constant (|
-                                        "revm_interpreter::instructions::stack::swap::N",
-                                        Ty.path "usize"
-                                      |)
-                                    |),
-                                    Value.Integer IntegerKind.Usize 0
-                                  |)
-                                |)
+                                UnOp.not (| BinOp.ne (| N, Value.Integer IntegerKind.Usize 0 |) |)
                               |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -1400,12 +1373,7 @@ Module instructions.
                                       |)
                                     |);
                                     Value.Integer IntegerKind.Usize 0;
-                                    M.read (|
-                                      get_constant (|
-                                        "revm_interpreter::instructions::stack::swap::N",
-                                        Ty.path "usize"
-                                      |)
-                                    |)
+                                    N
                                   ]
                                 |)
                               |)

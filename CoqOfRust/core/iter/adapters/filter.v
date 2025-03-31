@@ -444,15 +444,7 @@ Module iter.
                                                     (let γ :=
                                                       M.use
                                                         (M.alloc (|
-                                                          BinOp.lt (|
-                                                            M.read (| initialized |),
-                                                            M.read (|
-                                                              get_constant (|
-                                                                "core::iter::adapters::filter::next_chunk_dropless::N",
-                                                                Ty.path "usize"
-                                                              |)
-                                                            |)
-                                                          |)
+                                                          BinOp.lt (| M.read (| initialized |), N |)
                                                         |)) in
                                                     let _ :=
                                                       M.is_constant_or_break_match (|

@@ -4445,15 +4445,7 @@ Module bits.
                               M.use
                                 (M.alloc (|
                                   LogicalOp.or (|
-                                    BinOp.le (|
-                                      M.read (|
-                                        get_constant (|
-                                          "alloy_primitives::bits::fixed::N",
-                                          Ty.path "usize"
-                                        |)
-                                      |),
-                                      Value.Integer IntegerKind.Usize 4
-                                    |),
+                                    BinOp.le (| N, Value.Integer IntegerKind.Usize 4 |),
                                     ltac:(M.monadic
                                       (UnOp.not (|
                                         M.call_closure (|
@@ -4771,21 +4763,10 @@ Module bits.
                                         [
                                           ("start",
                                             BinOp.Wrap.sub (|
-                                              M.read (|
-                                                get_constant (|
-                                                  "alloy_primitives::bits::fixed::N",
-                                                  Ty.path "usize"
-                                                |)
-                                              |),
+                                              N,
                                               Value.Integer IntegerKind.Usize 2
                                             |));
-                                          ("end_",
-                                            M.read (|
-                                              get_constant (|
-                                                "alloy_primitives::bits::fixed::N",
-                                                Ty.path "usize"
-                                              |)
-                                            |))
+                                          ("end_", N)
                                         ]
                                     ]
                                   |)
@@ -5865,17 +5846,7 @@ Module bits.
                       ltac:(M.monadic
                         (let γ :=
                           M.use
-                            (M.alloc (|
-                              BinOp.gt (|
-                                M.read (|
-                                  get_constant (|
-                                    "alloy_primitives::bits::fixed::N",
-                                    Ty.path "usize"
-                                  |)
-                                |),
-                                Value.Integer IntegerKind.Usize 0
-                              |)
-                            |)) in
+                            (M.alloc (| BinOp.gt (| N, Value.Integer IntegerKind.Usize 0 |) |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
@@ -5883,15 +5854,7 @@ Module bits.
                             M.write (|
                               M.SubPointer.get_array_field (|
                                 bytes,
-                                BinOp.Wrap.sub (|
-                                  M.read (|
-                                    get_constant (|
-                                      "alloy_primitives::bits::fixed::N",
-                                      Ty.path "usize"
-                                    |)
-                                  |),
-                                  Value.Integer IntegerKind.Usize 1
-                                |)
+                                BinOp.Wrap.sub (| N, Value.Integer IntegerKind.Usize 1 |)
                               |),
                               M.read (| x |)
                             |)
@@ -5954,9 +5917,7 @@ Module bits.
           : M :=
         let Self : Ty.t := Self N in
         match ε, τ, α with
-        | [], [], [] =>
-          ltac:(M.monadic
-            (M.read (| get_constant (| "alloy_primitives::bits::fixed::N", Ty.path "usize" |) |)))
+        | [], [], [] => ltac:(M.monadic N)
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
       
@@ -6005,30 +5966,7 @@ Module bits.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              UnOp.not (|
-                                BinOp.eq (|
-                                  BinOp.Wrap.add (|
-                                    M.read (|
-                                      get_constant (|
-                                        "alloy_primitives::bits::fixed::N",
-                                        Ty.path "usize"
-                                      |)
-                                    |),
-                                    M.read (|
-                                      get_constant (|
-                                        "alloy_primitives::bits::fixed::concat_const::M",
-                                        Ty.path "usize"
-                                      |)
-                                    |)
-                                  |),
-                                  M.read (|
-                                    get_constant (|
-                                      "alloy_primitives::bits::fixed::concat_const::Z",
-                                      Ty.path "usize"
-                                    |)
-                                  |)
-                                |)
-                              |)
+                              UnOp.not (| BinOp.eq (| BinOp.Wrap.add (| N, M_ |), Z |) |)
                             |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
@@ -6085,19 +6023,7 @@ Module bits.
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  BinOp.lt (|
-                                    M.read (| i |),
-                                    M.read (|
-                                      get_constant (|
-                                        "alloy_primitives::bits::fixed::concat_const::Z",
-                                        Ty.path "usize"
-                                      |)
-                                    |)
-                                  |)
-                                |)) in
+                            (let γ := M.use (M.alloc (| BinOp.lt (| M.read (| i |), Z |) |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let~ _ : Ty.tuple [] :=
@@ -6113,17 +6039,7 @@ Module bits.
                                           ltac:(M.monadic
                                             (let γ :=
                                               M.use
-                                                (M.alloc (|
-                                                  BinOp.ge (|
-                                                    M.read (| i |),
-                                                    M.read (|
-                                                      get_constant (|
-                                                        "alloy_primitives::bits::fixed::N",
-                                                        Ty.path "usize"
-                                                      |)
-                                                    |)
-                                                  |)
-                                                |)) in
+                                                (M.alloc (| BinOp.ge (| M.read (| i |), N |) |)) in
                                             let _ :=
                                               M.is_constant_or_break_match (|
                                                 M.read (| γ |),
@@ -6135,15 +6051,7 @@ Module bits.
                                                 "alloy_primitives::bits::fixed::FixedBytes",
                                                 0
                                               |),
-                                              BinOp.Wrap.sub (|
-                                                M.read (| i |),
-                                                M.read (|
-                                                  get_constant (|
-                                                    "alloy_primitives::bits::fixed::N",
-                                                    Ty.path "usize"
-                                                  |)
-                                                |)
-                                              |)
+                                              BinOp.Wrap.sub (| M.read (| i |), N |)
                                             |)));
                                         fun γ =>
                                           ltac:(M.monadic
@@ -6359,10 +6267,7 @@ Module bits.
                                                     M.deref (|
                                                       M.borrow (|
                                                         Pointer.Kind.Ref,
-                                                        get_constant (|
-                                                          "alloy_primitives::bits::fixed::N",
-                                                          Ty.path "usize"
-                                                        |)
+                                                        M.alloc (| N |)
                                                       |)
                                                     |)
                                                   |)
@@ -6433,20 +6338,7 @@ Module bits.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
-                          M.use
-                            (M.alloc (|
-                              UnOp.not (|
-                                BinOp.le (|
-                                  M.read (| len |),
-                                  M.read (|
-                                    get_constant (|
-                                      "alloy_primitives::bits::fixed::N",
-                                      Ty.path "usize"
-                                    |)
-                                  |)
-                                |)
-                              |)
-                            |)) in
+                          M.use (M.alloc (| UnOp.not (| BinOp.le (| M.read (| len |), N |) |) |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
@@ -6504,10 +6396,7 @@ Module bits.
                                                       M.deref (|
                                                         M.borrow (|
                                                           Pointer.Kind.Ref,
-                                                          get_constant (|
-                                                            "alloy_primitives::bits::fixed::N",
-                                                            Ty.path "usize"
-                                                          |)
+                                                          M.alloc (| N |)
                                                         |)
                                                       |)
                                                     |)
@@ -6593,18 +6482,7 @@ Module bits.
                               M.borrow (| Pointer.Kind.MutRef, bytes |);
                               Value.StructRecord
                                 "core::ops::range::RangeFrom"
-                                [
-                                  ("start",
-                                    BinOp.Wrap.sub (|
-                                      M.read (|
-                                        get_constant (|
-                                          "alloy_primitives::bits::fixed::N",
-                                          Ty.path "usize"
-                                        |)
-                                      |),
-                                      M.read (| len |)
-                                    |))
-                                ]
+                                [ ("start", BinOp.Wrap.sub (| N, M.read (| len |) |)) ]
                             ]
                           |)
                         |)
@@ -6666,20 +6544,7 @@ Module bits.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ :=
-                          M.use
-                            (M.alloc (|
-                              UnOp.not (|
-                                BinOp.le (|
-                                  M.read (| len |),
-                                  M.read (|
-                                    get_constant (|
-                                      "alloy_primitives::bits::fixed::N",
-                                      Ty.path "usize"
-                                    |)
-                                  |)
-                                |)
-                              |)
-                            |)) in
+                          M.use (M.alloc (| UnOp.not (| BinOp.le (| M.read (| len |), N |) |) |)) in
                         let _ :=
                           M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
@@ -6737,10 +6602,7 @@ Module bits.
                                                       M.deref (|
                                                         M.borrow (|
                                                           Pointer.Kind.Ref,
-                                                          get_constant (|
-                                                            "alloy_primitives::bits::fixed::N",
-                                                            Ty.path "usize"
-                                                          |)
+                                                          M.alloc (| N |)
                                                         |)
                                                       |)
                                                     |)
@@ -7071,19 +6933,7 @@ Module bits.
                           [
                             fun γ =>
                               ltac:(M.monadic
-                                (let γ :=
-                                  M.use
-                                    (M.alloc (|
-                                      BinOp.lt (|
-                                        M.read (| i |),
-                                        M.read (|
-                                          get_constant (|
-                                            "alloy_primitives::bits::fixed::N",
-                                            Ty.path "usize"
-                                          |)
-                                        |)
-                                      |)
-                                    |)) in
+                                (let γ := M.use (M.alloc (| BinOp.lt (| M.read (| i |), N |) |)) in
                                 let _ :=
                                   M.is_constant_or_break_match (|
                                     M.read (| γ |),
@@ -7306,19 +7156,7 @@ Module bits.
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  BinOp.lt (|
-                                    M.read (| i |),
-                                    M.read (|
-                                      get_constant (|
-                                        "alloy_primitives::bits::fixed::N",
-                                        Ty.path "usize"
-                                      |)
-                                    |)
-                                  |)
-                                |)) in
+                            (let γ := M.use (M.alloc (| BinOp.lt (| M.read (| i |), N |) |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let~ _ : Ty.tuple [] :=
@@ -7430,19 +7268,7 @@ Module bits.
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  BinOp.lt (|
-                                    M.read (| i |),
-                                    M.read (|
-                                      get_constant (|
-                                        "alloy_primitives::bits::fixed::N",
-                                        Ty.path "usize"
-                                      |)
-                                    |)
-                                  |)
-                                |)) in
+                            (let γ := M.use (M.alloc (| BinOp.lt (| M.read (| i |), N |) |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let~ _ : Ty.tuple [] :=
@@ -7554,19 +7380,7 @@ Module bits.
                       [
                         fun γ =>
                           ltac:(M.monadic
-                            (let γ :=
-                              M.use
-                                (M.alloc (|
-                                  BinOp.lt (|
-                                    M.read (| i |),
-                                    M.read (|
-                                      get_constant (|
-                                        "alloy_primitives::bits::fixed::N",
-                                        Ty.path "usize"
-                                      |)
-                                    |)
-                                  |)
-                                |)) in
+                            (let γ := M.use (M.alloc (| BinOp.lt (| M.read (| i |), N |) |)) in
                             let _ :=
                               M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let~ _ : Ty.tuple [] :=
@@ -7678,12 +7492,7 @@ Module bits.
                     [
                       fun γ =>
                         ltac:(M.monadic
-                          (let γ :=
-                            M.use
-                              (get_constant (|
-                                "alloy_primitives::bits::fixed::fmt_hex::UPPER",
-                                Ty.path "bool"
-                              |)) in
+                          (let γ := M.use (M.alloc (| UPPER |)) in
                           let _ :=
                             M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|

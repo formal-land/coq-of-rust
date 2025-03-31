@@ -7812,12 +7812,7 @@ Module vec.
                                             [],
                                             []
                                           |),
-                                          [
-                                            M.read (| len |);
-                                            M.read (|
-                                              get_constant (| "alloc::vec::N", Ty.path "usize" |)
-                                            |)
-                                          ]
+                                          [ M.read (| len |); N ]
                                         |);
                                         M.borrow (|
                                           Pointer.Kind.Ref,
@@ -7847,12 +7842,7 @@ Module vec.
                                         [],
                                         []
                                       |),
-                                      [
-                                        M.read (| len |);
-                                        M.read (|
-                                          get_constant (| "alloc::vec::N", Ty.path "usize" |)
-                                        |)
-                                      ]
+                                      [ M.read (| len |); N ]
                                     |);
                                     M.call_closure (|
                                       Ty.path "usize",
@@ -7862,12 +7852,7 @@ Module vec.
                                         [],
                                         []
                                       |),
-                                      [
-                                        M.read (| cap |);
-                                        M.read (|
-                                          get_constant (| "alloc::vec::N", Ty.path "usize" |)
-                                        |)
-                                      ]
+                                      [ M.read (| cap |); N ]
                                     |)
                                   ]
                               |)))
@@ -11157,7 +11142,7 @@ Module vec.
                                     |),
                                     [ M.borrow (| Pointer.Kind.Ref, vec |) ]
                                   |),
-                                  M.read (| get_constant (| "alloc::vec::N", Ty.path "usize" |) |)
+                                  N
                                 |)
                               |)) in
                           let _ :=

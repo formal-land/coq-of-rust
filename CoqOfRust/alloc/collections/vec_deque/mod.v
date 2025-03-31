@@ -19513,11 +19513,7 @@ Module collections.
                       [],
                       []
                     |),
-                    [
-                      M.read (|
-                        get_constant (| "alloc::collections::vec_deque::N", Ty.path "usize" |)
-                      |)
-                    ]
+                    [ N ]
                   |)
                 |) in
               let~ arr :
@@ -19622,12 +19618,7 @@ Module collections.
                                   |),
                                   [ M.borrow (| Pointer.Kind.Ref, deq |) ]
                                 |);
-                                M.read (|
-                                  get_constant (|
-                                    "alloc::collections::vec_deque::N",
-                                    Ty.path "usize"
-                                  |)
-                                |)
+                                N
                               ]
                             |)
                           |) in
@@ -19654,9 +19645,7 @@ Module collections.
                       "alloc::collections::vec_deque::VecDeque",
                       "len"
                     |),
-                    M.read (|
-                      get_constant (| "alloc::collections::vec_deque::N", Ty.path "usize" |)
-                    |)
+                    N
                   |)
                 |) in
               deq

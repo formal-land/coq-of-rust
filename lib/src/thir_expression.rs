@@ -1202,13 +1202,10 @@ pub(crate) fn compile_expr<'a>(
                 _ => Rc::new(Expr::GetConstant { path, return_ty }),
             }
         }
-        thir::ExprKind::ConstParam { def_id, .. } => {
-            let return_ty = compile_type(env, &expr.span, generics, &expr.ty);
+        thir::ExprKind::ConstParam { param, .. } => {
+            let name = to_valid_coq_name(IsValue::No, param.name.as_str());
 
-            Rc::new(Expr::GetConstant {
-                path: compile_def_id(env, *def_id),
-                return_ty,
-            })
+            Expr::local_var(name.as_str()).alloc()
         }
         thir::ExprKind::StaticRef { def_id, .. } => {
             let return_ty = compile_type(env, &expr.span, generics, &expr.ty);

@@ -212,12 +212,7 @@ Module fmt.
                               M.use
                                 (M.alloc (|
                                   LogicalOp.or (|
-                                    BinOp.eq (|
-                                      M.read (|
-                                        get_constant (| "ruint::fmt::LIMBS", Ty.path "usize" |)
-                                      |),
-                                      Value.Integer IntegerKind.Usize 0
-                                    |),
+                                    BinOp.eq (| LIMBS, Value.Integer IntegerKind.Usize 0 |),
                                     ltac:(M.monadic
                                       (M.call_closure (|
                                         Ty.path "bool",
@@ -793,12 +788,7 @@ Module fmt.
                               M.use
                                 (M.alloc (|
                                   LogicalOp.or (|
-                                    BinOp.eq (|
-                                      M.read (|
-                                        get_constant (| "ruint::fmt::LIMBS", Ty.path "usize" |)
-                                      |),
-                                      Value.Integer IntegerKind.Usize 0
-                                    |),
+                                    BinOp.eq (| LIMBS, Value.Integer IntegerKind.Usize 0 |),
                                     ltac:(M.monadic
                                       (M.call_closure (|
                                         Ty.path "bool",
@@ -1321,12 +1311,7 @@ Module fmt.
                               M.use
                                 (M.alloc (|
                                   LogicalOp.or (|
-                                    BinOp.eq (|
-                                      M.read (|
-                                        get_constant (| "ruint::fmt::LIMBS", Ty.path "usize" |)
-                                      |),
-                                      Value.Integer IntegerKind.Usize 0
-                                    |),
+                                    BinOp.eq (| LIMBS, Value.Integer IntegerKind.Usize 0 |),
                                     ltac:(M.monadic
                                       (M.call_closure (|
                                         Ty.path "bool",
@@ -1849,12 +1834,7 @@ Module fmt.
                               M.use
                                 (M.alloc (|
                                   LogicalOp.or (|
-                                    BinOp.eq (|
-                                      M.read (|
-                                        get_constant (| "ruint::fmt::LIMBS", Ty.path "usize" |)
-                                      |),
-                                      Value.Integer IntegerKind.Usize 0
-                                    |),
+                                    BinOp.eq (| LIMBS, Value.Integer IntegerKind.Usize 0 |),
                                     ltac:(M.monadic
                                       (M.call_closure (|
                                         Ty.path "bool",
@@ -2377,12 +2357,7 @@ Module fmt.
                               M.use
                                 (M.alloc (|
                                   LogicalOp.or (|
-                                    BinOp.eq (|
-                                      M.read (|
-                                        get_constant (| "ruint::fmt::LIMBS", Ty.path "usize" |)
-                                      |),
-                                      Value.Integer IntegerKind.Usize 0
-                                    |),
+                                    BinOp.eq (| LIMBS, Value.Integer IntegerKind.Usize 0 |),
                                     ltac:(M.monadic
                                       (M.call_closure (|
                                         Ty.path "bool",
@@ -3235,9 +3210,7 @@ Module fmt.
                                       ]
                                     |)
                                   |),
-                                  M.read (|
-                                    get_constant (| "ruint::fmt::SIZE", Ty.path "usize" |)
-                                  |)
+                                  SIZE
                                 |)
                               |)) in
                           let _ :=

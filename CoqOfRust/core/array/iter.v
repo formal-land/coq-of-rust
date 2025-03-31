@@ -100,7 +100,7 @@ Module array.
                           [],
                           []
                         |),
-                        [ M.read (| get_constant (| "core::array::iter::N", Ty.path "usize" |) |) ]
+                        [ N ]
                       |))
                   ]
               |)
