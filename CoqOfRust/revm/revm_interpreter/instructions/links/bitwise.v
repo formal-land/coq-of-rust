@@ -5,7 +5,8 @@ Require Import core.cmp.
 Require Import core.result.
 Require Import core.convert.num.
 Require Import revm.revm_context_interface.links.host.
-Require revm.links.dependencies.
+Require Import revm.links.dependencies.
+Import dependencies.ruint.
 Require Import revm.revm_interpreter.links.gas.
 Require Import revm.revm_interpreter.links.interpreter.
 Require Import revm.revm_interpreter.links.interpreter_types.
@@ -13,7 +14,13 @@ Require Import revm.revm_interpreter.instructions.links.i256.
 Require Import revm.revm_interpreter.instructions.bitwise.
 Require Import revm.revm_interpreter.instructions.i256.
 Require Import revm.revm_specification.links.hardfork.
+Require Import core.num.links.error.
 Import Impl_Gas.
+Import Impl_SpecId.
+Import Impl_AsLimbs_Uint.
+Import convert.num.ptr_try_from_impls.
+Import Impl_core_convert_TryFrom_usize_for_u64.
+Import Impl_core_convert_TryFrom_u64_for_usize.
 
 (*
 pub fn lt<WIRE: InterpreterTypes, H: Host + ?Sized>(
@@ -412,21 +419,31 @@ Proof.
   destruct run_LoopControl_for_Control.
   destruct run_RuntimeFlag_for_RuntimeFlag.
   run_symbolic.
-  - constructor.
-    run_symbolic.
-    admit.
+  - eapply Run.CallPrimitiveGetTraitMethod.
+    + eapply IsTraitMethod.Defined.
+      ++ specialize convert.num.ptr_try_from_impls.Impl_core_convert_TryFrom_u64_for_usize.Implements.
+         intros.
+         unfold convert.num.ptr_try_from_impls.Impl_core_convert_TryFrom_u64_for_usize.Self in H3.
+         eapply H3.
+      ++ simpl. reflexivity.
+    + run_symbolic.
+      ++ constructor.
+        +++ eapply Implements_AsLimbs.
+      ++ admit.
+      ++ constructor.
+         run_symbolic.
+         simpl.
+         cbn.
+         instantiate (1 := result.Result.Ok (cast_integer IntegerKind.Usize value1)).
+         reflexivity.
+      ++ admit.
   - admit.
-  - constructor.
-    apply dependencies.ruint.Impl_ArithmeticShr_for_Uint.Implements.
-  - constructor.
-    destruct (dependencies.ruint.Impl_ArithmeticShr_for_Uint.run_arithmetic_shr
-      {| Integer.value := 256 |}
-      {| Integer.value := 4 |}
-      value2
-      value3).
-    exact run_f0.
   - admit.
   - admit.
+  - admit. 
+reflexivity.
+
+
 Admitted.
 
 Instance run_bitwise_shl
@@ -490,20 +507,25 @@ Proof.
   destruct run_LoopControl_for_Control.
   destruct run_RuntimeFlag_for_RuntimeFlag.
   run_symbolic.
+  Print hardfork.Impl_revm_specification_hardfork_SpecId.
   - constructor.
     run_symbolic.
     rewrite (hardfork.SpecId.cast_integer_eq IntegerKind.U8).
     run_symbolic.
+
+    eapply Run.Rewrite. { 
+      rewrite hardfork.SpecId.cast_integer_eq. }
     specialize (hardfork.SpecId.get_discriminant output).
     intro.
     set (discr_output := Integer.Build_t IntegerKind.U8 (SpecId.get_discriminant output mod 256)).
     replace (SpecId.get_discriminant output mod 256) with discr_output.(Integer.value). 
     + admit.
+    
     + simpl.
       reflexivity.
   - eapply Run.CallPrimitiveGetTraitMethod.
     + eapply IsTraitMethod.Defined.
-      ++ specialize convert.num.ptr_try_from_impls.Impl_core_convert_TryFrom_u64_for_usize.Implements.
+      ++  specialize convert.num.ptr_try_from_impls.Impl_core_convert_TryFrom_u64_for_usize.Implements.
           intros.
           unfold convert.num.ptr_try_from_impls.Impl_core_convert_TryFrom_u64_for_usize.Self in H3.
           eapply H3.

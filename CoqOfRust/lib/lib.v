@@ -141,9 +141,19 @@ End UnOp.
 
 Module BinOp.
   Parameter bit_xor : Value.t -> Value.t -> Value.t.
-  Parameter bit_and : Value.t -> Value.t -> Value.t.
-  Parameter bit_or : Value.t -> Value.t -> Value.t.
+  
+  Definition bit_and (v1 v2 : Value.t) : Value.t :=
+  match v1, v2 with
+  | Value.Bool b1, Value.Bool b2 => Value.Bool (andb b1 b2)
+  | Value.Integer kind1 z1, Value.Integer kind2 z2 =>
+      if IntegerKind.eqb kind1 kind2 then
+        Value.Integer kind1 (Z.land z1 z2)
+      else Value.Error "Type error" 
+  | _, _ => Value.Error "Type error" 
+  end.
 
+  Parameter bit_or : Value.t -> Value.t -> Value.t.
+  
   Definition eq : Value.t -> Value.t -> M :=
     M.are_equal.
 
