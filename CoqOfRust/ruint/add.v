@@ -54,7 +54,7 @@ Module add.
                             ]
                           |)
                         |)) in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
@@ -138,8 +138,7 @@ Module add.
                     (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let value := M.copy (| γ0_0 |) in
-                    let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
+                    let _ := is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
                     M.alloc (|
                       Value.StructTuple "core::option::Option::Some" [ M.read (| value |) ]
                     |)));
@@ -201,8 +200,7 @@ Module add.
                     (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let value := M.copy (| γ0_0 |) in
-                    let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
+                    let _ := is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
                     M.alloc (|
                       Value.StructTuple "core::option::Option::Some" [ M.read (| value |) ]
                     |)));
@@ -265,8 +263,7 @@ Module add.
                     (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let value := M.copy (| γ0_0 |) in
-                    let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
+                    let _ := is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
                     M.alloc (|
                       Value.StructTuple "core::option::Option::Some" [ M.read (| value |) ]
                     |)));
@@ -333,10 +330,14 @@ Module add.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.eq (| BITS, Value.Integer IntegerKind.Usize 0 |)
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.eq,
+                                  [ BITS; Value.Integer IntegerKind.Usize 0 ]
+                                |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -372,12 +373,16 @@ Module add.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
-                                M.use (M.alloc (| BinOp.lt (| M.read (| i |), LIMBS |) |)) in
+                                M.use
+                                  (M.alloc (|
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.lt,
+                                      [ M.read (| i |); LIMBS ]
+                                    |)
+                                  |)) in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
                                   None,
@@ -446,9 +451,10 @@ Module add.
                                   let β := i in
                                   M.write (|
                                     β,
-                                    BinOp.Wrap.add (|
-                                      M.read (| β |),
-                                      Value.Integer IntegerKind.Usize 1
+                                    M.call_closure (|
+                                      Ty.path "usize",
+                                      BinOp.Wrap.add,
+                                      [ M.read (| β |); Value.Integer IntegerKind.Usize 1 ]
                                     |)
                                   |)
                                 |) in
@@ -474,24 +480,32 @@ Module add.
                     LogicalOp.or (|
                       M.read (| carry |),
                       ltac:(M.monadic
-                        (BinOp.gt (|
-                          M.read (|
-                            M.SubPointer.get_array_field (|
-                              M.SubPointer.get_struct_record_field (|
-                                self,
-                                "ruint::Uint",
-                                "limbs"
-                              |),
-                              BinOp.Wrap.sub (| LIMBS, Value.Integer IntegerKind.Usize 1 |)
+                        (M.call_closure (|
+                          Ty.path "bool",
+                          BinOp.gt,
+                          [
+                            M.read (|
+                              M.SubPointer.get_array_field (|
+                                M.SubPointer.get_struct_record_field (|
+                                  self,
+                                  "ruint::Uint",
+                                  "limbs"
+                                |),
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  BinOp.Wrap.sub,
+                                  [ LIMBS; Value.Integer IntegerKind.Usize 1 ]
+                                |)
+                              |)
+                            |);
+                            M.read (|
+                              get_associated_constant (|
+                                Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                "MASK",
+                                Ty.path "u64"
+                              |)
                             |)
-                          |),
-                          M.read (|
-                            get_associated_constant (|
-                              Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                              "MASK",
-                              Ty.path "u64"
-                            |)
-                          |)
+                          ]
                         |)))
                     |)
                   |) in
@@ -500,19 +514,28 @@ Module add.
                     let β :=
                       M.SubPointer.get_array_field (|
                         M.SubPointer.get_struct_record_field (| self, "ruint::Uint", "limbs" |),
-                        BinOp.Wrap.sub (| LIMBS, Value.Integer IntegerKind.Usize 1 |)
+                        M.call_closure (|
+                          Ty.path "usize",
+                          BinOp.Wrap.sub,
+                          [ LIMBS; Value.Integer IntegerKind.Usize 1 ]
+                        |)
                       |) in
                     M.write (|
                       β,
-                      BinOp.bit_and
-                        (M.read (| β |))
-                        (M.read (|
-                          get_associated_constant (|
-                            Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                            "MASK",
-                            Ty.path "u64"
+                      M.call_closure (|
+                        Ty.path "u64",
+                        BinOp.Wrap.bit_and,
+                        [
+                          M.read (| β |);
+                          M.read (|
+                            get_associated_constant (|
+                              Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                              "MASK",
+                              Ty.path "u64"
+                            |)
                           |)
-                        |))
+                        ]
+                      |)
                     |)
                   |) in
                 M.alloc (| Value.Tuple [ M.read (| self |); M.read (| overflow |) ] |)
@@ -620,10 +643,14 @@ Module add.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.eq (| BITS, Value.Integer IntegerKind.Usize 0 |)
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.eq,
+                                  [ BITS; Value.Integer IntegerKind.Usize 0 ]
+                                |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -659,12 +686,16 @@ Module add.
                           fun γ =>
                             ltac:(M.monadic
                               (let γ :=
-                                M.use (M.alloc (| BinOp.lt (| M.read (| i |), LIMBS |) |)) in
+                                M.use
+                                  (M.alloc (|
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.lt,
+                                      [ M.read (| i |); LIMBS ]
+                                    |)
+                                  |)) in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
                                   None,
@@ -733,9 +764,10 @@ Module add.
                                   let β := i in
                                   M.write (|
                                     β,
-                                    BinOp.Wrap.add (|
-                                      M.read (| β |),
-                                      Value.Integer IntegerKind.Usize 1
+                                    M.call_closure (|
+                                      Ty.path "usize",
+                                      BinOp.Wrap.add,
+                                      [ M.read (| β |); Value.Integer IntegerKind.Usize 1 ]
                                     |)
                                   |)
                                 |) in
@@ -761,24 +793,32 @@ Module add.
                     LogicalOp.or (|
                       M.read (| borrow |),
                       ltac:(M.monadic
-                        (BinOp.gt (|
-                          M.read (|
-                            M.SubPointer.get_array_field (|
-                              M.SubPointer.get_struct_record_field (|
-                                self,
-                                "ruint::Uint",
-                                "limbs"
-                              |),
-                              BinOp.Wrap.sub (| LIMBS, Value.Integer IntegerKind.Usize 1 |)
+                        (M.call_closure (|
+                          Ty.path "bool",
+                          BinOp.gt,
+                          [
+                            M.read (|
+                              M.SubPointer.get_array_field (|
+                                M.SubPointer.get_struct_record_field (|
+                                  self,
+                                  "ruint::Uint",
+                                  "limbs"
+                                |),
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  BinOp.Wrap.sub,
+                                  [ LIMBS; Value.Integer IntegerKind.Usize 1 ]
+                                |)
+                              |)
+                            |);
+                            M.read (|
+                              get_associated_constant (|
+                                Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                "MASK",
+                                Ty.path "u64"
+                              |)
                             |)
-                          |),
-                          M.read (|
-                            get_associated_constant (|
-                              Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                              "MASK",
-                              Ty.path "u64"
-                            |)
-                          |)
+                          ]
                         |)))
                     |)
                   |) in
@@ -787,19 +827,28 @@ Module add.
                     let β :=
                       M.SubPointer.get_array_field (|
                         M.SubPointer.get_struct_record_field (| self, "ruint::Uint", "limbs" |),
-                        BinOp.Wrap.sub (| LIMBS, Value.Integer IntegerKind.Usize 1 |)
+                        M.call_closure (|
+                          Ty.path "usize",
+                          BinOp.Wrap.sub,
+                          [ LIMBS; Value.Integer IntegerKind.Usize 1 ]
+                        |)
                       |) in
                     M.write (|
                       β,
-                      BinOp.bit_and
-                        (M.read (| β |))
-                        (M.read (|
-                          get_associated_constant (|
-                            Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                            "MASK",
-                            Ty.path "u64"
+                      M.call_closure (|
+                        Ty.path "u64",
+                        BinOp.Wrap.bit_and,
+                        [
+                          M.read (| β |);
+                          M.read (|
+                            get_associated_constant (|
+                              Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                              "MASK",
+                              Ty.path "u64"
+                            |)
                           |)
-                        |))
+                        ]
+                      |)
                     |)
                   |) in
                 M.alloc (| Value.Tuple [ M.read (| self |); M.read (| overflow |) ] |)
@@ -855,8 +904,7 @@ Module add.
                     (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let value := M.copy (| γ0_0 |) in
-                    let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
+                    let _ := is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
                     value));
                 fun γ =>
                   ltac:(M.monadic
@@ -918,8 +966,7 @@ Module add.
                     (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                     let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                     let value := M.copy (| γ0_0 |) in
-                    let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
+                    let _ := is_constant_or_break_match (| M.read (| γ0_1 |), Value.Bool false |) in
                     value));
                 fun γ =>
                   ltac:(M.monadic

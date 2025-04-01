@@ -1002,8 +1002,7 @@ Module net.
                                 [ M.borrow (| Pointer.Kind.Ref, result |) ]
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.alloc (|
                             M.write (|
@@ -1117,10 +1116,7 @@ Module net.
                                     |)
                                   |)) in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               result));
                           fun γ =>
                             ltac:(M.monadic
@@ -1524,13 +1520,17 @@ Module net.
                                                                   (let γ :=
                                                                     M.use
                                                                       (M.alloc (|
-                                                                        BinOp.eq (|
-                                                                          M.read (| c |),
-                                                                          M.read (| target |)
+                                                                        M.call_closure (|
+                                                                          Ty.path "bool",
+                                                                          BinOp.eq,
+                                                                          [
+                                                                            M.read (| c |);
+                                                                            M.read (| target |)
+                                                                          ]
                                                                         |)
                                                                       |)) in
                                                                   let _ :=
-                                                                    M.is_constant_or_break_match (|
+                                                                    is_constant_or_break_match (|
                                                                       M.read (| γ |),
                                                                       Value.Bool true
                                                                     |) in
@@ -1643,13 +1643,17 @@ Module net.
                                               (let γ :=
                                                 M.use
                                                   (M.alloc (|
-                                                    BinOp.gt (|
-                                                      M.read (| index |),
-                                                      Value.Integer IntegerKind.Usize 0
+                                                    M.call_closure (|
+                                                      Ty.path "bool",
+                                                      BinOp.gt,
+                                                      [
+                                                        M.read (| index |);
+                                                        Value.Integer IntegerKind.Usize 0
+                                                      ]
                                                     |)
                                                   |)) in
                                               let _ :=
-                                                M.is_constant_or_break_match (|
+                                                is_constant_or_break_match (|
                                                   M.read (| γ |),
                                                   Value.Bool true
                                                 |) in
@@ -2002,7 +2006,7 @@ Module net.
                                                           (let γ :=
                                                             M.use (M.alloc (| Value.Bool true |)) in
                                                           let _ :=
-                                                            M.is_constant_or_break_match (|
+                                                            is_constant_or_break_match (|
                                                               M.read (| γ |),
                                                               Value.Bool true
                                                             |) in
@@ -2017,18 +2021,22 @@ Module net.
                                                                       M.use
                                                                         (M.alloc (|
                                                                           UnOp.not (|
-                                                                            BinOp.lt (|
-                                                                              M.read (|
-                                                                                max_digits
-                                                                              |),
-                                                                              Value.Integer
-                                                                                IntegerKind.Usize
-                                                                                10
+                                                                            M.call_closure (|
+                                                                              Ty.path "bool",
+                                                                              BinOp.lt,
+                                                                              [
+                                                                                M.read (|
+                                                                                  max_digits
+                                                                                |);
+                                                                                Value.Integer
+                                                                                  IntegerKind.Usize
+                                                                                  10
+                                                                              ]
                                                                             |)
                                                                           |)
                                                                         |)) in
                                                                     let _ :=
-                                                                      M.is_constant_or_break_match (|
+                                                                      is_constant_or_break_match (|
                                                                         M.read (| γ |),
                                                                         Value.Bool true
                                                                       |) in
@@ -2346,9 +2354,13 @@ Module net.
                                                                   let β := result in
                                                                   M.write (|
                                                                     β,
-                                                                    BinOp.Wrap.mul (|
-                                                                      M.read (| β |),
-                                                                      M.read (| radix |)
+                                                                    M.call_closure (|
+                                                                      Ty.path "u32",
+                                                                      BinOp.Wrap.mul,
+                                                                      [
+                                                                        M.read (| β |);
+                                                                        M.read (| radix |)
+                                                                      ]
                                                                     |)
                                                                   |)
                                                                 |) in
@@ -2357,9 +2369,13 @@ Module net.
                                                                   let β := result in
                                                                   M.write (|
                                                                     β,
-                                                                    BinOp.Wrap.add (|
-                                                                      M.read (| β |),
-                                                                      M.read (| digit |)
+                                                                    M.call_closure (|
+                                                                      Ty.path "u32",
+                                                                      BinOp.Wrap.add,
+                                                                      [
+                                                                        M.read (| β |);
+                                                                        M.read (| digit |)
+                                                                      ]
                                                                     |)
                                                                   |)
                                                                 |) in
@@ -2368,11 +2384,15 @@ Module net.
                                                                   let β := digit_count in
                                                                   M.write (|
                                                                     β,
-                                                                    BinOp.Wrap.add (|
-                                                                      M.read (| β |),
-                                                                      Value.Integer
-                                                                        IntegerKind.Usize
-                                                                        1
+                                                                    M.call_closure (|
+                                                                      Ty.path "usize",
+                                                                      BinOp.Wrap.add,
+                                                                      [
+                                                                        M.read (| β |);
+                                                                        Value.Integer
+                                                                          IntegerKind.Usize
+                                                                          1
+                                                                      ]
                                                                     |)
                                                                   |)
                                                                 |) in
@@ -2385,17 +2405,21 @@ Module net.
                                                                       (let γ :=
                                                                         M.use
                                                                           (M.alloc (|
-                                                                            BinOp.gt (|
-                                                                              M.read (|
-                                                                                digit_count
-                                                                              |),
-                                                                              M.read (|
-                                                                                max_digits
-                                                                              |)
+                                                                            M.call_closure (|
+                                                                              Ty.path "bool",
+                                                                              BinOp.gt,
+                                                                              [
+                                                                                M.read (|
+                                                                                  digit_count
+                                                                                |);
+                                                                                M.read (|
+                                                                                  max_digits
+                                                                                |)
+                                                                              ]
                                                                             |)
                                                                           |)) in
                                                                       let _ :=
-                                                                        M.is_constant_or_break_match (|
+                                                                        is_constant_or_break_match (|
                                                                           M.read (| γ |),
                                                                           Value.Bool true
                                                                         |) in
@@ -3045,11 +3069,15 @@ Module net.
                                                                   let β := digit_count in
                                                                   M.write (|
                                                                     β,
-                                                                    BinOp.Wrap.add (|
-                                                                      M.read (| β |),
-                                                                      Value.Integer
-                                                                        IntegerKind.Usize
-                                                                        1
+                                                                    M.call_closure (|
+                                                                      Ty.path "usize",
+                                                                      BinOp.Wrap.add,
+                                                                      [
+                                                                        M.read (| β |);
+                                                                        Value.Integer
+                                                                          IntegerKind.Usize
+                                                                          1
+                                                                      ]
                                                                     |)
                                                                   |)
                                                                 |) in
@@ -3089,13 +3117,17 @@ Module net.
                                             (let γ :=
                                               M.use
                                                 (M.alloc (|
-                                                  BinOp.eq (|
-                                                    M.read (| digit_count |),
-                                                    Value.Integer IntegerKind.Usize 0
+                                                  M.call_closure (|
+                                                    Ty.path "bool",
+                                                    BinOp.eq,
+                                                    [
+                                                      M.read (| digit_count |);
+                                                      Value.Integer IntegerKind.Usize 0
+                                                    ]
                                                   |)
                                                 |)) in
                                             let _ :=
-                                              M.is_constant_or_break_match (|
+                                              is_constant_or_break_match (|
                                                 M.read (| γ |),
                                                 Value.Bool true
                                               |) in
@@ -3126,14 +3158,18 @@ Module net.
                                                                 (M.read (| has_leading_zero |)))
                                                             |),
                                                             ltac:(M.monadic
-                                                              (BinOp.gt (|
-                                                                M.read (| digit_count |),
-                                                                Value.Integer IntegerKind.Usize 1
+                                                              (M.call_closure (|
+                                                                Ty.path "bool",
+                                                                BinOp.gt,
+                                                                [
+                                                                  M.read (| digit_count |);
+                                                                  Value.Integer IntegerKind.Usize 1
+                                                                ]
                                                               |)))
                                                           |)
                                                         |)) in
                                                     let _ :=
-                                                      M.is_constant_or_break_match (|
+                                                      is_constant_or_break_match (|
                                                         M.read (| γ |),
                                                         Value.Bool true
                                                       |) in
@@ -3891,13 +3927,17 @@ Module net.
                                                       (let γ :=
                                                         M.use
                                                           (M.alloc (|
-                                                            BinOp.eq (|
-                                                              M.read (| head_size |),
-                                                              Value.Integer IntegerKind.Usize 8
+                                                            M.call_closure (|
+                                                              Ty.path "bool",
+                                                              BinOp.eq,
+                                                              [
+                                                                M.read (| head_size |);
+                                                                Value.Integer IntegerKind.Usize 8
+                                                              ]
                                                             |)
                                                           |)) in
                                                       let _ :=
-                                                        M.is_constant_or_break_match (|
+                                                        is_constant_or_break_match (|
                                                           M.read (| γ |),
                                                           Value.Bool true
                                                         |) in
@@ -3950,7 +3990,7 @@ Module net.
                                                     ltac:(M.monadic
                                                       (let γ := M.use head_ipv4 in
                                                       let _ :=
-                                                        M.is_constant_or_break_match (|
+                                                        is_constant_or_break_match (|
                                                           M.read (| γ |),
                                                           Value.Bool true
                                                         |) in
@@ -4212,12 +4252,20 @@ Module net.
                                               |) in
                                             let~ limit : Ty.path "usize" :=
                                               M.alloc (|
-                                                BinOp.Wrap.sub (|
-                                                  Value.Integer IntegerKind.Usize 8,
-                                                  BinOp.Wrap.add (|
-                                                    M.read (| head_size |),
-                                                    Value.Integer IntegerKind.Usize 1
-                                                  |)
+                                                M.call_closure (|
+                                                  Ty.path "usize",
+                                                  BinOp.Wrap.sub,
+                                                  [
+                                                    Value.Integer IntegerKind.Usize 8;
+                                                    M.call_closure (|
+                                                      Ty.path "usize",
+                                                      BinOp.Wrap.add,
+                                                      [
+                                                        M.read (| head_size |);
+                                                        Value.Integer IntegerKind.Usize 1
+                                                      ]
+                                                    |)
+                                                  ]
                                                 |)
                                               |) in
                                             M.match_operator (|
@@ -4357,11 +4405,15 @@ Module net.
                                                                       "core::ops::range::Range"
                                                                       [
                                                                         ("start",
-                                                                          BinOp.Wrap.sub (|
-                                                                            Value.Integer
-                                                                              IntegerKind.Usize
-                                                                              8,
-                                                                            M.read (| tail_size |)
+                                                                          M.call_closure (|
+                                                                            Ty.path "usize",
+                                                                            BinOp.Wrap.sub,
+                                                                            [
+                                                                              Value.Integer
+                                                                                IntegerKind.Usize
+                                                                                8;
+                                                                              M.read (| tail_size |)
+                                                                            ]
                                                                           |));
                                                                         ("end_",
                                                                           Value.Integer
@@ -6277,21 +6329,25 @@ Module net.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.gt (|
-                              M.call_closure (|
-                                Ty.path "usize",
-                                M.get_associated_function (|
-                                  Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                  "len",
-                                  [],
-                                  []
-                                |),
-                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| b |) |) |) ]
-                              |),
-                              Value.Integer IntegerKind.Usize 15
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.gt,
+                              [
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                    "len",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| b |) |) |) ]
+                                |);
+                                Value.Integer IntegerKind.Usize 15
+                              ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
@@ -7390,7 +7446,13 @@ Module net.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                   |)
                 |) in
-              M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
+              M.alloc (|
+                M.call_closure (|
+                  Ty.path "bool",
+                  BinOp.eq,
+                  [ M.read (| __self_discr |); M.read (| __arg1_discr |) ]
+                |)
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

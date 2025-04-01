@@ -416,8 +416,7 @@ Module iter.
                               "core::iter::adapters::intersperse::Intersperse",
                               "started"
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.match_operator (|
                           Some
                             (Ty.apply
@@ -580,7 +579,7 @@ Module iter.
                                               |)
                                             |)) in
                                         let _ :=
-                                          M.is_constant_or_break_match (|
+                                          is_constant_or_break_match (|
                                             M.read (| γ |),
                                             Value.Bool true
                                           |) in
@@ -1403,8 +1402,7 @@ Module iter.
                               "core::iter::adapters::intersperse::IntersperseWith",
                               "started"
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.match_operator (|
                           Some
                             (Ty.apply
@@ -1567,7 +1565,7 @@ Module iter.
                                               |)
                                             |)) in
                                         let _ :=
-                                          M.is_constant_or_break_match (|
+                                          is_constant_or_break_match (|
                                             M.read (| γ |),
                                             Value.Bool true
                                           |) in
@@ -2102,7 +2100,7 @@ Module iter.
                         ltac:(M.monadic
                           (let γ := M.use started in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply

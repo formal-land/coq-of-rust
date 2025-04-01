@@ -26,7 +26,7 @@ Definition give_adult (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) :
                 (let γ0_0 :=
                   M.SubPointer.get_struct_tuple_field (| γ, "core::option::Option::Some", 0 |) in
                 let _ :=
-                  M.is_constant_or_break_match (| M.read (| γ0_0 |), mk_str (| "lemonade" |) |) in
+                  is_constant_or_break_match (| M.read (| γ0_0 |), mk_str (| "lemonade" |) |) in
                 let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     M.call_closure (|
@@ -230,7 +230,7 @@ Definition drink (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                           ]
                         |)
                       |)) in
-                  let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                  let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
                     M.never_to_any (|
                       M.call_closure (|

@@ -599,7 +599,13 @@ Module Impl_core_cmp_PartialEq_move_binary_format_IndexKind_for_move_binary_form
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |)
             |) in
-          M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
+          M.alloc (|
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.eq,
+              [ M.read (| __self_discr |); M.read (| __arg1_discr |) ]
+            |)
+          |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -1317,7 +1323,13 @@ Module Impl_core_cmp_PartialEq_move_binary_format_SignatureTokenKind_for_move_bi
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |)
             |) in
-          M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
+          M.alloc (|
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.eq,
+              [ M.read (| __self_discr |); M.read (| __arg1_discr |) ]
+            |)
+          |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.

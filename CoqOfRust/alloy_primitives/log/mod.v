@@ -818,36 +818,40 @@ Module log.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          BinOp.le (|
-            M.call_closure (|
-              Ty.path "usize",
-              M.get_associated_function (|
-                Ty.apply
-                  (Ty.path "alloc::vec::Vec")
+          M.call_closure (|
+            Ty.path "bool",
+            BinOp.le,
+            [
+              M.call_closure (|
+                Ty.path "usize",
+                M.get_associated_function (|
+                  Ty.apply
+                    (Ty.path "alloc::vec::Vec")
+                    []
+                    [
+                      Ty.apply
+                        (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                        [ Value.Integer IntegerKind.Usize 32 ]
+                        [];
+                      Ty.path "alloc::alloc::Global"
+                    ],
+                  "len",
+                  [],
                   []
-                  [
-                    Ty.apply
-                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                      [ Value.Integer IntegerKind.Usize 32 ]
-                      [];
-                    Ty.path "alloc::alloc::Global"
-                  ],
-                "len",
-                [],
-                []
-              |),
-              [
-                M.borrow (|
-                  Pointer.Kind.Ref,
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "alloy_primitives::log::LogData",
-                    "topics"
+                |),
+                [
+                  M.borrow (|
+                    Pointer.Kind.Ref,
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "alloy_primitives::log::LogData",
+                      "topics"
+                    |)
                   |)
-                |)
-              ]
-            |),
-            Value.Integer IntegerKind.Usize 4
+                ]
+              |);
+              Value.Integer IntegerKind.Usize 4
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.

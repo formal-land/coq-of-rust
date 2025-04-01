@@ -3437,16 +3437,20 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.gt (|
-                              M.read (| u |),
-                              M.cast
-                                (Ty.path "u16")
-                                (M.read (|
-                                  get_associated_constant (| Ty.path "u8", "MAX", Ty.path "u8" |)
-                                |))
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.gt,
+                              [
+                                M.read (| u |);
+                                M.cast
+                                  (Ty.path "u16")
+                                  (M.read (|
+                                    get_associated_constant (| Ty.path "u8", "MAX", Ty.path "u8" |)
+                                  |))
+                              ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
@@ -3510,16 +3514,20 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.gt (|
-                              M.read (| u |),
-                              M.cast
-                                (Ty.path "u32")
-                                (M.read (|
-                                  get_associated_constant (| Ty.path "u8", "MAX", Ty.path "u8" |)
-                                |))
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.gt,
+                              [
+                                M.read (| u |);
+                                M.cast
+                                  (Ty.path "u32")
+                                  (M.read (|
+                                    get_associated_constant (| Ty.path "u8", "MAX", Ty.path "u8" |)
+                                  |))
+                              ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
@@ -3583,16 +3591,24 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.gt (|
-                              M.read (| u |),
-                              M.cast
-                                (Ty.path "u32")
-                                (M.read (|
-                                  get_associated_constant (| Ty.path "u16", "MAX", Ty.path "u16" |)
-                                |))
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.gt,
+                              [
+                                M.read (| u |);
+                                M.cast
+                                  (Ty.path "u32")
+                                  (M.read (|
+                                    get_associated_constant (|
+                                      Ty.path "u16",
+                                      "MAX",
+                                      Ty.path "u16"
+                                    |)
+                                  |))
+                              ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
@@ -3656,16 +3672,20 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.gt (|
-                              M.read (| u |),
-                              M.cast
-                                (Ty.path "u64")
-                                (M.read (|
-                                  get_associated_constant (| Ty.path "u8", "MAX", Ty.path "u8" |)
-                                |))
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.gt,
+                              [
+                                M.read (| u |);
+                                M.cast
+                                  (Ty.path "u64")
+                                  (M.read (|
+                                    get_associated_constant (| Ty.path "u8", "MAX", Ty.path "u8" |)
+                                  |))
+                              ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
@@ -3729,16 +3749,24 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.gt (|
-                              M.read (| u |),
-                              M.cast
-                                (Ty.path "u64")
-                                (M.read (|
-                                  get_associated_constant (| Ty.path "u16", "MAX", Ty.path "u16" |)
-                                |))
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.gt,
+                              [
+                                M.read (| u |);
+                                M.cast
+                                  (Ty.path "u64")
+                                  (M.read (|
+                                    get_associated_constant (|
+                                      Ty.path "u16",
+                                      "MAX",
+                                      Ty.path "u16"
+                                    |)
+                                  |))
+                              ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
@@ -3802,16 +3830,24 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.gt (|
-                              M.read (| u |),
-                              M.cast
-                                (Ty.path "u64")
-                                (M.read (|
-                                  get_associated_constant (| Ty.path "u32", "MAX", Ty.path "u32" |)
-                                |))
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.gt,
+                              [
+                                M.read (| u |);
+                                M.cast
+                                  (Ty.path "u64")
+                                  (M.read (|
+                                    get_associated_constant (|
+                                      Ty.path "u32",
+                                      "MAX",
+                                      Ty.path "u32"
+                                    |)
+                                  |))
+                              ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
@@ -3875,16 +3911,20 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.gt (|
-                              M.read (| u |),
-                              M.cast
-                                (Ty.path "u128")
-                                (M.read (|
-                                  get_associated_constant (| Ty.path "u8", "MAX", Ty.path "u8" |)
-                                |))
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.gt,
+                              [
+                                M.read (| u |);
+                                M.cast
+                                  (Ty.path "u128")
+                                  (M.read (|
+                                    get_associated_constant (| Ty.path "u8", "MAX", Ty.path "u8" |)
+                                  |))
+                              ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
@@ -3948,16 +3988,24 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.gt (|
-                              M.read (| u |),
-                              M.cast
-                                (Ty.path "u128")
-                                (M.read (|
-                                  get_associated_constant (| Ty.path "u16", "MAX", Ty.path "u16" |)
-                                |))
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.gt,
+                              [
+                                M.read (| u |);
+                                M.cast
+                                  (Ty.path "u128")
+                                  (M.read (|
+                                    get_associated_constant (|
+                                      Ty.path "u16",
+                                      "MAX",
+                                      Ty.path "u16"
+                                    |)
+                                  |))
+                              ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
@@ -4021,16 +4069,24 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.gt (|
-                              M.read (| u |),
-                              M.cast
-                                (Ty.path "u128")
-                                (M.read (|
-                                  get_associated_constant (| Ty.path "u32", "MAX", Ty.path "u32" |)
-                                |))
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.gt,
+                              [
+                                M.read (| u |);
+                                M.cast
+                                  (Ty.path "u128")
+                                  (M.read (|
+                                    get_associated_constant (|
+                                      Ty.path "u32",
+                                      "MAX",
+                                      Ty.path "u32"
+                                    |)
+                                  |))
+                              ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
@@ -4094,16 +4150,24 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.gt (|
-                              M.read (| u |),
-                              M.cast
-                                (Ty.path "u128")
-                                (M.read (|
-                                  get_associated_constant (| Ty.path "u64", "MAX", Ty.path "u64" |)
-                                |))
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.gt,
+                              [
+                                M.read (| u |);
+                                M.cast
+                                  (Ty.path "u128")
+                                  (M.read (|
+                                    get_associated_constant (|
+                                      Ty.path "u64",
+                                      "MAX",
+                                      Ty.path "u64"
+                                    |)
+                                  |))
+                              ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
@@ -4182,11 +4246,20 @@ Module convert.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.lt (| M.read (| u |), M.read (| min |) |),
-                              ltac:(M.monadic (BinOp.gt (| M.read (| u |), M.read (| max |) |)))
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.lt,
+                                [ M.read (| u |); M.read (| min |) ]
+                              |),
+                              ltac:(M.monadic
+                                (M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.gt,
+                                  [ M.read (| u |); M.read (| max |) ]
+                                |)))
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
@@ -4265,11 +4338,20 @@ Module convert.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.lt (| M.read (| u |), M.read (| min |) |),
-                              ltac:(M.monadic (BinOp.gt (| M.read (| u |), M.read (| max |) |)))
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.lt,
+                                [ M.read (| u |); M.read (| min |) ]
+                              |),
+                              ltac:(M.monadic
+                                (M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.gt,
+                                  [ M.read (| u |); M.read (| max |) ]
+                                |)))
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
@@ -4348,11 +4430,20 @@ Module convert.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.lt (| M.read (| u |), M.read (| min |) |),
-                              ltac:(M.monadic (BinOp.gt (| M.read (| u |), M.read (| max |) |)))
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.lt,
+                                [ M.read (| u |); M.read (| min |) ]
+                              |),
+                              ltac:(M.monadic
+                                (M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.gt,
+                                  [ M.read (| u |); M.read (| max |) ]
+                                |)))
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
@@ -4431,11 +4522,20 @@ Module convert.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.lt (| M.read (| u |), M.read (| min |) |),
-                              ltac:(M.monadic (BinOp.gt (| M.read (| u |), M.read (| max |) |)))
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.lt,
+                                [ M.read (| u |); M.read (| min |) ]
+                              |),
+                              ltac:(M.monadic
+                                (M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.gt,
+                                  [ M.read (| u |); M.read (| max |) ]
+                                |)))
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
@@ -4514,11 +4614,20 @@ Module convert.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.lt (| M.read (| u |), M.read (| min |) |),
-                              ltac:(M.monadic (BinOp.gt (| M.read (| u |), M.read (| max |) |)))
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.lt,
+                                [ M.read (| u |); M.read (| min |) ]
+                              |),
+                              ltac:(M.monadic
+                                (M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.gt,
+                                  [ M.read (| u |); M.read (| max |) ]
+                                |)))
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
@@ -4597,11 +4706,20 @@ Module convert.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.lt (| M.read (| u |), M.read (| min |) |),
-                              ltac:(M.monadic (BinOp.gt (| M.read (| u |), M.read (| max |) |)))
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.lt,
+                                [ M.read (| u |); M.read (| min |) ]
+                              |),
+                              ltac:(M.monadic
+                                (M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.gt,
+                                  [ M.read (| u |); M.read (| max |) ]
+                                |)))
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
@@ -4680,11 +4798,20 @@ Module convert.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.lt (| M.read (| u |), M.read (| min |) |),
-                              ltac:(M.monadic (BinOp.gt (| M.read (| u |), M.read (| max |) |)))
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.lt,
+                                [ M.read (| u |); M.read (| min |) ]
+                              |),
+                              ltac:(M.monadic
+                                (M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.gt,
+                                  [ M.read (| u |); M.read (| max |) ]
+                                |)))
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
@@ -4763,11 +4890,20 @@ Module convert.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.lt (| M.read (| u |), M.read (| min |) |),
-                              ltac:(M.monadic (BinOp.gt (| M.read (| u |), M.read (| max |) |)))
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.lt,
+                                [ M.read (| u |); M.read (| min |) ]
+                              |),
+                              ltac:(M.monadic
+                                (M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.gt,
+                                  [ M.read (| u |); M.read (| max |) ]
+                                |)))
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
@@ -4846,11 +4982,20 @@ Module convert.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.lt (| M.read (| u |), M.read (| min |) |),
-                              ltac:(M.monadic (BinOp.gt (| M.read (| u |), M.read (| max |) |)))
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.lt,
+                                [ M.read (| u |); M.read (| min |) ]
+                              |),
+                              ltac:(M.monadic
+                                (M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.gt,
+                                  [ M.read (| u |); M.read (| max |) ]
+                                |)))
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
@@ -4929,11 +5074,20 @@ Module convert.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.lt (| M.read (| u |), M.read (| min |) |),
-                              ltac:(M.monadic (BinOp.gt (| M.read (| u |), M.read (| max |) |)))
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.lt,
+                                [ M.read (| u |); M.read (| min |) ]
+                              |),
+                              ltac:(M.monadic
+                                (M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.gt,
+                                  [ M.read (| u |); M.read (| max |) ]
+                                |)))
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
@@ -4997,16 +5151,20 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.gt (|
-                              M.read (| u |),
-                              M.cast
-                                (Ty.path "u8")
-                                (M.read (|
-                                  get_associated_constant (| Ty.path "i8", "MAX", Ty.path "i8" |)
-                                |))
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.gt,
+                              [
+                                M.read (| u |);
+                                M.cast
+                                  (Ty.path "u8")
+                                  (M.read (|
+                                    get_associated_constant (| Ty.path "i8", "MAX", Ty.path "i8" |)
+                                  |))
+                              ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
@@ -5070,16 +5228,20 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.gt (|
-                              M.read (| u |),
-                              M.cast
-                                (Ty.path "u16")
-                                (M.read (|
-                                  get_associated_constant (| Ty.path "i8", "MAX", Ty.path "i8" |)
-                                |))
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.gt,
+                              [
+                                M.read (| u |);
+                                M.cast
+                                  (Ty.path "u16")
+                                  (M.read (|
+                                    get_associated_constant (| Ty.path "i8", "MAX", Ty.path "i8" |)
+                                  |))
+                              ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
@@ -5143,16 +5305,24 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.gt (|
-                              M.read (| u |),
-                              M.cast
-                                (Ty.path "u16")
-                                (M.read (|
-                                  get_associated_constant (| Ty.path "i16", "MAX", Ty.path "i16" |)
-                                |))
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.gt,
+                              [
+                                M.read (| u |);
+                                M.cast
+                                  (Ty.path "u16")
+                                  (M.read (|
+                                    get_associated_constant (|
+                                      Ty.path "i16",
+                                      "MAX",
+                                      Ty.path "i16"
+                                    |)
+                                  |))
+                              ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
@@ -5216,16 +5386,20 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.gt (|
-                              M.read (| u |),
-                              M.cast
-                                (Ty.path "u32")
-                                (M.read (|
-                                  get_associated_constant (| Ty.path "i8", "MAX", Ty.path "i8" |)
-                                |))
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.gt,
+                              [
+                                M.read (| u |);
+                                M.cast
+                                  (Ty.path "u32")
+                                  (M.read (|
+                                    get_associated_constant (| Ty.path "i8", "MAX", Ty.path "i8" |)
+                                  |))
+                              ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
@@ -5289,16 +5463,24 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.gt (|
-                              M.read (| u |),
-                              M.cast
-                                (Ty.path "u32")
-                                (M.read (|
-                                  get_associated_constant (| Ty.path "i16", "MAX", Ty.path "i16" |)
-                                |))
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.gt,
+                              [
+                                M.read (| u |);
+                                M.cast
+                                  (Ty.path "u32")
+                                  (M.read (|
+                                    get_associated_constant (|
+                                      Ty.path "i16",
+                                      "MAX",
+                                      Ty.path "i16"
+                                    |)
+                                  |))
+                              ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
@@ -5362,16 +5544,24 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.gt (|
-                              M.read (| u |),
-                              M.cast
-                                (Ty.path "u32")
-                                (M.read (|
-                                  get_associated_constant (| Ty.path "i32", "MAX", Ty.path "i32" |)
-                                |))
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.gt,
+                              [
+                                M.read (| u |);
+                                M.cast
+                                  (Ty.path "u32")
+                                  (M.read (|
+                                    get_associated_constant (|
+                                      Ty.path "i32",
+                                      "MAX",
+                                      Ty.path "i32"
+                                    |)
+                                  |))
+                              ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
@@ -5435,16 +5625,20 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.gt (|
-                              M.read (| u |),
-                              M.cast
-                                (Ty.path "u64")
-                                (M.read (|
-                                  get_associated_constant (| Ty.path "i8", "MAX", Ty.path "i8" |)
-                                |))
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.gt,
+                              [
+                                M.read (| u |);
+                                M.cast
+                                  (Ty.path "u64")
+                                  (M.read (|
+                                    get_associated_constant (| Ty.path "i8", "MAX", Ty.path "i8" |)
+                                  |))
+                              ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
@@ -5508,16 +5702,24 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.gt (|
-                              M.read (| u |),
-                              M.cast
-                                (Ty.path "u64")
-                                (M.read (|
-                                  get_associated_constant (| Ty.path "i16", "MAX", Ty.path "i16" |)
-                                |))
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.gt,
+                              [
+                                M.read (| u |);
+                                M.cast
+                                  (Ty.path "u64")
+                                  (M.read (|
+                                    get_associated_constant (|
+                                      Ty.path "i16",
+                                      "MAX",
+                                      Ty.path "i16"
+                                    |)
+                                  |))
+                              ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
@@ -5581,16 +5783,24 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.gt (|
-                              M.read (| u |),
-                              M.cast
-                                (Ty.path "u64")
-                                (M.read (|
-                                  get_associated_constant (| Ty.path "i32", "MAX", Ty.path "i32" |)
-                                |))
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.gt,
+                              [
+                                M.read (| u |);
+                                M.cast
+                                  (Ty.path "u64")
+                                  (M.read (|
+                                    get_associated_constant (|
+                                      Ty.path "i32",
+                                      "MAX",
+                                      Ty.path "i32"
+                                    |)
+                                  |))
+                              ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
@@ -5654,16 +5864,24 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.gt (|
-                              M.read (| u |),
-                              M.cast
-                                (Ty.path "u64")
-                                (M.read (|
-                                  get_associated_constant (| Ty.path "i64", "MAX", Ty.path "i64" |)
-                                |))
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.gt,
+                              [
+                                M.read (| u |);
+                                M.cast
+                                  (Ty.path "u64")
+                                  (M.read (|
+                                    get_associated_constant (|
+                                      Ty.path "i64",
+                                      "MAX",
+                                      Ty.path "i64"
+                                    |)
+                                  |))
+                              ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
@@ -5727,16 +5945,20 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.gt (|
-                              M.read (| u |),
-                              M.cast
-                                (Ty.path "u128")
-                                (M.read (|
-                                  get_associated_constant (| Ty.path "i8", "MAX", Ty.path "i8" |)
-                                |))
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.gt,
+                              [
+                                M.read (| u |);
+                                M.cast
+                                  (Ty.path "u128")
+                                  (M.read (|
+                                    get_associated_constant (| Ty.path "i8", "MAX", Ty.path "i8" |)
+                                  |))
+                              ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
@@ -5800,16 +6022,24 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.gt (|
-                              M.read (| u |),
-                              M.cast
-                                (Ty.path "u128")
-                                (M.read (|
-                                  get_associated_constant (| Ty.path "i16", "MAX", Ty.path "i16" |)
-                                |))
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.gt,
+                              [
+                                M.read (| u |);
+                                M.cast
+                                  (Ty.path "u128")
+                                  (M.read (|
+                                    get_associated_constant (|
+                                      Ty.path "i16",
+                                      "MAX",
+                                      Ty.path "i16"
+                                    |)
+                                  |))
+                              ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
@@ -5873,16 +6103,24 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.gt (|
-                              M.read (| u |),
-                              M.cast
-                                (Ty.path "u128")
-                                (M.read (|
-                                  get_associated_constant (| Ty.path "i32", "MAX", Ty.path "i32" |)
-                                |))
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.gt,
+                              [
+                                M.read (| u |);
+                                M.cast
+                                  (Ty.path "u128")
+                                  (M.read (|
+                                    get_associated_constant (|
+                                      Ty.path "i32",
+                                      "MAX",
+                                      Ty.path "i32"
+                                    |)
+                                  |))
+                              ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
@@ -5946,16 +6184,24 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.gt (|
-                              M.read (| u |),
-                              M.cast
-                                (Ty.path "u128")
-                                (M.read (|
-                                  get_associated_constant (| Ty.path "i64", "MAX", Ty.path "i64" |)
-                                |))
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.gt,
+                              [
+                                M.read (| u |);
+                                M.cast
+                                  (Ty.path "u128")
+                                  (M.read (|
+                                    get_associated_constant (|
+                                      Ty.path "i64",
+                                      "MAX",
+                                      Ty.path "i64"
+                                    |)
+                                  |))
+                              ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
@@ -6019,20 +6265,24 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.gt (|
-                              M.read (| u |),
-                              M.cast
-                                (Ty.path "u128")
-                                (M.read (|
-                                  get_associated_constant (|
-                                    Ty.path "i128",
-                                    "MAX",
-                                    Ty.path "i128"
-                                  |)
-                                |))
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.gt,
+                              [
+                                M.read (| u |);
+                                M.cast
+                                  (Ty.path "u128")
+                                  (M.read (|
+                                    get_associated_constant (|
+                                      Ty.path "i128",
+                                      "MAX",
+                                      Ty.path "i128"
+                                    |)
+                                  |))
+                              ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
@@ -6096,9 +6346,13 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.ge (| M.read (| u |), Value.Integer IntegerKind.I8 0 |)
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.ge,
+                              [ M.read (| u |); Value.Integer IntegerKind.I8 0 ]
+                            |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
@@ -6162,9 +6416,13 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.ge (| M.read (| u |), Value.Integer IntegerKind.I8 0 |)
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.ge,
+                              [ M.read (| u |); Value.Integer IntegerKind.I8 0 ]
+                            |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
@@ -6228,9 +6486,13 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.ge (| M.read (| u |), Value.Integer IntegerKind.I8 0 |)
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.ge,
+                              [ M.read (| u |); Value.Integer IntegerKind.I8 0 ]
+                            |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
@@ -6294,9 +6556,13 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.ge (| M.read (| u |), Value.Integer IntegerKind.I8 0 |)
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.ge,
+                              [ M.read (| u |); Value.Integer IntegerKind.I8 0 ]
+                            |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
@@ -6360,9 +6626,13 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.ge (| M.read (| u |), Value.Integer IntegerKind.I8 0 |)
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.ge,
+                              [ M.read (| u |); Value.Integer IntegerKind.I8 0 ]
+                            |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
@@ -6441,11 +6711,20 @@ Module convert.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.lt (| M.read (| u |), M.read (| min |) |),
-                              ltac:(M.monadic (BinOp.gt (| M.read (| u |), M.read (| max |) |)))
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.lt,
+                                [ M.read (| u |); M.read (| min |) ]
+                              |),
+                              ltac:(M.monadic
+                                (M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.gt,
+                                  [ M.read (| u |); M.read (| max |) ]
+                                |)))
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
@@ -6509,9 +6788,13 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.ge (| M.read (| u |), Value.Integer IntegerKind.I16 0 |)
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.ge,
+                              [ M.read (| u |); Value.Integer IntegerKind.I16 0 ]
+                            |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
@@ -6575,9 +6858,13 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.ge (| M.read (| u |), Value.Integer IntegerKind.I16 0 |)
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.ge,
+                              [ M.read (| u |); Value.Integer IntegerKind.I16 0 ]
+                            |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
@@ -6641,9 +6928,13 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.ge (| M.read (| u |), Value.Integer IntegerKind.I16 0 |)
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.ge,
+                              [ M.read (| u |); Value.Integer IntegerKind.I16 0 ]
+                            |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
@@ -6707,9 +6998,13 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.ge (| M.read (| u |), Value.Integer IntegerKind.I16 0 |)
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.ge,
+                              [ M.read (| u |); Value.Integer IntegerKind.I16 0 ]
+                            |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
@@ -6788,11 +7083,20 @@ Module convert.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.lt (| M.read (| u |), M.read (| min |) |),
-                              ltac:(M.monadic (BinOp.gt (| M.read (| u |), M.read (| max |) |)))
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.lt,
+                                [ M.read (| u |); M.read (| min |) ]
+                              |),
+                              ltac:(M.monadic
+                                (M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.gt,
+                                  [ M.read (| u |); M.read (| max |) ]
+                                |)))
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
@@ -6871,11 +7175,20 @@ Module convert.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.lt (| M.read (| u |), M.read (| min |) |),
-                              ltac:(M.monadic (BinOp.gt (| M.read (| u |), M.read (| max |) |)))
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.lt,
+                                [ M.read (| u |); M.read (| min |) ]
+                              |),
+                              ltac:(M.monadic
+                                (M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.gt,
+                                  [ M.read (| u |); M.read (| max |) ]
+                                |)))
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
@@ -6939,9 +7252,13 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.ge (| M.read (| u |), Value.Integer IntegerKind.I32 0 |)
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.ge,
+                              [ M.read (| u |); Value.Integer IntegerKind.I32 0 ]
+                            |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
@@ -7005,9 +7322,13 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.ge (| M.read (| u |), Value.Integer IntegerKind.I32 0 |)
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.ge,
+                              [ M.read (| u |); Value.Integer IntegerKind.I32 0 ]
+                            |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
@@ -7071,9 +7392,13 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.ge (| M.read (| u |), Value.Integer IntegerKind.I32 0 |)
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.ge,
+                              [ M.read (| u |); Value.Integer IntegerKind.I32 0 ]
+                            |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
@@ -7152,11 +7477,20 @@ Module convert.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.lt (| M.read (| u |), M.read (| min |) |),
-                              ltac:(M.monadic (BinOp.gt (| M.read (| u |), M.read (| max |) |)))
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.lt,
+                                [ M.read (| u |); M.read (| min |) ]
+                              |),
+                              ltac:(M.monadic
+                                (M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.gt,
+                                  [ M.read (| u |); M.read (| max |) ]
+                                |)))
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
@@ -7235,11 +7569,20 @@ Module convert.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.lt (| M.read (| u |), M.read (| min |) |),
-                              ltac:(M.monadic (BinOp.gt (| M.read (| u |), M.read (| max |) |)))
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.lt,
+                                [ M.read (| u |); M.read (| min |) ]
+                              |),
+                              ltac:(M.monadic
+                                (M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.gt,
+                                  [ M.read (| u |); M.read (| max |) ]
+                                |)))
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
@@ -7318,11 +7661,20 @@ Module convert.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.lt (| M.read (| u |), M.read (| min |) |),
-                              ltac:(M.monadic (BinOp.gt (| M.read (| u |), M.read (| max |) |)))
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.lt,
+                                [ M.read (| u |); M.read (| min |) ]
+                              |),
+                              ltac:(M.monadic
+                                (M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.gt,
+                                  [ M.read (| u |); M.read (| max |) ]
+                                |)))
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
@@ -7386,9 +7738,13 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.ge (| M.read (| u |), Value.Integer IntegerKind.I64 0 |)
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.ge,
+                              [ M.read (| u |); Value.Integer IntegerKind.I64 0 ]
+                            |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
@@ -7452,9 +7808,13 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.ge (| M.read (| u |), Value.Integer IntegerKind.I64 0 |)
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.ge,
+                              [ M.read (| u |); Value.Integer IntegerKind.I64 0 ]
+                            |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
@@ -7533,11 +7893,20 @@ Module convert.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.lt (| M.read (| u |), M.read (| min |) |),
-                              ltac:(M.monadic (BinOp.gt (| M.read (| u |), M.read (| max |) |)))
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.lt,
+                                [ M.read (| u |); M.read (| min |) ]
+                              |),
+                              ltac:(M.monadic
+                                (M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.gt,
+                                  [ M.read (| u |); M.read (| max |) ]
+                                |)))
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
@@ -7616,11 +7985,20 @@ Module convert.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.lt (| M.read (| u |), M.read (| min |) |),
-                              ltac:(M.monadic (BinOp.gt (| M.read (| u |), M.read (| max |) |)))
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.lt,
+                                [ M.read (| u |); M.read (| min |) ]
+                              |),
+                              ltac:(M.monadic
+                                (M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.gt,
+                                  [ M.read (| u |); M.read (| max |) ]
+                                |)))
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
@@ -7699,11 +8077,20 @@ Module convert.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.lt (| M.read (| u |), M.read (| min |) |),
-                              ltac:(M.monadic (BinOp.gt (| M.read (| u |), M.read (| max |) |)))
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.lt,
+                                [ M.read (| u |); M.read (| min |) ]
+                              |),
+                              ltac:(M.monadic
+                                (M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.gt,
+                                  [ M.read (| u |); M.read (| max |) ]
+                                |)))
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
@@ -7782,11 +8169,20 @@ Module convert.
                         M.use
                           (M.alloc (|
                             LogicalOp.or (|
-                              BinOp.lt (| M.read (| u |), M.read (| min |) |),
-                              ltac:(M.monadic (BinOp.gt (| M.read (| u |), M.read (| max |) |)))
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.lt,
+                                [ M.read (| u |); M.read (| min |) ]
+                              |),
+                              ltac:(M.monadic
+                                (M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.gt,
+                                  [ M.read (| u |); M.read (| max |) ]
+                                |)))
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
@@ -7850,9 +8246,13 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.ge (| M.read (| u |), Value.Integer IntegerKind.I128 0 |)
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.ge,
+                              [ M.read (| u |); Value.Integer IntegerKind.I128 0 ]
+                            |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
@@ -7916,20 +8316,24 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.gt (|
-                              M.read (| u |),
-                              M.cast
-                                (Ty.path "usize")
-                                (M.read (|
-                                  get_associated_constant (|
-                                    Ty.path "isize",
-                                    "MAX",
-                                    Ty.path "isize"
-                                  |)
-                                |))
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.gt,
+                              [
+                                M.read (| u |);
+                                M.cast
+                                  (Ty.path "usize")
+                                  (M.read (|
+                                    get_associated_constant (|
+                                      Ty.path "isize",
+                                      "MAX",
+                                      Ty.path "isize"
+                                    |)
+                                  |))
+                              ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Err"
@@ -7993,9 +8397,13 @@ Module convert.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.ge (| M.read (| u |), Value.Integer IntegerKind.Isize 0 |)
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.ge,
+                              [ M.read (| u |); Value.Integer IntegerKind.Isize 0 ]
+                            |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::result::Result::Ok"
@@ -8060,17 +8468,24 @@ Module convert.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.gt (|
-                                M.read (| u |),
-                                M.cast
-                                  (Ty.path "usize")
-                                  (M.read (|
-                                    get_associated_constant (| Ty.path "u8", "MAX", Ty.path "u8" |)
-                                  |))
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.gt,
+                                [
+                                  M.read (| u |);
+                                  M.cast
+                                    (Ty.path "usize")
+                                    (M.read (|
+                                      get_associated_constant (|
+                                        Ty.path "u8",
+                                        "MAX",
+                                        Ty.path "u8"
+                                      |)
+                                    |))
+                                ]
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Err"
@@ -8137,21 +8552,24 @@ Module convert.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.gt (|
-                                M.read (| u |),
-                                M.cast
-                                  (Ty.path "usize")
-                                  (M.read (|
-                                    get_associated_constant (|
-                                      Ty.path "u16",
-                                      "MAX",
-                                      Ty.path "u16"
-                                    |)
-                                  |))
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.gt,
+                                [
+                                  M.read (| u |);
+                                  M.cast
+                                    (Ty.path "usize")
+                                    (M.read (|
+                                      get_associated_constant (|
+                                        Ty.path "u16",
+                                        "MAX",
+                                        Ty.path "u16"
+                                      |)
+                                    |))
+                                ]
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Err"
@@ -8218,21 +8636,24 @@ Module convert.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.gt (|
-                                M.read (| u |),
-                                M.cast
-                                  (Ty.path "usize")
-                                  (M.read (|
-                                    get_associated_constant (|
-                                      Ty.path "u32",
-                                      "MAX",
-                                      Ty.path "u32"
-                                    |)
-                                  |))
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.gt,
+                                [
+                                  M.read (| u |);
+                                  M.cast
+                                    (Ty.path "usize")
+                                    (M.read (|
+                                      get_associated_constant (|
+                                        Ty.path "u32",
+                                        "MAX",
+                                        Ty.path "u32"
+                                      |)
+                                    |))
+                                ]
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Err"
@@ -8363,17 +8784,24 @@ Module convert.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.gt (|
-                                M.read (| u |),
-                                M.cast
-                                  (Ty.path "usize")
-                                  (M.read (|
-                                    get_associated_constant (| Ty.path "i8", "MAX", Ty.path "i8" |)
-                                  |))
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.gt,
+                                [
+                                  M.read (| u |);
+                                  M.cast
+                                    (Ty.path "usize")
+                                    (M.read (|
+                                      get_associated_constant (|
+                                        Ty.path "i8",
+                                        "MAX",
+                                        Ty.path "i8"
+                                      |)
+                                    |))
+                                ]
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Err"
@@ -8440,21 +8868,24 @@ Module convert.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.gt (|
-                                M.read (| u |),
-                                M.cast
-                                  (Ty.path "usize")
-                                  (M.read (|
-                                    get_associated_constant (|
-                                      Ty.path "i16",
-                                      "MAX",
-                                      Ty.path "i16"
-                                    |)
-                                  |))
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.gt,
+                                [
+                                  M.read (| u |);
+                                  M.cast
+                                    (Ty.path "usize")
+                                    (M.read (|
+                                      get_associated_constant (|
+                                        Ty.path "i16",
+                                        "MAX",
+                                        Ty.path "i16"
+                                      |)
+                                    |))
+                                ]
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Err"
@@ -8521,21 +8952,24 @@ Module convert.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.gt (|
-                                M.read (| u |),
-                                M.cast
-                                  (Ty.path "usize")
-                                  (M.read (|
-                                    get_associated_constant (|
-                                      Ty.path "i32",
-                                      "MAX",
-                                      Ty.path "i32"
-                                    |)
-                                  |))
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.gt,
+                                [
+                                  M.read (| u |);
+                                  M.cast
+                                    (Ty.path "usize")
+                                    (M.read (|
+                                      get_associated_constant (|
+                                        Ty.path "i32",
+                                        "MAX",
+                                        Ty.path "i32"
+                                      |)
+                                    |))
+                                ]
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Err"
@@ -8602,21 +9036,24 @@ Module convert.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.gt (|
-                                M.read (| u |),
-                                M.cast
-                                  (Ty.path "usize")
-                                  (M.read (|
-                                    get_associated_constant (|
-                                      Ty.path "i64",
-                                      "MAX",
-                                      Ty.path "i64"
-                                    |)
-                                  |))
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.gt,
+                                [
+                                  M.read (| u |);
+                                  M.cast
+                                    (Ty.path "usize")
+                                    (M.read (|
+                                      get_associated_constant (|
+                                        Ty.path "i64",
+                                        "MAX",
+                                        Ty.path "i64"
+                                      |)
+                                    |))
+                                ]
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Err"
@@ -8730,12 +9167,20 @@ Module convert.
                           M.use
                             (M.alloc (|
                               LogicalOp.or (|
-                                BinOp.lt (| M.read (| u |), M.read (| min |) |),
-                                ltac:(M.monadic (BinOp.gt (| M.read (| u |), M.read (| max |) |)))
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.lt,
+                                  [ M.read (| u |); M.read (| min |) ]
+                                |),
+                                ltac:(M.monadic
+                                  (M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.gt,
+                                    [ M.read (| u |); M.read (| max |) ]
+                                  |)))
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Err"
@@ -8821,12 +9266,20 @@ Module convert.
                           M.use
                             (M.alloc (|
                               LogicalOp.or (|
-                                BinOp.lt (| M.read (| u |), M.read (| min |) |),
-                                ltac:(M.monadic (BinOp.gt (| M.read (| u |), M.read (| max |) |)))
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.lt,
+                                  [ M.read (| u |); M.read (| min |) ]
+                                |),
+                                ltac:(M.monadic
+                                  (M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.gt,
+                                    [ M.read (| u |); M.read (| max |) ]
+                                  |)))
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Err"
@@ -8912,12 +9365,20 @@ Module convert.
                           M.use
                             (M.alloc (|
                               LogicalOp.or (|
-                                BinOp.lt (| M.read (| u |), M.read (| min |) |),
-                                ltac:(M.monadic (BinOp.gt (| M.read (| u |), M.read (| max |) |)))
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.lt,
+                                  [ M.read (| u |); M.read (| min |) ]
+                                |),
+                                ltac:(M.monadic
+                                  (M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.gt,
+                                    [ M.read (| u |); M.read (| max |) ]
+                                  |)))
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Err"
@@ -8984,10 +9445,13 @@ Module convert.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.ge (| M.read (| u |), Value.Integer IntegerKind.Isize 0 |)
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.ge,
+                                [ M.read (| u |); Value.Integer IntegerKind.Isize 0 ]
+                              |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
@@ -9054,10 +9518,13 @@ Module convert.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.ge (| M.read (| u |), Value.Integer IntegerKind.Isize 0 |)
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.ge,
+                                [ M.read (| u |); Value.Integer IntegerKind.Isize 0 ]
+                              |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
@@ -9139,12 +9606,20 @@ Module convert.
                           M.use
                             (M.alloc (|
                               LogicalOp.or (|
-                                BinOp.lt (| M.read (| u |), M.read (| min |) |),
-                                ltac:(M.monadic (BinOp.gt (| M.read (| u |), M.read (| max |) |)))
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.lt,
+                                  [ M.read (| u |); M.read (| min |) ]
+                                |),
+                                ltac:(M.monadic
+                                  (M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.gt,
+                                    [ M.read (| u |); M.read (| max |) ]
+                                  |)))
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Err"
@@ -9230,12 +9705,20 @@ Module convert.
                           M.use
                             (M.alloc (|
                               LogicalOp.or (|
-                                BinOp.lt (| M.read (| u |), M.read (| min |) |),
-                                ltac:(M.monadic (BinOp.gt (| M.read (| u |), M.read (| max |) |)))
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.lt,
+                                  [ M.read (| u |); M.read (| min |) ]
+                                |),
+                                ltac:(M.monadic
+                                  (M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.gt,
+                                    [ M.read (| u |); M.read (| max |) ]
+                                  |)))
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Err"
@@ -9321,12 +9804,20 @@ Module convert.
                           M.use
                             (M.alloc (|
                               LogicalOp.or (|
-                                BinOp.lt (| M.read (| u |), M.read (| min |) |),
-                                ltac:(M.monadic (BinOp.gt (| M.read (| u |), M.read (| max |) |)))
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.lt,
+                                  [ M.read (| u |); M.read (| min |) ]
+                                |),
+                                ltac:(M.monadic
+                                  (M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.gt,
+                                    [ M.read (| u |); M.read (| max |) ]
+                                  |)))
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Err"
@@ -9521,21 +10012,24 @@ Module convert.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.gt (|
-                                M.read (| u |),
-                                M.cast
-                                  (Ty.path "u128")
-                                  (M.read (|
-                                    get_associated_constant (|
-                                      Ty.path "usize",
-                                      "MAX",
-                                      Ty.path "usize"
-                                    |)
-                                  |))
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.gt,
+                                [
+                                  M.read (| u |);
+                                  M.cast
+                                    (Ty.path "u128")
+                                    (M.read (|
+                                      get_associated_constant (|
+                                        Ty.path "usize",
+                                        "MAX",
+                                        Ty.path "usize"
+                                      |)
+                                    |))
+                                ]
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Err"
@@ -9602,10 +10096,13 @@ Module convert.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.ge (| M.read (| u |), Value.Integer IntegerKind.I8 0 |)
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.ge,
+                                [ M.read (| u |); Value.Integer IntegerKind.I8 0 ]
+                              |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
@@ -9672,10 +10169,13 @@ Module convert.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.ge (| M.read (| u |), Value.Integer IntegerKind.I16 0 |)
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.ge,
+                                [ M.read (| u |); Value.Integer IntegerKind.I16 0 ]
+                              |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
@@ -9742,10 +10242,13 @@ Module convert.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.ge (| M.read (| u |), Value.Integer IntegerKind.I32 0 |)
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.ge,
+                                [ M.read (| u |); Value.Integer IntegerKind.I32 0 ]
+                              |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
@@ -9812,10 +10315,13 @@ Module convert.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.ge (| M.read (| u |), Value.Integer IntegerKind.I64 0 |)
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.ge,
+                                [ M.read (| u |); Value.Integer IntegerKind.I64 0 ]
+                              |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Ok"
@@ -9901,12 +10407,20 @@ Module convert.
                           M.use
                             (M.alloc (|
                               LogicalOp.or (|
-                                BinOp.lt (| M.read (| u |), M.read (| min |) |),
-                                ltac:(M.monadic (BinOp.gt (| M.read (| u |), M.read (| max |) |)))
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.lt,
+                                  [ M.read (| u |); M.read (| min |) ]
+                                |),
+                                ltac:(M.monadic
+                                  (M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.gt,
+                                    [ M.read (| u |); M.read (| max |) ]
+                                  |)))
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Err"
@@ -10037,21 +10551,24 @@ Module convert.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.gt (|
-                                M.read (| u |),
-                                M.cast
-                                  (Ty.path "u64")
-                                  (M.read (|
-                                    get_associated_constant (|
-                                      Ty.path "isize",
-                                      "MAX",
-                                      Ty.path "isize"
-                                    |)
-                                  |))
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.gt,
+                                [
+                                  M.read (| u |);
+                                  M.cast
+                                    (Ty.path "u64")
+                                    (M.read (|
+                                      get_associated_constant (|
+                                        Ty.path "isize",
+                                        "MAX",
+                                        Ty.path "isize"
+                                      |)
+                                    |))
+                                ]
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Err"
@@ -10118,21 +10635,24 @@ Module convert.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.gt (|
-                                M.read (| u |),
-                                M.cast
-                                  (Ty.path "u128")
-                                  (M.read (|
-                                    get_associated_constant (|
-                                      Ty.path "isize",
-                                      "MAX",
-                                      Ty.path "isize"
-                                    |)
-                                  |))
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.gt,
+                                [
+                                  M.read (| u |);
+                                  M.cast
+                                    (Ty.path "u128")
+                                    (M.read (|
+                                      get_associated_constant (|
+                                        Ty.path "isize",
+                                        "MAX",
+                                        Ty.path "isize"
+                                      |)
+                                    |))
+                                ]
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Err"
@@ -10282,12 +10802,20 @@ Module convert.
                           M.use
                             (M.alloc (|
                               LogicalOp.or (|
-                                BinOp.lt (| M.read (| u |), M.read (| min |) |),
-                                ltac:(M.monadic (BinOp.gt (| M.read (| u |), M.read (| max |) |)))
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.lt,
+                                  [ M.read (| u |); M.read (| min |) ]
+                                |),
+                                ltac:(M.monadic
+                                  (M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.gt,
+                                    [ M.read (| u |); M.read (| max |) ]
+                                  |)))
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           Value.StructTuple
                             "core::result::Result::Err"

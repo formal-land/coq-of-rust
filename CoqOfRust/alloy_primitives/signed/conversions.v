@@ -507,7 +507,7 @@ Module signed.
                               |) in
                             let γ0_0 := M.read (| γ0_0 |) in
                             let _ :=
-                              M.is_constant_or_break_match (|
+                              is_constant_or_break_match (|
                                 M.read (| γ0_0 |),
                                 Value.Integer IntegerKind.U8 43
                               |) in
@@ -560,7 +560,7 @@ Module signed.
                               |) in
                             let γ0_0 := M.read (| γ0_0 |) in
                             let _ :=
-                              M.is_constant_or_break_match (|
+                              is_constant_or_break_match (|
                                 M.read (| γ0_0 |),
                                 Value.Integer IntegerKind.U8 45
                               |) in
@@ -880,25 +880,29 @@ Module signed.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.gt (|
-                                    M.call_closure (|
-                                      Ty.path "u32",
-                                      M.get_associated_function (|
-                                        Ty.apply
-                                          (Ty.path "alloy_primitives::signed::int::Signed")
-                                          [ BITS; LIMBS ]
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.gt,
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "u32",
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "alloy_primitives::signed::int::Signed")
+                                            [ BITS; LIMBS ]
+                                            [],
+                                          "bits",
                                           [],
-                                        "bits",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.borrow (| Pointer.Kind.Ref, value |) ]
-                                    |),
-                                    Value.Integer IntegerKind.U32 128
+                                          []
+                                        |),
+                                        [ M.borrow (| Pointer.Kind.Ref, value |) ]
+                                      |);
+                                      Value.Integer IntegerKind.U32 128
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
@@ -948,7 +952,7 @@ Module signed.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             Value.StructTuple
                               "core::result::Result::Ok"
@@ -1166,13 +1170,14 @@ Module signed.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.ge (|
-                                    M.read (| value |),
-                                    Value.Integer IntegerKind.I128 0
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.ge,
+                                    [ M.read (| value |); Value.Integer IntegerKind.I128 0 ]
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
@@ -1303,7 +1308,7 @@ Module signed.
                                   ltac:(M.monadic
                                     (let γ := M.use overflow in
                                     let _ :=
-                                      M.is_constant_or_break_match (|
+                                      is_constant_or_break_match (|
                                         M.read (| γ |),
                                         Value.Bool true
                                       |) in
@@ -1427,7 +1432,7 @@ Module signed.
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
@@ -1506,7 +1511,7 @@ Module signed.
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
@@ -1703,22 +1708,26 @@ Module signed.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.ne (|
-                                    M.read (| value |),
-                                    M.call_closure (|
-                                      Ty.path "u128",
-                                      M.get_associated_function (|
-                                        Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
-                                        "to",
-                                        [],
-                                        [ Ty.path "u128" ]
-                                      |),
-                                      [ M.borrow (| Pointer.Kind.Ref, saturated |) ]
-                                    |)
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.ne,
+                                    [
+                                      M.read (| value |);
+                                      M.call_closure (|
+                                        Ty.path "u128",
+                                        M.get_associated_function (|
+                                          Ty.apply (Ty.path "ruint::Uint") [ BITS; LIMBS ] [],
+                                          "to",
+                                          [],
+                                          [ Ty.path "u128" ]
+                                        |),
+                                        [ M.borrow (| Pointer.Kind.Ref, saturated |) ]
+                                      |)
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
@@ -1820,10 +1829,14 @@ Module signed.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.eq (| BITS, Value.Integer IntegerKind.Usize 0 |)
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.eq,
+                                    [ BITS; Value.Integer IntegerKind.Usize 0 ]
+                                  |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (| M.return_ (| Value.Integer IntegerKind.U8 0 |) |)
@@ -1969,10 +1982,14 @@ Module signed.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.eq (| BITS, Value.Integer IntegerKind.Usize 0 |)
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.eq,
+                                    [ BITS; Value.Integer IntegerKind.Usize 0 ]
+                                  |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (| M.return_ (| Value.Integer IntegerKind.I8 0 |) |)
@@ -2118,10 +2135,14 @@ Module signed.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.eq (| BITS, Value.Integer IntegerKind.Usize 0 |)
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.eq,
+                                    [ BITS; Value.Integer IntegerKind.Usize 0 ]
+                                  |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (| M.return_ (| Value.Integer IntegerKind.U16 0 |) |)
@@ -2267,10 +2288,14 @@ Module signed.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.eq (| BITS, Value.Integer IntegerKind.Usize 0 |)
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.eq,
+                                    [ BITS; Value.Integer IntegerKind.Usize 0 ]
+                                  |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (| M.return_ (| Value.Integer IntegerKind.I16 0 |) |)
@@ -2416,10 +2441,14 @@ Module signed.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.eq (| BITS, Value.Integer IntegerKind.Usize 0 |)
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.eq,
+                                    [ BITS; Value.Integer IntegerKind.Usize 0 ]
+                                  |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (| M.return_ (| Value.Integer IntegerKind.U32 0 |) |)
@@ -2565,10 +2594,14 @@ Module signed.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.eq (| BITS, Value.Integer IntegerKind.Usize 0 |)
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.eq,
+                                    [ BITS; Value.Integer IntegerKind.Usize 0 ]
+                                  |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (| M.return_ (| Value.Integer IntegerKind.I32 0 |) |)
@@ -2714,10 +2747,14 @@ Module signed.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.eq (| BITS, Value.Integer IntegerKind.Usize 0 |)
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.eq,
+                                    [ BITS; Value.Integer IntegerKind.Usize 0 ]
+                                  |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (| M.return_ (| Value.Integer IntegerKind.U64 0 |) |)
@@ -2858,10 +2895,14 @@ Module signed.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.eq (| BITS, Value.Integer IntegerKind.Usize 0 |)
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.eq,
+                                    [ BITS; Value.Integer IntegerKind.Usize 0 ]
+                                  |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (| M.return_ (| Value.Integer IntegerKind.I64 0 |) |)
@@ -3007,10 +3048,14 @@ Module signed.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.eq (| BITS, Value.Integer IntegerKind.Usize 0 |)
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.eq,
+                                    [ BITS; Value.Integer IntegerKind.Usize 0 ]
+                                  |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (| M.return_ (| Value.Integer IntegerKind.Usize 0 |) |)
@@ -3158,10 +3203,14 @@ Module signed.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.eq (| BITS, Value.Integer IntegerKind.Usize 0 |)
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.eq,
+                                    [ BITS; Value.Integer IntegerKind.Usize 0 ]
+                                  |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (| M.return_ (| Value.Integer IntegerKind.Isize 0 |) |)
@@ -3653,7 +3702,7 @@ Module signed.
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
@@ -4606,7 +4655,7 @@ Module signed.
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
@@ -5559,7 +5608,7 @@ Module signed.
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
@@ -6512,7 +6561,7 @@ Module signed.
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
@@ -7465,7 +7514,7 @@ Module signed.
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|

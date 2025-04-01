@@ -994,7 +994,7 @@ Module control_flow_graph.
                                                     |)
                                                   |)) in
                                               let _ :=
-                                                M.is_constant_or_break_match (|
+                                                is_constant_or_break_match (|
                                                   M.read (| γ |),
                                                   Value.Bool true
                                                 |) in
@@ -1119,9 +1119,13 @@ Module control_flow_graph.
                                                 M.alloc (|
                                                   M.write (|
                                                     entry,
-                                                    BinOp.Wrap.add (|
-                                                      M.read (| co_pc |),
-                                                      Value.Integer IntegerKind.U16 1
+                                                    M.call_closure (|
+                                                      Ty.path "u16",
+                                                      BinOp.Wrap.add,
+                                                      [
+                                                        M.read (| co_pc |);
+                                                        Value.Integer IntegerKind.U16 1
+                                                      ]
                                                     |)
                                                   |)
                                                 |) in
@@ -1172,17 +1176,18 @@ Module control_flow_graph.
                                 M.use
                                   (M.alloc (|
                                     UnOp.not (|
-                                      BinOp.eq (|
-                                        M.read (| M.deref (| M.read (| left_val |) |) |),
-                                        M.read (| M.deref (| M.read (| right_val |) |) |)
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.eq,
+                                        [
+                                          M.read (| M.deref (| M.read (| left_val |) |) |);
+                                          M.read (| M.deref (| M.read (| right_val |) |) |)
+                                        ]
                                       |)
                                     |)
                                   |)) in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (|
                                 M.never_to_any (|
                                   M.read (|
@@ -2275,7 +2280,7 @@ Module control_flow_graph.
                                                       (let γ :=
                                                         M.use (M.alloc (| Value.Bool true |)) in
                                                       let _ :=
-                                                        M.is_constant_or_break_match (|
+                                                        is_constant_or_break_match (|
                                                           M.read (| γ |),
                                                           Value.Bool true
                                                         |) in
@@ -2290,37 +2295,41 @@ Module control_flow_graph.
                                                                   M.use
                                                                     (M.alloc (|
                                                                       UnOp.not (|
-                                                                        BinOp.eq (|
-                                                                          M.call_closure (|
-                                                                            Ty.path "usize",
-                                                                            M.get_associated_function (|
-                                                                              Ty.apply
-                                                                                (Ty.path "slice")
+                                                                        M.call_closure (|
+                                                                          Ty.path "bool",
+                                                                          BinOp.eq,
+                                                                          [
+                                                                            M.call_closure (|
+                                                                              Ty.path "usize",
+                                                                              M.get_associated_function (|
+                                                                                Ty.apply
+                                                                                  (Ty.path "slice")
+                                                                                  []
+                                                                                  [ Ty.path "u16" ],
+                                                                                "len",
+                                                                                [],
                                                                                 []
-                                                                                [ Ty.path "u16" ],
-                                                                              "len",
-                                                                              [],
-                                                                              []
-                                                                            |),
-                                                                            [
-                                                                              M.borrow (|
-                                                                                Pointer.Kind.Ref,
-                                                                                M.deref (|
-                                                                                  M.read (|
-                                                                                    window
+                                                                              |),
+                                                                              [
+                                                                                M.borrow (|
+                                                                                  Pointer.Kind.Ref,
+                                                                                  M.deref (|
+                                                                                    M.read (|
+                                                                                      window
+                                                                                    |)
                                                                                   |)
                                                                                 |)
-                                                                              |)
-                                                                            ]
-                                                                          |),
-                                                                          Value.Integer
-                                                                            IntegerKind.Usize
-                                                                            2
+                                                                              ]
+                                                                            |);
+                                                                            Value.Integer
+                                                                              IntegerKind.Usize
+                                                                              2
+                                                                          ]
                                                                         |)
                                                                       |)
                                                                     |)) in
                                                                 let _ :=
-                                                                  M.is_constant_or_break_match (|
+                                                                  is_constant_or_break_match (|
                                                                     M.read (| γ |),
                                                                     Value.Bool true
                                                                   |) in
@@ -2696,23 +2705,31 @@ Module control_flow_graph.
           let code := M.alloc (| code |) in
           let block_ids := M.alloc (| block_ids |) in
           LogicalOp.or (|
-            BinOp.eq (|
-              BinOp.Wrap.add (| M.read (| pc |), Value.Integer IntegerKind.U16 1 |),
-              M.cast
-                (Ty.path "u16")
-                (M.call_closure (|
-                  Ty.path "usize",
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "slice")
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.eq,
+              [
+                M.call_closure (|
+                  Ty.path "u16",
+                  BinOp.Wrap.add,
+                  [ M.read (| pc |); Value.Integer IntegerKind.U16 1 ]
+                |);
+                M.cast
+                  (Ty.path "u16")
+                  (M.call_closure (|
+                    Ty.path "usize",
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "slice")
+                        []
+                        [ Ty.path "move_binary_format::file_format::Bytecode" ],
+                      "len",
+                      [],
                       []
-                      [ Ty.path "move_binary_format::file_format::Bytecode" ],
-                    "len",
-                    [],
-                    []
-                  |),
-                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| code |) |) |) ]
-                |))
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| code |) |) |) ]
+                  |))
+              ]
             |),
             ltac:(M.monadic
               (M.call_closure (|
@@ -2734,7 +2751,11 @@ Module control_flow_graph.
                       M.borrow (|
                         Pointer.Kind.Ref,
                         M.alloc (|
-                          BinOp.Wrap.add (| M.read (| pc |), Value.Integer IntegerKind.U16 1 |)
+                          M.call_closure (|
+                            Ty.path "u16",
+                            BinOp.Wrap.add,
+                            [ M.read (| pc |); Value.Integer IntegerKind.U16 1 ]
+                          |)
                         |)
                       |)
                     |)
@@ -2860,35 +2881,40 @@ Module control_flow_graph.
                               ]
                             |),
                             ltac:(M.monadic
-                              (BinOp.lt (|
-                                BinOp.Wrap.add (|
-                                  M.read (| pc |),
-                                  Value.Integer IntegerKind.U16 1
-                                |),
-                                M.cast
-                                  (Ty.path "u16")
-                                  (M.call_closure (|
-                                    Ty.path "usize",
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "slice")
+                              (M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.lt,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "u16",
+                                    BinOp.Wrap.add,
+                                    [ M.read (| pc |); Value.Integer IntegerKind.U16 1 ]
+                                  |);
+                                  M.cast
+                                    (Ty.path "u16")
+                                    (M.call_closure (|
+                                      Ty.path "usize",
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [ Ty.path "move_binary_format::file_format::Bytecode" ],
+                                        "len",
+                                        [],
                                         []
-                                        [ Ty.path "move_binary_format::file_format::Bytecode" ],
-                                      "len",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| code |) |)
-                                      |)
-                                    ]
-                                  |))
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| code |) |)
+                                        |)
+                                      ]
+                                    |))
+                                ]
                               |)))
                           |)
                         |)) in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     let~ _ : Ty.path "bool" :=
                       M.alloc (|
                         M.call_closure (|
@@ -2907,7 +2933,11 @@ Module control_flow_graph.
                               Pointer.Kind.MutRef,
                               M.deref (| M.read (| block_ids |) |)
                             |);
-                            BinOp.Wrap.add (| M.read (| pc |), Value.Integer IntegerKind.U16 1 |)
+                            M.call_closure (|
+                              Ty.path "u16",
+                              BinOp.Wrap.add,
+                              [ M.read (| pc |); Value.Integer IntegerKind.U16 1 ]
+                            |)
                           ]
                         |)
                       |) in
@@ -3054,25 +3084,29 @@ Module control_flow_graph.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.lt (|
-                                  M.read (| index |),
-                                  M.call_closure (|
-                                    Ty.path "usize",
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "alloc::vec::Vec")
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.lt,
+                                  [
+                                    M.read (| index |);
+                                    M.call_closure (|
+                                      Ty.path "usize",
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "alloc::vec::Vec")
+                                          []
+                                          [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
+                                        "len",
+                                        [],
                                         []
-                                        [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
-                                      "len",
-                                      [],
-                                      []
-                                    |),
-                                    [ M.borrow (| Pointer.Kind.Ref, ret |) ]
-                                  |)
+                                      |),
+                                      [ M.borrow (| Pointer.Kind.Ref, ret |) ]
+                                    |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ block_id : Ty.path "u16" :=
                             M.copy (|
                               M.deref (|
@@ -3099,9 +3133,10 @@ Module control_flow_graph.
                               let β := index in
                               M.write (|
                                 β,
-                                BinOp.Wrap.add (|
-                                  M.read (| β |),
-                                  Value.Integer IntegerKind.Usize 1
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  BinOp.Wrap.add,
+                                  [ M.read (| β |); Value.Integer IntegerKind.Usize 1 ]
                                 |)
                               |)
                             |) in
@@ -3318,7 +3353,7 @@ Module control_flow_graph.
                                                                 |)
                                                               |)) in
                                                           let _ :=
-                                                            M.is_constant_or_break_match (|
+                                                            is_constant_or_break_match (|
                                                               M.read (| γ |),
                                                               Value.Bool true
                                                             |) in
@@ -3618,7 +3653,7 @@ Module control_flow_graph.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ : Ty.tuple [] :=
                         M.match_operator (|
                           Some (Ty.tuple []),
@@ -3666,7 +3701,7 @@ Module control_flow_graph.
                                       |)
                                     |)) in
                                 let _ :=
-                                  M.is_constant_or_break_match (|
+                                  is_constant_or_break_match (|
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
@@ -4349,26 +4384,31 @@ Module control_flow_graph.
                                         (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                                         let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                                         let edges := M.copy (| γ0_1 |) in
-                                        BinOp.Wrap.add (|
-                                          M.read (| acc |),
-                                          M.call_closure (|
-                                            Ty.path "usize",
-                                            M.get_associated_function (|
-                                              Ty.apply
-                                                (Ty.path "alloc::collections::btree::set::BTreeSet")
+                                        M.call_closure (|
+                                          Ty.path "usize",
+                                          BinOp.Wrap.add,
+                                          [
+                                            M.read (| acc |);
+                                            M.call_closure (|
+                                              Ty.path "usize",
+                                              M.get_associated_function (|
+                                                Ty.apply
+                                                  (Ty.path
+                                                    "alloc::collections::btree::set::BTreeSet")
+                                                  []
+                                                  [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
+                                                "len",
+                                                [],
                                                 []
-                                                [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
-                                              "len",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (| M.read (| edges |) |)
-                                              |)
-                                            ]
-                                          |)
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| edges |) |)
+                                                |)
+                                              ]
+                                            |)
+                                          ]
                                         |)))
                                   ]
                                 |)))

@@ -470,7 +470,13 @@ Module num.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                   |)
                 |) in
-              M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
+              M.alloc (|
+                M.call_closure (|
+                  Ty.path "bool",
+                  BinOp.eq,
+                  [ M.read (| __self_discr |); M.read (| __arg1_discr |) ]
+                |)
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -692,25 +698,34 @@ Module num.
                 let β := word in
                 M.write (|
                   β,
-                  BinOp.bit_or
-                    (M.read (| β |))
-                    (BinOp.Wrap.shl (|
-                      M.cast
-                        (Ty.path "u64")
-                        (M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            x,
-                            "core::num::dec2flt::common::BiasedFp",
-                            "e"
+                  M.call_closure (|
+                    Ty.path "u64",
+                    BinOp.Wrap.bit_or,
+                    [
+                      M.read (| β |);
+                      M.call_closure (|
+                        Ty.path "u64",
+                        BinOp.Wrap.shl,
+                        [
+                          M.cast
+                            (Ty.path "u64")
+                            (M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                x,
+                                "core::num::dec2flt::common::BiasedFp",
+                                "e"
+                              |)
+                            |));
+                          M.read (|
+                            get_constant (|
+                              "core::num::dec2flt::float::RawFloat::MANTISSA_EXPLICIT_BITS",
+                              Ty.path "usize"
+                            |)
                           |)
-                        |)),
-                      M.read (|
-                        get_constant (|
-                          "core::num::dec2flt::float::RawFloat::MANTISSA_EXPLICIT_BITS",
-                          Ty.path "usize"
-                        |)
+                        ]
                       |)
-                    |))
+                    ]
+                  |)
                 |)
               |) in
             M.alloc (|
@@ -863,7 +878,13 @@ Module num.
                     |)
                   |) in
                 let~ negative : Ty.path "bool" :=
-                  M.alloc (| BinOp.eq (| M.read (| c |), M.read (| UnsupportedLiteral |) |) |) in
+                  M.alloc (|
+                    M.call_closure (|
+                      Ty.path "bool",
+                      BinOp.eq,
+                      [ M.read (| c |); M.read (| UnsupportedLiteral |) ]
+                    |)
+                  |) in
                 let~ _ : Ty.tuple [] :=
                   M.match_operator (|
                     Some (Ty.tuple []),
@@ -875,16 +896,21 @@ Module num.
                             M.use
                               (M.alloc (|
                                 LogicalOp.or (|
-                                  BinOp.eq (| M.read (| c |), M.read (| UnsupportedLiteral |) |),
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.eq,
+                                    [ M.read (| c |); M.read (| UnsupportedLiteral |) ]
+                                  |),
                                   ltac:(M.monadic
-                                    (BinOp.eq (|
-                                      M.read (| c |),
-                                      M.read (| UnsupportedLiteral |)
+                                    (M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.eq,
+                                      [ M.read (| c |); M.read (| UnsupportedLiteral |) ]
                                     |)))
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ : Ty.tuple [] :=
                             M.alloc (|
                               M.write (|
@@ -956,7 +982,7 @@ Module num.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -1089,7 +1115,7 @@ Module num.
                         ltac:(M.monadic
                           (let γ := M.use (M.alloc (| UnOp.not (| Value.Bool false |) |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.match_operator (|
                             Some (Ty.tuple []),
                             M.alloc (| Value.Tuple [] |),
@@ -1176,15 +1202,19 @@ Module num.
                                       |)
                                     |),
                                     ltac:(M.monadic
-                                      (BinOp.ge (|
-                                        M.read (|
-                                          M.SubPointer.get_struct_record_field (|
-                                            fp,
-                                            "core::num::dec2flt::common::BiasedFp",
-                                            "e"
-                                          |)
-                                        |),
-                                        Value.Integer IntegerKind.I32 0
+                                      (M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.ge,
+                                        [
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              fp,
+                                              "core::num::dec2flt::common::BiasedFp",
+                                              "e"
+                                            |)
+                                          |);
+                                          Value.Integer IntegerKind.I32 0
+                                        ]
                                       |)))
                                   |),
                                   ltac:(M.monadic
@@ -1219,15 +1249,19 @@ Module num.
                                                     "exponent"
                                                   |)
                                                 |);
-                                                BinOp.Wrap.add (|
-                                                  M.read (|
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      num,
-                                                      "core::num::dec2flt::number::Number",
-                                                      "mantissa"
-                                                    |)
-                                                  |),
-                                                  Value.Integer IntegerKind.U64 1
+                                                M.call_closure (|
+                                                  Ty.path "u64",
+                                                  BinOp.Wrap.add,
+                                                  [
+                                                    M.read (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        num,
+                                                        "core::num::dec2flt::number::Number",
+                                                        "mantissa"
+                                                      |)
+                                                    |);
+                                                    Value.Integer IntegerKind.U64 1
+                                                  ]
                                                 |)
                                               ]
                                             |)
@@ -1238,7 +1272,7 @@ Module num.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ : Ty.tuple [] :=
                             M.alloc (|
                               M.write (|
@@ -1264,19 +1298,23 @@ Module num.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.lt (|
-                                  M.read (|
-                                    M.SubPointer.get_struct_record_field (|
-                                      fp,
-                                      "core::num::dec2flt::common::BiasedFp",
-                                      "e"
-                                    |)
-                                  |),
-                                  Value.Integer IntegerKind.I32 0
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.lt,
+                                  [
+                                    M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        fp,
+                                        "core::num::dec2flt::common::BiasedFp",
+                                        "e"
+                                      |)
+                                    |);
+                                    Value.Integer IntegerKind.I32 0
+                                  ]
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ : Ty.tuple [] :=
                             M.alloc (|
                               M.write (|
@@ -1319,7 +1357,7 @@ Module num.
                                 "negative"
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ : Ty.tuple [] :=
                             M.alloc (|
                               M.write (|

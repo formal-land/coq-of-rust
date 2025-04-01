@@ -362,13 +362,20 @@ Module gas.
     Definition value_WARM_SSTORE_RESET (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       ltac:(M.monadic
         (M.alloc (|
-          BinOp.Wrap.sub (|
-            M.read (|
-              get_constant (| "revm_interpreter::gas::constants::SSTORE_RESET", Ty.path "u64" |)
-            |),
-            M.read (|
-              get_constant (| "revm_interpreter::gas::constants::COLD_SLOAD_COST", Ty.path "u64" |)
-            |)
+          M.call_closure (|
+            Ty.path "u64",
+            BinOp.Wrap.sub,
+            [
+              M.read (|
+                get_constant (| "revm_interpreter::gas::constants::SSTORE_RESET", Ty.path "u64" |)
+              |);
+              M.read (|
+                get_constant (|
+                  "revm_interpreter::gas::constants::COLD_SLOAD_COST",
+                  Ty.path "u64"
+                |)
+              |)
+            ]
           |)
         |))).
     

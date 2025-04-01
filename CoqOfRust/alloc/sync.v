@@ -2604,7 +2604,7 @@ Module sync.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ : Ty.tuple [] :=
                         M.match_operator (|
                           Some (Ty.tuple []),
@@ -2674,7 +2674,7 @@ Module sync.
                                               |)
                                             |)) in
                                         let _ :=
-                                          M.is_constant_or_break_match (|
+                                          is_constant_or_break_match (|
                                             M.read (| γ |),
                                             Value.Bool true
                                           |) in
@@ -3936,7 +3936,7 @@ Module sync.
                                 ltac:(M.monadic
                                   (let γ := M.use (M.alloc (| Value.Bool true |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -3970,18 +3970,26 @@ Module sync.
                                                       M.use
                                                         (M.alloc (|
                                                           UnOp.not (|
-                                                            BinOp.eq (|
-                                                              M.read (|
-                                                                M.deref (| M.read (| left_val |) |)
-                                                              |),
-                                                              M.read (|
-                                                                M.deref (| M.read (| right_val |) |)
-                                                              |)
+                                                            M.call_closure (|
+                                                              Ty.path "bool",
+                                                              BinOp.eq,
+                                                              [
+                                                                M.read (|
+                                                                  M.deref (|
+                                                                    M.read (| left_val |)
+                                                                  |)
+                                                                |);
+                                                                M.read (|
+                                                                  M.deref (|
+                                                                    M.read (| right_val |)
+                                                                  |)
+                                                                |)
+                                                              ]
                                                             |)
                                                           |)
                                                         |)) in
                                                     let _ :=
-                                                      M.is_constant_or_break_match (|
+                                                      is_constant_or_break_match (|
                                                         M.read (| γ |),
                                                         Value.Bool true
                                                       |) in
@@ -5504,7 +5512,7 @@ Module sync.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -5784,55 +5792,46 @@ Module sync.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.ne (|
-                                  M.call_closure (|
-                                    Ty.path "usize",
-                                    M.get_associated_function (|
-                                      Ty.path "core::sync::atomic::AtomicUsize",
-                                      "fetch_sub",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.deref (|
-                                            M.call_closure (|
-                                              Ty.apply
-                                                (Ty.path "&")
-                                                []
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.ne,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "usize",
+                                      M.get_associated_function (|
+                                        Ty.path "core::sync::atomic::AtomicUsize",
+                                        "fetch_sub",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (|
+                                              M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "alloc::sync::ArcInner")
+                                                      []
+                                                      [ T ]
+                                                  ],
+                                                M.get_associated_function (|
+                                                  Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
+                                                  "inner",
+                                                  [],
+                                                  []
+                                                |),
                                                 [
-                                                  Ty.apply
-                                                    (Ty.path "alloc::sync::ArcInner")
-                                                    []
-                                                    [ T ]
-                                                ],
-                                              M.get_associated_function (|
-                                                Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
-                                                "inner",
-                                                [],
-                                                []
-                                              |),
-                                              [
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (|
-                                                    M.call_closure (|
-                                                      Ty.apply
-                                                        (Ty.path "&")
-                                                        []
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path "alloc::sync::Arc")
-                                                            []
-                                                            [ T; A ]
-                                                        ],
-                                                      M.get_trait_method (|
-                                                        "core::ops::deref::Deref",
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (|
+                                                      M.call_closure (|
                                                         Ty.apply
-                                                          (Ty.path
-                                                            "core::mem::manually_drop::ManuallyDrop")
+                                                          (Ty.path "&")
                                                           []
                                                           [
                                                             Ty.apply
@@ -5840,32 +5839,45 @@ Module sync.
                                                               []
                                                               [ T; A ]
                                                           ],
-                                                        [],
-                                                        [],
-                                                        "deref",
-                                                        [],
-                                                        []
-                                                      |),
-                                                      [ M.borrow (| Pointer.Kind.Ref, this |) ]
+                                                        M.get_trait_method (|
+                                                          "core::ops::deref::Deref",
+                                                          Ty.apply
+                                                            (Ty.path
+                                                              "core::mem::manually_drop::ManuallyDrop")
+                                                            []
+                                                            [
+                                                              Ty.apply
+                                                                (Ty.path "alloc::sync::Arc")
+                                                                []
+                                                                [ T; A ]
+                                                            ],
+                                                          [],
+                                                          [],
+                                                          "deref",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [ M.borrow (| Pointer.Kind.Ref, this |) ]
+                                                      |)
                                                     |)
                                                   |)
-                                                |)
-                                              ]
-                                            |)
-                                          |),
-                                          "alloc::sync::ArcInner",
-                                          "strong"
-                                        |)
-                                      |);
-                                      Value.Integer IntegerKind.Usize 1;
-                                      Value.StructTuple "core::sync::atomic::Ordering::Release" []
-                                    ]
-                                  |),
-                                  Value.Integer IntegerKind.Usize 1
+                                                ]
+                                              |)
+                                            |),
+                                            "alloc::sync::ArcInner",
+                                            "strong"
+                                          |)
+                                        |);
+                                        Value.Integer IntegerKind.Usize 1;
+                                        Value.StructTuple "core::sync::atomic::Ordering::Release" []
+                                      ]
+                                    |);
+                                    Value.Integer IntegerKind.Usize 1
+                                  ]
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -6540,19 +6552,23 @@ Module sync.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          BinOp.eq (|
-                                            M.read (| cur |),
-                                            M.read (|
-                                              get_associated_constant (|
-                                                Ty.path "usize",
-                                                "MAX",
-                                                Ty.path "usize"
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            BinOp.eq,
+                                            [
+                                              M.read (| cur |);
+                                              M.read (|
+                                                get_associated_constant (|
+                                                  Ty.path "usize",
+                                                  "MAX",
+                                                  Ty.path "usize"
+                                                |)
                                               |)
-                                            |)
+                                            ]
                                           |)
                                         |)) in
                                     let _ :=
-                                      M.is_constant_or_break_match (|
+                                      is_constant_or_break_match (|
                                         M.read (| γ |),
                                         Value.Bool true
                                       |) in
@@ -6644,19 +6660,23 @@ Module sync.
                                       M.use
                                         (M.alloc (|
                                           UnOp.not (|
-                                            BinOp.le (|
-                                              M.read (| cur |),
-                                              M.read (|
-                                                get_constant (|
-                                                  "alloc::sync::MAX_REFCOUNT",
-                                                  Ty.path "usize"
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              BinOp.le,
+                                              [
+                                                M.read (| cur |);
+                                                M.read (|
+                                                  get_constant (|
+                                                    "alloc::sync::MAX_REFCOUNT",
+                                                    Ty.path "usize"
+                                                  |)
                                                 |)
-                                              |)
+                                              ]
                                             |)
                                           |)
                                         |)) in
                                     let _ :=
-                                      M.is_constant_or_break_match (|
+                                      is_constant_or_break_match (|
                                         M.read (| γ |),
                                         Value.Bool true
                                       |) in
@@ -6733,9 +6753,10 @@ Module sync.
                                     |)
                                   |);
                                   M.read (| cur |);
-                                  BinOp.Wrap.add (|
-                                    M.read (| cur |),
-                                    Value.Integer IntegerKind.Usize 1
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    BinOp.Wrap.add,
+                                    [ M.read (| cur |); Value.Integer IntegerKind.Usize 1 ]
                                   |);
                                   Value.StructTuple "core::sync::atomic::Ordering::Acquire" [];
                                   Value.StructTuple "core::sync::atomic::Ordering::Relaxed" []
@@ -6763,7 +6784,7 @@ Module sync.
                                                 ltac:(M.monadic
                                                   (let γ := M.use (M.alloc (| Value.Bool true |)) in
                                                   let _ :=
-                                                    M.is_constant_or_break_match (|
+                                                    is_constant_or_break_match (|
                                                       M.read (| γ |),
                                                       Value.Bool true
                                                     |) in
@@ -6842,7 +6863,7 @@ Module sync.
                                                                   |)
                                                                 |)) in
                                                             let _ :=
-                                                              M.is_constant_or_break_match (|
+                                                              is_constant_or_break_match (|
                                                                 M.read (| γ |),
                                                                 Value.Bool true
                                                               |) in
@@ -7001,19 +7022,31 @@ Module sync.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          BinOp.eq (|
-                            M.read (| cnt |),
-                            M.read (|
-                              get_associated_constant (| Ty.path "usize", "MAX", Ty.path "usize" |)
-                            |)
+                          M.call_closure (|
+                            Ty.path "bool",
+                            BinOp.eq,
+                            [
+                              M.read (| cnt |);
+                              M.read (|
+                                get_associated_constant (|
+                                  Ty.path "usize",
+                                  "MAX",
+                                  Ty.path "usize"
+                                |)
+                              |)
+                            ]
                           |)
                         |)) in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (| Value.Integer IntegerKind.Usize 0 |)));
                 fun γ =>
                   ltac:(M.monadic
                     (M.alloc (|
-                      BinOp.Wrap.sub (| M.read (| cnt |), Value.Integer IntegerKind.Usize 1 |)
+                      M.call_closure (|
+                        Ty.path "usize",
+                        BinOp.Wrap.sub,
+                        [ M.read (| cnt |); Value.Integer IntegerKind.Usize 1 ]
+                      |)
                     |)))
               ]
             |)
@@ -8100,7 +8133,7 @@ Module sync.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ this_data_ref : Ty.apply (Ty.path "&") [] [ T ] :=
                             M.alloc (|
                               M.borrow (|
@@ -8253,61 +8286,65 @@ Module sync.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.ne (|
-                                          M.call_closure (|
-                                            Ty.path "usize",
-                                            M.get_associated_function (|
-                                              Ty.path "core::sync::atomic::AtomicUsize",
-                                              "load",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.deref (|
-                                                    M.call_closure (|
-                                                      Ty.apply
-                                                        (Ty.path "&")
-                                                        []
-                                                        [
-                                                          Ty.apply
-                                                            (Ty.path "alloc::sync::ArcInner")
-                                                            []
-                                                            [ T ]
-                                                        ],
-                                                      M.get_associated_function (|
-                                                        Ty.apply
-                                                          (Ty.path "alloc::sync::Arc")
-                                                          []
-                                                          [ T; A ],
-                                                        "inner",
-                                                        [],
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.borrow (|
-                                                          Pointer.Kind.Ref,
-                                                          M.deref (| M.read (| this |) |)
-                                                        |)
-                                                      ]
-                                                    |)
-                                                  |),
-                                                  "alloc::sync::ArcInner",
-                                                  "weak"
-                                                |)
-                                              |);
-                                              Value.StructTuple
-                                                "core::sync::atomic::Ordering::Relaxed"
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.ne,
+                                          [
+                                            M.call_closure (|
+                                              Ty.path "usize",
+                                              M.get_associated_function (|
+                                                Ty.path "core::sync::atomic::AtomicUsize",
+                                                "load",
+                                                [],
                                                 []
-                                            ]
-                                          |),
-                                          Value.Integer IntegerKind.Usize 1
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (|
+                                                      M.call_closure (|
+                                                        Ty.apply
+                                                          (Ty.path "&")
+                                                          []
+                                                          [
+                                                            Ty.apply
+                                                              (Ty.path "alloc::sync::ArcInner")
+                                                              []
+                                                              [ T ]
+                                                          ],
+                                                        M.get_associated_function (|
+                                                          Ty.apply
+                                                            (Ty.path "alloc::sync::Arc")
+                                                            []
+                                                            [ T; A ],
+                                                          "inner",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| this |) |)
+                                                          |)
+                                                        ]
+                                                      |)
+                                                    |),
+                                                    "alloc::sync::ArcInner",
+                                                    "weak"
+                                                  |)
+                                                |);
+                                                Value.StructTuple
+                                                  "core::sync::atomic::Ordering::Relaxed"
+                                                  []
+                                              ]
+                                            |);
+                                            Value.Integer IntegerKind.Usize 1
+                                          ]
                                         |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -8788,7 +8825,7 @@ Module sync.
                             [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| this |) |) |) ]
                           |)
                         |)) in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       Value.StructTuple
                         "core::option::Option::Some"
@@ -9021,50 +9058,54 @@ Module sync.
                             ]
                           |)
                         |)) in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     let~ unique : Ty.path "bool" :=
                       M.alloc (|
-                        BinOp.eq (|
-                          M.call_closure (|
-                            Ty.path "usize",
-                            M.get_associated_function (|
-                              Ty.path "core::sync::atomic::AtomicUsize",
-                              "load",
-                              [],
-                              []
-                            |),
-                            [
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.SubPointer.get_struct_record_field (|
-                                  M.deref (|
-                                    M.call_closure (|
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ],
-                                      M.get_associated_function (|
-                                        Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
-                                        "inner",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (| M.read (| self |) |)
-                                        |)
-                                      ]
-                                    |)
-                                  |),
-                                  "alloc::sync::ArcInner",
-                                  "strong"
-                                |)
-                              |);
-                              Value.StructTuple "core::sync::atomic::Ordering::Acquire" []
-                            ]
-                          |),
-                          Value.Integer IntegerKind.Usize 1
+                        M.call_closure (|
+                          Ty.path "bool",
+                          BinOp.eq,
+                          [
+                            M.call_closure (|
+                              Ty.path "usize",
+                              M.get_associated_function (|
+                                Ty.path "core::sync::atomic::AtomicUsize",
+                                "load",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (|
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.apply (Ty.path "alloc::sync::ArcInner") [] [ T ] ],
+                                        M.get_associated_function (|
+                                          Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
+                                          "inner",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| self |) |)
+                                          |)
+                                        ]
+                                      |)
+                                    |),
+                                    "alloc::sync::ArcInner",
+                                    "strong"
+                                  |)
+                                |);
+                                Value.StructTuple "core::sync::atomic::Ordering::Acquire" []
+                              ]
+                            |);
+                            Value.Integer IntegerKind.Usize 1
+                          ]
                         |)
                       |) in
                     let~ _ : Ty.tuple [] :=
@@ -10423,9 +10464,10 @@ Module sync.
                                             |) in
                                           M.write (|
                                             β,
-                                            BinOp.Wrap.add (|
-                                              M.read (| β |),
-                                              Value.Integer IntegerKind.Usize 1
+                                            M.call_closure (|
+                                              Ty.path "usize",
+                                              BinOp.Wrap.add,
+                                              [ M.read (| β |); Value.Integer IntegerKind.Usize 1 ]
                                             |)
                                           |)
                                         |) in
@@ -11611,14 +11653,18 @@ Module sync.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.gt (|
-                              M.read (| old_size |),
-                              M.read (|
-                                get_constant (| "alloc::sync::MAX_REFCOUNT", Ty.path "usize" |)
-                              |)
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.gt,
+                              [
+                                M.read (| old_size |);
+                                M.read (|
+                                  get_constant (| "alloc::sync::MAX_REFCOUNT", Ty.path "usize" |)
+                                |)
+                              ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
@@ -11867,57 +11913,61 @@ Module sync.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.ne (|
-                                  M.call_closure (|
-                                    Ty.path "usize",
-                                    M.get_associated_function (|
-                                      Ty.path "core::sync::atomic::AtomicUsize",
-                                      "fetch_sub",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.deref (|
-                                            M.call_closure (|
-                                              Ty.apply
-                                                (Ty.path "&")
-                                                []
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.ne,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "usize",
+                                      M.get_associated_function (|
+                                        Ty.path "core::sync::atomic::AtomicUsize",
+                                        "fetch_sub",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (|
+                                              M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "&")
+                                                  []
+                                                  [
+                                                    Ty.apply
+                                                      (Ty.path "alloc::sync::ArcInner")
+                                                      []
+                                                      [ T ]
+                                                  ],
+                                                M.get_associated_function (|
+                                                  Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
+                                                  "inner",
+                                                  [],
+                                                  []
+                                                |),
                                                 [
-                                                  Ty.apply
-                                                    (Ty.path "alloc::sync::ArcInner")
-                                                    []
-                                                    [ T ]
-                                                ],
-                                              M.get_associated_function (|
-                                                Ty.apply (Ty.path "alloc::sync::Arc") [] [ T; A ],
-                                                "inner",
-                                                [],
-                                                []
-                                              |),
-                                              [
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (| M.read (| self |) |)
-                                                |)
-                                              ]
-                                            |)
-                                          |),
-                                          "alloc::sync::ArcInner",
-                                          "strong"
-                                        |)
-                                      |);
-                                      Value.Integer IntegerKind.Usize 1;
-                                      Value.StructTuple "core::sync::atomic::Ordering::Release" []
-                                    ]
-                                  |),
-                                  Value.Integer IntegerKind.Usize 1
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| self |) |)
+                                                  |)
+                                                ]
+                                              |)
+                                            |),
+                                            "alloc::sync::ArcInner",
+                                            "strong"
+                                          |)
+                                        |);
+                                        Value.Integer IntegerKind.Usize 1;
+                                        Value.StructTuple "core::sync::atomic::Ordering::Release" []
+                                      ]
+                                    |);
+                                    Value.Integer IntegerKind.Usize 1
+                                  ]
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (| M.read (| M.return_ (| Value.Tuple [] |) |) |)
                           |)));
@@ -11941,7 +11991,7 @@ Module sync.
                         ltac:(M.monadic
                           (let γ := M.use (M.alloc (| Value.Bool true |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ : Ty.tuple [] :=
                             M.match_operator (|
                               Some (Ty.tuple []),
@@ -12044,7 +12094,7 @@ Module sync.
                                           |)
                                         |)) in
                                     let _ :=
-                                      M.is_constant_or_break_match (|
+                                      is_constant_or_break_match (|
                                         M.read (| γ |),
                                         Value.Bool true
                                       |) in
@@ -12241,7 +12291,7 @@ Module sync.
                             ]
                           |)
                         |)) in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.match_operator (|
                       None,
                       M.alloc (|
@@ -12756,7 +12806,7 @@ Module sync.
                             [ (* MutToConstPointer *) M.pointer_coercion (M.read (| ptr |)) ]
                           |)
                         |)) in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.cast (Ty.apply (Ty.path "*const") [] [ T ]) (M.read (| ptr |))
                     |)));
@@ -13051,8 +13101,7 @@ Module sync.
                                 [ M.read (| ptr |) ]
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           M.cast
                             (Ty.apply
@@ -13367,8 +13416,7 @@ Module sync.
                                 ]
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           Value.StructTuple
                             "core::option::Option::Some"
@@ -13635,20 +13683,22 @@ Module sync.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.eq (|
-                                    M.read (| strong |),
-                                    Value.Integer IntegerKind.Usize 0
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.eq,
+                                    [ M.read (| strong |); Value.Integer IntegerKind.Usize 0 ]
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (| Value.Integer IntegerKind.Usize 0 |)));
                         fun γ =>
                           ltac:(M.monadic
                             (M.alloc (|
-                              BinOp.Wrap.sub (|
-                                M.read (| weak |),
-                                Value.Integer IntegerKind.Usize 1
+                              M.call_closure (|
+                                Ty.path "usize",
+                                BinOp.Wrap.sub,
+                                [ M.read (| weak |); Value.Integer IntegerKind.Usize 1 ]
                               |)
                             |)))
                       ]
@@ -13737,7 +13787,7 @@ Module sync.
                             [ (* MutToConstPointer *) M.pointer_coercion (M.read (| ptr |)) ]
                           |)
                         |)) in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                 fun γ =>
                   ltac:(M.monadic
@@ -13988,21 +14038,22 @@ Module sync.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.gt (|
-                                      M.read (| old_size |),
-                                      M.read (|
-                                        get_constant (|
-                                          "alloc::sync::MAX_REFCOUNT",
-                                          Ty.path "usize"
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.gt,
+                                      [
+                                        M.read (| old_size |);
+                                        M.read (|
+                                          get_constant (|
+                                            "alloc::sync::MAX_REFCOUNT",
+                                            Ty.path "usize"
+                                          |)
                                         |)
-                                      |)
+                                      ]
                                     |)
                                   |)) in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (|
                                 M.never_to_any (|
                                   M.call_closure (|
@@ -14189,37 +14240,40 @@ Module sync.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.eq (|
-                                M.call_closure (|
-                                  Ty.path "usize",
-                                  M.get_associated_function (|
-                                    Ty.path "core::sync::atomic::AtomicUsize",
-                                    "fetch_sub",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.deref (|
-                                        M.read (|
-                                          M.SubPointer.get_struct_record_field (|
-                                            inner,
-                                            "alloc::sync::WeakInner",
-                                            "weak"
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.eq,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    M.get_associated_function (|
+                                      Ty.path "core::sync::atomic::AtomicUsize",
+                                      "fetch_sub",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              inner,
+                                              "alloc::sync::WeakInner",
+                                              "weak"
+                                            |)
                                           |)
                                         |)
-                                      |)
-                                    |);
-                                    Value.Integer IntegerKind.Usize 1;
-                                    Value.StructTuple "core::sync::atomic::Ordering::Release" []
-                                  ]
-                                |),
-                                Value.Integer IntegerKind.Usize 1
+                                      |);
+                                      Value.Integer IntegerKind.Usize 1;
+                                      Value.StructTuple "core::sync::atomic::Ordering::Release" []
+                                    ]
+                                  |);
+                                  Value.Integer IntegerKind.Usize 1
+                                ]
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.alloc (|
                             M.call_closure (|
@@ -14237,7 +14291,7 @@ Module sync.
                                 ltac:(M.monadic
                                   (let γ := M.use (M.alloc (| Value.Bool true |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -14350,7 +14404,7 @@ Module sync.
                                                   |)
                                                 |)) in
                                             let _ :=
-                                              M.is_constant_or_break_match (|
+                                              is_constant_or_break_match (|
                                                 M.read (| γ |),
                                                 Value.Bool true
                                               |) in
@@ -15785,7 +15839,7 @@ Module sync.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ : Ty.tuple [] :=
                         M.match_operator (|
                           Some (Ty.tuple []),
@@ -15879,7 +15933,7 @@ Module sync.
                                       |)
                                     |)) in
                                 let _ :=
-                                  M.is_constant_or_break_match (|
+                                  is_constant_or_break_match (|
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
@@ -16398,22 +16452,26 @@ Module sync.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.le (|
-                                  M.call_closure (|
-                                    Ty.path "usize",
-                                    M.get_function (| "core::mem::align_of", [], [ T ] |),
-                                    []
-                                  |),
-                                  M.read (|
-                                    get_constant (|
-                                      "alloc::sync::MAX_STATIC_INNER_SLICE_ALIGNMENT",
-                                      Ty.path "usize"
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.le,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "usize",
+                                      M.get_function (| "core::mem::align_of", [], [ T ] |),
+                                      []
+                                    |);
+                                    M.read (|
+                                      get_constant (|
+                                        "alloc::sync::MAX_STATIC_INNER_SLICE_ALIGNMENT",
+                                        Ty.path "usize"
+                                      |)
                                     |)
-                                  |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -17619,46 +17677,50 @@ Module sync.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          BinOp.eq (|
-                            M.call_closure (|
-                              Ty.path "usize",
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "slice") [] [ T ],
-                                "len",
-                                [],
-                                []
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.call_closure (|
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                                      M.get_trait_method (|
-                                        "core::ops::deref::Deref",
+                          M.call_closure (|
+                            Ty.path "bool",
+                            BinOp.eq,
+                            [
+                              M.call_closure (|
+                                Ty.path "usize",
+                                M.get_associated_function (|
+                                  Ty.apply (Ty.path "slice") [] [ T ],
+                                  "len",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.call_closure (|
                                         Ty.apply
-                                          (Ty.path "alloc::sync::Arc")
+                                          (Ty.path "&")
                                           []
-                                          [ Ty.apply (Ty.path "slice") [] [ T ]; A ],
-                                        [],
-                                        [],
-                                        "deref",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.borrow (| Pointer.Kind.Ref, boxed_slice |) ]
+                                          [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                        M.get_trait_method (|
+                                          "core::ops::deref::Deref",
+                                          Ty.apply
+                                            (Ty.path "alloc::sync::Arc")
+                                            []
+                                            [ Ty.apply (Ty.path "slice") [] [ T ]; A ],
+                                          [],
+                                          [],
+                                          "deref",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.borrow (| Pointer.Kind.Ref, boxed_slice |) ]
+                                      |)
                                     |)
                                   |)
-                                |)
-                              ]
-                            |),
-                            N
+                                ]
+                              |);
+                              N
+                            ]
                           |)
                         |)) in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.match_operator (|
                       None,
                       M.alloc (|
@@ -18009,7 +18071,7 @@ Module sync.
                                     ltac:(M.monadic
                                       (let γ := M.use (M.alloc (| Value.Bool true |)) in
                                       let _ :=
-                                        M.is_constant_or_break_match (|
+                                        is_constant_or_break_match (|
                                           M.read (| γ |),
                                           Value.Bool true
                                         |) in
@@ -18042,22 +18104,26 @@ Module sync.
                                                           M.use
                                                             (M.alloc (|
                                                               UnOp.not (|
-                                                                BinOp.eq (|
-                                                                  M.read (|
-                                                                    M.deref (|
-                                                                      M.read (| left_val |)
+                                                                M.call_closure (|
+                                                                  Ty.path "bool",
+                                                                  BinOp.eq,
+                                                                  [
+                                                                    M.read (|
+                                                                      M.deref (|
+                                                                        M.read (| left_val |)
+                                                                      |)
+                                                                    |);
+                                                                    M.read (|
+                                                                      M.deref (|
+                                                                        M.read (| right_val |)
+                                                                      |)
                                                                     |)
-                                                                  |),
-                                                                  M.read (|
-                                                                    M.deref (|
-                                                                      M.read (| right_val |)
-                                                                    |)
-                                                                  |)
+                                                                  ]
                                                                 |)
                                                               |)
                                                             |)) in
                                                         let _ :=
-                                                          M.is_constant_or_break_match (|
+                                                          is_constant_or_break_match (|
                                                             M.read (| γ |),
                                                             Value.Bool true
                                                           |) in
@@ -18467,27 +18533,31 @@ Module sync.
               |)
             |) in
           M.alloc (|
-            BinOp.Wrap.add (|
-              M.call_closure (|
-                Ty.path "usize",
-                M.get_associated_function (|
-                  Ty.path "core::alloc::layout::Layout",
-                  "size",
-                  [],
-                  []
-                |),
-                [ M.borrow (| Pointer.Kind.Ref, layout |) ]
-              |),
-              M.call_closure (|
-                Ty.path "usize",
-                M.get_associated_function (|
-                  Ty.path "core::alloc::layout::Layout",
-                  "padding_needed_for",
-                  [],
-                  []
-                |),
-                [ M.borrow (| Pointer.Kind.Ref, layout |); M.read (| align |) ]
-              |)
+            M.call_closure (|
+              Ty.path "usize",
+              BinOp.Wrap.add,
+              [
+                M.call_closure (|
+                  Ty.path "usize",
+                  M.get_associated_function (|
+                    Ty.path "core::alloc::layout::Layout",
+                    "size",
+                    [],
+                    []
+                  |),
+                  [ M.borrow (| Pointer.Kind.Ref, layout |) ]
+                |);
+                M.call_closure (|
+                  Ty.path "usize",
+                  M.get_associated_function (|
+                    Ty.path "core::alloc::layout::Layout",
+                    "padding_needed_for",
+                    [],
+                    []
+                  |),
+                  [ M.borrow (| Pointer.Kind.Ref, layout |); M.read (| align |) ]
+                |)
+              ]
             |)
           |)
         |)))

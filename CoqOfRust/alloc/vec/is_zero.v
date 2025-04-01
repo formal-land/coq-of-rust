@@ -47,9 +47,10 @@ Module vec.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let x := M.copy (| γ |) in
-                                      BinOp.eq (|
-                                        M.read (| x |),
-                                        Value.Integer IntegerKind.I8 0
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.eq,
+                                        [ M.read (| x |); Value.Integer IntegerKind.I8 0 ]
                                       |)))
                                 ]
                               |)))
@@ -113,9 +114,10 @@ Module vec.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let x := M.copy (| γ |) in
-                                      BinOp.eq (|
-                                        M.read (| x |),
-                                        Value.Integer IntegerKind.I16 0
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.eq,
+                                        [ M.read (| x |); Value.Integer IntegerKind.I16 0 ]
                                       |)))
                                 ]
                               |)))
@@ -179,9 +181,10 @@ Module vec.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let x := M.copy (| γ |) in
-                                      BinOp.eq (|
-                                        M.read (| x |),
-                                        Value.Integer IntegerKind.I32 0
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.eq,
+                                        [ M.read (| x |); Value.Integer IntegerKind.I32 0 ]
                                       |)))
                                 ]
                               |)))
@@ -245,9 +248,10 @@ Module vec.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let x := M.copy (| γ |) in
-                                      BinOp.eq (|
-                                        M.read (| x |),
-                                        Value.Integer IntegerKind.I64 0
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.eq,
+                                        [ M.read (| x |); Value.Integer IntegerKind.I64 0 ]
                                       |)))
                                 ]
                               |)))
@@ -311,9 +315,10 @@ Module vec.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let x := M.copy (| γ |) in
-                                      BinOp.eq (|
-                                        M.read (| x |),
-                                        Value.Integer IntegerKind.I128 0
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.eq,
+                                        [ M.read (| x |); Value.Integer IntegerKind.I128 0 ]
                                       |)))
                                 ]
                               |)))
@@ -378,9 +383,10 @@ Module vec.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let x := M.copy (| γ |) in
-                                      BinOp.eq (|
-                                        M.read (| x |),
-                                        Value.Integer IntegerKind.Isize 0
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.eq,
+                                        [ M.read (| x |); Value.Integer IntegerKind.Isize 0 ]
                                       |)))
                                 ]
                               |)))
@@ -444,9 +450,10 @@ Module vec.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let x := M.copy (| γ |) in
-                                      BinOp.eq (|
-                                        M.read (| x |),
-                                        Value.Integer IntegerKind.U8 0
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.eq,
+                                        [ M.read (| x |); Value.Integer IntegerKind.U8 0 ]
                                       |)))
                                 ]
                               |)))
@@ -510,9 +517,10 @@ Module vec.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let x := M.copy (| γ |) in
-                                      BinOp.eq (|
-                                        M.read (| x |),
-                                        Value.Integer IntegerKind.U16 0
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.eq,
+                                        [ M.read (| x |); Value.Integer IntegerKind.U16 0 ]
                                       |)))
                                 ]
                               |)))
@@ -576,9 +584,10 @@ Module vec.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let x := M.copy (| γ |) in
-                                      BinOp.eq (|
-                                        M.read (| x |),
-                                        Value.Integer IntegerKind.U32 0
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.eq,
+                                        [ M.read (| x |); Value.Integer IntegerKind.U32 0 ]
                                       |)))
                                 ]
                               |)))
@@ -642,9 +651,10 @@ Module vec.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let x := M.copy (| γ |) in
-                                      BinOp.eq (|
-                                        M.read (| x |),
-                                        Value.Integer IntegerKind.U64 0
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.eq,
+                                        [ M.read (| x |); Value.Integer IntegerKind.U64 0 ]
                                       |)))
                                 ]
                               |)))
@@ -708,9 +718,10 @@ Module vec.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let x := M.copy (| γ |) in
-                                      BinOp.eq (|
-                                        M.read (| x |),
-                                        Value.Integer IntegerKind.U128 0
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.eq,
+                                        [ M.read (| x |); Value.Integer IntegerKind.U128 0 ]
                                       |)))
                                 ]
                               |)))
@@ -775,9 +786,10 @@ Module vec.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let x := M.copy (| γ |) in
-                                      BinOp.eq (|
-                                        M.read (| x |),
-                                        Value.Integer IntegerKind.Usize 0
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.eq,
+                                        [ M.read (| x |); Value.Integer IntegerKind.Usize 0 ]
                                       |)))
                                 ]
                               |)))
@@ -841,7 +853,11 @@ Module vec.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let x := M.copy (| γ |) in
-                                      BinOp.eq (| M.read (| x |), Value.Bool false |)))
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.eq,
+                                        [ M.read (| x |); Value.Bool false ]
+                                      |)))
                                 ]
                               |)))
                           | _ => M.impossible "wrong number of arguments"
@@ -904,7 +920,11 @@ Module vec.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let x := M.copy (| γ |) in
-                                      BinOp.eq (| M.read (| x |), Value.UnicodeChar 0 |)))
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.eq,
+                                        [ M.read (| x |); Value.UnicodeChar 0 ]
+                                      |)))
                                 ]
                               |)))
                           | _ => M.impossible "wrong number of arguments"
@@ -967,18 +987,22 @@ Module vec.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let x := M.copy (| γ |) in
-                                      BinOp.eq (|
-                                        M.call_closure (|
-                                          Ty.path "u32",
-                                          M.get_associated_function (|
-                                            Ty.path "f32",
-                                            "to_bits",
-                                            [],
-                                            []
-                                          |),
-                                          [ M.read (| x |) ]
-                                        |),
-                                        Value.Integer IntegerKind.U32 0
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.eq,
+                                        [
+                                          M.call_closure (|
+                                            Ty.path "u32",
+                                            M.get_associated_function (|
+                                              Ty.path "f32",
+                                              "to_bits",
+                                              [],
+                                              []
+                                            |),
+                                            [ M.read (| x |) ]
+                                          |);
+                                          Value.Integer IntegerKind.U32 0
+                                        ]
                                       |)))
                                 ]
                               |)))
@@ -1042,18 +1066,22 @@ Module vec.
                                   fun γ =>
                                     ltac:(M.monadic
                                       (let x := M.copy (| γ |) in
-                                      BinOp.eq (|
-                                        M.call_closure (|
-                                          Ty.path "u64",
-                                          M.get_associated_function (|
-                                            Ty.path "f64",
-                                            "to_bits",
-                                            [],
-                                            []
-                                          |),
-                                          [ M.read (| x |) ]
-                                        |),
-                                        Value.Integer IntegerKind.U64 0
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.eq,
+                                        [
+                                          M.call_closure (|
+                                            Ty.path "u64",
+                                            M.get_associated_function (|
+                                              Ty.path "f64",
+                                              "to_bits",
+                                              [],
+                                              []
+                                            |),
+                                            [ M.read (| x |) ]
+                                          |);
+                                          Value.Integer IntegerKind.U64 0
+                                        ]
                                       |)))
                                 ]
                               |)))
@@ -1173,7 +1201,11 @@ Module vec.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             LogicalOp.and (|
-              BinOp.le (| N, Value.Integer IntegerKind.Usize 16 |),
+              M.call_closure (|
+                Ty.path "bool",
+                BinOp.le,
+                [ N; Value.Integer IntegerKind.Usize 16 ]
+              |),
               ltac:(M.monadic
                 (M.call_closure (|
                   Ty.path "bool",
@@ -3627,7 +3659,13 @@ Module vec.
                     [ M.read (| M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
-              M.alloc (| BinOp.eq (| M.read (| raw |), Value.Integer IntegerKind.U8 0 |) |)
+              M.alloc (|
+                M.call_closure (|
+                  Ty.path "bool",
+                  BinOp.eq,
+                  [ M.read (| raw |); Value.Integer IntegerKind.U8 0 ]
+                |)
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3682,7 +3720,13 @@ Module vec.
                     [ M.read (| M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
-              M.alloc (| BinOp.eq (| M.read (| raw |), Value.Integer IntegerKind.U8 0 |) |)
+              M.alloc (|
+                M.call_closure (|
+                  Ty.path "bool",
+                  BinOp.eq,
+                  [ M.read (| raw |); Value.Integer IntegerKind.U8 0 ]
+                |)
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3747,7 +3791,13 @@ Module vec.
                     [ M.read (| M.deref (| M.read (| self |) |) |) ]
                   |)
                 |) in
-              M.alloc (| BinOp.eq (| M.read (| raw |), Value.Integer IntegerKind.U8 0 |) |)
+              M.alloc (|
+                M.call_closure (|
+                  Ty.path "bool",
+                  BinOp.eq,
+                  [ M.read (| raw |); Value.Integer IntegerKind.U8 0 ]
+                |)
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

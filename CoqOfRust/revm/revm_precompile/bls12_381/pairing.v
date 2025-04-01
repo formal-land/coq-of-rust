@@ -197,27 +197,36 @@ Module bls12_381.
                             M.use
                               (M.alloc (|
                                 LogicalOp.or (|
-                                  BinOp.eq (|
-                                    M.read (| input_len |),
-                                    Value.Integer IntegerKind.Usize 0
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.eq,
+                                    [ M.read (| input_len |); Value.Integer IntegerKind.Usize 0 ]
                                   |),
                                   ltac:(M.monadic
-                                    (BinOp.ne (|
-                                      BinOp.Wrap.rem (|
-                                        M.read (| input_len |),
-                                        M.read (|
-                                          get_constant (|
-                                            "revm_precompile::bls12_381::pairing::INPUT_LENGTH",
-                                            Ty.path "usize"
-                                          |)
-                                        |)
-                                      |),
-                                      Value.Integer IntegerKind.Usize 0
+                                    (M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.ne,
+                                      [
+                                        M.call_closure (|
+                                          Ty.path "usize",
+                                          BinOp.Wrap.rem,
+                                          [
+                                            M.read (| input_len |);
+                                            M.read (|
+                                              get_constant (|
+                                                "revm_precompile::bls12_381::pairing::INPUT_LENGTH",
+                                                Ty.path "usize"
+                                              |)
+                                            |)
+                                          ]
+                                        |);
+                                        Value.Integer IntegerKind.Usize 0
+                                      ]
                                     |)))
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -372,34 +381,46 @@ Module bls12_381.
                   |) in
                 let~ k : Ty.path "usize" :=
                   M.alloc (|
-                    BinOp.Wrap.div (|
-                      M.read (| input_len |),
-                      M.read (|
-                        get_constant (|
-                          "revm_precompile::bls12_381::pairing::INPUT_LENGTH",
-                          Ty.path "usize"
+                    M.call_closure (|
+                      Ty.path "usize",
+                      BinOp.Wrap.div,
+                      [
+                        M.read (| input_len |);
+                        M.read (|
+                          get_constant (|
+                            "revm_precompile::bls12_381::pairing::INPUT_LENGTH",
+                            Ty.path "usize"
+                          |)
                         |)
-                      |)
+                      ]
                     |)
                   |) in
                 let~ required_gas : Ty.path "u64" :=
                   M.alloc (|
-                    BinOp.Wrap.add (|
-                      BinOp.Wrap.mul (|
+                    M.call_closure (|
+                      Ty.path "u64",
+                      BinOp.Wrap.add,
+                      [
+                        M.call_closure (|
+                          Ty.path "u64",
+                          BinOp.Wrap.mul,
+                          [
+                            M.read (|
+                              get_constant (|
+                                "revm_precompile::bls12_381::pairing::PAIRING_MULTIPLIER_BASE",
+                                Ty.path "u64"
+                              |)
+                            |);
+                            M.cast (Ty.path "u64") (M.read (| k |))
+                          ]
+                        |);
                         M.read (|
                           get_constant (|
-                            "revm_precompile::bls12_381::pairing::PAIRING_MULTIPLIER_BASE",
+                            "revm_precompile::bls12_381::pairing::PAIRING_OFFSET_BASE",
                             Ty.path "u64"
                           |)
-                        |),
-                        M.cast (Ty.path "u64") (M.read (| k |))
-                      |),
-                      M.read (|
-                        get_constant (|
-                          "revm_precompile::bls12_381::pairing::PAIRING_OFFSET_BASE",
-                          Ty.path "u64"
                         |)
-                      |)
+                      ]
                     |)
                   |) in
                 let~ _ : Ty.tuple [] :=
@@ -412,10 +433,14 @@ Module bls12_381.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.gt (| M.read (| required_gas |), M.read (| gas_limit |) |)
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.gt,
+                                  [ M.read (| required_gas |); M.read (| gas_limit |) ]
+                                |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -709,19 +734,11 @@ Module bls12_381.
                                                                           "core::ops::range::Range"
                                                                           [
                                                                             ("start",
-                                                                              BinOp.Wrap.mul (|
-                                                                                M.read (| i |),
-                                                                                M.read (|
-                                                                                  get_constant (|
-                                                                                    "revm_precompile::bls12_381::pairing::INPUT_LENGTH",
-                                                                                    Ty.path "usize"
-                                                                                  |)
-                                                                                |)
-                                                                              |));
-                                                                            ("end_",
-                                                                              BinOp.Wrap.add (|
-                                                                                BinOp.Wrap.mul (|
-                                                                                  M.read (| i |),
+                                                                              M.call_closure (|
+                                                                                Ty.path "usize",
+                                                                                BinOp.Wrap.mul,
+                                                                                [
+                                                                                  M.read (| i |);
                                                                                   M.read (|
                                                                                     get_constant (|
                                                                                       "revm_precompile::bls12_381::pairing::INPUT_LENGTH",
@@ -729,13 +746,37 @@ Module bls12_381.
                                                                                         "usize"
                                                                                     |)
                                                                                   |)
-                                                                                |),
-                                                                                M.read (|
-                                                                                  get_constant (|
-                                                                                    "revm_precompile::bls12_381::g1::G1_INPUT_ITEM_LENGTH",
-                                                                                    Ty.path "usize"
+                                                                                ]
+                                                                              |));
+                                                                            ("end_",
+                                                                              M.call_closure (|
+                                                                                Ty.path "usize",
+                                                                                BinOp.Wrap.add,
+                                                                                [
+                                                                                  M.call_closure (|
+                                                                                    Ty.path "usize",
+                                                                                    BinOp.Wrap.mul,
+                                                                                    [
+                                                                                      M.read (|
+                                                                                        i
+                                                                                      |);
+                                                                                      M.read (|
+                                                                                        get_constant (|
+                                                                                          "revm_precompile::bls12_381::pairing::INPUT_LENGTH",
+                                                                                          Ty.path
+                                                                                            "usize"
+                                                                                        |)
+                                                                                      |)
+                                                                                    ]
+                                                                                  |);
+                                                                                  M.read (|
+                                                                                    get_constant (|
+                                                                                      "revm_precompile::bls12_381::g1::G1_INPUT_ITEM_LENGTH",
+                                                                                      Ty.path
+                                                                                        "usize"
+                                                                                    |)
                                                                                   |)
-                                                                                |)
+                                                                                ]
                                                                               |))
                                                                           ]
                                                                       ]
@@ -985,37 +1026,26 @@ Module bls12_381.
                                                                           "core::ops::range::Range"
                                                                           [
                                                                             ("start",
-                                                                              BinOp.Wrap.add (|
-                                                                                BinOp.Wrap.mul (|
-                                                                                  M.read (| i |),
-                                                                                  M.read (|
-                                                                                    get_constant (|
-                                                                                      "revm_precompile::bls12_381::pairing::INPUT_LENGTH",
-                                                                                      Ty.path
-                                                                                        "usize"
-                                                                                    |)
-                                                                                  |)
-                                                                                |),
-                                                                                M.read (|
-                                                                                  get_constant (|
-                                                                                    "revm_precompile::bls12_381::g1::G1_INPUT_ITEM_LENGTH",
-                                                                                    Ty.path "usize"
-                                                                                  |)
-                                                                                |)
-                                                                              |));
-                                                                            ("end_",
-                                                                              BinOp.Wrap.add (|
-                                                                                BinOp.Wrap.add (|
-                                                                                  BinOp.Wrap.mul (|
-                                                                                    M.read (| i |),
-                                                                                    M.read (|
-                                                                                      get_constant (|
-                                                                                        "revm_precompile::bls12_381::pairing::INPUT_LENGTH",
-                                                                                        Ty.path
-                                                                                          "usize"
+                                                                              M.call_closure (|
+                                                                                Ty.path "usize",
+                                                                                BinOp.Wrap.add,
+                                                                                [
+                                                                                  M.call_closure (|
+                                                                                    Ty.path "usize",
+                                                                                    BinOp.Wrap.mul,
+                                                                                    [
+                                                                                      M.read (|
+                                                                                        i
+                                                                                      |);
+                                                                                      M.read (|
+                                                                                        get_constant (|
+                                                                                          "revm_precompile::bls12_381::pairing::INPUT_LENGTH",
+                                                                                          Ty.path
+                                                                                            "usize"
+                                                                                        |)
                                                                                       |)
-                                                                                    |)
-                                                                                  |),
+                                                                                    ]
+                                                                                  |);
                                                                                   M.read (|
                                                                                     get_constant (|
                                                                                       "revm_precompile::bls12_381::g1::G1_INPUT_ITEM_LENGTH",
@@ -1023,13 +1053,51 @@ Module bls12_381.
                                                                                         "usize"
                                                                                     |)
                                                                                   |)
-                                                                                |),
-                                                                                M.read (|
-                                                                                  get_constant (|
-                                                                                    "revm_precompile::bls12_381::g2::G2_INPUT_ITEM_LENGTH",
-                                                                                    Ty.path "usize"
+                                                                                ]
+                                                                              |));
+                                                                            ("end_",
+                                                                              M.call_closure (|
+                                                                                Ty.path "usize",
+                                                                                BinOp.Wrap.add,
+                                                                                [
+                                                                                  M.call_closure (|
+                                                                                    Ty.path "usize",
+                                                                                    BinOp.Wrap.add,
+                                                                                    [
+                                                                                      M.call_closure (|
+                                                                                        Ty.path
+                                                                                          "usize",
+                                                                                        BinOp.Wrap.mul,
+                                                                                        [
+                                                                                          M.read (|
+                                                                                            i
+                                                                                          |);
+                                                                                          M.read (|
+                                                                                            get_constant (|
+                                                                                              "revm_precompile::bls12_381::pairing::INPUT_LENGTH",
+                                                                                              Ty.path
+                                                                                                "usize"
+                                                                                            |)
+                                                                                          |)
+                                                                                        ]
+                                                                                      |);
+                                                                                      M.read (|
+                                                                                        get_constant (|
+                                                                                          "revm_precompile::bls12_381::g1::G1_INPUT_ITEM_LENGTH",
+                                                                                          Ty.path
+                                                                                            "usize"
+                                                                                        |)
+                                                                                      |)
+                                                                                    ]
+                                                                                  |);
+                                                                                  M.read (|
+                                                                                    get_constant (|
+                                                                                      "revm_precompile::bls12_381::g2::G2_INPUT_ITEM_LENGTH",
+                                                                                      Ty.path
+                                                                                        "usize"
+                                                                                    |)
                                                                                   |)
-                                                                                |)
+                                                                                ]
                                                                               |))
                                                                           ]
                                                                       ]
@@ -1126,13 +1194,17 @@ Module bls12_381.
                                                   (let γ :=
                                                     M.use
                                                       (M.alloc (|
-                                                        BinOp.gt (|
-                                                          M.read (| i |),
-                                                          Value.Integer IntegerKind.Usize 0
+                                                        M.call_closure (|
+                                                          Ty.path "bool",
+                                                          BinOp.gt,
+                                                          [
+                                                            M.read (| i |);
+                                                            Value.Integer IntegerKind.Usize 0
+                                                          ]
                                                         |)
                                                       |)) in
                                                   let _ :=
-                                                    M.is_constant_or_break_match (|
+                                                    is_constant_or_break_match (|
                                                       M.read (| γ |),
                                                       Value.Bool true
                                                     |) in
@@ -1341,7 +1413,7 @@ Module bls12_381.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ : Ty.tuple [] :=
                             M.alloc (| M.write (| result, Value.Integer IntegerKind.U8 1 |) |) in
                           M.alloc (| Value.Tuple [] |)));

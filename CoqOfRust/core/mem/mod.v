@@ -370,7 +370,7 @@ Module mem.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.use (M.alloc (| UnOp.not (| Value.Bool false |) |)) in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     let~ _ : Ty.tuple [] :=
                       M.alloc (|
                         M.call_closure (|
@@ -599,21 +599,25 @@ Module mem.
                       M.use
                         (M.alloc (|
                           UnOp.not (|
-                            BinOp.ge (|
-                              M.call_closure (|
-                                Ty.path "usize",
-                                M.get_function (| "core::mem::size_of", [], [ Src ] |),
-                                []
-                              |),
-                              M.call_closure (|
-                                Ty.path "usize",
-                                M.get_function (| "core::mem::size_of", [], [ Dst ] |),
-                                []
-                              |)
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.ge,
+                              [
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  M.get_function (| "core::mem::size_of", [], [ Src ] |),
+                                  []
+                                |);
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  M.get_function (| "core::mem::size_of", [], [ Dst ] |),
+                                  []
+                                |)
+                              ]
                             |)
                           |)
                         |)) in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.never_to_any (|
                         M.call_closure (|
@@ -663,20 +667,24 @@ Module mem.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        BinOp.gt (|
-                          M.call_closure (|
-                            Ty.path "usize",
-                            M.get_function (| "core::mem::align_of", [], [ Dst ] |),
-                            []
-                          |),
-                          M.call_closure (|
-                            Ty.path "usize",
-                            M.get_function (| "core::mem::align_of", [], [ Src ] |),
-                            []
-                          |)
+                        M.call_closure (|
+                          Ty.path "bool",
+                          BinOp.gt,
+                          [
+                            M.call_closure (|
+                              Ty.path "usize",
+                              M.get_function (| "core::mem::align_of", [], [ Dst ] |),
+                              []
+                            |);
+                            M.call_closure (|
+                              Ty.path "usize",
+                              M.get_function (| "core::mem::align_of", [], [ Src ] |),
+                              []
+                            |)
+                          ]
                         |)
                       |)) in
-                  let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                  let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
                     M.call_closure (|
                       Dst,

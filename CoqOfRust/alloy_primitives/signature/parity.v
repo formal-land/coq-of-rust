@@ -408,7 +408,11 @@ Module signature.
                 |) in
               M.alloc (|
                 LogicalOp.and (|
-                  BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |),
+                  M.call_closure (|
+                    Ty.path "bool",
+                    BinOp.eq,
+                    [ M.read (| __self_discr |); M.read (| __arg1_discr |) ]
+                  |),
                   ltac:(M.monadic
                     (M.read (|
                       M.match_operator (|
@@ -835,7 +839,7 @@ Module signature.
                           fun γ =>
                             ltac:(M.monadic
                               (let _ :=
-                                M.is_constant_or_break_match (|
+                                is_constant_or_break_match (|
                                   M.read (| γ |),
                                   Value.Integer IntegerKind.U64 0
                                 |) in
@@ -843,7 +847,7 @@ Module signature.
                           fun γ =>
                             ltac:(M.monadic
                               (let _ :=
-                                M.is_constant_or_break_match (|
+                                is_constant_or_break_match (|
                                   M.read (| γ |),
                                   Value.Integer IntegerKind.U64 1
                                 |) in
@@ -861,9 +865,10 @@ Module signature.
                                       Value.StructTuple
                                         "alloy_primitives::signature::parity::Parity::Parity"
                                         [
-                                          BinOp.ne (|
-                                            M.read (| value |),
-                                            Value.Integer IntegerKind.U64 0
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            BinOp.ne,
+                                            [ M.read (| value |); Value.Integer IntegerKind.U64 0 ]
                                           |)
                                         ]
                                     ]
@@ -879,7 +884,7 @@ Module signature.
                           fun γ =>
                             ltac:(M.monadic
                               (let _ :=
-                                M.is_constant_or_break_match (|
+                                is_constant_or_break_match (|
                                   M.read (| γ |),
                                   Value.Integer IntegerKind.U64 27
                                 |) in
@@ -887,7 +892,7 @@ Module signature.
                           fun γ =>
                             ltac:(M.monadic
                               (let _ :=
-                                M.is_constant_or_break_match (|
+                                is_constant_or_break_match (|
                                   M.read (| γ |),
                                   Value.Integer IntegerKind.U64 28
                                 |) in
@@ -905,12 +910,20 @@ Module signature.
                                       Value.StructTuple
                                         "alloy_primitives::signature::parity::Parity::NonEip155"
                                         [
-                                          BinOp.ne (|
-                                            BinOp.Wrap.sub (|
-                                              M.read (| value |),
-                                              Value.Integer IntegerKind.U64 27
-                                            |),
-                                            Value.Integer IntegerKind.U64 0
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            BinOp.ne,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "u64",
+                                                BinOp.Wrap.sub,
+                                                [
+                                                  M.read (| value |);
+                                                  Value.Integer IntegerKind.U64 27
+                                                ]
+                                              |);
+                                              Value.Integer IntegerKind.U64 0
+                                            ]
                                           |)
                                         ]
                                     ]
@@ -1003,16 +1016,21 @@ Module signature.
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      BinOp.eq (|
-                                        BinOp.Wrap.rem (|
-                                          M.read (| v |),
-                                          Value.Integer IntegerKind.U64 2
-                                        |),
-                                        Value.Integer IntegerKind.U64 0
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.eq,
+                                        [
+                                          M.call_closure (|
+                                            Ty.path "u64",
+                                            BinOp.Wrap.rem,
+                                            [ M.read (| v |); Value.Integer IntegerKind.U64 2 ]
+                                          |);
+                                          Value.Integer IntegerKind.U64 0
+                                        ]
                                       |)
                                     |)) in
                                 let _ :=
-                                  M.is_constant_or_break_match (|
+                                  is_constant_or_break_match (|
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
@@ -1021,9 +1039,10 @@ Module signature.
                                     let β := v in
                                     M.write (|
                                       β,
-                                      BinOp.Wrap.sub (|
-                                        M.read (| β |),
-                                        Value.Integer IntegerKind.U64 1
+                                      M.call_closure (|
+                                        Ty.path "u64",
+                                        BinOp.Wrap.sub,
+                                        [ M.read (| β |); Value.Integer IntegerKind.U64 1 ]
                                       |)
                                     |)
                                   |) in
@@ -1036,13 +1055,23 @@ Module signature.
                           let β := v in
                           M.write (|
                             β,
-                            BinOp.Wrap.sub (| M.read (| β |), Value.Integer IntegerKind.U64 35 |)
+                            M.call_closure (|
+                              Ty.path "u64",
+                              BinOp.Wrap.sub,
+                              [ M.read (| β |); Value.Integer IntegerKind.U64 35 ]
+                            |)
                           |)
                         |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
-                          [ BinOp.Wrap.div (| M.read (| v |), Value.Integer IntegerKind.U64 2 |) ]
+                          [
+                            M.call_closure (|
+                              Ty.path "u64",
+                              BinOp.Wrap.div,
+                              [ M.read (| v |); Value.Integer IntegerKind.U64 2 ]
+                            |)
+                          ]
                       |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -1132,12 +1161,20 @@ Module signature.
                         |) in
                       let v := M.alloc (| γ1_0 |) in
                       M.alloc (|
-                        BinOp.eq (|
-                          BinOp.Wrap.rem (|
-                            M.read (| M.deref (| M.read (| v |) |) |),
-                            Value.Integer IntegerKind.U64 2
-                          |),
-                          Value.Integer IntegerKind.U64 1
+                        M.call_closure (|
+                          Ty.path "bool",
+                          BinOp.eq,
+                          [
+                            M.call_closure (|
+                              Ty.path "u64",
+                              BinOp.Wrap.rem,
+                              [
+                                M.read (| M.deref (| M.read (| v |) |) |);
+                                Value.Integer IntegerKind.U64 2
+                              ]
+                            |);
+                            Value.Integer IntegerKind.U64 1
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -1151,14 +1188,27 @@ Module signature.
                         |) in
                       let v := M.alloc (| γ1_0 |) in
                       M.alloc (|
-                        BinOp.eq (|
-                          BinOp.Wrap.rem (|
-                            BinOp.bit_xor
-                              (M.read (| M.deref (| M.read (| v |) |) |))
-                              (Value.Integer IntegerKind.U64 1),
-                            Value.Integer IntegerKind.U64 2
-                          |),
-                          Value.Integer IntegerKind.U64 1
+                        M.call_closure (|
+                          Ty.path "bool",
+                          BinOp.eq,
+                          [
+                            M.call_closure (|
+                              Ty.path "u64",
+                              BinOp.Wrap.rem,
+                              [
+                                M.call_closure (|
+                                  Ty.path "u64",
+                                  BinOp.Wrap.bit_xor,
+                                  [
+                                    M.read (| M.deref (| M.read (| v |) |) |);
+                                    Value.Integer IntegerKind.U64 1
+                                  ]
+                                |);
+                                Value.Integer IntegerKind.U64 2
+                              ]
+                            |);
+                            Value.Integer IntegerKind.U64 1
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -1296,11 +1346,15 @@ Module signature.
                                   Value.StructTuple
                                     "core::option::Option::Some"
                                     [
-                                      BinOp.Wrap.add (|
-                                        M.cast
-                                          (Ty.path "u8")
-                                          (M.read (| M.deref (| M.read (| v |) |) |)),
-                                        Value.Integer IntegerKind.U8 27
+                                      M.call_closure (|
+                                        Ty.path "u8",
+                                        BinOp.Wrap.add,
+                                        [
+                                          M.cast
+                                            (Ty.path "u8")
+                                            (M.read (| M.deref (| M.read (| v |) |) |));
+                                          Value.Integer IntegerKind.U8 27
+                                        ]
                                       |)
                                     ]
                                 |)))
@@ -1362,9 +1416,13 @@ Module signature.
                         |) in
                       let b := M.alloc (| γ1_0 |) in
                       M.alloc (|
-                        BinOp.Wrap.add (|
-                          M.cast (Ty.path "u64") (M.read (| M.deref (| M.read (| b |) |) |)),
-                          Value.Integer IntegerKind.U64 27
+                        M.call_closure (|
+                          Ty.path "u64",
+                          BinOp.Wrap.add,
+                          [
+                            M.cast (Ty.path "u64") (M.read (| M.deref (| M.read (| b |) |) |));
+                            Value.Integer IntegerKind.U64 27
+                          ]
                         |)
                       |)));
                   fun γ =>
@@ -1448,7 +1506,7 @@ Module signature.
                           0
                         |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
+                        is_constant_or_break_match (|
                           M.read (| γ0_0 |),
                           Value.Integer IntegerKind.U64 0
                         |) in
@@ -1480,31 +1538,39 @@ Module signature.
                                       (let γ :=
                                         M.use
                                           (M.alloc (|
-                                            BinOp.eq (|
-                                              BinOp.Wrap.rem (|
-                                                M.read (| v |),
-                                                Value.Integer IntegerKind.U64 2
-                                              |),
-                                              Value.Integer IntegerKind.U64 0
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              BinOp.eq,
+                                              [
+                                                M.call_closure (|
+                                                  Ty.path "u64",
+                                                  BinOp.Wrap.rem,
+                                                  [ M.read (| v |); Value.Integer IntegerKind.U64 2
+                                                  ]
+                                                |);
+                                                Value.Integer IntegerKind.U64 0
+                                              ]
                                             |)
                                           |)) in
                                       let _ :=
-                                        M.is_constant_or_break_match (|
+                                        is_constant_or_break_match (|
                                           M.read (| γ |),
                                           Value.Bool true
                                         |) in
                                       M.alloc (|
-                                        BinOp.Wrap.sub (|
-                                          M.read (| v |),
-                                          Value.Integer IntegerKind.U64 1
+                                        M.call_closure (|
+                                          Ty.path "u64",
+                                          BinOp.Wrap.sub,
+                                          [ M.read (| v |); Value.Integer IntegerKind.U64 1 ]
                                         |)
                                       |)));
                                   fun γ =>
                                     ltac:(M.monadic
                                       (M.alloc (|
-                                        BinOp.Wrap.add (|
-                                          M.read (| v |),
-                                          Value.Integer IntegerKind.U64 1
+                                        M.call_closure (|
+                                          Ty.path "u64",
+                                          BinOp.Wrap.add,
+                                          [ M.read (| v |); Value.Integer IntegerKind.U64 1 ]
                                         |)
                                       |)))
                                 ]
@@ -1524,7 +1590,13 @@ Module signature.
                       M.alloc (|
                         Value.StructTuple
                           "alloy_primitives::signature::parity::Parity::Eip155"
-                          [ BinOp.bit_xor (M.read (| v |)) (Value.Integer IntegerKind.U64 1) ]
+                          [
+                            M.call_closure (|
+                              Ty.path "u64",
+                              BinOp.Wrap.bit_xor,
+                              [ M.read (| v |); Value.Integer IntegerKind.U64 1 ]
+                            |)
+                          ]
                       |)))
                 ]
               |)
@@ -1568,9 +1640,17 @@ Module signature.
                         Value.StructTuple
                           "alloy_primitives::signature::parity::Parity::NonEip155"
                           [
-                            BinOp.eq (|
-                              BinOp.Wrap.rem (| M.read (| v |), Value.Integer IntegerKind.U64 2 |),
-                              Value.Integer IntegerKind.U64 1
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.eq,
+                              [
+                                M.call_closure (|
+                                  Ty.path "u64",
+                                  BinOp.Wrap.rem,
+                                  [ M.read (| v |); Value.Integer IntegerKind.U64 2 ]
+                                |);
+                                Value.Integer IntegerKind.U64 1
+                              ]
                             |)
                           ]
                       |)));
@@ -1622,17 +1702,21 @@ Module signature.
                             |) in
                           let v := M.copy (| γ0_0 |) in
                           M.alloc (|
-                            BinOp.eq (|
-                              M.call_closure (|
-                                Ty.path "u8",
-                                M.get_function (|
-                                  "alloy_primitives::signature::utils::normalize_v_to_byte",
-                                  [],
-                                  []
-                                |),
-                                [ M.read (| v |) ]
-                              |),
-                              Value.Integer IntegerKind.U8 1
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.eq,
+                              [
+                                M.call_closure (|
+                                  Ty.path "u8",
+                                  M.get_function (|
+                                    "alloy_primitives::signature::utils::normalize_v_to_byte",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.read (| v |) ]
+                                |);
+                                Value.Integer IntegerKind.U8 1
+                              ]
                             |)
                           |)));
                       fun γ =>

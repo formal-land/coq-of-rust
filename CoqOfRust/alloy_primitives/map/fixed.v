@@ -727,8 +727,7 @@ Module map.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             Some (Ty.tuple []),
@@ -775,18 +774,22 @@ Module map.
                                             M.use
                                               (M.alloc (|
                                                 UnOp.not (|
-                                                  BinOp.eq (|
-                                                    M.read (|
-                                                      M.deref (| M.read (| left_val |) |)
-                                                    |),
-                                                    M.read (|
-                                                      M.deref (| M.read (| right_val |) |)
-                                                    |)
+                                                  M.call_closure (|
+                                                    Ty.path "bool",
+                                                    BinOp.eq,
+                                                    [
+                                                      M.read (|
+                                                        M.deref (| M.read (| left_val |) |)
+                                                      |);
+                                                      M.read (|
+                                                        M.deref (| M.read (| right_val |) |)
+                                                      |)
+                                                    ]
                                                   |)
                                                 |)
                                               |)) in
                                           let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
@@ -853,27 +856,31 @@ Module map.
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      BinOp.ne (|
-                                        M.call_closure (|
-                                          Ty.path "usize",
-                                          M.get_associated_function (|
-                                            Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                            "len",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (| M.read (| bytes |) |)
-                                            |)
-                                          ]
-                                        |),
-                                        N
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.ne,
+                                        [
+                                          M.call_closure (|
+                                            Ty.path "usize",
+                                            M.get_associated_function (|
+                                              Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                              "len",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| bytes |) |)
+                                              |)
+                                            ]
+                                          |);
+                                          N
+                                        ]
                                       |)
                                     |)) in
                                 let _ :=
-                                  M.is_constant_or_break_match (|
+                                  is_constant_or_break_match (|
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
@@ -903,8 +910,14 @@ Module map.
                     ltac:(M.monadic
                       (let γ :=
                         M.use
-                          (M.alloc (| BinOp.gt (| N, Value.Integer IntegerKind.Usize 32 |) |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          (M.alloc (|
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.gt,
+                              [ N; Value.Integer IntegerKind.Usize 32 ]
+                            |)
+                          |)) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
@@ -994,8 +1007,7 @@ Module map.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.match_operator (|
                             Some (Ty.tuple []),
@@ -1023,18 +1035,22 @@ Module map.
                                             M.use
                                               (M.alloc (|
                                                 UnOp.not (|
-                                                  BinOp.eq (|
-                                                    M.read (|
-                                                      M.deref (| M.read (| left_val |) |)
-                                                    |),
-                                                    M.read (|
-                                                      M.deref (| M.read (| right_val |) |)
-                                                    |)
+                                                  M.call_closure (|
+                                                    Ty.path "bool",
+                                                    BinOp.eq,
+                                                    [
+                                                      M.read (|
+                                                        M.deref (| M.read (| left_val |) |)
+                                                      |);
+                                                      M.read (|
+                                                        M.deref (| M.read (| right_val |) |)
+                                                      |)
+                                                    ]
                                                   |)
                                                 |)
                                               |)) in
                                           let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
@@ -1271,14 +1287,22 @@ Module map.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.gt (|
-                              M.read (|
-                                get_associated_constant (| Ty.path "usize", "BITS", Ty.path "u32" |)
-                              |),
-                              Value.Integer IntegerKind.U32 64
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.gt,
+                              [
+                                M.read (|
+                                  get_associated_constant (|
+                                    Ty.path "usize",
+                                    "BITS",
+                                    Ty.path "u32"
+                                  |)
+                                |);
+                                Value.Integer IntegerKind.U32 64
+                              ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.match_operator (|
                         Some (Ty.tuple []),
                         M.alloc (| Value.Tuple [] |),
@@ -1388,14 +1412,22 @@ Module map.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.gt (|
-                              M.read (|
-                                get_associated_constant (| Ty.path "usize", "BITS", Ty.path "u32" |)
-                              |),
-                              Value.Integer IntegerKind.U32 32
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.gt,
+                              [
+                                M.read (|
+                                  get_associated_constant (|
+                                    Ty.path "usize",
+                                    "BITS",
+                                    Ty.path "u32"
+                                  |)
+                                |);
+                                Value.Integer IntegerKind.U32 32
+                              ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.match_operator (|
                         Some (Ty.tuple []),
                         M.alloc (| Value.Tuple [] |),
@@ -1505,14 +1537,22 @@ Module map.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.gt (|
-                              M.read (|
-                                get_associated_constant (| Ty.path "usize", "BITS", Ty.path "u32" |)
-                              |),
-                              Value.Integer IntegerKind.U32 16
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.gt,
+                              [
+                                M.read (|
+                                  get_associated_constant (|
+                                    Ty.path "usize",
+                                    "BITS",
+                                    Ty.path "u32"
+                                  |)
+                                |);
+                                Value.Integer IntegerKind.U32 16
+                              ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.match_operator (|
                         Some (Ty.tuple []),
                         M.alloc (| Value.Tuple [] |),
@@ -1622,14 +1662,22 @@ Module map.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.gt (|
-                              M.read (|
-                                get_associated_constant (| Ty.path "usize", "BITS", Ty.path "u32" |)
-                              |),
-                              Value.Integer IntegerKind.U32 8
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.gt,
+                              [
+                                M.read (|
+                                  get_associated_constant (|
+                                    Ty.path "usize",
+                                    "BITS",
+                                    Ty.path "u32"
+                                  |)
+                                |);
+                                Value.Integer IntegerKind.U32 8
+                              ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.match_operator (|
                         Some (Ty.tuple []),
                         M.alloc (| Value.Tuple [] |),
@@ -1737,7 +1785,7 @@ Module map.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ : Ty.tuple [] :=
                         M.match_operator (|
                           Some (Ty.tuple []),
@@ -1767,7 +1815,7 @@ Module map.
                                       |)
                                     |)) in
                                 let _ :=
-                                  M.is_constant_or_break_match (|
+                                  is_constant_or_break_match (|
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in

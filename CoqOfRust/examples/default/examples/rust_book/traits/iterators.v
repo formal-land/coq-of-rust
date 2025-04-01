@@ -66,15 +66,19 @@ Module Impl_core_iter_traits_iterator_Iterator_for_iterators_Fibonacci.
                   "iterators::Fibonacci",
                   "next"
                 |),
-                BinOp.Wrap.add (|
-                  M.read (| current |),
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "iterators::Fibonacci",
-                      "next"
+                M.call_closure (|
+                  Ty.path "u32",
+                  BinOp.Wrap.add,
+                  [
+                    M.read (| current |);
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "iterators::Fibonacci",
+                        "next"
+                      |)
                     |)
-                  |)
+                  ]
                 |)
               |)
             |) in

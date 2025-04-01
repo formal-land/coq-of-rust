@@ -1091,7 +1091,11 @@ Module collections.
                     |) in
                   M.write (|
                     β,
-                    BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
+                    M.call_closure (|
+                      Ty.path "usize",
+                      BinOp.Wrap.add,
+                      [ M.read (| β |); Value.Integer IntegerKind.Usize 1 ]
+                    |)
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -1415,9 +1419,10 @@ Module collections.
                                           |) in
                                         M.write (|
                                           β,
-                                          BinOp.Wrap.sub (|
-                                            M.read (| β |),
-                                            Value.Integer IntegerKind.Usize 1
+                                          M.call_closure (|
+                                            Ty.path "usize",
+                                            BinOp.Wrap.sub,
+                                            [ M.read (| β |); Value.Integer IntegerKind.Usize 1 ]
                                           |)
                                         |)
                                       |) in
@@ -1639,7 +1644,11 @@ Module collections.
                     |) in
                   M.write (|
                     β,
-                    BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
+                    M.call_closure (|
+                      Ty.path "usize",
+                      BinOp.Wrap.add,
+                      [ M.read (| β |); Value.Integer IntegerKind.Usize 1 ]
+                    |)
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -1963,9 +1972,10 @@ Module collections.
                                           |) in
                                         M.write (|
                                           β,
-                                          BinOp.Wrap.sub (|
-                                            M.read (| β |),
-                                            Value.Integer IntegerKind.Usize 1
+                                          M.call_closure (|
+                                            Ty.path "usize",
+                                            BinOp.Wrap.sub,
+                                            [ M.read (| β |); Value.Integer IntegerKind.Usize 1 ]
                                           |)
                                         |)
                                       |) in
@@ -2221,7 +2231,11 @@ Module collections.
                     |) in
                   M.write (|
                     β,
-                    BinOp.Wrap.sub (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
+                    M.call_closure (|
+                      Ty.path "usize",
+                      BinOp.Wrap.sub,
+                      [ M.read (| β |); Value.Integer IntegerKind.Usize 1 ]
+                    |)
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -2511,7 +2525,14 @@ Module collections.
                       "alloc::collections::linked_list::LinkedList",
                       "len"
                     |) in
-                  M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| splice_length |) |) |)
+                  M.write (|
+                    β,
+                    M.call_closure (|
+                      Ty.path "usize",
+                      BinOp.Wrap.add,
+                      [ M.read (| β |); M.read (| splice_length |) ]
+                    |)
+                  |)
                 |) in
               M.alloc (| Value.Tuple [] |)
             |)))
@@ -3050,15 +3071,19 @@ Module collections.
                               "alloc::collections::linked_list::LinkedList",
                               "len"
                             |),
-                            BinOp.Wrap.sub (|
-                              M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "alloc::collections::linked_list::LinkedList",
-                                  "len"
-                                |)
-                              |),
-                              M.read (| at_ |)
+                            M.call_closure (|
+                              Ty.path "usize",
+                              BinOp.Wrap.sub,
+                              [
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "alloc::collections::linked_list::LinkedList",
+                                    "len"
+                                  |)
+                                |);
+                                M.read (| at_ |)
+                              ]
                             |)
                           |)
                         |) in
@@ -3386,15 +3411,19 @@ Module collections.
                               ("head", M.read (| second_part_head |));
                               ("tail", M.read (| second_part_tail |));
                               ("len",
-                                BinOp.Wrap.sub (|
-                                  M.read (|
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "alloc::collections::linked_list::LinkedList",
-                                      "len"
-                                    |)
-                                  |),
-                                  M.read (| at_ |)
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  BinOp.Wrap.sub,
+                                  [
+                                    M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "alloc::collections::linked_list::LinkedList",
+                                        "len"
+                                      |)
+                                    |);
+                                    M.read (| at_ |)
+                                  ]
                                 |));
                               ("alloc",
                                 M.call_closure (|
@@ -5470,10 +5499,16 @@ Module collections.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  UnOp.not (| BinOp.le (| M.read (| at_ |), M.read (| len |) |) |)
+                                  UnOp.not (|
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.le,
+                                      [ M.read (| at_ |); M.read (| len |) ]
+                                    |)
+                                  |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (|
                                 M.call_closure (|
@@ -5524,10 +5559,14 @@ Module collections.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.eq (| M.read (| at_ |), Value.Integer IntegerKind.Usize 0 |)
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.eq,
+                                    [ M.read (| at_ |); Value.Integer IntegerKind.Usize 0 ]
+                                  |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
@@ -5609,10 +5648,14 @@ Module collections.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          BinOp.eq (| M.read (| at_ |), M.read (| len |) |)
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            BinOp.eq,
+                                            [ M.read (| at_ |); M.read (| len |) ]
+                                          |)
                                         |)) in
                                     let _ :=
-                                      M.is_constant_or_break_match (|
+                                      is_constant_or_break_match (|
                                         M.read (| γ |),
                                         Value.Bool true
                                       |) in
@@ -5704,28 +5747,38 @@ Module collections.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.le (|
-                                      BinOp.Wrap.sub (|
-                                        M.read (| at_ |),
-                                        Value.Integer IntegerKind.Usize 1
-                                      |),
-                                      BinOp.Wrap.sub (|
-                                        BinOp.Wrap.sub (|
-                                          M.read (| len |),
-                                          Value.Integer IntegerKind.Usize 1
-                                        |),
-                                        BinOp.Wrap.sub (|
-                                          M.read (| at_ |),
-                                          Value.Integer IntegerKind.Usize 1
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.le,
+                                      [
+                                        M.call_closure (|
+                                          Ty.path "usize",
+                                          BinOp.Wrap.sub,
+                                          [ M.read (| at_ |); Value.Integer IntegerKind.Usize 1 ]
+                                        |);
+                                        M.call_closure (|
+                                          Ty.path "usize",
+                                          BinOp.Wrap.sub,
+                                          [
+                                            M.call_closure (|
+                                              Ty.path "usize",
+                                              BinOp.Wrap.sub,
+                                              [ M.read (| len |); Value.Integer IntegerKind.Usize 1
+                                              ]
+                                            |);
+                                            M.call_closure (|
+                                              Ty.path "usize",
+                                              BinOp.Wrap.sub,
+                                              [ M.read (| at_ |); Value.Integer IntegerKind.Usize 1
+                                              ]
+                                            |)
+                                          ]
                                         |)
-                                      |)
+                                      ]
                                     |)
                                   |)) in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               let~ iter :
                                   Ty.apply
                                     (Ty.path "alloc::collections::linked_list::IterMut")
@@ -5782,9 +5835,13 @@ Module collections.
                                             [
                                               ("start", Value.Integer IntegerKind.Usize 0);
                                               ("end_",
-                                                BinOp.Wrap.sub (|
-                                                  M.read (| at_ |),
-                                                  Value.Integer IntegerKind.Usize 1
+                                                M.call_closure (|
+                                                  Ty.path "usize",
+                                                  BinOp.Wrap.sub,
+                                                  [
+                                                    M.read (| at_ |);
+                                                    Value.Integer IntegerKind.Usize 1
+                                                  ]
                                                 |))
                                             ]
                                         ]
@@ -5953,15 +6010,27 @@ Module collections.
                                             [
                                               ("start", Value.Integer IntegerKind.Usize 0);
                                               ("end_",
-                                                BinOp.Wrap.sub (|
-                                                  BinOp.Wrap.sub (|
-                                                    M.read (| len |),
-                                                    Value.Integer IntegerKind.Usize 1
-                                                  |),
-                                                  BinOp.Wrap.sub (|
-                                                    M.read (| at_ |),
-                                                    Value.Integer IntegerKind.Usize 1
-                                                  |)
+                                                M.call_closure (|
+                                                  Ty.path "usize",
+                                                  BinOp.Wrap.sub,
+                                                  [
+                                                    M.call_closure (|
+                                                      Ty.path "usize",
+                                                      BinOp.Wrap.sub,
+                                                      [
+                                                        M.read (| len |);
+                                                        Value.Integer IntegerKind.Usize 1
+                                                      ]
+                                                    |);
+                                                    M.call_closure (|
+                                                      Ty.path "usize",
+                                                      BinOp.Wrap.sub,
+                                                      [
+                                                        M.read (| at_ |);
+                                                        Value.Integer IntegerKind.Usize 1
+                                                      ]
+                                                    |)
+                                                  ]
                                                 |))
                                             ]
                                         ]
@@ -6159,10 +6228,15 @@ Module collections.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              UnOp.not (| BinOp.lt (| M.read (| at_ |), M.read (| len |) |) |)
+                              UnOp.not (|
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.lt,
+                                  [ M.read (| at_ |); M.read (| len |) ]
+                                |)
+                              |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
@@ -6205,9 +6279,17 @@ Module collections.
                 |) in
               let~ offset_from_end : Ty.path "usize" :=
                 M.alloc (|
-                  BinOp.Wrap.sub (|
-                    BinOp.Wrap.sub (| M.read (| len |), M.read (| at_ |) |),
-                    Value.Integer IntegerKind.Usize 1
+                  M.call_closure (|
+                    Ty.path "usize",
+                    BinOp.Wrap.sub,
+                    [
+                      M.call_closure (|
+                        Ty.path "usize",
+                        BinOp.Wrap.sub,
+                        [ M.read (| len |); M.read (| at_ |) ]
+                      |);
+                      Value.Integer IntegerKind.Usize 1
+                    ]
                   |)
                 |) in
               M.match_operator (|
@@ -6219,9 +6301,13 @@ Module collections.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.le (| M.read (| at_ |), M.read (| offset_from_end |) |)
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.le,
+                              [ M.read (| at_ |); M.read (| offset_from_end |) ]
+                            |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ cursor :
                           Ty.apply
                             (Ty.path "alloc::collections::linked_list::CursorMut")
@@ -6754,7 +6840,7 @@ Module collections.
                                         |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -7262,32 +7348,36 @@ Module collections.
                                     |) in
                                   M.write (|
                                     β,
-                                    BinOp.Wrap.add (|
-                                      M.read (| β |),
-                                      M.call_closure (|
-                                        Ty.path "usize",
-                                        M.get_function (|
-                                          "core::mem::replace",
-                                          [],
-                                          [ Ty.path "usize" ]
-                                        |),
-                                        [
-                                          M.borrow (|
-                                            Pointer.Kind.MutRef,
-                                            M.deref (|
-                                              M.borrow (|
-                                                Pointer.Kind.MutRef,
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.deref (| M.read (| other |) |),
-                                                  "alloc::collections::linked_list::LinkedList",
-                                                  "len"
+                                    M.call_closure (|
+                                      Ty.path "usize",
+                                      BinOp.Wrap.add,
+                                      [
+                                        M.read (| β |);
+                                        M.call_closure (|
+                                          Ty.path "usize",
+                                          M.get_function (|
+                                            "core::mem::replace",
+                                            [],
+                                            [ Ty.path "usize" ]
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.MutRef,
+                                              M.deref (|
+                                                M.borrow (|
+                                                  Pointer.Kind.MutRef,
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| other |) |),
+                                                    "alloc::collections::linked_list::LinkedList",
+                                                    "len"
+                                                  |)
                                                 |)
                                               |)
-                                            |)
-                                          |);
-                                          Value.Integer IntegerKind.Usize 0
-                                        ]
-                                      |)
+                                            |);
+                                            Value.Integer IntegerKind.Usize 0
+                                          ]
+                                        |)
+                                      ]
                                     |)
                                   |)
                                 |) in
@@ -7435,7 +7525,7 @@ Module collections.
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (| Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic
@@ -7525,18 +7615,22 @@ Module collections.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.eq (|
-                              M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "alloc::collections::linked_list::Iter",
-                                  "len"
-                                |)
-                              |),
-                              Value.Integer IntegerKind.Usize 0
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.eq,
+                              [
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "alloc::collections::linked_list::Iter",
+                                    "len"
+                                  |)
+                                |);
+                                Value.Integer IntegerKind.Usize 0
+                              ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -7679,9 +7773,13 @@ Module collections.
                                                       |) in
                                                     M.write (|
                                                       β,
-                                                      BinOp.Wrap.sub (|
-                                                        M.read (| β |),
-                                                        Value.Integer IntegerKind.Usize 1
+                                                      M.call_closure (|
+                                                        Ty.path "usize",
+                                                        BinOp.Wrap.sub,
+                                                        [
+                                                          M.read (| β |);
+                                                          Value.Integer IntegerKind.Usize 1
+                                                        ]
                                                       |)
                                                     |)
                                                   |) in
@@ -7843,18 +7941,22 @@ Module collections.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.eq (|
-                              M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "alloc::collections::linked_list::Iter",
-                                  "len"
-                                |)
-                              |),
-                              Value.Integer IntegerKind.Usize 0
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.eq,
+                              [
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "alloc::collections::linked_list::Iter",
+                                    "len"
+                                  |)
+                                |);
+                                Value.Integer IntegerKind.Usize 0
+                              ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -7997,9 +8099,13 @@ Module collections.
                                                       |) in
                                                     M.write (|
                                                       β,
-                                                      BinOp.Wrap.sub (|
-                                                        M.read (| β |),
-                                                        Value.Integer IntegerKind.Usize 1
+                                                      M.call_closure (|
+                                                        Ty.path "usize",
+                                                        BinOp.Wrap.sub,
+                                                        [
+                                                          M.read (| β |);
+                                                          Value.Integer IntegerKind.Usize 1
+                                                        ]
                                                       |)
                                                     |)
                                                   |) in
@@ -8188,18 +8294,22 @@ Module collections.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.eq (|
-                              M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "alloc::collections::linked_list::IterMut",
-                                  "len"
-                                |)
-                              |),
-                              Value.Integer IntegerKind.Usize 0
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.eq,
+                              [
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "alloc::collections::linked_list::IterMut",
+                                    "len"
+                                  |)
+                                |);
+                                Value.Integer IntegerKind.Usize 0
+                              ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -8345,9 +8455,13 @@ Module collections.
                                                           |) in
                                                         M.write (|
                                                           β,
-                                                          BinOp.Wrap.sub (|
-                                                            M.read (| β |),
-                                                            Value.Integer IntegerKind.Usize 1
+                                                          M.call_closure (|
+                                                            Ty.path "usize",
+                                                            BinOp.Wrap.sub,
+                                                            [
+                                                              M.read (| β |);
+                                                              Value.Integer IntegerKind.Usize 1
+                                                            ]
                                                           |)
                                                         |)
                                                       |) in
@@ -8511,18 +8625,22 @@ Module collections.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.eq (|
-                              M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "alloc::collections::linked_list::IterMut",
-                                  "len"
-                                |)
-                              |),
-                              Value.Integer IntegerKind.Usize 0
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.eq,
+                              [
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "alloc::collections::linked_list::IterMut",
+                                    "len"
+                                  |)
+                                |);
+                                Value.Integer IntegerKind.Usize 0
+                              ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -8668,9 +8786,13 @@ Module collections.
                                                           |) in
                                                         M.write (|
                                                           β,
-                                                          BinOp.Wrap.sub (|
-                                                            M.read (| β |),
-                                                            Value.Integer IntegerKind.Usize 1
+                                                          M.call_closure (|
+                                                            Ty.path "usize",
+                                                            BinOp.Wrap.sub,
+                                                            [
+                                                              M.read (| β |);
+                                                              Value.Integer IntegerKind.Usize 1
+                                                            ]
                                                           |)
                                                         |)
                                                       |) in
@@ -9549,7 +9671,11 @@ Module collections.
                             |) in
                           M.write (|
                             β,
-                            BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
+                            M.call_closure (|
+                              Ty.path "usize",
+                              BinOp.Wrap.add,
+                              [ M.read (| β |); Value.Integer IntegerKind.Usize 1 ]
+                            |)
                           |)
                         |) in
                       M.alloc (| Value.Tuple [] |)))
@@ -10889,7 +11015,11 @@ Module collections.
                             |) in
                           M.write (|
                             β,
-                            BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
+                            M.call_closure (|
+                              Ty.path "usize",
+                              BinOp.Wrap.add,
+                              [ M.read (| β |); Value.Integer IntegerKind.Usize 1 ]
+                            |)
                           |)
                         |) in
                       M.alloc (| Value.Tuple [] |)))
@@ -12193,7 +12323,7 @@ Module collections.
                               ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.write (|
@@ -12516,7 +12646,11 @@ Module collections.
                     |) in
                   M.write (|
                     β,
-                    BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
+                    M.call_closure (|
+                      Ty.path "usize",
+                      BinOp.Wrap.add,
+                      [ M.read (| β |); Value.Integer IntegerKind.Usize 1 ]
+                    |)
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -13256,46 +13390,54 @@ Module collections.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.eq (|
-                                  M.read (|
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "alloc::collections::linked_list::CursorMut",
-                                      "index"
-                                    |)
-                                  |),
-                                  M.read (|
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (|
-                                        M.read (|
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.deref (| M.read (| self |) |),
-                                            "alloc::collections::linked_list::CursorMut",
-                                            "list"
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.eq,
+                                  [
+                                    M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "alloc::collections::linked_list::CursorMut",
+                                        "index"
+                                      |)
+                                    |);
+                                    M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (|
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "alloc::collections::linked_list::CursorMut",
+                                              "list"
+                                            |)
                                           |)
-                                        |)
-                                      |),
-                                      "alloc::collections::linked_list::LinkedList",
-                                      "len"
+                                        |),
+                                        "alloc::collections::linked_list::LinkedList",
+                                        "len"
+                                      |)
                                     |)
-                                  |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (| Value.Integer IntegerKind.Usize 0 |)));
                       fun γ =>
                         ltac:(M.monadic
                           (M.alloc (|
-                            BinOp.Wrap.add (|
-                              M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "alloc::collections::linked_list::CursorMut",
-                                  "index"
-                                |)
-                              |),
-                              Value.Integer IntegerKind.Usize 1
+                            M.call_closure (|
+                              Ty.path "usize",
+                              BinOp.Wrap.add,
+                              [
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "alloc::collections::linked_list::CursorMut",
+                                    "index"
+                                  |)
+                                |);
+                                Value.Integer IntegerKind.Usize 1
+                              ]
                             |)
                           |)))
                     ]
@@ -13311,33 +13453,36 @@ Module collections.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.eq (|
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "alloc::collections::linked_list::CursorMut",
-                                    "index"
-                                  |)
-                                |),
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (|
-                                      M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.deref (| M.read (| self |) |),
-                                          "alloc::collections::linked_list::CursorMut",
-                                          "list"
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.eq,
+                                [
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "alloc::collections::linked_list::CursorMut",
+                                      "index"
+                                    |)
+                                  |);
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (|
+                                        M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "alloc::collections::linked_list::CursorMut",
+                                            "list"
+                                          |)
                                         |)
-                                      |)
-                                    |),
-                                    "alloc::collections::linked_list::LinkedList",
-                                    "len"
+                                      |),
+                                      "alloc::collections::linked_list::LinkedList",
+                                      "len"
+                                    |)
                                   |)
-                                |)
+                                ]
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.alloc (|
                             M.write (|
@@ -13539,7 +13684,11 @@ Module collections.
                     |) in
                   M.write (|
                     β,
-                    BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
+                    M.call_closure (|
+                      Ty.path "usize",
+                      BinOp.Wrap.add,
+                      [ M.read (| β |); Value.Integer IntegerKind.Usize 1 ]
+                    |)
                   |)
                 |) in
               M.alloc (| Value.Tuple [] |)
@@ -13651,7 +13800,7 @@ Module collections.
                               ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           let β :=
@@ -13662,7 +13811,11 @@ Module collections.
                             |) in
                           M.write (|
                             β,
-                            BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
+                            M.call_closure (|
+                              Ty.path "usize",
+                              BinOp.Wrap.add,
+                              [ M.read (| β |); Value.Integer IntegerKind.Usize 1 ]
+                            |)
                           |)
                         |) in
                       M.alloc (| Value.Tuple [] |)));
@@ -13743,7 +13896,7 @@ Module collections.
                               ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -13827,7 +13980,7 @@ Module collections.
                                       |)
                                     |)) in
                                 let _ :=
-                                  M.is_constant_or_break_match (|
+                                  is_constant_or_break_match (|
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
@@ -13865,9 +14018,10 @@ Module collections.
                                       |) in
                                     M.write (|
                                       β,
-                                      BinOp.Wrap.sub (|
-                                        M.read (| β |),
-                                        Value.Integer IntegerKind.Usize 1
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        BinOp.Wrap.sub,
+                                        [ M.read (| β |); Value.Integer IntegerKind.Usize 1 ]
                                       |)
                                     |)
                                   |) in
@@ -13974,7 +14128,7 @@ Module collections.
                               ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -14058,7 +14212,7 @@ Module collections.
                                       |)
                                     |)) in
                                 let _ :=
-                                  M.is_constant_or_break_match (|
+                                  is_constant_or_break_match (|
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
@@ -14120,7 +14274,7 @@ Module collections.
                                               |)
                                             |)) in
                                         let _ :=
-                                          M.is_constant_or_break_match (|
+                                          is_constant_or_break_match (|
                                             M.read (| γ |),
                                             Value.Bool true
                                           |) in
@@ -14132,23 +14286,27 @@ Module collections.
                                                 "alloc::collections::linked_list::CursorMut",
                                                 "index"
                                               |),
-                                              BinOp.Wrap.sub (|
-                                                M.read (|
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.deref (|
-                                                      M.read (|
-                                                        M.SubPointer.get_struct_record_field (|
-                                                          M.deref (| M.read (| self |) |),
-                                                          "alloc::collections::linked_list::CursorMut",
-                                                          "list"
+                                              M.call_closure (|
+                                                Ty.path "usize",
+                                                BinOp.Wrap.sub,
+                                                [
+                                                  M.read (|
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.deref (|
+                                                        M.read (|
+                                                          M.SubPointer.get_struct_record_field (|
+                                                            M.deref (| M.read (| self |) |),
+                                                            "alloc::collections::linked_list::CursorMut",
+                                                            "list"
+                                                          |)
                                                         |)
-                                                      |)
-                                                    |),
-                                                    "alloc::collections::linked_list::LinkedList",
-                                                    "len"
-                                                  |)
-                                                |),
-                                                Value.Integer IntegerKind.Usize 1
+                                                      |),
+                                                      "alloc::collections::linked_list::LinkedList",
+                                                      "len"
+                                                    |)
+                                                  |);
+                                                  Value.Integer IntegerKind.Usize 1
+                                                ]
                                               |)
                                             |)
                                           |) in
@@ -14682,7 +14840,7 @@ Module collections.
                                         |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -14995,7 +15153,11 @@ Module collections.
                                 |) in
                               M.write (|
                                 β,
-                                BinOp.Wrap.add (| M.read (| β |), M.read (| splice_len |) |)
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  BinOp.Wrap.add,
+                                  [ M.read (| β |); M.read (| splice_len |) ]
+                                |)
                               |)
                             |) in
                           M.alloc (| Value.Tuple [] |)))
@@ -15155,9 +15317,10 @@ Module collections.
                                       |) in
                                     M.write (|
                                       β,
-                                      BinOp.Wrap.add (|
-                                        M.read (| β |),
-                                        Value.Integer IntegerKind.Usize 1
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        BinOp.Wrap.add,
+                                        [ M.read (| β |); Value.Integer IntegerKind.Usize 1 ]
                                       |)
                                     |)
                                   |) in
@@ -15246,7 +15409,7 @@ Module collections.
                                               |)
                                             |)) in
                                         let _ :=
-                                          M.is_constant_or_break_match (|
+                                          is_constant_or_break_match (|
                                             M.read (| γ |),
                                             Value.Bool true
                                           |) in
@@ -15426,21 +15589,25 @@ Module collections.
                 Value.StructTuple
                   "core::option::Option::Some"
                   [
-                    BinOp.Wrap.sub (|
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "alloc::collections::linked_list::ExtractIf",
-                          "old_len"
+                    M.call_closure (|
+                      Ty.path "usize",
+                      BinOp.Wrap.sub,
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::collections::linked_list::ExtractIf",
+                            "old_len"
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::collections::linked_list::ExtractIf",
+                            "idx"
+                          |)
                         |)
-                      |),
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "alloc::collections::linked_list::ExtractIf",
-                          "idx"
-                        |)
-                      |)
+                      ]
                     |)
                   ]
               ]))
@@ -16521,27 +16688,31 @@ Module collections.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             LogicalOp.and (|
-              BinOp.eq (|
-                M.call_closure (|
-                  Ty.path "usize",
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
-                    "len",
-                    [],
-                    []
-                  |),
-                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                |),
-                M.call_closure (|
-                  Ty.path "usize",
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
-                    "len",
-                    [],
-                    []
-                  |),
-                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
-                |)
+              M.call_closure (|
+                Ty.path "bool",
+                BinOp.eq,
+                [
+                  M.call_closure (|
+                    Ty.path "usize",
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
+                      "len",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                  |);
+                  M.call_closure (|
+                    Ty.path "usize",
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
+                      "len",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
+                  |)
+                ]
               |),
               ltac:(M.monadic
                 (M.call_closure (|
@@ -16599,27 +16770,31 @@ Module collections.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             LogicalOp.or (|
-              BinOp.ne (|
-                M.call_closure (|
-                  Ty.path "usize",
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
-                    "len",
-                    [],
-                    []
-                  |),
-                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                |),
-                M.call_closure (|
-                  Ty.path "usize",
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
-                    "len",
-                    [],
-                    []
-                  |),
-                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
-                |)
+              M.call_closure (|
+                Ty.path "bool",
+                BinOp.ne,
+                [
+                  M.call_closure (|
+                    Ty.path "usize",
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
+                      "len",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                  |);
+                  M.call_closure (|
+                    Ty.path "usize",
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "alloc::collections::linked_list::LinkedList") [] [ T; A ],
+                      "len",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
+                  |)
+                ]
               |),
               ltac:(M.monadic
                 (M.call_closure (|
@@ -16970,43 +17145,50 @@ Module collections.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.gt (|
-                                M.call_closure (|
-                                  Ty.path "usize",
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "alloc::collections::linked_list::LinkedList")
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.gt,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "alloc::collections::linked_list::LinkedList")
+                                        []
+                                        [ T; A ],
+                                      "len",
+                                      [],
                                       []
-                                      [ T; A ],
-                                    "len",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |)
-                                  ]
-                                |),
-                                M.call_closure (|
-                                  Ty.path "usize",
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "alloc::collections::linked_list::LinkedList")
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| self |) |)
+                                      |)
+                                    ]
+                                  |);
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "alloc::collections::linked_list::LinkedList")
+                                        []
+                                        [ T; A ],
+                                      "len",
+                                      [],
                                       []
-                                      [ T; A ],
-                                    "len",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.deref (| M.read (| source |) |)
-                                    |)
-                                  ]
-                                |)
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| source |) |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ :
                             Ty.apply
                               (Ty.path "alloc::collections::linked_list::LinkedList")
@@ -17303,7 +17485,7 @@ Module collections.
                               |)
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|

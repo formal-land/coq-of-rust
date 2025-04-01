@@ -335,21 +335,25 @@ Module char.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.eq (|
-              M.read (|
-                M.SubPointer.get_struct_record_field (|
-                  M.deref (| M.read (| self |) |),
-                  "core::char::decode::DecodeUtf16Error",
-                  "code"
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.eq,
+              [
+                M.read (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::char::decode::DecodeUtf16Error",
+                    "code"
+                  |)
+                |);
+                M.read (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| other |) |),
+                    "core::char::decode::DecodeUtf16Error",
+                    "code"
+                  |)
                 |)
-              |),
-              M.read (|
-                M.SubPointer.get_struct_record_field (|
-                  M.deref (| M.read (| other |) |),
-                  "core::char::decode::DecodeUtf16Error",
-                  "code"
-                |)
-              |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -659,7 +663,7 @@ Module char.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             Value.StructTuple
                               "core::option::Option::Some"
@@ -701,13 +705,14 @@ Module char.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.ge (|
-                                          M.read (| u |),
-                                          Value.Integer IntegerKind.U16 56320
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.ge,
+                                          [ M.read (| u |); Value.Integer IntegerKind.U16 56320 ]
                                         |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -808,19 +813,27 @@ Module char.
                                               M.use
                                                 (M.alloc (|
                                                   LogicalOp.or (|
-                                                    BinOp.lt (|
-                                                      M.read (| u2 |),
-                                                      Value.Integer IntegerKind.U16 56320
+                                                    M.call_closure (|
+                                                      Ty.path "bool",
+                                                      BinOp.lt,
+                                                      [
+                                                        M.read (| u2 |);
+                                                        Value.Integer IntegerKind.U16 56320
+                                                      ]
                                                     |),
                                                     ltac:(M.monadic
-                                                      (BinOp.gt (|
-                                                        M.read (| u2 |),
-                                                        Value.Integer IntegerKind.U16 57343
+                                                      (M.call_closure (|
+                                                        Ty.path "bool",
+                                                        BinOp.gt,
+                                                        [
+                                                          M.read (| u2 |);
+                                                          Value.Integer IntegerKind.U16 57343
+                                                        ]
                                                       |)))
                                                   |)
                                                 |)) in
                                             let _ :=
-                                              M.is_constant_or_break_match (|
+                                              is_constant_or_break_match (|
                                                 M.read (| γ |),
                                                 Value.Bool true
                                               |) in
@@ -861,22 +874,45 @@ Module char.
                                     |) in
                                   let~ c : Ty.path "u32" :=
                                     M.alloc (|
-                                      BinOp.Wrap.add (|
-                                        BinOp.bit_or
-                                          (BinOp.Wrap.shl (|
-                                            M.cast
-                                              (Ty.path "u32")
-                                              (BinOp.bit_and
-                                                (M.read (| u |))
-                                                (Value.Integer IntegerKind.U16 1023)),
-                                            Value.Integer IntegerKind.I32 10
-                                          |))
-                                          (M.cast
-                                            (Ty.path "u32")
-                                            (BinOp.bit_and
-                                              (M.read (| u2 |))
-                                              (Value.Integer IntegerKind.U16 1023))),
-                                        Value.Integer IntegerKind.U32 65536
+                                      M.call_closure (|
+                                        Ty.path "u32",
+                                        BinOp.Wrap.add,
+                                        [
+                                          M.call_closure (|
+                                            Ty.path "u32",
+                                            BinOp.Wrap.bit_or,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "u32",
+                                                BinOp.Wrap.shl,
+                                                [
+                                                  M.cast
+                                                    (Ty.path "u32")
+                                                    (M.call_closure (|
+                                                      Ty.path "u16",
+                                                      BinOp.Wrap.bit_and,
+                                                      [
+                                                        M.read (| u |);
+                                                        Value.Integer IntegerKind.U16 1023
+                                                      ]
+                                                    |));
+                                                  Value.Integer IntegerKind.I32 10
+                                                ]
+                                              |);
+                                              M.cast
+                                                (Ty.path "u32")
+                                                (M.call_closure (|
+                                                  Ty.path "u16",
+                                                  BinOp.Wrap.bit_and,
+                                                  [
+                                                    M.read (| u2 |);
+                                                    Value.Integer IntegerKind.U16 1023
+                                                  ]
+                                                |))
+                                            ]
+                                          |);
+                                          Value.Integer IntegerKind.U32 65536
+                                        ]
                                       |)
                                     |) in
                                   M.alloc (|
@@ -1030,7 +1066,7 @@ Module char.
                                     |)
                                   |) in
                                 let _ :=
-                                  M.is_constant_or_break_match (|
+                                  is_constant_or_break_match (|
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
@@ -1085,7 +1121,7 @@ Module char.
                                     |)
                                   |) in
                                 let _ :=
-                                  M.is_constant_or_break_match (|
+                                  is_constant_or_break_match (|
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
@@ -1123,18 +1159,22 @@ Module char.
                               let high_buf := M.copy (| γ0_1 |) in
                               let~ low : Ty.path "usize" :=
                                 M.alloc (|
-                                  BinOp.Wrap.add (|
-                                    M.call_closure (|
-                                      Ty.path "usize",
-                                      M.get_associated_function (|
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    BinOp.Wrap.add,
+                                    [
+                                      M.call_closure (|
                                         Ty.path "usize",
-                                        "div_ceil",
-                                        [],
-                                        []
-                                      |),
-                                      [ M.read (| low |); Value.Integer IntegerKind.Usize 2 ]
-                                    |),
-                                    M.read (| low_buf |)
+                                        M.get_associated_function (|
+                                          Ty.path "usize",
+                                          "div_ceil",
+                                          [],
+                                          []
+                                        |),
+                                        [ M.read (| low |); Value.Integer IntegerKind.Usize 2 ]
+                                      |);
+                                      M.read (| low_buf |)
+                                    ]
                                   |)
                                 |) in
                               let~ high :

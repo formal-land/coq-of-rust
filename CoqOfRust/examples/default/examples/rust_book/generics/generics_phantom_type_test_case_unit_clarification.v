@@ -332,21 +332,25 @@ Module Impl_core_ops_arith_Add_generics_phantom_type_test_case_unit_clarificatio
         Value.StructTuple
           "generics_phantom_type_test_case_unit_clarification::Length"
           [
-            BinOp.Wrap.add (|
-              M.read (|
-                M.SubPointer.get_struct_tuple_field (|
-                  self,
-                  "generics_phantom_type_test_case_unit_clarification::Length",
-                  0
+            M.call_closure (|
+              Ty.path "f64",
+              BinOp.Wrap.add,
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    self,
+                    "generics_phantom_type_test_case_unit_clarification::Length",
+                    0
+                  |)
+                |);
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    rhs,
+                    "generics_phantom_type_test_case_unit_clarification::Length",
+                    0
+                  |)
                 |)
-              |),
-              M.read (|
-                M.SubPointer.get_struct_tuple_field (|
-                  rhs,
-                  "generics_phantom_type_test_case_unit_clarification::Length",
-                  0
-                |)
-              |)
+              ]
             |);
             Value.StructTuple "core::marker::PhantomData" []
           ]))

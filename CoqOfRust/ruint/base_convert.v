@@ -256,7 +256,11 @@ Module base_convert.
               |) in
             M.alloc (|
               LogicalOp.and (|
-                BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |),
+                M.call_closure (|
+                  Ty.path "bool",
+                  BinOp.eq,
+                  [ M.read (| __self_discr |); M.read (| __arg1_discr |) ]
+                |),
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
@@ -736,10 +740,14 @@ Module base_convert.
                         M.use
                           (M.alloc (|
                             UnOp.not (|
-                              BinOp.gt (| M.read (| base |), Value.Integer IntegerKind.U64 1 |)
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.gt,
+                                [ M.read (| base |); Value.Integer IntegerKind.U64 1 ]
+                              |)
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
@@ -822,10 +830,14 @@ Module base_convert.
                         M.use
                           (M.alloc (|
                             UnOp.not (|
-                              BinOp.gt (| M.read (| base |), Value.Integer IntegerKind.U64 1 |)
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.gt,
+                                [ M.read (| base |); Value.Integer IntegerKind.U64 1 ]
+                              |)
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
@@ -967,10 +979,14 @@ Module base_convert.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.lt (| M.read (| base |), Value.Integer IntegerKind.U64 2 |)
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.lt,
+                                  [ M.read (| base |); Value.Integer IntegerKind.U64 2 ]
+                                |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -999,10 +1015,14 @@ Module base_convert.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.eq (| BITS, Value.Integer IntegerKind.Usize 0 |)
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.eq,
+                                  [ BITS; Value.Integer IntegerKind.Usize 0 ]
+                                |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -1105,13 +1125,17 @@ Module base_convert.
                                                                     (let γ :=
                                                                       M.use
                                                                         (M.alloc (|
-                                                                          BinOp.ge (|
-                                                                            M.read (| digit |),
-                                                                            M.read (| base |)
+                                                                          M.call_closure (|
+                                                                            Ty.path "bool",
+                                                                            BinOp.ge,
+                                                                            [
+                                                                              M.read (| digit |);
+                                                                              M.read (| base |)
+                                                                            ]
                                                                           |)
                                                                         |)) in
                                                                     let _ :=
-                                                                      M.is_constant_or_break_match (|
+                                                                      is_constant_or_break_match (|
                                                                         M.read (| γ |),
                                                                         Value.Bool true
                                                                       |) in
@@ -1151,15 +1175,19 @@ Module base_convert.
                                                                   (let γ :=
                                                                     M.use
                                                                       (M.alloc (|
-                                                                        BinOp.ne (|
-                                                                          M.read (| digit |),
-                                                                          Value.Integer
-                                                                            IntegerKind.U64
-                                                                            0
+                                                                        M.call_closure (|
+                                                                          Ty.path "bool",
+                                                                          BinOp.ne,
+                                                                          [
+                                                                            M.read (| digit |);
+                                                                            Value.Integer
+                                                                              IntegerKind.U64
+                                                                              0
+                                                                          ]
                                                                         |)
                                                                       |)) in
                                                                   let _ :=
-                                                                    M.is_constant_or_break_match (|
+                                                                    is_constant_or_break_match (|
                                                                       M.read (| γ |),
                                                                       Value.Bool true
                                                                     |) in
@@ -1397,13 +1425,15 @@ Module base_convert.
                                                     (let γ :=
                                                       M.use
                                                         (M.alloc (|
-                                                          BinOp.ge (|
-                                                            M.read (| digit |),
-                                                            M.read (| base |)
+                                                          M.call_closure (|
+                                                            Ty.path "bool",
+                                                            BinOp.ge,
+                                                            [ M.read (| digit |); M.read (| base |)
+                                                            ]
                                                           |)
                                                         |)) in
                                                     let _ :=
-                                                      M.is_constant_or_break_match (|
+                                                      is_constant_or_break_match (|
                                                         M.read (| γ |),
                                                         Value.Bool true
                                                       |) in
@@ -1493,42 +1523,54 @@ Module base_convert.
                                                       M.use
                                                         (M.alloc (|
                                                           LogicalOp.or (|
-                                                            BinOp.ne (|
-                                                              M.read (| overflow |),
-                                                              Value.Integer IntegerKind.U64 0
+                                                            M.call_closure (|
+                                                              Ty.path "bool",
+                                                              BinOp.ne,
+                                                              [
+                                                                M.read (| overflow |);
+                                                                Value.Integer IntegerKind.U64 0
+                                                              ]
                                                             |),
                                                             ltac:(M.monadic
-                                                              (BinOp.gt (|
-                                                                M.read (|
-                                                                  M.SubPointer.get_array_field (|
-                                                                    M.SubPointer.get_struct_record_field (|
-                                                                      result,
-                                                                      "ruint::Uint",
-                                                                      "limbs"
-                                                                    |),
-                                                                    BinOp.Wrap.sub (|
-                                                                      LIMBS,
-                                                                      Value.Integer
-                                                                        IntegerKind.Usize
-                                                                        1
+                                                              (M.call_closure (|
+                                                                Ty.path "bool",
+                                                                BinOp.gt,
+                                                                [
+                                                                  M.read (|
+                                                                    M.SubPointer.get_array_field (|
+                                                                      M.SubPointer.get_struct_record_field (|
+                                                                        result,
+                                                                        "ruint::Uint",
+                                                                        "limbs"
+                                                                      |),
+                                                                      M.call_closure (|
+                                                                        Ty.path "usize",
+                                                                        BinOp.Wrap.sub,
+                                                                        [
+                                                                          LIMBS;
+                                                                          Value.Integer
+                                                                            IntegerKind.Usize
+                                                                            1
+                                                                        ]
+                                                                      |)
+                                                                    |)
+                                                                  |);
+                                                                  M.read (|
+                                                                    get_associated_constant (|
+                                                                      Ty.apply
+                                                                        (Ty.path "ruint::Uint")
+                                                                        [ BITS; LIMBS ]
+                                                                        [],
+                                                                      "MASK",
+                                                                      Ty.path "u64"
                                                                     |)
                                                                   |)
-                                                                |),
-                                                                M.read (|
-                                                                  get_associated_constant (|
-                                                                    Ty.apply
-                                                                      (Ty.path "ruint::Uint")
-                                                                      [ BITS; LIMBS ]
-                                                                      [],
-                                                                    "MASK",
-                                                                    Ty.path "u64"
-                                                                  |)
-                                                                |)
+                                                                ]
                                                               |)))
                                                           |)
                                                         |)) in
                                                     let _ :=
-                                                      M.is_constant_or_break_match (|
+                                                      is_constant_or_break_match (|
                                                         M.read (| γ |),
                                                         Value.Bool true
                                                       |) in
@@ -1588,42 +1630,54 @@ Module base_convert.
                                                     M.use
                                                       (M.alloc (|
                                                         LogicalOp.or (|
-                                                          BinOp.ne (|
-                                                            M.read (| overflow |),
-                                                            Value.Integer IntegerKind.U64 0
+                                                          M.call_closure (|
+                                                            Ty.path "bool",
+                                                            BinOp.ne,
+                                                            [
+                                                              M.read (| overflow |);
+                                                              Value.Integer IntegerKind.U64 0
+                                                            ]
                                                           |),
                                                           ltac:(M.monadic
-                                                            (BinOp.gt (|
-                                                              M.read (|
-                                                                M.SubPointer.get_array_field (|
-                                                                  M.SubPointer.get_struct_record_field (|
-                                                                    power,
-                                                                    "ruint::Uint",
-                                                                    "limbs"
-                                                                  |),
-                                                                  BinOp.Wrap.sub (|
-                                                                    LIMBS,
-                                                                    Value.Integer
-                                                                      IntegerKind.Usize
-                                                                      1
+                                                            (M.call_closure (|
+                                                              Ty.path "bool",
+                                                              BinOp.gt,
+                                                              [
+                                                                M.read (|
+                                                                  M.SubPointer.get_array_field (|
+                                                                    M.SubPointer.get_struct_record_field (|
+                                                                      power,
+                                                                      "ruint::Uint",
+                                                                      "limbs"
+                                                                    |),
+                                                                    M.call_closure (|
+                                                                      Ty.path "usize",
+                                                                      BinOp.Wrap.sub,
+                                                                      [
+                                                                        LIMBS;
+                                                                        Value.Integer
+                                                                          IntegerKind.Usize
+                                                                          1
+                                                                      ]
+                                                                    |)
+                                                                  |)
+                                                                |);
+                                                                M.read (|
+                                                                  get_associated_constant (|
+                                                                    Ty.apply
+                                                                      (Ty.path "ruint::Uint")
+                                                                      [ BITS; LIMBS ]
+                                                                      [],
+                                                                    "MASK",
+                                                                    Ty.path "u64"
                                                                   |)
                                                                 |)
-                                                              |),
-                                                              M.read (|
-                                                                get_associated_constant (|
-                                                                  Ty.apply
-                                                                    (Ty.path "ruint::Uint")
-                                                                    [ BITS; LIMBS ]
-                                                                    [],
-                                                                  "MASK",
-                                                                  Ty.path "u64"
-                                                                |)
-                                                              |)
+                                                              ]
                                                             |)))
                                                         |)
                                                       |)) in
                                                   let _ :=
-                                                    M.is_constant_or_break_match (|
+                                                    is_constant_or_break_match (|
                                                       M.read (| γ |),
                                                       Value.Bool true
                                                     |) in
@@ -1737,13 +1791,15 @@ Module base_convert.
                                                     (let γ :=
                                                       M.use
                                                         (M.alloc (|
-                                                          BinOp.ge (|
-                                                            M.read (| digit |),
-                                                            M.read (| base |)
+                                                          M.call_closure (|
+                                                            Ty.path "bool",
+                                                            BinOp.ge,
+                                                            [ M.read (| digit |); M.read (| base |)
+                                                            ]
                                                           |)
                                                         |)) in
                                                     let _ :=
-                                                      M.is_constant_or_break_match (|
+                                                      is_constant_or_break_match (|
                                                         M.read (| γ |),
                                                         Value.Bool true
                                                       |) in
@@ -1778,13 +1834,17 @@ Module base_convert.
                                                   (let γ :=
                                                     M.use
                                                       (M.alloc (|
-                                                        BinOp.ne (|
-                                                          M.read (| digit |),
-                                                          Value.Integer IntegerKind.U64 0
+                                                        M.call_closure (|
+                                                          Ty.path "bool",
+                                                          BinOp.ne,
+                                                          [
+                                                            M.read (| digit |);
+                                                            Value.Integer IntegerKind.U64 0
+                                                          ]
                                                         |)
                                                       |)) in
                                                   let _ :=
-                                                    M.is_constant_or_break_match (|
+                                                    is_constant_or_break_match (|
                                                       M.read (| γ |),
                                                       Value.Bool true
                                                     |) in
@@ -1885,10 +1945,14 @@ Module base_convert.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.lt (| M.read (| base |), Value.Integer IntegerKind.U64 2 |)
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.lt,
+                                  [ M.read (| base |); Value.Integer IntegerKind.U64 2 ]
+                                |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -2007,13 +2071,15 @@ Module base_convert.
                                                     (let γ :=
                                                       M.use
                                                         (M.alloc (|
-                                                          BinOp.ge (|
-                                                            M.read (| digit |),
-                                                            M.read (| base |)
+                                                          M.call_closure (|
+                                                            Ty.path "bool",
+                                                            BinOp.ge,
+                                                            [ M.read (| digit |); M.read (| base |)
+                                                            ]
                                                           |)
                                                         |)) in
                                                     let _ :=
-                                                      M.is_constant_or_break_match (|
+                                                      is_constant_or_break_match (|
                                                         M.read (| γ |),
                                                         Value.Bool true
                                                       |) in
@@ -2168,45 +2234,64 @@ Module base_convert.
                                                                         let β := carry in
                                                                         M.write (|
                                                                           β,
-                                                                          BinOp.Wrap.add (|
-                                                                            M.read (| β |),
-                                                                            BinOp.Wrap.mul (|
+                                                                          M.call_closure (|
+                                                                            Ty.path "u128",
+                                                                            BinOp.Wrap.add,
+                                                                            [
+                                                                              M.read (| β |);
                                                                               M.call_closure (|
                                                                                 Ty.path "u128",
-                                                                                M.get_trait_method (|
-                                                                                  "core::convert::From",
-                                                                                  Ty.path "u128",
-                                                                                  [],
-                                                                                  [ Ty.path "u64" ],
-                                                                                  "from",
-                                                                                  [],
-                                                                                  []
-                                                                                |),
+                                                                                BinOp.Wrap.mul,
                                                                                 [
-                                                                                  M.read (|
-                                                                                    M.deref (|
+                                                                                  M.call_closure (|
+                                                                                    Ty.path "u128",
+                                                                                    M.get_trait_method (|
+                                                                                      "core::convert::From",
+                                                                                      Ty.path
+                                                                                        "u128",
+                                                                                      [],
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "u64"
+                                                                                      ],
+                                                                                      "from",
+                                                                                      [],
+                                                                                      []
+                                                                                    |),
+                                                                                    [
                                                                                       M.read (|
-                                                                                        limb
+                                                                                        M.deref (|
+                                                                                          M.read (|
+                                                                                            limb
+                                                                                          |)
+                                                                                        |)
                                                                                       |)
-                                                                                    |)
+                                                                                    ]
+                                                                                  |);
+                                                                                  M.call_closure (|
+                                                                                    Ty.path "u128",
+                                                                                    M.get_trait_method (|
+                                                                                      "core::convert::From",
+                                                                                      Ty.path
+                                                                                        "u128",
+                                                                                      [],
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "u64"
+                                                                                      ],
+                                                                                      "from",
+                                                                                      [],
+                                                                                      []
+                                                                                    |),
+                                                                                    [
+                                                                                      M.read (|
+                                                                                        base
+                                                                                      |)
+                                                                                    ]
                                                                                   |)
                                                                                 ]
-                                                                              |),
-                                                                              M.call_closure (|
-                                                                                Ty.path "u128",
-                                                                                M.get_trait_method (|
-                                                                                  "core::convert::From",
-                                                                                  Ty.path "u128",
-                                                                                  [],
-                                                                                  [ Ty.path "u64" ],
-                                                                                  "from",
-                                                                                  [],
-                                                                                  []
-                                                                                |),
-                                                                                [ M.read (| base |)
-                                                                                ]
                                                                               |)
-                                                                            |)
+                                                                            ]
                                                                           |)
                                                                         |)
                                                                       |) in
@@ -2226,11 +2311,15 @@ Module base_convert.
                                                                         let β := carry in
                                                                         M.write (|
                                                                           β,
-                                                                          BinOp.Wrap.shr (|
-                                                                            M.read (| β |),
-                                                                            Value.Integer
-                                                                              IntegerKind.I32
-                                                                              64
+                                                                          M.call_closure (|
+                                                                            Ty.path "u128",
+                                                                            BinOp.Wrap.shr,
+                                                                            [
+                                                                              M.read (| β |);
+                                                                              Value.Integer
+                                                                                IntegerKind.I32
+                                                                                64
+                                                                            ]
                                                                           |)
                                                                         |)
                                                                       |) in
@@ -2251,49 +2340,65 @@ Module base_convert.
                                                     M.use
                                                       (M.alloc (|
                                                         LogicalOp.or (|
-                                                          BinOp.gt (|
-                                                            M.read (| carry |),
-                                                            Value.Integer IntegerKind.U128 0
+                                                          M.call_closure (|
+                                                            Ty.path "bool",
+                                                            BinOp.gt,
+                                                            [
+                                                              M.read (| carry |);
+                                                              Value.Integer IntegerKind.U128 0
+                                                            ]
                                                           |),
                                                           ltac:(M.monadic
                                                             (LogicalOp.and (|
-                                                              BinOp.ne (|
-                                                                LIMBS,
-                                                                Value.Integer IntegerKind.Usize 0
+                                                              M.call_closure (|
+                                                                Ty.path "bool",
+                                                                BinOp.ne,
+                                                                [
+                                                                  LIMBS;
+                                                                  Value.Integer IntegerKind.Usize 0
+                                                                ]
                                                               |),
                                                               ltac:(M.monadic
-                                                                (BinOp.gt (|
-                                                                  M.read (|
-                                                                    M.SubPointer.get_array_field (|
-                                                                      M.SubPointer.get_struct_record_field (|
-                                                                        result,
-                                                                        "ruint::Uint",
-                                                                        "limbs"
-                                                                      |),
-                                                                      BinOp.Wrap.sub (|
-                                                                        LIMBS,
-                                                                        Value.Integer
-                                                                          IntegerKind.Usize
-                                                                          1
+                                                                (M.call_closure (|
+                                                                  Ty.path "bool",
+                                                                  BinOp.gt,
+                                                                  [
+                                                                    M.read (|
+                                                                      M.SubPointer.get_array_field (|
+                                                                        M.SubPointer.get_struct_record_field (|
+                                                                          result,
+                                                                          "ruint::Uint",
+                                                                          "limbs"
+                                                                        |),
+                                                                        M.call_closure (|
+                                                                          Ty.path "usize",
+                                                                          BinOp.Wrap.sub,
+                                                                          [
+                                                                            LIMBS;
+                                                                            Value.Integer
+                                                                              IntegerKind.Usize
+                                                                              1
+                                                                          ]
+                                                                        |)
+                                                                      |)
+                                                                    |);
+                                                                    M.read (|
+                                                                      get_associated_constant (|
+                                                                        Ty.apply
+                                                                          (Ty.path "ruint::Uint")
+                                                                          [ BITS; LIMBS ]
+                                                                          [],
+                                                                        "MASK",
+                                                                        Ty.path "u64"
                                                                       |)
                                                                     |)
-                                                                  |),
-                                                                  M.read (|
-                                                                    get_associated_constant (|
-                                                                      Ty.apply
-                                                                        (Ty.path "ruint::Uint")
-                                                                        [ BITS; LIMBS ]
-                                                                        [],
-                                                                      "MASK",
-                                                                      Ty.path "u64"
-                                                                    |)
-                                                                  |)
+                                                                  ]
                                                                 |)))
                                                             |)))
                                                         |)
                                                       |)) in
                                                   let _ :=
-                                                    M.is_constant_or_break_match (|
+                                                    is_constant_or_break_match (|
                                                       M.read (| γ |),
                                                       Value.Bool true
                                                     |) in
@@ -2506,33 +2611,47 @@ Module base_convert.
                                           let β := zero in
                                           M.write (|
                                             β,
-                                            BinOp.bit_or
-                                              (M.read (| β |))
-                                              (M.read (| M.deref (| M.read (| limb |) |) |))
+                                            M.call_closure (|
+                                              Ty.path "u64",
+                                              BinOp.Wrap.bit_or,
+                                              [
+                                                M.read (| β |);
+                                                M.read (| M.deref (| M.read (| limb |) |) |)
+                                              ]
+                                            |)
                                           |)
                                         |) in
                                       let~ _ : Ty.tuple [] :=
                                         M.alloc (|
                                           M.write (|
                                             remainder,
-                                            BinOp.bit_or
-                                              (BinOp.Wrap.shl (|
-                                                M.read (| remainder |),
-                                                Value.Integer IntegerKind.I32 64
-                                              |))
-                                              (M.call_closure (|
-                                                Ty.path "u128",
-                                                M.get_trait_method (|
-                                                  "core::convert::From",
+                                            M.call_closure (|
+                                              Ty.path "u128",
+                                              BinOp.Wrap.bit_or,
+                                              [
+                                                M.call_closure (|
                                                   Ty.path "u128",
-                                                  [],
-                                                  [ Ty.path "u64" ],
-                                                  "from",
-                                                  [],
-                                                  []
-                                                |),
-                                                [ M.read (| M.deref (| M.read (| limb |) |) |) ]
-                                              |))
+                                                  BinOp.Wrap.shl,
+                                                  [
+                                                    M.read (| remainder |);
+                                                    Value.Integer IntegerKind.I32 64
+                                                  ]
+                                                |);
+                                                M.call_closure (|
+                                                  Ty.path "u128",
+                                                  M.get_trait_method (|
+                                                    "core::convert::From",
+                                                    Ty.path "u128",
+                                                    [],
+                                                    [ Ty.path "u64" ],
+                                                    "from",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [ M.read (| M.deref (| M.read (| limb |) |) |) ]
+                                                |)
+                                              ]
+                                            |)
                                           |)
                                         |) in
                                       let~ _ : Ty.tuple [] :=
@@ -2541,8 +2660,46 @@ Module base_convert.
                                             M.deref (| M.read (| limb |) |),
                                             M.cast
                                               (Ty.path "u64")
-                                              (BinOp.Wrap.div (|
-                                                M.read (| remainder |),
+                                              (M.call_closure (|
+                                                Ty.path "u128",
+                                                BinOp.Wrap.div,
+                                                [
+                                                  M.read (| remainder |);
+                                                  M.call_closure (|
+                                                    Ty.path "u128",
+                                                    M.get_trait_method (|
+                                                      "core::convert::From",
+                                                      Ty.path "u128",
+                                                      [],
+                                                      [ Ty.path "u64" ],
+                                                      "from",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.read (|
+                                                        M.SubPointer.get_struct_record_field (|
+                                                          M.deref (| M.read (| self |) |),
+                                                          "ruint::base_convert::SpigotLittle",
+                                                          "base"
+                                                        |)
+                                                      |)
+                                                    ]
+                                                  |)
+                                                ]
+                                              |))
+                                          |)
+                                        |) in
+                                      let~ _ : Ty.tuple [] :=
+                                        M.alloc (|
+                                          let β := remainder in
+                                          M.write (|
+                                            β,
+                                            M.call_closure (|
+                                              Ty.path "u128",
+                                              BinOp.Wrap.rem,
+                                              [
+                                                M.read (| β |);
                                                 M.call_closure (|
                                                   Ty.path "u128",
                                                   M.get_trait_method (|
@@ -2564,37 +2721,7 @@ Module base_convert.
                                                     |)
                                                   ]
                                                 |)
-                                              |))
-                                          |)
-                                        |) in
-                                      let~ _ : Ty.tuple [] :=
-                                        M.alloc (|
-                                          let β := remainder in
-                                          M.write (|
-                                            β,
-                                            BinOp.Wrap.rem (|
-                                              M.read (| β |),
-                                              M.call_closure (|
-                                                Ty.path "u128",
-                                                M.get_trait_method (|
-                                                  "core::convert::From",
-                                                  Ty.path "u128",
-                                                  [],
-                                                  [ Ty.path "u64" ],
-                                                  "from",
-                                                  [],
-                                                  []
-                                                |),
-                                                [
-                                                  M.read (|
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.deref (| M.read (| self |) |),
-                                                      "ruint::base_convert::SpigotLittle",
-                                                      "base"
-                                                    |)
-                                                  |)
-                                                ]
-                                              |)
+                                              ]
                                             |)
                                           |)
                                         |) in
@@ -2614,9 +2741,13 @@ Module base_convert.
                     (let γ :=
                       M.use
                         (M.alloc (|
-                          BinOp.eq (| M.read (| zero |), Value.Integer IntegerKind.U64 0 |)
+                          M.call_closure (|
+                            Ty.path "bool",
+                            BinOp.eq,
+                            [ M.read (| zero |); Value.Integer IntegerKind.U64 0 ]
+                          |)
                         |)) in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                 fun γ =>
                   ltac:(M.monadic

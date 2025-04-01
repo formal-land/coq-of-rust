@@ -84,21 +84,25 @@ Module Impl_core_cmp_PartialEq_try_from_and_try_into_EvenNumber_for_try_from_and
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
-        BinOp.eq (|
-          M.read (|
-            M.SubPointer.get_struct_tuple_field (|
-              M.deref (| M.read (| self |) |),
-              "try_from_and_try_into::EvenNumber",
-              0
+        M.call_closure (|
+          Ty.path "bool",
+          BinOp.eq,
+          [
+            M.read (|
+              M.SubPointer.get_struct_tuple_field (|
+                M.deref (| M.read (| self |) |),
+                "try_from_and_try_into::EvenNumber",
+                0
+              |)
+            |);
+            M.read (|
+              M.SubPointer.get_struct_tuple_field (|
+                M.deref (| M.read (| other |) |),
+                "try_from_and_try_into::EvenNumber",
+                0
+              |)
             |)
-          |),
-          M.read (|
-            M.SubPointer.get_struct_tuple_field (|
-              M.deref (| M.read (| other |) |),
-              "try_from_and_try_into::EvenNumber",
-              0
-            |)
-          |)
+          ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -146,12 +150,20 @@ Module Impl_core_convert_TryFrom_i32_for_try_from_and_try_into_EvenNumber.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        BinOp.eq (|
-                          BinOp.Wrap.rem (| M.read (| value |), Value.Integer IntegerKind.I32 2 |),
-                          Value.Integer IntegerKind.I32 0
+                        M.call_closure (|
+                          Ty.path "bool",
+                          BinOp.eq,
+                          [
+                            M.call_closure (|
+                              Ty.path "i32",
+                              BinOp.Wrap.rem,
+                              [ M.read (| value |); Value.Integer IntegerKind.I32 2 ]
+                            |);
+                            Value.Integer IntegerKind.I32 0
+                          ]
                         |)
                       |)) in
-                  let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                  let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Ok"
@@ -290,7 +302,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -434,7 +446,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -589,7 +601,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -736,7 +748,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|

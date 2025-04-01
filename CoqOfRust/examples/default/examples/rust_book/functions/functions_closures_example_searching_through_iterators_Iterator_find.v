@@ -339,11 +339,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                     (let γ := M.read (| γ |) in
                                                                     let γ := M.read (| γ |) in
                                                                     let x := M.copy (| γ |) in
-                                                                    BinOp.eq (|
-                                                                      M.read (| x |),
-                                                                      Value.Integer
-                                                                        IntegerKind.I32
-                                                                        2
+                                                                    M.call_closure (|
+                                                                      Ty.path "bool",
+                                                                      BinOp.eq,
+                                                                      [
+                                                                        M.read (| x |);
+                                                                        Value.Integer
+                                                                          IntegerKind.I32
+                                                                          2
+                                                                      ]
                                                                     |)))
                                                               ]
                                                             |)))
@@ -482,11 +486,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                   ltac:(M.monadic
                                                                     (let γ := M.read (| γ |) in
                                                                     let x := M.copy (| γ |) in
-                                                                    BinOp.eq (|
-                                                                      M.read (| x |),
-                                                                      Value.Integer
-                                                                        IntegerKind.I32
-                                                                        2
+                                                                    M.call_closure (|
+                                                                      Ty.path "bool",
+                                                                      BinOp.eq,
+                                                                      [
+                                                                        M.read (| x |);
+                                                                        Value.Integer
+                                                                          IntegerKind.I32
+                                                                          2
+                                                                      ]
                                                                     |)))
                                                               ]
                                                             |)))
@@ -675,11 +683,15 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                     (let γ := M.read (| γ |) in
                                                                     let γ := M.read (| γ |) in
                                                                     let x := M.copy (| γ |) in
-                                                                    BinOp.eq (|
-                                                                      M.read (| x |),
-                                                                      Value.Integer
-                                                                        IntegerKind.I32
-                                                                        2
+                                                                    M.call_closure (|
+                                                                      Ty.path "bool",
+                                                                      BinOp.eq,
+                                                                      [
+                                                                        M.read (| x |);
+                                                                        Value.Integer
+                                                                          IntegerKind.I32
+                                                                          2
+                                                                      ]
                                                                     |)))
                                                               ]
                                                             |)))
@@ -856,13 +868,19 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                                   ltac:(M.monadic
                                                                     (let γ := M.read (| γ |) in
                                                                     let x := M.copy (| γ |) in
-                                                                    BinOp.eq (|
-                                                                      M.read (|
-                                                                        M.deref (| M.read (| x |) |)
-                                                                      |),
-                                                                      Value.Integer
-                                                                        IntegerKind.I32
-                                                                        2
+                                                                    M.call_closure (|
+                                                                      Ty.path "bool",
+                                                                      BinOp.eq,
+                                                                      [
+                                                                        M.read (|
+                                                                          M.deref (|
+                                                                            M.read (| x |)
+                                                                          |)
+                                                                        |);
+                                                                        Value.Integer
+                                                                          IntegerKind.I32
+                                                                          2
+                                                                      ]
                                                                     |)))
                                                               ]
                                                             |)))

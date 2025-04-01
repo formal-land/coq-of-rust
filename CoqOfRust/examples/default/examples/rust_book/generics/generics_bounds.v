@@ -101,21 +101,25 @@ Module Impl_generics_bounds_HasArea_for_generics_bounds_Rectangle.
     | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        BinOp.Wrap.mul (|
-          M.read (|
-            M.SubPointer.get_struct_record_field (|
-              M.deref (| M.read (| self |) |),
-              "generics_bounds::Rectangle",
-              "length"
+        M.call_closure (|
+          Ty.path "f64",
+          BinOp.Wrap.mul,
+          [
+            M.read (|
+              M.SubPointer.get_struct_record_field (|
+                M.deref (| M.read (| self |) |),
+                "generics_bounds::Rectangle",
+                "length"
+              |)
+            |);
+            M.read (|
+              M.SubPointer.get_struct_record_field (|
+                M.deref (| M.read (| self |) |),
+                "generics_bounds::Rectangle",
+                "height"
+              |)
             |)
-          |),
-          M.read (|
-            M.SubPointer.get_struct_record_field (|
-              M.deref (| M.read (| self |) |),
-              "generics_bounds::Rectangle",
-              "height"
-            |)
-          |)
+          ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.

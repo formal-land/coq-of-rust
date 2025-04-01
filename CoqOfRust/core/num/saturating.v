@@ -1594,21 +1594,26 @@ Module num.
             Value.StructTuple
               "core::num::saturating::Saturating"
               [
-                BinOp.bit_xor
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
+                M.call_closure (|
+                  Ty.path "usize",
+                  BinOp.Wrap.bit_xor,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1764,21 +1769,26 @@ Module num.
             Value.StructTuple
               "core::num::saturating::Saturating"
               [
-                BinOp.bit_or
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
+                M.call_closure (|
+                  Ty.path "usize",
+                  BinOp.Wrap.bit_or,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1934,21 +1944,26 @@ Module num.
             Value.StructTuple
               "core::num::saturating::Saturating"
               [
-                BinOp.bit_and
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
+                M.call_closure (|
+                  Ty.path "usize",
+                  BinOp.Wrap.bit_and,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2961,21 +2976,26 @@ Module num.
             Value.StructTuple
               "core::num::saturating::Saturating"
               [
-                BinOp.bit_xor
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
+                M.call_closure (|
+                  Ty.path "u8",
+                  BinOp.Wrap.bit_xor,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3117,21 +3137,26 @@ Module num.
             Value.StructTuple
               "core::num::saturating::Saturating"
               [
-                BinOp.bit_or
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
+                M.call_closure (|
+                  Ty.path "u8",
+                  BinOp.Wrap.bit_or,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3273,21 +3298,26 @@ Module num.
             Value.StructTuple
               "core::num::saturating::Saturating"
               [
-                BinOp.bit_and
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
+                M.call_closure (|
+                  Ty.path "u8",
+                  BinOp.Wrap.bit_and,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4326,21 +4356,26 @@ Module num.
             Value.StructTuple
               "core::num::saturating::Saturating"
               [
-                BinOp.bit_xor
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
+                M.call_closure (|
+                  Ty.path "u16",
+                  BinOp.Wrap.bit_xor,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4490,21 +4525,26 @@ Module num.
             Value.StructTuple
               "core::num::saturating::Saturating"
               [
-                BinOp.bit_or
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
+                M.call_closure (|
+                  Ty.path "u16",
+                  BinOp.Wrap.bit_or,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4654,21 +4694,26 @@ Module num.
             Value.StructTuple
               "core::num::saturating::Saturating"
               [
-                BinOp.bit_and
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
+                M.call_closure (|
+                  Ty.path "u16",
+                  BinOp.Wrap.bit_and,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5715,21 +5760,26 @@ Module num.
             Value.StructTuple
               "core::num::saturating::Saturating"
               [
-                BinOp.bit_xor
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
+                M.call_closure (|
+                  Ty.path "u32",
+                  BinOp.Wrap.bit_xor,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5879,21 +5929,26 @@ Module num.
             Value.StructTuple
               "core::num::saturating::Saturating"
               [
-                BinOp.bit_or
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
+                M.call_closure (|
+                  Ty.path "u32",
+                  BinOp.Wrap.bit_or,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -6043,21 +6098,26 @@ Module num.
             Value.StructTuple
               "core::num::saturating::Saturating"
               [
-                BinOp.bit_and
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
+                M.call_closure (|
+                  Ty.path "u32",
+                  BinOp.Wrap.bit_and,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -7104,21 +7164,26 @@ Module num.
             Value.StructTuple
               "core::num::saturating::Saturating"
               [
-                BinOp.bit_xor
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
+                M.call_closure (|
+                  Ty.path "u64",
+                  BinOp.Wrap.bit_xor,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -7268,21 +7333,26 @@ Module num.
             Value.StructTuple
               "core::num::saturating::Saturating"
               [
-                BinOp.bit_or
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
+                M.call_closure (|
+                  Ty.path "u64",
+                  BinOp.Wrap.bit_or,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -7432,21 +7502,26 @@ Module num.
             Value.StructTuple
               "core::num::saturating::Saturating"
               [
-                BinOp.bit_and
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
+                M.call_closure (|
+                  Ty.path "u64",
+                  BinOp.Wrap.bit_and,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -8523,21 +8598,26 @@ Module num.
             Value.StructTuple
               "core::num::saturating::Saturating"
               [
-                BinOp.bit_xor
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
+                M.call_closure (|
+                  Ty.path "u128",
+                  BinOp.Wrap.bit_xor,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -8693,21 +8773,26 @@ Module num.
             Value.StructTuple
               "core::num::saturating::Saturating"
               [
-                BinOp.bit_or
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
+                M.call_closure (|
+                  Ty.path "u128",
+                  BinOp.Wrap.bit_or,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -8863,21 +8948,26 @@ Module num.
             Value.StructTuple
               "core::num::saturating::Saturating"
               [
-                BinOp.bit_and
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
+                M.call_closure (|
+                  Ty.path "u128",
+                  BinOp.Wrap.bit_and,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -9960,21 +10050,26 @@ Module num.
             Value.StructTuple
               "core::num::saturating::Saturating"
               [
-                BinOp.bit_xor
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
+                M.call_closure (|
+                  Ty.path "isize",
+                  BinOp.Wrap.bit_xor,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -10130,21 +10225,26 @@ Module num.
             Value.StructTuple
               "core::num::saturating::Saturating"
               [
-                BinOp.bit_or
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
+                M.call_closure (|
+                  Ty.path "isize",
+                  BinOp.Wrap.bit_or,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -10300,21 +10400,26 @@ Module num.
             Value.StructTuple
               "core::num::saturating::Saturating"
               [
-                BinOp.bit_and
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
+                M.call_closure (|
+                  Ty.path "isize",
+                  BinOp.Wrap.bit_and,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -11327,21 +11432,26 @@ Module num.
             Value.StructTuple
               "core::num::saturating::Saturating"
               [
-                BinOp.bit_xor
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
+                M.call_closure (|
+                  Ty.path "i8",
+                  BinOp.Wrap.bit_xor,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -11483,21 +11593,26 @@ Module num.
             Value.StructTuple
               "core::num::saturating::Saturating"
               [
-                BinOp.bit_or
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
+                M.call_closure (|
+                  Ty.path "i8",
+                  BinOp.Wrap.bit_or,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -11639,21 +11754,26 @@ Module num.
             Value.StructTuple
               "core::num::saturating::Saturating"
               [
-                BinOp.bit_and
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
+                M.call_closure (|
+                  Ty.path "i8",
+                  BinOp.Wrap.bit_and,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -12692,21 +12812,26 @@ Module num.
             Value.StructTuple
               "core::num::saturating::Saturating"
               [
-                BinOp.bit_xor
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
+                M.call_closure (|
+                  Ty.path "i16",
+                  BinOp.Wrap.bit_xor,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -12856,21 +12981,26 @@ Module num.
             Value.StructTuple
               "core::num::saturating::Saturating"
               [
-                BinOp.bit_or
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
+                M.call_closure (|
+                  Ty.path "i16",
+                  BinOp.Wrap.bit_or,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -13020,21 +13150,26 @@ Module num.
             Value.StructTuple
               "core::num::saturating::Saturating"
               [
-                BinOp.bit_and
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
+                M.call_closure (|
+                  Ty.path "i16",
+                  BinOp.Wrap.bit_and,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -14081,21 +14216,26 @@ Module num.
             Value.StructTuple
               "core::num::saturating::Saturating"
               [
-                BinOp.bit_xor
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
+                M.call_closure (|
+                  Ty.path "i32",
+                  BinOp.Wrap.bit_xor,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -14245,21 +14385,26 @@ Module num.
             Value.StructTuple
               "core::num::saturating::Saturating"
               [
-                BinOp.bit_or
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
+                M.call_closure (|
+                  Ty.path "i32",
+                  BinOp.Wrap.bit_or,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -14409,21 +14554,26 @@ Module num.
             Value.StructTuple
               "core::num::saturating::Saturating"
               [
-                BinOp.bit_and
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
+                M.call_closure (|
+                  Ty.path "i32",
+                  BinOp.Wrap.bit_and,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -15470,21 +15620,26 @@ Module num.
             Value.StructTuple
               "core::num::saturating::Saturating"
               [
-                BinOp.bit_xor
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
+                M.call_closure (|
+                  Ty.path "i64",
+                  BinOp.Wrap.bit_xor,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -15634,21 +15789,26 @@ Module num.
             Value.StructTuple
               "core::num::saturating::Saturating"
               [
-                BinOp.bit_or
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
+                M.call_closure (|
+                  Ty.path "i64",
+                  BinOp.Wrap.bit_or,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -15798,21 +15958,26 @@ Module num.
             Value.StructTuple
               "core::num::saturating::Saturating"
               [
-                BinOp.bit_and
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
+                M.call_closure (|
+                  Ty.path "i64",
+                  BinOp.Wrap.bit_and,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -16889,21 +17054,26 @@ Module num.
             Value.StructTuple
               "core::num::saturating::Saturating"
               [
-                BinOp.bit_xor
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
+                M.call_closure (|
+                  Ty.path "i128",
+                  BinOp.Wrap.bit_xor,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -17059,21 +17229,26 @@ Module num.
             Value.StructTuple
               "core::num::saturating::Saturating"
               [
-                BinOp.bit_or
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
+                M.call_closure (|
+                  Ty.path "i128",
+                  BinOp.Wrap.bit_or,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -17229,21 +17404,26 @@ Module num.
             Value.StructTuple
               "core::num::saturating::Saturating"
               [
-                BinOp.bit_and
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      self,
-                      "core::num::saturating::Saturating",
-                      0
+                M.call_closure (|
+                  Ty.path "i128",
+                  BinOp.Wrap.bit_and,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        self,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_tuple_field (|
+                        other,
+                        "core::num::saturating::Saturating",
+                        0
+                      |)
                     |)
-                  |))
-                  (M.read (|
-                    M.SubPointer.get_struct_tuple_field (|
-                      other,
-                      "core::num::saturating::Saturating",
-                      0
-                    |)
-                  |))
+                  ]
+                |)
               ]))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

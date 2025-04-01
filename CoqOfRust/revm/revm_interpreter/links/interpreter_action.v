@@ -245,7 +245,6 @@ Module Impl_InterpreterAction.
   Proof.
     constructor.
     run_symbolic.
-    destruct_all FrameInput.t; run_symbolic.
   Defined.
 
   (* pub fn is_create(&self) -> bool *)
@@ -257,7 +256,6 @@ Module Impl_InterpreterAction.
   Proof.
     constructor.
     run_symbolic.
-    destruct_all FrameInput.t; run_symbolic.
   Defined.
 
   (* pub fn is_return(&self) -> bool *)
@@ -269,7 +267,6 @@ Module Impl_InterpreterAction.
   Proof.
     constructor.
     run_symbolic.
-    destruct_all Self; run_symbolic.
   Defined.
 
   (* pub fn is_none(&self) -> bool *)
@@ -281,7 +278,6 @@ Module Impl_InterpreterAction.
   Proof.
     constructor.
     run_symbolic.
-    destruct_all Self; run_symbolic.
   Defined.
 
   (* pub fn is_some(&self) -> bool *)

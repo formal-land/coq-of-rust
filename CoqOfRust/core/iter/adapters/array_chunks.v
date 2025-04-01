@@ -257,10 +257,16 @@ Module iter.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                UnOp.not (| BinOp.ne (| N, Value.Integer IntegerKind.Usize 0 |) |)
+                                UnOp.not (|
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.ne,
+                                    [ N; Value.Integer IntegerKind.Usize 0 ]
+                                  |)
+                                |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.call_closure (|
@@ -382,7 +388,7 @@ Module iter.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.loop (|
                             Ty.tuple [],
                             ltac:(M.monadic
@@ -550,10 +556,7 @@ Module iter.
                                     |)
                                   |)) in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (|
                                 M.never_to_any (| M.read (| M.return_ (| Value.Tuple [] |) |) |)
                               |)));
@@ -562,30 +565,34 @@ Module iter.
                       |) in
                     let~ rem : Ty.path "usize" :=
                       M.alloc (|
-                        BinOp.Wrap.rem (|
-                          M.call_closure (|
-                            Ty.path "usize",
-                            M.get_trait_method (|
-                              "core::iter::traits::exact_size::ExactSizeIterator",
-                              I,
-                              [],
-                              [],
-                              "len",
-                              [],
-                              []
-                            |),
-                            [
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.SubPointer.get_struct_record_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "core::iter::adapters::array_chunks::ArrayChunks",
-                                  "iter"
+                        M.call_closure (|
+                          Ty.path "usize",
+                          BinOp.Wrap.rem,
+                          [
+                            M.call_closure (|
+                              Ty.path "usize",
+                              M.get_trait_method (|
+                                "core::iter::traits::exact_size::ExactSizeIterator",
+                                I,
+                                [],
+                                [],
+                                "len",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::iter::adapters::array_chunks::ArrayChunks",
+                                    "iter"
+                                  |)
                                 |)
-                              |)
-                            ]
-                          |),
-                          N
+                              ]
+                            |);
+                            N
+                          ]
                         |)
                       |) in
                     let~ remainder :
@@ -1077,7 +1084,11 @@ Module iter.
                         M.alloc (|
                           Value.Tuple
                             [
-                              BinOp.Wrap.div (| M.read (| lower |), N |);
+                              M.call_closure (|
+                                Ty.path "usize",
+                                BinOp.Wrap.div,
+                                [ M.read (| lower |); N ]
+                              |);
                               M.call_closure (|
                                 Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ],
                                 M.get_associated_function (|
@@ -1107,7 +1118,11 @@ Module iter.
                                                 fun γ =>
                                                   ltac:(M.monadic
                                                     (let n := M.copy (| γ |) in
-                                                    BinOp.Wrap.div (| M.read (| n |), N |)))
+                                                    M.call_closure (|
+                                                      Ty.path "usize",
+                                                      BinOp.Wrap.div,
+                                                      [ M.read (| n |); N ]
+                                                    |)))
                                               ]
                                             |)))
                                         | _ => M.impossible "wrong number of arguments"
@@ -1139,29 +1154,33 @@ Module iter.
           | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              BinOp.Wrap.div (|
-                M.call_closure (|
-                  Ty.path "usize",
-                  M.get_trait_method (|
-                    "core::iter::traits::iterator::Iterator",
-                    I,
-                    [],
-                    [],
-                    "count",
-                    [],
-                    []
-                  |),
-                  [
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        self,
-                        "core::iter::adapters::array_chunks::ArrayChunks",
-                        "iter"
+              M.call_closure (|
+                Ty.path "usize",
+                BinOp.Wrap.div,
+                [
+                  M.call_closure (|
+                    Ty.path "usize",
+                    M.get_trait_method (|
+                      "core::iter::traits::iterator::Iterator",
+                      I,
+                      [],
+                      [],
+                      "count",
+                      [],
+                      []
+                    |),
+                    [
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "core::iter::adapters::array_chunks::ArrayChunks",
+                          "iter"
+                        |)
                       |)
-                    |)
-                  ]
-                |),
-                N
+                    ]
+                  |);
+                  N
+                ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -2300,30 +2319,34 @@ Module iter.
           | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              BinOp.Wrap.div (|
-                M.call_closure (|
-                  Ty.path "usize",
-                  M.get_trait_method (|
-                    "core::iter::traits::exact_size::ExactSizeIterator",
-                    I,
-                    [],
-                    [],
-                    "len",
-                    [],
-                    []
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "core::iter::adapters::array_chunks::ArrayChunks",
-                        "iter"
+              M.call_closure (|
+                Ty.path "usize",
+                BinOp.Wrap.div,
+                [
+                  M.call_closure (|
+                    Ty.path "usize",
+                    M.get_trait_method (|
+                      "core::iter::traits::exact_size::ExactSizeIterator",
+                      I,
+                      [],
+                      [],
+                      "len",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::iter::adapters::array_chunks::ArrayChunks",
+                          "iter"
+                        |)
                       |)
-                    |)
-                  ]
-                |),
-                N
+                    ]
+                  |);
+                  N
+                ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -2345,30 +2368,34 @@ Module iter.
           | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              BinOp.lt (|
-                M.call_closure (|
-                  Ty.path "usize",
-                  M.get_trait_method (|
-                    "core::iter::traits::exact_size::ExactSizeIterator",
-                    I,
-                    [],
-                    [],
-                    "len",
-                    [],
-                    []
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "core::iter::adapters::array_chunks::ArrayChunks",
-                        "iter"
+              M.call_closure (|
+                Ty.path "bool",
+                BinOp.lt,
+                [
+                  M.call_closure (|
+                    Ty.path "usize",
+                    M.get_trait_method (|
+                      "core::iter::traits::exact_size::ExactSizeIterator",
+                      I,
+                      [],
+                      [],
+                      "len",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::iter::adapters::array_chunks::ArrayChunks",
+                          "iter"
+                        |)
                       |)
-                    |)
-                  ]
-                |),
-                N
+                    ]
+                  |);
+                  N
+                ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -2573,16 +2600,21 @@ Module iter.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.ge (|
-                                      BinOp.Wrap.sub (| M.read (| inner_len |), M.read (| i |) |),
-                                      N
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.ge,
+                                      [
+                                        M.call_closure (|
+                                          Ty.path "usize",
+                                          BinOp.Wrap.sub,
+                                          [ M.read (| inner_len |); M.read (| i |) ]
+                                        |);
+                                        N
+                                      ]
                                     |)
                                   |)) in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               let~ chunk :
                                   Ty.apply
                                     (Ty.path "array")
@@ -2653,9 +2685,11 @@ Module iter.
                                                         M.read (|
                                                           let~ idx : Ty.path "usize" :=
                                                             M.alloc (|
-                                                              BinOp.Wrap.add (|
-                                                                M.read (| i |),
-                                                                M.read (| local |)
+                                                              M.call_closure (|
+                                                                Ty.path "usize",
+                                                                BinOp.Wrap.add,
+                                                                [ M.read (| i |); M.read (| local |)
+                                                                ]
                                                               |)
                                                             |) in
                                                           M.alloc (|
@@ -2737,7 +2771,14 @@ Module iter.
                               let~ _ : Ty.tuple [] :=
                                 M.alloc (|
                                   let β := i in
-                                  M.write (| β, BinOp.Wrap.add (| M.read (| β |), N |) |)
+                                  M.write (|
+                                    β,
+                                    M.call_closure (|
+                                      Ty.path "usize",
+                                      BinOp.Wrap.add,
+                                      [ M.read (| β |); N ]
+                                    |)
+                                  |)
                                 |) in
                               M.alloc (| Value.Tuple [] |)));
                           fun γ =>

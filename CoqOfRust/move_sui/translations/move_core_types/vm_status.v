@@ -334,7 +334,13 @@ Module vm_status.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |)
               |) in
-            M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
+            M.alloc (|
+              M.call_closure (|
+                Ty.path "bool",
+                BinOp.eq,
+                [ M.read (| __self_discr |); M.read (| __arg1_discr |) ]
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -4938,7 +4944,13 @@ Module vm_status.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |)
               |) in
-            M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
+            M.alloc (|
+              M.call_closure (|
+                Ty.path "bool",
+                BinOp.eq,
+                [ M.read (| __self_discr |); M.read (| __arg1_discr |) ]
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -5124,7 +5136,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 0
                       |) in
@@ -5140,7 +5152,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1
                       |) in
@@ -5156,7 +5168,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 2
                       |) in
@@ -5172,7 +5184,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 3
                       |) in
@@ -5188,7 +5200,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 4
                       |) in
@@ -5204,7 +5216,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 5
                       |) in
@@ -5220,7 +5232,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 6
                       |) in
@@ -5236,7 +5248,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 7
                       |) in
@@ -5252,7 +5264,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 8
                       |) in
@@ -5268,7 +5280,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 9
                       |) in
@@ -5284,7 +5296,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 10
                       |) in
@@ -5300,7 +5312,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 11
                       |) in
@@ -5316,7 +5328,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 12
                       |) in
@@ -5332,7 +5344,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 13
                       |) in
@@ -5348,7 +5360,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 14
                       |) in
@@ -5364,7 +5376,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 15
                       |) in
@@ -5380,7 +5392,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 16
                       |) in
@@ -5396,7 +5408,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 17
                       |) in
@@ -5412,7 +5424,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 18
                       |) in
@@ -5428,7 +5440,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 19
                       |) in
@@ -5444,7 +5456,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 20
                       |) in
@@ -5460,7 +5472,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 21
                       |) in
@@ -5476,7 +5488,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 22
                       |) in
@@ -5492,7 +5504,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 23
                       |) in
@@ -5508,7 +5520,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 24
                       |) in
@@ -5524,7 +5536,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 25
                       |) in
@@ -5540,7 +5552,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 26
                       |) in
@@ -5556,7 +5568,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 27
                       |) in
@@ -5572,7 +5584,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 28
                       |) in
@@ -5588,7 +5600,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 29
                       |) in
@@ -5604,7 +5616,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 30
                       |) in
@@ -5620,7 +5632,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1000
                       |) in
@@ -5636,7 +5648,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1001
                       |) in
@@ -5652,7 +5664,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1003
                       |) in
@@ -5668,7 +5680,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1005
                       |) in
@@ -5684,7 +5696,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1006
                       |) in
@@ -5700,7 +5712,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1007
                       |) in
@@ -5716,7 +5728,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1009
                       |) in
@@ -5732,7 +5744,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1011
                       |) in
@@ -5748,7 +5760,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1012
                       |) in
@@ -5764,7 +5776,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1013
                       |) in
@@ -5780,7 +5792,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1014
                       |) in
@@ -5796,7 +5808,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1017
                       |) in
@@ -5812,7 +5824,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1020
                       |) in
@@ -5828,7 +5840,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1021
                       |) in
@@ -5844,7 +5856,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1023
                       |) in
@@ -5860,7 +5872,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1025
                       |) in
@@ -5876,7 +5888,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1026
                       |) in
@@ -5892,7 +5904,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1027
                       |) in
@@ -5908,7 +5920,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1028
                       |) in
@@ -5924,7 +5936,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1029
                       |) in
@@ -5940,7 +5952,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1030
                       |) in
@@ -5956,7 +5968,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1031
                       |) in
@@ -5972,7 +5984,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1032
                       |) in
@@ -5988,7 +6000,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1033
                       |) in
@@ -6004,7 +6016,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1034
                       |) in
@@ -6020,7 +6032,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1035
                       |) in
@@ -6036,7 +6048,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1036
                       |) in
@@ -6052,7 +6064,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1037
                       |) in
@@ -6068,7 +6080,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1038
                       |) in
@@ -6084,7 +6096,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1039
                       |) in
@@ -6100,7 +6112,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1040
                       |) in
@@ -6116,7 +6128,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1041
                       |) in
@@ -6132,7 +6144,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1042
                       |) in
@@ -6148,7 +6160,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1043
                       |) in
@@ -6164,7 +6176,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1044
                       |) in
@@ -6180,7 +6192,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1045
                       |) in
@@ -6196,7 +6208,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1046
                       |) in
@@ -6212,7 +6224,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1047
                       |) in
@@ -6228,7 +6240,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1048
                       |) in
@@ -6244,7 +6256,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1049
                       |) in
@@ -6260,7 +6272,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1050
                       |) in
@@ -6276,7 +6288,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1051
                       |) in
@@ -6292,7 +6304,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1052
                       |) in
@@ -6308,7 +6320,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1053
                       |) in
@@ -6324,7 +6336,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1054
                       |) in
@@ -6340,7 +6352,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1055
                       |) in
@@ -6356,7 +6368,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1056
                       |) in
@@ -6372,7 +6384,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1057
                       |) in
@@ -6388,7 +6400,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1058
                       |) in
@@ -6404,7 +6416,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1059
                       |) in
@@ -6420,7 +6432,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1060
                       |) in
@@ -6436,7 +6448,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1061
                       |) in
@@ -6452,7 +6464,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1062
                       |) in
@@ -6468,7 +6480,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1063
                       |) in
@@ -6484,7 +6496,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1064
                       |) in
@@ -6500,7 +6512,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1065
                       |) in
@@ -6516,7 +6528,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1067
                       |) in
@@ -6532,7 +6544,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1068
                       |) in
@@ -6548,7 +6560,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1069
                       |) in
@@ -6564,7 +6576,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1070
                       |) in
@@ -6580,7 +6592,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1071
                       |) in
@@ -6596,7 +6608,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1072
                       |) in
@@ -6612,7 +6624,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1073
                       |) in
@@ -6628,7 +6640,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1074
                       |) in
@@ -6644,7 +6656,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1075
                       |) in
@@ -6660,7 +6672,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1076
                       |) in
@@ -6676,7 +6688,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1077
                       |) in
@@ -6692,7 +6704,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1080
                       |) in
@@ -6708,7 +6720,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1081
                       |) in
@@ -6724,7 +6736,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1082
                       |) in
@@ -6740,7 +6752,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1083
                       |) in
@@ -6756,7 +6768,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1084
                       |) in
@@ -6772,7 +6784,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1085
                       |) in
@@ -6788,7 +6800,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1086
                       |) in
@@ -6804,7 +6816,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1087
                       |) in
@@ -6820,7 +6832,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1088
                       |) in
@@ -6836,7 +6848,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1089
                       |) in
@@ -6852,7 +6864,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1090
                       |) in
@@ -6868,7 +6880,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1091
                       |) in
@@ -6884,7 +6896,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1094
                       |) in
@@ -6900,7 +6912,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1095
                       |) in
@@ -6916,7 +6928,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1096
                       |) in
@@ -6932,7 +6944,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1097
                       |) in
@@ -6948,7 +6960,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1098
                       |) in
@@ -6964,7 +6976,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1099
                       |) in
@@ -6980,7 +6992,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1100
                       |) in
@@ -6996,7 +7008,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1101
                       |) in
@@ -7012,7 +7024,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1102
                       |) in
@@ -7028,7 +7040,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1103
                       |) in
@@ -7044,7 +7056,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1104
                       |) in
@@ -7060,7 +7072,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1105
                       |) in
@@ -7076,7 +7088,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1106
                       |) in
@@ -7092,7 +7104,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1107
                       |) in
@@ -7108,7 +7120,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1108
                       |) in
@@ -7124,7 +7136,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1109
                       |) in
@@ -7140,7 +7152,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1110
                       |) in
@@ -7156,7 +7168,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1111
                       |) in
@@ -7172,7 +7184,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1112
                       |) in
@@ -7188,7 +7200,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1113
                       |) in
@@ -7204,7 +7216,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1114
                       |) in
@@ -7220,7 +7232,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1115
                       |) in
@@ -7236,7 +7248,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1116
                       |) in
@@ -7252,7 +7264,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1117
                       |) in
@@ -7268,7 +7280,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1118
                       |) in
@@ -7284,7 +7296,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1119
                       |) in
@@ -7300,7 +7312,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1120
                       |) in
@@ -7316,7 +7328,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1121
                       |) in
@@ -7332,7 +7344,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1122
                       |) in
@@ -7348,7 +7360,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1123
                       |) in
@@ -7364,7 +7376,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1124
                       |) in
@@ -7380,7 +7392,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1125
                       |) in
@@ -7396,7 +7408,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1126
                       |) in
@@ -7412,7 +7424,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1127
                       |) in
@@ -7428,7 +7440,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1128
                       |) in
@@ -7444,7 +7456,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1129
                       |) in
@@ -7460,7 +7472,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 1130
                       |) in
@@ -7476,7 +7488,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 2000
                       |) in
@@ -7492,7 +7504,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 2003
                       |) in
@@ -7508,7 +7520,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 2005
                       |) in
@@ -7521,7 +7533,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 2006
                       |) in
@@ -7537,7 +7549,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 2008
                       |) in
@@ -7553,7 +7565,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 2009
                       |) in
@@ -7569,7 +7581,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 2010
                       |) in
@@ -7585,7 +7597,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 2011
                       |) in
@@ -7598,7 +7610,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 2012
                       |) in
@@ -7614,7 +7626,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 2015
                       |) in
@@ -7630,7 +7642,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 2016
                       |) in
@@ -7646,7 +7658,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 2017
                       |) in
@@ -7662,7 +7674,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 2018
                       |) in
@@ -7678,7 +7690,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 2019
                       |) in
@@ -7694,7 +7706,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 2020
                       |) in
@@ -7710,7 +7722,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 2021
                       |) in
@@ -7726,7 +7738,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 2022
                       |) in
@@ -7742,7 +7754,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 2023
                       |) in
@@ -7758,7 +7770,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 3000
                       |) in
@@ -7774,7 +7786,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 3001
                       |) in
@@ -7786,7 +7798,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 3002
                       |) in
@@ -7798,7 +7810,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 3003
                       |) in
@@ -7814,7 +7826,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 3004
                       |) in
@@ -7830,7 +7842,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 3005
                       |) in
@@ -7846,7 +7858,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 3006
                       |) in
@@ -7862,7 +7874,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 3007
                       |) in
@@ -7878,7 +7890,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 3008
                       |) in
@@ -7894,7 +7906,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 3009
                       |) in
@@ -7910,7 +7922,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 3010
                       |) in
@@ -7926,7 +7938,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 3013
                       |) in
@@ -7942,7 +7954,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 3014
                       |) in
@@ -7958,7 +7970,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 3017
                       |) in
@@ -7970,7 +7982,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 3018
                       |) in
@@ -7982,7 +7994,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 3019
                       |) in
@@ -7994,7 +8006,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 3020
                       |) in
@@ -8006,7 +8018,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 3021
                       |) in
@@ -8018,7 +8030,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 3022
                       |) in
@@ -8034,7 +8046,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 3023
                       |) in
@@ -8050,7 +8062,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 3024
                       |) in
@@ -8066,7 +8078,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 3025
                       |) in
@@ -8082,7 +8094,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 3026
                       |) in
@@ -8098,7 +8110,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 4000
                       |) in
@@ -8114,7 +8126,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 4001
                       |) in
@@ -8126,7 +8138,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 4002
                       |) in
@@ -8139,7 +8151,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 4003
                       |) in
@@ -8155,7 +8167,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 4004
                       |) in
@@ -8171,7 +8183,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 4008
                       |) in
@@ -8187,7 +8199,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 4009
                       |) in
@@ -8203,7 +8215,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 4016
                       |) in
@@ -8215,7 +8227,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 4017
                       |) in
@@ -8231,7 +8243,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 4018
                       |) in
@@ -8247,7 +8259,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 4020
                       |) in
@@ -8263,7 +8275,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 4021
                       |) in
@@ -8279,7 +8291,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 4024
                       |) in
@@ -8295,7 +8307,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 4025
                       |) in
@@ -8311,7 +8323,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 4026
                       |) in
@@ -8327,7 +8339,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 4027
                       |) in
@@ -8343,7 +8355,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 4028
                       |) in
@@ -8359,7 +8371,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 4029
                       |) in
@@ -8375,7 +8387,7 @@ Module vm_status.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U64 18446744073709551615
                       |) in
@@ -8490,37 +8502,45 @@ Module vm_status.
                             M.use
                               (M.alloc (|
                                 LogicalOp.and (|
-                                  BinOp.ge (|
-                                    M.read (| major_status_number |),
-                                    M.read (|
-                                      M.deref (|
-                                        M.read (|
-                                          get_constant (|
-                                            "move_core_types::vm_status::VALIDATION_STATUS_MIN_CODE",
-                                            Ty.apply (Ty.path "&") [] [ Ty.path "u64" ]
-                                          |)
-                                        |)
-                                      |)
-                                    |)
-                                  |),
-                                  ltac:(M.monadic
-                                    (BinOp.le (|
-                                      M.read (| major_status_number |),
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.ge,
+                                    [
+                                      M.read (| major_status_number |);
                                       M.read (|
                                         M.deref (|
                                           M.read (|
                                             get_constant (|
-                                              "move_core_types::vm_status::VALIDATION_STATUS_MAX_CODE",
+                                              "move_core_types::vm_status::VALIDATION_STATUS_MIN_CODE",
                                               Ty.apply (Ty.path "&") [] [ Ty.path "u64" ]
                                             |)
                                           |)
                                         |)
                                       |)
+                                    ]
+                                  |),
+                                  ltac:(M.monadic
+                                    (M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.le,
+                                      [
+                                        M.read (| major_status_number |);
+                                        M.read (|
+                                          M.deref (|
+                                            M.read (|
+                                              get_constant (|
+                                                "move_core_types::vm_status::VALIDATION_STATUS_MAX_CODE",
+                                                Ty.apply (Ty.path "&") [] [ Ty.path "u64" ]
+                                              |)
+                                            |)
+                                          |)
+                                        |)
+                                      ]
                                     |)))
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -8546,37 +8566,45 @@ Module vm_status.
                             M.use
                               (M.alloc (|
                                 LogicalOp.and (|
-                                  BinOp.ge (|
-                                    M.read (| major_status_number |),
-                                    M.read (|
-                                      M.deref (|
-                                        M.read (|
-                                          get_constant (|
-                                            "move_core_types::vm_status::VERIFICATION_STATUS_MIN_CODE",
-                                            Ty.apply (Ty.path "&") [] [ Ty.path "u64" ]
-                                          |)
-                                        |)
-                                      |)
-                                    |)
-                                  |),
-                                  ltac:(M.monadic
-                                    (BinOp.le (|
-                                      M.read (| major_status_number |),
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.ge,
+                                    [
+                                      M.read (| major_status_number |);
                                       M.read (|
                                         M.deref (|
                                           M.read (|
                                             get_constant (|
-                                              "move_core_types::vm_status::VERIFICATION_STATUS_MAX_CODE",
+                                              "move_core_types::vm_status::VERIFICATION_STATUS_MIN_CODE",
                                               Ty.apply (Ty.path "&") [] [ Ty.path "u64" ]
                                             |)
                                           |)
                                         |)
                                       |)
+                                    ]
+                                  |),
+                                  ltac:(M.monadic
+                                    (M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.le,
+                                      [
+                                        M.read (| major_status_number |);
+                                        M.read (|
+                                          M.deref (|
+                                            M.read (|
+                                              get_constant (|
+                                                "move_core_types::vm_status::VERIFICATION_STATUS_MAX_CODE",
+                                                Ty.apply (Ty.path "&") [] [ Ty.path "u64" ]
+                                              |)
+                                            |)
+                                          |)
+                                        |)
+                                      ]
                                     |)))
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -8602,37 +8630,45 @@ Module vm_status.
                             M.use
                               (M.alloc (|
                                 LogicalOp.and (|
-                                  BinOp.ge (|
-                                    M.read (| major_status_number |),
-                                    M.read (|
-                                      M.deref (|
-                                        M.read (|
-                                          get_constant (|
-                                            "move_core_types::vm_status::INVARIANT_VIOLATION_STATUS_MIN_CODE",
-                                            Ty.apply (Ty.path "&") [] [ Ty.path "u64" ]
-                                          |)
-                                        |)
-                                      |)
-                                    |)
-                                  |),
-                                  ltac:(M.monadic
-                                    (BinOp.le (|
-                                      M.read (| major_status_number |),
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.ge,
+                                    [
+                                      M.read (| major_status_number |);
                                       M.read (|
                                         M.deref (|
                                           M.read (|
                                             get_constant (|
-                                              "move_core_types::vm_status::INVARIANT_VIOLATION_STATUS_MAX_CODE",
+                                              "move_core_types::vm_status::INVARIANT_VIOLATION_STATUS_MIN_CODE",
                                               Ty.apply (Ty.path "&") [] [ Ty.path "u64" ]
                                             |)
                                           |)
                                         |)
                                       |)
+                                    ]
+                                  |),
+                                  ltac:(M.monadic
+                                    (M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.le,
+                                      [
+                                        M.read (| major_status_number |);
+                                        M.read (|
+                                          M.deref (|
+                                            M.read (|
+                                              get_constant (|
+                                                "move_core_types::vm_status::INVARIANT_VIOLATION_STATUS_MAX_CODE",
+                                                Ty.apply (Ty.path "&") [] [ Ty.path "u64" ]
+                                              |)
+                                            |)
+                                          |)
+                                        |)
+                                      ]
                                     |)))
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -8658,37 +8694,45 @@ Module vm_status.
                             M.use
                               (M.alloc (|
                                 LogicalOp.and (|
-                                  BinOp.ge (|
-                                    M.read (| major_status_number |),
-                                    M.read (|
-                                      M.deref (|
-                                        M.read (|
-                                          get_constant (|
-                                            "move_core_types::vm_status::DESERIALIZATION_STATUS_MIN_CODE",
-                                            Ty.apply (Ty.path "&") [] [ Ty.path "u64" ]
-                                          |)
-                                        |)
-                                      |)
-                                    |)
-                                  |),
-                                  ltac:(M.monadic
-                                    (BinOp.le (|
-                                      M.read (| major_status_number |),
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.ge,
+                                    [
+                                      M.read (| major_status_number |);
                                       M.read (|
                                         M.deref (|
                                           M.read (|
                                             get_constant (|
-                                              "move_core_types::vm_status::DESERIALIZATION_STATUS_MAX_CODE",
+                                              "move_core_types::vm_status::DESERIALIZATION_STATUS_MIN_CODE",
                                               Ty.apply (Ty.path "&") [] [ Ty.path "u64" ]
                                             |)
                                           |)
                                         |)
                                       |)
+                                    ]
+                                  |),
+                                  ltac:(M.monadic
+                                    (M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.le,
+                                      [
+                                        M.read (| major_status_number |);
+                                        M.read (|
+                                          M.deref (|
+                                            M.read (|
+                                              get_constant (|
+                                                "move_core_types::vm_status::DESERIALIZATION_STATUS_MAX_CODE",
+                                                Ty.apply (Ty.path "&") [] [ Ty.path "u64" ]
+                                              |)
+                                            |)
+                                          |)
+                                        |)
+                                      ]
                                     |)))
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -8714,37 +8758,45 @@ Module vm_status.
                             M.use
                               (M.alloc (|
                                 LogicalOp.and (|
-                                  BinOp.ge (|
-                                    M.read (| major_status_number |),
-                                    M.read (|
-                                      M.deref (|
-                                        M.read (|
-                                          get_constant (|
-                                            "move_core_types::vm_status::EXECUTION_STATUS_MIN_CODE",
-                                            Ty.apply (Ty.path "&") [] [ Ty.path "u64" ]
-                                          |)
-                                        |)
-                                      |)
-                                    |)
-                                  |),
-                                  ltac:(M.monadic
-                                    (BinOp.le (|
-                                      M.read (| major_status_number |),
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.ge,
+                                    [
+                                      M.read (| major_status_number |);
                                       M.read (|
                                         M.deref (|
                                           M.read (|
                                             get_constant (|
-                                              "move_core_types::vm_status::EXECUTION_STATUS_MAX_CODE",
+                                              "move_core_types::vm_status::EXECUTION_STATUS_MIN_CODE",
                                               Ty.apply (Ty.path "&") [] [ Ty.path "u64" ]
                                             |)
                                           |)
                                         |)
                                       |)
+                                    ]
+                                  |),
+                                  ltac:(M.monadic
+                                    (M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.le,
+                                      [
+                                        M.read (| major_status_number |);
+                                        M.read (|
+                                          M.deref (|
+                                            M.read (|
+                                              get_constant (|
+                                                "move_core_types::vm_status::EXECUTION_STATUS_MAX_CODE",
+                                                Ty.apply (Ty.path "&") [] [ Ty.path "u64" ]
+                                              |)
+                                            |)
+                                          |)
+                                        |)
+                                      ]
                                     |)))
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|

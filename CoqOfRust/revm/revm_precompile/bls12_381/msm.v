@@ -185,10 +185,14 @@ Module bls12_381.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.eq (| M.read (| k |), Value.Integer IntegerKind.Usize 0 |)
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.eq,
+                                  [ M.read (| k |); Value.Integer IntegerKind.Usize 0 ]
+                                |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (| M.return_ (| Value.Integer IntegerKind.U64 0 |) |)
@@ -203,39 +207,47 @@ Module bls12_381.
                       Ty.path "usize",
                       M.get_function (| "core::cmp::min", [], [ Ty.path "usize" ] |),
                       [
-                        BinOp.Wrap.sub (| M.read (| k |), Value.Integer IntegerKind.Usize 1 |);
-                        BinOp.Wrap.sub (|
-                          M.call_closure (|
-                            Ty.path "usize",
-                            M.get_associated_function (|
-                              Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ],
-                              "len",
-                              [],
-                              []
-                            |),
-                            [
-                              M.borrow (|
-                                Pointer.Kind.Ref,
-                                M.deref (|
-                                  M.read (|
-                                    get_constant (|
-                                      "revm_precompile::bls12_381::msm::MSM_DISCOUNT_TABLE",
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [
-                                          Ty.apply
-                                            (Ty.path "array")
-                                            [ Value.Integer IntegerKind.Usize 128 ]
-                                            [ Ty.path "u16" ]
-                                        ]
+                        M.call_closure (|
+                          Ty.path "usize",
+                          BinOp.Wrap.sub,
+                          [ M.read (| k |); Value.Integer IntegerKind.Usize 1 ]
+                        |);
+                        M.call_closure (|
+                          Ty.path "usize",
+                          BinOp.Wrap.sub,
+                          [
+                            M.call_closure (|
+                              Ty.path "usize",
+                              M.get_associated_function (|
+                                Ty.apply (Ty.path "slice") [] [ Ty.path "u16" ],
+                                "len",
+                                [],
+                                []
+                              |),
+                              [
+                                M.borrow (|
+                                  Pointer.Kind.Ref,
+                                  M.deref (|
+                                    M.read (|
+                                      get_constant (|
+                                        "revm_precompile::bls12_381::msm::MSM_DISCOUNT_TABLE",
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "array")
+                                              [ Value.Integer IntegerKind.Usize 128 ]
+                                              [ Ty.path "u16" ]
+                                          ]
+                                      |)
                                     |)
                                   |)
                                 |)
-                              |)
-                            ]
-                          |),
-                          Value.Integer IntegerKind.Usize 1
+                              ]
+                            |);
+                            Value.Integer IntegerKind.Usize 1
+                          ]
                         |)
                       ]
                     |)
@@ -267,20 +279,29 @@ Module bls12_381.
                       |))
                   |) in
                 M.alloc (|
-                  BinOp.Wrap.div (|
-                    BinOp.Wrap.mul (|
-                      BinOp.Wrap.mul (|
-                        M.cast (Ty.path "u64") (M.read (| k |)),
-                        M.read (| discount |)
-                      |),
-                      M.read (| multiplication_cost |)
-                    |),
-                    M.read (|
-                      get_constant (|
-                        "revm_precompile::bls12_381::msm::MSM_MULTIPLIER",
-                        Ty.path "u64"
+                  M.call_closure (|
+                    Ty.path "u64",
+                    BinOp.Wrap.div,
+                    [
+                      M.call_closure (|
+                        Ty.path "u64",
+                        BinOp.Wrap.mul,
+                        [
+                          M.call_closure (|
+                            Ty.path "u64",
+                            BinOp.Wrap.mul,
+                            [ M.cast (Ty.path "u64") (M.read (| k |)); M.read (| discount |) ]
+                          |);
+                          M.read (| multiplication_cost |)
+                        ]
+                      |);
+                      M.read (|
+                        get_constant (|
+                          "revm_precompile::bls12_381::msm::MSM_MULTIPLIER",
+                          Ty.path "u64"
+                        |)
                       |)
-                    |)
+                    ]
                   |)
                 |)
               |)))

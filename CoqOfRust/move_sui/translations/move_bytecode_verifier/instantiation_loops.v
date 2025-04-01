@@ -106,21 +106,25 @@ Module instantiation_loops.
               ]
             |),
             ltac:(M.monadic
-              (BinOp.eq (|
-                M.read (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.deref (| M.read (| self |) |),
-                    "move_bytecode_verifier::instantiation_loops::Node",
-                    1
+              (M.call_closure (|
+                Ty.path "bool",
+                BinOp.eq,
+                [
+                  M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_bytecode_verifier::instantiation_loops::Node",
+                      1
+                    |)
+                  |);
+                  M.read (|
+                    M.SubPointer.get_struct_tuple_field (|
+                      M.deref (| M.read (| other |) |),
+                      "move_bytecode_verifier::instantiation_loops::Node",
+                      1
+                    |)
                   |)
-                |),
-                M.read (|
-                  M.SubPointer.get_struct_tuple_field (|
-                    M.deref (| M.read (| other |) |),
-                    "move_bytecode_verifier::instantiation_loops::Node",
-                    1
-                  |)
-                |)
+                ]
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -5060,7 +5064,7 @@ Module instantiation_loops.
                                                                                                         |)) in
                                                                                                     let
                                                                                                           _ :=
-                                                                                                      M.is_constant_or_break_match (|
+                                                                                                      is_constant_or_break_match (|
                                                                                                         M.read (|
                                                                                                           γ
                                                                                                         |),
@@ -5463,7 +5467,7 @@ Module instantiation_loops.
                                                     |)
                                                   |)) in
                                               let _ :=
-                                                M.is_constant_or_break_match (|
+                                                is_constant_or_break_match (|
                                                   M.read (| γ |),
                                                   Value.Bool true
                                                 |) in

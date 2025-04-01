@@ -344,7 +344,7 @@ Module reference_safety.
                                 ltac:(M.monadic
                                   (let γ := M.use (M.alloc (| Value.Bool true |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -687,7 +687,7 @@ Module reference_safety.
                                 ltac:(M.monadic
                                   (let γ := M.use (M.alloc (| Value.Bool true |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -1499,7 +1499,7 @@ Module reference_safety.
                                         |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -2633,7 +2633,7 @@ Module reference_safety.
                                                                                     Value.Bool true
                                                                                   |)) in
                                                                               let _ :=
-                                                                                M.is_constant_or_break_match (|
+                                                                                is_constant_or_break_match (|
                                                                                   M.read (| γ |),
                                                                                   Value.Bool true
                                                                                 |) in
@@ -2752,7 +2752,7 @@ Module reference_safety.
                                                       |)
                                                     |)) in
                                                 let _ :=
-                                                  M.is_constant_or_break_match (|
+                                                  is_constant_or_break_match (|
                                                     M.read (| γ |),
                                                     Value.Bool true
                                                   |) in
@@ -2894,7 +2894,7 @@ Module reference_safety.
                                                         (let γ :=
                                                           M.use (M.alloc (| Value.Bool true |)) in
                                                         let _ :=
-                                                          M.is_constant_or_break_match (|
+                                                          is_constant_or_break_match (|
                                                             M.read (| γ |),
                                                             Value.Bool true
                                                           |) in
@@ -3426,7 +3426,7 @@ Module reference_safety.
                                                       (let γ :=
                                                         M.use (M.alloc (| Value.Bool true |)) in
                                                       let _ :=
-                                                        M.is_constant_or_break_match (|
+                                                        is_constant_or_break_match (|
                                                           M.read (| γ |),
                                                           Value.Bool true
                                                         |) in
@@ -3534,8 +3534,7 @@ Module reference_safety.
                                 |)
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ err : Ty.path "move_binary_format::errors::PartialVMError" :=
                           M.alloc (|
                             M.call_closure (|
@@ -3647,7 +3646,7 @@ Module reference_safety.
                               ltac:(M.monadic
                                 (let γ := M.use (M.alloc (| Value.Bool true |)) in
                                 let _ :=
-                                  M.is_constant_or_break_match (|
+                                  is_constant_or_break_match (|
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
@@ -5008,7 +5007,7 @@ Module reference_safety.
                                               ltac:(M.monadic
                                                 (let γ := M.use (M.alloc (| Value.Bool true |)) in
                                                 let _ :=
-                                                  M.is_constant_or_break_match (|
+                                                  is_constant_or_break_match (|
                                                     M.read (| γ |),
                                                     Value.Bool true
                                                   |) in
@@ -5966,7 +5965,7 @@ Module reference_safety.
                                                       (let γ :=
                                                         M.use (M.alloc (| Value.Bool true |)) in
                                                       let _ :=
-                                                        M.is_constant_or_break_match (|
+                                                        is_constant_or_break_match (|
                                                           M.read (| γ |),
                                                           Value.Bool true
                                                         |) in
@@ -6419,7 +6418,7 @@ Module reference_safety.
                                                       (let γ :=
                                                         M.use (M.alloc (| Value.Bool true |)) in
                                                       let _ :=
-                                                        M.is_constant_or_break_match (|
+                                                        is_constant_or_break_match (|
                                                           M.read (| γ |),
                                                           Value.Bool true
                                                         |) in
@@ -6666,7 +6665,7 @@ Module reference_safety.
                                           ltac:(M.monadic
                                             (let γ := M.use (M.alloc (| Value.Bool true |)) in
                                             let _ :=
-                                              M.is_constant_or_break_match (|
+                                              is_constant_or_break_match (|
                                                 M.read (| γ |),
                                                 Value.Bool true
                                               |) in
@@ -7309,7 +7308,7 @@ Module reference_safety.
                                                       (let γ :=
                                                         M.use (M.alloc (| Value.Bool true |)) in
                                                       let _ :=
-                                                        M.is_constant_or_break_match (|
+                                                        is_constant_or_break_match (|
                                                           M.read (| γ |),
                                                           Value.Bool true
                                                         |) in
@@ -7669,7 +7668,7 @@ Module reference_safety.
                                                       (let γ :=
                                                         M.use (M.alloc (| Value.Bool true |)) in
                                                       let _ :=
-                                                        M.is_constant_or_break_match (|
+                                                        is_constant_or_break_match (|
                                                           M.read (| γ |),
                                                           Value.Bool true
                                                         |) in
@@ -8321,7 +8320,7 @@ Module reference_safety.
                                                       (let γ :=
                                                         M.use (M.alloc (| Value.Bool true |)) in
                                                       let _ :=
-                                                        M.is_constant_or_break_match (|
+                                                        is_constant_or_break_match (|
                                                           M.read (| γ |),
                                                           Value.Bool true
                                                         |) in
@@ -8568,7 +8567,7 @@ Module reference_safety.
                                           ltac:(M.monadic
                                             (let γ := M.use (M.alloc (| Value.Bool true |)) in
                                             let _ :=
-                                              M.is_constant_or_break_match (|
+                                              is_constant_or_break_match (|
                                                 M.read (| γ |),
                                                 Value.Bool true
                                               |) in
@@ -9206,7 +9205,7 @@ Module reference_safety.
                                                       (let γ :=
                                                         M.use (M.alloc (| Value.Bool true |)) in
                                                       let _ :=
-                                                        M.is_constant_or_break_match (|
+                                                        is_constant_or_break_match (|
                                                           M.read (| γ |),
                                                           Value.Bool true
                                                         |) in
@@ -9453,7 +9452,7 @@ Module reference_safety.
                                           ltac:(M.monadic
                                             (let γ := M.use (M.alloc (| Value.Bool true |)) in
                                             let _ :=
-                                              M.is_constant_or_break_match (|
+                                              is_constant_or_break_match (|
                                                 M.read (| γ |),
                                                 Value.Bool true
                                               |) in
@@ -9798,7 +9797,7 @@ Module reference_safety.
                                           ltac:(M.monadic
                                             (let γ := M.use (M.alloc (| Value.Bool true |)) in
                                             let _ :=
-                                              M.is_constant_or_break_match (|
+                                              is_constant_or_break_match (|
                                                 M.read (| γ |),
                                                 Value.Bool true
                                               |) in
@@ -9922,7 +9921,7 @@ Module reference_safety.
                                         |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -10049,7 +10048,7 @@ Module reference_safety.
                                         ltac:(M.monadic
                                           (let γ := M.use (M.alloc (| Value.Bool true |)) in
                                           let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
@@ -11094,7 +11093,7 @@ Module reference_safety.
                                                       (let γ :=
                                                         M.use (M.alloc (| Value.Bool true |)) in
                                                       let _ :=
-                                                        M.is_constant_or_break_match (|
+                                                        is_constant_or_break_match (|
                                                           M.read (| γ |),
                                                           Value.Bool true
                                                         |) in
@@ -11341,7 +11340,7 @@ Module reference_safety.
                                           ltac:(M.monadic
                                             (let γ := M.use (M.alloc (| Value.Bool true |)) in
                                             let _ :=
-                                              M.is_constant_or_break_match (|
+                                              is_constant_or_break_match (|
                                                 M.read (| γ |),
                                                 Value.Bool true
                                               |) in
@@ -12017,7 +12016,7 @@ Module reference_safety.
                                                       (let γ :=
                                                         M.use (M.alloc (| Value.Bool true |)) in
                                                       let _ :=
-                                                        M.is_constant_or_break_match (|
+                                                        is_constant_or_break_match (|
                                                           M.read (| γ |),
                                                           Value.Bool true
                                                         |) in
@@ -12264,7 +12263,7 @@ Module reference_safety.
                                           ltac:(M.monadic
                                             (let γ := M.use (M.alloc (| Value.Bool true |)) in
                                             let _ :=
-                                              M.is_constant_or_break_match (|
+                                              is_constant_or_break_match (|
                                                 M.read (| γ |),
                                                 Value.Bool true
                                               |) in
@@ -12912,7 +12911,7 @@ Module reference_safety.
                                                       (let γ :=
                                                         M.use (M.alloc (| Value.Bool true |)) in
                                                       let _ :=
-                                                        M.is_constant_or_break_match (|
+                                                        is_constant_or_break_match (|
                                                           M.read (| γ |),
                                                           Value.Bool true
                                                         |) in
@@ -13159,7 +13158,7 @@ Module reference_safety.
                                           ltac:(M.monadic
                                             (let γ := M.use (M.alloc (| Value.Bool true |)) in
                                             let _ :=
-                                              M.is_constant_or_break_match (|
+                                              is_constant_or_break_match (|
                                                 M.read (| γ |),
                                                 Value.Bool true
                                               |) in
@@ -13835,7 +13834,7 @@ Module reference_safety.
                                                       (let γ :=
                                                         M.use (M.alloc (| Value.Bool true |)) in
                                                       let _ :=
-                                                        M.is_constant_or_break_match (|
+                                                        is_constant_or_break_match (|
                                                           M.read (| γ |),
                                                           Value.Bool true
                                                         |) in
@@ -14082,7 +14081,7 @@ Module reference_safety.
                                           ltac:(M.monadic
                                             (let γ := M.use (M.alloc (| Value.Bool true |)) in
                                             let _ :=
-                                              M.is_constant_or_break_match (|
+                                              is_constant_or_break_match (|
                                                 M.read (| γ |),
                                                 Value.Bool true
                                               |) in
@@ -14743,7 +14742,7 @@ Module reference_safety.
                                                                       Value.Bool true
                                                                     |)) in
                                                                 let _ :=
-                                                                  M.is_constant_or_break_match (|
+                                                                  is_constant_or_break_match (|
                                                                     M.read (| γ |),
                                                                     Value.Bool true
                                                                   |) in
@@ -14858,7 +14857,7 @@ Module reference_safety.
                                         |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -14985,7 +14984,7 @@ Module reference_safety.
                                         ltac:(M.monadic
                                           (let γ := M.use (M.alloc (| Value.Bool true |)) in
                                           let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
@@ -15639,7 +15638,7 @@ Module reference_safety.
                                                                       Value.Bool true
                                                                     |)) in
                                                                 let _ :=
-                                                                  M.is_constant_or_break_match (|
+                                                                  is_constant_or_break_match (|
                                                                     M.read (| γ |),
                                                                     Value.Bool true
                                                                   |) in
@@ -15754,7 +15753,7 @@ Module reference_safety.
                                         |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -15881,7 +15880,7 @@ Module reference_safety.
                                         ltac:(M.monadic
                                           (let γ := M.use (M.alloc (| Value.Bool true |)) in
                                           let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
@@ -16577,7 +16576,7 @@ Module reference_safety.
                                                                       Value.Bool true
                                                                     |)) in
                                                                 let _ :=
-                                                                  M.is_constant_or_break_match (|
+                                                                  is_constant_or_break_match (|
                                                                     M.read (| γ |),
                                                                     Value.Bool true
                                                                   |) in
@@ -16692,7 +16691,7 @@ Module reference_safety.
                                         |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -16819,7 +16818,7 @@ Module reference_safety.
                                         ltac:(M.monadic
                                           (let γ := M.use (M.alloc (| Value.Bool true |)) in
                                           let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
@@ -17473,7 +17472,7 @@ Module reference_safety.
                                                                       Value.Bool true
                                                                     |)) in
                                                                 let _ :=
-                                                                  M.is_constant_or_break_match (|
+                                                                  is_constant_or_break_match (|
                                                                     M.read (| γ |),
                                                                     Value.Bool true
                                                                   |) in
@@ -17588,7 +17587,7 @@ Module reference_safety.
                                         |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -17715,7 +17714,7 @@ Module reference_safety.
                                         ltac:(M.monadic
                                           (let γ := M.use (M.alloc (| Value.Bool true |)) in
                                           let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
@@ -18411,7 +18410,7 @@ Module reference_safety.
                                                                       Value.Bool true
                                                                     |)) in
                                                                 let _ :=
-                                                                  M.is_constant_or_break_match (|
+                                                                  is_constant_or_break_match (|
                                                                     M.read (| γ |),
                                                                     Value.Bool true
                                                                   |) in
@@ -18526,7 +18525,7 @@ Module reference_safety.
                                         |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -18653,7 +18652,7 @@ Module reference_safety.
                                         ltac:(M.monadic
                                           (let γ := M.use (M.alloc (| Value.Bool true |)) in
                                           let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
@@ -19306,7 +19305,7 @@ Module reference_safety.
                                                                       Value.Bool true
                                                                     |)) in
                                                                 let _ :=
-                                                                  M.is_constant_or_break_match (|
+                                                                  is_constant_or_break_match (|
                                                                     M.read (| γ |),
                                                                     Value.Bool true
                                                                   |) in
@@ -19421,7 +19420,7 @@ Module reference_safety.
                                         |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -19548,7 +19547,7 @@ Module reference_safety.
                                         ltac:(M.monadic
                                           (let γ := M.use (M.alloc (| Value.Bool true |)) in
                                           let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
@@ -20810,7 +20809,7 @@ Module reference_safety.
                                                                                   Value.Bool true
                                                                                 |)) in
                                                                             let _ :=
-                                                                              M.is_constant_or_break_match (|
+                                                                              is_constant_or_break_match (|
                                                                                 M.read (| γ |),
                                                                                 Value.Bool true
                                                                               |) in
@@ -21557,7 +21556,7 @@ Module reference_safety.
                                                                                 Value.Bool true
                                                                               |)) in
                                                                           let _ :=
-                                                                            M.is_constant_or_break_match (|
+                                                                            is_constant_or_break_match (|
                                                                               M.read (| γ |),
                                                                               Value.Bool true
                                                                             |) in
@@ -21676,7 +21675,7 @@ Module reference_safety.
                                                   |)
                                                 |)) in
                                             let _ :=
-                                              M.is_constant_or_break_match (|
+                                              is_constant_or_break_match (|
                                                 M.read (| γ |),
                                                 Value.Bool true
                                               |) in
@@ -21816,7 +21815,7 @@ Module reference_safety.
                                                     (let γ :=
                                                       M.use (M.alloc (| Value.Bool true |)) in
                                                     let _ :=
-                                                      M.is_constant_or_break_match (|
+                                                      is_constant_or_break_match (|
                                                         M.read (| γ |),
                                                         Value.Bool true
                                                       |) in
@@ -22239,7 +22238,7 @@ Module reference_safety.
                                                                                 Value.Bool true
                                                                               |)) in
                                                                           let _ :=
-                                                                            M.is_constant_or_break_match (|
+                                                                            is_constant_or_break_match (|
                                                                               M.read (| γ |),
                                                                               Value.Bool true
                                                                             |) in
@@ -22358,7 +22357,7 @@ Module reference_safety.
                                                   |)
                                                 |)) in
                                             let _ :=
-                                              M.is_constant_or_break_match (|
+                                              is_constant_or_break_match (|
                                                 M.read (| γ |),
                                                 Value.Bool true
                                               |) in
@@ -22498,7 +22497,7 @@ Module reference_safety.
                                                     (let γ :=
                                                       M.use (M.alloc (| Value.Bool true |)) in
                                                     let _ :=
-                                                      M.is_constant_or_break_match (|
+                                                      is_constant_or_break_match (|
                                                         M.read (| γ |),
                                                         Value.Bool true
                                                       |) in
@@ -22870,7 +22869,7 @@ Module reference_safety.
                                                               M.use
                                                                 (M.alloc (| Value.Bool true |)) in
                                                             let _ :=
-                                                              M.is_constant_or_break_match (|
+                                                              is_constant_or_break_match (|
                                                                 M.read (| γ |),
                                                                 Value.Bool true
                                                               |) in
@@ -24775,7 +24774,7 @@ Module reference_safety.
                                                                                 Value.Bool true
                                                                               |)) in
                                                                           let _ :=
-                                                                            M.is_constant_or_break_match (|
+                                                                            is_constant_or_break_match (|
                                                                               M.read (| γ |),
                                                                               Value.Bool true
                                                                             |) in
@@ -24894,7 +24893,7 @@ Module reference_safety.
                                                   |)
                                                 |)) in
                                             let _ :=
-                                              M.is_constant_or_break_match (|
+                                              is_constant_or_break_match (|
                                                 M.read (| γ |),
                                                 Value.Bool true
                                               |) in
@@ -25034,7 +25033,7 @@ Module reference_safety.
                                                     (let γ :=
                                                       M.use (M.alloc (| Value.Bool true |)) in
                                                     let _ :=
-                                                      M.is_constant_or_break_match (|
+                                                      is_constant_or_break_match (|
                                                         M.read (| γ |),
                                                         Value.Bool true
                                                       |) in
@@ -25422,7 +25421,7 @@ Module reference_safety.
                                                                                 Value.Bool true
                                                                               |)) in
                                                                           let _ :=
-                                                                            M.is_constant_or_break_match (|
+                                                                            is_constant_or_break_match (|
                                                                               M.read (| γ |),
                                                                               Value.Bool true
                                                                             |) in
@@ -25541,7 +25540,7 @@ Module reference_safety.
                                                   |)
                                                 |)) in
                                             let _ :=
-                                              M.is_constant_or_break_match (|
+                                              is_constant_or_break_match (|
                                                 M.read (| γ |),
                                                 Value.Bool true
                                               |) in
@@ -25681,7 +25680,7 @@ Module reference_safety.
                                                     (let γ :=
                                                       M.use (M.alloc (| Value.Bool true |)) in
                                                     let _ :=
-                                                      M.is_constant_or_break_match (|
+                                                      is_constant_or_break_match (|
                                                         M.read (| γ |),
                                                         Value.Bool true
                                                       |) in
@@ -26989,7 +26988,7 @@ Module reference_safety.
                                                       (let γ :=
                                                         M.use (M.alloc (| Value.Bool true |)) in
                                                       let _ :=
-                                                        M.is_constant_or_break_match (|
+                                                        is_constant_or_break_match (|
                                                           M.read (| γ |),
                                                           Value.Bool true
                                                         |) in
@@ -27118,7 +27117,7 @@ Module reference_safety.
                                                   |)
                                                 |)) in
                                             let _ :=
-                                              M.is_constant_or_break_match (|
+                                              is_constant_or_break_match (|
                                                 M.read (| γ |),
                                                 Value.Bool true
                                               |) in
@@ -27258,7 +27257,7 @@ Module reference_safety.
                                                     (let γ :=
                                                       M.use (M.alloc (| Value.Bool true |)) in
                                                     let _ :=
-                                                      M.is_constant_or_break_match (|
+                                                      is_constant_or_break_match (|
                                                         M.read (| γ |),
                                                         Value.Bool true
                                                       |) in
@@ -27921,7 +27920,7 @@ Module reference_safety.
                                           ltac:(M.monadic
                                             (let γ := M.use (M.alloc (| Value.Bool true |)) in
                                             let _ :=
-                                              M.is_constant_or_break_match (|
+                                              is_constant_or_break_match (|
                                                 M.read (| γ |),
                                                 Value.Bool true
                                               |) in
@@ -28593,7 +28592,7 @@ Module reference_safety.
                                                                       Value.Bool true
                                                                     |)) in
                                                                 let _ :=
-                                                                  M.is_constant_or_break_match (|
+                                                                  is_constant_or_break_match (|
                                                                     M.read (| γ |),
                                                                     Value.Bool true
                                                                   |) in
@@ -28708,7 +28707,7 @@ Module reference_safety.
                                         |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -28835,7 +28834,7 @@ Module reference_safety.
                                         ltac:(M.monadic
                                           (let γ := M.use (M.alloc (| Value.Bool true |)) in
                                           let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
@@ -29180,7 +29179,7 @@ Module reference_safety.
                                           ltac:(M.monadic
                                             (let γ := M.use (M.alloc (| Value.Bool true |)) in
                                             let _ :=
-                                              M.is_constant_or_break_match (|
+                                              is_constant_or_break_match (|
                                                 M.read (| γ |),
                                                 Value.Bool true
                                               |) in
@@ -29833,7 +29832,7 @@ Module reference_safety.
                                                                       Value.Bool true
                                                                     |)) in
                                                                 let _ :=
-                                                                  M.is_constant_or_break_match (|
+                                                                  is_constant_or_break_match (|
                                                                     M.read (| γ |),
                                                                     Value.Bool true
                                                                   |) in
@@ -29948,7 +29947,7 @@ Module reference_safety.
                                         |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -30075,7 +30074,7 @@ Module reference_safety.
                                         ltac:(M.monadic
                                           (let γ := M.use (M.alloc (| Value.Bool true |)) in
                                           let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
@@ -30420,7 +30419,7 @@ Module reference_safety.
                                           ltac:(M.monadic
                                             (let γ := M.use (M.alloc (| Value.Bool true |)) in
                                             let _ :=
-                                              M.is_constant_or_break_match (|
+                                              is_constant_or_break_match (|
                                                 M.read (| γ |),
                                                 Value.Bool true
                                               |) in
@@ -31073,7 +31072,7 @@ Module reference_safety.
                                                                       Value.Bool true
                                                                     |)) in
                                                                 let _ :=
-                                                                  M.is_constant_or_break_match (|
+                                                                  is_constant_or_break_match (|
                                                                     M.read (| γ |),
                                                                     Value.Bool true
                                                                   |) in
@@ -31188,7 +31187,7 @@ Module reference_safety.
                                         |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -31315,7 +31314,7 @@ Module reference_safety.
                                         ltac:(M.monadic
                                           (let γ := M.use (M.alloc (| Value.Bool true |)) in
                                           let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
@@ -31660,7 +31659,7 @@ Module reference_safety.
                                           ltac:(M.monadic
                                             (let γ := M.use (M.alloc (| Value.Bool true |)) in
                                             let _ :=
-                                              M.is_constant_or_break_match (|
+                                              is_constant_or_break_match (|
                                                 M.read (| γ |),
                                                 Value.Bool true
                                               |) in
@@ -32143,7 +32142,7 @@ Module reference_safety.
                                           ltac:(M.monadic
                                             (let γ := M.use (M.alloc (| Value.Bool true |)) in
                                             let _ :=
-                                              M.is_constant_or_break_match (|
+                                              is_constant_or_break_match (|
                                                 M.read (| γ |),
                                                 Value.Bool true
                                               |) in
@@ -32943,7 +32942,7 @@ Module reference_safety.
                                                                       Value.Bool true
                                                                     |)) in
                                                                 let _ :=
-                                                                  M.is_constant_or_break_match (|
+                                                                  is_constant_or_break_match (|
                                                                     M.read (| γ |),
                                                                     Value.Bool true
                                                                   |) in
@@ -33058,7 +33057,7 @@ Module reference_safety.
                                         |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -33185,7 +33184,7 @@ Module reference_safety.
                                         ltac:(M.monadic
                                           (let γ := M.use (M.alloc (| Value.Bool true |)) in
                                           let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
@@ -33851,7 +33850,7 @@ Module reference_safety.
                                                                       Value.Bool true
                                                                     |)) in
                                                                 let _ :=
-                                                                  M.is_constant_or_break_match (|
+                                                                  is_constant_or_break_match (|
                                                                     M.read (| γ |),
                                                                     Value.Bool true
                                                                   |) in
@@ -33966,7 +33965,7 @@ Module reference_safety.
                                         |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -34093,7 +34092,7 @@ Module reference_safety.
                                         ltac:(M.monadic
                                           (let γ := M.use (M.alloc (| Value.Bool true |)) in
                                           let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
@@ -34477,7 +34476,7 @@ Module reference_safety.
                                                                       Value.Bool true
                                                                     |)) in
                                                                 let _ :=
-                                                                  M.is_constant_or_break_match (|
+                                                                  is_constant_or_break_match (|
                                                                     M.read (| γ |),
                                                                     Value.Bool true
                                                                   |) in
@@ -34592,7 +34591,7 @@ Module reference_safety.
                                         |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -34719,7 +34718,7 @@ Module reference_safety.
                                         ltac:(M.monadic
                                           (let γ := M.use (M.alloc (| Value.Bool true |)) in
                                           let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
@@ -35064,7 +35063,7 @@ Module reference_safety.
                                           ltac:(M.monadic
                                             (let γ := M.use (M.alloc (| Value.Bool true |)) in
                                             let _ :=
-                                              M.is_constant_or_break_match (|
+                                              is_constant_or_break_match (|
                                                 M.read (| γ |),
                                                 Value.Bool true
                                               |) in
@@ -35470,10 +35469,14 @@ Module reference_safety.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.eq (| M.read (| index |), M.read (| last_index |) |)
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.eq,
+                                  [ M.read (| index |); M.read (| last_index |) ]
+                                |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ : Ty.tuple [] :=
                             M.match_operator (|
                               Some (Ty.tuple []),
@@ -35513,7 +35516,7 @@ Module reference_safety.
                                           |)
                                         |)) in
                                     let _ :=
-                                      M.is_constant_or_break_match (|
+                                      is_constant_or_break_match (|
                                         M.read (| γ |),
                                         Value.Bool true
                                       |) in
@@ -35642,7 +35645,7 @@ Module reference_safety.
                                           ltac:(M.monadic
                                             (let γ := M.use (M.alloc (| Value.Bool true |)) in
                                             let _ :=
-                                              M.is_constant_or_break_match (|
+                                              is_constant_or_break_match (|
                                                 M.read (| γ |),
                                                 Value.Bool true
                                               |) in

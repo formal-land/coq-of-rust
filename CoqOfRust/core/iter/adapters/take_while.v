@@ -331,7 +331,7 @@ Module iter.
                                   "flag"
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                         fun γ =>
                           ltac:(M.monadic
@@ -558,7 +558,7 @@ Module iter.
                                           |)
                                         |)) in
                                     let _ :=
-                                      M.is_constant_or_break_match (|
+                                      is_constant_or_break_match (|
                                         M.read (| γ |),
                                         Value.Bool true
                                       |) in
@@ -632,8 +632,7 @@ Module iter.
                               "core::iter::adapters::take_while::TakeWhile",
                               "flag"
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           Value.Tuple
                             [
@@ -751,8 +750,7 @@ Module iter.
                               "core::iter::adapters::take_while::TakeWhile",
                               "flag"
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           M.call_closure (|
                             R,

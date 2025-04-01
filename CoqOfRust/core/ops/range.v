@@ -2246,21 +2246,25 @@ Module ops.
                   |)))
               |),
               ltac:(M.monadic
-                (BinOp.eq (|
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "core::ops::range::RangeInclusive",
-                      "exhausted"
+                (M.call_closure (|
+                  Ty.path "bool",
+                  BinOp.eq,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::ops::range::RangeInclusive",
+                        "exhausted"
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| other |) |),
+                        "core::ops::range::RangeInclusive",
+                        "exhausted"
+                      |)
                     |)
-                  |),
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| other |) |),
-                      "core::ops::range::RangeInclusive",
-                      "exhausted"
-                    |)
-                  |)
+                  ]
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -2691,15 +2695,19 @@ Module ops.
             M.read (|
               let~ exclusive_end : Ty.path "usize" :=
                 M.alloc (|
-                  BinOp.Wrap.add (|
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        self,
-                        "core::ops::range::RangeInclusive",
-                        "end"
-                      |)
-                    |),
-                    Value.Integer IntegerKind.Usize 1
+                  M.call_closure (|
+                    Ty.path "usize",
+                    BinOp.Wrap.add,
+                    [
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          self,
+                          "core::ops::range::RangeInclusive",
+                          "end"
+                        |)
+                      |);
+                      Value.Integer IntegerKind.Usize 1
+                    ]
                   |)
                 |) in
               let~ start : Ty.path "usize" :=
@@ -2718,7 +2726,7 @@ Module ops.
                                 "exhausted"
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           exclusive_end));
                       fun γ =>
                         ltac:(M.monadic
@@ -3136,7 +3144,7 @@ Module ops.
                                   "exhausted"
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let~ _ : Ty.tuple [] :=
                               M.match_operator (|
                                 Some (Ty.tuple []),
@@ -4256,7 +4264,11 @@ Module ops.
                 |) in
               M.alloc (|
                 LogicalOp.and (|
-                  BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |),
+                  M.call_closure (|
+                    Ty.path "bool",
+                    BinOp.eq,
+                    [ M.read (| __self_discr |); M.read (| __arg1_discr |) ]
+                  |),
                   ltac:(M.monadic
                     (M.read (|
                       M.match_operator (|
@@ -5259,7 +5271,7 @@ Module ops.
                             "core::ops::range::RangeInclusive",
                             "exhausted"
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::ops::range::Bound::Excluded"

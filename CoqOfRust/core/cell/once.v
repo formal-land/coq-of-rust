@@ -834,7 +834,7 @@ Module cell.
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let~ _ : Ty.apply (Ty.path "&") [] [ T ] :=
                               M.match_operator (|
                                 Some (Ty.apply (Ty.path "&") [] [ T ]),

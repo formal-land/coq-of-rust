@@ -84,7 +84,11 @@ Module collections.
                   |) in
                 let~ new_len : Ty.path "usize" :=
                   M.alloc (|
-                    BinOp.Wrap.sub (| M.read (| orig_len |), M.read (| drain_len |) |)
+                    M.call_closure (|
+                      Ty.path "usize",
+                      BinOp.Wrap.sub,
+                      [ M.read (| orig_len |); M.read (| drain_len |) ]
+                    |)
                   |) in
                 M.alloc (|
                   Value.StructRecord
@@ -228,21 +232,25 @@ Module collections.
                             |)
                           |));
                         ("end_",
-                          BinOp.Wrap.add (|
-                            M.read (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "alloc::collections::vec_deque::drain::Drain",
-                                "idx"
+                          M.call_closure (|
+                            Ty.path "usize",
+                            BinOp.Wrap.add,
+                            [
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "alloc::collections::vec_deque::drain::Drain",
+                                  "idx"
+                                |)
+                              |);
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "alloc::collections::vec_deque::drain::Drain",
+                                  "remaining"
+                                |)
                               |)
-                            |),
-                            M.read (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "alloc::collections::vec_deque::drain::Drain",
-                                "remaining"
-                              |)
-                            |)
+                            ]
                           |))
                       ]
                   |) in
@@ -753,28 +761,32 @@ Module collections.
                                     []
                                   |),
                                   ltac:(M.monadic
-                                    (BinOp.ne (|
-                                      M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.deref (|
-                                            M.read (|
-                                              M.SubPointer.get_struct_tuple_field (|
-                                                guard,
-                                                "alloc::collections::vec_deque::drain::drop::DropGuard",
-                                                0
+                                    (M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.ne,
+                                      [
+                                        M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (|
+                                              M.read (|
+                                                M.SubPointer.get_struct_tuple_field (|
+                                                  guard,
+                                                  "alloc::collections::vec_deque::drain::drop::DropGuard",
+                                                  0
+                                                |)
                                               |)
-                                            |)
-                                          |),
-                                          "alloc::collections::vec_deque::drain::Drain",
-                                          "remaining"
-                                        |)
-                                      |),
-                                      Value.Integer IntegerKind.Usize 0
+                                            |),
+                                            "alloc::collections::vec_deque::drain::Drain",
+                                            "remaining"
+                                          |)
+                                        |);
+                                        Value.Integer IntegerKind.Usize 0
+                                      ]
                                     |)))
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.match_operator (|
                             None,
                             M.alloc (|
@@ -840,21 +852,25 @@ Module collections.
                                         |) in
                                       M.write (|
                                         β,
-                                        BinOp.Wrap.add (|
-                                          M.read (| β |),
-                                          M.call_closure (|
-                                            Ty.path "usize",
-                                            M.get_associated_function (|
-                                              Ty.apply
-                                                (Ty.path "*mut")
+                                        M.call_closure (|
+                                          Ty.path "usize",
+                                          BinOp.Wrap.add,
+                                          [
+                                            M.read (| β |);
+                                            M.call_closure (|
+                                              Ty.path "usize",
+                                              M.get_associated_function (|
+                                                Ty.apply
+                                                  (Ty.path "*mut")
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                                "len",
+                                                [],
                                                 []
-                                                [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                                              "len",
-                                              [],
-                                              []
-                                            |),
-                                            [ M.read (| front |) ]
-                                          |)
+                                              |),
+                                              [ M.read (| front |) ]
+                                            |)
+                                          ]
                                         |)
                                       |)
                                     |) in
@@ -876,21 +892,25 @@ Module collections.
                                         |) in
                                       M.write (|
                                         β,
-                                        BinOp.Wrap.sub (|
-                                          M.read (| β |),
-                                          M.call_closure (|
-                                            Ty.path "usize",
-                                            M.get_associated_function (|
-                                              Ty.apply
-                                                (Ty.path "*mut")
+                                        M.call_closure (|
+                                          Ty.path "usize",
+                                          BinOp.Wrap.sub,
+                                          [
+                                            M.read (| β |);
+                                            M.call_closure (|
+                                              Ty.path "usize",
+                                              M.get_associated_function (|
+                                                Ty.apply
+                                                  (Ty.path "*mut")
+                                                  []
+                                                  [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                                "len",
+                                                [],
                                                 []
-                                                [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                                              "len",
-                                              [],
-                                              []
-                                            |),
-                                            [ M.read (| front |) ]
-                                          |)
+                                              |),
+                                              [ M.read (| front |) ]
+                                            |)
+                                          ]
                                         |)
                                       |)
                                     |) in
@@ -995,22 +1015,23 @@ Module collections.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.eq (|
-                                      M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.deref (| M.read (| self |) |),
-                                          "alloc::collections::vec_deque::drain::Drain",
-                                          "remaining"
-                                        |)
-                                      |),
-                                      Value.Integer IntegerKind.Usize 0
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.eq,
+                                      [
+                                        M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "alloc::collections::vec_deque::drain::Drain",
+                                            "remaining"
+                                          |)
+                                        |);
+                                        Value.Integer IntegerKind.Usize 0
+                                      ]
                                     |)
                                   |)) in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (|
                                 M.never_to_any (|
                                   M.read (|
@@ -1097,7 +1118,11 @@ Module collections.
                           |) in
                         M.write (|
                           β,
-                          BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
+                          M.call_closure (|
+                            Ty.path "usize",
+                            BinOp.Wrap.add,
+                            [ M.read (| β |); Value.Integer IntegerKind.Usize 1 ]
+                          |)
                         |)
                       |) in
                     let~ _ : Ty.tuple [] :=
@@ -1110,7 +1135,11 @@ Module collections.
                           |) in
                         M.write (|
                           β,
-                          BinOp.Wrap.sub (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
+                          M.call_closure (|
+                            Ty.path "usize",
+                            BinOp.Wrap.sub,
+                            [ M.read (| β |); Value.Integer IntegerKind.Usize 1 ]
+                          |)
                         |)
                       |) in
                     M.alloc (|
@@ -1269,22 +1298,23 @@ Module collections.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.eq (|
-                                      M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.deref (| M.read (| self |) |),
-                                          "alloc::collections::vec_deque::drain::Drain",
-                                          "remaining"
-                                        |)
-                                      |),
-                                      Value.Integer IntegerKind.Usize 0
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.eq,
+                                      [
+                                        M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "alloc::collections::vec_deque::drain::Drain",
+                                            "remaining"
+                                          |)
+                                        |);
+                                        Value.Integer IntegerKind.Usize 0
+                                      ]
                                     |)
                                   |)) in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (|
                                 M.never_to_any (|
                                   M.read (|
@@ -1307,7 +1337,11 @@ Module collections.
                           |) in
                         M.write (|
                           β,
-                          BinOp.Wrap.sub (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
+                          M.call_closure (|
+                            Ty.path "usize",
+                            BinOp.Wrap.sub,
+                            [ M.read (| β |); Value.Integer IntegerKind.Usize 1 ]
+                          |)
                         |)
                       |) in
                     let~ wrapped_idx : Ty.path "usize" :=
@@ -1364,21 +1398,25 @@ Module collections.
                                 |)
                               |)
                             |);
-                            BinOp.Wrap.add (|
-                              M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "alloc::collections::vec_deque::drain::Drain",
-                                  "idx"
+                            M.call_closure (|
+                              Ty.path "usize",
+                              BinOp.Wrap.add,
+                              [
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "alloc::collections::vec_deque::drain::Drain",
+                                    "idx"
+                                  |)
+                                |);
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "alloc::collections::vec_deque::drain::Drain",
+                                    "remaining"
+                                  |)
                                 |)
-                              |),
-                              M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "alloc::collections::vec_deque::drain::Drain",
-                                  "remaining"
-                                |)
-                              |)
+                              ]
                             |)
                           ]
                         |)

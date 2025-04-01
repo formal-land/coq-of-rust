@@ -533,7 +533,7 @@ Module signed.
                                         |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -1433,22 +1433,27 @@ Module signed.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          BinOp.ge (|
-                                            M.read (| M.deref (| M.read (| limb |) |) |),
-                                            M.read (|
-                                              get_associated_constant (|
-                                                Ty.apply
-                                                  (Ty.path "alloy_primitives::signed::int::Signed")
-                                                  [ BITS; LIMBS ]
-                                                  [],
-                                                "SIGN_BIT",
-                                                Ty.path "u64"
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            BinOp.ge,
+                                            [
+                                              M.read (| M.deref (| M.read (| limb |) |) |);
+                                              M.read (|
+                                                get_associated_constant (|
+                                                  Ty.apply
+                                                    (Ty.path
+                                                      "alloy_primitives::signed::int::Signed")
+                                                    [ BITS; LIMBS ]
+                                                    [],
+                                                  "SIGN_BIT",
+                                                  Ty.path "u64"
+                                                |)
                                               |)
-                                            |)
+                                            ]
                                           |)
                                         |)) in
                                     let _ :=
-                                      M.is_constant_or_break_match (|
+                                      is_constant_or_break_match (|
                                         M.read (| γ |),
                                         Value.Bool true
                                       |) in
@@ -1512,45 +1517,60 @@ Module signed.
                     ltac:(M.monadic
                       (let γ :=
                         M.use
-                          (M.alloc (| BinOp.eq (| BITS, Value.Integer IntegerKind.Usize 0 |) |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          (M.alloc (|
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.eq,
+                              [ BITS; Value.Integer IntegerKind.Usize 0 ]
+                            |)
+                          |)) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.Bool false |)));
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        BinOp.eq (|
-                          BinOp.Wrap.rem (|
-                            M.read (|
-                              M.SubPointer.get_array_field (|
-                                M.deref (|
-                                  M.call_closure (|
-                                    Ty.apply
-                                      (Ty.path "&")
-                                      []
-                                      [ Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ] ],
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "alloy_primitives::signed::int::Signed")
-                                        [ BITS; LIMBS ]
-                                        [],
-                                      "as_limbs",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| self |) |)
+                        M.call_closure (|
+                          Ty.path "bool",
+                          BinOp.eq,
+                          [
+                            M.call_closure (|
+                              Ty.path "u64",
+                              BinOp.Wrap.rem,
+                              [
+                                M.read (|
+                                  M.SubPointer.get_array_field (|
+                                    M.deref (|
+                                      M.call_closure (|
+                                        Ty.apply
+                                          (Ty.path "&")
+                                          []
+                                          [ Ty.apply (Ty.path "array") [ LIMBS ] [ Ty.path "u64" ]
+                                          ],
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "alloy_primitives::signed::int::Signed")
+                                            [ BITS; LIMBS ]
+                                            [],
+                                          "as_limbs",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| self |) |)
+                                          |)
+                                        ]
                                       |)
-                                    ]
+                                    |),
+                                    Value.Integer IntegerKind.Usize 0
                                   |)
-                                |),
-                                Value.Integer IntegerKind.Usize 0
-                              |)
-                            |),
-                            Value.Integer IntegerKind.U64 2
-                          |),
-                          Value.Integer IntegerKind.U64 1
+                                |);
+                                Value.Integer IntegerKind.U64 2
+                              ]
+                            |);
+                            Value.Integer IntegerKind.U64 1
+                          ]
                         |)
                       |)))
                 ]
@@ -2169,54 +2189,59 @@ Module signed.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.eq (|
-                                  M.call_closure (|
-                                    Ty.path "usize",
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "alloy_primitives::signed::int::Signed")
-                                        [ BITS; LIMBS ]
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.eq,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "usize",
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "alloy_primitives::signed::int::Signed")
+                                          [ BITS; LIMBS ]
+                                          [],
+                                        "count_zeros",
                                         [],
-                                      "count_zeros",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| self |) |)
-                                      |)
-                                    ]
-                                  |),
-                                  M.call_closure (|
-                                    Ty.path "usize",
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "alloy_primitives::signed::int::Signed")
-                                        [ BITS; LIMBS ]
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
+                                    |);
+                                    M.call_closure (|
+                                      Ty.path "usize",
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "alloy_primitives::signed::int::Signed")
+                                          [ BITS; LIMBS ]
+                                          [],
+                                        "trailing_zeros",
                                         [],
-                                      "trailing_zeros",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| self |) |)
-                                      |)
-                                    ]
-                                  |)
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
+                                    |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           unsigned_bits));
                       fun γ =>
                         ltac:(M.monadic
                           (M.alloc (|
-                            BinOp.Wrap.add (|
-                              M.read (| unsigned_bits |),
-                              Value.Integer IntegerKind.Usize 1
+                            M.call_closure (|
+                              Ty.path "usize",
+                              BinOp.Wrap.add,
+                              [ M.read (| unsigned_bits |); Value.Integer IntegerKind.Usize 1 ]
                             |)
                           |)))
                     ]
@@ -2458,10 +2483,7 @@ Module signed.
                             ltac:(M.monadic
                               (let γ := M.use overflow in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                           fun γ =>
                             ltac:(M.monadic
@@ -2566,7 +2588,7 @@ Module signed.
                               |) in
                             let γ0_0 := M.read (| γ0_0 |) in
                             let _ :=
-                              M.is_constant_or_break_match (|
+                              is_constant_or_break_match (|
                                 M.read (| γ0_0 |),
                                 Value.Integer IntegerKind.U8 43
                               |) in
@@ -2619,7 +2641,7 @@ Module signed.
                               |) in
                             let γ0_0 := M.read (| γ0_0 |) in
                             let _ :=
-                              M.is_constant_or_break_match (|
+                              is_constant_or_break_match (|
                                 M.read (| γ0_0 |),
                                 Value.Integer IntegerKind.U8 45
                               |) in
@@ -3126,7 +3148,7 @@ Module signed.
                               |) in
                             let γ0_0 := M.read (| γ0_0 |) in
                             let _ :=
-                              M.is_constant_or_break_match (|
+                              is_constant_or_break_match (|
                                 M.read (| γ0_0 |),
                                 Value.Integer IntegerKind.U8 43
                               |) in
@@ -3179,7 +3201,7 @@ Module signed.
                               |) in
                             let γ0_0 := M.read (| γ0_0 |) in
                             let _ :=
-                              M.is_constant_or_break_match (|
+                              is_constant_or_break_match (|
                                 M.read (| γ0_0 |),
                                 Value.Integer IntegerKind.U8 45
                               |) in
@@ -3289,27 +3311,31 @@ Module signed.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          BinOp.gt (|
-                                            M.call_closure (|
-                                              Ty.path "usize",
-                                              M.get_associated_function (|
-                                                Ty.path "str",
-                                                "len",
-                                                [],
-                                                []
-                                              |),
-                                              [
-                                                M.borrow (|
-                                                  Pointer.Kind.Ref,
-                                                  M.deref (| M.read (| value |) |)
-                                                |)
-                                              ]
-                                            |),
-                                            Value.Integer IntegerKind.Usize 64
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            BinOp.gt,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "usize",
+                                                M.get_associated_function (|
+                                                  Ty.path "str",
+                                                  "len",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| value |) |)
+                                                  |)
+                                                ]
+                                              |);
+                                              Value.Integer IntegerKind.Usize 64
+                                            ]
                                           |)
                                         |)) in
                                     let _ :=
-                                      M.is_constant_or_break_match (|
+                                      is_constant_or_break_match (|
                                         M.read (| γ |),
                                         Value.Bool true
                                       |) in

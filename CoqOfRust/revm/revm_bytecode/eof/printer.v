@@ -63,23 +63,30 @@ Module eof.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.lt (|
-                                M.read (| i |),
-                                M.call_closure (|
-                                  Ty.path "usize",
-                                  M.get_associated_function (|
-                                    Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                    "len",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| code |) |) |)
-                                  ]
-                                |)
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.lt,
+                                [
+                                  M.read (| i |);
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    M.get_associated_function (|
+                                      Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                      "len",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| code |) |)
+                                      |)
+                                    ]
+                                  |)
+                                ]
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ op : Ty.path "u8" :=
                           M.copy (|
                             M.SubPointer.get_array_field (|
@@ -141,27 +148,31 @@ Module eof.
                                           (let γ :=
                                             M.use
                                               (M.alloc (|
-                                                BinOp.ne (|
-                                                  M.call_closure (|
-                                                    Ty.path "u8",
-                                                    M.get_associated_function (|
-                                                      Ty.path "revm_bytecode::opcode::OpCodeInfo",
-                                                      "immediate_size",
-                                                      [],
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.borrow (|
-                                                        Pointer.Kind.Ref,
-                                                        M.deref (| M.read (| opcode |) |)
-                                                      |)
-                                                    ]
-                                                  |),
-                                                  Value.Integer IntegerKind.U8 0
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  BinOp.ne,
+                                                  [
+                                                    M.call_closure (|
+                                                      Ty.path "u8",
+                                                      M.get_associated_function (|
+                                                        Ty.path "revm_bytecode::opcode::OpCodeInfo",
+                                                        "immediate_size",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (| M.read (| opcode |) |)
+                                                        |)
+                                                      ]
+                                                    |);
+                                                    Value.Integer IntegerKind.U8 0
+                                                  ]
                                                 |)
                                               |)) in
                                           let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
@@ -174,52 +185,60 @@ Module eof.
                                                   (let γ :=
                                                     M.use
                                                       (M.alloc (|
-                                                        BinOp.ge (|
-                                                          BinOp.Wrap.add (|
-                                                            M.read (| i |),
-                                                            M.cast
-                                                              (Ty.path "usize")
-                                                              (M.call_closure (|
-                                                                Ty.path "u8",
-                                                                M.get_associated_function (|
-                                                                  Ty.path
-                                                                    "revm_bytecode::opcode::OpCodeInfo",
-                                                                  "immediate_size",
-                                                                  [],
+                                                        M.call_closure (|
+                                                          Ty.path "bool",
+                                                          BinOp.ge,
+                                                          [
+                                                            M.call_closure (|
+                                                              Ty.path "usize",
+                                                              BinOp.Wrap.add,
+                                                              [
+                                                                M.read (| i |);
+                                                                M.cast
+                                                                  (Ty.path "usize")
+                                                                  (M.call_closure (|
+                                                                    Ty.path "u8",
+                                                                    M.get_associated_function (|
+                                                                      Ty.path
+                                                                        "revm_bytecode::opcode::OpCodeInfo",
+                                                                      "immediate_size",
+                                                                      [],
+                                                                      []
+                                                                    |),
+                                                                    [
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.read (| opcode |)
+                                                                        |)
+                                                                      |)
+                                                                    ]
+                                                                  |))
+                                                              ]
+                                                            |);
+                                                            M.call_closure (|
+                                                              Ty.path "usize",
+                                                              M.get_associated_function (|
+                                                                Ty.apply
+                                                                  (Ty.path "slice")
                                                                   []
-                                                                |),
-                                                                [
-                                                                  M.borrow (|
-                                                                    Pointer.Kind.Ref,
-                                                                    M.deref (|
-                                                                      M.read (| opcode |)
-                                                                    |)
-                                                                  |)
-                                                                ]
-                                                              |))
-                                                          |),
-                                                          M.call_closure (|
-                                                            Ty.path "usize",
-                                                            M.get_associated_function (|
-                                                              Ty.apply
-                                                                (Ty.path "slice")
+                                                                  [ Ty.path "u8" ],
+                                                                "len",
+                                                                [],
                                                                 []
-                                                                [ Ty.path "u8" ],
-                                                              "len",
-                                                              [],
-                                                              []
-                                                            |),
-                                                            [
-                                                              M.borrow (|
-                                                                Pointer.Kind.Ref,
-                                                                M.deref (| M.read (| code |) |)
-                                                              |)
-                                                            ]
-                                                          |)
+                                                              |),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (| M.read (| code |) |)
+                                                                |)
+                                                              ]
+                                                            |)
+                                                          ]
                                                         |)
                                                       |)) in
                                                   let _ :=
-                                                    M.is_constant_or_break_match (|
+                                                    is_constant_or_break_match (|
                                                       M.read (| γ |),
                                                       Value.Bool true
                                                     |) in
@@ -389,27 +408,31 @@ Module eof.
                                           (let γ :=
                                             M.use
                                               (M.alloc (|
-                                                BinOp.ne (|
-                                                  M.call_closure (|
-                                                    Ty.path "u8",
-                                                    M.get_associated_function (|
-                                                      Ty.path "revm_bytecode::opcode::OpCodeInfo",
-                                                      "immediate_size",
-                                                      [],
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.borrow (|
-                                                        Pointer.Kind.Ref,
-                                                        M.deref (| M.read (| opcode |) |)
-                                                      |)
-                                                    ]
-                                                  |),
-                                                  Value.Integer IntegerKind.U8 0
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  BinOp.ne,
+                                                  [
+                                                    M.call_closure (|
+                                                      Ty.path "u8",
+                                                      M.get_associated_function (|
+                                                        Ty.path "revm_bytecode::opcode::OpCodeInfo",
+                                                        "immediate_size",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (| M.read (| opcode |) |)
+                                                        |)
+                                                      ]
+                                                    |);
+                                                    Value.Integer IntegerKind.U8 0
+                                                  ]
                                                 |)
                                               |)) in
                                           let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
@@ -459,36 +482,50 @@ Module eof.
                                                         "core::ops::range::Range"
                                                         [
                                                           ("start",
-                                                            BinOp.Wrap.add (|
-                                                              M.read (| i |),
-                                                              Value.Integer IntegerKind.Usize 1
+                                                            M.call_closure (|
+                                                              Ty.path "usize",
+                                                              BinOp.Wrap.add,
+                                                              [
+                                                                M.read (| i |);
+                                                                Value.Integer IntegerKind.Usize 1
+                                                              ]
                                                             |));
                                                           ("end_",
-                                                            BinOp.Wrap.add (|
-                                                              BinOp.Wrap.add (|
-                                                                M.read (| i |),
-                                                                Value.Integer IntegerKind.Usize 1
-                                                              |),
-                                                              M.cast
-                                                                (Ty.path "usize")
-                                                                (M.call_closure (|
-                                                                  Ty.path "u8",
-                                                                  M.get_associated_function (|
-                                                                    Ty.path
-                                                                      "revm_bytecode::opcode::OpCodeInfo",
-                                                                    "immediate_size",
-                                                                    [],
-                                                                    []
-                                                                  |),
+                                                            M.call_closure (|
+                                                              Ty.path "usize",
+                                                              BinOp.Wrap.add,
+                                                              [
+                                                                M.call_closure (|
+                                                                  Ty.path "usize",
+                                                                  BinOp.Wrap.add,
                                                                   [
-                                                                    M.borrow (|
-                                                                      Pointer.Kind.Ref,
-                                                                      M.deref (|
-                                                                        M.read (| opcode |)
-                                                                      |)
-                                                                    |)
+                                                                    M.read (| i |);
+                                                                    Value.Integer
+                                                                      IntegerKind.Usize
+                                                                      1
                                                                   ]
-                                                                |))
+                                                                |);
+                                                                M.cast
+                                                                  (Ty.path "usize")
+                                                                  (M.call_closure (|
+                                                                    Ty.path "u8",
+                                                                    M.get_associated_function (|
+                                                                      Ty.path
+                                                                        "revm_bytecode::opcode::OpCodeInfo",
+                                                                      "immediate_size",
+                                                                      [],
+                                                                      []
+                                                                    |),
+                                                                    [
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.read (| opcode |)
+                                                                        |)
+                                                                      |)
+                                                                    ]
+                                                                  |))
+                                                              ]
                                                             |))
                                                         ]
                                                     ]
@@ -613,28 +650,32 @@ Module eof.
                                                   (let γ :=
                                                     M.use
                                                       (M.alloc (|
-                                                        BinOp.eq (|
-                                                          M.call_closure (|
-                                                            Ty.path "u8",
-                                                            M.get_associated_function (|
-                                                              Ty.path
-                                                                "revm_bytecode::opcode::OpCodeInfo",
-                                                              "immediate_size",
-                                                              [],
-                                                              []
-                                                            |),
-                                                            [
-                                                              M.borrow (|
-                                                                Pointer.Kind.Ref,
-                                                                M.deref (| M.read (| opcode |) |)
-                                                              |)
-                                                            ]
-                                                          |),
-                                                          Value.Integer IntegerKind.U8 2
+                                                        M.call_closure (|
+                                                          Ty.path "bool",
+                                                          BinOp.eq,
+                                                          [
+                                                            M.call_closure (|
+                                                              Ty.path "u8",
+                                                              M.get_associated_function (|
+                                                                Ty.path
+                                                                  "revm_bytecode::opcode::OpCodeInfo",
+                                                                "immediate_size",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (| M.read (| opcode |) |)
+                                                                |)
+                                                              ]
+                                                            |);
+                                                            Value.Integer IntegerKind.U8 2
+                                                          ]
                                                         |)
                                                       |)) in
                                                   let _ :=
-                                                    M.is_constant_or_break_match (|
+                                                    is_constant_or_break_match (|
                                                       M.read (| γ |),
                                                       Value.Bool true
                                                     |) in
@@ -886,31 +927,43 @@ Module eof.
                                     let β := i in
                                     M.write (|
                                       β,
-                                      BinOp.Wrap.add (|
-                                        M.read (| β |),
-                                        BinOp.Wrap.add (|
-                                          BinOp.Wrap.add (|
-                                            Value.Integer IntegerKind.Usize 1,
-                                            M.cast
-                                              (Ty.path "usize")
-                                              (M.call_closure (|
-                                                Ty.path "u8",
-                                                M.get_associated_function (|
-                                                  Ty.path "revm_bytecode::opcode::OpCodeInfo",
-                                                  "immediate_size",
-                                                  [],
-                                                  []
-                                                |),
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        BinOp.Wrap.add,
+                                        [
+                                          M.read (| β |);
+                                          M.call_closure (|
+                                            Ty.path "usize",
+                                            BinOp.Wrap.add,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "usize",
+                                                BinOp.Wrap.add,
                                                 [
-                                                  M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.deref (| M.read (| opcode |) |)
-                                                  |)
+                                                  Value.Integer IntegerKind.Usize 1;
+                                                  M.cast
+                                                    (Ty.path "usize")
+                                                    (M.call_closure (|
+                                                      Ty.path "u8",
+                                                      M.get_associated_function (|
+                                                        Ty.path "revm_bytecode::opcode::OpCodeInfo",
+                                                        "immediate_size",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (| M.read (| opcode |) |)
+                                                        |)
+                                                      ]
+                                                    |))
                                                 ]
-                                              |))
-                                          |),
-                                          M.read (| rjumpv_additional_immediates |)
-                                        |)
+                                              |);
+                                              M.read (| rjumpv_additional_immediates |)
+                                            ]
+                                          |)
+                                        ]
                                       |)
                                     |)
                                   |) in

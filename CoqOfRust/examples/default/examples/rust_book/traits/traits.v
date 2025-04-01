@@ -215,7 +215,7 @@ Module Impl_traits_Sheep.
                           [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                         |)
                       |)) in
-                  let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                  let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   let~ _ : Ty.tuple [] :=
                     let~ _ : Ty.tuple [] :=
                       M.alloc (|
@@ -487,7 +487,7 @@ Module Impl_traits_Animal_for_traits_Sheep.
                           [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                         |)
                       |)) in
-                  let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                  let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (| mk_str (| "baaaaah?" |) |)));
               fun γ => ltac:(M.monadic (M.alloc (| mk_str (| "baaaaah!" |) |)))
             ]

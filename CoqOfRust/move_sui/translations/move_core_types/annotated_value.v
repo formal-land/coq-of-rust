@@ -904,7 +904,11 @@ Module annotated_value.
               |) in
             M.alloc (|
               LogicalOp.and (|
-                BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |),
+                M.call_closure (|
+                  Ty.path "bool",
+                  BinOp.eq,
+                  [ M.read (| __self_discr |); M.read (| __arg1_discr |) ]
+                |),
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
@@ -2101,12 +2105,20 @@ Module annotated_value.
                             [
                               M.read (| __serializer |);
                               mk_str (| "MoveFieldLayout" |);
-                              BinOp.Wrap.add (|
-                                BinOp.Wrap.add (|
-                                  M.cast (Ty.path "usize") (Value.Bool false),
+                              M.call_closure (|
+                                Ty.path "usize",
+                                BinOp.Wrap.add,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    BinOp.Wrap.add,
+                                    [
+                                      M.cast (Ty.path "usize") (Value.Bool false);
+                                      Value.Integer IntegerKind.Usize 1
+                                    ]
+                                  |);
                                   Value.Integer IntegerKind.Usize 1
-                                |),
-                                Value.Integer IntegerKind.Usize 1
+                                ]
                               |)
                             ]
                           |)
@@ -2453,12 +2465,20 @@ Module annotated_value.
                             [
                               M.read (| __serializer |);
                               mk_str (| "MoveStructLayout" |);
-                              BinOp.Wrap.add (|
-                                BinOp.Wrap.add (|
-                                  M.cast (Ty.path "usize") (Value.Bool false),
+                              M.call_closure (|
+                                Ty.path "usize",
+                                BinOp.Wrap.add,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    BinOp.Wrap.add,
+                                    [
+                                      M.cast (Ty.path "usize") (Value.Bool false);
+                                      Value.Integer IntegerKind.Usize 1
+                                    ]
+                                  |);
                                   Value.Integer IntegerKind.Usize 1
-                                |),
-                                Value.Integer IntegerKind.Usize 1
+                                ]
                               |)
                             ]
                           |)
@@ -4469,8 +4489,7 @@ Module annotated_value.
                                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| blob |) |) |) ]
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           Value.StructTuple "core::result::Result::Ok" [ M.read (| res |) ]
                         |)));
@@ -5569,8 +5588,7 @@ Module annotated_value.
                                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| blob |) |) |) ]
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           Value.StructTuple "core::result::Result::Ok" [ M.read (| res |) ]
                         |)));
@@ -11465,7 +11483,7 @@ Module annotated_value.
                           [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| f |) |) |) ]
                         |)
                       |) in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -11704,7 +11722,7 @@ Module annotated_value.
                           [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| f |) |) |) ]
                         |)
                       |) in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -11972,7 +11990,7 @@ Module annotated_value.
                             [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| f |) |) |) ]
                           |)
                         |)) in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     M.alloc (|
                       M.call_closure (|
                         Ty.apply
@@ -13600,7 +13618,7 @@ Module annotated_value.
                             0
                           |) in
                         let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ1_0 |), Value.Bool false |) in
+                          is_constant_or_break_match (| M.read (| γ1_0 |), Value.Bool false |) in
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply
@@ -13648,7 +13666,7 @@ Module annotated_value.
                             0
                           |) in
                         let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ1_0 |), Value.Bool true |) in
+                          is_constant_or_break_match (| M.read (| γ1_0 |), Value.Bool true |) in
                         M.alloc (|
                           M.call_closure (|
                             Ty.apply

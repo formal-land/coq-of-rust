@@ -170,9 +170,13 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
                                               fun γ =>
                                                 ltac:(M.monadic
                                                   (let n := M.copy (| γ |) in
-                                                  BinOp.Wrap.mul (|
-                                                    Value.Integer IntegerKind.I32 2,
-                                                    M.read (| n |)
+                                                  M.call_closure (|
+                                                    Ty.path "i32",
+                                                    BinOp.Wrap.mul,
+                                                    [
+                                                      Value.Integer IntegerKind.I32 2;
+                                                      M.read (| n |)
+                                                    ]
                                                   |)))
                                             ]
                                           |)))

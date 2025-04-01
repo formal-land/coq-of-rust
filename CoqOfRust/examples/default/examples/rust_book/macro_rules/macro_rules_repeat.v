@@ -125,9 +125,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                   [ Ty.path "i32" ]
                                                 |),
                                                 [
-                                                  BinOp.Wrap.add (|
-                                                    Value.Integer IntegerKind.I32 1,
-                                                    Value.Integer IntegerKind.I32 2
+                                                  M.call_closure (|
+                                                    Ty.path "i32",
+                                                    BinOp.Wrap.add,
+                                                    [
+                                                      Value.Integer IntegerKind.I32 1;
+                                                      Value.Integer IntegerKind.I32 2
+                                                    ]
                                                   |);
                                                   Value.Integer IntegerKind.I32 2
                                                 ]
@@ -215,9 +219,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                                       [ Ty.path "i32" ]
                                                     |),
                                                     [
-                                                      BinOp.Wrap.mul (|
-                                                        Value.Integer IntegerKind.I32 2,
-                                                        Value.Integer IntegerKind.I32 3
+                                                      M.call_closure (|
+                                                        Ty.path "i32",
+                                                        BinOp.Wrap.mul,
+                                                        [
+                                                          Value.Integer IntegerKind.I32 2;
+                                                          Value.Integer IntegerKind.I32 3
+                                                        ]
                                                       |);
                                                       Value.Integer IntegerKind.I32 4
                                                     ]

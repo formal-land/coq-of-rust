@@ -382,7 +382,13 @@ Module sync.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                   |)
                 |) in
-              M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
+              M.alloc (|
+                M.call_closure (|
+                  Ty.path "bool",
+                  BinOp.eq,
+                  [ M.read (| __self_discr |); M.read (| __arg1_discr |) ]
+                |)
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -777,26 +783,30 @@ Module sync.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.ne (|
-              M.call_closure (|
-                Ty.path "u8",
-                M.get_associated_function (|
-                  Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
-                  "into_inner",
-                  [],
-                  []
-                |),
-                [
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      self,
-                      "core::sync::atomic::AtomicBool",
-                      "v"
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.ne,
+              [
+                M.call_closure (|
+                  Ty.path "u8",
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
+                    "into_inner",
+                    [],
+                    []
+                  |),
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        self,
+                        "core::sync::atomic::AtomicBool",
+                        "v"
+                      |)
                     |)
-                  |)
-                ]
-              |),
-              Value.Integer IntegerKind.U8 0
+                  ]
+                |);
+                Value.Integer IntegerKind.U8 0
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -819,36 +829,40 @@ Module sync.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let order := M.alloc (| order |) in
-            BinOp.ne (|
-              M.call_closure (|
-                Ty.path "u8",
-                M.get_function (| "core::sync::atomic::atomic_load", [], [ Ty.path "u8" ] |),
-                [
-                  (* MutToConstPointer *)
-                  M.pointer_coercion
-                    (M.call_closure (|
-                      Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
-                        "get",
-                        [],
-                        []
-                      |),
-                      [
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "core::sync::atomic::AtomicBool",
-                            "v"
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.ne,
+              [
+                M.call_closure (|
+                  Ty.path "u8",
+                  M.get_function (| "core::sync::atomic::atomic_load", [], [ Ty.path "u8" ] |),
+                  [
+                    (* MutToConstPointer *)
+                    M.pointer_coercion
+                      (M.call_closure (|
+                        Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
+                          "get",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::sync::atomic::AtomicBool",
+                              "v"
+                            |)
                           |)
-                        |)
-                      ]
-                    |));
-                  M.read (| order |)
-                ]
-              |),
-              Value.Integer IntegerKind.U8 0
+                        ]
+                      |));
+                    M.read (| order |)
+                  ]
+                |);
+                Value.Integer IntegerKind.U8 0
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -943,7 +957,7 @@ Module sync.
                             "core::sync::atomic::EMULATE_ATOMIC_BOOL",
                             Ty.path "bool"
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.match_operator (|
                         Some (Ty.path "bool"),
                         M.alloc (| Value.Tuple [] |),
@@ -952,10 +966,7 @@ Module sync.
                             ltac:(M.monadic
                               (let γ := M.use val in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (|
                                 M.call_closure (|
                                   Ty.path "bool",
@@ -1001,39 +1012,43 @@ Module sync.
                   fun γ =>
                     ltac:(M.monadic
                       (M.alloc (|
-                        BinOp.ne (|
-                          M.call_closure (|
-                            Ty.path "u8",
-                            M.get_function (|
-                              "core::sync::atomic::atomic_swap",
-                              [],
-                              [ Ty.path "u8" ]
-                            |),
-                            [
-                              M.call_closure (|
-                                Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
-                                M.get_associated_function (|
-                                  Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
-                                  "get",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "core::sync::atomic::AtomicBool",
-                                      "v"
+                        M.call_closure (|
+                          Ty.path "bool",
+                          BinOp.ne,
+                          [
+                            M.call_closure (|
+                              Ty.path "u8",
+                              M.get_function (|
+                                "core::sync::atomic::atomic_swap",
+                                [],
+                                [ Ty.path "u8" ]
+                              |),
+                              [
+                                M.call_closure (|
+                                  Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
+                                    "get",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "core::sync::atomic::AtomicBool",
+                                        "v"
+                                      |)
                                     |)
-                                  |)
-                                ]
-                              |);
-                              M.cast (Ty.path "u8") (M.read (| val |));
-                              M.read (| order |)
-                            ]
-                          |),
-                          Value.Integer IntegerKind.U8 0
+                                  ]
+                                |);
+                                M.cast (Ty.path "u8") (M.read (| val |));
+                                M.read (| order |)
+                              ]
+                            |);
+                            Value.Integer IntegerKind.U8 0
+                          ]
                         |)
                       |)))
                 ]
@@ -1190,7 +1205,7 @@ Module sync.
                             "core::sync::atomic::EMULATE_ATOMIC_BOOL",
                             Ty.path "bool"
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ order : Ty.path "core::sync::atomic::Ordering" :=
                         M.copy (|
                           M.match_operator (|
@@ -1416,10 +1431,14 @@ Module sync.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.eq (| M.read (| current |), M.read (| new |) |)
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.eq,
+                                          [ M.read (| current |); M.read (| new |) ]
+                                        |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -1479,13 +1498,14 @@ Module sync.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.eq (| M.read (| old |), M.read (| current |) |)
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.eq,
+                                      [ M.read (| old |); M.read (| current |) ]
+                                    |)
                                   |)) in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (|
                                 Value.StructTuple "core::result::Result::Ok" [ M.read (| old |) ]
                               |)));
@@ -1555,7 +1575,13 @@ Module sync.
                               M.alloc (|
                                 Value.StructTuple
                                   "core::result::Result::Ok"
-                                  [ BinOp.ne (| M.read (| x |), Value.Integer IntegerKind.U8 0 |) ]
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.ne,
+                                      [ M.read (| x |); Value.Integer IntegerKind.U8 0 ]
+                                    |)
+                                  ]
                               |)));
                           fun γ =>
                             ltac:(M.monadic
@@ -1569,7 +1595,13 @@ Module sync.
                               M.alloc (|
                                 Value.StructTuple
                                   "core::result::Result::Err"
-                                  [ BinOp.ne (| M.read (| x |), Value.Integer IntegerKind.U8 0 |) ]
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.ne,
+                                      [ M.read (| x |); Value.Integer IntegerKind.U8 0 ]
+                                    |)
+                                  ]
                               |)))
                         ]
                       |)))
@@ -1631,7 +1663,7 @@ Module sync.
                                   Ty.path "bool"
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
@@ -1719,7 +1751,13 @@ Module sync.
                           M.alloc (|
                             Value.StructTuple
                               "core::result::Result::Ok"
-                              [ BinOp.ne (| M.read (| x |), Value.Integer IntegerKind.U8 0 |) ]
+                              [
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.ne,
+                                  [ M.read (| x |); Value.Integer IntegerKind.U8 0 ]
+                                |)
+                              ]
                           |)));
                       fun γ =>
                         ltac:(M.monadic
@@ -1733,7 +1771,13 @@ Module sync.
                           M.alloc (|
                             Value.StructTuple
                               "core::result::Result::Err"
-                              [ BinOp.ne (| M.read (| x |), Value.Integer IntegerKind.U8 0 |) ]
+                              [
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.ne,
+                                  [ M.read (| x |); Value.Integer IntegerKind.U8 0 ]
+                                |)
+                              ]
                           |)))
                     ]
                   |)
@@ -1760,35 +1804,39 @@ Module sync.
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
-            BinOp.ne (|
-              M.call_closure (|
-                Ty.path "u8",
-                M.get_function (| "core::sync::atomic::atomic_and", [], [ Ty.path "u8" ] |),
-                [
-                  M.call_closure (|
-                    Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
-                      "get",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "core::sync::atomic::AtomicBool",
-                          "v"
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.ne,
+              [
+                M.call_closure (|
+                  Ty.path "u8",
+                  M.get_function (| "core::sync::atomic::atomic_and", [], [ Ty.path "u8" ] |),
+                  [
+                    M.call_closure (|
+                      Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::sync::atomic::AtomicBool",
+                            "v"
+                          |)
                         |)
-                      |)
-                    ]
-                  |);
-                  M.cast (Ty.path "u8") (M.read (| val |));
-                  M.read (| order |)
-                ]
-              |),
-              Value.Integer IntegerKind.U8 0
+                      ]
+                    |);
+                    M.cast (Ty.path "u8") (M.read (| val |));
+                    M.read (| order |)
+                  ]
+                |);
+                Value.Integer IntegerKind.U8 0
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1830,7 +1878,7 @@ Module sync.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.use val in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         M.call_closure (|
                           Ty.path "bool",
@@ -1889,35 +1937,39 @@ Module sync.
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
-            BinOp.ne (|
-              M.call_closure (|
-                Ty.path "u8",
-                M.get_function (| "core::sync::atomic::atomic_or", [], [ Ty.path "u8" ] |),
-                [
-                  M.call_closure (|
-                    Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
-                      "get",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "core::sync::atomic::AtomicBool",
-                          "v"
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.ne,
+              [
+                M.call_closure (|
+                  Ty.path "u8",
+                  M.get_function (| "core::sync::atomic::atomic_or", [], [ Ty.path "u8" ] |),
+                  [
+                    M.call_closure (|
+                      Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::sync::atomic::AtomicBool",
+                            "v"
+                          |)
                         |)
-                      |)
-                    ]
-                  |);
-                  M.cast (Ty.path "u8") (M.read (| val |));
-                  M.read (| order |)
-                ]
-              |),
-              Value.Integer IntegerKind.U8 0
+                      ]
+                    |);
+                    M.cast (Ty.path "u8") (M.read (| val |));
+                    M.read (| order |)
+                  ]
+                |);
+                Value.Integer IntegerKind.U8 0
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -1940,35 +1992,39 @@ Module sync.
             (let self := M.alloc (| self |) in
             let val := M.alloc (| val |) in
             let order := M.alloc (| order |) in
-            BinOp.ne (|
-              M.call_closure (|
-                Ty.path "u8",
-                M.get_function (| "core::sync::atomic::atomic_xor", [], [ Ty.path "u8" ] |),
-                [
-                  M.call_closure (|
-                    Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
-                      "get",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "core::sync::atomic::AtomicBool",
-                          "v"
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.ne,
+              [
+                M.call_closure (|
+                  Ty.path "u8",
+                  M.get_function (| "core::sync::atomic::atomic_xor", [], [ Ty.path "u8" ] |),
+                  [
+                    M.call_closure (|
+                      Ty.apply (Ty.path "*mut") [] [ Ty.path "u8" ],
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::cell::UnsafeCell") [] [ Ty.path "u8" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::sync::atomic::AtomicBool",
+                            "v"
+                          |)
                         |)
-                      |)
-                    ]
-                  |);
-                  M.cast (Ty.path "u8") (M.read (| val |));
-                  M.read (| order |)
-                ]
-              |),
-              Value.Integer IntegerKind.U8 0
+                      ]
+                    |);
+                    M.cast (Ty.path "u8") (M.read (| val |));
+                    M.read (| order |)
+                  ]
+                |);
+                Value.Integer IntegerKind.U8 0
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -19298,7 +19354,7 @@ Module sync.
                           ltac:(M.monadic
                             (let γ := M.use ok in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               Value.StructTuple "core::result::Result::Ok" [ M.read (| val |) ]
                             |)));
@@ -19761,7 +19817,7 @@ Module sync.
                           ltac:(M.monadic
                             (let γ := M.use ok in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               Value.StructTuple "core::result::Result::Ok" [ M.read (| val |) ]
                             |)));

@@ -399,10 +399,7 @@ Module annotated_visitor.
                                     |)
                                   |)) in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (| Value.Tuple [] |)));
                           fun γ =>
                             ltac:(M.monadic
@@ -706,10 +703,7 @@ Module annotated_visitor.
                                     |)
                                   |)) in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (| Value.Tuple [] |)));
                           fun γ =>
                             ltac:(M.monadic
@@ -1873,21 +1867,25 @@ Module annotated_visitor.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          BinOp.lt (|
-            M.read (|
-              M.SubPointer.get_struct_record_field (|
-                M.deref (| M.read (| self |) |),
-                "move_core_types::annotated_visitor::VecDriver",
-                "off"
+          M.call_closure (|
+            Ty.path "bool",
+            BinOp.lt,
+            [
+              M.read (|
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "move_core_types::annotated_visitor::VecDriver",
+                  "off"
+                |)
+              |);
+              M.read (|
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "move_core_types::annotated_visitor::VecDriver",
+                  "len"
+                |)
               |)
-            |),
-            M.read (|
-              M.SubPointer.get_struct_record_field (|
-                M.deref (| M.read (| self |) |),
-                "move_core_types::annotated_visitor::VecDriver",
-                "len"
-              |)
-            |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1943,25 +1941,29 @@ Module annotated_visitor.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.ge (|
-                                    M.read (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "move_core_types::annotated_visitor::VecDriver",
-                                        "off"
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.ge,
+                                    [
+                                      M.read (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "move_core_types::annotated_visitor::VecDriver",
+                                          "off"
+                                        |)
+                                      |);
+                                      M.read (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "move_core_types::annotated_visitor::VecDriver",
+                                          "len"
+                                        |)
                                       |)
-                                    |),
-                                    M.read (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "move_core_types::annotated_visitor::VecDriver",
-                                        "len"
-                                      |)
-                                    |)
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                         fun γ =>
                           ltac:(M.monadic
@@ -2198,9 +2200,10 @@ Module annotated_visitor.
                                   |) in
                                 M.write (|
                                   β,
-                                  BinOp.Wrap.add (|
-                                    M.read (| β |),
-                                    Value.Integer IntegerKind.U64 1
+                                  M.call_closure (|
+                                    Ty.path "u64",
+                                    BinOp.Wrap.add,
+                                    [ M.read (| β |); Value.Integer IntegerKind.U64 1 ]
                                   |)
                                 |)
                               |) in
@@ -2788,7 +2791,11 @@ Module annotated_visitor.
                               |) in
                             M.write (|
                               β,
-                              BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
+                              M.call_closure (|
+                                Ty.path "usize",
+                                BinOp.Wrap.add,
+                                [ M.read (| β |); Value.Integer IntegerKind.Usize 1 ]
+                              |)
                             |)
                           |) in
                         M.alloc (|
@@ -3379,7 +3386,7 @@ Module annotated_visitor.
                             ltac:(M.monadic
                               (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
                               let _ :=
-                                M.is_constant_or_break_match (|
+                                is_constant_or_break_match (|
                                   M.read (| γ0_0 |),
                                   Value.Integer IntegerKind.U8 0
                                 |) in
@@ -3424,7 +3431,7 @@ Module annotated_visitor.
                             ltac:(M.monadic
                               (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
                               let _ :=
-                                M.is_constant_or_break_match (|
+                                is_constant_or_break_match (|
                                   M.read (| γ0_0 |),
                                   Value.Integer IntegerKind.U8 1
                                 |) in
@@ -5767,7 +5774,7 @@ Module annotated_visitor.
                                           ]
                                         |)) in
                                     let _ :=
-                                      M.is_constant_or_break_match (|
+                                      is_constant_or_break_match (|
                                         M.read (| γ |),
                                         Value.Bool true
                                       |) in
@@ -6305,7 +6312,7 @@ Module annotated_visitor.
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (| Value.Tuple [] |)));
                         fun γ =>
                           ltac:(M.monadic

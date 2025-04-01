@@ -276,7 +276,11 @@ Module string.
               |) in
             M.alloc (|
               LogicalOp.and (|
-                BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |),
+                M.call_closure (|
+                  Ty.path "bool",
+                  BinOp.eq,
+                  [ M.read (| __self_discr |); M.read (| __arg1_discr |) ]
+                |),
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
@@ -869,10 +873,14 @@ Module string.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.gt (| M.read (| radix |), Value.Integer IntegerKind.U64 64 |)
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.gt,
+                                  [ M.read (| radix |); Value.Integer IntegerKind.U64 64 ]
+                                |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -987,7 +995,7 @@ Module string.
                                                             |)
                                                           |)) in
                                                       let _ :=
-                                                        M.is_constant_or_break_match (|
+                                                        is_constant_or_break_match (|
                                                           M.read (| γ |),
                                                           Value.Bool true
                                                         |) in
@@ -1017,13 +1025,17 @@ Module string.
                                                         (let γ :=
                                                           M.use
                                                             (M.alloc (|
-                                                              BinOp.le (|
-                                                                M.read (| radix |),
-                                                                Value.Integer IntegerKind.U64 36
+                                                              M.call_closure (|
+                                                                Ty.path "bool",
+                                                                BinOp.le,
+                                                                [
+                                                                  M.read (| radix |);
+                                                                  Value.Integer IntegerKind.U64 36
+                                                                ]
                                                               |)
                                                             |)) in
                                                         let _ :=
-                                                          M.is_constant_or_break_match (|
+                                                          is_constant_or_break_match (|
                                                             M.read (| γ |),
                                                             Value.Bool true
                                                           |) in
@@ -1034,40 +1046,10 @@ Module string.
                                                             fun γ =>
                                                               ltac:(M.monadic
                                                                 (M.alloc (|
-                                                                  BinOp.Wrap.sub (|
-                                                                    M.call_closure (|
-                                                                      Ty.path "u64",
-                                                                      M.get_trait_method (|
-                                                                        "core::convert::From",
-                                                                        Ty.path "u64",
-                                                                        [],
-                                                                        [ Ty.path "char" ],
-                                                                        "from",
-                                                                        [],
-                                                                        []
-                                                                      |),
-                                                                      [ M.read (| c |) ]
-                                                                    |),
-                                                                    M.call_closure (|
-                                                                      Ty.path "u64",
-                                                                      M.get_trait_method (|
-                                                                        "core::convert::From",
-                                                                        Ty.path "u64",
-                                                                        [],
-                                                                        [ Ty.path "char" ],
-                                                                        "from",
-                                                                        [],
-                                                                        []
-                                                                      |),
-                                                                      [ Value.UnicodeChar 48 ]
-                                                                    |)
-                                                                  |)
-                                                                |)));
-                                                            fun γ =>
-                                                              ltac:(M.monadic
-                                                                (M.alloc (|
-                                                                  BinOp.Wrap.add (|
-                                                                    BinOp.Wrap.sub (|
+                                                                  M.call_closure (|
+                                                                    Ty.path "u64",
+                                                                    BinOp.Wrap.sub,
+                                                                    [
                                                                       M.call_closure (|
                                                                         Ty.path "u64",
                                                                         M.get_trait_method (|
@@ -1080,7 +1062,7 @@ Module string.
                                                                           []
                                                                         |),
                                                                         [ M.read (| c |) ]
-                                                                      |),
+                                                                      |);
                                                                       M.call_closure (|
                                                                         Ty.path "u64",
                                                                         M.get_trait_method (|
@@ -1092,51 +1074,105 @@ Module string.
                                                                           [],
                                                                           []
                                                                         |),
-                                                                        [ Value.UnicodeChar 97 ]
+                                                                        [ Value.UnicodeChar 48 ]
                                                                       |)
-                                                                    |),
-                                                                    Value.Integer IntegerKind.U64 10
+                                                                    ]
                                                                   |)
                                                                 |)));
                                                             fun γ =>
                                                               ltac:(M.monadic
                                                                 (M.alloc (|
-                                                                  BinOp.Wrap.add (|
-                                                                    BinOp.Wrap.sub (|
+                                                                  M.call_closure (|
+                                                                    Ty.path "u64",
+                                                                    BinOp.Wrap.add,
+                                                                    [
                                                                       M.call_closure (|
                                                                         Ty.path "u64",
-                                                                        M.get_trait_method (|
-                                                                          "core::convert::From",
-                                                                          Ty.path "u64",
-                                                                          [],
-                                                                          [ Ty.path "char" ],
-                                                                          "from",
-                                                                          [],
-                                                                          []
-                                                                        |),
-                                                                        [ M.read (| c |) ]
-                                                                      |),
+                                                                        BinOp.Wrap.sub,
+                                                                        [
+                                                                          M.call_closure (|
+                                                                            Ty.path "u64",
+                                                                            M.get_trait_method (|
+                                                                              "core::convert::From",
+                                                                              Ty.path "u64",
+                                                                              [],
+                                                                              [ Ty.path "char" ],
+                                                                              "from",
+                                                                              [],
+                                                                              []
+                                                                            |),
+                                                                            [ M.read (| c |) ]
+                                                                          |);
+                                                                          M.call_closure (|
+                                                                            Ty.path "u64",
+                                                                            M.get_trait_method (|
+                                                                              "core::convert::From",
+                                                                              Ty.path "u64",
+                                                                              [],
+                                                                              [ Ty.path "char" ],
+                                                                              "from",
+                                                                              [],
+                                                                              []
+                                                                            |),
+                                                                            [ Value.UnicodeChar 97 ]
+                                                                          |)
+                                                                        ]
+                                                                      |);
+                                                                      Value.Integer
+                                                                        IntegerKind.U64
+                                                                        10
+                                                                    ]
+                                                                  |)
+                                                                |)));
+                                                            fun γ =>
+                                                              ltac:(M.monadic
+                                                                (M.alloc (|
+                                                                  M.call_closure (|
+                                                                    Ty.path "u64",
+                                                                    BinOp.Wrap.add,
+                                                                    [
                                                                       M.call_closure (|
                                                                         Ty.path "u64",
-                                                                        M.get_trait_method (|
-                                                                          "core::convert::From",
-                                                                          Ty.path "u64",
-                                                                          [],
-                                                                          [ Ty.path "char" ],
-                                                                          "from",
-                                                                          [],
-                                                                          []
-                                                                        |),
-                                                                        [ Value.UnicodeChar 65 ]
-                                                                      |)
-                                                                    |),
-                                                                    Value.Integer IntegerKind.U64 10
+                                                                        BinOp.Wrap.sub,
+                                                                        [
+                                                                          M.call_closure (|
+                                                                            Ty.path "u64",
+                                                                            M.get_trait_method (|
+                                                                              "core::convert::From",
+                                                                              Ty.path "u64",
+                                                                              [],
+                                                                              [ Ty.path "char" ],
+                                                                              "from",
+                                                                              [],
+                                                                              []
+                                                                            |),
+                                                                            [ M.read (| c |) ]
+                                                                          |);
+                                                                          M.call_closure (|
+                                                                            Ty.path "u64",
+                                                                            M.get_trait_method (|
+                                                                              "core::convert::From",
+                                                                              Ty.path "u64",
+                                                                              [],
+                                                                              [ Ty.path "char" ],
+                                                                              "from",
+                                                                              [],
+                                                                              []
+                                                                            |),
+                                                                            [ Value.UnicodeChar 65 ]
+                                                                          |)
+                                                                        ]
+                                                                      |);
+                                                                      Value.Integer
+                                                                        IntegerKind.U64
+                                                                        10
+                                                                    ]
                                                                   |)
                                                                 |)));
                                                             fun γ =>
                                                               ltac:(M.monadic
                                                                 (let _ :=
-                                                                  M.is_constant_or_break_match (|
+                                                                  is_constant_or_break_match (|
                                                                     M.read (| γ |),
                                                                     Value.UnicodeChar 95
                                                                   |) in
@@ -1188,40 +1224,10 @@ Module string.
                                                             fun γ =>
                                                               ltac:(M.monadic
                                                                 (M.alloc (|
-                                                                  BinOp.Wrap.sub (|
-                                                                    M.call_closure (|
-                                                                      Ty.path "u64",
-                                                                      M.get_trait_method (|
-                                                                        "core::convert::From",
-                                                                        Ty.path "u64",
-                                                                        [],
-                                                                        [ Ty.path "char" ],
-                                                                        "from",
-                                                                        [],
-                                                                        []
-                                                                      |),
-                                                                      [ M.read (| c |) ]
-                                                                    |),
-                                                                    M.call_closure (|
-                                                                      Ty.path "u64",
-                                                                      M.get_trait_method (|
-                                                                        "core::convert::From",
-                                                                        Ty.path "u64",
-                                                                        [],
-                                                                        [ Ty.path "char" ],
-                                                                        "from",
-                                                                        [],
-                                                                        []
-                                                                      |),
-                                                                      [ Value.UnicodeChar 65 ]
-                                                                    |)
-                                                                  |)
-                                                                |)));
-                                                            fun γ =>
-                                                              ltac:(M.monadic
-                                                                (M.alloc (|
-                                                                  BinOp.Wrap.add (|
-                                                                    BinOp.Wrap.sub (|
+                                                                  M.call_closure (|
+                                                                    Ty.path "u64",
+                                                                    BinOp.Wrap.sub,
+                                                                    [
                                                                       M.call_closure (|
                                                                         Ty.path "u64",
                                                                         M.get_trait_method (|
@@ -1234,7 +1240,7 @@ Module string.
                                                                           []
                                                                         |),
                                                                         [ M.read (| c |) ]
-                                                                      |),
+                                                                      |);
                                                                       M.call_closure (|
                                                                         Ty.path "u64",
                                                                         M.get_trait_method (|
@@ -1246,45 +1252,99 @@ Module string.
                                                                           [],
                                                                           []
                                                                         |),
-                                                                        [ Value.UnicodeChar 97 ]
+                                                                        [ Value.UnicodeChar 65 ]
                                                                       |)
-                                                                    |),
-                                                                    Value.Integer IntegerKind.U64 26
+                                                                    ]
                                                                   |)
                                                                 |)));
                                                             fun γ =>
                                                               ltac:(M.monadic
                                                                 (M.alloc (|
-                                                                  BinOp.Wrap.add (|
-                                                                    BinOp.Wrap.sub (|
+                                                                  M.call_closure (|
+                                                                    Ty.path "u64",
+                                                                    BinOp.Wrap.add,
+                                                                    [
                                                                       M.call_closure (|
                                                                         Ty.path "u64",
-                                                                        M.get_trait_method (|
-                                                                          "core::convert::From",
-                                                                          Ty.path "u64",
-                                                                          [],
-                                                                          [ Ty.path "char" ],
-                                                                          "from",
-                                                                          [],
-                                                                          []
-                                                                        |),
-                                                                        [ M.read (| c |) ]
-                                                                      |),
+                                                                        BinOp.Wrap.sub,
+                                                                        [
+                                                                          M.call_closure (|
+                                                                            Ty.path "u64",
+                                                                            M.get_trait_method (|
+                                                                              "core::convert::From",
+                                                                              Ty.path "u64",
+                                                                              [],
+                                                                              [ Ty.path "char" ],
+                                                                              "from",
+                                                                              [],
+                                                                              []
+                                                                            |),
+                                                                            [ M.read (| c |) ]
+                                                                          |);
+                                                                          M.call_closure (|
+                                                                            Ty.path "u64",
+                                                                            M.get_trait_method (|
+                                                                              "core::convert::From",
+                                                                              Ty.path "u64",
+                                                                              [],
+                                                                              [ Ty.path "char" ],
+                                                                              "from",
+                                                                              [],
+                                                                              []
+                                                                            |),
+                                                                            [ Value.UnicodeChar 97 ]
+                                                                          |)
+                                                                        ]
+                                                                      |);
+                                                                      Value.Integer
+                                                                        IntegerKind.U64
+                                                                        26
+                                                                    ]
+                                                                  |)
+                                                                |)));
+                                                            fun γ =>
+                                                              ltac:(M.monadic
+                                                                (M.alloc (|
+                                                                  M.call_closure (|
+                                                                    Ty.path "u64",
+                                                                    BinOp.Wrap.add,
+                                                                    [
                                                                       M.call_closure (|
                                                                         Ty.path "u64",
-                                                                        M.get_trait_method (|
-                                                                          "core::convert::From",
-                                                                          Ty.path "u64",
-                                                                          [],
-                                                                          [ Ty.path "char" ],
-                                                                          "from",
-                                                                          [],
-                                                                          []
-                                                                        |),
-                                                                        [ Value.UnicodeChar 48 ]
-                                                                      |)
-                                                                    |),
-                                                                    Value.Integer IntegerKind.U64 52
+                                                                        BinOp.Wrap.sub,
+                                                                        [
+                                                                          M.call_closure (|
+                                                                            Ty.path "u64",
+                                                                            M.get_trait_method (|
+                                                                              "core::convert::From",
+                                                                              Ty.path "u64",
+                                                                              [],
+                                                                              [ Ty.path "char" ],
+                                                                              "from",
+                                                                              [],
+                                                                              []
+                                                                            |),
+                                                                            [ M.read (| c |) ]
+                                                                          |);
+                                                                          M.call_closure (|
+                                                                            Ty.path "u64",
+                                                                            M.get_trait_method (|
+                                                                              "core::convert::From",
+                                                                              Ty.path "u64",
+                                                                              [],
+                                                                              [ Ty.path "char" ],
+                                                                              "from",
+                                                                              [],
+                                                                              []
+                                                                            |),
+                                                                            [ Value.UnicodeChar 48 ]
+                                                                          |)
+                                                                        ]
+                                                                      |);
+                                                                      Value.Integer
+                                                                        IntegerKind.U64
+                                                                        52
+                                                                    ]
                                                                   |)
                                                                 |)));
                                                             fun γ =>
@@ -1295,7 +1355,7 @@ Module string.
                                                                     fun γ =>
                                                                       ltac:(M.monadic
                                                                         (let _ :=
-                                                                          M.is_constant_or_break_match (|
+                                                                          is_constant_or_break_match (|
                                                                             M.read (| γ |),
                                                                             Value.UnicodeChar 43
                                                                           |) in
@@ -1303,7 +1363,7 @@ Module string.
                                                                     fun γ =>
                                                                       ltac:(M.monadic
                                                                         (let _ :=
-                                                                          M.is_constant_or_break_match (|
+                                                                          is_constant_or_break_match (|
                                                                             M.read (| γ |),
                                                                             Value.UnicodeChar 45
                                                                           |) in
@@ -1332,7 +1392,7 @@ Module string.
                                                                     fun γ =>
                                                                       ltac:(M.monadic
                                                                         (let _ :=
-                                                                          M.is_constant_or_break_match (|
+                                                                          is_constant_or_break_match (|
                                                                             M.read (| γ |),
                                                                             Value.UnicodeChar 47
                                                                           |) in
@@ -1340,7 +1400,7 @@ Module string.
                                                                     fun γ =>
                                                                       ltac:(M.monadic
                                                                         (let _ :=
-                                                                          M.is_constant_or_break_match (|
+                                                                          is_constant_or_break_match (|
                                                                             M.read (| γ |),
                                                                             Value.UnicodeChar 44
                                                                           |) in
@@ -1348,7 +1408,7 @@ Module string.
                                                                     fun γ =>
                                                                       ltac:(M.monadic
                                                                         (let _ :=
-                                                                          M.is_constant_or_break_match (|
+                                                                          is_constant_or_break_match (|
                                                                             M.read (| γ |),
                                                                             Value.UnicodeChar 95
                                                                           |) in
@@ -1377,7 +1437,7 @@ Module string.
                                                                     fun γ =>
                                                                       ltac:(M.monadic
                                                                         (let _ :=
-                                                                          M.is_constant_or_break_match (|
+                                                                          is_constant_or_break_match (|
                                                                             M.read (| γ |),
                                                                             Value.UnicodeChar 61
                                                                           |) in
@@ -1385,7 +1445,7 @@ Module string.
                                                                     fun γ =>
                                                                       ltac:(M.monadic
                                                                         (let _ :=
-                                                                          M.is_constant_or_break_match (|
+                                                                          is_constant_or_break_match (|
                                                                             M.read (| γ |),
                                                                             Value.UnicodeChar 13
                                                                           |) in
@@ -1393,7 +1453,7 @@ Module string.
                                                                     fun γ =>
                                                                       ltac:(M.monadic
                                                                         (let _ :=
-                                                                          M.is_constant_or_break_match (|
+                                                                          is_constant_or_break_match (|
                                                                             M.read (| γ |),
                                                                             Value.UnicodeChar 10
                                                                           |) in
@@ -1709,7 +1769,7 @@ Module string.
                               ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.match_operator (|
                         None,
                         M.alloc (|
@@ -1747,7 +1807,7 @@ Module string.
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let _ :=
-                                                M.is_constant_or_break_match (|
+                                                is_constant_or_break_match (|
                                                   M.read (| γ |),
                                                   mk_str (| "0x" |)
                                                 |) in
@@ -1755,7 +1815,7 @@ Module string.
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let _ :=
-                                                M.is_constant_or_break_match (|
+                                                is_constant_or_break_match (|
                                                   M.read (| γ |),
                                                   mk_str (| "0X" |)
                                                 |) in
@@ -1784,7 +1844,7 @@ Module string.
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let _ :=
-                                                M.is_constant_or_break_match (|
+                                                is_constant_or_break_match (|
                                                   M.read (| γ |),
                                                   mk_str (| "0o" |)
                                                 |) in
@@ -1792,7 +1852,7 @@ Module string.
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let _ :=
-                                                M.is_constant_or_break_match (|
+                                                is_constant_or_break_match (|
                                                   M.read (| γ |),
                                                   mk_str (| "0O" |)
                                                 |) in
@@ -1821,7 +1881,7 @@ Module string.
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let _ :=
-                                                M.is_constant_or_break_match (|
+                                                is_constant_or_break_match (|
                                                   M.read (| γ |),
                                                   mk_str (| "0b" |)
                                                 |) in
@@ -1829,7 +1889,7 @@ Module string.
                                           fun γ =>
                                             ltac:(M.monadic
                                               (let _ :=
-                                                M.is_constant_or_break_match (|
+                                                is_constant_or_break_match (|
                                                   M.read (| γ |),
                                                   mk_str (| "0B" |)
                                                 |) in

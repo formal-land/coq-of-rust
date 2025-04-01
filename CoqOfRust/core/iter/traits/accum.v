@@ -70,7 +70,11 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
-                                            BinOp.Wrap.add (| M.read (| a |), M.read (| b |) |)))
+                                            M.call_closure (|
+                                              Ty.path "i8",
+                                              BinOp.Wrap.add,
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
                                       ]
                                     |)))
                               ]
@@ -151,7 +155,11 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
-                                            BinOp.Wrap.mul (| M.read (| a |), M.read (| b |) |)))
+                                            M.call_closure (|
+                                              Ty.path "i8",
+                                              BinOp.Wrap.mul,
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
                                       ]
                                     |)))
                               ]
@@ -440,7 +448,11 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
-                                            BinOp.Wrap.add (| M.read (| a |), M.read (| b |) |)))
+                                            M.call_closure (|
+                                              Ty.path "i16",
+                                              BinOp.Wrap.add,
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
                                       ]
                                     |)))
                               ]
@@ -521,7 +533,11 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
-                                            BinOp.Wrap.mul (| M.read (| a |), M.read (| b |) |)))
+                                            M.call_closure (|
+                                              Ty.path "i16",
+                                              BinOp.Wrap.mul,
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
                                       ]
                                     |)))
                               ]
@@ -810,7 +826,11 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
-                                            BinOp.Wrap.add (| M.read (| a |), M.read (| b |) |)))
+                                            M.call_closure (|
+                                              Ty.path "i32",
+                                              BinOp.Wrap.add,
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
                                       ]
                                     |)))
                               ]
@@ -891,7 +911,11 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
-                                            BinOp.Wrap.mul (| M.read (| a |), M.read (| b |) |)))
+                                            M.call_closure (|
+                                              Ty.path "i32",
+                                              BinOp.Wrap.mul,
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
                                       ]
                                     |)))
                               ]
@@ -1180,7 +1204,11 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
-                                            BinOp.Wrap.add (| M.read (| a |), M.read (| b |) |)))
+                                            M.call_closure (|
+                                              Ty.path "i64",
+                                              BinOp.Wrap.add,
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
                                       ]
                                     |)))
                               ]
@@ -1261,7 +1289,11 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
-                                            BinOp.Wrap.mul (| M.read (| a |), M.read (| b |) |)))
+                                            M.call_closure (|
+                                              Ty.path "i64",
+                                              BinOp.Wrap.mul,
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
                                       ]
                                     |)))
                               ]
@@ -1550,7 +1582,11 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
-                                            BinOp.Wrap.add (| M.read (| a |), M.read (| b |) |)))
+                                            M.call_closure (|
+                                              Ty.path "i128",
+                                              BinOp.Wrap.add,
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
                                       ]
                                     |)))
                               ]
@@ -1631,7 +1667,11 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
-                                            BinOp.Wrap.mul (| M.read (| a |), M.read (| b |) |)))
+                                            M.call_closure (|
+                                              Ty.path "i128",
+                                              BinOp.Wrap.mul,
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
                                       ]
                                     |)))
                               ]
@@ -1922,7 +1962,11 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
-                                            BinOp.Wrap.add (| M.read (| a |), M.read (| b |) |)))
+                                            M.call_closure (|
+                                              Ty.path "isize",
+                                              BinOp.Wrap.add,
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
                                       ]
                                     |)))
                               ]
@@ -2003,7 +2047,11 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
-                                            BinOp.Wrap.mul (| M.read (| a |), M.read (| b |) |)))
+                                            M.call_closure (|
+                                              Ty.path "isize",
+                                              BinOp.Wrap.mul,
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
                                       ]
                                     |)))
                               ]
@@ -2300,7 +2348,11 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
-                                            BinOp.Wrap.add (| M.read (| a |), M.read (| b |) |)))
+                                            M.call_closure (|
+                                              Ty.path "u8",
+                                              BinOp.Wrap.add,
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
                                       ]
                                     |)))
                               ]
@@ -2381,7 +2433,11 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
-                                            BinOp.Wrap.mul (| M.read (| a |), M.read (| b |) |)))
+                                            M.call_closure (|
+                                              Ty.path "u8",
+                                              BinOp.Wrap.mul,
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
                                       ]
                                     |)))
                               ]
@@ -2670,7 +2726,11 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
-                                            BinOp.Wrap.add (| M.read (| a |), M.read (| b |) |)))
+                                            M.call_closure (|
+                                              Ty.path "u16",
+                                              BinOp.Wrap.add,
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
                                       ]
                                     |)))
                               ]
@@ -2751,7 +2811,11 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
-                                            BinOp.Wrap.mul (| M.read (| a |), M.read (| b |) |)))
+                                            M.call_closure (|
+                                              Ty.path "u16",
+                                              BinOp.Wrap.mul,
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
                                       ]
                                     |)))
                               ]
@@ -3040,7 +3104,11 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
-                                            BinOp.Wrap.add (| M.read (| a |), M.read (| b |) |)))
+                                            M.call_closure (|
+                                              Ty.path "u32",
+                                              BinOp.Wrap.add,
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
                                       ]
                                     |)))
                               ]
@@ -3121,7 +3189,11 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
-                                            BinOp.Wrap.mul (| M.read (| a |), M.read (| b |) |)))
+                                            M.call_closure (|
+                                              Ty.path "u32",
+                                              BinOp.Wrap.mul,
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
                                       ]
                                     |)))
                               ]
@@ -3410,7 +3482,11 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
-                                            BinOp.Wrap.add (| M.read (| a |), M.read (| b |) |)))
+                                            M.call_closure (|
+                                              Ty.path "u64",
+                                              BinOp.Wrap.add,
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
                                       ]
                                     |)))
                               ]
@@ -3491,7 +3567,11 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
-                                            BinOp.Wrap.mul (| M.read (| a |), M.read (| b |) |)))
+                                            M.call_closure (|
+                                              Ty.path "u64",
+                                              BinOp.Wrap.mul,
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
                                       ]
                                     |)))
                               ]
@@ -3780,7 +3860,11 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
-                                            BinOp.Wrap.add (| M.read (| a |), M.read (| b |) |)))
+                                            M.call_closure (|
+                                              Ty.path "u128",
+                                              BinOp.Wrap.add,
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
                                       ]
                                     |)))
                               ]
@@ -3861,7 +3945,11 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
-                                            BinOp.Wrap.mul (| M.read (| a |), M.read (| b |) |)))
+                                            M.call_closure (|
+                                              Ty.path "u128",
+                                              BinOp.Wrap.mul,
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
                                       ]
                                     |)))
                               ]
@@ -4152,7 +4240,11 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
-                                            BinOp.Wrap.add (| M.read (| a |), M.read (| b |) |)))
+                                            M.call_closure (|
+                                              Ty.path "usize",
+                                              BinOp.Wrap.add,
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
                                       ]
                                     |)))
                               ]
@@ -4233,7 +4325,11 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
-                                            BinOp.Wrap.mul (| M.read (| a |), M.read (| b |) |)))
+                                            M.call_closure (|
+                                              Ty.path "usize",
+                                              BinOp.Wrap.mul,
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
                                       ]
                                     |)))
                               ]
@@ -12270,7 +12366,11 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
-                                            BinOp.Wrap.add (| M.read (| a |), M.read (| b |) |)))
+                                            M.call_closure (|
+                                              Ty.path "f32",
+                                              BinOp.Wrap.add,
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
                                       ]
                                     |)))
                               ]
@@ -12351,7 +12451,11 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
-                                            BinOp.Wrap.mul (| M.read (| a |), M.read (| b |) |)))
+                                            M.call_closure (|
+                                              Ty.path "f32",
+                                              BinOp.Wrap.mul,
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
                                       ]
                                     |)))
                               ]
@@ -12640,7 +12744,11 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
-                                            BinOp.Wrap.add (| M.read (| a |), M.read (| b |) |)))
+                                            M.call_closure (|
+                                              Ty.path "f64",
+                                              BinOp.Wrap.add,
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
                                       ]
                                     |)))
                               ]
@@ -12721,7 +12829,11 @@ Module iter.
                                         fun γ =>
                                           ltac:(M.monadic
                                             (let b := M.copy (| γ |) in
-                                            BinOp.Wrap.mul (| M.read (| a |), M.read (| b |) |)))
+                                            M.call_closure (|
+                                              Ty.path "f64",
+                                              BinOp.Wrap.mul,
+                                              [ M.read (| a |); M.read (| b |) ]
+                                            |)))
                                       ]
                                     |)))
                               ]

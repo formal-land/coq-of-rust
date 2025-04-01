@@ -235,21 +235,25 @@ Module Impl_core_cmp_PartialEq_mother_AccountId_for_mother_AccountId.
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
-        BinOp.eq (|
-          M.read (|
-            M.SubPointer.get_struct_tuple_field (|
-              M.deref (| M.read (| self |) |),
-              "mother::AccountId",
-              0
+        M.call_closure (|
+          Ty.path "bool",
+          BinOp.eq,
+          [
+            M.read (|
+              M.SubPointer.get_struct_tuple_field (|
+                M.deref (| M.read (| self |) |),
+                "mother::AccountId",
+                0
+              |)
+            |);
+            M.read (|
+              M.SubPointer.get_struct_tuple_field (|
+                M.deref (| M.read (| other |) |),
+                "mother::AccountId",
+                0
+              |)
             |)
-          |),
-          M.read (|
-            M.SubPointer.get_struct_tuple_field (|
-              M.deref (| M.read (| other |) |),
-              "mother::AccountId",
-              0
-            |)
-          |)
+          ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -691,7 +695,13 @@ Module Impl_core_cmp_PartialEq_mother_Outline_for_mother_Outline.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |)
             |) in
-          M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
+          M.alloc (|
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.eq,
+              [ M.read (| __self_discr |); M.read (| __arg1_discr |) ]
+            |)
+          |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -862,7 +872,11 @@ Module Impl_core_cmp_PartialEq_mother_Status_for_mother_Status.
             |) in
           M.alloc (|
             LogicalOp.and (|
-              BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |),
+              M.call_closure (|
+                Ty.path "bool",
+                BinOp.eq,
+                [ M.read (| __self_discr |); M.read (| __arg1_discr |) ]
+              |),
               ltac:(M.monadic
                 (M.read (|
                   M.match_operator (|
@@ -1384,21 +1398,25 @@ Module Impl_core_cmp_PartialEq_mother_Auction_for_mother_Auction.
                 |)))
             |),
             ltac:(M.monadic
-              (BinOp.eq (|
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "mother::Auction",
-                    "finalized"
+              (M.call_closure (|
+                Ty.path "bool",
+                BinOp.eq,
+                [
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "mother::Auction",
+                      "finalized"
+                    |)
+                  |);
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| other |) |),
+                      "mother::Auction",
+                      "finalized"
+                    |)
                   |)
-                |),
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| other |) |),
-                    "mother::Auction",
-                    "finalized"
-                  |)
-                |)
+                ]
               |)))
           |),
           ltac:(M.monadic
@@ -1962,7 +1980,11 @@ Module Impl_core_cmp_PartialEq_mother_Failure_for_mother_Failure.
             |) in
           M.alloc (|
             LogicalOp.and (|
-              BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |),
+              M.call_closure (|
+                Ty.path "bool",
+                BinOp.eq,
+                [ M.read (| __self_discr |); M.read (| __arg1_discr |) ]
+              |),
               ltac:(M.monadic
                 (M.read (|
                   M.match_operator (|
@@ -2358,7 +2380,7 @@ Module Impl_mother_Mother.
               fun γ =>
                 ltac:(M.monadic
                   (let γ := M.use fail in
-                  let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                  let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (|
                     Value.StructTuple
                       "core::result::Result::Err"

@@ -21,23 +21,32 @@ Module random.
       | [], [ impl_RandomSource__plus___Sized ], [ source ] =>
         ltac:(M.monadic
           (let source := M.alloc (| source |) in
-          BinOp.eq (|
-            BinOp.bit_and
-              (M.call_closure (|
+          M.call_closure (|
+            Ty.path "bool",
+            BinOp.eq,
+            [
+              M.call_closure (|
                 Ty.path "u8",
-                M.get_trait_method (|
-                  "core::random::Random",
-                  Ty.path "u8",
-                  [],
-                  [],
-                  "random",
-                  [],
-                  [ impl_RandomSource__plus___Sized ]
-                |),
-                [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| source |) |) |) ]
-              |))
-              (Value.Integer IntegerKind.U8 1),
-            Value.Integer IntegerKind.U8 1
+                BinOp.Wrap.bit_and,
+                [
+                  M.call_closure (|
+                    Ty.path "u8",
+                    M.get_trait_method (|
+                      "core::random::Random",
+                      Ty.path "u8",
+                      [],
+                      [],
+                      "random",
+                      [],
+                      [ impl_RandomSource__plus___Sized ]
+                    |),
+                    [ M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| source |) |) |) ]
+                  |);
+                  Value.Integer IntegerKind.U8 1
+                ]
+              |);
+              Value.Integer IntegerKind.U8 1
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.

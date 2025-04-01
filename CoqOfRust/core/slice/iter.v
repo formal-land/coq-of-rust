@@ -335,7 +335,7 @@ Module slice.
                                 Ty.path "bool"
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply (Ty.path "*const") [] [ T ],
@@ -771,7 +771,7 @@ Module slice.
                                 Ty.path "bool"
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.call_closure (|
                               Ty.apply (Ty.path "*mut") [] [ T ],
@@ -886,7 +886,7 @@ Module slice.
                                             Ty.path "bool"
                                           |)) in
                                       let _ :=
-                                        M.is_constant_or_break_match (|
+                                        is_constant_or_break_match (|
                                           M.read (| γ |),
                                           Value.Bool true
                                         |) in
@@ -1101,7 +1101,7 @@ Module slice.
                                             Ty.path "bool"
                                           |)) in
                                       let _ :=
-                                        M.is_constant_or_break_match (|
+                                        is_constant_or_break_match (|
                                           M.read (| γ |),
                                           Value.Bool true
                                         |) in
@@ -1333,7 +1333,7 @@ Module slice.
                             "core::slice::iter::Split",
                             "finished"
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         M.borrow (|
                           Pointer.Kind.Ref,
@@ -1626,7 +1626,7 @@ Module slice.
                                   "finished"
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
@@ -1845,9 +1845,11 @@ Module slice.
                                         "core::ops::range::RangeFrom"
                                         [
                                           ("start",
-                                            BinOp.Wrap.add (|
-                                              M.read (| idx |),
-                                              Value.Integer IntegerKind.Usize 1
+                                            M.call_closure (|
+                                              Ty.path "usize",
+                                              BinOp.Wrap.add,
+                                              [ M.read (| idx |); Value.Integer IntegerKind.Usize 1
+                                              ]
                                             |))
                                         ]
                                     ]
@@ -1936,7 +1938,7 @@ Module slice.
                             "core::slice::iter::Split",
                             "finished"
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.Tuple
                           [
@@ -1955,31 +1957,35 @@ Module slice.
                             Value.StructTuple
                               "core::option::Option::Some"
                               [
-                                BinOp.Wrap.add (|
-                                  M.call_closure (|
-                                    Ty.path "usize",
-                                    M.get_associated_function (|
-                                      Ty.apply (Ty.path "slice") [] [ T ],
-                                      "len",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (|
-                                          M.read (|
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.deref (| M.read (| self |) |),
-                                              "core::slice::iter::Split",
-                                              "v"
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  BinOp.Wrap.add,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "usize",
+                                      M.get_associated_function (|
+                                        Ty.apply (Ty.path "slice") [] [ T ],
+                                        "len",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.read (|
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (| M.read (| self |) |),
+                                                "core::slice::iter::Split",
+                                                "v"
+                                              |)
                                             |)
                                           |)
                                         |)
-                                      |)
-                                    ]
-                                  |),
-                                  Value.Integer IntegerKind.Usize 1
+                                      ]
+                                    |);
+                                    Value.Integer IntegerKind.Usize 1
+                                  ]
                                 |)
                               ]
                           ]
@@ -2053,7 +2059,7 @@ Module slice.
                                   "finished"
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
@@ -2272,9 +2278,11 @@ Module slice.
                                         "core::ops::range::RangeFrom"
                                         [
                                           ("start",
-                                            BinOp.Wrap.add (|
-                                              M.read (| idx |),
-                                              Value.Integer IntegerKind.Usize 1
+                                            M.call_closure (|
+                                              Ty.path "usize",
+                                              BinOp.Wrap.add,
+                                              [ M.read (| idx |); Value.Integer IntegerKind.Usize 1
+                                              ]
                                             |))
                                         ]
                                     ]
@@ -2375,7 +2383,7 @@ Module slice.
                             "core::slice::iter::Split",
                             "finished"
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -2751,7 +2759,7 @@ Module slice.
                                   "finished"
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
@@ -2899,9 +2907,13 @@ Module slice.
                                             fun γ =>
                                               ltac:(M.monadic
                                                 (let idx := M.copy (| γ |) in
-                                                BinOp.Wrap.add (|
-                                                  M.read (| idx |),
-                                                  Value.Integer IntegerKind.Usize 1
+                                                M.call_closure (|
+                                                  Ty.path "usize",
+                                                  BinOp.Wrap.add,
+                                                  [
+                                                    M.read (| idx |);
+                                                    Value.Integer IntegerKind.Usize 1
+                                                  ]
                                                 |)))
                                           ]
                                         |)))
@@ -2945,35 +2957,39 @@ Module slice.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.eq (|
-                                    M.read (| idx |),
-                                    M.call_closure (|
-                                      Ty.path "usize",
-                                      M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [] [ T ],
-                                        "len",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (|
-                                            M.read (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.deref (| M.read (| self |) |),
-                                                "core::slice::iter::SplitInclusive",
-                                                "v"
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.eq,
+                                    [
+                                      M.read (| idx |);
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        M.get_associated_function (|
+                                          Ty.apply (Ty.path "slice") [] [ T ],
+                                          "len",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.read (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "core::slice::iter::SplitInclusive",
+                                                  "v"
+                                                |)
                                               |)
                                             |)
                                           |)
-                                        |)
-                                      ]
-                                    |)
+                                        ]
+                                      |)
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let~ _ : Ty.tuple [] :=
                               M.alloc (|
                                 M.write (|
@@ -3136,7 +3152,7 @@ Module slice.
                             "core::slice::iter::SplitInclusive",
                             "finished"
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.Tuple
                           [
@@ -3256,7 +3272,7 @@ Module slice.
                                   "finished"
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
@@ -3304,10 +3320,7 @@ Module slice.
                                     |)
                                   |)) in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (|
                                 M.borrow (|
                                   Pointer.Kind.Ref,
@@ -3358,31 +3371,35 @@ Module slice.
                                           "core::ops::range::RangeTo"
                                           [
                                             ("end_",
-                                              BinOp.Wrap.sub (|
-                                                M.call_closure (|
-                                                  Ty.path "usize",
-                                                  M.get_associated_function (|
-                                                    Ty.apply (Ty.path "slice") [] [ T ],
-                                                    "len",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.borrow (|
-                                                      Pointer.Kind.Ref,
-                                                      M.deref (|
-                                                        M.read (|
-                                                          M.SubPointer.get_struct_record_field (|
-                                                            M.deref (| M.read (| self |) |),
-                                                            "core::slice::iter::SplitInclusive",
-                                                            "v"
+                                              M.call_closure (|
+                                                Ty.path "usize",
+                                                BinOp.Wrap.sub,
+                                                [
+                                                  M.call_closure (|
+                                                    Ty.path "usize",
+                                                    M.get_associated_function (|
+                                                      Ty.apply (Ty.path "slice") [] [ T ],
+                                                      "len",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.read (|
+                                                            M.SubPointer.get_struct_record_field (|
+                                                              M.deref (| M.read (| self |) |),
+                                                              "core::slice::iter::SplitInclusive",
+                                                              "v"
+                                                            |)
                                                           |)
                                                         |)
                                                       |)
-                                                    |)
-                                                  ]
-                                                |),
-                                                Value.Integer IntegerKind.Usize 1
+                                                    ]
+                                                  |);
+                                                  Value.Integer IntegerKind.Usize 1
+                                                ]
                                               |))
                                           ]
                                       ]
@@ -3522,9 +3539,13 @@ Module slice.
                                             fun γ =>
                                               ltac:(M.monadic
                                                 (let idx := M.copy (| γ |) in
-                                                BinOp.Wrap.add (|
-                                                  M.read (| idx |),
-                                                  Value.Integer IntegerKind.Usize 1
+                                                M.call_closure (|
+                                                  Ty.path "usize",
+                                                  BinOp.Wrap.add,
+                                                  [
+                                                    M.read (| idx |);
+                                                    Value.Integer IntegerKind.Usize 1
+                                                  ]
                                                 |)))
                                           ]
                                         |)))
@@ -3546,10 +3567,14 @@ Module slice.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.eq (| M.read (| idx |), Value.Integer IntegerKind.Usize 0 |)
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.eq,
+                                    [ M.read (| idx |); Value.Integer IntegerKind.Usize 0 ]
+                                  |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let~ _ : Ty.tuple [] :=
                               M.alloc (|
                                 M.write (|
@@ -3913,7 +3938,7 @@ Module slice.
                             "core::slice::iter::SplitMut",
                             "finished"
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -4039,7 +4064,7 @@ Module slice.
                                   "finished"
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
@@ -4254,9 +4279,10 @@ Module slice.
                                     Pointer.Kind.MutRef,
                                     M.deref (| M.read (| tmp |) |)
                                   |);
-                                  BinOp.Wrap.add (|
-                                    M.read (| idx |),
-                                    Value.Integer IntegerKind.Usize 1
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    BinOp.Wrap.add,
+                                    [ M.read (| idx |); Value.Integer IntegerKind.Usize 1 ]
                                   |)
                                 ]
                               |)
@@ -4372,7 +4398,7 @@ Module slice.
                             "core::slice::iter::SplitMut",
                             "finished"
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.Tuple
                           [
@@ -4391,31 +4417,35 @@ Module slice.
                             Value.StructTuple
                               "core::option::Option::Some"
                               [
-                                BinOp.Wrap.add (|
-                                  M.call_closure (|
-                                    Ty.path "usize",
-                                    M.get_associated_function (|
-                                      Ty.apply (Ty.path "slice") [] [ T ],
-                                      "len",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (|
-                                          M.read (|
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.deref (| M.read (| self |) |),
-                                              "core::slice::iter::SplitMut",
-                                              "v"
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  BinOp.Wrap.add,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "usize",
+                                      M.get_associated_function (|
+                                        Ty.apply (Ty.path "slice") [] [ T ],
+                                        "len",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (|
+                                            M.read (|
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (| M.read (| self |) |),
+                                                "core::slice::iter::SplitMut",
+                                                "v"
+                                              |)
                                             |)
                                           |)
                                         |)
-                                      |)
-                                    ]
-                                  |),
-                                  Value.Integer IntegerKind.Usize 1
+                                      ]
+                                    |);
+                                    Value.Integer IntegerKind.Usize 1
+                                  ]
                                 |)
                               ]
                           ]
@@ -4491,7 +4521,7 @@ Module slice.
                                   "finished"
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
@@ -5071,7 +5101,7 @@ Module slice.
                                   "finished"
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
@@ -5229,9 +5259,13 @@ Module slice.
                                             fun γ =>
                                               ltac:(M.monadic
                                                 (let idx := M.copy (| γ |) in
-                                                BinOp.Wrap.add (|
-                                                  M.read (| idx |),
-                                                  Value.Integer IntegerKind.Usize 1
+                                                M.call_closure (|
+                                                  Ty.path "usize",
+                                                  BinOp.Wrap.add,
+                                                  [
+                                                    M.read (| idx |);
+                                                    Value.Integer IntegerKind.Usize 1
+                                                  ]
                                                 |)))
                                           ]
                                         |)))
@@ -5275,35 +5309,39 @@ Module slice.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.eq (|
-                                    M.read (| idx |),
-                                    M.call_closure (|
-                                      Ty.path "usize",
-                                      M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [] [ T ],
-                                        "len",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (|
-                                            M.read (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.deref (| M.read (| self |) |),
-                                                "core::slice::iter::SplitInclusiveMut",
-                                                "v"
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.eq,
+                                    [
+                                      M.read (| idx |);
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        M.get_associated_function (|
+                                          Ty.apply (Ty.path "slice") [] [ T ],
+                                          "len",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.read (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "core::slice::iter::SplitInclusiveMut",
+                                                  "v"
+                                                |)
                                               |)
                                             |)
                                           |)
-                                        |)
-                                      ]
-                                    |)
+                                        ]
+                                      |)
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let~ _ : Ty.tuple [] :=
                               M.alloc (|
                                 M.write (|
@@ -5434,7 +5472,7 @@ Module slice.
                             "core::slice::iter::SplitInclusiveMut",
                             "finished"
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.Tuple
                           [
@@ -5563,7 +5601,7 @@ Module slice.
                                   "finished"
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
@@ -5610,10 +5648,7 @@ Module slice.
                                     |)
                                   |)) in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                           fun γ =>
                             ltac:(M.monadic
@@ -5673,31 +5708,35 @@ Module slice.
                                             "core::ops::range::RangeTo"
                                             [
                                               ("end_",
-                                                BinOp.Wrap.sub (|
-                                                  M.call_closure (|
-                                                    Ty.path "usize",
-                                                    M.get_associated_function (|
-                                                      Ty.apply (Ty.path "slice") [] [ T ],
-                                                      "len",
-                                                      [],
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.borrow (|
-                                                        Pointer.Kind.Ref,
-                                                        M.deref (|
-                                                          M.read (|
-                                                            M.SubPointer.get_struct_record_field (|
-                                                              M.deref (| M.read (| self |) |),
-                                                              "core::slice::iter::SplitInclusiveMut",
-                                                              "v"
+                                                M.call_closure (|
+                                                  Ty.path "usize",
+                                                  BinOp.Wrap.sub,
+                                                  [
+                                                    M.call_closure (|
+                                                      Ty.path "usize",
+                                                      M.get_associated_function (|
+                                                        Ty.apply (Ty.path "slice") [] [ T ],
+                                                        "len",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (|
+                                                            M.read (|
+                                                              M.SubPointer.get_struct_record_field (|
+                                                                M.deref (| M.read (| self |) |),
+                                                                "core::slice::iter::SplitInclusiveMut",
+                                                                "v"
+                                                              |)
                                                             |)
                                                           |)
                                                         |)
-                                                      |)
-                                                    ]
-                                                  |),
-                                                  Value.Integer IntegerKind.Usize 1
+                                                      ]
+                                                    |);
+                                                    Value.Integer IntegerKind.Usize 1
+                                                  ]
                                                 |))
                                             ]
                                         ]
@@ -5836,9 +5875,13 @@ Module slice.
                                             fun γ =>
                                               ltac:(M.monadic
                                                 (let idx := M.copy (| γ |) in
-                                                BinOp.Wrap.add (|
-                                                  M.read (| idx |),
-                                                  Value.Integer IntegerKind.Usize 1
+                                                M.call_closure (|
+                                                  Ty.path "usize",
+                                                  BinOp.Wrap.add,
+                                                  [
+                                                    M.read (| idx |);
+                                                    Value.Integer IntegerKind.Usize 1
+                                                  ]
                                                 |)))
                                           ]
                                         |)))
@@ -5860,10 +5903,14 @@ Module slice.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.eq (| M.read (| idx |), Value.Integer IntegerKind.Usize 0 |)
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.eq,
+                                    [ M.read (| idx |); Value.Integer IntegerKind.Usize 0 ]
+                                  |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let~ _ : Ty.tuple [] :=
                               M.alloc (|
                                 M.write (|
@@ -6984,7 +7031,7 @@ Module slice.
                   fun γ =>
                     ltac:(M.monadic
                       (let _ :=
-                        M.is_constant_or_break_match (|
+                        is_constant_or_break_match (|
                           M.read (| γ |),
                           Value.Integer IntegerKind.Usize 0
                         |) in
@@ -6992,7 +7039,7 @@ Module slice.
                   fun γ =>
                     ltac:(M.monadic
                       (let _ :=
-                        M.is_constant_or_break_match (|
+                        is_constant_or_break_match (|
                           M.read (| γ |),
                           Value.Integer IntegerKind.Usize 1
                         |) in
@@ -7006,7 +7053,11 @@ Module slice.
                             |) in
                           M.write (|
                             β,
-                            BinOp.Wrap.sub (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
+                            M.call_closure (|
+                              Ty.path "usize",
+                              BinOp.Wrap.sub,
+                              [ M.read (| β |); Value.Integer IntegerKind.Usize 1 ]
+                            |)
                           |)
                         |) in
                       M.alloc (|
@@ -7045,7 +7096,11 @@ Module slice.
                             |) in
                           M.write (|
                             β,
-                            BinOp.Wrap.sub (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
+                            M.call_closure (|
+                              Ty.path "usize",
+                              BinOp.Wrap.sub,
+                              [ M.read (| β |); Value.Integer IntegerKind.Usize 1 ]
+                            |)
                           |)
                         |) in
                       M.alloc (|
@@ -8010,54 +8065,58 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.gt (|
-                              M.call_closure (|
-                                Ty.path "usize",
-                                M.get_associated_function (|
-                                  Ty.apply
-                                    (Ty.path "core::num::nonzero::NonZero")
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.gt,
+                              [
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "core::num::nonzero::NonZero")
+                                      []
+                                      [ Ty.path "usize" ],
+                                    "get",
+                                    [],
                                     []
-                                    [ Ty.path "usize" ],
-                                  "get",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.read (|
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "core::slice::iter::Windows",
-                                      "size"
+                                  |),
+                                  [
+                                    M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "core::slice::iter::Windows",
+                                        "size"
+                                      |)
                                     |)
-                                  |)
-                                ]
-                              |),
-                              M.call_closure (|
-                                Ty.path "usize",
-                                M.get_associated_function (|
-                                  Ty.apply (Ty.path "slice") [] [ T ],
-                                  "len",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (|
-                                      M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.deref (| M.read (| self |) |),
-                                          "core::slice::iter::Windows",
-                                          "v"
+                                  ]
+                                |);
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "slice") [] [ T ],
+                                    "len",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "core::slice::iter::Windows",
+                                            "v"
+                                          |)
                                         |)
                                       |)
                                     |)
-                                  |)
-                                ]
-                              |)
+                                  ]
+                                |)
+                              ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -8232,54 +8291,58 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.gt (|
-                              M.call_closure (|
-                                Ty.path "usize",
-                                M.get_associated_function (|
-                                  Ty.apply
-                                    (Ty.path "core::num::nonzero::NonZero")
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.gt,
+                              [
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "core::num::nonzero::NonZero")
+                                      []
+                                      [ Ty.path "usize" ],
+                                    "get",
+                                    [],
                                     []
-                                    [ Ty.path "usize" ],
-                                  "get",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.read (|
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "core::slice::iter::Windows",
-                                      "size"
+                                  |),
+                                  [
+                                    M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "core::slice::iter::Windows",
+                                        "size"
+                                      |)
                                     |)
-                                  |)
-                                ]
-                              |),
-                              M.call_closure (|
-                                Ty.path "usize",
-                                M.get_associated_function (|
-                                  Ty.apply (Ty.path "slice") [] [ T ],
-                                  "len",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (|
-                                      M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.deref (| M.read (| self |) |),
-                                          "core::slice::iter::Windows",
-                                          "v"
+                                  ]
+                                |);
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "slice") [] [ T ],
+                                    "len",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "core::slice::iter::Windows",
+                                            "v"
+                                          |)
                                         |)
                                       |)
                                     |)
-                                  |)
-                                ]
-                              |)
+                                  ]
+                                |)
+                              ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.Tuple
                           [
@@ -8293,54 +8356,62 @@ Module slice.
                     ltac:(M.monadic
                       (let~ size : Ty.path "usize" :=
                         M.alloc (|
-                          BinOp.Wrap.add (|
-                            BinOp.Wrap.sub (|
+                          M.call_closure (|
+                            Ty.path "usize",
+                            BinOp.Wrap.add,
+                            [
                               M.call_closure (|
                                 Ty.path "usize",
-                                M.get_associated_function (|
-                                  Ty.apply (Ty.path "slice") [] [ T ],
-                                  "len",
-                                  [],
-                                  []
-                                |),
+                                BinOp.Wrap.sub,
                                 [
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (|
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    M.get_associated_function (|
+                                      Ty.apply (Ty.path "slice") [] [ T ],
+                                      "len",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "core::slice::iter::Windows",
+                                              "v"
+                                            |)
+                                          |)
+                                        |)
+                                      |)
+                                    ]
+                                  |);
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "core::num::nonzero::NonZero")
+                                        []
+                                        [ Ty.path "usize" ],
+                                      "get",
+                                      [],
+                                      []
+                                    |),
+                                    [
                                       M.read (|
                                         M.SubPointer.get_struct_record_field (|
                                           M.deref (| M.read (| self |) |),
                                           "core::slice::iter::Windows",
-                                          "v"
+                                          "size"
                                         |)
                                       |)
-                                    |)
+                                    ]
                                   |)
                                 ]
-                              |),
-                              M.call_closure (|
-                                Ty.path "usize",
-                                M.get_associated_function (|
-                                  Ty.apply
-                                    (Ty.path "core::num::nonzero::NonZero")
-                                    []
-                                    [ Ty.path "usize" ],
-                                  "get",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.read (|
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "core::slice::iter::Windows",
-                                      "size"
-                                    |)
-                                  |)
-                                ]
-                              |)
-                            |),
-                            Value.Integer IntegerKind.Usize 1
+                              |);
+                              Value.Integer IntegerKind.Usize 1
+                            ]
                           |)
                         |) in
                       M.alloc (|
@@ -8454,40 +8525,41 @@ Module slice.
                                 M.use
                                   (M.alloc (|
                                     LogicalOp.or (|
-                                      BinOp.gt (|
-                                        M.read (| end_ |),
-                                        M.call_closure (|
-                                          Ty.path "usize",
-                                          M.get_associated_function (|
-                                            Ty.apply (Ty.path "slice") [] [ T ],
-                                            "len",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (|
-                                                M.read (|
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.deref (| M.read (| self |) |),
-                                                    "core::slice::iter::Windows",
-                                                    "v"
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.gt,
+                                        [
+                                          M.read (| end_ |);
+                                          M.call_closure (|
+                                            Ty.path "usize",
+                                            M.get_associated_function (|
+                                              Ty.apply (Ty.path "slice") [] [ T ],
+                                              "len",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.read (|
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.deref (| M.read (| self |) |),
+                                                      "core::slice::iter::Windows",
+                                                      "v"
+                                                    |)
                                                   |)
                                                 |)
                                               |)
-                                            |)
-                                          ]
-                                        |)
+                                            ]
+                                          |)
+                                        ]
                                       |),
                                       ltac:(M.monadic (M.read (| overflow |)))
                                     |)
                                   |)) in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               let~ _ : Ty.tuple [] :=
                                 M.alloc (|
                                   M.write (|
@@ -8610,9 +8682,13 @@ Module slice.
                                                   "core::ops::range::RangeFrom"
                                                   [
                                                     ("start",
-                                                      BinOp.Wrap.add (|
-                                                        M.read (| n |),
-                                                        Value.Integer IntegerKind.Usize 1
+                                                      M.call_closure (|
+                                                        Ty.path "usize",
+                                                        BinOp.Wrap.add,
+                                                        [
+                                                          M.read (| n |);
+                                                          Value.Integer IntegerKind.Usize 1
+                                                        ]
                                                       |))
                                                   ]
                                               ]
@@ -8667,28 +8743,67 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.gt (|
-                              M.call_closure (|
-                                Ty.path "usize",
-                                M.get_associated_function (|
-                                  Ty.apply
-                                    (Ty.path "core::num::nonzero::NonZero")
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.gt,
+                              [
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "core::num::nonzero::NonZero")
+                                      []
+                                      [ Ty.path "usize" ],
+                                    "get",
+                                    [],
                                     []
-                                    [ Ty.path "usize" ],
-                                  "get",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.read (|
-                                    M.SubPointer.get_struct_record_field (|
-                                      self,
-                                      "core::slice::iter::Windows",
-                                      "size"
+                                  |),
+                                  [
+                                    M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        self,
+                                        "core::slice::iter::Windows",
+                                        "size"
+                                      |)
                                     |)
-                                  |)
-                                ]
-                              |),
+                                  ]
+                                |);
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "slice") [] [ T ],
+                                    "len",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            self,
+                                            "core::slice::iter::Windows",
+                                            "v"
+                                          |)
+                                        |)
+                                      |)
+                                    |)
+                                  ]
+                                |)
+                              ]
+                            |)
+                          |)) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
+                  fun γ =>
+                    ltac:(M.monadic
+                      (let~ start : Ty.path "usize" :=
+                        M.alloc (|
+                          M.call_closure (|
+                            Ty.path "usize",
+                            BinOp.Wrap.sub,
+                            [
                               M.call_closure (|
                                 Ty.path "usize",
                                 M.get_associated_function (|
@@ -8711,60 +8826,29 @@ Module slice.
                                     |)
                                   |)
                                 ]
-                              |)
-                            |)
-                          |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                      M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
-                  fun γ =>
-                    ltac:(M.monadic
-                      (let~ start : Ty.path "usize" :=
-                        M.alloc (|
-                          BinOp.Wrap.sub (|
-                            M.call_closure (|
-                              Ty.path "usize",
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "slice") [] [ T ],
-                                "len",
-                                [],
-                                []
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.read (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        self,
-                                        "core::slice::iter::Windows",
-                                        "v"
-                                      |)
+                              |);
+                              M.call_closure (|
+                                Ty.path "usize",
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "core::num::nonzero::NonZero")
+                                    []
+                                    [ Ty.path "usize" ],
+                                  "get",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      self,
+                                      "core::slice::iter::Windows",
+                                      "size"
                                     |)
                                   |)
-                                |)
-                              ]
-                            |),
-                            M.call_closure (|
-                              Ty.path "usize",
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "core::num::nonzero::NonZero")
-                                  []
-                                  [ Ty.path "usize" ],
-                                "get",
-                                [],
-                                []
-                              |),
-                              [
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    self,
-                                    "core::slice::iter::Windows",
-                                    "size"
-                                  |)
-                                |)
-                              ]
-                            |)
+                                ]
+                              |)
+                            ]
                           |)
                         |) in
                       M.alloc (|
@@ -8967,54 +9051,58 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.gt (|
-                              M.call_closure (|
-                                Ty.path "usize",
-                                M.get_associated_function (|
-                                  Ty.apply
-                                    (Ty.path "core::num::nonzero::NonZero")
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.gt,
+                              [
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "core::num::nonzero::NonZero")
+                                      []
+                                      [ Ty.path "usize" ],
+                                    "get",
+                                    [],
                                     []
-                                    [ Ty.path "usize" ],
-                                  "get",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.read (|
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "core::slice::iter::Windows",
-                                      "size"
+                                  |),
+                                  [
+                                    M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "core::slice::iter::Windows",
+                                        "size"
+                                      |)
                                     |)
-                                  |)
-                                ]
-                              |),
-                              M.call_closure (|
-                                Ty.path "usize",
-                                M.get_associated_function (|
-                                  Ty.apply (Ty.path "slice") [] [ T ],
-                                  "len",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (|
-                                      M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.deref (| M.read (| self |) |),
-                                          "core::slice::iter::Windows",
-                                          "v"
+                                  ]
+                                |);
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "slice") [] [ T ],
+                                    "len",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "core::slice::iter::Windows",
+                                            "v"
+                                          |)
                                         |)
                                       |)
                                     |)
-                                  |)
-                                ]
-                              |)
+                                  ]
+                                |)
+                              ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -9066,51 +9154,55 @@ Module slice.
                                         "core::ops::range::RangeFrom"
                                         [
                                           ("start",
-                                            BinOp.Wrap.sub (|
-                                              M.call_closure (|
-                                                Ty.path "usize",
-                                                M.get_associated_function (|
-                                                  Ty.apply (Ty.path "slice") [] [ T ],
-                                                  "len",
-                                                  [],
-                                                  []
-                                                |),
-                                                [
-                                                  M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.deref (|
-                                                      M.read (|
-                                                        M.SubPointer.get_struct_record_field (|
-                                                          M.deref (| M.read (| self |) |),
-                                                          "core::slice::iter::Windows",
-                                                          "v"
+                                            M.call_closure (|
+                                              Ty.path "usize",
+                                              BinOp.Wrap.sub,
+                                              [
+                                                M.call_closure (|
+                                                  Ty.path "usize",
+                                                  M.get_associated_function (|
+                                                    Ty.apply (Ty.path "slice") [] [ T ],
+                                                    "len",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (|
+                                                        M.read (|
+                                                          M.SubPointer.get_struct_record_field (|
+                                                            M.deref (| M.read (| self |) |),
+                                                            "core::slice::iter::Windows",
+                                                            "v"
+                                                          |)
                                                         |)
                                                       |)
                                                     |)
-                                                  |)
-                                                ]
-                                              |),
-                                              M.call_closure (|
-                                                Ty.path "usize",
-                                                M.get_associated_function (|
-                                                  Ty.apply
-                                                    (Ty.path "core::num::nonzero::NonZero")
+                                                  ]
+                                                |);
+                                                M.call_closure (|
+                                                  Ty.path "usize",
+                                                  M.get_associated_function (|
+                                                    Ty.apply
+                                                      (Ty.path "core::num::nonzero::NonZero")
+                                                      []
+                                                      [ Ty.path "usize" ],
+                                                    "get",
+                                                    [],
                                                     []
-                                                    [ Ty.path "usize" ],
-                                                  "get",
-                                                  [],
-                                                  []
-                                                |),
-                                                [
-                                                  M.read (|
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      M.deref (| M.read (| self |) |),
-                                                      "core::slice::iter::Windows",
-                                                      "size"
+                                                  |),
+                                                  [
+                                                    M.read (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        M.deref (| M.read (| self |) |),
+                                                        "core::slice::iter::Windows",
+                                                        "size"
+                                                      |)
                                                     |)
-                                                  |)
-                                                ]
-                                              |)
+                                                  ]
+                                                |)
+                                              ]
                                             |))
                                         ]
                                     ]
@@ -9169,31 +9261,35 @@ Module slice.
                                           "core::ops::range::RangeTo"
                                           [
                                             ("end_",
-                                              BinOp.Wrap.sub (|
-                                                M.call_closure (|
-                                                  Ty.path "usize",
-                                                  M.get_associated_function (|
-                                                    Ty.apply (Ty.path "slice") [] [ T ],
-                                                    "len",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.borrow (|
-                                                      Pointer.Kind.Ref,
-                                                      M.deref (|
-                                                        M.read (|
-                                                          M.SubPointer.get_struct_record_field (|
-                                                            M.deref (| M.read (| self |) |),
-                                                            "core::slice::iter::Windows",
-                                                            "v"
+                                              M.call_closure (|
+                                                Ty.path "usize",
+                                                BinOp.Wrap.sub,
+                                                [
+                                                  M.call_closure (|
+                                                    Ty.path "usize",
+                                                    M.get_associated_function (|
+                                                      Ty.apply (Ty.path "slice") [] [ T ],
+                                                      "len",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (|
+                                                          M.read (|
+                                                            M.SubPointer.get_struct_record_field (|
+                                                              M.deref (| M.read (| self |) |),
+                                                              "core::slice::iter::Windows",
+                                                              "v"
+                                                            |)
                                                           |)
                                                         |)
                                                       |)
-                                                    |)
-                                                  ]
-                                                |),
-                                                Value.Integer IntegerKind.Usize 1
+                                                    ]
+                                                  |);
+                                                  Value.Integer IntegerKind.Usize 1
+                                                ]
                                               |))
                                           ]
                                       ]
@@ -9287,38 +9383,39 @@ Module slice.
                                 M.use
                                   (M.alloc (|
                                     LogicalOp.or (|
-                                      BinOp.lt (|
-                                        M.read (| end_ |),
-                                        M.call_closure (|
-                                          Ty.path "usize",
-                                          M.get_associated_function (|
-                                            Ty.apply
-                                              (Ty.path "core::num::nonzero::NonZero")
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.lt,
+                                        [
+                                          M.read (| end_ |);
+                                          M.call_closure (|
+                                            Ty.path "usize",
+                                            M.get_associated_function (|
+                                              Ty.apply
+                                                (Ty.path "core::num::nonzero::NonZero")
+                                                []
+                                                [ Ty.path "usize" ],
+                                              "get",
+                                              [],
                                               []
-                                              [ Ty.path "usize" ],
-                                            "get",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.read (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.deref (| M.read (| self |) |),
-                                                "core::slice::iter::Windows",
-                                                "size"
+                                            |),
+                                            [
+                                              M.read (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "core::slice::iter::Windows",
+                                                  "size"
+                                                |)
                                               |)
-                                            |)
-                                          ]
-                                        |)
+                                            ]
+                                          |)
+                                        ]
                                       |),
                                       ltac:(M.monadic (M.read (| overflow |)))
                                     |)
                                   |)) in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               let~ _ : Ty.tuple [] :=
                                 M.alloc (|
                                   M.write (|
@@ -9386,29 +9483,33 @@ Module slice.
                                             "core::ops::range::Range"
                                             [
                                               ("start",
-                                                BinOp.Wrap.sub (|
-                                                  M.read (| end_ |),
-                                                  M.call_closure (|
-                                                    Ty.path "usize",
-                                                    M.get_associated_function (|
-                                                      Ty.apply
-                                                        (Ty.path "core::num::nonzero::NonZero")
+                                                M.call_closure (|
+                                                  Ty.path "usize",
+                                                  BinOp.Wrap.sub,
+                                                  [
+                                                    M.read (| end_ |);
+                                                    M.call_closure (|
+                                                      Ty.path "usize",
+                                                      M.get_associated_function (|
+                                                        Ty.apply
+                                                          (Ty.path "core::num::nonzero::NonZero")
+                                                          []
+                                                          [ Ty.path "usize" ],
+                                                        "get",
+                                                        [],
                                                         []
-                                                        [ Ty.path "usize" ],
-                                                      "get",
-                                                      [],
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.read (|
-                                                        M.SubPointer.get_struct_record_field (|
-                                                          M.deref (| M.read (| self |) |),
-                                                          "core::slice::iter::Windows",
-                                                          "size"
+                                                      |),
+                                                      [
+                                                        M.read (|
+                                                          M.SubPointer.get_struct_record_field (|
+                                                            M.deref (| M.read (| self |) |),
+                                                            "core::slice::iter::Windows",
+                                                            "size"
+                                                          |)
                                                         |)
-                                                      |)
-                                                    ]
-                                                  |)
+                                                      ]
+                                                    |)
+                                                  ]
                                                 |));
                                               ("end_", M.read (| end_ |))
                                             ]
@@ -9467,9 +9568,13 @@ Module slice.
                                                   "core::ops::range::RangeTo"
                                                   [
                                                     ("end_",
-                                                      BinOp.Wrap.sub (|
-                                                        M.read (| end_ |),
-                                                        Value.Integer IntegerKind.Usize 1
+                                                      M.call_closure (|
+                                                        Ty.path "usize",
+                                                        BinOp.Wrap.sub,
+                                                        [
+                                                          M.read (| end_ |);
+                                                          Value.Integer IntegerKind.Usize 1
+                                                        ]
                                                       |))
                                                   ]
                                               ]
@@ -9813,7 +9918,7 @@ Module slice.
                               ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -9977,7 +10082,7 @@ Module slice.
                               ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.Tuple
                           [
@@ -9991,72 +10096,80 @@ Module slice.
                     ltac:(M.monadic
                       (let~ n : Ty.path "usize" :=
                         M.alloc (|
-                          BinOp.Wrap.div (|
-                            M.call_closure (|
-                              Ty.path "usize",
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "slice") [] [ T ],
-                                "len",
-                                [],
-                                []
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.read (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "core::slice::iter::Chunks",
-                                        "v"
+                          M.call_closure (|
+                            Ty.path "usize",
+                            BinOp.Wrap.div,
+                            [
+                              M.call_closure (|
+                                Ty.path "usize",
+                                M.get_associated_function (|
+                                  Ty.apply (Ty.path "slice") [] [ T ],
+                                  "len",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.read (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "core::slice::iter::Chunks",
+                                          "v"
+                                        |)
                                       |)
                                     |)
                                   |)
+                                ]
+                              |);
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::slice::iter::Chunks",
+                                  "chunk_size"
                                 |)
-                              ]
-                            |),
-                            M.read (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "core::slice::iter::Chunks",
-                                "chunk_size"
                               |)
-                            |)
+                            ]
                           |)
                         |) in
                       let~ rem : Ty.path "usize" :=
                         M.alloc (|
-                          BinOp.Wrap.rem (|
-                            M.call_closure (|
-                              Ty.path "usize",
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "slice") [] [ T ],
-                                "len",
-                                [],
-                                []
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.read (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "core::slice::iter::Chunks",
-                                        "v"
+                          M.call_closure (|
+                            Ty.path "usize",
+                            BinOp.Wrap.rem,
+                            [
+                              M.call_closure (|
+                                Ty.path "usize",
+                                M.get_associated_function (|
+                                  Ty.apply (Ty.path "slice") [] [ T ],
+                                  "len",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.read (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "core::slice::iter::Chunks",
+                                          "v"
+                                        |)
                                       |)
                                     |)
                                   |)
+                                ]
+                              |);
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::slice::iter::Chunks",
+                                  "chunk_size"
                                 |)
-                              ]
-                            |),
-                            M.read (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "core::slice::iter::Chunks",
-                                "chunk_size"
                               |)
-                            |)
+                            ]
                           |)
                         |) in
                       let~ n : Ty.path "usize" :=
@@ -10070,20 +10183,22 @@ Module slice.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.gt (|
-                                          M.read (| rem |),
-                                          Value.Integer IntegerKind.Usize 0
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.gt,
+                                          [ M.read (| rem |); Value.Integer IntegerKind.Usize 0 ]
                                         |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
                                   M.alloc (|
-                                    BinOp.Wrap.add (|
-                                      M.read (| n |),
-                                      Value.Integer IntegerKind.Usize 1
+                                    M.call_closure (|
+                                      Ty.path "usize",
+                                      BinOp.Wrap.add,
+                                      [ M.read (| n |); Value.Integer IntegerKind.Usize 1 ]
                                     |)
                                   |)));
                               fun γ => ltac:(M.monadic n)
@@ -10194,40 +10309,41 @@ Module slice.
                                 M.use
                                   (M.alloc (|
                                     LogicalOp.or (|
-                                      BinOp.ge (|
-                                        M.read (| start |),
-                                        M.call_closure (|
-                                          Ty.path "usize",
-                                          M.get_associated_function (|
-                                            Ty.apply (Ty.path "slice") [] [ T ],
-                                            "len",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (|
-                                                M.read (|
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.deref (| M.read (| self |) |),
-                                                    "core::slice::iter::Chunks",
-                                                    "v"
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.ge,
+                                        [
+                                          M.read (| start |);
+                                          M.call_closure (|
+                                            Ty.path "usize",
+                                            M.get_associated_function (|
+                                              Ty.apply (Ty.path "slice") [] [ T ],
+                                              "len",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.read (|
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.deref (| M.read (| self |) |),
+                                                      "core::slice::iter::Chunks",
+                                                      "v"
+                                                    |)
                                                   |)
                                                 |)
                                               |)
-                                            |)
-                                          ]
-                                        |)
+                                            ]
+                                          |)
+                                        ]
                                       |),
                                       ltac:(M.monadic (M.read (| overflow |)))
                                     |)
                                   |)) in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               let~ _ : Ty.tuple [] :=
                                 M.alloc (|
                                   M.write (|
@@ -10536,40 +10652,59 @@ Module slice.
                               ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let~ start : Ty.path "usize" :=
                         M.alloc (|
-                          BinOp.Wrap.mul (|
-                            BinOp.Wrap.div (|
-                              BinOp.Wrap.sub (|
-                                M.call_closure (|
-                                  Ty.path "usize",
-                                  M.get_associated_function (|
-                                    Ty.apply (Ty.path "slice") [] [ T ],
-                                    "len",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.deref (|
-                                        M.read (|
-                                          M.SubPointer.get_struct_record_field (|
-                                            self,
-                                            "core::slice::iter::Chunks",
-                                            "v"
+                          M.call_closure (|
+                            Ty.path "usize",
+                            BinOp.Wrap.mul,
+                            [
+                              M.call_closure (|
+                                Ty.path "usize",
+                                BinOp.Wrap.div,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    BinOp.Wrap.sub,
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        M.get_associated_function (|
+                                          Ty.apply (Ty.path "slice") [] [ T ],
+                                          "len",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.read (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  self,
+                                                  "core::slice::iter::Chunks",
+                                                  "v"
+                                                |)
+                                              |)
+                                            |)
                                           |)
-                                        |)
-                                      |)
+                                        ]
+                                      |);
+                                      Value.Integer IntegerKind.Usize 1
+                                    ]
+                                  |);
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      self,
+                                      "core::slice::iter::Chunks",
+                                      "chunk_size"
                                     |)
-                                  ]
-                                |),
-                                Value.Integer IntegerKind.Usize 1
-                              |),
+                                  |)
+                                ]
+                              |);
                               M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   self,
@@ -10577,14 +10712,7 @@ Module slice.
                                   "chunk_size"
                                 |)
                               |)
-                            |),
-                            M.read (|
-                              M.SubPointer.get_struct_record_field (|
-                                self,
-                                "core::slice::iter::Chunks",
-                                "chunk_size"
-                              |)
-                            |)
+                            ]
                           |)
                         |) in
                       M.alloc (|
@@ -10677,15 +10805,19 @@ Module slice.
             M.read (|
               let~ start : Ty.path "usize" :=
                 M.alloc (|
-                  BinOp.Wrap.mul (|
-                    M.read (| idx |),
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "core::slice::iter::Chunks",
-                        "chunk_size"
+                  M.call_closure (|
+                    Ty.path "usize",
+                    BinOp.Wrap.mul,
+                    [
+                      M.read (| idx |);
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::slice::iter::Chunks",
+                          "chunk_size"
+                        |)
                       |)
-                    |)
+                    ]
                   |)
                 |) in
               let~ len : Ty.path "usize" :=
@@ -10880,43 +11012,47 @@ Module slice.
                               ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let~ remainder : Ty.path "usize" :=
                         M.alloc (|
-                          BinOp.Wrap.rem (|
-                            M.call_closure (|
-                              Ty.path "usize",
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "slice") [] [ T ],
-                                "len",
-                                [],
-                                []
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.read (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "core::slice::iter::Chunks",
-                                        "v"
+                          M.call_closure (|
+                            Ty.path "usize",
+                            BinOp.Wrap.rem,
+                            [
+                              M.call_closure (|
+                                Ty.path "usize",
+                                M.get_associated_function (|
+                                  Ty.apply (Ty.path "slice") [] [ T ],
+                                  "len",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.read (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "core::slice::iter::Chunks",
+                                          "v"
+                                        |)
                                       |)
                                     |)
                                   |)
+                                ]
+                              |);
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::slice::iter::Chunks",
+                                  "chunk_size"
                                 |)
-                              ]
-                            |),
-                            M.read (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "core::slice::iter::Chunks",
-                                "chunk_size"
                               |)
-                            |)
+                            ]
                           |)
                         |) in
                       let~ chunksz : Ty.path "usize" :=
@@ -10930,13 +11066,17 @@ Module slice.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.ne (|
-                                          M.read (| remainder |),
-                                          Value.Integer IntegerKind.Usize 0
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.ne,
+                                          [
+                                            M.read (| remainder |);
+                                            Value.Integer IntegerKind.Usize 0
+                                          ]
                                         |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -10979,31 +11119,35 @@ Module slice.
                                   |)
                                 |)
                               |);
-                              BinOp.Wrap.sub (|
-                                M.call_closure (|
-                                  Ty.path "usize",
-                                  M.get_associated_function (|
-                                    Ty.apply (Ty.path "slice") [] [ T ],
-                                    "len",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.deref (|
-                                        M.read (|
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.deref (| M.read (| self |) |),
-                                            "core::slice::iter::Chunks",
-                                            "v"
+                              M.call_closure (|
+                                Ty.path "usize",
+                                BinOp.Wrap.sub,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    M.get_associated_function (|
+                                      Ty.apply (Ty.path "slice") [] [ T ],
+                                      "len",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "core::slice::iter::Chunks",
+                                              "v"
+                                            |)
                                           |)
                                         |)
                                       |)
-                                    |)
-                                  ]
-                                |),
-                                M.read (| chunksz |)
+                                    ]
+                                  |);
+                                  M.read (| chunksz |)
+                                ]
                               |)
                             ]
                           |)
@@ -11096,8 +11240,15 @@ Module slice.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use (M.alloc (| BinOp.ge (| M.read (| n |), M.read (| len |) |) |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        M.use
+                          (M.alloc (|
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.ge,
+                              [ M.read (| n |); M.read (| len |) ]
+                            |)
+                          |)) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.write (|
@@ -11119,21 +11270,30 @@ Module slice.
                     ltac:(M.monadic
                       (let~ start : Ty.path "usize" :=
                         M.alloc (|
-                          BinOp.Wrap.mul (|
-                            BinOp.Wrap.sub (|
-                              BinOp.Wrap.sub (|
-                                M.read (| len |),
-                                Value.Integer IntegerKind.Usize 1
-                              |),
-                              M.read (| n |)
-                            |),
-                            M.read (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "core::slice::iter::Chunks",
-                                "chunk_size"
+                          M.call_closure (|
+                            Ty.path "usize",
+                            BinOp.Wrap.mul,
+                            [
+                              M.call_closure (|
+                                Ty.path "usize",
+                                BinOp.Wrap.sub,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    BinOp.Wrap.sub,
+                                    [ M.read (| len |); Value.Integer IntegerKind.Usize 1 ]
+                                  |);
+                                  M.read (| n |)
+                                ]
+                              |);
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::slice::iter::Chunks",
+                                  "chunk_size"
+                                |)
                               |)
-                            |)
+                            ]
                           |)
                         |) in
                       let~ end_ : Ty.path "usize" :=
@@ -11643,7 +11803,7 @@ Module slice.
                               ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -11815,7 +11975,7 @@ Module slice.
                               ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.Tuple
                           [
@@ -11829,68 +11989,76 @@ Module slice.
                     ltac:(M.monadic
                       (let~ n : Ty.path "usize" :=
                         M.alloc (|
-                          BinOp.Wrap.div (|
-                            M.call_closure (|
-                              Ty.path "usize",
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "*mut")
+                          M.call_closure (|
+                            Ty.path "usize",
+                            BinOp.Wrap.div,
+                            [
+                              M.call_closure (|
+                                Ty.path "usize",
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "*mut")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                  "len",
+                                  [],
                                   []
-                                  [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                                "len",
-                                [],
-                                []
-                              |),
-                              [
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "core::slice::iter::ChunksMut",
-                                    "v"
+                                |),
+                                [
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::slice::iter::ChunksMut",
+                                      "v"
+                                    |)
                                   |)
+                                ]
+                              |);
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::slice::iter::ChunksMut",
+                                  "chunk_size"
                                 |)
-                              ]
-                            |),
-                            M.read (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "core::slice::iter::ChunksMut",
-                                "chunk_size"
                               |)
-                            |)
+                            ]
                           |)
                         |) in
                       let~ rem : Ty.path "usize" :=
                         M.alloc (|
-                          BinOp.Wrap.rem (|
-                            M.call_closure (|
-                              Ty.path "usize",
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "*mut")
+                          M.call_closure (|
+                            Ty.path "usize",
+                            BinOp.Wrap.rem,
+                            [
+                              M.call_closure (|
+                                Ty.path "usize",
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "*mut")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                  "len",
+                                  [],
                                   []
-                                  [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                                "len",
-                                [],
-                                []
-                              |),
-                              [
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "core::slice::iter::ChunksMut",
-                                    "v"
+                                |),
+                                [
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::slice::iter::ChunksMut",
+                                      "v"
+                                    |)
                                   |)
+                                ]
+                              |);
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::slice::iter::ChunksMut",
+                                  "chunk_size"
                                 |)
-                              ]
-                            |),
-                            M.read (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "core::slice::iter::ChunksMut",
-                                "chunk_size"
                               |)
-                            |)
+                            ]
                           |)
                         |) in
                       let~ n : Ty.path "usize" :=
@@ -11904,20 +12072,22 @@ Module slice.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.gt (|
-                                          M.read (| rem |),
-                                          Value.Integer IntegerKind.Usize 0
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.gt,
+                                          [ M.read (| rem |); Value.Integer IntegerKind.Usize 0 ]
                                         |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
                                   M.alloc (|
-                                    BinOp.Wrap.add (|
-                                      M.read (| n |),
-                                      Value.Integer IntegerKind.Usize 1
+                                    M.call_closure (|
+                                      Ty.path "usize",
+                                      BinOp.Wrap.add,
+                                      [ M.read (| n |); Value.Integer IntegerKind.Usize 1 ]
                                     |)
                                   |)));
                               fun γ => ltac:(M.monadic n)
@@ -12033,38 +12203,39 @@ Module slice.
                                 M.use
                                   (M.alloc (|
                                     LogicalOp.or (|
-                                      BinOp.ge (|
-                                        M.read (| start |),
-                                        M.call_closure (|
-                                          Ty.path "usize",
-                                          M.get_associated_function (|
-                                            Ty.apply
-                                              (Ty.path "*mut")
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.ge,
+                                        [
+                                          M.read (| start |);
+                                          M.call_closure (|
+                                            Ty.path "usize",
+                                            M.get_associated_function (|
+                                              Ty.apply
+                                                (Ty.path "*mut")
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                              "len",
+                                              [],
                                               []
-                                              [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                                            "len",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.read (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.deref (| M.read (| self |) |),
-                                                "core::slice::iter::ChunksMut",
-                                                "v"
+                                            |),
+                                            [
+                                              M.read (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "core::slice::iter::ChunksMut",
+                                                  "v"
+                                                |)
                                               |)
-                                            |)
-                                          ]
-                                        |)
+                                            ]
+                                          |)
+                                        ]
                                       |),
                                       ltac:(M.monadic (M.read (| overflow |)))
                                     |)
                                   |)) in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               let~ _ : Ty.tuple [] :=
                                 M.alloc (|
                                   M.write (|
@@ -12365,38 +12536,57 @@ Module slice.
                               ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let~ start : Ty.path "usize" :=
                         M.alloc (|
-                          BinOp.Wrap.mul (|
-                            BinOp.Wrap.div (|
-                              BinOp.Wrap.sub (|
-                                M.call_closure (|
-                                  Ty.path "usize",
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "*mut")
-                                      []
-                                      [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                                    "len",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.read (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        self,
-                                        "core::slice::iter::ChunksMut",
-                                        "v"
-                                      |)
+                          M.call_closure (|
+                            Ty.path "usize",
+                            BinOp.Wrap.mul,
+                            [
+                              M.call_closure (|
+                                Ty.path "usize",
+                                BinOp.Wrap.div,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    BinOp.Wrap.sub,
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "*mut")
+                                            []
+                                            [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                          "len",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              self,
+                                              "core::slice::iter::ChunksMut",
+                                              "v"
+                                            |)
+                                          |)
+                                        ]
+                                      |);
+                                      Value.Integer IntegerKind.Usize 1
+                                    ]
+                                  |);
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      self,
+                                      "core::slice::iter::ChunksMut",
+                                      "chunk_size"
                                     |)
-                                  ]
-                                |),
-                                Value.Integer IntegerKind.Usize 1
-                              |),
+                                  |)
+                                ]
+                              |);
                               M.read (|
                                 M.SubPointer.get_struct_record_field (|
                                   self,
@@ -12404,14 +12594,7 @@ Module slice.
                                   "chunk_size"
                                 |)
                               |)
-                            |),
-                            M.read (|
-                              M.SubPointer.get_struct_record_field (|
-                                self,
-                                "core::slice::iter::ChunksMut",
-                                "chunk_size"
-                              |)
-                            |)
+                            ]
                           |)
                         |) in
                       M.alloc (|
@@ -12506,15 +12689,19 @@ Module slice.
                 M.read (|
                   let~ start : Ty.path "usize" :=
                     M.alloc (|
-                      BinOp.Wrap.mul (|
-                        M.read (| idx |),
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "core::slice::iter::ChunksMut",
-                            "chunk_size"
+                      M.call_closure (|
+                        Ty.path "usize",
+                        BinOp.Wrap.mul,
+                        [
+                          M.read (| idx |);
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::slice::iter::ChunksMut",
+                              "chunk_size"
+                            |)
                           |)
-                        |)
+                        ]
                       |)
                     |) in
                   M.alloc (|
@@ -12716,41 +12903,45 @@ Module slice.
                               ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let~ remainder : Ty.path "usize" :=
                         M.alloc (|
-                          BinOp.Wrap.rem (|
-                            M.call_closure (|
-                              Ty.path "usize",
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "*mut")
+                          M.call_closure (|
+                            Ty.path "usize",
+                            BinOp.Wrap.rem,
+                            [
+                              M.call_closure (|
+                                Ty.path "usize",
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "*mut")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                  "len",
+                                  [],
                                   []
-                                  [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                                "len",
-                                [],
-                                []
-                              |),
-                              [
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "core::slice::iter::ChunksMut",
-                                    "v"
+                                |),
+                                [
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::slice::iter::ChunksMut",
+                                      "v"
+                                    |)
                                   |)
+                                ]
+                              |);
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::slice::iter::ChunksMut",
+                                  "chunk_size"
                                 |)
-                              ]
-                            |),
-                            M.read (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "core::slice::iter::ChunksMut",
-                                "chunk_size"
                               |)
-                            |)
+                            ]
                           |)
                         |) in
                       let~ sz : Ty.path "usize" :=
@@ -12764,13 +12955,17 @@ Module slice.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.ne (|
-                                          M.read (| remainder |),
-                                          Value.Integer IntegerKind.Usize 0
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.ne,
+                                          [
+                                            M.read (| remainder |);
+                                            Value.Integer IntegerKind.Usize 0
+                                          ]
                                         |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -12832,7 +13027,11 @@ Module slice.
                                   "v"
                                 |)
                               |);
-                              BinOp.Wrap.sub (| M.read (| len |), M.read (| sz |) |)
+                              M.call_closure (|
+                                Ty.path "usize",
+                                BinOp.Wrap.sub,
+                                [ M.read (| len |); M.read (| sz |) ]
+                              |)
                             ]
                           |)
                         |),
@@ -12942,8 +13141,15 @@ Module slice.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use (M.alloc (| BinOp.ge (| M.read (| n |), M.read (| len |) |) |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        M.use
+                          (M.alloc (|
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.ge,
+                              [ M.read (| n |); M.read (| len |) ]
+                            |)
+                          |)) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.write (|
@@ -12965,21 +13171,30 @@ Module slice.
                     ltac:(M.monadic
                       (let~ start : Ty.path "usize" :=
                         M.alloc (|
-                          BinOp.Wrap.mul (|
-                            BinOp.Wrap.sub (|
-                              BinOp.Wrap.sub (|
-                                M.read (| len |),
-                                Value.Integer IntegerKind.Usize 1
-                              |),
-                              M.read (| n |)
-                            |),
-                            M.read (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "core::slice::iter::ChunksMut",
-                                "chunk_size"
+                          M.call_closure (|
+                            Ty.path "usize",
+                            BinOp.Wrap.mul,
+                            [
+                              M.call_closure (|
+                                Ty.path "usize",
+                                BinOp.Wrap.sub,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    BinOp.Wrap.sub,
+                                    [ M.read (| len |); Value.Integer IntegerKind.Usize 1 ]
+                                  |);
+                                  M.read (| n |)
+                                ]
+                              |);
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::slice::iter::ChunksMut",
+                                  "chunk_size"
+                                |)
                               |)
-                            |)
+                            ]
                           |)
                         |) in
                       let~ end_ : Ty.path "usize" :=
@@ -13441,34 +13656,42 @@ Module slice.
             M.read (|
               let~ rem : Ty.path "usize" :=
                 M.alloc (|
-                  BinOp.Wrap.rem (|
-                    M.call_closure (|
-                      Ty.path "usize",
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [] [ T ],
-                        "len",
-                        [],
-                        []
-                      |),
-                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |) ]
-                    |),
-                    M.read (| chunk_size |)
+                  M.call_closure (|
+                    Ty.path "usize",
+                    BinOp.Wrap.rem,
+                    [
+                      M.call_closure (|
+                        Ty.path "usize",
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "slice") [] [ T ],
+                          "len",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |) ]
+                      |);
+                      M.read (| chunk_size |)
+                    ]
                   |)
                 |) in
               let~ fst_len : Ty.path "usize" :=
                 M.alloc (|
-                  BinOp.Wrap.sub (|
-                    M.call_closure (|
-                      Ty.path "usize",
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [] [ T ],
-                        "len",
-                        [],
-                        []
-                      |),
-                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |) ]
-                    |),
-                    M.read (| rem |)
+                  M.call_closure (|
+                    Ty.path "usize",
+                    BinOp.Wrap.sub,
+                    [
+                      M.call_closure (|
+                        Ty.path "usize",
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "slice") [] [ T ],
+                          "len",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |) ]
+                      |);
+                      M.read (| rem |)
+                    ]
                   |)
                 |) in
               M.match_operator (|
@@ -13654,40 +13877,44 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.lt (|
-                              M.call_closure (|
-                                Ty.path "usize",
-                                M.get_associated_function (|
-                                  Ty.apply (Ty.path "slice") [] [ T ],
-                                  "len",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (|
-                                      M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.deref (| M.read (| self |) |),
-                                          "core::slice::iter::ChunksExact",
-                                          "v"
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.lt,
+                              [
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "slice") [] [ T ],
+                                    "len",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "core::slice::iter::ChunksExact",
+                                            "v"
+                                          |)
                                         |)
                                       |)
                                     |)
+                                  ]
+                                |);
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::slice::iter::ChunksExact",
+                                    "chunk_size"
                                   |)
-                                ]
-                              |),
-                              M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "core::slice::iter::ChunksExact",
-                                  "chunk_size"
                                 |)
-                              |)
+                              ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -13776,37 +14003,41 @@ Module slice.
             M.read (|
               let~ n : Ty.path "usize" :=
                 M.alloc (|
-                  BinOp.Wrap.div (|
-                    M.call_closure (|
-                      Ty.path "usize",
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [] [ T ],
-                        "len",
-                        [],
-                        []
-                      |),
-                      [
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (|
-                            M.read (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "core::slice::iter::ChunksExact",
-                                "v"
+                  M.call_closure (|
+                    Ty.path "usize",
+                    BinOp.Wrap.div,
+                    [
+                      M.call_closure (|
+                        Ty.path "usize",
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "slice") [] [ T ],
+                          "len",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::slice::iter::ChunksExact",
+                                  "v"
+                                |)
                               |)
                             |)
                           |)
+                        ]
+                      |);
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::slice::iter::ChunksExact",
+                          "chunk_size"
                         |)
-                      ]
-                    |),
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "core::slice::iter::ChunksExact",
-                        "chunk_size"
                       |)
-                    |)
+                    ]
                   |)
                 |) in
               M.alloc (|
@@ -13907,40 +14138,41 @@ Module slice.
                                 M.use
                                   (M.alloc (|
                                     LogicalOp.or (|
-                                      BinOp.ge (|
-                                        M.read (| start |),
-                                        M.call_closure (|
-                                          Ty.path "usize",
-                                          M.get_associated_function (|
-                                            Ty.apply (Ty.path "slice") [] [ T ],
-                                            "len",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (|
-                                                M.read (|
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.deref (| M.read (| self |) |),
-                                                    "core::slice::iter::ChunksExact",
-                                                    "v"
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.ge,
+                                        [
+                                          M.read (| start |);
+                                          M.call_closure (|
+                                            Ty.path "usize",
+                                            M.get_associated_function (|
+                                              Ty.apply (Ty.path "slice") [] [ T ],
+                                              "len",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.read (|
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.deref (| M.read (| self |) |),
+                                                      "core::slice::iter::ChunksExact",
+                                                      "v"
+                                                    |)
                                                   |)
                                                 |)
                                               |)
-                                            |)
-                                          ]
-                                        |)
+                                            ]
+                                          |)
+                                        ]
                                       |),
                                       ltac:(M.monadic (M.read (| overflow |)))
                                     |)
                                   |)) in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               let~ _ : Ty.tuple [] :=
                                 M.alloc (|
                                   M.write (|
@@ -14114,15 +14346,19 @@ Module slice.
             M.read (|
               let~ start : Ty.path "usize" :=
                 M.alloc (|
-                  BinOp.Wrap.mul (|
-                    M.read (| idx |),
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "core::slice::iter::ChunksExact",
-                        "chunk_size"
+                  M.call_closure (|
+                    Ty.path "usize",
+                    BinOp.Wrap.mul,
+                    [
+                      M.read (| idx |);
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::slice::iter::ChunksExact",
+                          "chunk_size"
+                        |)
                       |)
-                    |)
+                    ]
                   |)
                 |) in
               M.alloc (|
@@ -14238,40 +14474,44 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.lt (|
-                              M.call_closure (|
-                                Ty.path "usize",
-                                M.get_associated_function (|
-                                  Ty.apply (Ty.path "slice") [] [ T ],
-                                  "len",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (|
-                                      M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.deref (| M.read (| self |) |),
-                                          "core::slice::iter::ChunksExact",
-                                          "v"
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.lt,
+                              [
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "slice") [] [ T ],
+                                    "len",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "core::slice::iter::ChunksExact",
+                                            "v"
+                                          |)
                                         |)
                                       |)
                                     |)
+                                  ]
+                                |);
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::slice::iter::ChunksExact",
+                                    "chunk_size"
                                   |)
-                                ]
-                              |),
-                              M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "core::slice::iter::ChunksExact",
-                                  "chunk_size"
                                 |)
-                              |)
+                              ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -14303,37 +14543,41 @@ Module slice.
                                   |)
                                 |)
                               |);
-                              BinOp.Wrap.sub (|
-                                M.call_closure (|
-                                  Ty.path "usize",
-                                  M.get_associated_function (|
-                                    Ty.apply (Ty.path "slice") [] [ T ],
-                                    "len",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.deref (|
-                                        M.read (|
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.deref (| M.read (| self |) |),
-                                            "core::slice::iter::ChunksExact",
-                                            "v"
+                              M.call_closure (|
+                                Ty.path "usize",
+                                BinOp.Wrap.sub,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    M.get_associated_function (|
+                                      Ty.apply (Ty.path "slice") [] [ T ],
+                                      "len",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "core::slice::iter::ChunksExact",
+                                              "v"
+                                            |)
                                           |)
                                         |)
                                       |)
+                                    ]
+                                  |);
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::slice::iter::ChunksExact",
+                                      "chunk_size"
                                     |)
-                                  ]
-                                |),
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "core::slice::iter::ChunksExact",
-                                    "chunk_size"
                                   |)
-                                |)
+                                ]
                               |)
                             ]
                           |)
@@ -14423,8 +14667,15 @@ Module slice.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use (M.alloc (| BinOp.ge (| M.read (| n |), M.read (| len |) |) |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        M.use
+                          (M.alloc (|
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.ge,
+                              [ M.read (| n |); M.read (| len |) ]
+                            |)
+                          |)) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.write (|
@@ -14446,34 +14697,47 @@ Module slice.
                     ltac:(M.monadic
                       (let~ start : Ty.path "usize" :=
                         M.alloc (|
-                          BinOp.Wrap.mul (|
-                            BinOp.Wrap.sub (|
-                              BinOp.Wrap.sub (|
-                                M.read (| len |),
-                                Value.Integer IntegerKind.Usize 1
-                              |),
-                              M.read (| n |)
-                            |),
-                            M.read (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "core::slice::iter::ChunksExact",
-                                "chunk_size"
+                          M.call_closure (|
+                            Ty.path "usize",
+                            BinOp.Wrap.mul,
+                            [
+                              M.call_closure (|
+                                Ty.path "usize",
+                                BinOp.Wrap.sub,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    BinOp.Wrap.sub,
+                                    [ M.read (| len |); Value.Integer IntegerKind.Usize 1 ]
+                                  |);
+                                  M.read (| n |)
+                                ]
+                              |);
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::slice::iter::ChunksExact",
+                                  "chunk_size"
+                                |)
                               |)
-                            |)
+                            ]
                           |)
                         |) in
                       let~ end_ : Ty.path "usize" :=
                         M.alloc (|
-                          BinOp.Wrap.add (|
-                            M.read (| start |),
-                            M.read (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "core::slice::iter::ChunksExact",
-                                "chunk_size"
+                          M.call_closure (|
+                            Ty.path "usize",
+                            BinOp.Wrap.add,
+                            [
+                              M.read (| start |);
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::slice::iter::ChunksExact",
+                                  "chunk_size"
+                                |)
                               |)
-                            |)
+                            ]
                           |)
                         |) in
                       let~ nth_back :
@@ -14863,34 +15127,42 @@ Module slice.
             M.read (|
               let~ rem : Ty.path "usize" :=
                 M.alloc (|
-                  BinOp.Wrap.rem (|
-                    M.call_closure (|
-                      Ty.path "usize",
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [] [ T ],
-                        "len",
-                        [],
-                        []
-                      |),
-                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |) ]
-                    |),
-                    M.read (| chunk_size |)
+                  M.call_closure (|
+                    Ty.path "usize",
+                    BinOp.Wrap.rem,
+                    [
+                      M.call_closure (|
+                        Ty.path "usize",
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "slice") [] [ T ],
+                          "len",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |) ]
+                      |);
+                      M.read (| chunk_size |)
+                    ]
                   |)
                 |) in
               let~ fst_len : Ty.path "usize" :=
                 M.alloc (|
-                  BinOp.Wrap.sub (|
-                    M.call_closure (|
-                      Ty.path "usize",
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [] [ T ],
-                        "len",
-                        [],
-                        []
-                      |),
-                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |) ]
-                    |),
-                    M.read (| rem |)
+                  M.call_closure (|
+                    Ty.path "usize",
+                    BinOp.Wrap.sub,
+                    [
+                      M.call_closure (|
+                        Ty.path "usize",
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "slice") [] [ T ],
+                          "len",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |) ]
+                      |);
+                      M.read (| rem |)
+                    ]
                   |)
                 |) in
               M.match_operator (|
@@ -15032,38 +15304,42 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.lt (|
-                              M.call_closure (|
-                                Ty.path "usize",
-                                M.get_associated_function (|
-                                  Ty.apply
-                                    (Ty.path "*mut")
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.lt,
+                              [
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "*mut")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                    "len",
+                                    [],
                                     []
-                                    [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                                  "len",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.read (|
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "core::slice::iter::ChunksExactMut",
-                                      "v"
+                                  |),
+                                  [
+                                    M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "core::slice::iter::ChunksExactMut",
+                                        "v"
+                                      |)
                                     |)
+                                  ]
+                                |);
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::slice::iter::ChunksExactMut",
+                                    "chunk_size"
                                   |)
-                                ]
-                              |),
-                              M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "core::slice::iter::ChunksExactMut",
-                                  "chunk_size"
                                 |)
-                              |)
+                              ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -15164,32 +15440,36 @@ Module slice.
             M.read (|
               let~ n : Ty.path "usize" :=
                 M.alloc (|
-                  BinOp.Wrap.div (|
-                    M.call_closure (|
-                      Ty.path "usize",
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                        "len",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "core::slice::iter::ChunksExactMut",
-                            "v"
+                  M.call_closure (|
+                    Ty.path "usize",
+                    BinOp.Wrap.div,
+                    [
+                      M.call_closure (|
+                        Ty.path "usize",
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                          "len",
+                          [],
+                          []
+                        |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::slice::iter::ChunksExactMut",
+                              "v"
+                            |)
                           |)
+                        ]
+                      |);
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::slice::iter::ChunksExactMut",
+                          "chunk_size"
                         |)
-                      ]
-                    |),
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "core::slice::iter::ChunksExactMut",
-                        "chunk_size"
                       |)
-                    |)
+                    ]
                   |)
                 |) in
               M.alloc (|
@@ -15292,38 +15572,39 @@ Module slice.
                                 M.use
                                   (M.alloc (|
                                     LogicalOp.or (|
-                                      BinOp.ge (|
-                                        M.read (| start |),
-                                        M.call_closure (|
-                                          Ty.path "usize",
-                                          M.get_associated_function (|
-                                            Ty.apply
-                                              (Ty.path "*mut")
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.ge,
+                                        [
+                                          M.read (| start |);
+                                          M.call_closure (|
+                                            Ty.path "usize",
+                                            M.get_associated_function (|
+                                              Ty.apply
+                                                (Ty.path "*mut")
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                              "len",
+                                              [],
                                               []
-                                              [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                                            "len",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.read (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.deref (| M.read (| self |) |),
-                                                "core::slice::iter::ChunksExactMut",
-                                                "v"
+                                            |),
+                                            [
+                                              M.read (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "core::slice::iter::ChunksExactMut",
+                                                  "v"
+                                                |)
                                               |)
-                                            |)
-                                          ]
-                                        |)
+                                            ]
+                                          |)
+                                        ]
                                       |),
                                       ltac:(M.monadic (M.read (| overflow |)))
                                     |)
                                   |)) in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               let~ _ : Ty.tuple [] :=
                                 M.alloc (|
                                   M.write (|
@@ -15495,15 +15776,19 @@ Module slice.
                 M.read (|
                   let~ start : Ty.path "usize" :=
                     M.alloc (|
-                      BinOp.Wrap.mul (|
-                        M.read (| idx |),
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "core::slice::iter::ChunksExactMut",
-                            "chunk_size"
+                      M.call_closure (|
+                        Ty.path "usize",
+                        BinOp.Wrap.mul,
+                        [
+                          M.read (| idx |);
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::slice::iter::ChunksExactMut",
+                              "chunk_size"
+                            |)
                           |)
-                        |)
+                        ]
                       |)
                     |) in
                   M.alloc (|
@@ -15630,38 +15915,42 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.lt (|
-                              M.call_closure (|
-                                Ty.path "usize",
-                                M.get_associated_function (|
-                                  Ty.apply
-                                    (Ty.path "*mut")
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.lt,
+                              [
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "*mut")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                    "len",
+                                    [],
                                     []
-                                    [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                                  "len",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.read (|
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "core::slice::iter::ChunksExactMut",
-                                      "v"
+                                  |),
+                                  [
+                                    M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "core::slice::iter::ChunksExactMut",
+                                        "v"
+                                      |)
                                     |)
+                                  ]
+                                |);
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::slice::iter::ChunksExactMut",
+                                    "chunk_size"
                                   |)
-                                ]
-                              |),
-                              M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "core::slice::iter::ChunksExactMut",
-                                  "chunk_size"
                                 |)
-                              |)
+                              ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -15691,35 +15980,39 @@ Module slice.
                                   "v"
                                 |)
                               |);
-                              BinOp.Wrap.sub (|
-                                M.call_closure (|
-                                  Ty.path "usize",
-                                  M.get_associated_function (|
-                                    Ty.apply
-                                      (Ty.path "*mut")
+                              M.call_closure (|
+                                Ty.path "usize",
+                                BinOp.Wrap.sub,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    M.get_associated_function (|
+                                      Ty.apply
+                                        (Ty.path "*mut")
+                                        []
+                                        [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                      "len",
+                                      [],
                                       []
-                                      [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                                    "len",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.read (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "core::slice::iter::ChunksExactMut",
-                                        "v"
+                                    |),
+                                    [
+                                      M.read (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "core::slice::iter::ChunksExactMut",
+                                          "v"
+                                        |)
                                       |)
+                                    ]
+                                  |);
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::slice::iter::ChunksExactMut",
+                                      "chunk_size"
                                     |)
-                                  ]
-                                |),
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "core::slice::iter::ChunksExactMut",
-                                    "chunk_size"
                                   |)
-                                |)
+                                ]
                               |)
                             ]
                           |)
@@ -15827,8 +16120,15 @@ Module slice.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use (M.alloc (| BinOp.ge (| M.read (| n |), M.read (| len |) |) |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        M.use
+                          (M.alloc (|
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.ge,
+                              [ M.read (| n |); M.read (| len |) ]
+                            |)
+                          |)) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.write (|
@@ -15850,34 +16150,47 @@ Module slice.
                     ltac:(M.monadic
                       (let~ start : Ty.path "usize" :=
                         M.alloc (|
-                          BinOp.Wrap.mul (|
-                            BinOp.Wrap.sub (|
-                              BinOp.Wrap.sub (|
-                                M.read (| len |),
-                                Value.Integer IntegerKind.Usize 1
-                              |),
-                              M.read (| n |)
-                            |),
-                            M.read (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "core::slice::iter::ChunksExactMut",
-                                "chunk_size"
+                          M.call_closure (|
+                            Ty.path "usize",
+                            BinOp.Wrap.mul,
+                            [
+                              M.call_closure (|
+                                Ty.path "usize",
+                                BinOp.Wrap.sub,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    BinOp.Wrap.sub,
+                                    [ M.read (| len |); Value.Integer IntegerKind.Usize 1 ]
+                                  |);
+                                  M.read (| n |)
+                                ]
+                              |);
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::slice::iter::ChunksExactMut",
+                                  "chunk_size"
+                                |)
                               |)
-                            |)
+                            ]
                           |)
                         |) in
                       let~ end_ : Ty.path "usize" :=
                         M.alloc (|
-                          BinOp.Wrap.add (|
-                            M.read (| start |),
-                            M.read (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "core::slice::iter::ChunksExactMut",
-                                "chunk_size"
+                          M.call_closure (|
+                            Ty.path "usize",
+                            BinOp.Wrap.add,
+                            [
+                              M.read (| start |);
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::slice::iter::ChunksExactMut",
+                                  "chunk_size"
+                                |)
                               |)
-                            |)
+                            ]
                           |)
                         |) in
                       M.match_operator (|
@@ -16469,7 +16782,11 @@ Module slice.
                         |),
                         [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |) ]
                       |);
-                      BinOp.Wrap.sub (| N, Value.Integer IntegerKind.Usize 1 |)
+                      M.call_closure (|
+                        Ty.path "usize",
+                        BinOp.Wrap.sub,
+                        [ N; Value.Integer IntegerKind.Usize 1 ]
+                      |)
                     ]
                   |)
                 |) in
@@ -16552,19 +16869,23 @@ Module slice.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.eq (|
-                                    M.read (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "core::slice::iter::ArrayWindows",
-                                        "num"
-                                      |)
-                                    |),
-                                    Value.Integer IntegerKind.Usize 0
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.eq,
+                                    [
+                                      M.read (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "core::slice::iter::ArrayWindows",
+                                          "num"
+                                        |)
+                                      |);
+                                      Value.Integer IntegerKind.Usize 0
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
@@ -16643,7 +16964,11 @@ Module slice.
                         |) in
                       M.write (|
                         β,
-                        BinOp.Wrap.sub (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
+                        M.call_closure (|
+                          Ty.path "usize",
+                          BinOp.Wrap.sub,
+                          [ M.read (| β |); Value.Integer IntegerKind.Usize 1 ]
+                        |)
                       |)
                     |) in
                   M.alloc (|
@@ -16766,19 +17091,23 @@ Module slice.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.le (|
-                                    M.read (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "core::slice::iter::ArrayWindows",
-                                        "num"
-                                      |)
-                                    |),
-                                    M.read (| n |)
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.le,
+                                    [
+                                      M.read (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "core::slice::iter::ArrayWindows",
+                                          "num"
+                                        |)
+                                      |);
+                                      M.read (| n |)
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
@@ -16865,7 +17194,11 @@ Module slice.
                                 "slice_head"
                               |)
                             |);
-                            BinOp.Wrap.add (| M.read (| n |), Value.Integer IntegerKind.Usize 1 |)
+                            M.call_closure (|
+                              Ty.path "usize",
+                              BinOp.Wrap.add,
+                              [ M.read (| n |); Value.Integer IntegerKind.Usize 1 ]
+                            |)
                           ]
                         |)
                       |)
@@ -16880,9 +17213,17 @@ Module slice.
                         |) in
                       M.write (|
                         β,
-                        BinOp.Wrap.sub (|
-                          M.read (| β |),
-                          BinOp.Wrap.add (| M.read (| n |), Value.Integer IntegerKind.Usize 1 |)
+                        M.call_closure (|
+                          Ty.path "usize",
+                          BinOp.Wrap.sub,
+                          [
+                            M.read (| β |);
+                            M.call_closure (|
+                              Ty.path "usize",
+                              BinOp.Wrap.add,
+                              [ M.read (| n |); Value.Integer IntegerKind.Usize 1 ]
+                            |)
+                          ]
                         |)
                       |)
                     |) in
@@ -17107,19 +17448,23 @@ Module slice.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.eq (|
-                                    M.read (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "core::slice::iter::ArrayWindows",
-                                        "num"
-                                      |)
-                                    |),
-                                    Value.Integer IntegerKind.Usize 0
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.eq,
+                                    [
+                                      M.read (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "core::slice::iter::ArrayWindows",
+                                          "num"
+                                        |)
+                                      |);
+                                      Value.Integer IntegerKind.Usize 0
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
@@ -17163,15 +17508,19 @@ Module slice.
                                       "slice_head"
                                     |)
                                   |);
-                                  BinOp.Wrap.sub (|
-                                    M.read (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "core::slice::iter::ArrayWindows",
-                                        "num"
-                                      |)
-                                    |),
-                                    Value.Integer IntegerKind.Usize 1
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    BinOp.Wrap.sub,
+                                    [
+                                      M.read (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "core::slice::iter::ArrayWindows",
+                                          "num"
+                                        |)
+                                      |);
+                                      Value.Integer IntegerKind.Usize 1
+                                    ]
                                   |)
                                 ]
                               |)
@@ -17190,7 +17539,11 @@ Module slice.
                         |) in
                       M.write (|
                         β,
-                        BinOp.Wrap.sub (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
+                        M.call_closure (|
+                          Ty.path "usize",
+                          BinOp.Wrap.sub,
+                          [ M.read (| β |); Value.Integer IntegerKind.Usize 1 ]
+                        |)
                       |)
                     |) in
                   M.alloc (|
@@ -17241,19 +17594,23 @@ Module slice.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.le (|
-                                    M.read (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "core::slice::iter::ArrayWindows",
-                                        "num"
-                                      |)
-                                    |),
-                                    M.read (| n |)
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.le,
+                                    [
+                                      M.read (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "core::slice::iter::ArrayWindows",
+                                          "num"
+                                        |)
+                                      |);
+                                      M.read (| n |)
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
@@ -17308,18 +17665,23 @@ Module slice.
                                       "slice_head"
                                     |)
                                   |);
-                                  BinOp.Wrap.sub (|
-                                    M.read (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "core::slice::iter::ArrayWindows",
-                                        "num"
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    BinOp.Wrap.sub,
+                                    [
+                                      M.read (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "core::slice::iter::ArrayWindows",
+                                          "num"
+                                        |)
+                                      |);
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        BinOp.Wrap.add,
+                                        [ M.read (| n |); Value.Integer IntegerKind.Usize 1 ]
                                       |)
-                                    |),
-                                    BinOp.Wrap.add (|
-                                      M.read (| n |),
-                                      Value.Integer IntegerKind.Usize 1
-                                    |)
+                                    ]
                                   |)
                                 ]
                               |)
@@ -17338,9 +17700,17 @@ Module slice.
                         |) in
                       M.write (|
                         β,
-                        BinOp.Wrap.sub (|
-                          M.read (| β |),
-                          BinOp.Wrap.add (| M.read (| n |), Value.Integer IntegerKind.Usize 1 |)
+                        M.call_closure (|
+                          Ty.path "usize",
+                          BinOp.Wrap.sub,
+                          [
+                            M.read (| β |);
+                            M.call_closure (|
+                              Ty.path "usize",
+                              BinOp.Wrap.add,
+                              [ M.read (| n |); Value.Integer IntegerKind.Usize 1 ]
+                            |)
+                          ]
                         |)
                       |)
                     |) in
@@ -17389,15 +17759,19 @@ Module slice.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.eq (|
-              M.read (|
-                M.SubPointer.get_struct_record_field (|
-                  M.deref (| M.read (| self |) |),
-                  "core::slice::iter::ArrayWindows",
-                  "num"
-                |)
-              |),
-              Value.Integer IntegerKind.Usize 0
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.eq,
+              [
+                M.read (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "core::slice::iter::ArrayWindows",
+                    "num"
+                  |)
+                |);
+                Value.Integer IntegerKind.Usize 0
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -19310,7 +19684,7 @@ Module slice.
                               ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -19385,7 +19759,11 @@ Module slice.
                                   |)
                                 |)
                               |);
-                              BinOp.Wrap.sub (| M.read (| len |), M.read (| chunksz |) |)
+                              M.call_closure (|
+                                Ty.path "usize",
+                                BinOp.Wrap.sub,
+                                [ M.read (| len |); M.read (| chunksz |) ]
+                              |)
                             ]
                           |)
                         |),
@@ -19478,7 +19856,7 @@ Module slice.
                               ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.Tuple
                           [
@@ -19492,72 +19870,80 @@ Module slice.
                     ltac:(M.monadic
                       (let~ n : Ty.path "usize" :=
                         M.alloc (|
-                          BinOp.Wrap.div (|
-                            M.call_closure (|
-                              Ty.path "usize",
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "slice") [] [ T ],
-                                "len",
-                                [],
-                                []
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.read (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "core::slice::iter::RChunks",
-                                        "v"
+                          M.call_closure (|
+                            Ty.path "usize",
+                            BinOp.Wrap.div,
+                            [
+                              M.call_closure (|
+                                Ty.path "usize",
+                                M.get_associated_function (|
+                                  Ty.apply (Ty.path "slice") [] [ T ],
+                                  "len",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.read (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "core::slice::iter::RChunks",
+                                          "v"
+                                        |)
                                       |)
                                     |)
                                   |)
+                                ]
+                              |);
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::slice::iter::RChunks",
+                                  "chunk_size"
                                 |)
-                              ]
-                            |),
-                            M.read (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "core::slice::iter::RChunks",
-                                "chunk_size"
                               |)
-                            |)
+                            ]
                           |)
                         |) in
                       let~ rem : Ty.path "usize" :=
                         M.alloc (|
-                          BinOp.Wrap.rem (|
-                            M.call_closure (|
-                              Ty.path "usize",
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "slice") [] [ T ],
-                                "len",
-                                [],
-                                []
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.read (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "core::slice::iter::RChunks",
-                                        "v"
+                          M.call_closure (|
+                            Ty.path "usize",
+                            BinOp.Wrap.rem,
+                            [
+                              M.call_closure (|
+                                Ty.path "usize",
+                                M.get_associated_function (|
+                                  Ty.apply (Ty.path "slice") [] [ T ],
+                                  "len",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.read (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "core::slice::iter::RChunks",
+                                          "v"
+                                        |)
                                       |)
                                     |)
                                   |)
+                                ]
+                              |);
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::slice::iter::RChunks",
+                                  "chunk_size"
                                 |)
-                              ]
-                            |),
-                            M.read (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "core::slice::iter::RChunks",
-                                "chunk_size"
                               |)
-                            |)
+                            ]
                           |)
                         |) in
                       let~ n : Ty.path "usize" :=
@@ -19571,20 +19957,22 @@ Module slice.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.gt (|
-                                          M.read (| rem |),
-                                          Value.Integer IntegerKind.Usize 0
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.gt,
+                                          [ M.read (| rem |); Value.Integer IntegerKind.Usize 0 ]
                                         |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
                                   M.alloc (|
-                                    BinOp.Wrap.add (|
-                                      M.read (| n |),
-                                      Value.Integer IntegerKind.Usize 1
+                                    M.call_closure (|
+                                      Ty.path "usize",
+                                      BinOp.Wrap.add,
+                                      [ M.read (| n |); Value.Integer IntegerKind.Usize 1 ]
                                     |)
                                   |)));
                               fun γ => ltac:(M.monadic n)
@@ -19697,40 +20085,41 @@ Module slice.
                                 M.use
                                   (M.alloc (|
                                     LogicalOp.or (|
-                                      BinOp.ge (|
-                                        M.read (| end_ |),
-                                        M.call_closure (|
-                                          Ty.path "usize",
-                                          M.get_associated_function (|
-                                            Ty.apply (Ty.path "slice") [] [ T ],
-                                            "len",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (|
-                                                M.read (|
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.deref (| M.read (| self |) |),
-                                                    "core::slice::iter::RChunks",
-                                                    "v"
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.ge,
+                                        [
+                                          M.read (| end_ |);
+                                          M.call_closure (|
+                                            Ty.path "usize",
+                                            M.get_associated_function (|
+                                              Ty.apply (Ty.path "slice") [] [ T ],
+                                              "len",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.read (|
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.deref (| M.read (| self |) |),
+                                                      "core::slice::iter::RChunks",
+                                                      "v"
+                                                    |)
                                                   |)
                                                 |)
                                               |)
-                                            |)
-                                          ]
-                                        |)
+                                            ]
+                                          |)
+                                        ]
                                       |),
                                       ltac:(M.monadic (M.read (| overflow |)))
                                     |)
                                   |)) in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               let~ _ : Ty.tuple [] :=
                                 M.alloc (|
                                   M.write (|
@@ -19755,31 +20144,35 @@ Module slice.
                             ltac:(M.monadic
                               (let~ end_ : Ty.path "usize" :=
                                 M.alloc (|
-                                  BinOp.Wrap.sub (|
-                                    M.call_closure (|
-                                      Ty.path "usize",
-                                      M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [] [ T ],
-                                        "len",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (|
-                                            M.read (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.deref (| M.read (| self |) |),
-                                                "core::slice::iter::RChunks",
-                                                "v"
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    BinOp.Wrap.sub,
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        M.get_associated_function (|
+                                          Ty.apply (Ty.path "slice") [] [ T ],
+                                          "len",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (|
+                                              M.read (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "core::slice::iter::RChunks",
+                                                  "v"
+                                                |)
                                               |)
                                             |)
                                           |)
-                                        |)
-                                      ]
-                                    |),
-                                    M.read (| end_ |)
+                                        ]
+                                      |);
+                                      M.read (| end_ |)
+                                    ]
                                   |)
                                 |) in
                               let~ start : Ty.path "usize" :=
@@ -20013,43 +20406,47 @@ Module slice.
                               ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let~ rem : Ty.path "usize" :=
                         M.alloc (|
-                          BinOp.Wrap.rem (|
-                            M.call_closure (|
-                              Ty.path "usize",
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "slice") [] [ T ],
-                                "len",
-                                [],
-                                []
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.read (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        self,
-                                        "core::slice::iter::RChunks",
-                                        "v"
+                          M.call_closure (|
+                            Ty.path "usize",
+                            BinOp.Wrap.rem,
+                            [
+                              M.call_closure (|
+                                Ty.path "usize",
+                                M.get_associated_function (|
+                                  Ty.apply (Ty.path "slice") [] [ T ],
+                                  "len",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.read (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          self,
+                                          "core::slice::iter::RChunks",
+                                          "v"
+                                        |)
                                       |)
                                     |)
                                   |)
+                                ]
+                              |);
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  self,
+                                  "core::slice::iter::RChunks",
+                                  "chunk_size"
                                 |)
-                              ]
-                            |),
-                            M.read (|
-                              M.SubPointer.get_struct_record_field (|
-                                self,
-                                "core::slice::iter::RChunks",
-                                "chunk_size"
                               |)
-                            |)
+                            ]
                           |)
                         |) in
                       let~ end_ : Ty.path "usize" :=
@@ -20063,13 +20460,14 @@ Module slice.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.eq (|
-                                          M.read (| rem |),
-                                          Value.Integer IntegerKind.Usize 0
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.eq,
+                                          [ M.read (| rem |); Value.Integer IntegerKind.Usize 0 ]
                                         |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -20170,40 +20568,48 @@ Module slice.
             M.read (|
               let~ end_ : Ty.path "usize" :=
                 M.alloc (|
-                  BinOp.Wrap.sub (|
-                    M.call_closure (|
-                      Ty.path "usize",
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [] [ T ],
-                        "len",
-                        [],
-                        []
-                      |),
-                      [
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (|
-                            M.read (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "core::slice::iter::RChunks",
-                                "v"
+                  M.call_closure (|
+                    Ty.path "usize",
+                    BinOp.Wrap.sub,
+                    [
+                      M.call_closure (|
+                        Ty.path "usize",
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "slice") [] [ T ],
+                          "len",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::slice::iter::RChunks",
+                                  "v"
+                                |)
                               |)
                             |)
                           |)
-                        |)
-                      ]
-                    |),
-                    BinOp.Wrap.mul (|
-                      M.read (| idx |),
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "core::slice::iter::RChunks",
-                          "chunk_size"
-                        |)
+                        ]
+                      |);
+                      M.call_closure (|
+                        Ty.path "usize",
+                        BinOp.Wrap.mul,
+                        [
+                          M.read (| idx |);
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::slice::iter::RChunks",
+                              "chunk_size"
+                            |)
+                          |)
+                        ]
                       |)
-                    |)
+                    ]
                   |)
                 |) in
               let~ start : Ty.path "usize" :=
@@ -20287,7 +20693,11 @@ Module slice.
                             M.read (| start |)
                           ]
                         |);
-                        BinOp.Wrap.sub (| M.read (| end_ |), M.read (| start |) |)
+                        M.call_closure (|
+                          Ty.path "usize",
+                          BinOp.Wrap.sub,
+                          [ M.read (| end_ |); M.read (| start |) ]
+                        |)
                       ]
                     |)
                   |)
@@ -20377,43 +20787,47 @@ Module slice.
                               ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let~ remainder : Ty.path "usize" :=
                         M.alloc (|
-                          BinOp.Wrap.rem (|
-                            M.call_closure (|
-                              Ty.path "usize",
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "slice") [] [ T ],
-                                "len",
-                                [],
-                                []
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.read (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "core::slice::iter::RChunks",
-                                        "v"
+                          M.call_closure (|
+                            Ty.path "usize",
+                            BinOp.Wrap.rem,
+                            [
+                              M.call_closure (|
+                                Ty.path "usize",
+                                M.get_associated_function (|
+                                  Ty.apply (Ty.path "slice") [] [ T ],
+                                  "len",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.read (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "core::slice::iter::RChunks",
+                                          "v"
+                                        |)
                                       |)
                                     |)
                                   |)
+                                ]
+                              |);
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::slice::iter::RChunks",
+                                  "chunk_size"
                                 |)
-                              ]
-                            |),
-                            M.read (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "core::slice::iter::RChunks",
-                                "chunk_size"
                               |)
-                            |)
+                            ]
                           |)
                         |) in
                       let~ chunksz : Ty.path "usize" :=
@@ -20427,13 +20841,17 @@ Module slice.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.ne (|
-                                          M.read (| remainder |),
-                                          Value.Integer IntegerKind.Usize 0
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.ne,
+                                          [
+                                            M.read (| remainder |);
+                                            Value.Integer IntegerKind.Usize 0
+                                          ]
                                         |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -20567,8 +20985,15 @@ Module slice.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use (M.alloc (| BinOp.ge (| M.read (| n |), M.read (| len |) |) |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        M.use
+                          (M.alloc (|
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.ge,
+                              [ M.read (| n |); M.read (| len |) ]
+                            |)
+                          |)) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.write (|
@@ -20590,50 +21015,63 @@ Module slice.
                     ltac:(M.monadic
                       (let~ offset_from_end : Ty.path "usize" :=
                         M.alloc (|
-                          BinOp.Wrap.mul (|
-                            BinOp.Wrap.sub (|
-                              BinOp.Wrap.sub (|
-                                M.read (| len |),
-                                Value.Integer IntegerKind.Usize 1
-                              |),
-                              M.read (| n |)
-                            |),
-                            M.read (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "core::slice::iter::RChunks",
-                                "chunk_size"
+                          M.call_closure (|
+                            Ty.path "usize",
+                            BinOp.Wrap.mul,
+                            [
+                              M.call_closure (|
+                                Ty.path "usize",
+                                BinOp.Wrap.sub,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    BinOp.Wrap.sub,
+                                    [ M.read (| len |); Value.Integer IntegerKind.Usize 1 ]
+                                  |);
+                                  M.read (| n |)
+                                ]
+                              |);
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::slice::iter::RChunks",
+                                  "chunk_size"
+                                |)
                               |)
-                            |)
+                            ]
                           |)
                         |) in
                       let~ end_ : Ty.path "usize" :=
                         M.alloc (|
-                          BinOp.Wrap.sub (|
-                            M.call_closure (|
-                              Ty.path "usize",
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "slice") [] [ T ],
-                                "len",
-                                [],
-                                []
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.read (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "core::slice::iter::RChunks",
-                                        "v"
+                          M.call_closure (|
+                            Ty.path "usize",
+                            BinOp.Wrap.sub,
+                            [
+                              M.call_closure (|
+                                Ty.path "usize",
+                                M.get_associated_function (|
+                                  Ty.apply (Ty.path "slice") [] [ T ],
+                                  "len",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.read (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "core::slice::iter::RChunks",
+                                          "v"
+                                        |)
                                       |)
                                     |)
                                   |)
-                                |)
-                              ]
-                            |),
-                            M.read (| offset_from_end |)
+                                ]
+                              |);
+                              M.read (| offset_from_end |)
+                            ]
                           |)
                         |) in
                       let~ start : Ty.path "usize" :=
@@ -21067,7 +21505,7 @@ Module slice.
                               ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -21155,7 +21593,11 @@ Module slice.
                                   "v"
                                 |)
                               |);
-                              BinOp.Wrap.sub (| M.read (| len |), M.read (| sz |) |)
+                              M.call_closure (|
+                                Ty.path "usize",
+                                BinOp.Wrap.sub,
+                                [ M.read (| len |); M.read (| sz |) ]
+                              |)
                             ]
                           |)
                         |),
@@ -21260,7 +21702,7 @@ Module slice.
                               ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.Tuple
                           [
@@ -21274,68 +21716,76 @@ Module slice.
                     ltac:(M.monadic
                       (let~ n : Ty.path "usize" :=
                         M.alloc (|
-                          BinOp.Wrap.div (|
-                            M.call_closure (|
-                              Ty.path "usize",
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "*mut")
+                          M.call_closure (|
+                            Ty.path "usize",
+                            BinOp.Wrap.div,
+                            [
+                              M.call_closure (|
+                                Ty.path "usize",
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "*mut")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                  "len",
+                                  [],
                                   []
-                                  [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                                "len",
-                                [],
-                                []
-                              |),
-                              [
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "core::slice::iter::RChunksMut",
-                                    "v"
+                                |),
+                                [
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::slice::iter::RChunksMut",
+                                      "v"
+                                    |)
                                   |)
+                                ]
+                              |);
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::slice::iter::RChunksMut",
+                                  "chunk_size"
                                 |)
-                              ]
-                            |),
-                            M.read (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "core::slice::iter::RChunksMut",
-                                "chunk_size"
                               |)
-                            |)
+                            ]
                           |)
                         |) in
                       let~ rem : Ty.path "usize" :=
                         M.alloc (|
-                          BinOp.Wrap.rem (|
-                            M.call_closure (|
-                              Ty.path "usize",
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "*mut")
+                          M.call_closure (|
+                            Ty.path "usize",
+                            BinOp.Wrap.rem,
+                            [
+                              M.call_closure (|
+                                Ty.path "usize",
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "*mut")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                  "len",
+                                  [],
                                   []
-                                  [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                                "len",
-                                [],
-                                []
-                              |),
-                              [
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "core::slice::iter::RChunksMut",
-                                    "v"
+                                |),
+                                [
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::slice::iter::RChunksMut",
+                                      "v"
+                                    |)
                                   |)
+                                ]
+                              |);
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::slice::iter::RChunksMut",
+                                  "chunk_size"
                                 |)
-                              ]
-                            |),
-                            M.read (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "core::slice::iter::RChunksMut",
-                                "chunk_size"
                               |)
-                            |)
+                            ]
                           |)
                         |) in
                       let~ n : Ty.path "usize" :=
@@ -21349,20 +21799,22 @@ Module slice.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.gt (|
-                                          M.read (| rem |),
-                                          Value.Integer IntegerKind.Usize 0
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.gt,
+                                          [ M.read (| rem |); Value.Integer IntegerKind.Usize 0 ]
                                         |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
                                   M.alloc (|
-                                    BinOp.Wrap.add (|
-                                      M.read (| n |),
-                                      Value.Integer IntegerKind.Usize 1
+                                    M.call_closure (|
+                                      Ty.path "usize",
+                                      BinOp.Wrap.add,
+                                      [ M.read (| n |); Value.Integer IntegerKind.Usize 1 ]
                                     |)
                                   |)));
                               fun γ => ltac:(M.monadic n)
@@ -21482,38 +21934,39 @@ Module slice.
                                 M.use
                                   (M.alloc (|
                                     LogicalOp.or (|
-                                      BinOp.ge (|
-                                        M.read (| end_ |),
-                                        M.call_closure (|
-                                          Ty.path "usize",
-                                          M.get_associated_function (|
-                                            Ty.apply
-                                              (Ty.path "*mut")
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.ge,
+                                        [
+                                          M.read (| end_ |);
+                                          M.call_closure (|
+                                            Ty.path "usize",
+                                            M.get_associated_function (|
+                                              Ty.apply
+                                                (Ty.path "*mut")
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                              "len",
+                                              [],
                                               []
-                                              [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                                            "len",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.read (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.deref (| M.read (| self |) |),
-                                                "core::slice::iter::RChunksMut",
-                                                "v"
+                                            |),
+                                            [
+                                              M.read (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "core::slice::iter::RChunksMut",
+                                                  "v"
+                                                |)
                                               |)
-                                            |)
-                                          ]
-                                        |)
+                                            ]
+                                          |)
+                                        ]
                                       |),
                                       ltac:(M.monadic (M.read (| overflow |)))
                                     |)
                                   |)) in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               let~ _ : Ty.tuple [] :=
                                 M.alloc (|
                                   M.write (|
@@ -21538,29 +21991,33 @@ Module slice.
                             ltac:(M.monadic
                               (let~ end_ : Ty.path "usize" :=
                                 M.alloc (|
-                                  BinOp.Wrap.sub (|
-                                    M.call_closure (|
-                                      Ty.path "usize",
-                                      M.get_associated_function (|
-                                        Ty.apply
-                                          (Ty.path "*mut")
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    BinOp.Wrap.sub,
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        M.get_associated_function (|
+                                          Ty.apply
+                                            (Ty.path "*mut")
+                                            []
+                                            [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                          "len",
+                                          [],
                                           []
-                                          [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                                        "len",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.read (|
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.deref (| M.read (| self |) |),
-                                            "core::slice::iter::RChunksMut",
-                                            "v"
+                                        |),
+                                        [
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "core::slice::iter::RChunksMut",
+                                              "v"
+                                            |)
                                           |)
-                                        |)
-                                      ]
-                                    |),
-                                    M.read (| end_ |)
+                                        ]
+                                      |);
+                                      M.read (| end_ |)
+                                    ]
                                   |)
                                 |) in
                               let~ start : Ty.path "usize" :=
@@ -21682,9 +22139,10 @@ Module slice.
                                             |),
                                             [
                                               M.read (| tail |);
-                                              BinOp.Wrap.sub (|
-                                                M.read (| end_ |),
-                                                M.read (| start |)
+                                              M.call_closure (|
+                                                Ty.path "usize",
+                                                BinOp.Wrap.sub,
+                                                [ M.read (| end_ |); M.read (| start |) ]
                                               |)
                                             ]
                                           |)
@@ -21793,41 +22251,45 @@ Module slice.
                               ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let~ rem : Ty.path "usize" :=
                         M.alloc (|
-                          BinOp.Wrap.rem (|
-                            M.call_closure (|
-                              Ty.path "usize",
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "*mut")
+                          M.call_closure (|
+                            Ty.path "usize",
+                            BinOp.Wrap.rem,
+                            [
+                              M.call_closure (|
+                                Ty.path "usize",
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "*mut")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                  "len",
+                                  [],
                                   []
-                                  [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                                "len",
-                                [],
-                                []
-                              |),
-                              [
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    self,
-                                    "core::slice::iter::RChunksMut",
-                                    "v"
+                                |),
+                                [
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      self,
+                                      "core::slice::iter::RChunksMut",
+                                      "v"
+                                    |)
                                   |)
+                                ]
+                              |);
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  self,
+                                  "core::slice::iter::RChunksMut",
+                                  "chunk_size"
                                 |)
-                              ]
-                            |),
-                            M.read (|
-                              M.SubPointer.get_struct_record_field (|
-                                self,
-                                "core::slice::iter::RChunksMut",
-                                "chunk_size"
                               |)
-                            |)
+                            ]
                           |)
                         |) in
                       let~ end_ : Ty.path "usize" :=
@@ -21841,13 +22303,14 @@ Module slice.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.eq (|
-                                          M.read (| rem |),
-                                          Value.Integer IntegerKind.Usize 0
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.eq,
+                                          [ M.read (| rem |); Value.Integer IntegerKind.Usize 0 ]
                                         |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -21952,35 +22415,43 @@ Module slice.
                 M.read (|
                   let~ end_ : Ty.path "usize" :=
                     M.alloc (|
-                      BinOp.Wrap.sub (|
-                        M.call_closure (|
-                          Ty.path "usize",
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                            "len",
-                            [],
-                            []
-                          |),
-                          [
-                            M.read (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "core::slice::iter::RChunksMut",
-                                "v"
+                      M.call_closure (|
+                        Ty.path "usize",
+                        BinOp.Wrap.sub,
+                        [
+                          M.call_closure (|
+                            Ty.path "usize",
+                            M.get_associated_function (|
+                              Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                              "len",
+                              [],
+                              []
+                            |),
+                            [
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::slice::iter::RChunksMut",
+                                  "v"
+                                |)
                               |)
-                            |)
-                          ]
-                        |),
-                        BinOp.Wrap.mul (|
-                          M.read (| idx |),
-                          M.read (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "core::slice::iter::RChunksMut",
-                              "chunk_size"
-                            |)
+                            ]
+                          |);
+                          M.call_closure (|
+                            Ty.path "usize",
+                            BinOp.Wrap.mul,
+                            [
+                              M.read (| idx |);
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::slice::iter::RChunksMut",
+                                  "chunk_size"
+                                |)
+                              |)
+                            ]
                           |)
-                        |)
+                        ]
                       |)
                     |) in
                   let~ start : Ty.path "usize" :=
@@ -22069,7 +22540,11 @@ Module slice.
                                     M.read (| start |)
                                   ]
                                 |);
-                                BinOp.Wrap.sub (| M.read (| end_ |), M.read (| start |) |)
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  BinOp.Wrap.sub,
+                                  [ M.read (| end_ |); M.read (| start |) ]
+                                |)
                               ]
                             |)
                           |)
@@ -22163,41 +22638,45 @@ Module slice.
                               ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let~ remainder : Ty.path "usize" :=
                         M.alloc (|
-                          BinOp.Wrap.rem (|
-                            M.call_closure (|
-                              Ty.path "usize",
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "*mut")
+                          M.call_closure (|
+                            Ty.path "usize",
+                            BinOp.Wrap.rem,
+                            [
+                              M.call_closure (|
+                                Ty.path "usize",
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "*mut")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                  "len",
+                                  [],
                                   []
-                                  [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                                "len",
-                                [],
-                                []
-                              |),
-                              [
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "core::slice::iter::RChunksMut",
-                                    "v"
+                                |),
+                                [
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::slice::iter::RChunksMut",
+                                      "v"
+                                    |)
                                   |)
+                                ]
+                              |);
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::slice::iter::RChunksMut",
+                                  "chunk_size"
                                 |)
-                              ]
-                            |),
-                            M.read (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "core::slice::iter::RChunksMut",
-                                "chunk_size"
                               |)
-                            |)
+                            ]
                           |)
                         |) in
                       let~ sz : Ty.path "usize" :=
@@ -22211,13 +22690,17 @@ Module slice.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.ne (|
-                                          M.read (| remainder |),
-                                          Value.Integer IntegerKind.Usize 0
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.ne,
+                                          [
+                                            M.read (| remainder |);
+                                            Value.Integer IntegerKind.Usize 0
+                                          ]
                                         |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -22367,8 +22850,15 @@ Module slice.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use (M.alloc (| BinOp.ge (| M.read (| n |), M.read (| len |) |) |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        M.use
+                          (M.alloc (|
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.ge,
+                              [ M.read (| n |); M.read (| len |) ]
+                            |)
+                          |)) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.write (|
@@ -22390,48 +22880,61 @@ Module slice.
                     ltac:(M.monadic
                       (let~ offset_from_end : Ty.path "usize" :=
                         M.alloc (|
-                          BinOp.Wrap.mul (|
-                            BinOp.Wrap.sub (|
-                              BinOp.Wrap.sub (|
-                                M.read (| len |),
-                                Value.Integer IntegerKind.Usize 1
-                              |),
-                              M.read (| n |)
-                            |),
-                            M.read (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "core::slice::iter::RChunksMut",
-                                "chunk_size"
+                          M.call_closure (|
+                            Ty.path "usize",
+                            BinOp.Wrap.mul,
+                            [
+                              M.call_closure (|
+                                Ty.path "usize",
+                                BinOp.Wrap.sub,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    BinOp.Wrap.sub,
+                                    [ M.read (| len |); Value.Integer IntegerKind.Usize 1 ]
+                                  |);
+                                  M.read (| n |)
+                                ]
+                              |);
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::slice::iter::RChunksMut",
+                                  "chunk_size"
+                                |)
                               |)
-                            |)
+                            ]
                           |)
                         |) in
                       let~ end_ : Ty.path "usize" :=
                         M.alloc (|
-                          BinOp.Wrap.sub (|
-                            M.call_closure (|
-                              Ty.path "usize",
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "*mut")
+                          M.call_closure (|
+                            Ty.path "usize",
+                            BinOp.Wrap.sub,
+                            [
+                              M.call_closure (|
+                                Ty.path "usize",
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "*mut")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                  "len",
+                                  [],
                                   []
-                                  [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                                "len",
-                                [],
-                                []
-                              |),
-                              [
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "core::slice::iter::RChunksMut",
-                                    "v"
+                                |),
+                                [
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::slice::iter::RChunksMut",
+                                      "v"
+                                    |)
                                   |)
-                                |)
-                              ]
-                            |),
-                            M.read (| offset_from_end |)
+                                ]
+                              |);
+                              M.read (| offset_from_end |)
+                            ]
                           |)
                         |) in
                       let~ start : Ty.path "usize" :=
@@ -22814,18 +23317,22 @@ Module slice.
             M.read (|
               let~ rem : Ty.path "usize" :=
                 M.alloc (|
-                  BinOp.Wrap.rem (|
-                    M.call_closure (|
-                      Ty.path "usize",
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [] [ T ],
-                        "len",
-                        [],
-                        []
-                      |),
-                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |) ]
-                    |),
-                    M.read (| chunk_size |)
+                  M.call_closure (|
+                    Ty.path "usize",
+                    BinOp.Wrap.rem,
+                    [
+                      M.call_closure (|
+                        Ty.path "usize",
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "slice") [] [ T ],
+                          "len",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |) ]
+                      |);
+                      M.read (| chunk_size |)
+                    ]
                   |)
                 |) in
               M.match_operator (|
@@ -23011,40 +23518,44 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.lt (|
-                              M.call_closure (|
-                                Ty.path "usize",
-                                M.get_associated_function (|
-                                  Ty.apply (Ty.path "slice") [] [ T ],
-                                  "len",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (|
-                                      M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.deref (| M.read (| self |) |),
-                                          "core::slice::iter::RChunksExact",
-                                          "v"
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.lt,
+                              [
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "slice") [] [ T ],
+                                    "len",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "core::slice::iter::RChunksExact",
+                                            "v"
+                                          |)
                                         |)
                                       |)
                                     |)
+                                  ]
+                                |);
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::slice::iter::RChunksExact",
+                                    "chunk_size"
                                   |)
-                                ]
-                              |),
-                              M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "core::slice::iter::RChunksExact",
-                                  "chunk_size"
                                 |)
-                              |)
+                              ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -23076,37 +23587,41 @@ Module slice.
                                   |)
                                 |)
                               |);
-                              BinOp.Wrap.sub (|
-                                M.call_closure (|
-                                  Ty.path "usize",
-                                  M.get_associated_function (|
-                                    Ty.apply (Ty.path "slice") [] [ T ],
-                                    "len",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.deref (|
-                                        M.read (|
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.deref (| M.read (| self |) |),
-                                            "core::slice::iter::RChunksExact",
-                                            "v"
+                              M.call_closure (|
+                                Ty.path "usize",
+                                BinOp.Wrap.sub,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    M.get_associated_function (|
+                                      Ty.apply (Ty.path "slice") [] [ T ],
+                                      "len",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "core::slice::iter::RChunksExact",
+                                              "v"
+                                            |)
                                           |)
                                         |)
                                       |)
+                                    ]
+                                  |);
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::slice::iter::RChunksExact",
+                                      "chunk_size"
                                     |)
-                                  ]
-                                |),
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "core::slice::iter::RChunksExact",
-                                    "chunk_size"
                                   |)
-                                |)
+                                ]
                               |)
                             ]
                           |)
@@ -23158,37 +23673,41 @@ Module slice.
             M.read (|
               let~ n : Ty.path "usize" :=
                 M.alloc (|
-                  BinOp.Wrap.div (|
-                    M.call_closure (|
-                      Ty.path "usize",
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [] [ T ],
-                        "len",
-                        [],
-                        []
-                      |),
-                      [
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (|
-                            M.read (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "core::slice::iter::RChunksExact",
-                                "v"
+                  M.call_closure (|
+                    Ty.path "usize",
+                    BinOp.Wrap.div,
+                    [
+                      M.call_closure (|
+                        Ty.path "usize",
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "slice") [] [ T ],
+                          "len",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::slice::iter::RChunksExact",
+                                  "v"
+                                |)
                               |)
                             |)
                           |)
+                        ]
+                      |);
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::slice::iter::RChunksExact",
+                          "chunk_size"
                         |)
-                      ]
-                    |),
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "core::slice::iter::RChunksExact",
-                        "chunk_size"
                       |)
-                    |)
+                    ]
                   |)
                 |) in
               M.alloc (|
@@ -23289,40 +23808,41 @@ Module slice.
                                 M.use
                                   (M.alloc (|
                                     LogicalOp.or (|
-                                      BinOp.ge (|
-                                        M.read (| end_ |),
-                                        M.call_closure (|
-                                          Ty.path "usize",
-                                          M.get_associated_function (|
-                                            Ty.apply (Ty.path "slice") [] [ T ],
-                                            "len",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (|
-                                                M.read (|
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.deref (| M.read (| self |) |),
-                                                    "core::slice::iter::RChunksExact",
-                                                    "v"
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.ge,
+                                        [
+                                          M.read (| end_ |);
+                                          M.call_closure (|
+                                            Ty.path "usize",
+                                            M.get_associated_function (|
+                                              Ty.apply (Ty.path "slice") [] [ T ],
+                                              "len",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.read (|
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.deref (| M.read (| self |) |),
+                                                      "core::slice::iter::RChunksExact",
+                                                      "v"
+                                                    |)
                                                   |)
                                                 |)
                                               |)
-                                            |)
-                                          ]
-                                        |)
+                                            ]
+                                          |)
+                                        ]
                                       |),
                                       ltac:(M.monadic (M.read (| overflow |)))
                                     |)
                                   |)) in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               let~ _ : Ty.tuple [] :=
                                 M.alloc (|
                                   M.write (|
@@ -23379,31 +23899,35 @@ Module slice.
                                           |)
                                         |)
                                       |);
-                                      BinOp.Wrap.sub (|
-                                        M.call_closure (|
-                                          Ty.path "usize",
-                                          M.get_associated_function (|
-                                            Ty.apply (Ty.path "slice") [] [ T ],
-                                            "len",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (|
-                                                M.read (|
-                                                  M.SubPointer.get_struct_record_field (|
-                                                    M.deref (| M.read (| self |) |),
-                                                    "core::slice::iter::RChunksExact",
-                                                    "v"
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        BinOp.Wrap.sub,
+                                        [
+                                          M.call_closure (|
+                                            Ty.path "usize",
+                                            M.get_associated_function (|
+                                              Ty.apply (Ty.path "slice") [] [ T ],
+                                              "len",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (|
+                                                  M.read (|
+                                                    M.SubPointer.get_struct_record_field (|
+                                                      M.deref (| M.read (| self |) |),
+                                                      "core::slice::iter::RChunksExact",
+                                                      "v"
+                                                    |)
                                                   |)
                                                 |)
                                               |)
-                                            |)
-                                          ]
-                                        |),
-                                        M.read (| end_ |)
+                                            ]
+                                          |);
+                                          M.read (| end_ |)
+                                        ]
                                       |)
                                     ]
                                   |)
@@ -23522,32 +24046,57 @@ Module slice.
             M.read (|
               let~ end_ : Ty.path "usize" :=
                 M.alloc (|
-                  BinOp.Wrap.sub (|
-                    M.call_closure (|
-                      Ty.path "usize",
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [] [ T ],
-                        "len",
-                        [],
-                        []
-                      |),
-                      [
-                        M.borrow (|
-                          Pointer.Kind.Ref,
-                          M.deref (|
-                            M.read (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "core::slice::iter::RChunksExact",
-                                "v"
+                  M.call_closure (|
+                    Ty.path "usize",
+                    BinOp.Wrap.sub,
+                    [
+                      M.call_closure (|
+                        Ty.path "usize",
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "slice") [] [ T ],
+                          "len",
+                          [],
+                          []
+                        |),
+                        [
+                          M.borrow (|
+                            Pointer.Kind.Ref,
+                            M.deref (|
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::slice::iter::RChunksExact",
+                                  "v"
+                                |)
                               |)
                             |)
                           |)
-                        |)
-                      ]
-                    |),
-                    BinOp.Wrap.mul (|
-                      M.read (| idx |),
+                        ]
+                      |);
+                      M.call_closure (|
+                        Ty.path "usize",
+                        BinOp.Wrap.mul,
+                        [
+                          M.read (| idx |);
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::slice::iter::RChunksExact",
+                              "chunk_size"
+                            |)
+                          |)
+                        ]
+                      |)
+                    ]
+                  |)
+                |) in
+              let~ start : Ty.path "usize" :=
+                M.alloc (|
+                  M.call_closure (|
+                    Ty.path "usize",
+                    BinOp.Wrap.sub,
+                    [
+                      M.read (| end_ |);
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.deref (| M.read (| self |) |),
@@ -23555,20 +24104,7 @@ Module slice.
                           "chunk_size"
                         |)
                       |)
-                    |)
-                  |)
-                |) in
-              let~ start : Ty.path "usize" :=
-                M.alloc (|
-                  BinOp.Wrap.sub (|
-                    M.read (| end_ |),
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "core::slice::iter::RChunksExact",
-                        "chunk_size"
-                      |)
-                    |)
+                    ]
                   |)
                 |) in
               M.alloc (|
@@ -23684,40 +24220,44 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.lt (|
-                              M.call_closure (|
-                                Ty.path "usize",
-                                M.get_associated_function (|
-                                  Ty.apply (Ty.path "slice") [] [ T ],
-                                  "len",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.borrow (|
-                                    Pointer.Kind.Ref,
-                                    M.deref (|
-                                      M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.deref (| M.read (| self |) |),
-                                          "core::slice::iter::RChunksExact",
-                                          "v"
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.lt,
+                              [
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  M.get_associated_function (|
+                                    Ty.apply (Ty.path "slice") [] [ T ],
+                                    "len",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.borrow (|
+                                      Pointer.Kind.Ref,
+                                      M.deref (|
+                                        M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "core::slice::iter::RChunksExact",
+                                            "v"
+                                          |)
                                         |)
                                       |)
                                     |)
+                                  ]
+                                |);
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::slice::iter::RChunksExact",
+                                    "chunk_size"
                                   |)
-                                ]
-                              |),
-                              M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "core::slice::iter::RChunksExact",
-                                  "chunk_size"
                                 |)
-                              |)
+                              ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -23847,8 +24387,15 @@ Module slice.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use (M.alloc (| BinOp.ge (| M.read (| n |), M.read (| len |) |) |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        M.use
+                          (M.alloc (|
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.ge,
+                              [ M.read (| n |); M.read (| len |) ]
+                            |)
+                          |)) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.write (|
@@ -23870,57 +24417,73 @@ Module slice.
                     ltac:(M.monadic
                       (let~ offset : Ty.path "usize" :=
                         M.alloc (|
-                          BinOp.Wrap.mul (|
-                            BinOp.Wrap.sub (| M.read (| len |), M.read (| n |) |),
-                            M.read (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "core::slice::iter::RChunksExact",
-                                "chunk_size"
+                          M.call_closure (|
+                            Ty.path "usize",
+                            BinOp.Wrap.mul,
+                            [
+                              M.call_closure (|
+                                Ty.path "usize",
+                                BinOp.Wrap.sub,
+                                [ M.read (| len |); M.read (| n |) ]
+                              |);
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::slice::iter::RChunksExact",
+                                  "chunk_size"
+                                |)
                               |)
-                            |)
+                            ]
                           |)
                         |) in
                       let~ start : Ty.path "usize" :=
                         M.alloc (|
-                          BinOp.Wrap.sub (|
-                            M.call_closure (|
-                              Ty.path "usize",
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "slice") [] [ T ],
-                                "len",
-                                [],
-                                []
-                              |),
-                              [
-                                M.borrow (|
-                                  Pointer.Kind.Ref,
-                                  M.deref (|
-                                    M.read (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "core::slice::iter::RChunksExact",
-                                        "v"
+                          M.call_closure (|
+                            Ty.path "usize",
+                            BinOp.Wrap.sub,
+                            [
+                              M.call_closure (|
+                                Ty.path "usize",
+                                M.get_associated_function (|
+                                  Ty.apply (Ty.path "slice") [] [ T ],
+                                  "len",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (|
+                                      M.read (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "core::slice::iter::RChunksExact",
+                                          "v"
+                                        |)
                                       |)
                                     |)
                                   |)
-                                |)
-                              ]
-                            |),
-                            M.read (| offset |)
+                                ]
+                              |);
+                              M.read (| offset |)
+                            ]
                           |)
                         |) in
                       let~ end_ : Ty.path "usize" :=
                         M.alloc (|
-                          BinOp.Wrap.add (|
-                            M.read (| start |),
-                            M.read (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "core::slice::iter::RChunksExact",
-                                "chunk_size"
+                          M.call_closure (|
+                            Ty.path "usize",
+                            BinOp.Wrap.add,
+                            [
+                              M.read (| start |);
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::slice::iter::RChunksExact",
+                                  "chunk_size"
+                                |)
                               |)
-                            |)
+                            ]
                           |)
                         |) in
                       let~ nth_back :
@@ -24290,18 +24853,22 @@ Module slice.
             M.read (|
               let~ rem : Ty.path "usize" :=
                 M.alloc (|
-                  BinOp.Wrap.rem (|
-                    M.call_closure (|
-                      Ty.path "usize",
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "slice") [] [ T ],
-                        "len",
-                        [],
-                        []
-                      |),
-                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |) ]
-                    |),
-                    M.read (| chunk_size |)
+                  M.call_closure (|
+                    Ty.path "usize",
+                    BinOp.Wrap.rem,
+                    [
+                      M.call_closure (|
+                        Ty.path "usize",
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "slice") [] [ T ],
+                          "len",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| slice |) |) |) ]
+                      |);
+                      M.read (| chunk_size |)
+                    ]
                   |)
                 |) in
               M.match_operator (|
@@ -24443,38 +25010,42 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.lt (|
-                              M.call_closure (|
-                                Ty.path "usize",
-                                M.get_associated_function (|
-                                  Ty.apply
-                                    (Ty.path "*mut")
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.lt,
+                              [
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "*mut")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                    "len",
+                                    [],
                                     []
-                                    [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                                  "len",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.read (|
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "core::slice::iter::RChunksExactMut",
-                                      "v"
+                                  |),
+                                  [
+                                    M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "core::slice::iter::RChunksExactMut",
+                                        "v"
+                                      |)
                                     |)
+                                  ]
+                                |);
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::slice::iter::RChunksExactMut",
+                                    "chunk_size"
                                   |)
-                                ]
-                              |),
-                              M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "core::slice::iter::RChunksExactMut",
-                                  "chunk_size"
                                 |)
-                              |)
+                              ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -24525,15 +25096,19 @@ Module slice.
                                   "v"
                                 |)
                               |);
-                              BinOp.Wrap.sub (|
-                                M.read (| len |),
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "core::slice::iter::RChunksExactMut",
-                                    "chunk_size"
+                              M.call_closure (|
+                                Ty.path "usize",
+                                BinOp.Wrap.sub,
+                                [
+                                  M.read (| len |);
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::slice::iter::RChunksExactMut",
+                                      "chunk_size"
+                                    |)
                                   |)
-                                |)
+                                ]
                               |)
                             ]
                           |)
@@ -24599,32 +25174,36 @@ Module slice.
             M.read (|
               let~ n : Ty.path "usize" :=
                 M.alloc (|
-                  BinOp.Wrap.div (|
-                    M.call_closure (|
-                      Ty.path "usize",
-                      M.get_associated_function (|
-                        Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                        "len",
-                        [],
-                        []
-                      |),
-                      [
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "core::slice::iter::RChunksExactMut",
-                            "v"
+                  M.call_closure (|
+                    Ty.path "usize",
+                    BinOp.Wrap.div,
+                    [
+                      M.call_closure (|
+                        Ty.path "usize",
+                        M.get_associated_function (|
+                          Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                          "len",
+                          [],
+                          []
+                        |),
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "core::slice::iter::RChunksExactMut",
+                              "v"
+                            |)
                           |)
+                        ]
+                      |);
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::slice::iter::RChunksExactMut",
+                          "chunk_size"
                         |)
-                      ]
-                    |),
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "core::slice::iter::RChunksExactMut",
-                        "chunk_size"
                       |)
-                    |)
+                    ]
                   |)
                 |) in
               M.alloc (|
@@ -24728,38 +25307,39 @@ Module slice.
                                 M.use
                                   (M.alloc (|
                                     LogicalOp.or (|
-                                      BinOp.ge (|
-                                        M.read (| end_ |),
-                                        M.call_closure (|
-                                          Ty.path "usize",
-                                          M.get_associated_function (|
-                                            Ty.apply
-                                              (Ty.path "*mut")
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.ge,
+                                        [
+                                          M.read (| end_ |);
+                                          M.call_closure (|
+                                            Ty.path "usize",
+                                            M.get_associated_function (|
+                                              Ty.apply
+                                                (Ty.path "*mut")
+                                                []
+                                                [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                              "len",
+                                              [],
                                               []
-                                              [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                                            "len",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.read (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.deref (| M.read (| self |) |),
-                                                "core::slice::iter::RChunksExactMut",
-                                                "v"
+                                            |),
+                                            [
+                                              M.read (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "core::slice::iter::RChunksExactMut",
+                                                  "v"
+                                                |)
                                               |)
-                                            |)
-                                          ]
-                                        |)
+                                            ]
+                                          |)
+                                        ]
                                       |),
                                       ltac:(M.monadic (M.read (| overflow |)))
                                     |)
                                   |)) in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               let~ _ : Ty.tuple [] :=
                                 M.alloc (|
                                   M.write (|
@@ -24838,7 +25418,11 @@ Module slice.
                                           "v"
                                         |)
                                       |);
-                                      BinOp.Wrap.sub (| M.read (| len |), M.read (| end_ |) |)
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        BinOp.Wrap.sub,
+                                        [ M.read (| len |); M.read (| end_ |) ]
+                                      |)
                                     ]
                                   |)
                                 |),
@@ -24956,27 +25540,52 @@ Module slice.
                 M.read (|
                   let~ end_ : Ty.path "usize" :=
                     M.alloc (|
-                      BinOp.Wrap.sub (|
-                        M.call_closure (|
-                          Ty.path "usize",
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                            "len",
-                            [],
-                            []
-                          |),
-                          [
-                            M.read (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "core::slice::iter::RChunksExactMut",
-                                "v"
+                      M.call_closure (|
+                        Ty.path "usize",
+                        BinOp.Wrap.sub,
+                        [
+                          M.call_closure (|
+                            Ty.path "usize",
+                            M.get_associated_function (|
+                              Ty.apply (Ty.path "*mut") [] [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                              "len",
+                              [],
+                              []
+                            |),
+                            [
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::slice::iter::RChunksExactMut",
+                                  "v"
+                                |)
                               |)
-                            |)
-                          ]
-                        |),
-                        BinOp.Wrap.mul (|
-                          M.read (| idx |),
+                            ]
+                          |);
+                          M.call_closure (|
+                            Ty.path "usize",
+                            BinOp.Wrap.mul,
+                            [
+                              M.read (| idx |);
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::slice::iter::RChunksExactMut",
+                                  "chunk_size"
+                                |)
+                              |)
+                            ]
+                          |)
+                        ]
+                      |)
+                    |) in
+                  let~ start : Ty.path "usize" :=
+                    M.alloc (|
+                      M.call_closure (|
+                        Ty.path "usize",
+                        BinOp.Wrap.sub,
+                        [
+                          M.read (| end_ |);
                           M.read (|
                             M.SubPointer.get_struct_record_field (|
                               M.deref (| M.read (| self |) |),
@@ -24984,20 +25593,7 @@ Module slice.
                               "chunk_size"
                             |)
                           |)
-                        |)
-                      |)
-                    |) in
-                  let~ start : Ty.path "usize" :=
-                    M.alloc (|
-                      BinOp.Wrap.sub (|
-                        M.read (| end_ |),
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "core::slice::iter::RChunksExactMut",
-                            "chunk_size"
-                          |)
-                        |)
+                        ]
                       |)
                     |) in
                   M.alloc (|
@@ -25124,38 +25720,42 @@ Module slice.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.lt (|
-                              M.call_closure (|
-                                Ty.path "usize",
-                                M.get_associated_function (|
-                                  Ty.apply
-                                    (Ty.path "*mut")
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.lt,
+                              [
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  M.get_associated_function (|
+                                    Ty.apply
+                                      (Ty.path "*mut")
+                                      []
+                                      [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                    "len",
+                                    [],
                                     []
-                                    [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                                  "len",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.read (|
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "core::slice::iter::RChunksExactMut",
-                                      "v"
+                                  |),
+                                  [
+                                    M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "core::slice::iter::RChunksExactMut",
+                                        "v"
+                                      |)
                                     |)
+                                  ]
+                                |);
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "core::slice::iter::RChunksExactMut",
+                                    "chunk_size"
                                   |)
-                                ]
-                              |),
-                              M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "core::slice::iter::RChunksExactMut",
-                                  "chunk_size"
                                 |)
-                              |)
+                              ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -25301,8 +25901,15 @@ Module slice.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ :=
-                        M.use (M.alloc (| BinOp.ge (| M.read (| n |), M.read (| len |) |) |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        M.use
+                          (M.alloc (|
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.ge,
+                              [ M.read (| n |); M.read (| len |) ]
+                            |)
+                          |)) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.write (|
@@ -25324,55 +25931,71 @@ Module slice.
                     ltac:(M.monadic
                       (let~ offset : Ty.path "usize" :=
                         M.alloc (|
-                          BinOp.Wrap.mul (|
-                            BinOp.Wrap.sub (| M.read (| len |), M.read (| n |) |),
-                            M.read (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "core::slice::iter::RChunksExactMut",
-                                "chunk_size"
+                          M.call_closure (|
+                            Ty.path "usize",
+                            BinOp.Wrap.mul,
+                            [
+                              M.call_closure (|
+                                Ty.path "usize",
+                                BinOp.Wrap.sub,
+                                [ M.read (| len |); M.read (| n |) ]
+                              |);
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::slice::iter::RChunksExactMut",
+                                  "chunk_size"
+                                |)
                               |)
-                            |)
+                            ]
                           |)
                         |) in
                       let~ start : Ty.path "usize" :=
                         M.alloc (|
-                          BinOp.Wrap.sub (|
-                            M.call_closure (|
-                              Ty.path "usize",
-                              M.get_associated_function (|
-                                Ty.apply
-                                  (Ty.path "*mut")
+                          M.call_closure (|
+                            Ty.path "usize",
+                            BinOp.Wrap.sub,
+                            [
+                              M.call_closure (|
+                                Ty.path "usize",
+                                M.get_associated_function (|
+                                  Ty.apply
+                                    (Ty.path "*mut")
+                                    []
+                                    [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                                  "len",
+                                  [],
                                   []
-                                  [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                                "len",
-                                [],
-                                []
-                              |),
-                              [
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "core::slice::iter::RChunksExactMut",
-                                    "v"
+                                |),
+                                [
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::slice::iter::RChunksExactMut",
+                                      "v"
+                                    |)
                                   |)
-                                |)
-                              ]
-                            |),
-                            M.read (| offset |)
+                                ]
+                              |);
+                              M.read (| offset |)
+                            ]
                           |)
                         |) in
                       let~ end_ : Ty.path "usize" :=
                         M.alloc (|
-                          BinOp.Wrap.add (|
-                            M.read (| start |),
-                            M.read (|
-                              M.SubPointer.get_struct_record_field (|
-                                M.deref (| M.read (| self |) |),
-                                "core::slice::iter::RChunksExactMut",
-                                "chunk_size"
+                          M.call_closure (|
+                            Ty.path "usize",
+                            BinOp.Wrap.add,
+                            [
+                              M.read (| start |);
+                              M.read (|
+                                M.SubPointer.get_struct_record_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "core::slice::iter::RChunksExactMut",
+                                  "chunk_size"
+                                |)
                               |)
-                            |)
+                            ]
                           |)
                         |) in
                       M.match_operator (|
@@ -25830,7 +26453,7 @@ Module slice.
                               ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -25961,7 +26584,7 @@ Module slice.
                                                   |)
                                                 |)) in
                                             let _ :=
-                                              M.is_constant_or_break_match (|
+                                              is_constant_or_break_match (|
                                                 M.read (| γ |),
                                                 Value.Bool true
                                               |) in
@@ -25969,9 +26592,13 @@ Module slice.
                                               let β := len in
                                               M.write (|
                                                 β,
-                                                BinOp.Wrap.add (|
-                                                  M.read (| β |),
-                                                  Value.Integer IntegerKind.Usize 1
+                                                M.call_closure (|
+                                                  Ty.path "usize",
+                                                  BinOp.Wrap.add,
+                                                  [
+                                                    M.read (| β |);
+                                                    Value.Integer IntegerKind.Usize 1
+                                                  ]
                                                 |)
                                               |)
                                             |)));
@@ -26112,7 +26739,7 @@ Module slice.
                               ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.Tuple
                           [
@@ -26273,7 +26900,7 @@ Module slice.
                               ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -26404,7 +27031,7 @@ Module slice.
                                                   |)
                                                 |)) in
                                             let _ :=
-                                              M.is_constant_or_break_match (|
+                                              is_constant_or_break_match (|
                                                 M.read (| γ |),
                                                 Value.Bool true
                                               |) in
@@ -26412,9 +27039,13 @@ Module slice.
                                               let β := len in
                                               M.write (|
                                                 β,
-                                                BinOp.Wrap.add (|
-                                                  M.read (| β |),
-                                                  Value.Integer IntegerKind.Usize 1
+                                                M.call_closure (|
+                                                  Ty.path "usize",
+                                                  BinOp.Wrap.add,
+                                                  [
+                                                    M.read (| β |);
+                                                    Value.Integer IntegerKind.Usize 1
+                                                  ]
                                                 |)
                                               |)
                                             |)));
@@ -26469,31 +27100,35 @@ Module slice.
                                   |)
                                 |)
                               |);
-                              BinOp.Wrap.sub (|
-                                M.call_closure (|
-                                  Ty.path "usize",
-                                  M.get_associated_function (|
-                                    Ty.apply (Ty.path "slice") [] [ T ],
-                                    "len",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.deref (|
-                                        M.read (|
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.deref (| M.read (| self |) |),
-                                            "core::slice::iter::ChunkBy",
-                                            "slice"
+                              M.call_closure (|
+                                Ty.path "usize",
+                                BinOp.Wrap.sub,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    M.get_associated_function (|
+                                      Ty.apply (Ty.path "slice") [] [ T ],
+                                      "len",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (|
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "core::slice::iter::ChunkBy",
+                                              "slice"
+                                            |)
                                           |)
                                         |)
                                       |)
-                                    |)
-                                  ]
-                                |),
-                                M.read (| len |)
+                                    ]
+                                  |);
+                                  M.read (| len |)
+                                ]
                               |)
                             ]
                           |)
@@ -26761,7 +27396,7 @@ Module slice.
                               ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -26892,7 +27527,7 @@ Module slice.
                                                   |)
                                                 |)) in
                                             let _ :=
-                                              M.is_constant_or_break_match (|
+                                              is_constant_or_break_match (|
                                                 M.read (| γ |),
                                                 Value.Bool true
                                               |) in
@@ -26900,9 +27535,13 @@ Module slice.
                                               let β := len in
                                               M.write (|
                                                 β,
-                                                BinOp.Wrap.add (|
-                                                  M.read (| β |),
-                                                  Value.Integer IntegerKind.Usize 1
+                                                M.call_closure (|
+                                                  Ty.path "usize",
+                                                  BinOp.Wrap.add,
+                                                  [
+                                                    M.read (| β |);
+                                                    Value.Integer IntegerKind.Usize 1
+                                                  ]
                                                 |)
                                               |)
                                             |)));
@@ -27070,7 +27709,7 @@ Module slice.
                               ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.Tuple
                           [
@@ -27232,7 +27871,7 @@ Module slice.
                               ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -27363,7 +28002,7 @@ Module slice.
                                                   |)
                                                 |)) in
                                             let _ :=
-                                              M.is_constant_or_break_match (|
+                                              is_constant_or_break_match (|
                                                 M.read (| γ |),
                                                 Value.Bool true
                                               |) in
@@ -27371,9 +28010,13 @@ Module slice.
                                               let β := len in
                                               M.write (|
                                                 β,
-                                                BinOp.Wrap.add (|
-                                                  M.read (| β |),
-                                                  Value.Integer IntegerKind.Usize 1
+                                                M.call_closure (|
+                                                  Ty.path "usize",
+                                                  BinOp.Wrap.add,
+                                                  [
+                                                    M.read (| β |);
+                                                    Value.Integer IntegerKind.Usize 1
+                                                  ]
                                                 |)
                                               |)
                                             |)));
@@ -27448,23 +28091,27 @@ Module slice.
                             |),
                             [
                               M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| slice |) |) |);
-                              BinOp.Wrap.sub (|
-                                M.call_closure (|
-                                  Ty.path "usize",
-                                  M.get_associated_function (|
-                                    Ty.apply (Ty.path "slice") [] [ T ],
-                                    "len",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.deref (| M.read (| slice |) |)
-                                    |)
-                                  ]
-                                |),
-                                M.read (| len |)
+                              M.call_closure (|
+                                Ty.path "usize",
+                                BinOp.Wrap.sub,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    M.get_associated_function (|
+                                      Ty.apply (Ty.path "slice") [] [ T ],
+                                      "len",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| slice |) |)
+                                      |)
+                                    ]
+                                  |);
+                                  M.read (| len |)
+                                ]
                               |)
                             ]
                           |)

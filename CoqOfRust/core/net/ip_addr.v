@@ -163,7 +163,11 @@ Module net.
                 |) in
               M.alloc (|
                 LogicalOp.and (|
-                  BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |),
+                  M.call_closure (|
+                    Ty.path "bool",
+                    BinOp.eq,
+                    [ M.read (| __self_discr |); M.read (| __arg1_discr |) ]
+                  |),
                   ltac:(M.monadic
                     (M.read (|
                       M.match_operator (|
@@ -1315,7 +1319,13 @@ Module net.
                     [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                   |)
                 |) in
-              M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
+              M.alloc (|
+                M.call_closure (|
+                  Ty.path "bool",
+                  BinOp.eq,
+                  [ M.read (| __self_discr |); M.read (| __arg1_discr |) ]
+                |)
+              |)
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2352,21 +2362,25 @@ Module net.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.eq (|
-              M.call_closure (|
-                Ty.path "u32",
-                M.get_associated_function (| Ty.path "u32", "from_be_bytes", [], [] |),
-                [
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "core::net::ip_addr::Ipv4Addr",
-                      "octets"
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.eq,
+              [
+                M.call_closure (|
+                  Ty.path "u32",
+                  M.get_associated_function (| Ty.path "u32", "from_be_bytes", [], [] |),
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "core::net::ip_addr::Ipv4Addr",
+                        "octets"
+                      |)
                     |)
-                  |)
-                ]
-              |),
-              Value.Integer IntegerKind.U32 0
+                  ]
+                |);
+                Value.Integer IntegerKind.U32 0
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2386,28 +2400,32 @@ Module net.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.eq (|
-              M.read (|
-                M.SubPointer.get_array_field (|
-                  M.alloc (|
-                    M.call_closure (|
-                      Ty.apply
-                        (Ty.path "array")
-                        [ Value.Integer IntegerKind.Usize 4 ]
-                        [ Ty.path "u8" ],
-                      M.get_associated_function (|
-                        Ty.path "core::net::ip_addr::Ipv4Addr",
-                        "octets",
-                        [],
-                        []
-                      |),
-                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                    |)
-                  |),
-                  Value.Integer IntegerKind.Usize 0
-                |)
-              |),
-              Value.Integer IntegerKind.U8 127
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.eq,
+              [
+                M.read (|
+                  M.SubPointer.get_array_field (|
+                    M.alloc (|
+                      M.call_closure (|
+                        Ty.apply
+                          (Ty.path "array")
+                          [ Value.Integer IntegerKind.Usize 4 ]
+                          [ Ty.path "u8" ],
+                        M.get_associated_function (|
+                          Ty.path "core::net::ip_addr::Ipv4Addr",
+                          "octets",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                      |)
+                    |),
+                    Value.Integer IntegerKind.Usize 0
+                  |)
+                |);
+                Value.Integer IntegerKind.U8 127
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2456,7 +2474,7 @@ Module net.
                       (let γ0_0 := M.SubPointer.get_slice_index (| γ, 0 |) in
                       let γ0_rest := M.SubPointer.get_slice_rest (| γ, 1, 0 |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
+                        is_constant_or_break_match (|
                           M.read (| γ0_0 |),
                           Value.Integer IntegerKind.U8 10
                         |) in
@@ -2467,21 +2485,29 @@ Module net.
                       let γ0_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
                       let γ0_rest := M.SubPointer.get_slice_rest (| γ, 2, 0 |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
+                        is_constant_or_break_match (|
                           M.read (| γ0_0 |),
                           Value.Integer IntegerKind.U8 172
                         |) in
                       let b := M.copy (| γ0_1 |) in
                       let γ :=
                         M.alloc (|
-                          BinOp.ge (| M.read (| b |), Value.Integer IntegerKind.U8 16 |)
+                          M.call_closure (|
+                            Ty.path "bool",
+                            BinOp.ge,
+                            [ M.read (| b |); Value.Integer IntegerKind.U8 16 ]
+                          |)
                         |) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let γ :=
                         M.alloc (|
-                          BinOp.le (| M.read (| b |), Value.Integer IntegerKind.U8 31 |)
+                          M.call_closure (|
+                            Ty.path "bool",
+                            BinOp.le,
+                            [ M.read (| b |); Value.Integer IntegerKind.U8 31 ]
+                          |)
                         |) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (| Value.Bool true |)));
                   fun γ =>
                     ltac:(M.monadic
@@ -2489,12 +2515,12 @@ Module net.
                       let γ0_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
                       let γ0_rest := M.SubPointer.get_slice_rest (| γ, 2, 0 |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
+                        is_constant_or_break_match (|
                           M.read (| γ0_0 |),
                           Value.Integer IntegerKind.U8 192
                         |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
+                        is_constant_or_break_match (|
                           M.read (| γ0_1 |),
                           Value.Integer IntegerKind.U8 168
                         |) in
@@ -2546,12 +2572,12 @@ Module net.
                       let γ0_1 := M.SubPointer.get_slice_index (| γ, 1 |) in
                       let γ0_rest := M.SubPointer.get_slice_rest (| γ, 2, 0 |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
+                        is_constant_or_break_match (|
                           M.read (| γ0_0 |),
                           Value.Integer IntegerKind.U8 169
                         |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
+                        is_constant_or_break_match (|
                           M.read (| γ0_1 |),
                           Value.Integer IntegerKind.U8 254
                         |) in
@@ -2602,33 +2628,37 @@ Module net.
                           LogicalOp.or (|
                             LogicalOp.or (|
                               LogicalOp.or (|
-                                BinOp.eq (|
-                                  M.read (|
-                                    M.SubPointer.get_array_field (|
-                                      M.alloc (|
-                                        M.call_closure (|
-                                          Ty.apply
-                                            (Ty.path "array")
-                                            [ Value.Integer IntegerKind.Usize 4 ]
-                                            [ Ty.path "u8" ],
-                                          M.get_associated_function (|
-                                            Ty.path "core::net::ip_addr::Ipv4Addr",
-                                            "octets",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (| M.read (| self |) |)
-                                            |)
-                                          ]
-                                        |)
-                                      |),
-                                      Value.Integer IntegerKind.Usize 0
-                                    |)
-                                  |),
-                                  Value.Integer IntegerKind.U8 0
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.eq,
+                                  [
+                                    M.read (|
+                                      M.SubPointer.get_array_field (|
+                                        M.alloc (|
+                                          M.call_closure (|
+                                            Ty.apply
+                                              (Ty.path "array")
+                                              [ Value.Integer IntegerKind.Usize 4 ]
+                                              [ Ty.path "u8" ],
+                                            M.get_associated_function (|
+                                              Ty.path "core::net::ip_addr::Ipv4Addr",
+                                              "octets",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| self |) |)
+                                              |)
+                                            ]
+                                          |)
+                                        |),
+                                        Value.Integer IntegerKind.Usize 0
+                                      |)
+                                    |);
+                                    Value.Integer IntegerKind.U8 0
+                                  ]
                                 |),
                                 ltac:(M.monadic
                                   (M.call_closure (|
@@ -2689,36 +2719,10 @@ Module net.
                             LogicalOp.and (|
                               LogicalOp.and (|
                                 LogicalOp.and (|
-                                  BinOp.eq (|
-                                    M.read (|
-                                      M.SubPointer.get_array_field (|
-                                        M.alloc (|
-                                          M.call_closure (|
-                                            Ty.apply
-                                              (Ty.path "array")
-                                              [ Value.Integer IntegerKind.Usize 4 ]
-                                              [ Ty.path "u8" ],
-                                            M.get_associated_function (|
-                                              Ty.path "core::net::ip_addr::Ipv4Addr",
-                                              "octets",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (| M.read (| self |) |)
-                                              |)
-                                            ]
-                                          |)
-                                        |),
-                                        Value.Integer IntegerKind.Usize 0
-                                      |)
-                                    |),
-                                    Value.Integer IntegerKind.U8 192
-                                  |),
-                                  ltac:(M.monadic
-                                    (BinOp.eq (|
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.eq,
+                                    [
                                       M.read (|
                                         M.SubPointer.get_array_field (|
                                           M.alloc (|
@@ -2741,14 +2745,85 @@ Module net.
                                               ]
                                             |)
                                           |),
-                                          Value.Integer IntegerKind.Usize 1
+                                          Value.Integer IntegerKind.Usize 0
                                         |)
-                                      |),
-                                      Value.Integer IntegerKind.U8 0
+                                      |);
+                                      Value.Integer IntegerKind.U8 192
+                                    ]
+                                  |),
+                                  ltac:(M.monadic
+                                    (M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.eq,
+                                      [
+                                        M.read (|
+                                          M.SubPointer.get_array_field (|
+                                            M.alloc (|
+                                              M.call_closure (|
+                                                Ty.apply
+                                                  (Ty.path "array")
+                                                  [ Value.Integer IntegerKind.Usize 4 ]
+                                                  [ Ty.path "u8" ],
+                                                M.get_associated_function (|
+                                                  Ty.path "core::net::ip_addr::Ipv4Addr",
+                                                  "octets",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.borrow (|
+                                                    Pointer.Kind.Ref,
+                                                    M.deref (| M.read (| self |) |)
+                                                  |)
+                                                ]
+                                              |)
+                                            |),
+                                            Value.Integer IntegerKind.Usize 1
+                                          |)
+                                        |);
+                                        Value.Integer IntegerKind.U8 0
+                                      ]
                                     |)))
                                 |),
                                 ltac:(M.monadic
-                                  (BinOp.eq (|
+                                  (M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.eq,
+                                    [
+                                      M.read (|
+                                        M.SubPointer.get_array_field (|
+                                          M.alloc (|
+                                            M.call_closure (|
+                                              Ty.apply
+                                                (Ty.path "array")
+                                                [ Value.Integer IntegerKind.Usize 4 ]
+                                                [ Ty.path "u8" ],
+                                              M.get_associated_function (|
+                                                Ty.path "core::net::ip_addr::Ipv4Addr",
+                                                "octets",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| self |) |)
+                                                |)
+                                              ]
+                                            |)
+                                          |),
+                                          Value.Integer IntegerKind.Usize 2
+                                        |)
+                                      |);
+                                      Value.Integer IntegerKind.U8 0
+                                    ]
+                                  |)))
+                              |),
+                              ltac:(M.monadic
+                                (M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.ne,
+                                  [
                                     M.read (|
                                       M.SubPointer.get_array_field (|
                                         M.alloc (|
@@ -2771,14 +2846,18 @@ Module net.
                                             ]
                                           |)
                                         |),
-                                        Value.Integer IntegerKind.Usize 2
+                                        Value.Integer IntegerKind.Usize 3
                                       |)
-                                    |),
-                                    Value.Integer IntegerKind.U8 0
-                                  |)))
-                              |),
-                              ltac:(M.monadic
-                                (BinOp.ne (|
+                                    |);
+                                    Value.Integer IntegerKind.U8 9
+                                  ]
+                                |)))
+                            |),
+                            ltac:(M.monadic
+                              (M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.ne,
+                                [
                                   M.read (|
                                     M.SubPointer.get_array_field (|
                                       M.alloc (|
@@ -2803,38 +2882,9 @@ Module net.
                                       |),
                                       Value.Integer IntegerKind.Usize 3
                                     |)
-                                  |),
-                                  Value.Integer IntegerKind.U8 9
-                                |)))
-                            |),
-                            ltac:(M.monadic
-                              (BinOp.ne (|
-                                M.read (|
-                                  M.SubPointer.get_array_field (|
-                                    M.alloc (|
-                                      M.call_closure (|
-                                        Ty.apply
-                                          (Ty.path "array")
-                                          [ Value.Integer IntegerKind.Usize 4 ]
-                                          [ Ty.path "u8" ],
-                                        M.get_associated_function (|
-                                          Ty.path "core::net::ip_addr::Ipv4Addr",
-                                          "octets",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (| M.read (| self |) |)
-                                          |)
-                                        ]
-                                      |)
-                                    |),
-                                    Value.Integer IntegerKind.Usize 3
-                                  |)
-                                |),
-                                Value.Integer IntegerKind.U8 10
+                                  |);
+                                  Value.Integer IntegerKind.U8 10
+                                ]
                               |)))
                           |)))
                       |),
@@ -2906,54 +2956,67 @@ Module net.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             LogicalOp.and (|
-              BinOp.eq (|
-                M.read (|
-                  M.SubPointer.get_array_field (|
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "array")
-                          [ Value.Integer IntegerKind.Usize 4 ]
-                          [ Ty.path "u8" ],
-                        M.get_associated_function (|
-                          Ty.path "core::net::ip_addr::Ipv4Addr",
-                          "octets",
-                          [],
-                          []
-                        |),
-                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                      |)
-                    |),
-                    Value.Integer IntegerKind.Usize 0
-                  |)
-                |),
-                Value.Integer IntegerKind.U8 100
+              M.call_closure (|
+                Ty.path "bool",
+                BinOp.eq,
+                [
+                  M.read (|
+                    M.SubPointer.get_array_field (|
+                      M.alloc (|
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 4 ]
+                            [ Ty.path "u8" ],
+                          M.get_associated_function (|
+                            Ty.path "core::net::ip_addr::Ipv4Addr",
+                            "octets",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                        |)
+                      |),
+                      Value.Integer IntegerKind.Usize 0
+                    |)
+                  |);
+                  Value.Integer IntegerKind.U8 100
+                ]
               |),
               ltac:(M.monadic
-                (BinOp.eq (|
-                  BinOp.bit_and
-                    (M.read (|
-                      M.SubPointer.get_array_field (|
-                        M.alloc (|
-                          M.call_closure (|
-                            Ty.apply
-                              (Ty.path "array")
-                              [ Value.Integer IntegerKind.Usize 4 ]
-                              [ Ty.path "u8" ],
-                            M.get_associated_function (|
-                              Ty.path "core::net::ip_addr::Ipv4Addr",
-                              "octets",
-                              [],
-                              []
+                (M.call_closure (|
+                  Ty.path "bool",
+                  BinOp.eq,
+                  [
+                    M.call_closure (|
+                      Ty.path "u8",
+                      BinOp.Wrap.bit_and,
+                      [
+                        M.read (|
+                          M.SubPointer.get_array_field (|
+                            M.alloc (|
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 4 ]
+                                  [ Ty.path "u8" ],
+                                M.get_associated_function (|
+                                  Ty.path "core::net::ip_addr::Ipv4Addr",
+                                  "octets",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                              |)
                             |),
-                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                            Value.Integer IntegerKind.Usize 1
                           |)
-                        |),
-                        Value.Integer IntegerKind.Usize 1
-                      |)
-                    |))
-                    (Value.Integer IntegerKind.U8 192),
-                  Value.Integer IntegerKind.U8 64
+                        |);
+                        Value.Integer IntegerKind.U8 192
+                      ]
+                    |);
+                    Value.Integer IntegerKind.U8 64
+                  ]
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -2975,54 +3038,67 @@ Module net.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             LogicalOp.and (|
-              BinOp.eq (|
-                M.read (|
-                  M.SubPointer.get_array_field (|
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "array")
-                          [ Value.Integer IntegerKind.Usize 4 ]
-                          [ Ty.path "u8" ],
-                        M.get_associated_function (|
-                          Ty.path "core::net::ip_addr::Ipv4Addr",
-                          "octets",
-                          [],
-                          []
-                        |),
-                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                      |)
-                    |),
-                    Value.Integer IntegerKind.Usize 0
-                  |)
-                |),
-                Value.Integer IntegerKind.U8 198
+              M.call_closure (|
+                Ty.path "bool",
+                BinOp.eq,
+                [
+                  M.read (|
+                    M.SubPointer.get_array_field (|
+                      M.alloc (|
+                        M.call_closure (|
+                          Ty.apply
+                            (Ty.path "array")
+                            [ Value.Integer IntegerKind.Usize 4 ]
+                            [ Ty.path "u8" ],
+                          M.get_associated_function (|
+                            Ty.path "core::net::ip_addr::Ipv4Addr",
+                            "octets",
+                            [],
+                            []
+                          |),
+                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                        |)
+                      |),
+                      Value.Integer IntegerKind.Usize 0
+                    |)
+                  |);
+                  Value.Integer IntegerKind.U8 198
+                ]
               |),
               ltac:(M.monadic
-                (BinOp.eq (|
-                  BinOp.bit_and
-                    (M.read (|
-                      M.SubPointer.get_array_field (|
-                        M.alloc (|
-                          M.call_closure (|
-                            Ty.apply
-                              (Ty.path "array")
-                              [ Value.Integer IntegerKind.Usize 4 ]
-                              [ Ty.path "u8" ],
-                            M.get_associated_function (|
-                              Ty.path "core::net::ip_addr::Ipv4Addr",
-                              "octets",
-                              [],
-                              []
+                (M.call_closure (|
+                  Ty.path "bool",
+                  BinOp.eq,
+                  [
+                    M.call_closure (|
+                      Ty.path "u8",
+                      BinOp.Wrap.bit_and,
+                      [
+                        M.read (|
+                          M.SubPointer.get_array_field (|
+                            M.alloc (|
+                              M.call_closure (|
+                                Ty.apply
+                                  (Ty.path "array")
+                                  [ Value.Integer IntegerKind.Usize 4 ]
+                                  [ Ty.path "u8" ],
+                                M.get_associated_function (|
+                                  Ty.path "core::net::ip_addr::Ipv4Addr",
+                                  "octets",
+                                  [],
+                                  []
+                                |),
+                                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                              |)
                             |),
-                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                            Value.Integer IntegerKind.Usize 1
                           |)
-                        |),
-                        Value.Integer IntegerKind.Usize 1
-                      |)
-                    |))
-                    (Value.Integer IntegerKind.U8 254),
-                  Value.Integer IntegerKind.U8 18
+                        |);
+                        Value.Integer IntegerKind.U8 254
+                      ]
+                    |);
+                    Value.Integer IntegerKind.U8 18
+                  ]
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -3044,30 +3120,39 @@ Module net.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             LogicalOp.and (|
-              BinOp.eq (|
-                BinOp.bit_and
-                  (M.read (|
-                    M.SubPointer.get_array_field (|
-                      M.alloc (|
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "array")
-                            [ Value.Integer IntegerKind.Usize 4 ]
-                            [ Ty.path "u8" ],
-                          M.get_associated_function (|
-                            Ty.path "core::net::ip_addr::Ipv4Addr",
-                            "octets",
-                            [],
-                            []
+              M.call_closure (|
+                Ty.path "bool",
+                BinOp.eq,
+                [
+                  M.call_closure (|
+                    Ty.path "u8",
+                    BinOp.Wrap.bit_and,
+                    [
+                      M.read (|
+                        M.SubPointer.get_array_field (|
+                          M.alloc (|
+                            M.call_closure (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 4 ]
+                                [ Ty.path "u8" ],
+                              M.get_associated_function (|
+                                Ty.path "core::net::ip_addr::Ipv4Addr",
+                                "octets",
+                                [],
+                                []
+                              |),
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                            |)
                           |),
-                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                          Value.Integer IntegerKind.Usize 0
                         |)
-                      |),
-                      Value.Integer IntegerKind.Usize 0
-                    |)
-                  |))
-                  (Value.Integer IntegerKind.U8 240),
-                Value.Integer IntegerKind.U8 240
+                      |);
+                      Value.Integer IntegerKind.U8 240
+                    ]
+                  |);
+                  Value.Integer IntegerKind.U8 240
+                ]
               |),
               ltac:(M.monadic
                 (UnOp.not (|
@@ -3102,31 +3187,10 @@ Module net.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             LogicalOp.and (|
-              BinOp.ge (|
-                M.read (|
-                  M.SubPointer.get_array_field (|
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "array")
-                          [ Value.Integer IntegerKind.Usize 4 ]
-                          [ Ty.path "u8" ],
-                        M.get_associated_function (|
-                          Ty.path "core::net::ip_addr::Ipv4Addr",
-                          "octets",
-                          [],
-                          []
-                        |),
-                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                      |)
-                    |),
-                    Value.Integer IntegerKind.Usize 0
-                  |)
-                |),
-                Value.Integer IntegerKind.U8 224
-              |),
-              ltac:(M.monadic
-                (BinOp.le (|
+              M.call_closure (|
+                Ty.path "bool",
+                BinOp.ge,
+                [
                   M.read (|
                     M.SubPointer.get_array_field (|
                       M.alloc (|
@@ -3146,8 +3210,37 @@ Module net.
                       |),
                       Value.Integer IntegerKind.Usize 0
                     |)
-                  |),
-                  Value.Integer IntegerKind.U8 239
+                  |);
+                  Value.Integer IntegerKind.U8 224
+                ]
+              |),
+              ltac:(M.monadic
+                (M.call_closure (|
+                  Ty.path "bool",
+                  BinOp.le,
+                  [
+                    M.read (|
+                      M.SubPointer.get_array_field (|
+                        M.alloc (|
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 4 ]
+                              [ Ty.path "u8" ],
+                            M.get_associated_function (|
+                              Ty.path "core::net::ip_addr::Ipv4Addr",
+                              "octets",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                          |)
+                        |),
+                        Value.Integer IntegerKind.Usize 0
+                      |)
+                    |);
+                    Value.Integer IntegerKind.U8 239
+                  ]
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -3168,54 +3261,58 @@ Module net.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.eq (|
-              M.call_closure (|
-                Ty.path "u32",
-                M.get_associated_function (| Ty.path "u32", "from_be_bytes", [], [] |),
-                [
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "array")
-                      [ Value.Integer IntegerKind.Usize 4 ]
-                      [ Ty.path "u8" ],
-                    M.get_associated_function (|
-                      Ty.path "core::net::ip_addr::Ipv4Addr",
-                      "octets",
-                      [],
-                      []
-                    |),
-                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                  |)
-                ]
-              |),
-              M.call_closure (|
-                Ty.path "u32",
-                M.get_associated_function (| Ty.path "u32", "from_be_bytes", [], [] |),
-                [
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "array")
-                      [ Value.Integer IntegerKind.Usize 4 ]
-                      [ Ty.path "u8" ],
-                    M.get_associated_function (|
-                      Ty.path "core::net::ip_addr::Ipv4Addr",
-                      "octets",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        get_associated_constant (|
-                          Ty.path "core::net::ip_addr::Ipv4Addr",
-                          "BROADCAST",
-                          Ty.path "core::net::ip_addr::Ipv4Addr"
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.eq,
+              [
+                M.call_closure (|
+                  Ty.path "u32",
+                  M.get_associated_function (| Ty.path "u32", "from_be_bytes", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 4 ]
+                        [ Ty.path "u8" ],
+                      M.get_associated_function (|
+                        Ty.path "core::net::ip_addr::Ipv4Addr",
+                        "octets",
+                        [],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                    |)
+                  ]
+                |);
+                M.call_closure (|
+                  Ty.path "u32",
+                  M.get_associated_function (| Ty.path "u32", "from_be_bytes", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 4 ]
+                        [ Ty.path "u8" ],
+                      M.get_associated_function (|
+                        Ty.path "core::net::ip_addr::Ipv4Addr",
+                        "octets",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          get_associated_constant (|
+                            Ty.path "core::net::ip_addr::Ipv4Addr",
+                            "BROADCAST",
+                            Ty.path "core::net::ip_addr::Ipv4Addr"
+                          |)
                         |)
-                      |)
-                    ]
-                  |)
-                ]
-              |)
+                      ]
+                    |)
+                  ]
+                |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3266,17 +3363,17 @@ Module net.
                               let γ0_2 := M.SubPointer.get_slice_index (| γ, 2 |) in
                               let γ0_3 := M.SubPointer.get_slice_index (| γ, 3 |) in
                               let _ :=
-                                M.is_constant_or_break_match (|
+                                is_constant_or_break_match (|
                                   M.read (| γ0_0 |),
                                   Value.Integer IntegerKind.U8 192
                                 |) in
                               let _ :=
-                                M.is_constant_or_break_match (|
+                                is_constant_or_break_match (|
                                   M.read (| γ0_1 |),
                                   Value.Integer IntegerKind.U8 0
                                 |) in
                               let _ :=
-                                M.is_constant_or_break_match (|
+                                is_constant_or_break_match (|
                                   M.read (| γ0_2 |),
                                   Value.Integer IntegerKind.U8 2
                                 |) in
@@ -3288,17 +3385,17 @@ Module net.
                               let γ0_2 := M.SubPointer.get_slice_index (| γ, 2 |) in
                               let γ0_3 := M.SubPointer.get_slice_index (| γ, 3 |) in
                               let _ :=
-                                M.is_constant_or_break_match (|
+                                is_constant_or_break_match (|
                                   M.read (| γ0_0 |),
                                   Value.Integer IntegerKind.U8 198
                                 |) in
                               let _ :=
-                                M.is_constant_or_break_match (|
+                                is_constant_or_break_match (|
                                   M.read (| γ0_1 |),
                                   Value.Integer IntegerKind.U8 51
                                 |) in
                               let _ :=
-                                M.is_constant_or_break_match (|
+                                is_constant_or_break_match (|
                                   M.read (| γ0_2 |),
                                   Value.Integer IntegerKind.U8 100
                                 |) in
@@ -3310,17 +3407,17 @@ Module net.
                               let γ0_2 := M.SubPointer.get_slice_index (| γ, 2 |) in
                               let γ0_3 := M.SubPointer.get_slice_index (| γ, 3 |) in
                               let _ :=
-                                M.is_constant_or_break_match (|
+                                is_constant_or_break_match (|
                                   M.read (| γ0_0 |),
                                   Value.Integer IntegerKind.U8 203
                                 |) in
                               let _ :=
-                                M.is_constant_or_break_match (|
+                                is_constant_or_break_match (|
                                   M.read (| γ0_1 |),
                                   Value.Integer IntegerKind.U8 0
                                 |) in
                               let _ :=
-                                M.is_constant_or_break_match (|
+                                is_constant_or_break_match (|
                                   M.read (| γ0_2 |),
                                   Value.Integer IntegerKind.U8 113
                                 |) in
@@ -3837,7 +3934,7 @@ Module net.
                                 |)))
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -5307,54 +5404,58 @@ Module net.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.eq (|
-              M.call_closure (|
-                Ty.path "u128",
-                M.get_associated_function (| Ty.path "u128", "from_be_bytes", [], [] |),
-                [
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "array")
-                      [ Value.Integer IntegerKind.Usize 16 ]
-                      [ Ty.path "u8" ],
-                    M.get_associated_function (|
-                      Ty.path "core::net::ip_addr::Ipv6Addr",
-                      "octets",
-                      [],
-                      []
-                    |),
-                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                  |)
-                ]
-              |),
-              M.call_closure (|
-                Ty.path "u128",
-                M.get_associated_function (| Ty.path "u128", "from_be_bytes", [], [] |),
-                [
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "array")
-                      [ Value.Integer IntegerKind.Usize 16 ]
-                      [ Ty.path "u8" ],
-                    M.get_associated_function (|
-                      Ty.path "core::net::ip_addr::Ipv6Addr",
-                      "octets",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        get_associated_constant (|
-                          Ty.path "core::net::ip_addr::Ipv6Addr",
-                          "UNSPECIFIED",
-                          Ty.path "core::net::ip_addr::Ipv6Addr"
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.eq,
+              [
+                M.call_closure (|
+                  Ty.path "u128",
+                  M.get_associated_function (| Ty.path "u128", "from_be_bytes", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 16 ]
+                        [ Ty.path "u8" ],
+                      M.get_associated_function (|
+                        Ty.path "core::net::ip_addr::Ipv6Addr",
+                        "octets",
+                        [],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                    |)
+                  ]
+                |);
+                M.call_closure (|
+                  Ty.path "u128",
+                  M.get_associated_function (| Ty.path "u128", "from_be_bytes", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 16 ]
+                        [ Ty.path "u8" ],
+                      M.get_associated_function (|
+                        Ty.path "core::net::ip_addr::Ipv6Addr",
+                        "octets",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          get_associated_constant (|
+                            Ty.path "core::net::ip_addr::Ipv6Addr",
+                            "UNSPECIFIED",
+                            Ty.path "core::net::ip_addr::Ipv6Addr"
+                          |)
                         |)
-                      |)
-                    ]
-                  |)
-                ]
-              |)
+                      ]
+                    |)
+                  ]
+                |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5374,54 +5475,58 @@ Module net.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.eq (|
-              M.call_closure (|
-                Ty.path "u128",
-                M.get_associated_function (| Ty.path "u128", "from_be_bytes", [], [] |),
-                [
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "array")
-                      [ Value.Integer IntegerKind.Usize 16 ]
-                      [ Ty.path "u8" ],
-                    M.get_associated_function (|
-                      Ty.path "core::net::ip_addr::Ipv6Addr",
-                      "octets",
-                      [],
-                      []
-                    |),
-                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                  |)
-                ]
-              |),
-              M.call_closure (|
-                Ty.path "u128",
-                M.get_associated_function (| Ty.path "u128", "from_be_bytes", [], [] |),
-                [
-                  M.call_closure (|
-                    Ty.apply
-                      (Ty.path "array")
-                      [ Value.Integer IntegerKind.Usize 16 ]
-                      [ Ty.path "u8" ],
-                    M.get_associated_function (|
-                      Ty.path "core::net::ip_addr::Ipv6Addr",
-                      "octets",
-                      [],
-                      []
-                    |),
-                    [
-                      M.borrow (|
-                        Pointer.Kind.Ref,
-                        get_associated_constant (|
-                          Ty.path "core::net::ip_addr::Ipv6Addr",
-                          "LOCALHOST",
-                          Ty.path "core::net::ip_addr::Ipv6Addr"
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.eq,
+              [
+                M.call_closure (|
+                  Ty.path "u128",
+                  M.get_associated_function (| Ty.path "u128", "from_be_bytes", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 16 ]
+                        [ Ty.path "u8" ],
+                      M.get_associated_function (|
+                        Ty.path "core::net::ip_addr::Ipv6Addr",
+                        "octets",
+                        [],
+                        []
+                      |),
+                      [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                    |)
+                  ]
+                |);
+                M.call_closure (|
+                  Ty.path "u128",
+                  M.get_associated_function (| Ty.path "u128", "from_be_bytes", [], [] |),
+                  [
+                    M.call_closure (|
+                      Ty.apply
+                        (Ty.path "array")
+                        [ Value.Integer IntegerKind.Usize 16 ]
+                        [ Ty.path "u8" ],
+                      M.get_associated_function (|
+                        Ty.path "core::net::ip_addr::Ipv6Addr",
+                        "octets",
+                        [],
+                        []
+                      |),
+                      [
+                        M.borrow (|
+                          Pointer.Kind.Ref,
+                          get_associated_constant (|
+                            Ty.path "core::net::ip_addr::Ipv6Addr",
+                            "LOCALHOST",
+                            Ty.path "core::net::ip_addr::Ipv6Addr"
+                          |)
                         |)
-                      |)
-                    ]
-                  |)
-                ]
-              |)
+                      ]
+                    |)
+                  ]
+                |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -5543,32 +5648,32 @@ Module net.
                                           let γ0_6 := M.SubPointer.get_slice_index (| γ, 6 |) in
                                           let γ0_7 := M.SubPointer.get_slice_index (| γ, 7 |) in
                                           let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ0_0 |),
                                               Value.Integer IntegerKind.U16 0
                                             |) in
                                           let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ0_1 |),
                                               Value.Integer IntegerKind.U16 0
                                             |) in
                                           let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ0_2 |),
                                               Value.Integer IntegerKind.U16 0
                                             |) in
                                           let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ0_3 |),
                                               Value.Integer IntegerKind.U16 0
                                             |) in
                                           let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ0_4 |),
                                               Value.Integer IntegerKind.U16 0
                                             |) in
                                           let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ0_5 |),
                                               Value.Integer IntegerKind.U16 65535
                                             |) in
@@ -5614,17 +5719,17 @@ Module net.
                                         let γ0_6 := M.SubPointer.get_slice_index (| γ, 6 |) in
                                         let γ0_7 := M.SubPointer.get_slice_index (| γ, 7 |) in
                                         let _ :=
-                                          M.is_constant_or_break_match (|
+                                          is_constant_or_break_match (|
                                             M.read (| γ0_0 |),
                                             Value.Integer IntegerKind.U16 100
                                           |) in
                                         let _ :=
-                                          M.is_constant_or_break_match (|
+                                          is_constant_or_break_match (|
                                             M.read (| γ0_1 |),
                                             Value.Integer IntegerKind.U16 65435
                                           |) in
                                         let _ :=
-                                          M.is_constant_or_break_match (|
+                                          is_constant_or_break_match (|
                                             M.read (| γ0_2 |),
                                             Value.Integer IntegerKind.U16 1
                                           |) in
@@ -5670,22 +5775,22 @@ Module net.
                                       let γ0_6 := M.SubPointer.get_slice_index (| γ, 6 |) in
                                       let γ0_7 := M.SubPointer.get_slice_index (| γ, 7 |) in
                                       let _ :=
-                                        M.is_constant_or_break_match (|
+                                        is_constant_or_break_match (|
                                           M.read (| γ0_0 |),
                                           Value.Integer IntegerKind.U16 256
                                         |) in
                                       let _ :=
-                                        M.is_constant_or_break_match (|
+                                        is_constant_or_break_match (|
                                           M.read (| γ0_1 |),
                                           Value.Integer IntegerKind.U16 0
                                         |) in
                                       let _ :=
-                                        M.is_constant_or_break_match (|
+                                        is_constant_or_break_match (|
                                           M.read (| γ0_2 |),
                                           Value.Integer IntegerKind.U16 0
                                         |) in
                                       let _ :=
-                                        M.is_constant_or_break_match (|
+                                        is_constant_or_break_match (|
                                           M.read (| γ0_3 |),
                                           Value.Integer IntegerKind.U16 0
                                         |) in
@@ -5732,20 +5837,21 @@ Module net.
                                       let γ0_6 := M.SubPointer.get_slice_index (| γ, 6 |) in
                                       let γ0_7 := M.SubPointer.get_slice_index (| γ, 7 |) in
                                       let _ :=
-                                        M.is_constant_or_break_match (|
+                                        is_constant_or_break_match (|
                                           M.read (| γ0_0 |),
                                           Value.Integer IntegerKind.U16 8193
                                         |) in
                                       let b := M.copy (| γ0_1 |) in
                                       let γ :=
                                         M.alloc (|
-                                          BinOp.lt (|
-                                            M.read (| b |),
-                                            Value.Integer IntegerKind.U16 512
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            BinOp.lt,
+                                            [ M.read (| b |); Value.Integer IntegerKind.U16 512 ]
                                           |)
                                         |) in
                                       let _ :=
-                                        M.is_constant_or_break_match (|
+                                        is_constant_or_break_match (|
                                           M.read (| γ |),
                                           Value.Bool true
                                         |) in
@@ -5760,42 +5866,10 @@ Module net.
                                   LogicalOp.or (|
                                     LogicalOp.or (|
                                       LogicalOp.or (|
-                                        BinOp.eq (|
-                                          M.call_closure (|
-                                            Ty.path "u128",
-                                            M.get_associated_function (|
-                                              Ty.path "u128",
-                                              "from_be_bytes",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              M.call_closure (|
-                                                Ty.apply
-                                                  (Ty.path "array")
-                                                  [ Value.Integer IntegerKind.Usize 16 ]
-                                                  [ Ty.path "u8" ],
-                                                M.get_associated_function (|
-                                                  Ty.path "core::net::ip_addr::Ipv6Addr",
-                                                  "octets",
-                                                  [],
-                                                  []
-                                                |),
-                                                [
-                                                  M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.deref (| M.read (| self |) |)
-                                                  |)
-                                                ]
-                                              |)
-                                            ]
-                                          |),
-                                          Value.Integer
-                                            IntegerKind.U128
-                                            42540488241204005274814694018844196865
-                                        |),
-                                        ltac:(M.monadic
-                                          (BinOp.eq (|
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.eq,
+                                          [
                                             M.call_closure (|
                                               Ty.path "u128",
                                               M.get_associated_function (|
@@ -5824,10 +5898,50 @@ Module net.
                                                   ]
                                                 |)
                                               ]
-                                            |),
+                                            |);
                                             Value.Integer
                                               IntegerKind.U128
-                                              42540488241204005274814694018844196866
+                                              42540488241204005274814694018844196865
+                                          ]
+                                        |),
+                                        ltac:(M.monadic
+                                          (M.call_closure (|
+                                            Ty.path "bool",
+                                            BinOp.eq,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "u128",
+                                                M.get_associated_function (|
+                                                  Ty.path "u128",
+                                                  "from_be_bytes",
+                                                  [],
+                                                  []
+                                                |),
+                                                [
+                                                  M.call_closure (|
+                                                    Ty.apply
+                                                      (Ty.path "array")
+                                                      [ Value.Integer IntegerKind.Usize 16 ]
+                                                      [ Ty.path "u8" ],
+                                                    M.get_associated_function (|
+                                                      Ty.path "core::net::ip_addr::Ipv6Addr",
+                                                      "octets",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [
+                                                      M.borrow (|
+                                                        Pointer.Kind.Ref,
+                                                        M.deref (| M.read (| self |) |)
+                                                      |)
+                                                    ]
+                                                  |)
+                                                ]
+                                              |);
+                                              Value.Integer
+                                                IntegerKind.U128
+                                                42540488241204005274814694018844196866
+                                            ]
                                           |)))
                                       |),
                                       ltac:(M.monadic
@@ -5874,12 +5988,12 @@ Module net.
                                                   let γ0_7 :=
                                                     M.SubPointer.get_slice_index (| γ, 7 |) in
                                                   let _ :=
-                                                    M.is_constant_or_break_match (|
+                                                    is_constant_or_break_match (|
                                                       M.read (| γ0_0 |),
                                                       Value.Integer IntegerKind.U16 8193
                                                     |) in
                                                   let _ :=
-                                                    M.is_constant_or_break_match (|
+                                                    is_constant_or_break_match (|
                                                       M.read (| γ0_1 |),
                                                       Value.Integer IntegerKind.U16 3
                                                     |) in
@@ -5934,17 +6048,17 @@ Module net.
                                                 let γ0_7 :=
                                                   M.SubPointer.get_slice_index (| γ, 7 |) in
                                                 let _ :=
-                                                  M.is_constant_or_break_match (|
+                                                  is_constant_or_break_match (|
                                                     M.read (| γ0_0 |),
                                                     Value.Integer IntegerKind.U16 8193
                                                   |) in
                                                 let _ :=
-                                                  M.is_constant_or_break_match (|
+                                                  is_constant_or_break_match (|
                                                     M.read (| γ0_1 |),
                                                     Value.Integer IntegerKind.U16 4
                                                   |) in
                                                 let _ :=
-                                                  M.is_constant_or_break_match (|
+                                                  is_constant_or_break_match (|
                                                     M.read (| γ0_2 |),
                                                     Value.Integer IntegerKind.U16 274
                                                   |) in
@@ -5992,32 +6106,40 @@ Module net.
                                               let γ0_6 := M.SubPointer.get_slice_index (| γ, 6 |) in
                                               let γ0_7 := M.SubPointer.get_slice_index (| γ, 7 |) in
                                               let _ :=
-                                                M.is_constant_or_break_match (|
+                                                is_constant_or_break_match (|
                                                   M.read (| γ0_0 |),
                                                   Value.Integer IntegerKind.U16 8193
                                                 |) in
                                               let b := M.copy (| γ0_1 |) in
                                               let γ :=
                                                 M.alloc (|
-                                                  BinOp.ge (|
-                                                    M.read (| b |),
-                                                    Value.Integer IntegerKind.U16 32
+                                                  M.call_closure (|
+                                                    Ty.path "bool",
+                                                    BinOp.ge,
+                                                    [
+                                                      M.read (| b |);
+                                                      Value.Integer IntegerKind.U16 32
+                                                    ]
                                                   |)
                                                 |) in
                                               let _ :=
-                                                M.is_constant_or_break_match (|
+                                                is_constant_or_break_match (|
                                                   M.read (| γ |),
                                                   Value.Bool true
                                                 |) in
                                               let γ :=
                                                 M.alloc (|
-                                                  BinOp.le (|
-                                                    M.read (| b |),
-                                                    Value.Integer IntegerKind.U16 63
+                                                  M.call_closure (|
+                                                    Ty.path "bool",
+                                                    BinOp.le,
+                                                    [
+                                                      M.read (| b |);
+                                                      Value.Integer IntegerKind.U16 63
+                                                    ]
                                                   |)
                                                 |) in
                                               let _ :=
-                                                M.is_constant_or_break_match (|
+                                                is_constant_or_break_match (|
                                                   M.read (| γ |),
                                                   Value.Bool true
                                                 |) in
@@ -6061,7 +6183,7 @@ Module net.
                                   let γ0_6 := M.SubPointer.get_slice_index (| γ, 6 |) in
                                   let γ0_7 := M.SubPointer.get_slice_index (| γ, 7 |) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ0_0 |),
                                       Value.Integer IntegerKind.U16 8194
                                     |) in
@@ -6126,30 +6248,39 @@ Module net.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.eq (|
-              BinOp.bit_and
-                (M.read (|
-                  M.SubPointer.get_array_field (|
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "array")
-                          [ Value.Integer IntegerKind.Usize 8 ]
-                          [ Ty.path "u16" ],
-                        M.get_associated_function (|
-                          Ty.path "core::net::ip_addr::Ipv6Addr",
-                          "segments",
-                          [],
-                          []
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.eq,
+              [
+                M.call_closure (|
+                  Ty.path "u16",
+                  BinOp.Wrap.bit_and,
+                  [
+                    M.read (|
+                      M.SubPointer.get_array_field (|
+                        M.alloc (|
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 8 ]
+                              [ Ty.path "u16" ],
+                            M.get_associated_function (|
+                              Ty.path "core::net::ip_addr::Ipv6Addr",
+                              "segments",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                          |)
                         |),
-                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                        Value.Integer IntegerKind.Usize 0
                       |)
-                    |),
-                    Value.Integer IntegerKind.Usize 0
-                  |)
-                |))
-                (Value.Integer IntegerKind.U16 65024),
-              Value.Integer IntegerKind.U16 64512
+                    |);
+                    Value.Integer IntegerKind.U16 65024
+                  ]
+                |);
+                Value.Integer IntegerKind.U16 64512
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -6199,30 +6330,39 @@ Module net.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.eq (|
-              BinOp.bit_and
-                (M.read (|
-                  M.SubPointer.get_array_field (|
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "array")
-                          [ Value.Integer IntegerKind.Usize 8 ]
-                          [ Ty.path "u16" ],
-                        M.get_associated_function (|
-                          Ty.path "core::net::ip_addr::Ipv6Addr",
-                          "segments",
-                          [],
-                          []
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.eq,
+              [
+                M.call_closure (|
+                  Ty.path "u16",
+                  BinOp.Wrap.bit_and,
+                  [
+                    M.read (|
+                      M.SubPointer.get_array_field (|
+                        M.alloc (|
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 8 ]
+                              [ Ty.path "u16" ],
+                            M.get_associated_function (|
+                              Ty.path "core::net::ip_addr::Ipv6Addr",
+                              "segments",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                          |)
                         |),
-                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                        Value.Integer IntegerKind.Usize 0
                       |)
-                    |),
-                    Value.Integer IntegerKind.Usize 0
-                  |)
-                |))
-                (Value.Integer IntegerKind.U16 65472),
-              Value.Integer IntegerKind.U16 65152
+                    |);
+                    Value.Integer IntegerKind.U16 65472
+                  ]
+                |);
+                Value.Integer IntegerKind.U16 65152
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -6243,31 +6383,10 @@ Module net.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             LogicalOp.and (|
-              BinOp.eq (|
-                M.read (|
-                  M.SubPointer.get_array_field (|
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "array")
-                          [ Value.Integer IntegerKind.Usize 8 ]
-                          [ Ty.path "u16" ],
-                        M.get_associated_function (|
-                          Ty.path "core::net::ip_addr::Ipv6Addr",
-                          "segments",
-                          [],
-                          []
-                        |),
-                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                      |)
-                    |),
-                    Value.Integer IntegerKind.Usize 0
-                  |)
-                |),
-                Value.Integer IntegerKind.U16 8193
-              |),
-              ltac:(M.monadic
-                (BinOp.eq (|
+              M.call_closure (|
+                Ty.path "bool",
+                BinOp.eq,
+                [
                   M.read (|
                     M.SubPointer.get_array_field (|
                       M.alloc (|
@@ -6285,10 +6404,39 @@ Module net.
                           [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                         |)
                       |),
-                      Value.Integer IntegerKind.Usize 1
+                      Value.Integer IntegerKind.Usize 0
                     |)
-                  |),
-                  Value.Integer IntegerKind.U16 3512
+                  |);
+                  Value.Integer IntegerKind.U16 8193
+                ]
+              |),
+              ltac:(M.monadic
+                (M.call_closure (|
+                  Ty.path "bool",
+                  BinOp.eq,
+                  [
+                    M.read (|
+                      M.SubPointer.get_array_field (|
+                        M.alloc (|
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 8 ]
+                              [ Ty.path "u16" ],
+                            M.get_associated_function (|
+                              Ty.path "core::net::ip_addr::Ipv6Addr",
+                              "segments",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                          |)
+                        |),
+                        Value.Integer IntegerKind.Usize 1
+                      |)
+                    |);
+                    Value.Integer IntegerKind.U16 3512
+                  ]
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -6311,31 +6459,10 @@ Module net.
             (let self := M.alloc (| self |) in
             LogicalOp.and (|
               LogicalOp.and (|
-                BinOp.eq (|
-                  M.read (|
-                    M.SubPointer.get_array_field (|
-                      M.alloc (|
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "array")
-                            [ Value.Integer IntegerKind.Usize 8 ]
-                            [ Ty.path "u16" ],
-                          M.get_associated_function (|
-                            Ty.path "core::net::ip_addr::Ipv6Addr",
-                            "segments",
-                            [],
-                            []
-                          |),
-                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                        |)
-                      |),
-                      Value.Integer IntegerKind.Usize 0
-                    |)
-                  |),
-                  Value.Integer IntegerKind.U16 8193
-                |),
-                ltac:(M.monadic
-                  (BinOp.eq (|
+                M.call_closure (|
+                  Ty.path "bool",
+                  BinOp.eq,
+                  [
                     M.read (|
                       M.SubPointer.get_array_field (|
                         M.alloc (|
@@ -6353,35 +6480,68 @@ Module net.
                             [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                           |)
                         |),
-                        Value.Integer IntegerKind.Usize 1
+                        Value.Integer IntegerKind.Usize 0
                       |)
-                    |),
-                    Value.Integer IntegerKind.U16 2
+                    |);
+                    Value.Integer IntegerKind.U16 8193
+                  ]
+                |),
+                ltac:(M.monadic
+                  (M.call_closure (|
+                    Ty.path "bool",
+                    BinOp.eq,
+                    [
+                      M.read (|
+                        M.SubPointer.get_array_field (|
+                          M.alloc (|
+                            M.call_closure (|
+                              Ty.apply
+                                (Ty.path "array")
+                                [ Value.Integer IntegerKind.Usize 8 ]
+                                [ Ty.path "u16" ],
+                              M.get_associated_function (|
+                                Ty.path "core::net::ip_addr::Ipv6Addr",
+                                "segments",
+                                [],
+                                []
+                              |),
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                            |)
+                          |),
+                          Value.Integer IntegerKind.Usize 1
+                        |)
+                      |);
+                      Value.Integer IntegerKind.U16 2
+                    ]
                   |)))
               |),
               ltac:(M.monadic
-                (BinOp.eq (|
-                  M.read (|
-                    M.SubPointer.get_array_field (|
-                      M.alloc (|
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "array")
-                            [ Value.Integer IntegerKind.Usize 8 ]
-                            [ Ty.path "u16" ],
-                          M.get_associated_function (|
-                            Ty.path "core::net::ip_addr::Ipv6Addr",
-                            "segments",
-                            [],
-                            []
-                          |),
-                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                        |)
-                      |),
-                      Value.Integer IntegerKind.Usize 2
-                    |)
-                  |),
-                  Value.Integer IntegerKind.U16 0
+                (M.call_closure (|
+                  Ty.path "bool",
+                  BinOp.eq,
+                  [
+                    M.read (|
+                      M.SubPointer.get_array_field (|
+                        M.alloc (|
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 8 ]
+                              [ Ty.path "u16" ],
+                            M.get_associated_function (|
+                              Ty.path "core::net::ip_addr::Ipv6Addr",
+                              "segments",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                          |)
+                        |),
+                        Value.Integer IntegerKind.Usize 2
+                      |)
+                    |);
+                    Value.Integer IntegerKind.U16 0
+                  ]
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -6564,7 +6724,7 @@ Module net.
                               [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.match_operator (|
                         Some
                           (Ty.apply
@@ -6572,39 +6732,44 @@ Module net.
                             []
                             [ Ty.path "core::net::ip_addr::Ipv6MulticastScope" ]),
                         M.alloc (|
-                          BinOp.bit_and
-                            (M.read (|
-                              M.SubPointer.get_array_field (|
-                                M.alloc (|
-                                  M.call_closure (|
-                                    Ty.apply
-                                      (Ty.path "array")
-                                      [ Value.Integer IntegerKind.Usize 8 ]
-                                      [ Ty.path "u16" ],
-                                    M.get_associated_function (|
-                                      Ty.path "core::net::ip_addr::Ipv6Addr",
-                                      "segments",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| self |) |)
-                                      |)
-                                    ]
-                                  |)
-                                |),
-                                Value.Integer IntegerKind.Usize 0
-                              |)
-                            |))
-                            (Value.Integer IntegerKind.U16 15)
+                          M.call_closure (|
+                            Ty.path "u16",
+                            BinOp.Wrap.bit_and,
+                            [
+                              M.read (|
+                                M.SubPointer.get_array_field (|
+                                  M.alloc (|
+                                    M.call_closure (|
+                                      Ty.apply
+                                        (Ty.path "array")
+                                        [ Value.Integer IntegerKind.Usize 8 ]
+                                        [ Ty.path "u16" ],
+                                      M.get_associated_function (|
+                                        Ty.path "core::net::ip_addr::Ipv6Addr",
+                                        "segments",
+                                        [],
+                                        []
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| self |) |)
+                                        |)
+                                      ]
+                                    |)
+                                  |),
+                                  Value.Integer IntegerKind.Usize 0
+                                |)
+                              |);
+                              Value.Integer IntegerKind.U16 15
+                            ]
+                          |)
                         |),
                         [
                           fun γ =>
                             ltac:(M.monadic
                               (let _ :=
-                                M.is_constant_or_break_match (|
+                                is_constant_or_break_match (|
                                   M.read (| γ |),
                                   Value.Integer IntegerKind.U16 1
                                 |) in
@@ -6620,7 +6785,7 @@ Module net.
                           fun γ =>
                             ltac:(M.monadic
                               (let _ :=
-                                M.is_constant_or_break_match (|
+                                is_constant_or_break_match (|
                                   M.read (| γ |),
                                   Value.Integer IntegerKind.U16 2
                                 |) in
@@ -6636,7 +6801,7 @@ Module net.
                           fun γ =>
                             ltac:(M.monadic
                               (let _ :=
-                                M.is_constant_or_break_match (|
+                                is_constant_or_break_match (|
                                   M.read (| γ |),
                                   Value.Integer IntegerKind.U16 3
                                 |) in
@@ -6652,7 +6817,7 @@ Module net.
                           fun γ =>
                             ltac:(M.monadic
                               (let _ :=
-                                M.is_constant_or_break_match (|
+                                is_constant_or_break_match (|
                                   M.read (| γ |),
                                   Value.Integer IntegerKind.U16 4
                                 |) in
@@ -6668,7 +6833,7 @@ Module net.
                           fun γ =>
                             ltac:(M.monadic
                               (let _ :=
-                                M.is_constant_or_break_match (|
+                                is_constant_or_break_match (|
                                   M.read (| γ |),
                                   Value.Integer IntegerKind.U16 5
                                 |) in
@@ -6684,7 +6849,7 @@ Module net.
                           fun γ =>
                             ltac:(M.monadic
                               (let _ :=
-                                M.is_constant_or_break_match (|
+                                is_constant_or_break_match (|
                                   M.read (| γ |),
                                   Value.Integer IntegerKind.U16 8
                                 |) in
@@ -6700,7 +6865,7 @@ Module net.
                           fun γ =>
                             ltac:(M.monadic
                               (let _ :=
-                                M.is_constant_or_break_match (|
+                                is_constant_or_break_match (|
                                   M.read (| γ |),
                                   Value.Integer IntegerKind.U16 14
                                 |) in
@@ -6742,30 +6907,39 @@ Module net.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.eq (|
-              BinOp.bit_and
-                (M.read (|
-                  M.SubPointer.get_array_field (|
-                    M.alloc (|
-                      M.call_closure (|
-                        Ty.apply
-                          (Ty.path "array")
-                          [ Value.Integer IntegerKind.Usize 8 ]
-                          [ Ty.path "u16" ],
-                        M.get_associated_function (|
-                          Ty.path "core::net::ip_addr::Ipv6Addr",
-                          "segments",
-                          [],
-                          []
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.eq,
+              [
+                M.call_closure (|
+                  Ty.path "u16",
+                  BinOp.Wrap.bit_and,
+                  [
+                    M.read (|
+                      M.SubPointer.get_array_field (|
+                        M.alloc (|
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "array")
+                              [ Value.Integer IntegerKind.Usize 8 ]
+                              [ Ty.path "u16" ],
+                            M.get_associated_function (|
+                              Ty.path "core::net::ip_addr::Ipv6Addr",
+                              "segments",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                          |)
                         |),
-                        [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                        Value.Integer IntegerKind.Usize 0
                       |)
-                    |),
-                    Value.Integer IntegerKind.Usize 0
-                  |)
-                |))
-                (Value.Integer IntegerKind.U16 65280),
-              Value.Integer IntegerKind.U16 65280
+                    |);
+                    Value.Integer IntegerKind.U16 65280
+                  ]
+                |);
+                Value.Integer IntegerKind.U16 65280
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -6815,32 +6989,32 @@ Module net.
                       let γ0_6 := M.SubPointer.get_slice_index (| γ, 6 |) in
                       let γ0_7 := M.SubPointer.get_slice_index (| γ, 7 |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
+                        is_constant_or_break_match (|
                           M.read (| γ0_0 |),
                           Value.Integer IntegerKind.U16 0
                         |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
+                        is_constant_or_break_match (|
                           M.read (| γ0_1 |),
                           Value.Integer IntegerKind.U16 0
                         |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
+                        is_constant_or_break_match (|
                           M.read (| γ0_2 |),
                           Value.Integer IntegerKind.U16 0
                         |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
+                        is_constant_or_break_match (|
                           M.read (| γ0_3 |),
                           Value.Integer IntegerKind.U16 0
                         |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
+                        is_constant_or_break_match (|
                           M.read (| γ0_4 |),
                           Value.Integer IntegerKind.U16 0
                         |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
+                        is_constant_or_break_match (|
                           M.read (| γ0_5 |),
                           Value.Integer IntegerKind.U16 65535
                         |) in
@@ -6914,62 +7088,62 @@ Module net.
                       let γ0_14 := M.SubPointer.get_slice_index (| γ, 14 |) in
                       let γ0_15 := M.SubPointer.get_slice_index (| γ, 15 |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
+                        is_constant_or_break_match (|
                           M.read (| γ0_0 |),
                           Value.Integer IntegerKind.U8 0
                         |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
+                        is_constant_or_break_match (|
                           M.read (| γ0_1 |),
                           Value.Integer IntegerKind.U8 0
                         |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
+                        is_constant_or_break_match (|
                           M.read (| γ0_2 |),
                           Value.Integer IntegerKind.U8 0
                         |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
+                        is_constant_or_break_match (|
                           M.read (| γ0_3 |),
                           Value.Integer IntegerKind.U8 0
                         |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
+                        is_constant_or_break_match (|
                           M.read (| γ0_4 |),
                           Value.Integer IntegerKind.U8 0
                         |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
+                        is_constant_or_break_match (|
                           M.read (| γ0_5 |),
                           Value.Integer IntegerKind.U8 0
                         |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
+                        is_constant_or_break_match (|
                           M.read (| γ0_6 |),
                           Value.Integer IntegerKind.U8 0
                         |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
+                        is_constant_or_break_match (|
                           M.read (| γ0_7 |),
                           Value.Integer IntegerKind.U8 0
                         |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
+                        is_constant_or_break_match (|
                           M.read (| γ0_8 |),
                           Value.Integer IntegerKind.U8 0
                         |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
+                        is_constant_or_break_match (|
                           M.read (| γ0_9 |),
                           Value.Integer IntegerKind.U8 0
                         |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
+                        is_constant_or_break_match (|
                           M.read (| γ0_10 |),
                           Value.Integer IntegerKind.U8 255
                         |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
+                        is_constant_or_break_match (|
                           M.read (| γ0_11 |),
                           Value.Integer IntegerKind.U8 255
                         |) in
@@ -7059,27 +7233,27 @@ Module net.
                       let γ0_6 := M.SubPointer.get_slice_index (| γ, 6 |) in
                       let γ0_7 := M.SubPointer.get_slice_index (| γ, 7 |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
+                        is_constant_or_break_match (|
                           M.read (| γ0_0 |),
                           Value.Integer IntegerKind.U16 0
                         |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
+                        is_constant_or_break_match (|
                           M.read (| γ0_1 |),
                           Value.Integer IntegerKind.U16 0
                         |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
+                        is_constant_or_break_match (|
                           M.read (| γ0_2 |),
                           Value.Integer IntegerKind.U16 0
                         |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
+                        is_constant_or_break_match (|
                           M.read (| γ0_3 |),
                           Value.Integer IntegerKind.U16 0
                         |) in
                       let _ :=
-                        M.is_constant_or_break_match (|
+                        is_constant_or_break_match (|
                           M.read (| γ0_4 |),
                           Value.Integer IntegerKind.U16 0
                         |) in
@@ -7089,7 +7263,7 @@ Module net.
                           fun γ =>
                             ltac:(M.monadic
                               (let _ :=
-                                M.is_constant_or_break_match (|
+                                is_constant_or_break_match (|
                                   M.read (| γ |),
                                   Value.Integer IntegerKind.U16 0
                                 |) in
@@ -7097,7 +7271,7 @@ Module net.
                           fun γ =>
                             ltac:(M.monadic
                               (let _ :=
-                                M.is_constant_or_break_match (|
+                                is_constant_or_break_match (|
                                   M.read (| γ |),
                                   Value.Integer IntegerKind.U16 65535
                                 |) in
@@ -7497,7 +7671,7 @@ Module net.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ segments :
                               Ty.apply
                                 (Ty.path "array")
@@ -7852,17 +8026,21 @@ Module net.
                                                                         (let γ :=
                                                                           M.use
                                                                             (M.alloc (|
-                                                                              BinOp.eq (|
-                                                                                M.read (|
-                                                                                  segment
-                                                                                |),
-                                                                                Value.Integer
-                                                                                  IntegerKind.U16
-                                                                                  0
+                                                                              M.call_closure (|
+                                                                                Ty.path "bool",
+                                                                                BinOp.eq,
+                                                                                [
+                                                                                  M.read (|
+                                                                                    segment
+                                                                                  |);
+                                                                                  Value.Integer
+                                                                                    IntegerKind.U16
+                                                                                    0
+                                                                                ]
                                                                               |)
                                                                             |)) in
                                                                         let _ :=
-                                                                          M.is_constant_or_break_match (|
+                                                                          is_constant_or_break_match (|
                                                                             M.read (| γ |),
                                                                             Value.Bool true
                                                                           |) in
@@ -7878,21 +8056,26 @@ Module net.
                                                                                   (let γ :=
                                                                                     M.use
                                                                                       (M.alloc (|
-                                                                                        BinOp.eq (|
-                                                                                          M.read (|
-                                                                                            M.SubPointer.get_struct_record_field (|
-                                                                                              current,
-                                                                                              "core::net::ip_addr::fmt::Span",
-                                                                                              "len"
-                                                                                            |)
-                                                                                          |),
-                                                                                          Value.Integer
-                                                                                            IntegerKind.Usize
-                                                                                            0
+                                                                                        M.call_closure (|
+                                                                                          Ty.path
+                                                                                            "bool",
+                                                                                          BinOp.eq,
+                                                                                          [
+                                                                                            M.read (|
+                                                                                              M.SubPointer.get_struct_record_field (|
+                                                                                                current,
+                                                                                                "core::net::ip_addr::fmt::Span",
+                                                                                                "len"
+                                                                                              |)
+                                                                                            |);
+                                                                                            Value.Integer
+                                                                                              IntegerKind.Usize
+                                                                                              0
+                                                                                          ]
                                                                                         |)
                                                                                       |)) in
                                                                                   let _ :=
-                                                                                    M.is_constant_or_break_match (|
+                                                                                    is_constant_or_break_match (|
                                                                                       M.read (|
                                                                                         γ
                                                                                       |),
@@ -7933,11 +8116,15 @@ Module net.
                                                                               |) in
                                                                             M.write (|
                                                                               β,
-                                                                              BinOp.Wrap.add (|
-                                                                                M.read (| β |),
-                                                                                Value.Integer
-                                                                                  IntegerKind.Usize
-                                                                                  1
+                                                                              M.call_closure (|
+                                                                                Ty.path "usize",
+                                                                                BinOp.Wrap.add,
+                                                                                [
+                                                                                  M.read (| β |);
+                                                                                  Value.Integer
+                                                                                    IntegerKind.Usize
+                                                                                    1
+                                                                                ]
                                                                               |)
                                                                             |)
                                                                           |) in
@@ -7952,25 +8139,30 @@ Module net.
                                                                                 (let γ :=
                                                                                   M.use
                                                                                     (M.alloc (|
-                                                                                      BinOp.gt (|
-                                                                                        M.read (|
-                                                                                          M.SubPointer.get_struct_record_field (|
-                                                                                            current,
-                                                                                            "core::net::ip_addr::fmt::Span",
-                                                                                            "len"
+                                                                                      M.call_closure (|
+                                                                                        Ty.path
+                                                                                          "bool",
+                                                                                        BinOp.gt,
+                                                                                        [
+                                                                                          M.read (|
+                                                                                            M.SubPointer.get_struct_record_field (|
+                                                                                              current,
+                                                                                              "core::net::ip_addr::fmt::Span",
+                                                                                              "len"
+                                                                                            |)
+                                                                                          |);
+                                                                                          M.read (|
+                                                                                            M.SubPointer.get_struct_record_field (|
+                                                                                              longest,
+                                                                                              "core::net::ip_addr::fmt::Span",
+                                                                                              "len"
+                                                                                            |)
                                                                                           |)
-                                                                                        |),
-                                                                                        M.read (|
-                                                                                          M.SubPointer.get_struct_record_field (|
-                                                                                            longest,
-                                                                                            "core::net::ip_addr::fmt::Span",
-                                                                                            "len"
-                                                                                          |)
-                                                                                        |)
+                                                                                        ]
                                                                                       |)
                                                                                     |)) in
                                                                                 let _ :=
-                                                                                  M.is_constant_or_break_match (|
+                                                                                  is_constant_or_break_match (|
                                                                                     M.read (| γ |),
                                                                                     Value.Bool true
                                                                                   |) in
@@ -8043,19 +8235,23 @@ Module net.
                                           (let γ :=
                                             M.use
                                               (M.alloc (|
-                                                BinOp.gt (|
-                                                  M.read (|
-                                                    M.SubPointer.get_struct_record_field (|
-                                                      zeroes,
-                                                      "core::net::ip_addr::fmt::Span",
-                                                      "len"
-                                                    |)
-                                                  |),
-                                                  Value.Integer IntegerKind.Usize 1
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  BinOp.gt,
+                                                  [
+                                                    M.read (|
+                                                      M.SubPointer.get_struct_record_field (|
+                                                        zeroes,
+                                                        "core::net::ip_addr::fmt::Span",
+                                                        "len"
+                                                      |)
+                                                    |);
+                                                    Value.Integer IntegerKind.Usize 1
+                                                  ]
                                                 |)
                                               |)) in
                                           let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
@@ -8416,21 +8612,25 @@ Module net.
                                                               "core::ops::range::RangeFrom"
                                                               [
                                                                 ("start",
-                                                                  BinOp.Wrap.add (|
-                                                                    M.read (|
-                                                                      M.SubPointer.get_struct_record_field (|
-                                                                        zeroes,
-                                                                        "core::net::ip_addr::fmt::Span",
-                                                                        "start"
+                                                                  M.call_closure (|
+                                                                    Ty.path "usize",
+                                                                    BinOp.Wrap.add,
+                                                                    [
+                                                                      M.read (|
+                                                                        M.SubPointer.get_struct_record_field (|
+                                                                          zeroes,
+                                                                          "core::net::ip_addr::fmt::Span",
+                                                                          "start"
+                                                                        |)
+                                                                      |);
+                                                                      M.read (|
+                                                                        M.SubPointer.get_struct_record_field (|
+                                                                          zeroes,
+                                                                          "core::net::ip_addr::fmt::Span",
+                                                                          "len"
+                                                                        |)
                                                                       |)
-                                                                    |),
-                                                                    M.read (|
-                                                                      M.SubPointer.get_struct_record_field (|
-                                                                        zeroes,
-                                                                        "core::net::ip_addr::fmt::Span",
-                                                                        "len"
-                                                                      |)
-                                                                    |)
+                                                                    ]
                                                                   |))
                                                               ]
                                                           ]

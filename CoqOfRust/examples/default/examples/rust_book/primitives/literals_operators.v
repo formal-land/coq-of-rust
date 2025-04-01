@@ -80,9 +80,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
-                                              BinOp.Wrap.add (|
-                                                Value.Integer IntegerKind.U32 1,
-                                                Value.Integer IntegerKind.U32 2
+                                              M.call_closure (|
+                                                Ty.path "u32",
+                                                BinOp.Wrap.add,
+                                                [
+                                                  Value.Integer IntegerKind.U32 1;
+                                                  Value.Integer IntegerKind.U32 2
+                                                ]
                                               |)
                                             |)
                                           |)
@@ -150,9 +154,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
-                                              BinOp.Wrap.sub (|
-                                                Value.Integer IntegerKind.I32 1,
-                                                Value.Integer IntegerKind.I32 2
+                                              M.call_closure (|
+                                                Ty.path "i32",
+                                                BinOp.Wrap.sub,
+                                                [
+                                                  Value.Integer IntegerKind.I32 1;
+                                                  Value.Integer IntegerKind.I32 2
+                                                ]
                                               |)
                                             |)
                                           |)
@@ -433,9 +441,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
-                                              BinOp.bit_and
-                                                (Value.Integer IntegerKind.U32 3)
-                                                (Value.Integer IntegerKind.U32 5)
+                                              M.call_closure (|
+                                                Ty.path "u32",
+                                                BinOp.Wrap.bit_and,
+                                                [
+                                                  Value.Integer IntegerKind.U32 3;
+                                                  Value.Integer IntegerKind.U32 5
+                                                ]
+                                              |)
                                             |)
                                           |)
                                         |)
@@ -546,9 +559,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
-                                              BinOp.bit_or
-                                                (Value.Integer IntegerKind.U32 3)
-                                                (Value.Integer IntegerKind.U32 5)
+                                              M.call_closure (|
+                                                Ty.path "u32",
+                                                BinOp.Wrap.bit_or,
+                                                [
+                                                  Value.Integer IntegerKind.U32 3;
+                                                  Value.Integer IntegerKind.U32 5
+                                                ]
+                                              |)
                                             |)
                                           |)
                                         |)
@@ -659,9 +677,14 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
-                                              BinOp.bit_xor
-                                                (Value.Integer IntegerKind.U32 3)
-                                                (Value.Integer IntegerKind.U32 5)
+                                              M.call_closure (|
+                                                Ty.path "u32",
+                                                BinOp.Wrap.bit_xor,
+                                                [
+                                                  Value.Integer IntegerKind.U32 3;
+                                                  Value.Integer IntegerKind.U32 5
+                                                ]
+                                              |)
                                             |)
                                           |)
                                         |)
@@ -772,9 +795,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
-                                              BinOp.Wrap.shl (|
-                                                Value.Integer IntegerKind.U32 1,
-                                                Value.Integer IntegerKind.I32 5
+                                              M.call_closure (|
+                                                Ty.path "u32",
+                                                BinOp.Wrap.shl,
+                                                [
+                                                  Value.Integer IntegerKind.U32 1;
+                                                  Value.Integer IntegerKind.I32 5
+                                                ]
                                               |)
                                             |)
                                           |)
@@ -844,9 +871,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
-                                              BinOp.Wrap.shr (|
-                                                Value.Integer IntegerKind.U32 128,
-                                                Value.Integer IntegerKind.I32 2
+                                              M.call_closure (|
+                                                Ty.path "u32",
+                                                BinOp.Wrap.shr,
+                                                [
+                                                  Value.Integer IntegerKind.U32 128;
+                                                  Value.Integer IntegerKind.I32 2
+                                                ]
                                               |)
                                             |)
                                           |)

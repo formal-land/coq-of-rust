@@ -110,20 +110,36 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             Pointer.Kind.Ref,
                                             M.alloc (|
                                               LogicalOp.and (|
-                                                BinOp.eq (|
-                                                  BinOp.Wrap.add (|
-                                                    Value.Integer IntegerKind.I32 1,
-                                                    Value.Integer IntegerKind.I32 1
-                                                  |),
-                                                  Value.Integer IntegerKind.I32 2
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  BinOp.eq,
+                                                  [
+                                                    M.call_closure (|
+                                                      Ty.path "i32",
+                                                      BinOp.Wrap.add,
+                                                      [
+                                                        Value.Integer IntegerKind.I32 1;
+                                                        Value.Integer IntegerKind.I32 1
+                                                      ]
+                                                    |);
+                                                    Value.Integer IntegerKind.I32 2
+                                                  ]
                                                 |),
                                                 ltac:(M.monadic
-                                                  (BinOp.eq (|
-                                                    BinOp.Wrap.mul (|
-                                                      Value.Integer IntegerKind.I32 2,
-                                                      Value.Integer IntegerKind.I32 2
-                                                    |),
-                                                    Value.Integer IntegerKind.I32 4
+                                                  (M.call_closure (|
+                                                    Ty.path "bool",
+                                                    BinOp.eq,
+                                                    [
+                                                      M.call_closure (|
+                                                        Ty.path "i32",
+                                                        BinOp.Wrap.mul,
+                                                        [
+                                                          Value.Integer IntegerKind.I32 2;
+                                                          Value.Integer IntegerKind.I32 2
+                                                        ]
+                                                      |);
+                                                      Value.Integer IntegerKind.I32 4
+                                                    ]
                                                   |)))
                                               |)
                                             |)

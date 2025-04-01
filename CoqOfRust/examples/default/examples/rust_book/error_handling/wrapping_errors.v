@@ -653,7 +653,13 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
             M.alloc (|
               Value.StructTuple
                 "core::result::Result::Ok"
-                [ BinOp.Wrap.mul (| Value.Integer IntegerKind.I32 2, M.read (| parsed |) |) ]
+                [
+                  M.call_closure (|
+                    Ty.path "i32",
+                    BinOp.Wrap.mul,
+                    [ Value.Integer IntegerKind.I32 2; M.read (| parsed |) ]
+                  |)
+                ]
             |)
           |)))
       |)))

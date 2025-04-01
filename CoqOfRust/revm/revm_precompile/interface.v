@@ -196,21 +196,25 @@ Module interface.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           LogicalOp.and (|
-            BinOp.eq (|
-              M.read (|
-                M.SubPointer.get_struct_record_field (|
-                  M.deref (| M.read (| self |) |),
-                  "revm_precompile::interface::PrecompileOutput",
-                  "gas_used"
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.eq,
+              [
+                M.read (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "revm_precompile::interface::PrecompileOutput",
+                    "gas_used"
+                  |)
+                |);
+                M.read (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| other |) |),
+                    "revm_precompile::interface::PrecompileOutput",
+                    "gas_used"
+                  |)
                 |)
-              |),
-              M.read (|
-                M.SubPointer.get_struct_record_field (|
-                  M.deref (| M.read (| other |) |),
-                  "revm_precompile::interface::PrecompileOutput",
-                  "gas_used"
-                |)
-              |)
+              ]
             |),
             ltac:(M.monadic
               (M.call_closure (|
@@ -680,7 +684,11 @@ Module interface.
               |) in
             M.alloc (|
               LogicalOp.and (|
-                BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |),
+                M.call_closure (|
+                  Ty.path "bool",
+                  BinOp.eq,
+                  [ M.read (| __self_discr |); M.read (| __arg1_discr |) ]
+                |),
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
@@ -1897,7 +1905,11 @@ Module interface.
               |) in
             M.alloc (|
               LogicalOp.and (|
-                BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |),
+                M.call_closure (|
+                  Ty.path "bool",
+                  BinOp.eq,
+                  [ M.read (| __self_discr |); M.read (| __arg1_discr |) ]
+                |),
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|

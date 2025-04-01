@@ -690,7 +690,7 @@ Module collections.
                                           |)
                                         |) in
                                       let _ :=
-                                        M.is_constant_or_break_match (|
+                                        is_constant_or_break_match (|
                                           M.read (| γ |),
                                           Value.Bool true
                                         |) in
@@ -702,7 +702,7 @@ Module collections.
                                             ltac:(M.monadic
                                               (let γ := M.use is_set in
                                               let _ :=
-                                                M.is_constant_or_break_match (|
+                                                is_constant_or_break_match (|
                                                   M.read (| γ |),
                                                   Value.Bool true
                                                 |) in
@@ -886,7 +886,7 @@ Module collections.
                                                               |)
                                                             |) in
                                                           let _ :=
-                                                            M.is_constant_or_break_match (|
+                                                            is_constant_or_break_match (|
                                                               M.read (| γ |),
                                                               Value.Bool true
                                                             |) in
@@ -898,7 +898,7 @@ Module collections.
                                                                 ltac:(M.monadic
                                                                   (let γ := M.use is_set in
                                                                   let _ :=
-                                                                    M.is_constant_or_break_match (|
+                                                                    is_constant_or_break_match (|
                                                                       M.read (| γ |),
                                                                       Value.Bool true
                                                                     |) in
@@ -1159,13 +1159,21 @@ Module collections.
                                                                 (let γ :=
                                                                   M.use
                                                                     (M.alloc (|
-                                                                      BinOp.lt (|
-                                                                        M.read (| lower_edge_idx |),
-                                                                        M.read (| upper_edge_idx |)
+                                                                      M.call_closure (|
+                                                                        Ty.path "bool",
+                                                                        BinOp.lt,
+                                                                        [
+                                                                          M.read (|
+                                                                            lower_edge_idx
+                                                                          |);
+                                                                          M.read (|
+                                                                            upper_edge_idx
+                                                                          |)
+                                                                        ]
                                                                       |)
                                                                     |)) in
                                                                 let _ :=
-                                                                  M.is_constant_or_break_match (|
+                                                                  is_constant_or_break_match (|
                                                                     M.read (| γ |),
                                                                     Value.Bool true
                                                                   |) in
@@ -1215,7 +1223,7 @@ Module collections.
                                                                       Value.Bool true
                                                                     |)) in
                                                                 let _ :=
-                                                                  M.is_constant_or_break_match (|
+                                                                  is_constant_or_break_match (|
                                                                     M.read (| γ |),
                                                                     Value.Bool true
                                                                   |) in
@@ -1264,26 +1272,31 @@ Module collections.
                                                                                     M.use
                                                                                       (M.alloc (|
                                                                                         UnOp.not (|
-                                                                                          BinOp.eq (|
-                                                                                            M.read (|
-                                                                                              M.deref (|
-                                                                                                M.read (|
-                                                                                                  left_val
+                                                                                          M.call_closure (|
+                                                                                            Ty.path
+                                                                                              "bool",
+                                                                                            BinOp.eq,
+                                                                                            [
+                                                                                              M.read (|
+                                                                                                M.deref (|
+                                                                                                  M.read (|
+                                                                                                    left_val
+                                                                                                  |)
+                                                                                                |)
+                                                                                              |);
+                                                                                              M.read (|
+                                                                                                M.deref (|
+                                                                                                  M.read (|
+                                                                                                    right_val
+                                                                                                  |)
                                                                                                 |)
                                                                                               |)
-                                                                                            |),
-                                                                                            M.read (|
-                                                                                              M.deref (|
-                                                                                                M.read (|
-                                                                                                  right_val
-                                                                                                |)
-                                                                                              |)
-                                                                                            |)
+                                                                                            ]
                                                                                           |)
                                                                                         |)
                                                                                       |)) in
                                                                                   let _ :=
-                                                                                    M.is_constant_or_break_match (|
+                                                                                    is_constant_or_break_match (|
                                                                                       M.read (|
                                                                                         γ
                                                                                       |),
@@ -2162,10 +2175,7 @@ Module collections.
                             ltac:(M.monadic
                               (let γ := M.use (M.alloc (| Value.Bool true |)) in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
                                   Some (Ty.tuple []),
@@ -2177,28 +2187,32 @@ Module collections.
                                           M.use
                                             (M.alloc (|
                                               UnOp.not (|
-                                                BinOp.le (|
-                                                  M.read (| start_index |),
-                                                  M.call_closure (|
-                                                    Ty.path "usize",
-                                                    M.get_associated_function (|
-                                                      Ty.apply (Ty.path "slice") [] [ K ],
-                                                      "len",
-                                                      [],
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.borrow (|
-                                                        Pointer.Kind.Ref,
-                                                        M.deref (| M.read (| keys |) |)
-                                                      |)
-                                                    ]
-                                                  |)
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  BinOp.le,
+                                                  [
+                                                    M.read (| start_index |);
+                                                    M.call_closure (|
+                                                      Ty.path "usize",
+                                                      M.get_associated_function (|
+                                                        Ty.apply (Ty.path "slice") [] [ K ],
+                                                        "len",
+                                                        [],
+                                                        []
+                                                      |),
+                                                      [
+                                                        M.borrow (|
+                                                          Pointer.Kind.Ref,
+                                                          M.deref (| M.read (| keys |) |)
+                                                        |)
+                                                      ]
+                                                    |)
+                                                  ]
                                                 |)
                                               |)
                                             |)) in
                                         let _ :=
-                                          M.is_constant_or_break_match (|
+                                          is_constant_or_break_match (|
                                             M.read (| γ |),
                                             Value.Bool true
                                           |) in
@@ -2448,9 +2462,13 @@ Module collections.
                                                               Value.StructTuple
                                                                 "alloc::collections::btree::search::IndexResult::KV"
                                                                 [
-                                                                  BinOp.Wrap.add (|
-                                                                    M.read (| start_index |),
-                                                                    M.read (| offset |)
+                                                                  M.call_closure (|
+                                                                    Ty.path "usize",
+                                                                    BinOp.Wrap.add,
+                                                                    [
+                                                                      M.read (| start_index |);
+                                                                      M.read (| offset |)
+                                                                    ]
                                                                   |)
                                                                 ]
                                                             |)
@@ -2471,9 +2489,13 @@ Module collections.
                                                               Value.StructTuple
                                                                 "alloc::collections::btree::search::IndexResult::Edge"
                                                                 [
-                                                                  BinOp.Wrap.add (|
-                                                                    M.read (| start_index |),
-                                                                    M.read (| offset |)
+                                                                  M.call_closure (|
+                                                                    Ty.path "usize",
+                                                                    BinOp.Wrap.add,
+                                                                    [
+                                                                      M.read (| start_index |);
+                                                                      M.read (| offset |)
+                                                                    ]
                                                                   |)
                                                                 ]
                                                             |)
@@ -2686,9 +2708,10 @@ Module collections.
                                 M.alloc (|
                                   Value.Tuple
                                     [
-                                      BinOp.Wrap.add (|
-                                        M.read (| idx |),
-                                        Value.Integer IntegerKind.Usize 1
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        BinOp.Wrap.add,
+                                        [ M.read (| idx |); Value.Integer IntegerKind.Usize 1 ]
                                       |);
                                       Value.StructTuple
                                         "alloc::collections::btree::search::SearchBound::AllIncluded"
@@ -2867,9 +2890,10 @@ Module collections.
                                 M.alloc (|
                                   Value.Tuple
                                     [
-                                      BinOp.Wrap.add (|
-                                        M.read (| idx |),
-                                        Value.Integer IntegerKind.Usize 1
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        BinOp.Wrap.add,
+                                        [ M.read (| idx |); Value.Integer IntegerKind.Usize 1 ]
                                       |);
                                       Value.StructTuple
                                         "alloc::collections::btree::search::SearchBound::AllExcluded"

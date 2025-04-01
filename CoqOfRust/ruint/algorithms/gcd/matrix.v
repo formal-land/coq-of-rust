@@ -86,92 +86,112 @@ Module algorithms.
                 LogicalOp.and (|
                   LogicalOp.and (|
                     LogicalOp.and (|
-                      BinOp.eq (|
-                        M.read (|
-                          M.SubPointer.get_struct_tuple_field (|
-                            M.deref (| M.read (| self |) |),
-                            "ruint::algorithms::gcd::matrix::Matrix",
-                            0
-                          |)
-                        |),
-                        M.read (|
-                          M.SubPointer.get_struct_tuple_field (|
-                            M.deref (| M.read (| other |) |),
-                            "ruint::algorithms::gcd::matrix::Matrix",
-                            0
-                          |)
-                        |)
-                      |),
-                      ltac:(M.monadic
-                        (BinOp.eq (|
+                      M.call_closure (|
+                        Ty.path "bool",
+                        BinOp.eq,
+                        [
                           M.read (|
                             M.SubPointer.get_struct_tuple_field (|
                               M.deref (| M.read (| self |) |),
                               "ruint::algorithms::gcd::matrix::Matrix",
-                              1
+                              0
                             |)
-                          |),
+                          |);
                           M.read (|
                             M.SubPointer.get_struct_tuple_field (|
                               M.deref (| M.read (| other |) |),
                               "ruint::algorithms::gcd::matrix::Matrix",
-                              1
+                              0
                             |)
                           |)
+                        ]
+                      |),
+                      ltac:(M.monadic
+                        (M.call_closure (|
+                          Ty.path "bool",
+                          BinOp.eq,
+                          [
+                            M.read (|
+                              M.SubPointer.get_struct_tuple_field (|
+                                M.deref (| M.read (| self |) |),
+                                "ruint::algorithms::gcd::matrix::Matrix",
+                                1
+                              |)
+                            |);
+                            M.read (|
+                              M.SubPointer.get_struct_tuple_field (|
+                                M.deref (| M.read (| other |) |),
+                                "ruint::algorithms::gcd::matrix::Matrix",
+                                1
+                              |)
+                            |)
+                          ]
                         |)))
                     |),
                     ltac:(M.monadic
-                      (BinOp.eq (|
+                      (M.call_closure (|
+                        Ty.path "bool",
+                        BinOp.eq,
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_tuple_field (|
+                              M.deref (| M.read (| self |) |),
+                              "ruint::algorithms::gcd::matrix::Matrix",
+                              2
+                            |)
+                          |);
+                          M.read (|
+                            M.SubPointer.get_struct_tuple_field (|
+                              M.deref (| M.read (| other |) |),
+                              "ruint::algorithms::gcd::matrix::Matrix",
+                              2
+                            |)
+                          |)
+                        ]
+                      |)))
+                  |),
+                  ltac:(M.monadic
+                    (M.call_closure (|
+                      Ty.path "bool",
+                      BinOp.eq,
+                      [
                         M.read (|
                           M.SubPointer.get_struct_tuple_field (|
                             M.deref (| M.read (| self |) |),
                             "ruint::algorithms::gcd::matrix::Matrix",
-                            2
+                            3
                           |)
-                        |),
+                        |);
                         M.read (|
                           M.SubPointer.get_struct_tuple_field (|
                             M.deref (| M.read (| other |) |),
                             "ruint::algorithms::gcd::matrix::Matrix",
-                            2
+                            3
                           |)
                         |)
-                      |)))
-                  |),
-                  ltac:(M.monadic
-                    (BinOp.eq (|
+                      ]
+                    |)))
+                |),
+                ltac:(M.monadic
+                  (M.call_closure (|
+                    Ty.path "bool",
+                    BinOp.eq,
+                    [
                       M.read (|
                         M.SubPointer.get_struct_tuple_field (|
                           M.deref (| M.read (| self |) |),
                           "ruint::algorithms::gcd::matrix::Matrix",
-                          3
+                          4
                         |)
-                      |),
+                      |);
                       M.read (|
                         M.SubPointer.get_struct_tuple_field (|
                           M.deref (| M.read (| other |) |),
                           "ruint::algorithms::gcd::matrix::Matrix",
-                          3
+                          4
                         |)
                       |)
-                    |)))
-                |),
-                ltac:(M.monadic
-                  (BinOp.eq (|
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        M.deref (| M.read (| self |) |),
-                        "ruint::algorithms::gcd::matrix::Matrix",
-                        4
-                      |)
-                    |),
-                    M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        M.deref (| M.read (| other |) |),
-                        "ruint::algorithms::gcd::matrix::Matrix",
-                        4
-                      |)
-                    |)
+                    ]
                   |)))
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
@@ -379,159 +399,212 @@ Module algorithms.
               Value.StructTuple
                 "ruint::algorithms::gcd::matrix::Matrix"
                 [
-                  BinOp.Wrap.add (|
-                    BinOp.Wrap.mul (|
-                      M.read (|
-                        M.SubPointer.get_struct_tuple_field (|
-                          self,
-                          "ruint::algorithms::gcd::matrix::Matrix",
-                          0
-                        |)
-                      |),
-                      M.read (|
-                        M.SubPointer.get_struct_tuple_field (|
-                          other,
-                          "ruint::algorithms::gcd::matrix::Matrix",
-                          0
-                        |)
+                  M.call_closure (|
+                    Ty.path "u64",
+                    BinOp.Wrap.add,
+                    [
+                      M.call_closure (|
+                        Ty.path "u64",
+                        BinOp.Wrap.mul,
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_tuple_field (|
+                              self,
+                              "ruint::algorithms::gcd::matrix::Matrix",
+                              0
+                            |)
+                          |);
+                          M.read (|
+                            M.SubPointer.get_struct_tuple_field (|
+                              other,
+                              "ruint::algorithms::gcd::matrix::Matrix",
+                              0
+                            |)
+                          |)
+                        ]
+                      |);
+                      M.call_closure (|
+                        Ty.path "u64",
+                        BinOp.Wrap.mul,
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_tuple_field (|
+                              self,
+                              "ruint::algorithms::gcd::matrix::Matrix",
+                              1
+                            |)
+                          |);
+                          M.read (|
+                            M.SubPointer.get_struct_tuple_field (|
+                              other,
+                              "ruint::algorithms::gcd::matrix::Matrix",
+                              2
+                            |)
+                          |)
+                        ]
                       |)
-                    |),
-                    BinOp.Wrap.mul (|
-                      M.read (|
-                        M.SubPointer.get_struct_tuple_field (|
-                          self,
-                          "ruint::algorithms::gcd::matrix::Matrix",
-                          1
-                        |)
-                      |),
-                      M.read (|
-                        M.SubPointer.get_struct_tuple_field (|
-                          other,
-                          "ruint::algorithms::gcd::matrix::Matrix",
-                          2
-                        |)
-                      |)
-                    |)
+                    ]
                   |);
-                  BinOp.Wrap.add (|
-                    BinOp.Wrap.mul (|
-                      M.read (|
-                        M.SubPointer.get_struct_tuple_field (|
-                          self,
-                          "ruint::algorithms::gcd::matrix::Matrix",
-                          0
-                        |)
-                      |),
-                      M.read (|
-                        M.SubPointer.get_struct_tuple_field (|
-                          other,
-                          "ruint::algorithms::gcd::matrix::Matrix",
-                          1
-                        |)
+                  M.call_closure (|
+                    Ty.path "u64",
+                    BinOp.Wrap.add,
+                    [
+                      M.call_closure (|
+                        Ty.path "u64",
+                        BinOp.Wrap.mul,
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_tuple_field (|
+                              self,
+                              "ruint::algorithms::gcd::matrix::Matrix",
+                              0
+                            |)
+                          |);
+                          M.read (|
+                            M.SubPointer.get_struct_tuple_field (|
+                              other,
+                              "ruint::algorithms::gcd::matrix::Matrix",
+                              1
+                            |)
+                          |)
+                        ]
+                      |);
+                      M.call_closure (|
+                        Ty.path "u64",
+                        BinOp.Wrap.mul,
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_tuple_field (|
+                              self,
+                              "ruint::algorithms::gcd::matrix::Matrix",
+                              1
+                            |)
+                          |);
+                          M.read (|
+                            M.SubPointer.get_struct_tuple_field (|
+                              other,
+                              "ruint::algorithms::gcd::matrix::Matrix",
+                              3
+                            |)
+                          |)
+                        ]
                       |)
-                    |),
-                    BinOp.Wrap.mul (|
-                      M.read (|
-                        M.SubPointer.get_struct_tuple_field (|
-                          self,
-                          "ruint::algorithms::gcd::matrix::Matrix",
-                          1
-                        |)
-                      |),
-                      M.read (|
-                        M.SubPointer.get_struct_tuple_field (|
-                          other,
-                          "ruint::algorithms::gcd::matrix::Matrix",
-                          3
-                        |)
-                      |)
-                    |)
+                    ]
                   |);
-                  BinOp.Wrap.add (|
-                    BinOp.Wrap.mul (|
-                      M.read (|
-                        M.SubPointer.get_struct_tuple_field (|
-                          self,
-                          "ruint::algorithms::gcd::matrix::Matrix",
-                          2
-                        |)
-                      |),
-                      M.read (|
-                        M.SubPointer.get_struct_tuple_field (|
-                          other,
-                          "ruint::algorithms::gcd::matrix::Matrix",
-                          0
-                        |)
+                  M.call_closure (|
+                    Ty.path "u64",
+                    BinOp.Wrap.add,
+                    [
+                      M.call_closure (|
+                        Ty.path "u64",
+                        BinOp.Wrap.mul,
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_tuple_field (|
+                              self,
+                              "ruint::algorithms::gcd::matrix::Matrix",
+                              2
+                            |)
+                          |);
+                          M.read (|
+                            M.SubPointer.get_struct_tuple_field (|
+                              other,
+                              "ruint::algorithms::gcd::matrix::Matrix",
+                              0
+                            |)
+                          |)
+                        ]
+                      |);
+                      M.call_closure (|
+                        Ty.path "u64",
+                        BinOp.Wrap.mul,
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_tuple_field (|
+                              self,
+                              "ruint::algorithms::gcd::matrix::Matrix",
+                              3
+                            |)
+                          |);
+                          M.read (|
+                            M.SubPointer.get_struct_tuple_field (|
+                              other,
+                              "ruint::algorithms::gcd::matrix::Matrix",
+                              2
+                            |)
+                          |)
+                        ]
                       |)
-                    |),
-                    BinOp.Wrap.mul (|
-                      M.read (|
-                        M.SubPointer.get_struct_tuple_field (|
-                          self,
-                          "ruint::algorithms::gcd::matrix::Matrix",
-                          3
-                        |)
-                      |),
-                      M.read (|
-                        M.SubPointer.get_struct_tuple_field (|
-                          other,
-                          "ruint::algorithms::gcd::matrix::Matrix",
-                          2
-                        |)
-                      |)
-                    |)
+                    ]
                   |);
-                  BinOp.Wrap.add (|
-                    BinOp.Wrap.mul (|
-                      M.read (|
-                        M.SubPointer.get_struct_tuple_field (|
-                          self,
-                          "ruint::algorithms::gcd::matrix::Matrix",
-                          2
-                        |)
-                      |),
-                      M.read (|
-                        M.SubPointer.get_struct_tuple_field (|
-                          other,
-                          "ruint::algorithms::gcd::matrix::Matrix",
-                          1
-                        |)
+                  M.call_closure (|
+                    Ty.path "u64",
+                    BinOp.Wrap.add,
+                    [
+                      M.call_closure (|
+                        Ty.path "u64",
+                        BinOp.Wrap.mul,
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_tuple_field (|
+                              self,
+                              "ruint::algorithms::gcd::matrix::Matrix",
+                              2
+                            |)
+                          |);
+                          M.read (|
+                            M.SubPointer.get_struct_tuple_field (|
+                              other,
+                              "ruint::algorithms::gcd::matrix::Matrix",
+                              1
+                            |)
+                          |)
+                        ]
+                      |);
+                      M.call_closure (|
+                        Ty.path "u64",
+                        BinOp.Wrap.mul,
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_tuple_field (|
+                              self,
+                              "ruint::algorithms::gcd::matrix::Matrix",
+                              3
+                            |)
+                          |);
+                          M.read (|
+                            M.SubPointer.get_struct_tuple_field (|
+                              other,
+                              "ruint::algorithms::gcd::matrix::Matrix",
+                              3
+                            |)
+                          |)
+                        ]
                       |)
-                    |),
-                    BinOp.Wrap.mul (|
-                      M.read (|
-                        M.SubPointer.get_struct_tuple_field (|
-                          self,
-                          "ruint::algorithms::gcd::matrix::Matrix",
-                          3
-                        |)
-                      |),
-                      M.read (|
-                        M.SubPointer.get_struct_tuple_field (|
-                          other,
-                          "ruint::algorithms::gcd::matrix::Matrix",
-                          3
-                        |)
-                      |)
-                    |)
+                    ]
                   |);
-                  BinOp.bit_xor
-                    (M.read (|
-                      M.SubPointer.get_struct_tuple_field (|
-                        self,
-                        "ruint::algorithms::gcd::matrix::Matrix",
-                        4
-                      |)
-                    |))
-                    (UnOp.not (|
+                  M.call_closure (|
+                    Ty.path "bool",
+                    BinOp.Wrap.bit_xor,
+                    [
                       M.read (|
                         M.SubPointer.get_struct_tuple_field (|
-                          other,
+                          self,
                           "ruint::algorithms::gcd::matrix::Matrix",
                           4
                         |)
+                      |);
+                      UnOp.not (|
+                        M.read (|
+                          M.SubPointer.get_struct_tuple_field (|
+                            other,
+                            "ruint::algorithms::gcd::matrix::Matrix",
+                            4
+                          |)
+                        |)
                       |)
-                    |))
+                    ]
+                  |)
                 ]))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -587,13 +660,14 @@ Module algorithms.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.eq (| BITS, Value.Integer IntegerKind.Usize 0 |)
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.eq,
+                                      [ BITS; Value.Integer IntegerKind.Usize 0 ]
+                                    |)
                                   |)) in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (|
                                 M.never_to_any (| M.read (| M.return_ (| Value.Tuple [] |) |) |)
                               |)));
@@ -621,10 +695,7 @@ Module algorithms.
                                     4
                                   |)) in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (|
                                 Value.Tuple
                                   [
@@ -1032,8 +1103,7 @@ Module algorithms.
                               "ruint::algorithms::gcd::matrix::Matrix",
                               4
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           Value.Tuple
                             [
@@ -1326,7 +1396,7 @@ Module algorithms.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.call_closure (|
@@ -1361,10 +1431,13 @@ Module algorithms.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.le (| M.read (| s |), Value.Integer IntegerKind.Usize 64 |)
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.le,
+                                [ M.read (| s |); Value.Integer IntegerKind.Usize 64 ]
+                              |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           M.call_closure (|
                             Ty.path "ruint::algorithms::gcd::matrix::Matrix",
@@ -1473,13 +1546,14 @@ Module algorithms.
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      BinOp.le (|
-                                        M.read (| s |),
-                                        Value.Integer IntegerKind.Usize 128
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.le,
+                                        [ M.read (| s |); Value.Integer IntegerKind.Usize 128 ]
                                       |)
                                     |)) in
                                 let _ :=
-                                  M.is_constant_or_break_match (|
+                                  is_constant_or_break_match (|
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
@@ -1597,9 +1671,10 @@ Module algorithms.
                                       |),
                                       [
                                         M.read (| a |);
-                                        BinOp.Wrap.sub (|
-                                          M.read (| s |),
-                                          Value.Integer IntegerKind.Usize 128
+                                        M.call_closure (|
+                                          Ty.path "usize",
+                                          BinOp.Wrap.sub,
+                                          [ M.read (| s |); Value.Integer IntegerKind.Usize 128 ]
                                         |)
                                       ]
                                     |)
@@ -1619,9 +1694,10 @@ Module algorithms.
                                       |),
                                       [
                                         M.read (| b |);
-                                        BinOp.Wrap.sub (|
-                                          M.read (| s |),
-                                          Value.Integer IntegerKind.Usize 128
+                                        M.call_closure (|
+                                          Ty.path "usize",
+                                          BinOp.Wrap.sub,
+                                          [ M.read (| s |); Value.Integer IntegerKind.Usize 128 ]
                                         |)
                                       ]
                                     |)
@@ -1782,10 +1858,7 @@ Module algorithms.
                             ltac:(M.monadic
                               (let γ := M.use (M.alloc (| Value.Bool true |)) in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
                                   Some (Ty.tuple []),
@@ -1797,11 +1870,15 @@ Module algorithms.
                                           M.use
                                             (M.alloc (|
                                               UnOp.not (|
-                                                BinOp.ge (| M.read (| r0 |), M.read (| r1 |) |)
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  BinOp.ge,
+                                                  [ M.read (| r0 |); M.read (| r1 |) ]
+                                                |)
                                               |)
                                             |)) in
                                         let _ :=
-                                          M.is_constant_or_break_match (|
+                                          is_constant_or_break_match (|
                                             M.read (| γ |),
                                             Value.Bool true
                                           |) in
@@ -1831,13 +1908,14 @@ Module algorithms.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.eq (| M.read (| r1 |), Value.Integer IntegerKind.U64 0 |)
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.eq,
+                                      [ M.read (| r1 |); Value.Integer IntegerKind.U64 0 ]
+                                    |)
                                   |)) in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (|
                                 M.never_to_any (|
                                   M.read (|
@@ -1868,16 +1946,28 @@ Module algorithms.
                             ltac:(M.monadic
                               (let~ q : Ty.path "u64" :=
                                 M.alloc (|
-                                  BinOp.Wrap.div (| M.read (| r0 |), M.read (| r1 |) |)
+                                  M.call_closure (|
+                                    Ty.path "u64",
+                                    BinOp.Wrap.div,
+                                    [ M.read (| r0 |); M.read (| r1 |) ]
+                                  |)
                                 |) in
                               let~ _ : Ty.tuple [] :=
                                 M.alloc (|
                                   let β := r0 in
                                   M.write (|
                                     β,
-                                    BinOp.Wrap.sub (|
-                                      M.read (| β |),
-                                      BinOp.Wrap.mul (| M.read (| q |), M.read (| r1 |) |)
+                                    M.call_closure (|
+                                      Ty.path "u64",
+                                      BinOp.Wrap.sub,
+                                      [
+                                        M.read (| β |);
+                                        M.call_closure (|
+                                          Ty.path "u64",
+                                          BinOp.Wrap.mul,
+                                          [ M.read (| q |); M.read (| r1 |) ]
+                                        |)
+                                      ]
                                     |)
                                   |)
                                 |) in
@@ -1886,9 +1976,17 @@ Module algorithms.
                                   let β := q00 in
                                   M.write (|
                                     β,
-                                    BinOp.Wrap.add (|
-                                      M.read (| β |),
-                                      BinOp.Wrap.mul (| M.read (| q |), M.read (| q10 |) |)
+                                    M.call_closure (|
+                                      Ty.path "u64",
+                                      BinOp.Wrap.add,
+                                      [
+                                        M.read (| β |);
+                                        M.call_closure (|
+                                          Ty.path "u64",
+                                          BinOp.Wrap.mul,
+                                          [ M.read (| q |); M.read (| q10 |) ]
+                                        |)
+                                      ]
                                     |)
                                   |)
                                 |) in
@@ -1897,9 +1995,17 @@ Module algorithms.
                                   let β := q01 in
                                   M.write (|
                                     β,
-                                    BinOp.Wrap.add (|
-                                      M.read (| β |),
-                                      BinOp.Wrap.mul (| M.read (| q |), M.read (| q11 |) |)
+                                    M.call_closure (|
+                                      Ty.path "u64",
+                                      BinOp.Wrap.add,
+                                      [
+                                        M.read (| β |);
+                                        M.call_closure (|
+                                          Ty.path "u64",
+                                          BinOp.Wrap.mul,
+                                          [ M.read (| q |); M.read (| q11 |) ]
+                                        |)
+                                      ]
                                     |)
                                   |)
                                 |) in
@@ -1913,13 +2019,14 @@ Module algorithms.
                                         (let γ :=
                                           M.use
                                             (M.alloc (|
-                                              BinOp.eq (|
-                                                M.read (| r0 |),
-                                                Value.Integer IntegerKind.U64 0
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                BinOp.eq,
+                                                [ M.read (| r0 |); Value.Integer IntegerKind.U64 0 ]
                                               |)
                                             |)) in
                                         let _ :=
-                                          M.is_constant_or_break_match (|
+                                          is_constant_or_break_match (|
                                             M.read (| γ |),
                                             Value.Bool true
                                           |) in
@@ -1945,16 +2052,28 @@ Module algorithms.
                                 |) in
                               let~ q : Ty.path "u64" :=
                                 M.alloc (|
-                                  BinOp.Wrap.div (| M.read (| r1 |), M.read (| r0 |) |)
+                                  M.call_closure (|
+                                    Ty.path "u64",
+                                    BinOp.Wrap.div,
+                                    [ M.read (| r1 |); M.read (| r0 |) ]
+                                  |)
                                 |) in
                               let~ _ : Ty.tuple [] :=
                                 M.alloc (|
                                   let β := r1 in
                                   M.write (|
                                     β,
-                                    BinOp.Wrap.sub (|
-                                      M.read (| β |),
-                                      BinOp.Wrap.mul (| M.read (| q |), M.read (| r0 |) |)
+                                    M.call_closure (|
+                                      Ty.path "u64",
+                                      BinOp.Wrap.sub,
+                                      [
+                                        M.read (| β |);
+                                        M.call_closure (|
+                                          Ty.path "u64",
+                                          BinOp.Wrap.mul,
+                                          [ M.read (| q |); M.read (| r0 |) ]
+                                        |)
+                                      ]
                                     |)
                                   |)
                                 |) in
@@ -1963,9 +2082,17 @@ Module algorithms.
                                   let β := q10 in
                                   M.write (|
                                     β,
-                                    BinOp.Wrap.add (|
-                                      M.read (| β |),
-                                      BinOp.Wrap.mul (| M.read (| q |), M.read (| q00 |) |)
+                                    M.call_closure (|
+                                      Ty.path "u64",
+                                      BinOp.Wrap.add,
+                                      [
+                                        M.read (| β |);
+                                        M.call_closure (|
+                                          Ty.path "u64",
+                                          BinOp.Wrap.mul,
+                                          [ M.read (| q |); M.read (| q00 |) ]
+                                        |)
+                                      ]
                                     |)
                                   |)
                                 |) in
@@ -1974,9 +2101,17 @@ Module algorithms.
                                   let β := q11 in
                                   M.write (|
                                     β,
-                                    BinOp.Wrap.add (|
-                                      M.read (| β |),
-                                      BinOp.Wrap.mul (| M.read (| q |), M.read (| q01 |) |)
+                                    M.call_closure (|
+                                      Ty.path "u64",
+                                      BinOp.Wrap.add,
+                                      [
+                                        M.read (| β |);
+                                        M.call_closure (|
+                                          Ty.path "u64",
+                                          BinOp.Wrap.mul,
+                                          [ M.read (| q |); M.read (| q01 |) ]
+                                        |)
+                                      ]
                                     |)
                                   |)
                                 |) in
@@ -1989,13 +2124,14 @@ Module algorithms.
                                       (let γ :=
                                         M.use
                                           (M.alloc (|
-                                            BinOp.eq (|
-                                              M.read (| r1 |),
-                                              Value.Integer IntegerKind.U64 0
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              BinOp.eq,
+                                              [ M.read (| r1 |); Value.Integer IntegerKind.U64 0 ]
                                             |)
                                           |)) in
                                       let _ :=
-                                        M.is_constant_or_break_match (|
+                                        is_constant_or_break_match (|
                                           M.read (| γ |),
                                           Value.Bool true
                                         |) in
@@ -2173,10 +2309,7 @@ Module algorithms.
                             ltac:(M.monadic
                               (let γ := M.use (M.alloc (| Value.Bool true |)) in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
                                   Some (Ty.tuple []),
@@ -2188,17 +2321,25 @@ Module algorithms.
                                           M.use
                                             (M.alloc (|
                                               UnOp.not (|
-                                                BinOp.ge (|
-                                                  M.read (| a0 |),
-                                                  BinOp.Wrap.shl (|
-                                                    Value.Integer IntegerKind.U64 1,
-                                                    Value.Integer IntegerKind.I32 63
-                                                  |)
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  BinOp.ge,
+                                                  [
+                                                    M.read (| a0 |);
+                                                    M.call_closure (|
+                                                      Ty.path "u64",
+                                                      BinOp.Wrap.shl,
+                                                      [
+                                                        Value.Integer IntegerKind.U64 1;
+                                                        Value.Integer IntegerKind.I32 63
+                                                      ]
+                                                    |)
+                                                  ]
                                                 |)
                                               |)
                                             |)) in
                                         let _ :=
-                                          M.is_constant_or_break_match (|
+                                          is_constant_or_break_match (|
                                             M.read (| γ |),
                                             Value.Bool true
                                           |) in
@@ -2227,10 +2368,7 @@ Module algorithms.
                             ltac:(M.monadic
                               (let γ := M.use (M.alloc (| Value.Bool true |)) in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
                                   Some (Ty.tuple []),
@@ -2242,11 +2380,15 @@ Module algorithms.
                                           M.use
                                             (M.alloc (|
                                               UnOp.not (|
-                                                BinOp.ge (| M.read (| a0 |), M.read (| a1 |) |)
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  BinOp.ge,
+                                                  [ M.read (| a0 |); M.read (| a1 |) ]
+                                                |)
                                               |)
                                             |)) in
                                         let _ :=
-                                          M.is_constant_or_break_match (|
+                                          is_constant_or_break_match (|
                                             M.read (| γ |),
                                             Value.Bool true
                                           |) in
@@ -2268,9 +2410,10 @@ Module algorithms.
                       |) in
                     let~ k0 : Ty.path "u64" :=
                       M.alloc (|
-                        BinOp.Wrap.shl (|
-                          Value.Integer IntegerKind.U64 1,
-                          Value.Integer IntegerKind.I32 32
+                        M.call_closure (|
+                          Ty.path "u64",
+                          BinOp.Wrap.shl,
+                          [ Value.Integer IntegerKind.U64 1; Value.Integer IntegerKind.I32 32 ]
                         |)
                       |) in
                     let~ k1 : Ty.path "u64" := M.alloc (| Value.Integer IntegerKind.U64 1 |) in
@@ -2285,21 +2428,22 @@ Module algorithms.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.lt (|
-                                      M.read (| a1 |),
-                                      M.read (|
-                                        get_constant (|
-                                          "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT",
-                                          Ty.path "u64"
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.lt,
+                                      [
+                                        M.read (| a1 |);
+                                        M.read (|
+                                          get_constant (|
+                                            "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT",
+                                            Ty.path "u64"
+                                          |)
                                         |)
-                                      |)
+                                      ]
                                     |)
                                   |)) in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (|
                                 M.never_to_any (|
                                   M.read (|
@@ -2319,19 +2463,41 @@ Module algorithms.
                         ]
                       |) in
                     let~ q : Ty.path "u64" :=
-                      M.alloc (| BinOp.Wrap.div (| M.read (| a0 |), M.read (| a1 |) |) |) in
+                      M.alloc (|
+                        M.call_closure (|
+                          Ty.path "u64",
+                          BinOp.Wrap.div,
+                          [ M.read (| a0 |); M.read (| a1 |) ]
+                        |)
+                      |) in
                     let~ a2 : Ty.path "u64" :=
                       M.alloc (|
-                        BinOp.Wrap.sub (|
-                          M.read (| a0 |),
-                          BinOp.Wrap.mul (| M.read (| q |), M.read (| a1 |) |)
+                        M.call_closure (|
+                          Ty.path "u64",
+                          BinOp.Wrap.sub,
+                          [
+                            M.read (| a0 |);
+                            M.call_closure (|
+                              Ty.path "u64",
+                              BinOp.Wrap.mul,
+                              [ M.read (| q |); M.read (| a1 |) ]
+                            |)
+                          ]
                         |)
                       |) in
                     let~ k2 : Ty.path "u64" :=
                       M.alloc (|
-                        BinOp.Wrap.add (|
-                          M.read (| k0 |),
-                          BinOp.Wrap.mul (| M.read (| q |), M.read (| k1 |) |)
+                        M.call_closure (|
+                          Ty.path "u64",
+                          BinOp.Wrap.add,
+                          [
+                            M.read (| k0 |);
+                            M.call_closure (|
+                              Ty.path "u64",
+                              BinOp.Wrap.mul,
+                              [ M.read (| q |); M.read (| k1 |) ]
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ : Ty.tuple [] :=
@@ -2344,38 +2510,44 @@ Module algorithms.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.lt (|
-                                      M.read (| a2 |),
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.lt,
+                                      [
+                                        M.read (| a2 |);
+                                        M.read (|
+                                          get_constant (|
+                                            "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT",
+                                            Ty.path "u64"
+                                          |)
+                                        |)
+                                      ]
+                                    |)
+                                  |)) in
+                              let _ :=
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              let~ u2 : Ty.path "u64" :=
+                                M.alloc (|
+                                  M.call_closure (|
+                                    Ty.path "u64",
+                                    BinOp.Wrap.shr,
+                                    [ M.read (| k2 |); Value.Integer IntegerKind.I32 32 ]
+                                  |)
+                                |) in
+                              let~ v2 : Ty.path "u64" :=
+                                M.alloc (|
+                                  M.call_closure (|
+                                    Ty.path "u64",
+                                    BinOp.Wrap.rem,
+                                    [
+                                      M.read (| k2 |);
                                       M.read (|
                                         get_constant (|
                                           "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT",
                                           Ty.path "u64"
                                         |)
                                       |)
-                                    |)
-                                  |)) in
-                              let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
-                              let~ u2 : Ty.path "u64" :=
-                                M.alloc (|
-                                  BinOp.Wrap.shr (|
-                                    M.read (| k2 |),
-                                    Value.Integer IntegerKind.I32 32
-                                  |)
-                                |) in
-                              let~ v2 : Ty.path "u64" :=
-                                M.alloc (|
-                                  BinOp.Wrap.rem (|
-                                    M.read (| k2 |),
-                                    M.read (|
-                                      get_constant (|
-                                        "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT",
-                                        Ty.path "u64"
-                                      |)
-                                    |)
+                                    ]
                                   |)
                                 |) in
                               M.match_operator (|
@@ -2388,19 +2560,28 @@ Module algorithms.
                                         M.use
                                           (M.alloc (|
                                             LogicalOp.and (|
-                                              BinOp.ge (| M.read (| a2 |), M.read (| v2 |) |),
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                BinOp.ge,
+                                                [ M.read (| a2 |); M.read (| v2 |) ]
+                                              |),
                                               ltac:(M.monadic
-                                                (BinOp.ge (|
-                                                  BinOp.Wrap.sub (|
-                                                    M.read (| a1 |),
-                                                    M.read (| a2 |)
-                                                  |),
-                                                  M.read (| u2 |)
+                                                (M.call_closure (|
+                                                  Ty.path "bool",
+                                                  BinOp.ge,
+                                                  [
+                                                    M.call_closure (|
+                                                      Ty.path "u64",
+                                                      BinOp.Wrap.sub,
+                                                      [ M.read (| a1 |); M.read (| a2 |) ]
+                                                    |);
+                                                    M.read (| u2 |)
+                                                  ]
                                                 |)))
                                             |)
                                           |)) in
                                       let _ :=
-                                        M.is_constant_or_break_match (|
+                                        is_constant_or_break_match (|
                                           M.read (| γ |),
                                           Value.Bool true
                                         |) in
@@ -2444,19 +2625,41 @@ Module algorithms.
                         ]
                       |) in
                     let~ q : Ty.path "u64" :=
-                      M.alloc (| BinOp.Wrap.div (| M.read (| a1 |), M.read (| a2 |) |) |) in
+                      M.alloc (|
+                        M.call_closure (|
+                          Ty.path "u64",
+                          BinOp.Wrap.div,
+                          [ M.read (| a1 |); M.read (| a2 |) ]
+                        |)
+                      |) in
                     let~ a3 : Ty.path "u64" :=
                       M.alloc (|
-                        BinOp.Wrap.sub (|
-                          M.read (| a1 |),
-                          BinOp.Wrap.mul (| M.read (| q |), M.read (| a2 |) |)
+                        M.call_closure (|
+                          Ty.path "u64",
+                          BinOp.Wrap.sub,
+                          [
+                            M.read (| a1 |);
+                            M.call_closure (|
+                              Ty.path "u64",
+                              BinOp.Wrap.mul,
+                              [ M.read (| q |); M.read (| a2 |) ]
+                            |)
+                          ]
                         |)
                       |) in
                     let~ k3 : Ty.path "u64" :=
                       M.alloc (|
-                        BinOp.Wrap.add (|
-                          M.read (| k1 |),
-                          BinOp.Wrap.mul (| M.read (| q |), M.read (| k2 |) |)
+                        M.call_closure (|
+                          Ty.path "u64",
+                          BinOp.Wrap.add,
+                          [
+                            M.read (| k1 |);
+                            M.call_closure (|
+                              Ty.path "u64",
+                              BinOp.Wrap.mul,
+                              [ M.read (| q |); M.read (| k2 |) ]
+                            |)
+                          ]
                         |)
                       |) in
                     let~ _ : Ty.tuple [] :=
@@ -2472,18 +2675,22 @@ Module algorithms.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.ge (|
-                                          M.read (| a3 |),
-                                          M.read (|
-                                            get_constant (|
-                                              "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT",
-                                              Ty.path "u64"
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.ge,
+                                          [
+                                            M.read (| a3 |);
+                                            M.read (|
+                                              get_constant (|
+                                                "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT",
+                                                Ty.path "u64"
+                                              |)
                                             |)
-                                          |)
+                                          ]
                                         |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -2510,7 +2717,7 @@ Module algorithms.
                                           ltac:(M.monadic
                                             (let γ := M.use (M.alloc (| Value.Bool true |)) in
                                             let _ :=
-                                              M.is_constant_or_break_match (|
+                                              is_constant_or_break_match (|
                                                 M.read (| γ |),
                                                 Value.Bool true
                                               |) in
@@ -2525,14 +2732,15 @@ Module algorithms.
                                                         M.use
                                                           (M.alloc (|
                                                             UnOp.not (|
-                                                              BinOp.lt (|
-                                                                M.read (| a2 |),
-                                                                M.read (| a3 |)
+                                                              M.call_closure (|
+                                                                Ty.path "bool",
+                                                                BinOp.lt,
+                                                                [ M.read (| a2 |); M.read (| a3 |) ]
                                                               |)
                                                             |)
                                                           |)) in
                                                       let _ :=
-                                                        M.is_constant_or_break_match (|
+                                                        is_constant_or_break_match (|
                                                           M.read (| γ |),
                                                           Value.Bool true
                                                         |) in
@@ -2570,7 +2778,7 @@ Module algorithms.
                                           ltac:(M.monadic
                                             (let γ := M.use (M.alloc (| Value.Bool true |)) in
                                             let _ :=
-                                              M.is_constant_or_break_match (|
+                                              is_constant_or_break_match (|
                                                 M.read (| γ |),
                                                 Value.Bool true
                                               |) in
@@ -2585,14 +2793,18 @@ Module algorithms.
                                                         M.use
                                                           (M.alloc (|
                                                             UnOp.not (|
-                                                              BinOp.gt (|
-                                                                M.read (| a2 |),
-                                                                Value.Integer IntegerKind.U64 0
+                                                              M.call_closure (|
+                                                                Ty.path "bool",
+                                                                BinOp.gt,
+                                                                [
+                                                                  M.read (| a2 |);
+                                                                  Value.Integer IntegerKind.U64 0
+                                                                ]
                                                               |)
                                                             |)
                                                           |)) in
                                                       let _ :=
-                                                        M.is_constant_or_break_match (|
+                                                        is_constant_or_break_match (|
                                                           M.read (| γ |),
                                                           Value.Bool true
                                                         |) in
@@ -2623,16 +2835,28 @@ Module algorithms.
                                     |) in
                                   let~ q : Ty.path "u64" :=
                                     M.alloc (|
-                                      BinOp.Wrap.div (| M.read (| a3 |), M.read (| a2 |) |)
+                                      M.call_closure (|
+                                        Ty.path "u64",
+                                        BinOp.Wrap.div,
+                                        [ M.read (| a3 |); M.read (| a2 |) ]
+                                      |)
                                     |) in
                                   let~ _ : Ty.tuple [] :=
                                     M.alloc (|
                                       let β := a3 in
                                       M.write (|
                                         β,
-                                        BinOp.Wrap.sub (|
-                                          M.read (| β |),
-                                          BinOp.Wrap.mul (| M.read (| q |), M.read (| a2 |) |)
+                                        M.call_closure (|
+                                          Ty.path "u64",
+                                          BinOp.Wrap.sub,
+                                          [
+                                            M.read (| β |);
+                                            M.call_closure (|
+                                              Ty.path "u64",
+                                              BinOp.Wrap.mul,
+                                              [ M.read (| q |); M.read (| a2 |) ]
+                                            |)
+                                          ]
                                         |)
                                       |)
                                     |) in
@@ -2641,9 +2865,17 @@ Module algorithms.
                                       let β := k3 in
                                       M.write (|
                                         β,
-                                        BinOp.Wrap.add (|
-                                          M.read (| β |),
-                                          BinOp.Wrap.mul (| M.read (| q |), M.read (| k2 |) |)
+                                        M.call_closure (|
+                                          Ty.path "u64",
+                                          BinOp.Wrap.add,
+                                          [
+                                            M.read (| β |);
+                                            M.call_closure (|
+                                              Ty.path "u64",
+                                              BinOp.Wrap.mul,
+                                              [ M.read (| q |); M.read (| k2 |) ]
+                                            |)
+                                          ]
                                         |)
                                       |)
                                     |) in
@@ -2657,18 +2889,22 @@ Module algorithms.
                                             (let γ :=
                                               M.use
                                                 (M.alloc (|
-                                                  BinOp.lt (|
-                                                    M.read (| a3 |),
-                                                    M.read (|
-                                                      get_constant (|
-                                                        "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT",
-                                                        Ty.path "u64"
+                                                  M.call_closure (|
+                                                    Ty.path "bool",
+                                                    BinOp.lt,
+                                                    [
+                                                      M.read (| a3 |);
+                                                      M.read (|
+                                                        get_constant (|
+                                                          "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT",
+                                                          Ty.path "u64"
+                                                        |)
                                                       |)
-                                                    |)
+                                                    ]
                                                   |)
                                                 |)) in
                                             let _ :=
-                                              M.is_constant_or_break_match (|
+                                              is_constant_or_break_match (|
                                                 M.read (| γ |),
                                                 Value.Bool true
                                               |) in
@@ -2709,7 +2945,7 @@ Module algorithms.
                                           ltac:(M.monadic
                                             (let γ := M.use (M.alloc (| Value.Bool true |)) in
                                             let _ :=
-                                              M.is_constant_or_break_match (|
+                                              is_constant_or_break_match (|
                                                 M.read (| γ |),
                                                 Value.Bool true
                                               |) in
@@ -2724,14 +2960,15 @@ Module algorithms.
                                                         M.use
                                                           (M.alloc (|
                                                             UnOp.not (|
-                                                              BinOp.lt (|
-                                                                M.read (| a2 |),
-                                                                M.read (| a3 |)
+                                                              M.call_closure (|
+                                                                Ty.path "bool",
+                                                                BinOp.lt,
+                                                                [ M.read (| a2 |); M.read (| a3 |) ]
                                                               |)
                                                             |)
                                                           |)) in
                                                       let _ :=
-                                                        M.is_constant_or_break_match (|
+                                                        is_constant_or_break_match (|
                                                           M.read (| γ |),
                                                           Value.Bool true
                                                         |) in
@@ -2769,7 +3006,7 @@ Module algorithms.
                                           ltac:(M.monadic
                                             (let γ := M.use (M.alloc (| Value.Bool true |)) in
                                             let _ :=
-                                              M.is_constant_or_break_match (|
+                                              is_constant_or_break_match (|
                                                 M.read (| γ |),
                                                 Value.Bool true
                                               |) in
@@ -2784,14 +3021,18 @@ Module algorithms.
                                                         M.use
                                                           (M.alloc (|
                                                             UnOp.not (|
-                                                              BinOp.gt (|
-                                                                M.read (| a2 |),
-                                                                Value.Integer IntegerKind.U64 0
+                                                              M.call_closure (|
+                                                                Ty.path "bool",
+                                                                BinOp.gt,
+                                                                [
+                                                                  M.read (| a2 |);
+                                                                  Value.Integer IntegerKind.U64 0
+                                                                ]
                                                               |)
                                                             |)
                                                           |)) in
                                                       let _ :=
-                                                        M.is_constant_or_break_match (|
+                                                        is_constant_or_break_match (|
                                                           M.read (| γ |),
                                                           Value.Bool true
                                                         |) in
@@ -2822,16 +3063,28 @@ Module algorithms.
                                     |) in
                                   let~ q : Ty.path "u64" :=
                                     M.alloc (|
-                                      BinOp.Wrap.div (| M.read (| a3 |), M.read (| a2 |) |)
+                                      M.call_closure (|
+                                        Ty.path "u64",
+                                        BinOp.Wrap.div,
+                                        [ M.read (| a3 |); M.read (| a2 |) ]
+                                      |)
                                     |) in
                                   let~ _ : Ty.tuple [] :=
                                     M.alloc (|
                                       let β := a3 in
                                       M.write (|
                                         β,
-                                        BinOp.Wrap.sub (|
-                                          M.read (| β |),
-                                          BinOp.Wrap.mul (| M.read (| q |), M.read (| a2 |) |)
+                                        M.call_closure (|
+                                          Ty.path "u64",
+                                          BinOp.Wrap.sub,
+                                          [
+                                            M.read (| β |);
+                                            M.call_closure (|
+                                              Ty.path "u64",
+                                              BinOp.Wrap.mul,
+                                              [ M.read (| q |); M.read (| a2 |) ]
+                                            |)
+                                          ]
                                         |)
                                       |)
                                     |) in
@@ -2840,9 +3093,17 @@ Module algorithms.
                                       let β := k3 in
                                       M.write (|
                                         β,
-                                        BinOp.Wrap.add (|
-                                          M.read (| β |),
-                                          BinOp.Wrap.mul (| M.read (| q |), M.read (| k2 |) |)
+                                        M.call_closure (|
+                                          Ty.path "u64",
+                                          BinOp.Wrap.add,
+                                          [
+                                            M.read (| β |);
+                                            M.call_closure (|
+                                              Ty.path "u64",
+                                              BinOp.Wrap.mul,
+                                              [ M.read (| q |); M.read (| k2 |) ]
+                                            |)
+                                          ]
                                         |)
                                       |)
                                     |) in
@@ -2865,66 +3126,98 @@ Module algorithms.
                       |) in
                     let~ u0 : Ty.path "u64" :=
                       M.alloc (|
-                        BinOp.Wrap.shr (| M.read (| k0 |), Value.Integer IntegerKind.I32 32 |)
+                        M.call_closure (|
+                          Ty.path "u64",
+                          BinOp.Wrap.shr,
+                          [ M.read (| k0 |); Value.Integer IntegerKind.I32 32 ]
+                        |)
                       |) in
                     let~ u1 : Ty.path "u64" :=
                       M.alloc (|
-                        BinOp.Wrap.shr (| M.read (| k1 |), Value.Integer IntegerKind.I32 32 |)
+                        M.call_closure (|
+                          Ty.path "u64",
+                          BinOp.Wrap.shr,
+                          [ M.read (| k1 |); Value.Integer IntegerKind.I32 32 ]
+                        |)
                       |) in
                     let~ u2 : Ty.path "u64" :=
                       M.alloc (|
-                        BinOp.Wrap.shr (| M.read (| k2 |), Value.Integer IntegerKind.I32 32 |)
+                        M.call_closure (|
+                          Ty.path "u64",
+                          BinOp.Wrap.shr,
+                          [ M.read (| k2 |); Value.Integer IntegerKind.I32 32 ]
+                        |)
                       |) in
                     let~ u3 : Ty.path "u64" :=
                       M.alloc (|
-                        BinOp.Wrap.shr (| M.read (| k3 |), Value.Integer IntegerKind.I32 32 |)
+                        M.call_closure (|
+                          Ty.path "u64",
+                          BinOp.Wrap.shr,
+                          [ M.read (| k3 |); Value.Integer IntegerKind.I32 32 ]
+                        |)
                       |) in
                     let~ v0 : Ty.path "u64" :=
                       M.alloc (|
-                        BinOp.Wrap.rem (|
-                          M.read (| k0 |),
-                          M.read (|
-                            get_constant (|
-                              "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT",
-                              Ty.path "u64"
+                        M.call_closure (|
+                          Ty.path "u64",
+                          BinOp.Wrap.rem,
+                          [
+                            M.read (| k0 |);
+                            M.read (|
+                              get_constant (|
+                                "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT",
+                                Ty.path "u64"
+                              |)
                             |)
-                          |)
+                          ]
                         |)
                       |) in
                     let~ v1 : Ty.path "u64" :=
                       M.alloc (|
-                        BinOp.Wrap.rem (|
-                          M.read (| k1 |),
-                          M.read (|
-                            get_constant (|
-                              "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT",
-                              Ty.path "u64"
+                        M.call_closure (|
+                          Ty.path "u64",
+                          BinOp.Wrap.rem,
+                          [
+                            M.read (| k1 |);
+                            M.read (|
+                              get_constant (|
+                                "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT",
+                                Ty.path "u64"
+                              |)
                             |)
-                          |)
+                          ]
                         |)
                       |) in
                     let~ v2 : Ty.path "u64" :=
                       M.alloc (|
-                        BinOp.Wrap.rem (|
-                          M.read (| k2 |),
-                          M.read (|
-                            get_constant (|
-                              "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT",
-                              Ty.path "u64"
+                        M.call_closure (|
+                          Ty.path "u64",
+                          BinOp.Wrap.rem,
+                          [
+                            M.read (| k2 |);
+                            M.read (|
+                              get_constant (|
+                                "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT",
+                                Ty.path "u64"
+                              |)
                             |)
-                          |)
+                          ]
                         |)
                       |) in
                     let~ v3 : Ty.path "u64" :=
                       M.alloc (|
-                        BinOp.Wrap.rem (|
-                          M.read (| k3 |),
-                          M.read (|
-                            get_constant (|
-                              "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT",
-                              Ty.path "u64"
+                        M.call_closure (|
+                          Ty.path "u64",
+                          BinOp.Wrap.rem,
+                          [
+                            M.read (| k3 |);
+                            M.read (|
+                              get_constant (|
+                                "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT",
+                                Ty.path "u64"
+                              |)
                             |)
-                          |)
+                          ]
                         |)
                       |) in
                     let~ _ : Ty.tuple [] :=
@@ -2936,10 +3229,7 @@ Module algorithms.
                             ltac:(M.monadic
                               (let γ := M.use (M.alloc (| Value.Bool true |)) in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
                                   Some (Ty.tuple []),
@@ -2951,19 +3241,23 @@ Module algorithms.
                                           M.use
                                             (M.alloc (|
                                               UnOp.not (|
-                                                BinOp.ge (|
-                                                  M.read (| a2 |),
-                                                  M.read (|
-                                                    get_constant (|
-                                                      "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT",
-                                                      Ty.path "u64"
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  BinOp.ge,
+                                                  [
+                                                    M.read (| a2 |);
+                                                    M.read (|
+                                                      get_constant (|
+                                                        "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT",
+                                                        Ty.path "u64"
+                                                      |)
                                                     |)
-                                                  |)
+                                                  ]
                                                 |)
                                               |)
                                             |)) in
                                         let _ :=
-                                          M.is_constant_or_break_match (|
+                                          is_constant_or_break_match (|
                                             M.read (| γ |),
                                             Value.Bool true
                                           |) in
@@ -2992,10 +3286,7 @@ Module algorithms.
                             ltac:(M.monadic
                               (let γ := M.use (M.alloc (| Value.Bool true |)) in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
                                   Some (Ty.tuple []),
@@ -3007,19 +3298,23 @@ Module algorithms.
                                           M.use
                                             (M.alloc (|
                                               UnOp.not (|
-                                                BinOp.lt (|
-                                                  M.read (| a3 |),
-                                                  M.read (|
-                                                    get_constant (|
-                                                      "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT",
-                                                      Ty.path "u64"
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  BinOp.lt,
+                                                  [
+                                                    M.read (| a3 |);
+                                                    M.read (|
+                                                      get_constant (|
+                                                        "ruint::algorithms::gcd::matrix::from_u64_prefix::LIMIT",
+                                                        Ty.path "u64"
+                                                      |)
                                                     |)
-                                                  |)
+                                                  ]
                                                 |)
                                               |)
                                             |)) in
                                         let _ :=
-                                          M.is_constant_or_break_match (|
+                                          is_constant_or_break_match (|
                                             M.read (| γ |),
                                             Value.Bool true
                                           |) in
@@ -3047,7 +3342,7 @@ Module algorithms.
                           ltac:(M.monadic
                             (let γ := M.use even in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let~ _ : Ty.tuple [] :=
                               M.match_operator (|
                                 Some (Ty.tuple []),
@@ -3057,7 +3352,7 @@ Module algorithms.
                                     ltac:(M.monadic
                                       (let γ := M.use (M.alloc (| Value.Bool true |)) in
                                       let _ :=
-                                        M.is_constant_or_break_match (|
+                                        is_constant_or_break_match (|
                                           M.read (| γ |),
                                           Value.Bool true
                                         |) in
@@ -3072,14 +3367,15 @@ Module algorithms.
                                                   M.use
                                                     (M.alloc (|
                                                       UnOp.not (|
-                                                        BinOp.ge (|
-                                                          M.read (| a2 |),
-                                                          M.read (| v2 |)
+                                                        M.call_closure (|
+                                                          Ty.path "bool",
+                                                          BinOp.ge,
+                                                          [ M.read (| a2 |); M.read (| v2 |) ]
                                                         |)
                                                       |)
                                                     |)) in
                                                 let _ :=
-                                                  M.is_constant_or_break_match (|
+                                                  is_constant_or_break_match (|
                                                     M.read (| γ |),
                                                     Value.Bool true
                                                   |) in
@@ -3112,13 +3408,25 @@ Module algorithms.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          BinOp.ge (|
-                                            BinOp.Wrap.sub (| M.read (| a1 |), M.read (| a2 |) |),
-                                            BinOp.Wrap.add (| M.read (| u2 |), M.read (| u1 |) |)
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            BinOp.ge,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "u64",
+                                                BinOp.Wrap.sub,
+                                                [ M.read (| a1 |); M.read (| a2 |) ]
+                                              |);
+                                              M.call_closure (|
+                                                Ty.path "u64",
+                                                BinOp.Wrap.add,
+                                                [ M.read (| u2 |); M.read (| u1 |) ]
+                                              |)
+                                            ]
                                           |)
                                         |)) in
                                     let _ :=
-                                      M.is_constant_or_break_match (|
+                                      is_constant_or_break_match (|
                                         M.read (| γ |),
                                         Value.Bool true
                                       |) in
@@ -3132,22 +3440,32 @@ Module algorithms.
                                               M.use
                                                 (M.alloc (|
                                                   LogicalOp.and (|
-                                                    BinOp.ge (| M.read (| a3 |), M.read (| u3 |) |),
+                                                    M.call_closure (|
+                                                      Ty.path "bool",
+                                                      BinOp.ge,
+                                                      [ M.read (| a3 |); M.read (| u3 |) ]
+                                                    |),
                                                     ltac:(M.monadic
-                                                      (BinOp.ge (|
-                                                        BinOp.Wrap.sub (|
-                                                          M.read (| a2 |),
-                                                          M.read (| a3 |)
-                                                        |),
-                                                        BinOp.Wrap.add (|
-                                                          M.read (| v3 |),
-                                                          M.read (| v2 |)
-                                                        |)
+                                                      (M.call_closure (|
+                                                        Ty.path "bool",
+                                                        BinOp.ge,
+                                                        [
+                                                          M.call_closure (|
+                                                            Ty.path "u64",
+                                                            BinOp.Wrap.sub,
+                                                            [ M.read (| a2 |); M.read (| a3 |) ]
+                                                          |);
+                                                          M.call_closure (|
+                                                            Ty.path "u64",
+                                                            BinOp.Wrap.add,
+                                                            [ M.read (| v3 |); M.read (| v2 |) ]
+                                                          |)
+                                                        ]
                                                       |)))
                                                   |)
                                                 |)) in
                                             let _ :=
-                                              M.is_constant_or_break_match (|
+                                              is_constant_or_break_match (|
                                                 M.read (| γ |),
                                                 Value.Bool true
                                               |) in
@@ -3203,7 +3521,7 @@ Module algorithms.
                                     ltac:(M.monadic
                                       (let γ := M.use (M.alloc (| Value.Bool true |)) in
                                       let _ :=
-                                        M.is_constant_or_break_match (|
+                                        is_constant_or_break_match (|
                                           M.read (| γ |),
                                           Value.Bool true
                                         |) in
@@ -3218,14 +3536,15 @@ Module algorithms.
                                                   M.use
                                                     (M.alloc (|
                                                       UnOp.not (|
-                                                        BinOp.ge (|
-                                                          M.read (| a2 |),
-                                                          M.read (| u2 |)
+                                                        M.call_closure (|
+                                                          Ty.path "bool",
+                                                          BinOp.ge,
+                                                          [ M.read (| a2 |); M.read (| u2 |) ]
                                                         |)
                                                       |)
                                                     |)) in
                                                 let _ :=
-                                                  M.is_constant_or_break_match (|
+                                                  is_constant_or_break_match (|
                                                     M.read (| γ |),
                                                     Value.Bool true
                                                   |) in
@@ -3258,13 +3577,25 @@ Module algorithms.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          BinOp.ge (|
-                                            BinOp.Wrap.sub (| M.read (| a1 |), M.read (| a2 |) |),
-                                            BinOp.Wrap.add (| M.read (| v2 |), M.read (| v1 |) |)
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            BinOp.ge,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "u64",
+                                                BinOp.Wrap.sub,
+                                                [ M.read (| a1 |); M.read (| a2 |) ]
+                                              |);
+                                              M.call_closure (|
+                                                Ty.path "u64",
+                                                BinOp.Wrap.add,
+                                                [ M.read (| v2 |); M.read (| v1 |) ]
+                                              |)
+                                            ]
                                           |)
                                         |)) in
                                     let _ :=
-                                      M.is_constant_or_break_match (|
+                                      is_constant_or_break_match (|
                                         M.read (| γ |),
                                         Value.Bool true
                                       |) in
@@ -3278,22 +3609,32 @@ Module algorithms.
                                               M.use
                                                 (M.alloc (|
                                                   LogicalOp.and (|
-                                                    BinOp.ge (| M.read (| a3 |), M.read (| v3 |) |),
+                                                    M.call_closure (|
+                                                      Ty.path "bool",
+                                                      BinOp.ge,
+                                                      [ M.read (| a3 |); M.read (| v3 |) ]
+                                                    |),
                                                     ltac:(M.monadic
-                                                      (BinOp.ge (|
-                                                        BinOp.Wrap.sub (|
-                                                          M.read (| a2 |),
-                                                          M.read (| a3 |)
-                                                        |),
-                                                        BinOp.Wrap.add (|
-                                                          M.read (| u3 |),
-                                                          M.read (| u2 |)
-                                                        |)
+                                                      (M.call_closure (|
+                                                        Ty.path "bool",
+                                                        BinOp.ge,
+                                                        [
+                                                          M.call_closure (|
+                                                            Ty.path "u64",
+                                                            BinOp.Wrap.sub,
+                                                            [ M.read (| a2 |); M.read (| a3 |) ]
+                                                          |);
+                                                          M.call_closure (|
+                                                            Ty.path "u64",
+                                                            BinOp.Wrap.add,
+                                                            [ M.read (| u3 |); M.read (| u2 |) ]
+                                                          |)
+                                                        ]
                                                       |)))
                                                   |)
                                                 |)) in
                                             let _ :=
-                                              M.is_constant_or_break_match (|
+                                              is_constant_or_break_match (|
                                                 M.read (| γ |),
                                                 Value.Bool true
                                               |) in
@@ -3395,10 +3736,7 @@ Module algorithms.
                             ltac:(M.monadic
                               (let γ := M.use (M.alloc (| Value.Bool true |)) in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
                                   Some (Ty.tuple []),
@@ -3410,11 +3748,15 @@ Module algorithms.
                                           M.use
                                             (M.alloc (|
                                               UnOp.not (|
-                                                BinOp.ge (| M.read (| r0 |), M.read (| r1 |) |)
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  BinOp.ge,
+                                                  [ M.read (| r0 |); M.read (| r1 |) ]
+                                                |)
                                               |)
                                             |)) in
                                         let _ :=
-                                          M.is_constant_or_break_match (|
+                                          is_constant_or_break_match (|
                                             M.read (| γ |),
                                             Value.Bool true
                                           |) in
@@ -3443,9 +3785,21 @@ Module algorithms.
                         |)
                       |) in
                     let~ r0s : Ty.path "u128" :=
-                      M.alloc (| BinOp.Wrap.shl (| M.read (| r0 |), M.read (| s |) |) |) in
+                      M.alloc (|
+                        M.call_closure (|
+                          Ty.path "u128",
+                          BinOp.Wrap.shl,
+                          [ M.read (| r0 |); M.read (| s |) ]
+                        |)
+                      |) in
                     let~ r1s : Ty.path "u128" :=
-                      M.alloc (| BinOp.Wrap.shl (| M.read (| r1 |), M.read (| s |) |) |) in
+                      M.alloc (|
+                        M.call_closure (|
+                          Ty.path "u128",
+                          BinOp.Wrap.shl,
+                          [ M.read (| r1 |); M.read (| s |) ]
+                        |)
+                      |) in
                     let~ q : Ty.path "ruint::algorithms::gcd::matrix::Matrix" :=
                       M.alloc (|
                         M.call_closure (|
@@ -3459,15 +3813,17 @@ Module algorithms.
                           [
                             M.cast
                               (Ty.path "u64")
-                              (BinOp.Wrap.shr (|
-                                M.read (| r0s |),
-                                Value.Integer IntegerKind.I32 64
+                              (M.call_closure (|
+                                Ty.path "u128",
+                                BinOp.Wrap.shr,
+                                [ M.read (| r0s |); Value.Integer IntegerKind.I32 64 ]
                               |));
                             M.cast
                               (Ty.path "u64")
-                              (BinOp.Wrap.shr (|
-                                M.read (| r1s |),
-                                Value.Integer IntegerKind.I32 64
+                              (M.call_closure (|
+                                Ty.path "u128",
+                                BinOp.Wrap.shr,
+                                [ M.read (| r1s |); Value.Integer IntegerKind.I32 64 ]
                               |))
                           ]
                         |)
@@ -3507,10 +3863,7 @@ Module algorithms.
                                     |)
                                   |)) in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (|
                                 M.never_to_any (| M.read (| M.return_ (| M.read (| q |) |) |) |)
                               |)));

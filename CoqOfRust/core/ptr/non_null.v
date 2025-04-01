@@ -288,8 +288,7 @@ Module ptr.
                                 []
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.alloc (|
                             M.call_closure (|
@@ -374,7 +373,7 @@ Module ptr.
                               |)
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
@@ -1217,7 +1216,7 @@ Module ptr.
                             "core::mem::SizedTypeProperties::IS_ZST",
                             Ty.path "bool"
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       self));
                   fun γ =>
                     ltac:(M.monadic
@@ -2273,8 +2272,7 @@ Module ptr.
                                 |)
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|
@@ -2563,21 +2561,25 @@ Module ptr.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.eq (|
-              M.call_closure (|
-                Ty.path "usize",
-                M.get_associated_function (|
-                  Ty.apply
-                    (Ty.path "core::ptr::non_null::NonNull")
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.eq,
+              [
+                M.call_closure (|
+                  Ty.path "usize",
+                  M.get_associated_function (|
+                    Ty.apply
+                      (Ty.path "core::ptr::non_null::NonNull")
+                      []
+                      [ Ty.apply (Ty.path "slice") [] [ T ] ],
+                    "len",
+                    [],
                     []
-                    [ Ty.apply (Ty.path "slice") [] [ T ] ],
-                  "len",
-                  [],
-                  []
-                |),
-                [ M.read (| self |) ]
-              |),
-              Value.Integer IntegerKind.Usize 0
+                  |),
+                  [ M.read (| self |) ]
+                |);
+                Value.Integer IntegerKind.Usize 0
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -3239,27 +3241,31 @@ Module ptr.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.eq (|
-              M.call_closure (|
-                Ty.apply (Ty.path "*mut") [] [ T ],
-                M.get_associated_function (|
-                  Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                  "as_ptr",
-                  [],
-                  []
-                |),
-                [ M.read (| M.deref (| M.read (| self |) |) |) ]
-              |),
-              M.call_closure (|
-                Ty.apply (Ty.path "*mut") [] [ T ],
-                M.get_associated_function (|
-                  Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
-                  "as_ptr",
-                  [],
-                  []
-                |),
-                [ M.read (| M.deref (| M.read (| other |) |) |) ]
-              |)
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.eq,
+              [
+                M.call_closure (|
+                  Ty.apply (Ty.path "*mut") [] [ T ],
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                    "as_ptr",
+                    [],
+                    []
+                  |),
+                  [ M.read (| M.deref (| M.read (| self |) |) |) ]
+                |);
+                M.call_closure (|
+                  Ty.apply (Ty.path "*mut") [] [ T ],
+                  M.get_associated_function (|
+                    Ty.apply (Ty.path "core::ptr::non_null::NonNull") [] [ T ],
+                    "as_ptr",
+                    [],
+                    []
+                  |),
+                  [ M.read (| M.deref (| M.read (| other |) |) |) ]
+                |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

@@ -542,8 +542,7 @@ Module vec.
                                 |)
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ start_ptr : Ty.apply (Ty.path "*mut") [] [ T ] :=
                           M.alloc (|
                             M.call_closure (|
@@ -584,14 +583,18 @@ Module vec.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.ne (|
-                                          M.read (| unyielded_ptr |),
-                                          (* MutToConstPointer *)
-                                          M.pointer_coercion (M.read (| start_ptr |))
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.ne,
+                                          [
+                                            M.read (| unyielded_ptr |);
+                                            (* MutToConstPointer *)
+                                            M.pointer_coercion (M.read (| start_ptr |))
+                                          ]
                                         |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -624,16 +627,21 @@ Module vec.
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      BinOp.ne (|
-                                        M.read (| tail |),
-                                        BinOp.Wrap.add (|
-                                          M.read (| start |),
-                                          M.read (| unyielded_len |)
-                                        |)
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.ne,
+                                        [
+                                          M.read (| tail |);
+                                          M.call_closure (|
+                                            Ty.path "usize",
+                                            BinOp.Wrap.add,
+                                            [ M.read (| start |); M.read (| unyielded_len |) ]
+                                          |)
+                                        ]
                                       |)
                                     |)) in
                                 let _ :=
-                                  M.is_constant_or_break_match (|
+                                  is_constant_or_break_match (|
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
@@ -748,35 +756,43 @@ Module vec.
                     |),
                     [
                       M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| source_vec |) |) |);
-                      BinOp.Wrap.add (|
-                        BinOp.Wrap.add (| M.read (| start |), M.read (| unyielded_len |) |),
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (|
-                              M.call_closure (|
-                                Ty.apply
-                                  (Ty.path "&")
-                                  []
-                                  [ Ty.apply (Ty.path "alloc::vec::drain::Drain") [] [ T; A ] ],
-                                M.get_trait_method (|
-                                  "core::ops::deref::Deref",
+                      M.call_closure (|
+                        Ty.path "usize",
+                        BinOp.Wrap.add,
+                        [
+                          M.call_closure (|
+                            Ty.path "usize",
+                            BinOp.Wrap.add,
+                            [ M.read (| start |); M.read (| unyielded_len |) ]
+                          |);
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (|
+                                M.call_closure (|
                                   Ty.apply
-                                    (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                    (Ty.path "&")
                                     []
                                     [ Ty.apply (Ty.path "alloc::vec::drain::Drain") [] [ T; A ] ],
-                                  [],
-                                  [],
-                                  "deref",
-                                  [],
-                                  []
-                                |),
-                                [ M.borrow (| Pointer.Kind.Ref, this |) ]
-                              |)
-                            |),
-                            "alloc::vec::drain::Drain",
-                            "tail_len"
+                                  M.get_trait_method (|
+                                    "core::ops::deref::Deref",
+                                    Ty.apply
+                                      (Ty.path "core::mem::manually_drop::ManuallyDrop")
+                                      []
+                                      [ Ty.apply (Ty.path "alloc::vec::drain::Drain") [] [ T; A ] ],
+                                    [],
+                                    [],
+                                    "deref",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.borrow (| Pointer.Kind.Ref, this |) ]
+                                |)
+                              |),
+                              "alloc::vec::drain::Drain",
+                              "tail_len"
+                            |)
                           |)
-                        |)
+                        ]
                       |)
                     ]
                   |)
@@ -1244,7 +1260,7 @@ Module vec.
                                   Ty.path "bool"
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
@@ -1305,18 +1321,23 @@ Module vec.
                                               Pointer.Kind.MutRef,
                                               M.deref (| M.read (| vec |) |)
                                             |);
-                                            BinOp.Wrap.add (|
-                                              BinOp.Wrap.add (|
-                                                M.read (| old_len |),
-                                                M.read (| drop_len |)
-                                              |),
-                                              M.read (|
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.deref (| M.read (| self |) |),
-                                                  "alloc::vec::drain::Drain",
-                                                  "tail_len"
+                                            M.call_closure (|
+                                              Ty.path "usize",
+                                              BinOp.Wrap.add,
+                                              [
+                                                M.call_closure (|
+                                                  Ty.path "usize",
+                                                  BinOp.Wrap.add,
+                                                  [ M.read (| old_len |); M.read (| drop_len |) ]
+                                                |);
+                                                M.read (|
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| self |) |),
+                                                    "alloc::vec::drain::Drain",
+                                                    "tail_len"
+                                                  |)
                                                 |)
-                                              |)
+                                              ]
                                             |)
                                           ]
                                         |)
@@ -1336,15 +1357,19 @@ Module vec.
                                               Pointer.Kind.MutRef,
                                               M.deref (| M.read (| vec |) |)
                                             |);
-                                            BinOp.Wrap.add (|
-                                              M.read (| old_len |),
-                                              M.read (|
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.deref (| M.read (| self |) |),
-                                                  "alloc::vec::drain::Drain",
-                                                  "tail_len"
+                                            M.call_closure (|
+                                              Ty.path "usize",
+                                              BinOp.Wrap.add,
+                                              [
+                                                M.read (| old_len |);
+                                                M.read (|
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| self |) |),
+                                                    "alloc::vec::drain::Drain",
+                                                    "tail_len"
+                                                  |)
                                                 |)
-                                              |)
+                                              ]
                                             |)
                                           ]
                                         |)
@@ -1374,13 +1399,14 @@ Module vec.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.eq (|
-                                    M.read (| drop_len |),
-                                    Value.Integer IntegerKind.Usize 0
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.eq,
+                                    [ M.read (| drop_len |); Value.Integer IntegerKind.Usize 0 ]
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (| M.read (| M.return_ (| Value.Tuple [] |) |) |)
                             |)));

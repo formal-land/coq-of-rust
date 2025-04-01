@@ -103,9 +103,13 @@ Definition random_animal (ε : list Value.t) (τ : list Ty.t) (α : list Value.t
                 (let γ :=
                   M.use
                     (M.alloc (|
-                      BinOp.lt (| M.read (| random_number |), M.read (| UnsupportedLiteral |) |)
+                      M.call_closure (|
+                        Ty.path "bool",
+                        BinOp.lt,
+                        [ M.read (| random_number |); M.read (| UnsupportedLiteral |) ]
+                      |)
                     |)) in
-                let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                 M.alloc (|
                   M.call_closure (|
                     Ty.apply

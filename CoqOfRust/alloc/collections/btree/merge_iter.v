@@ -1197,30 +1197,34 @@ Module collections.
                         M.alloc (|
                           Value.Tuple
                             [
-                              BinOp.Wrap.add (|
-                                Value.Integer IntegerKind.Usize 1,
-                                M.call_closure (|
-                                  Ty.path "usize",
-                                  M.get_trait_method (|
-                                    "core::iter::traits::exact_size::ExactSizeIterator",
-                                    I,
-                                    [],
-                                    [],
-                                    "len",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "alloc::collections::btree::merge_iter::MergeIterInner",
-                                        "a"
+                              M.call_closure (|
+                                Ty.path "usize",
+                                BinOp.Wrap.add,
+                                [
+                                  Value.Integer IntegerKind.Usize 1;
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    M.get_trait_method (|
+                                      "core::iter::traits::exact_size::ExactSizeIterator",
+                                      I,
+                                      [],
+                                      [],
+                                      "len",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "alloc::collections::btree::merge_iter::MergeIterInner",
+                                          "a"
+                                        |)
                                       |)
-                                    |)
-                                  ]
-                                |)
+                                    ]
+                                  |)
+                                ]
                               |);
                               M.call_closure (|
                                 Ty.path "usize",
@@ -1285,30 +1289,34 @@ Module collections.
                                   |)
                                 ]
                               |);
-                              BinOp.Wrap.add (|
-                                Value.Integer IntegerKind.Usize 1,
-                                M.call_closure (|
-                                  Ty.path "usize",
-                                  M.get_trait_method (|
-                                    "core::iter::traits::exact_size::ExactSizeIterator",
-                                    I,
-                                    [],
-                                    [],
-                                    "len",
-                                    [],
-                                    []
-                                  |),
-                                  [
-                                    M.borrow (|
-                                      Pointer.Kind.Ref,
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "alloc::collections::btree::merge_iter::MergeIterInner",
-                                        "b"
+                              M.call_closure (|
+                                Ty.path "usize",
+                                BinOp.Wrap.add,
+                                [
+                                  Value.Integer IntegerKind.Usize 1;
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    M.get_trait_method (|
+                                      "core::iter::traits::exact_size::ExactSizeIterator",
+                                      I,
+                                      [],
+                                      [],
+                                      "len",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "alloc::collections::btree::merge_iter::MergeIterInner",
+                                          "b"
+                                        |)
                                       |)
-                                    |)
-                                  ]
-                                |)
+                                    ]
+                                  |)
+                                ]
                               |)
                             ]
                         |)));

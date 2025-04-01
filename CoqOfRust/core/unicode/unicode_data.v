@@ -68,12 +68,28 @@ Module unicode.
                   M.alloc (|
                     M.cast
                       (Ty.path "usize")
-                      (BinOp.Wrap.div (| M.read (| needle |), Value.Integer IntegerKind.U32 64 |))
+                      (M.call_closure (|
+                        Ty.path "u32",
+                        BinOp.Wrap.div,
+                        [ M.read (| needle |); Value.Integer IntegerKind.U32 64 ]
+                      |))
                   |) in
                 let~ chunk_map_idx : Ty.path "usize" :=
-                  M.alloc (| BinOp.Wrap.div (| M.read (| bucket_idx |), CHUNK_SIZE |) |) in
+                  M.alloc (|
+                    M.call_closure (|
+                      Ty.path "usize",
+                      BinOp.Wrap.div,
+                      [ M.read (| bucket_idx |); CHUNK_SIZE ]
+                    |)
+                  |) in
                 let~ chunk_piece : Ty.path "usize" :=
-                  M.alloc (| BinOp.Wrap.rem (| M.read (| bucket_idx |), CHUNK_SIZE |) |) in
+                  M.alloc (|
+                    M.call_closure (|
+                      Ty.path "usize",
+                      BinOp.Wrap.rem,
+                      [ M.read (| bucket_idx |); CHUNK_SIZE ]
+                    |)
+                  |) in
                 let~ chunk_idx : Ty.path "u8" :=
                   M.copy (|
                     M.match_operator (|
@@ -85,27 +101,31 @@ Module unicode.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.lt (|
-                                    M.read (| chunk_map_idx |),
-                                    M.call_closure (|
-                                      Ty.path "usize",
-                                      M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                        "len",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (| M.read (| chunk_idx_map |) |)
-                                        |)
-                                      ]
-                                    |)
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.lt,
+                                    [
+                                      M.read (| chunk_map_idx |);
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        M.get_associated_function (|
+                                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                          "len",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| chunk_idx_map |) |)
+                                          |)
+                                        ]
+                                      |)
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.SubPointer.get_array_field (|
                               M.deref (| M.read (| chunk_idx_map |) |),
                               M.read (| chunk_map_idx |)
@@ -143,8 +163,46 @@ Module unicode.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.lt (|
-                                    M.read (| idx |),
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.lt,
+                                    [
+                                      M.read (| idx |);
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        M.get_associated_function (|
+                                          Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ],
+                                          "len",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| bitset_canonical |) |)
+                                          |)
+                                        ]
+                                      |)
+                                    ]
+                                  |)
+                                |)) in
+                            let _ :=
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            M.SubPointer.get_array_field (|
+                              M.deref (| M.read (| bitset_canonical |) |),
+                              M.read (| idx |)
+                            |)));
+                        fun γ =>
+                          ltac:(M.monadic
+                            (M.match_operator (|
+                              None,
+                              M.SubPointer.get_array_field (|
+                                M.deref (| M.read (| bitset_canonicalized |) |),
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  BinOp.Wrap.sub,
+                                  [
+                                    M.read (| idx |);
                                     M.call_closure (|
                                       Ty.path "usize",
                                       M.get_associated_function (|
@@ -160,37 +218,7 @@ Module unicode.
                                         |)
                                       ]
                                     |)
-                                  |)
-                                |)) in
-                            let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                            M.SubPointer.get_array_field (|
-                              M.deref (| M.read (| bitset_canonical |) |),
-                              M.read (| idx |)
-                            |)));
-                        fun γ =>
-                          ltac:(M.monadic
-                            (M.match_operator (|
-                              None,
-                              M.SubPointer.get_array_field (|
-                                M.deref (| M.read (| bitset_canonicalized |) |),
-                                BinOp.Wrap.sub (|
-                                  M.read (| idx |),
-                                  M.call_closure (|
-                                    Ty.path "usize",
-                                    M.get_associated_function (|
-                                      Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ],
-                                      "len",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| bitset_canonical |) |)
-                                      |)
-                                    ]
-                                  |)
+                                  ]
                                 |)
                               |),
                               [
@@ -209,14 +237,27 @@ Module unicode.
                                       |) in
                                     let~ should_invert : Ty.path "bool" :=
                                       M.alloc (|
-                                        BinOp.ne (|
-                                          BinOp.bit_and
-                                            (M.read (| mapping |))
-                                            (BinOp.Wrap.shl (|
-                                              Value.Integer IntegerKind.U8 1,
-                                              Value.Integer IntegerKind.I32 6
-                                            |)),
-                                          Value.Integer IntegerKind.U8 0
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.ne,
+                                          [
+                                            M.call_closure (|
+                                              Ty.path "u8",
+                                              BinOp.Wrap.bit_and,
+                                              [
+                                                M.read (| mapping |);
+                                                M.call_closure (|
+                                                  Ty.path "u8",
+                                                  BinOp.Wrap.shl,
+                                                  [
+                                                    Value.Integer IntegerKind.U8 1;
+                                                    Value.Integer IntegerKind.I32 6
+                                                  ]
+                                                |)
+                                              ]
+                                            |);
+                                            Value.Integer IntegerKind.U8 0
+                                          ]
                                         |)
                                       |) in
                                     let~ _ : Ty.tuple [] :=
@@ -228,7 +269,7 @@ Module unicode.
                                             ltac:(M.monadic
                                               (let γ := M.use should_invert in
                                               let _ :=
-                                                M.is_constant_or_break_match (|
+                                                is_constant_or_break_match (|
                                                   M.read (| γ |),
                                                   Value.Bool true
                                                 |) in
@@ -245,15 +286,28 @@ Module unicode.
                                       |) in
                                     let~ quantity : Ty.path "u8" :=
                                       M.alloc (|
-                                        BinOp.bit_and
-                                          (M.read (| mapping |))
-                                          (BinOp.Wrap.sub (|
-                                            BinOp.Wrap.shl (|
-                                              Value.Integer IntegerKind.U8 1,
-                                              Value.Integer IntegerKind.I32 6
-                                            |),
-                                            Value.Integer IntegerKind.U8 1
-                                          |))
+                                        M.call_closure (|
+                                          Ty.path "u8",
+                                          BinOp.Wrap.bit_and,
+                                          [
+                                            M.read (| mapping |);
+                                            M.call_closure (|
+                                              Ty.path "u8",
+                                              BinOp.Wrap.sub,
+                                              [
+                                                M.call_closure (|
+                                                  Ty.path "u8",
+                                                  BinOp.Wrap.shl,
+                                                  [
+                                                    Value.Integer IntegerKind.U8 1;
+                                                    Value.Integer IntegerKind.I32 6
+                                                  ]
+                                                |);
+                                                Value.Integer IntegerKind.U8 1
+                                              ]
+                                            |)
+                                          ]
+                                        |)
                                       |) in
                                     let~ _ : Ty.tuple [] :=
                                       M.match_operator (|
@@ -265,18 +319,31 @@ Module unicode.
                                               (let γ :=
                                                 M.use
                                                   (M.alloc (|
-                                                    BinOp.ne (|
-                                                      BinOp.bit_and
-                                                        (M.read (| mapping |))
-                                                        (BinOp.Wrap.shl (|
-                                                          Value.Integer IntegerKind.U8 1,
-                                                          Value.Integer IntegerKind.I32 7
-                                                        |)),
-                                                      Value.Integer IntegerKind.U8 0
+                                                    M.call_closure (|
+                                                      Ty.path "bool",
+                                                      BinOp.ne,
+                                                      [
+                                                        M.call_closure (|
+                                                          Ty.path "u8",
+                                                          BinOp.Wrap.bit_and,
+                                                          [
+                                                            M.read (| mapping |);
+                                                            M.call_closure (|
+                                                              Ty.path "u8",
+                                                              BinOp.Wrap.shl,
+                                                              [
+                                                                Value.Integer IntegerKind.U8 1;
+                                                                Value.Integer IntegerKind.I32 7
+                                                              ]
+                                                            |)
+                                                          ]
+                                                        |);
+                                                        Value.Integer IntegerKind.U8 0
+                                                      ]
                                                     |)
                                                   |)) in
                                               let _ :=
-                                                M.is_constant_or_break_match (|
+                                                is_constant_or_break_match (|
                                                   M.read (| γ |),
                                                   Value.Bool true
                                                 |) in
@@ -285,9 +352,15 @@ Module unicode.
                                                   let β := word in
                                                   M.write (|
                                                     β,
-                                                    BinOp.Wrap.shr (|
-                                                      M.read (| β |),
-                                                      M.cast (Ty.path "u64") (M.read (| quantity |))
+                                                    M.call_closure (|
+                                                      Ty.path "u64",
+                                                      BinOp.Wrap.shr,
+                                                      [
+                                                        M.read (| β |);
+                                                        M.cast
+                                                          (Ty.path "u64")
+                                                          (M.read (| quantity |))
+                                                      ]
                                                     |)
                                                   |)
                                                 |) in
@@ -325,19 +398,33 @@ Module unicode.
                     |)
                   |) in
                 M.alloc (|
-                  BinOp.ne (|
-                    BinOp.bit_and
-                      (M.read (| word |))
-                      (BinOp.Wrap.shl (|
-                        Value.Integer IntegerKind.U64 1,
-                        M.cast
-                          (Ty.path "u64")
-                          (BinOp.Wrap.rem (|
-                            M.read (| needle |),
-                            Value.Integer IntegerKind.U32 64
-                          |))
-                      |)),
-                    Value.Integer IntegerKind.U64 0
+                  M.call_closure (|
+                    Ty.path "bool",
+                    BinOp.ne,
+                    [
+                      M.call_closure (|
+                        Ty.path "u64",
+                        BinOp.Wrap.bit_and,
+                        [
+                          M.read (| word |);
+                          M.call_closure (|
+                            Ty.path "u64",
+                            BinOp.Wrap.shl,
+                            [
+                              Value.Integer IntegerKind.U64 1;
+                              M.cast
+                                (Ty.path "u64")
+                                (M.call_closure (|
+                                  Ty.path "u32",
+                                  BinOp.Wrap.rem,
+                                  [ M.read (| needle |); Value.Integer IntegerKind.U32 64 ]
+                                |))
+                            ]
+                          |)
+                        ]
+                      |);
+                      Value.Integer IntegerKind.U64 0
+                    ]
                   |)
                 |)
               |)))
@@ -360,15 +447,25 @@ Module unicode.
       | [], [], [ short_offset_run_header ] =>
         ltac:(M.monadic
           (let short_offset_run_header := M.alloc (| short_offset_run_header |) in
-          BinOp.bit_and
-            (M.read (| short_offset_run_header |))
-            (BinOp.Wrap.sub (|
-              BinOp.Wrap.shl (|
-                Value.Integer IntegerKind.U32 1,
-                Value.Integer IntegerKind.I32 21
-              |),
-              Value.Integer IntegerKind.U32 1
-            |))))
+          M.call_closure (|
+            Ty.path "u32",
+            BinOp.Wrap.bit_and,
+            [
+              M.read (| short_offset_run_header |);
+              M.call_closure (|
+                Ty.path "u32",
+                BinOp.Wrap.sub,
+                [
+                  M.call_closure (|
+                    Ty.path "u32",
+                    BinOp.Wrap.shl,
+                    [ Value.Integer IntegerKind.U32 1; Value.Integer IntegerKind.I32 21 ]
+                  |);
+                  Value.Integer IntegerKind.U32 1
+                ]
+              |)
+            ]
+          |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -389,9 +486,10 @@ Module unicode.
           (let short_offset_run_header := M.alloc (| short_offset_run_header |) in
           M.cast
             (Ty.path "usize")
-            (BinOp.Wrap.shr (|
-              M.read (| short_offset_run_header |),
-              Value.Integer IntegerKind.I32 21
+            (M.call_closure (|
+              Ty.path "u32",
+              BinOp.Wrap.shr,
+              [ M.read (| short_offset_run_header |); Value.Integer IntegerKind.I32 21 ]
             |))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -482,9 +580,10 @@ Module unicode.
                             M.borrow (|
                               Pointer.Kind.Ref,
                               M.alloc (|
-                                BinOp.Wrap.shl (|
-                                  M.read (| needle |),
-                                  Value.Integer IntegerKind.I32 11
+                                M.call_closure (|
+                                  Ty.path "u32",
+                                  BinOp.Wrap.shl,
+                                  [ M.read (| needle |); Value.Integer IntegerKind.I32 11 ]
                                 |)
                               |)
                             |)
@@ -538,7 +637,11 @@ Module unicode.
                           |) in
                         let idx := M.copy (| γ0_0 |) in
                         M.alloc (|
-                          BinOp.Wrap.add (| M.read (| idx |), Value.Integer IntegerKind.Usize 1 |)
+                          M.call_closure (|
+                            Ty.path "usize",
+                            BinOp.Wrap.add,
+                            [ M.read (| idx |); Value.Integer IntegerKind.Usize 1 ]
+                          |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -594,9 +697,10 @@ Module unicode.
                                   Pointer.Kind.Ref,
                                   M.deref (| M.read (| short_offset_runs |) |)
                                 |);
-                                BinOp.Wrap.add (|
-                                  M.read (| last_idx |),
-                                  Value.Integer IntegerKind.Usize 1
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  BinOp.Wrap.add,
+                                  [ M.read (| last_idx |); Value.Integer IntegerKind.Usize 1 ]
                                 |)
                               ]
                             |)
@@ -609,35 +713,47 @@ Module unicode.
                           |) in
                         let next := M.copy (| γ0_0 |) in
                         M.alloc (|
-                          BinOp.Wrap.sub (|
-                            M.call_closure (|
-                              Ty.path "usize",
-                              M.get_function (|
-                                "core::unicode::unicode_data::decode_length",
-                                [],
-                                []
-                              |),
-                              [ M.read (| M.deref (| M.read (| next |) |) |) ]
-                            |),
-                            M.read (| offset_idx |)
+                          M.call_closure (|
+                            Ty.path "usize",
+                            BinOp.Wrap.sub,
+                            [
+                              M.call_closure (|
+                                Ty.path "usize",
+                                M.get_function (|
+                                  "core::unicode::unicode_data::decode_length",
+                                  [],
+                                  []
+                                |),
+                                [ M.read (| M.deref (| M.read (| next |) |) |) ]
+                              |);
+                              M.read (| offset_idx |)
+                            ]
                           |)
                         |)));
                     fun γ =>
                       ltac:(M.monadic
                         (M.alloc (|
-                          BinOp.Wrap.sub (|
-                            M.call_closure (|
-                              Ty.path "usize",
-                              M.get_associated_function (|
-                                Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                "len",
-                                [],
-                                []
-                              |),
-                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| offsets |) |) |)
-                              ]
-                            |),
-                            M.read (| offset_idx |)
+                          M.call_closure (|
+                            Ty.path "usize",
+                            BinOp.Wrap.sub,
+                            [
+                              M.call_closure (|
+                                Ty.path "usize",
+                                M.get_associated_function (|
+                                  Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                  "len",
+                                  [],
+                                  []
+                                |),
+                                [
+                                  M.borrow (|
+                                    Pointer.Kind.Ref,
+                                    M.deref (| M.read (| offsets |) |)
+                                  |)
+                                ]
+                              |);
+                              M.read (| offset_idx |)
+                            ]
                           |)
                         |)))
                   ]
@@ -714,7 +830,13 @@ Module unicode.
                 |)
               |) in
             let~ total : Ty.path "u32" :=
-              M.alloc (| BinOp.Wrap.sub (| M.read (| needle |), M.read (| prev |) |) |) in
+              M.alloc (|
+                M.call_closure (|
+                  Ty.path "u32",
+                  BinOp.Wrap.sub,
+                  [ M.read (| needle |); M.read (| prev |) ]
+                |)
+              |) in
             let~ prefix_sum : Ty.path "u32" := M.alloc (| Value.Integer IntegerKind.U32 0 |) in
             let~ _ : Ty.tuple [] :=
               M.use
@@ -738,9 +860,10 @@ Module unicode.
                           [
                             ("start", Value.Integer IntegerKind.Usize 0);
                             ("end_",
-                              BinOp.Wrap.sub (|
-                                M.read (| length |),
-                                Value.Integer IntegerKind.Usize 1
+                              M.call_closure (|
+                                Ty.path "usize",
+                                BinOp.Wrap.sub,
+                                [ M.read (| length |); Value.Integer IntegerKind.Usize 1 ]
                               |))
                           ]
                       ]
@@ -810,9 +933,13 @@ Module unicode.
                                           let β := prefix_sum in
                                           M.write (|
                                             β,
-                                            BinOp.Wrap.add (|
-                                              M.read (| β |),
-                                              M.cast (Ty.path "u32") (M.read (| offset |))
+                                            M.call_closure (|
+                                              Ty.path "u32",
+                                              BinOp.Wrap.add,
+                                              [
+                                                M.read (| β |);
+                                                M.cast (Ty.path "u32") (M.read (| offset |))
+                                              ]
                                             |)
                                           |)
                                         |) in
@@ -826,13 +953,17 @@ Module unicode.
                                                 (let γ :=
                                                   M.use
                                                     (M.alloc (|
-                                                      BinOp.gt (|
-                                                        M.read (| prefix_sum |),
-                                                        M.read (| total |)
+                                                      M.call_closure (|
+                                                        Ty.path "bool",
+                                                        BinOp.gt,
+                                                        [
+                                                          M.read (| prefix_sum |);
+                                                          M.read (| total |)
+                                                        ]
                                                       |)
                                                     |)) in
                                                 let _ :=
-                                                  M.is_constant_or_break_match (|
+                                                  is_constant_or_break_match (|
                                                     M.read (| γ |),
                                                     Value.Bool true
                                                   |) in
@@ -847,9 +978,10 @@ Module unicode.
                                           let β := offset_idx in
                                           M.write (|
                                             β,
-                                            BinOp.Wrap.add (|
-                                              M.read (| β |),
-                                              Value.Integer IntegerKind.Usize 1
+                                            M.call_closure (|
+                                              Ty.path "usize",
+                                              BinOp.Wrap.add,
+                                              [ M.read (| β |); Value.Integer IntegerKind.Usize 1 ]
                                             |)
                                           |)
                                         |) in
@@ -861,9 +993,17 @@ Module unicode.
                   ]
                 |)) in
             M.alloc (|
-              BinOp.eq (|
-                BinOp.Wrap.rem (| M.read (| offset_idx |), Value.Integer IntegerKind.Usize 2 |),
-                Value.Integer IntegerKind.Usize 1
+              M.call_closure (|
+                Ty.path "bool",
+                BinOp.eq,
+                [
+                  M.call_closure (|
+                    Ty.path "usize",
+                    BinOp.Wrap.rem,
+                    [ M.read (| offset_idx |); Value.Integer IntegerKind.Usize 2 ]
+                  |);
+                  Value.Integer IntegerKind.Usize 1
+                ]
               |)
             |)
           |)))
@@ -5048,9 +5188,10 @@ Module unicode.
           ltac:(M.monadic
             (let c := M.alloc (| c |) in
             LogicalOp.and (|
-              BinOp.ge (|
-                M.cast (Ty.path "u32") (M.read (| c |)),
-                Value.Integer IntegerKind.U32 768
+              M.call_closure (|
+                Ty.path "bool",
+                BinOp.ge,
+                [ M.cast (Ty.path "u32") (M.read (| c |)); Value.Integer IntegerKind.U32 768 ]
               |),
               ltac:(M.monadic
                 (M.call_closure (|
@@ -7433,110 +7574,147 @@ Module unicode.
               M.match_operator (|
                 Some (Ty.path "bool"),
                 M.alloc (|
-                  BinOp.Wrap.shr (|
-                    M.cast (Ty.path "u32") (M.read (| c |)),
-                    Value.Integer IntegerKind.I32 8
+                  M.call_closure (|
+                    Ty.path "u32",
+                    BinOp.Wrap.shr,
+                    [ M.cast (Ty.path "u32") (M.read (| c |)); Value.Integer IntegerKind.I32 8 ]
                   |)
                 |),
                 [
                   fun γ =>
                     ltac:(M.monadic
                       (let _ :=
-                        M.is_constant_or_break_match (|
+                        is_constant_or_break_match (|
                           M.read (| γ |),
                           Value.Integer IntegerKind.U32 0
                         |) in
                       M.alloc (|
-                        BinOp.ne (|
-                          BinOp.bit_and
-                            (M.read (|
-                              M.SubPointer.get_array_field (|
-                                M.deref (|
-                                  M.read (|
-                                    get_constant (|
-                                      "core::unicode::unicode_data::white_space::WHITESPACE_MAP",
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [
+                        M.call_closure (|
+                          Ty.path "bool",
+                          BinOp.ne,
+                          [
+                            M.call_closure (|
+                              Ty.path "u8",
+                              BinOp.Wrap.bit_and,
+                              [
+                                M.read (|
+                                  M.SubPointer.get_array_field (|
+                                    M.deref (|
+                                      M.read (|
+                                        get_constant (|
+                                          "core::unicode::unicode_data::white_space::WHITESPACE_MAP",
                                           Ty.apply
-                                            (Ty.path "array")
-                                            [ Value.Integer IntegerKind.Usize 256 ]
-                                            [ Ty.path "u8" ]
-                                        ]
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "array")
+                                                [ Value.Integer IntegerKind.Usize 256 ]
+                                                [ Ty.path "u8" ]
+                                            ]
+                                        |)
+                                      |)
+                                    |),
+                                    M.call_closure (|
+                                      Ty.path "usize",
+                                      BinOp.Wrap.bit_and,
+                                      [
+                                        M.cast (Ty.path "usize") (M.read (| c |));
+                                        Value.Integer IntegerKind.Usize 255
+                                      ]
                                     |)
                                   |)
-                                |),
-                                BinOp.bit_and
-                                  (M.cast (Ty.path "usize") (M.read (| c |)))
-                                  (Value.Integer IntegerKind.Usize 255)
-                              |)
-                            |))
-                            (Value.Integer IntegerKind.U8 1),
-                          Value.Integer IntegerKind.U8 0
+                                |);
+                                Value.Integer IntegerKind.U8 1
+                              ]
+                            |);
+                            Value.Integer IntegerKind.U8 0
+                          ]
                         |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let _ :=
-                        M.is_constant_or_break_match (|
+                        is_constant_or_break_match (|
                           M.read (| γ |),
                           Value.Integer IntegerKind.U32 22
                         |) in
                       M.alloc (|
-                        BinOp.eq (|
-                          M.cast (Ty.path "u32") (M.read (| c |)),
-                          Value.Integer IntegerKind.U32 5760
+                        M.call_closure (|
+                          Ty.path "bool",
+                          BinOp.eq,
+                          [
+                            M.cast (Ty.path "u32") (M.read (| c |));
+                            Value.Integer IntegerKind.U32 5760
+                          ]
                         |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let _ :=
-                        M.is_constant_or_break_match (|
+                        is_constant_or_break_match (|
                           M.read (| γ |),
                           Value.Integer IntegerKind.U32 32
                         |) in
                       M.alloc (|
-                        BinOp.ne (|
-                          BinOp.bit_and
-                            (M.read (|
-                              M.SubPointer.get_array_field (|
-                                M.deref (|
-                                  M.read (|
-                                    get_constant (|
-                                      "core::unicode::unicode_data::white_space::WHITESPACE_MAP",
-                                      Ty.apply
-                                        (Ty.path "&")
-                                        []
-                                        [
+                        M.call_closure (|
+                          Ty.path "bool",
+                          BinOp.ne,
+                          [
+                            M.call_closure (|
+                              Ty.path "u8",
+                              BinOp.Wrap.bit_and,
+                              [
+                                M.read (|
+                                  M.SubPointer.get_array_field (|
+                                    M.deref (|
+                                      M.read (|
+                                        get_constant (|
+                                          "core::unicode::unicode_data::white_space::WHITESPACE_MAP",
                                           Ty.apply
-                                            (Ty.path "array")
-                                            [ Value.Integer IntegerKind.Usize 256 ]
-                                            [ Ty.path "u8" ]
-                                        ]
+                                            (Ty.path "&")
+                                            []
+                                            [
+                                              Ty.apply
+                                                (Ty.path "array")
+                                                [ Value.Integer IntegerKind.Usize 256 ]
+                                                [ Ty.path "u8" ]
+                                            ]
+                                        |)
+                                      |)
+                                    |),
+                                    M.call_closure (|
+                                      Ty.path "usize",
+                                      BinOp.Wrap.bit_and,
+                                      [
+                                        M.cast (Ty.path "usize") (M.read (| c |));
+                                        Value.Integer IntegerKind.Usize 255
+                                      ]
                                     |)
                                   |)
-                                |),
-                                BinOp.bit_and
-                                  (M.cast (Ty.path "usize") (M.read (| c |)))
-                                  (Value.Integer IntegerKind.Usize 255)
-                              |)
-                            |))
-                            (Value.Integer IntegerKind.U8 2),
-                          Value.Integer IntegerKind.U8 0
+                                |);
+                                Value.Integer IntegerKind.U8 2
+                              ]
+                            |);
+                            Value.Integer IntegerKind.U8 0
+                          ]
                         |)
                       |)));
                   fun γ =>
                     ltac:(M.monadic
                       (let _ :=
-                        M.is_constant_or_break_match (|
+                        is_constant_or_break_match (|
                           M.read (| γ |),
                           Value.Integer IntegerKind.U32 48
                         |) in
                       M.alloc (|
-                        BinOp.eq (|
-                          M.cast (Ty.path "u32") (M.read (| c |)),
-                          Value.Integer IntegerKind.U32 12288
+                        M.call_closure (|
+                          Ty.path "bool",
+                          BinOp.eq,
+                          [
+                            M.cast (Ty.path "u32") (M.read (| c |));
+                            Value.Integer IntegerKind.U32 12288
+                          ]
                         |)
                       |)));
                   fun γ => ltac:(M.monadic (M.alloc (| Value.Bool false |)))
@@ -7604,7 +7782,7 @@ Module unicode.
                               [ M.borrow (| Pointer.Kind.Ref, c |) ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.Array
                           [
@@ -8109,22 +8287,33 @@ Module unicode.
                                                                                     M.cast
                                                                                       (Ty.path
                                                                                         "usize")
-                                                                                      (BinOp.bit_and
-                                                                                        (M.read (|
-                                                                                          u
-                                                                                        |))
-                                                                                        (BinOp.Wrap.sub (|
+                                                                                      (M.call_closure (|
+                                                                                        Ty.path
+                                                                                          "u32",
+                                                                                        BinOp.Wrap.bit_and,
+                                                                                        [
                                                                                           M.read (|
-                                                                                            get_constant (|
-                                                                                              "core::unicode::unicode_data::conversions::INDEX_MASK",
-                                                                                              Ty.path
-                                                                                                "u32"
-                                                                                            |)
-                                                                                          |),
-                                                                                          Value.Integer
-                                                                                            IntegerKind.U32
-                                                                                            1
-                                                                                        |)))
+                                                                                            u
+                                                                                          |);
+                                                                                          M.call_closure (|
+                                                                                            Ty.path
+                                                                                              "u32",
+                                                                                            BinOp.Wrap.sub,
+                                                                                            [
+                                                                                              M.read (|
+                                                                                                get_constant (|
+                                                                                                  "core::unicode::unicode_data::conversions::INDEX_MASK",
+                                                                                                  Ty.path
+                                                                                                    "u32"
+                                                                                                |)
+                                                                                              |);
+                                                                                              Value.Integer
+                                                                                                IntegerKind.U32
+                                                                                                1
+                                                                                            ]
+                                                                                          |)
+                                                                                        ]
+                                                                                      |))
                                                                                   ]
                                                                                 |)
                                                                               |)
@@ -8203,7 +8392,7 @@ Module unicode.
                               [ M.borrow (| Pointer.Kind.Ref, c |) ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.Array
                           [
@@ -8708,22 +8897,33 @@ Module unicode.
                                                                                     M.cast
                                                                                       (Ty.path
                                                                                         "usize")
-                                                                                      (BinOp.bit_and
-                                                                                        (M.read (|
-                                                                                          u
-                                                                                        |))
-                                                                                        (BinOp.Wrap.sub (|
+                                                                                      (M.call_closure (|
+                                                                                        Ty.path
+                                                                                          "u32",
+                                                                                        BinOp.Wrap.bit_and,
+                                                                                        [
                                                                                           M.read (|
-                                                                                            get_constant (|
-                                                                                              "core::unicode::unicode_data::conversions::INDEX_MASK",
-                                                                                              Ty.path
-                                                                                                "u32"
-                                                                                            |)
-                                                                                          |),
-                                                                                          Value.Integer
-                                                                                            IntegerKind.U32
-                                                                                            1
-                                                                                        |)))
+                                                                                            u
+                                                                                          |);
+                                                                                          M.call_closure (|
+                                                                                            Ty.path
+                                                                                              "u32",
+                                                                                            BinOp.Wrap.sub,
+                                                                                            [
+                                                                                              M.read (|
+                                                                                                get_constant (|
+                                                                                                  "core::unicode::unicode_data::conversions::INDEX_MASK",
+                                                                                                  Ty.path
+                                                                                                    "u32"
+                                                                                                |)
+                                                                                              |);
+                                                                                              Value.Integer
+                                                                                                IntegerKind.U32
+                                                                                                1
+                                                                                            ]
+                                                                                          |)
+                                                                                        ]
+                                                                                      |))
                                                                                   ]
                                                                                 |)
                                                                               |)

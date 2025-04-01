@@ -553,7 +553,13 @@ Module legacy.
                       [],
                       []
                     |),
-                    [ BinOp.Wrap.add (| M.read (| len |), Value.Integer IntegerKind.Usize 33 |) ]
+                    [
+                      M.call_closure (|
+                        Ty.path "usize",
+                        BinOp.Wrap.add,
+                        [ M.read (| len |); Value.Integer IntegerKind.Usize 33 ]
+                      |)
+                    ]
                   |)
                 |) in
               let~ _ : Ty.tuple [] :=
@@ -643,7 +649,11 @@ Module legacy.
                     |),
                     [
                       M.borrow (| Pointer.Kind.MutRef, padded_bytecode |);
-                      BinOp.Wrap.add (| M.read (| len |), Value.Integer IntegerKind.Usize 33 |);
+                      M.call_closure (|
+                        Ty.path "usize",
+                        BinOp.Wrap.add,
+                        [ M.read (| len |); Value.Integer IntegerKind.Usize 33 ]
+                      |);
                       Value.Integer IntegerKind.U8 0
                     ]
                   |)
@@ -838,7 +848,11 @@ Module legacy.
                     []
                   |),
                   [
-                    BinOp.ne (| Value.Integer IntegerKind.I32 0, Value.Integer IntegerKind.I32 0 |);
+                    M.call_closure (|
+                      Ty.path "bool",
+                      BinOp.ne,
+                      [ Value.Integer IntegerKind.I32 0; Value.Integer IntegerKind.I32 0 ]
+                    |);
                     M.call_closure (|
                       Ty.path "usize",
                       M.get_associated_function (|

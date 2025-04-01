@@ -24,12 +24,12 @@ Definition matching (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M
                 (let γ0_0 := M.SubPointer.get_tuple_field (| γ, 0 |) in
                 let γ0_1 := M.SubPointer.get_tuple_field (| γ, 1 |) in
                 let _ :=
-                  M.is_constant_or_break_match (|
+                  is_constant_or_break_match (|
                     M.read (| γ0_0 |),
                     Value.Integer IntegerKind.I32 0
                   |) in
                 let _ :=
-                  M.is_constant_or_break_match (|
+                  is_constant_or_break_match (|
                     M.read (| γ0_1 |),
                     Value.Integer IntegerKind.I32 0
                   |) in

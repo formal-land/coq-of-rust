@@ -91,21 +91,25 @@ Module str.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             LogicalOp.and (|
-              BinOp.eq (|
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "core::str::error::Utf8Error",
-                    "valid_up_to"
+              M.call_closure (|
+                Ty.path "bool",
+                BinOp.eq,
+                [
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::str::error::Utf8Error",
+                      "valid_up_to"
+                    |)
+                  |);
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| other |) |),
+                      "core::str::error::Utf8Error",
+                      "valid_up_to"
+                    |)
                   |)
-                |),
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| other |) |),
-                    "core::str::error::Utf8Error",
-                    "valid_up_to"
-                  |)
-                |)
+                ]
               |),
               ltac:(M.monadic
                 (M.call_closure (|

@@ -19,8 +19,30 @@ Module algorithms.
         ltac:(M.monadic
           (let high := M.alloc (| high |) in
           let low := M.alloc (| low |) in
-          BinOp.bit_or
-            (BinOp.Wrap.shl (|
+          M.call_closure (|
+            Ty.path "u128",
+            BinOp.Wrap.bit_or,
+            [
+              M.call_closure (|
+                Ty.path "u128",
+                BinOp.Wrap.shl,
+                [
+                  M.call_closure (|
+                    Ty.path "u128",
+                    M.get_trait_method (|
+                      "core::convert::From",
+                      Ty.path "u128",
+                      [],
+                      [ Ty.path "u64" ],
+                      "from",
+                      [],
+                      []
+                    |),
+                    [ M.read (| high |) ]
+                  |);
+                  Value.Integer IntegerKind.I32 64
+                ]
+              |);
               M.call_closure (|
                 Ty.path "u128",
                 M.get_trait_method (|
@@ -32,23 +54,10 @@ Module algorithms.
                   [],
                   []
                 |),
-                [ M.read (| high |) ]
-              |),
-              Value.Integer IntegerKind.I32 64
-            |))
-            (M.call_closure (|
-              Ty.path "u128",
-              M.get_trait_method (|
-                "core::convert::From",
-                Ty.path "u128",
-                [],
-                [ Ty.path "u64" ],
-                "from",
-                [],
-                []
-              |),
-              [ M.read (| low |) ]
-            |))))
+                [ M.read (| low |) ]
+              |)
+            ]
+          |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -63,33 +72,37 @@ Module algorithms.
         ltac:(M.monadic
           (let a := M.alloc (| a |) in
           let b := M.alloc (| b |) in
-          BinOp.Wrap.add (|
-            M.call_closure (|
-              Ty.path "u128",
-              M.get_trait_method (|
-                "core::convert::From",
+          M.call_closure (|
+            Ty.path "u128",
+            BinOp.Wrap.add,
+            [
+              M.call_closure (|
                 Ty.path "u128",
-                [],
-                [ Ty.path "u64" ],
-                "from",
-                [],
-                []
-              |),
-              [ M.read (| a |) ]
-            |),
-            M.call_closure (|
-              Ty.path "u128",
-              M.get_trait_method (|
-                "core::convert::From",
+                M.get_trait_method (|
+                  "core::convert::From",
+                  Ty.path "u128",
+                  [],
+                  [ Ty.path "u64" ],
+                  "from",
+                  [],
+                  []
+                |),
+                [ M.read (| a |) ]
+              |);
+              M.call_closure (|
                 Ty.path "u128",
-                [],
-                [ Ty.path "u64" ],
-                "from",
-                [],
-                []
-              |),
-              [ M.read (| b |) ]
-            |)
+                M.get_trait_method (|
+                  "core::convert::From",
+                  Ty.path "u128",
+                  [],
+                  [ Ty.path "u64" ],
+                  "from",
+                  [],
+                  []
+                |),
+                [ M.read (| b |) ]
+              |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -105,33 +118,37 @@ Module algorithms.
         ltac:(M.monadic
           (let a := M.alloc (| a |) in
           let b := M.alloc (| b |) in
-          BinOp.Wrap.mul (|
-            M.call_closure (|
-              Ty.path "u128",
-              M.get_trait_method (|
-                "core::convert::From",
+          M.call_closure (|
+            Ty.path "u128",
+            BinOp.Wrap.mul,
+            [
+              M.call_closure (|
                 Ty.path "u128",
-                [],
-                [ Ty.path "u64" ],
-                "from",
-                [],
-                []
-              |),
-              [ M.read (| a |) ]
-            |),
-            M.call_closure (|
-              Ty.path "u128",
-              M.get_trait_method (|
-                "core::convert::From",
+                M.get_trait_method (|
+                  "core::convert::From",
+                  Ty.path "u128",
+                  [],
+                  [ Ty.path "u64" ],
+                  "from",
+                  [],
+                  []
+                |),
+                [ M.read (| a |) ]
+              |);
+              M.call_closure (|
                 Ty.path "u128",
-                [],
-                [ Ty.path "u64" ],
-                "from",
-                [],
-                []
-              |),
-              [ M.read (| b |) ]
-            |)
+                M.get_trait_method (|
+                  "core::convert::From",
+                  Ty.path "u128",
+                  [],
+                  [ Ty.path "u64" ],
+                  "from",
+                  [],
+                  []
+                |),
+                [ M.read (| b |) ]
+              |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -148,8 +165,42 @@ Module algorithms.
           (let a := M.alloc (| a |) in
           let b := M.alloc (| b |) in
           let c := M.alloc (| c |) in
-          BinOp.Wrap.add (|
-            BinOp.Wrap.mul (|
+          M.call_closure (|
+            Ty.path "u128",
+            BinOp.Wrap.add,
+            [
+              M.call_closure (|
+                Ty.path "u128",
+                BinOp.Wrap.mul,
+                [
+                  M.call_closure (|
+                    Ty.path "u128",
+                    M.get_trait_method (|
+                      "core::convert::From",
+                      Ty.path "u128",
+                      [],
+                      [ Ty.path "u64" ],
+                      "from",
+                      [],
+                      []
+                    |),
+                    [ M.read (| a |) ]
+                  |);
+                  M.call_closure (|
+                    Ty.path "u128",
+                    M.get_trait_method (|
+                      "core::convert::From",
+                      Ty.path "u128",
+                      [],
+                      [ Ty.path "u64" ],
+                      "from",
+                      [],
+                      []
+                    |),
+                    [ M.read (| b |) ]
+                  |)
+                ]
+              |);
               M.call_closure (|
                 Ty.path "u128",
                 M.get_trait_method (|
@@ -161,35 +212,9 @@ Module algorithms.
                   [],
                   []
                 |),
-                [ M.read (| a |) ]
-              |),
-              M.call_closure (|
-                Ty.path "u128",
-                M.get_trait_method (|
-                  "core::convert::From",
-                  Ty.path "u128",
-                  [],
-                  [ Ty.path "u64" ],
-                  "from",
-                  [],
-                  []
-                |),
-                [ M.read (| b |) ]
+                [ M.read (| c |) ]
               |)
-            |),
-            M.call_closure (|
-              Ty.path "u128",
-              M.get_trait_method (|
-                "core::convert::From",
-                Ty.path "u128",
-                [],
-                [ Ty.path "u64" ],
-                "from",
-                [],
-                []
-              |),
-              [ M.read (| c |) ]
-            |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -207,36 +232,61 @@ Module algorithms.
           let b := M.alloc (| b |) in
           let c := M.alloc (| c |) in
           let d := M.alloc (| d |) in
-          BinOp.Wrap.add (|
-            BinOp.Wrap.add (|
-              BinOp.Wrap.mul (|
-                M.call_closure (|
-                  Ty.path "u128",
-                  M.get_trait_method (|
-                    "core::convert::From",
+          M.call_closure (|
+            Ty.path "u128",
+            BinOp.Wrap.add,
+            [
+              M.call_closure (|
+                Ty.path "u128",
+                BinOp.Wrap.add,
+                [
+                  M.call_closure (|
                     Ty.path "u128",
-                    [],
-                    [ Ty.path "u64" ],
-                    "from",
-                    [],
-                    []
-                  |),
-                  [ M.read (| a |) ]
-                |),
-                M.call_closure (|
-                  Ty.path "u128",
-                  M.get_trait_method (|
-                    "core::convert::From",
+                    BinOp.Wrap.mul,
+                    [
+                      M.call_closure (|
+                        Ty.path "u128",
+                        M.get_trait_method (|
+                          "core::convert::From",
+                          Ty.path "u128",
+                          [],
+                          [ Ty.path "u64" ],
+                          "from",
+                          [],
+                          []
+                        |),
+                        [ M.read (| a |) ]
+                      |);
+                      M.call_closure (|
+                        Ty.path "u128",
+                        M.get_trait_method (|
+                          "core::convert::From",
+                          Ty.path "u128",
+                          [],
+                          [ Ty.path "u64" ],
+                          "from",
+                          [],
+                          []
+                        |),
+                        [ M.read (| b |) ]
+                      |)
+                    ]
+                  |);
+                  M.call_closure (|
                     Ty.path "u128",
-                    [],
-                    [ Ty.path "u64" ],
-                    "from",
-                    [],
-                    []
-                  |),
-                  [ M.read (| b |) ]
-                |)
-              |),
+                    M.get_trait_method (|
+                      "core::convert::From",
+                      Ty.path "u128",
+                      [],
+                      [ Ty.path "u64" ],
+                      "from",
+                      [],
+                      []
+                    |),
+                    [ M.read (| c |) ]
+                  |)
+                ]
+              |);
               M.call_closure (|
                 Ty.path "u128",
                 M.get_trait_method (|
@@ -248,22 +298,9 @@ Module algorithms.
                   [],
                   []
                 |),
-                [ M.read (| c |) ]
+                [ M.read (| d |) ]
               |)
-            |),
-            M.call_closure (|
-              Ty.path "u128",
-              M.get_trait_method (|
-                "core::convert::From",
-                Ty.path "u128",
-                [],
-                [ Ty.path "u64" ],
-                "from",
-                [],
-                []
-              |),
-              [ M.read (| d |) ]
-            |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -280,7 +317,11 @@ Module algorithms.
           (let self := M.alloc (| self |) in
           M.cast
             (Ty.path "u64")
-            (BinOp.Wrap.shr (| M.read (| self |), Value.Integer IntegerKind.I32 64 |))))
+            (M.call_closure (|
+              Ty.path "u128",
+              BinOp.Wrap.shr,
+              [ M.read (| self |); Value.Integer IntegerKind.I32 64 ]
+            |))))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
     
@@ -595,70 +636,82 @@ Module algorithms.
                                         M.match_operator (|
                                           Some (Ty.tuple []),
                                           M.alloc (|
-                                            BinOp.Wrap.sub (|
-                                              M.call_closure (|
-                                                Ty.path "i8",
-                                                M.get_trait_method (|
-                                                  "core::convert::From",
+                                            M.call_closure (|
+                                              Ty.path "i8",
+                                              BinOp.Wrap.sub,
+                                              [
+                                                M.call_closure (|
                                                   Ty.path "i8",
-                                                  [],
-                                                  [ Ty.path "bool" ],
-                                                  "from",
-                                                  [],
-                                                  []
-                                                |),
-                                                [
-                                                  BinOp.gt (|
-                                                    M.read (|
-                                                      M.SubPointer.get_array_field (|
-                                                        M.deref (| M.read (| lhs |) |),
-                                                        M.read (| i |)
-                                                      |)
-                                                    |),
-                                                    M.read (|
-                                                      M.SubPointer.get_array_field (|
-                                                        M.deref (| M.read (| rhs |) |),
-                                                        M.read (| i |)
-                                                      |)
+                                                  M.get_trait_method (|
+                                                    "core::convert::From",
+                                                    Ty.path "i8",
+                                                    [],
+                                                    [ Ty.path "bool" ],
+                                                    "from",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.call_closure (|
+                                                      Ty.path "bool",
+                                                      BinOp.gt,
+                                                      [
+                                                        M.read (|
+                                                          M.SubPointer.get_array_field (|
+                                                            M.deref (| M.read (| lhs |) |),
+                                                            M.read (| i |)
+                                                          |)
+                                                        |);
+                                                        M.read (|
+                                                          M.SubPointer.get_array_field (|
+                                                            M.deref (| M.read (| rhs |) |),
+                                                            M.read (| i |)
+                                                          |)
+                                                        |)
+                                                      ]
                                                     |)
-                                                  |)
-                                                ]
-                                              |),
-                                              M.call_closure (|
-                                                Ty.path "i8",
-                                                M.get_trait_method (|
-                                                  "core::convert::From",
+                                                  ]
+                                                |);
+                                                M.call_closure (|
                                                   Ty.path "i8",
-                                                  [],
-                                                  [ Ty.path "bool" ],
-                                                  "from",
-                                                  [],
-                                                  []
-                                                |),
-                                                [
-                                                  BinOp.lt (|
-                                                    M.read (|
-                                                      M.SubPointer.get_array_field (|
-                                                        M.deref (| M.read (| lhs |) |),
-                                                        M.read (| i |)
-                                                      |)
-                                                    |),
-                                                    M.read (|
-                                                      M.SubPointer.get_array_field (|
-                                                        M.deref (| M.read (| rhs |) |),
-                                                        M.read (| i |)
-                                                      |)
+                                                  M.get_trait_method (|
+                                                    "core::convert::From",
+                                                    Ty.path "i8",
+                                                    [],
+                                                    [ Ty.path "bool" ],
+                                                    "from",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.call_closure (|
+                                                      Ty.path "bool",
+                                                      BinOp.lt,
+                                                      [
+                                                        M.read (|
+                                                          M.SubPointer.get_array_field (|
+                                                            M.deref (| M.read (| lhs |) |),
+                                                            M.read (| i |)
+                                                          |)
+                                                        |);
+                                                        M.read (|
+                                                          M.SubPointer.get_array_field (|
+                                                            M.deref (| M.read (| rhs |) |),
+                                                            M.read (| i |)
+                                                          |)
+                                                        |)
+                                                      ]
                                                     |)
-                                                  |)
-                                                ]
-                                              |)
+                                                  ]
+                                                |)
+                                              ]
                                             |)
                                           |),
                                           [
                                             fun γ =>
                                               ltac:(M.monadic
                                                 (let _ :=
-                                                  M.is_constant_or_break_match (|
+                                                  is_constant_or_break_match (|
                                                     M.read (| γ |),
                                                     Value.Integer IntegerKind.I8 (-1)
                                                   |) in
@@ -676,7 +729,7 @@ Module algorithms.
                                             fun γ =>
                                               ltac:(M.monadic
                                                 (let _ :=
-                                                  M.is_constant_or_break_match (|
+                                                  is_constant_or_break_match (|
                                                     M.read (| γ |),
                                                     Value.Integer IntegerKind.I8 0
                                                   |) in
@@ -684,7 +737,7 @@ Module algorithms.
                                             fun γ =>
                                               ltac:(M.monadic
                                                 (let _ :=
-                                                  M.is_constant_or_break_match (|
+                                                  is_constant_or_break_match (|
                                                     M.read (| γ |),
                                                     Value.Integer IntegerKind.I8 1
                                                   |) in

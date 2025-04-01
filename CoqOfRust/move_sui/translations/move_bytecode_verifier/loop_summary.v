@@ -128,21 +128,25 @@ Module loop_summary.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
-          BinOp.eq (|
-            M.read (|
-              M.SubPointer.get_struct_tuple_field (|
-                M.deref (| M.read (| self |) |),
-                "move_bytecode_verifier::loop_summary::NodeId",
-                0
+          M.call_closure (|
+            Ty.path "bool",
+            BinOp.eq,
+            [
+              M.read (|
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| self |) |),
+                  "move_bytecode_verifier::loop_summary::NodeId",
+                  0
+                |)
+              |);
+              M.read (|
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| other |) |),
+                  "move_bytecode_verifier::loop_summary::NodeId",
+                  0
+                |)
               |)
-            |),
-            M.read (|
-              M.SubPointer.get_struct_tuple_field (|
-                M.deref (| M.read (| other |) |),
-                "move_bytecode_verifier::loop_summary::NodeId",
-                0
-              |)
-            |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1099,52 +1103,60 @@ Module loop_summary.
                                         |) in
                                       M.write (|
                                         β,
-                                        BinOp.Wrap.add (|
-                                          M.read (| β |),
-                                          BinOp.Wrap.add (|
-                                            Value.Integer IntegerKind.U16 1,
-                                            M.read (|
-                                              M.deref (|
-                                                M.call_closure (|
-                                                  Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
-                                                  M.get_trait_method (|
-                                                    "core::ops::index::Index",
-                                                    Ty.apply
-                                                      (Ty.path "alloc::vec::Vec")
-                                                      []
-                                                      [
-                                                        Ty.path "u16";
-                                                        Ty.path "alloc::alloc::Global"
-                                                      ],
-                                                    [],
-                                                    [ Ty.path "usize" ],
-                                                    "index",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [
-                                                    M.borrow (| Pointer.Kind.Ref, descs |);
+                                        M.call_closure (|
+                                          Ty.path "u16",
+                                          BinOp.Wrap.add,
+                                          [
+                                            M.read (| β |);
+                                            M.call_closure (|
+                                              Ty.path "u16",
+                                              BinOp.Wrap.add,
+                                              [
+                                                Value.Integer IntegerKind.U16 1;
+                                                M.read (|
+                                                  M.deref (|
                                                     M.call_closure (|
-                                                      Ty.path "usize",
+                                                      Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
                                                       M.get_trait_method (|
-                                                        "core::convert::From",
-                                                        Ty.path "usize",
+                                                        "core::ops::index::Index",
+                                                        Ty.apply
+                                                          (Ty.path "alloc::vec::Vec")
+                                                          []
+                                                          [
+                                                            Ty.path "u16";
+                                                            Ty.path "alloc::alloc::Global"
+                                                          ],
                                                         [],
-                                                        [
-                                                          Ty.path
-                                                            "move_bytecode_verifier::loop_summary::NodeId"
-                                                        ],
-                                                        "from",
+                                                        [ Ty.path "usize" ],
+                                                        "index",
                                                         [],
                                                         []
                                                       |),
-                                                      [ M.read (| node_id |) ]
+                                                      [
+                                                        M.borrow (| Pointer.Kind.Ref, descs |);
+                                                        M.call_closure (|
+                                                          Ty.path "usize",
+                                                          M.get_trait_method (|
+                                                            "core::convert::From",
+                                                            Ty.path "usize",
+                                                            [],
+                                                            [
+                                                              Ty.path
+                                                                "move_bytecode_verifier::loop_summary::NodeId"
+                                                            ],
+                                                            "from",
+                                                            [],
+                                                            []
+                                                          |),
+                                                          [ M.read (| node_id |) ]
+                                                        |)
+                                                      ]
                                                     |)
-                                                  ]
+                                                  |)
                                                 |)
-                                              |)
+                                              ]
                                             |)
-                                          |)
+                                          ]
                                         |)
                                       |)
                                     |) in
@@ -2058,43 +2070,55 @@ Module loop_summary.
                             |) in
                           let descendant := M.copy (| γ0_0 |) in
                           LogicalOp.and (|
-                            BinOp.le (| M.read (| ancestor |), M.read (| descendant |) |),
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.le,
+                              [ M.read (| ancestor |); M.read (| descendant |) ]
+                            |),
                             ltac:(M.monadic
-                              (BinOp.le (|
-                                M.read (| descendant |),
-                                BinOp.Wrap.add (|
-                                  M.read (| ancestor |),
-                                  M.read (|
-                                    M.deref (|
-                                      M.call_closure (|
-                                        Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
-                                        M.get_trait_method (|
-                                          "core::ops::index::Index",
-                                          Ty.apply
-                                            (Ty.path "alloc::vec::Vec")
-                                            []
-                                            [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
-                                          [],
-                                          [ Ty.path "usize" ],
-                                          "index",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.deref (| M.read (| self |) |),
-                                              "move_bytecode_verifier::loop_summary::LoopSummary",
-                                              "descs"
-                                            |)
-                                          |);
-                                          M.cast (Ty.path "usize") (M.read (| ancestor |))
-                                        ]
+                              (M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.le,
+                                [
+                                  M.read (| descendant |);
+                                  M.call_closure (|
+                                    Ty.path "u16",
+                                    BinOp.Wrap.add,
+                                    [
+                                      M.read (| ancestor |);
+                                      M.read (|
+                                        M.deref (|
+                                          M.call_closure (|
+                                            Ty.apply (Ty.path "&") [] [ Ty.path "u16" ],
+                                            M.get_trait_method (|
+                                              "core::ops::index::Index",
+                                              Ty.apply
+                                                (Ty.path "alloc::vec::Vec")
+                                                []
+                                                [ Ty.path "u16"; Ty.path "alloc::alloc::Global" ],
+                                              [],
+                                              [ Ty.path "usize" ],
+                                              "index",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "move_bytecode_verifier::loop_summary::LoopSummary",
+                                                  "descs"
+                                                |)
+                                              |);
+                                              M.cast (Ty.path "usize") (M.read (| ancestor |))
+                                            ]
+                                          |)
+                                        |)
                                       |)
-                                    |)
+                                    ]
                                   |)
-                                |)
+                                ]
                               |)))
                           |)))
                     ]
@@ -2720,7 +2744,7 @@ Module loop_summary.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (| M.read (| M.return_ (| M.read (| parent |) |) |) |)
                           |)));
@@ -2853,10 +2877,7 @@ Module loop_summary.
                                     |)
                                   |)) in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (| M.never_to_any (| M.read (| M.break (||) |) |) |)));
                           fun γ => ltac:(M.monadic (M.alloc (| Value.Tuple [] |)))
                         ]
@@ -3035,7 +3056,7 @@ Module loop_summary.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ : Ty.tuple [] :=
                         M.match_operator (|
                           Some (Ty.tuple []),
@@ -3113,7 +3134,7 @@ Module loop_summary.
                                               |)
                                             |)) in
                                         let _ :=
-                                          M.is_constant_or_break_match (|
+                                          is_constant_or_break_match (|
                                             M.read (| γ |),
                                             Value.Bool true
                                           |) in
@@ -3293,7 +3314,7 @@ Module loop_summary.
                                               ltac:(M.monadic
                                                 (let γ := M.use (M.alloc (| Value.Bool true |)) in
                                                 let _ :=
-                                                  M.is_constant_or_break_match (|
+                                                  is_constant_or_break_match (|
                                                     M.read (| γ |),
                                                     Value.Bool true
                                                   |) in
@@ -3398,7 +3419,7 @@ Module loop_summary.
                                                                         |)
                                                                       |)) in
                                                                   let _ :=
-                                                                    M.is_constant_or_break_match (|
+                                                                    is_constant_or_break_match (|
                                                                       M.read (| γ |),
                                                                       Value.Bool true
                                                                     |) in
@@ -3559,7 +3580,11 @@ Module loop_summary.
                 let β := depth in
                 M.write (|
                   β,
-                  BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.U16 1 |)
+                  M.call_closure (|
+                    Ty.path "u16",
+                    BinOp.Wrap.add,
+                    [ M.read (| β |); Value.Integer IntegerKind.U16 1 ]
+                  |)
                 |)
               |) in
             let~ _ : Ty.tuple [] :=
@@ -3898,7 +3923,11 @@ Module loop_summary.
                   |) in
                 M.write (|
                   β,
-                  BinOp.Wrap.add (| M.read (| β |), Value.Integer IntegerKind.U16 1 |)
+                  M.call_closure (|
+                    Ty.path "u16",
+                    BinOp.Wrap.add,
+                    [ M.read (| β |); Value.Integer IntegerKind.U16 1 ]
+                  |)
                 |)
               |) in
             ret

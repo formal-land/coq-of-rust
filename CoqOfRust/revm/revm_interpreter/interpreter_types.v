@@ -45,7 +45,12 @@ Module interpreter_types.
                 "core::ops::range::Range"
                 [
                   ("start", M.read (| offset |));
-                  ("end_", BinOp.Wrap.add (| M.read (| offset |), M.read (| len |) |))
+                  ("end_",
+                    M.call_closure (|
+                      Ty.path "usize",
+                      BinOp.Wrap.add,
+                      [ M.read (| offset |); M.read (| len |) ]
+                    |))
                 ]
             ]
           |)))
@@ -66,21 +71,25 @@ Module interpreter_types.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          BinOp.eq (|
-            M.call_closure (|
-              Ty.path "usize",
-              M.get_trait_method (|
-                "revm_interpreter::interpreter_types::SubRoutineStack",
-                Self,
-                [],
-                [],
-                "len",
-                [],
-                []
-              |),
-              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-            |),
-            Value.Integer IntegerKind.Usize 0
+          M.call_closure (|
+            Ty.path "bool",
+            BinOp.eq,
+            [
+              M.call_closure (|
+                Ty.path "usize",
+                M.get_trait_method (|
+                  "revm_interpreter::interpreter_types::SubRoutineStack",
+                  Self,
+                  [],
+                  [],
+                  "len",
+                  [],
+                  []
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+              |);
+              Value.Integer IntegerKind.Usize 0
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -96,21 +105,25 @@ Module interpreter_types.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          BinOp.eq (|
-            M.call_closure (|
-              Ty.path "usize",
-              M.get_trait_method (|
-                "revm_interpreter::interpreter_types::StackTrait",
-                Self,
-                [],
-                [],
-                "len",
-                [],
-                []
-              |),
-              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-            |),
-            Value.Integer IntegerKind.Usize 0
+          M.call_closure (|
+            Ty.path "bool",
+            BinOp.eq,
+            [
+              M.call_closure (|
+                Ty.path "usize",
+                M.get_trait_method (|
+                  "revm_interpreter::interpreter_types::StackTrait",
+                  Self,
+                  [],
+                  [],
+                  "len",
+                  [],
+                  []
+                |),
+                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+              |);
+              Value.Integer IntegerKind.Usize 0
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.

@@ -261,14 +261,18 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             M.alloc (|
                                               M.cast
                                                 (Ty.path "i32")
-                                                (BinOp.Wrap.add (|
-                                                  M.read (|
-                                                    get_constant (|
-                                                      "enums_c_like::Color::Red_discriminant",
-                                                      Ty.path "isize"
-                                                    |)
-                                                  |),
-                                                  Value.Integer IntegerKind.Isize 0
+                                                (M.call_closure (|
+                                                  Ty.path "isize",
+                                                  BinOp.Wrap.add,
+                                                  [
+                                                    M.read (|
+                                                      get_constant (|
+                                                        "enums_c_like::Color::Red_discriminant",
+                                                        Ty.path "isize"
+                                                      |)
+                                                    |);
+                                                    Value.Integer IntegerKind.Isize 0
+                                                  ]
                                                 |))
                                             |)
                                           |)
@@ -382,14 +386,18 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             M.alloc (|
                                               M.cast
                                                 (Ty.path "i32")
-                                                (BinOp.Wrap.add (|
-                                                  M.read (|
-                                                    get_constant (|
-                                                      "enums_c_like::Color::Blue_discriminant",
-                                                      Ty.path "isize"
-                                                    |)
-                                                  |),
-                                                  Value.Integer IntegerKind.Isize 0
+                                                (M.call_closure (|
+                                                  Ty.path "isize",
+                                                  BinOp.Wrap.add,
+                                                  [
+                                                    M.read (|
+                                                      get_constant (|
+                                                        "enums_c_like::Color::Blue_discriminant",
+                                                        Ty.path "isize"
+                                                      |)
+                                                    |);
+                                                    Value.Integer IntegerKind.Isize 0
+                                                  ]
                                                 |))
                                             |)
                                           |)

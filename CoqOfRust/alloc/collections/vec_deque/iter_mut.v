@@ -1196,10 +1196,14 @@ Module collections.
                                         (let γ :=
                                           M.use
                                             (M.alloc (|
-                                              BinOp.lt (| M.read (| idx |), M.read (| i1_len |) |)
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                BinOp.lt,
+                                                [ M.read (| idx |); M.read (| i1_len |) ]
+                                              |)
                                             |)) in
                                         let _ :=
-                                          M.is_constant_or_break_match (|
+                                          is_constant_or_break_match (|
                                             M.read (| γ |),
                                             Value.Bool true
                                           |) in
@@ -1270,9 +1274,10 @@ Module collections.
                                                       "i2"
                                                     |)
                                                   |);
-                                                  BinOp.Wrap.sub (|
-                                                    M.read (| idx |),
-                                                    M.read (| i1_len |)
+                                                  M.call_closure (|
+                                                    Ty.path "usize",
+                                                    BinOp.Wrap.sub,
+                                                    [ M.read (| idx |); M.read (| i1_len |) ]
                                                   |)
                                                 ]
                                               |)
@@ -1901,51 +1906,55 @@ Module collections.
           | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              BinOp.Wrap.add (|
-                M.call_closure (|
-                  Ty.path "usize",
-                  M.get_trait_method (|
-                    "core::iter::traits::exact_size::ExactSizeIterator",
-                    Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
-                    [],
-                    [],
-                    "len",
-                    [],
-                    []
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "alloc::collections::vec_deque::iter_mut::IterMut",
-                        "i1"
+              M.call_closure (|
+                Ty.path "usize",
+                BinOp.Wrap.add,
+                [
+                  M.call_closure (|
+                    Ty.path "usize",
+                    M.get_trait_method (|
+                      "core::iter::traits::exact_size::ExactSizeIterator",
+                      Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
+                      [],
+                      [],
+                      "len",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::collections::vec_deque::iter_mut::IterMut",
+                          "i1"
+                        |)
                       |)
-                    |)
-                  ]
-                |),
-                M.call_closure (|
-                  Ty.path "usize",
-                  M.get_trait_method (|
-                    "core::iter::traits::exact_size::ExactSizeIterator",
-                    Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
-                    [],
-                    [],
-                    "len",
-                    [],
-                    []
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "alloc::collections::vec_deque::iter_mut::IterMut",
-                        "i2"
+                    ]
+                  |);
+                  M.call_closure (|
+                    Ty.path "usize",
+                    M.get_trait_method (|
+                      "core::iter::traits::exact_size::ExactSizeIterator",
+                      Ty.apply (Ty.path "core::slice::iter::IterMut") [] [ T ],
+                      [],
+                      [],
+                      "len",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::collections::vec_deque::iter_mut::IterMut",
+                          "i2"
+                        |)
                       |)
-                    |)
-                  ]
-                |)
+                    ]
+                  |)
+                ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.

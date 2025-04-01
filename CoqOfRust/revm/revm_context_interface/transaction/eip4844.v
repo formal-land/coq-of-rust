@@ -15,62 +15,66 @@ Module transaction.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.Wrap.mul (|
-              M.read (|
-                get_constant (| "revm_specification::eip4844::GAS_PER_BLOB", Ty.path "u64" |)
-              |),
-              M.cast
-                (Ty.path "u64")
-                (M.call_closure (|
-                  Ty.path "usize",
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "slice")
-                      []
-                      [
-                        Ty.apply
-                          (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                          [ Value.Integer IntegerKind.Usize 32 ]
-                          []
-                      ],
-                    "len",
-                    [],
-                    []
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (|
-                        M.call_closure (|
+            M.call_closure (|
+              Ty.path "u64",
+              BinOp.Wrap.mul,
+              [
+                M.read (|
+                  get_constant (| "revm_specification::eip4844::GAS_PER_BLOB", Ty.path "u64" |)
+                |);
+                M.cast
+                  (Ty.path "u64")
+                  (M.call_closure (|
+                    Ty.path "usize",
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "slice")
+                        []
+                        [
                           Ty.apply
-                            (Ty.path "&")
+                            (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                            [ Value.Integer IntegerKind.Usize 32 ]
                             []
-                            [
-                              Ty.apply
-                                (Ty.path "slice")
-                                []
-                                [
-                                  Ty.apply
-                                    (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
-                                    [ Value.Integer IntegerKind.Usize 32 ]
-                                    []
-                                ]
-                            ],
-                          M.get_trait_method (|
-                            "revm_context_interface::transaction::eip4844::Eip4844Tx",
-                            Self,
-                            [],
-                            [],
-                            "blob_versioned_hashes",
-                            [],
-                            []
-                          |),
-                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                        ],
+                      "len",
+                      [],
+                      []
+                    |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.call_closure (|
+                            Ty.apply
+                              (Ty.path "&")
+                              []
+                              [
+                                Ty.apply
+                                  (Ty.path "slice")
+                                  []
+                                  [
+                                    Ty.apply
+                                      (Ty.path "alloy_primitives::bits::fixed::FixedBytes")
+                                      [ Value.Integer IntegerKind.Usize 32 ]
+                                      []
+                                  ]
+                              ],
+                            M.get_trait_method (|
+                              "revm_context_interface::transaction::eip4844::Eip4844Tx",
+                              Self,
+                              [],
+                              [],
+                              "blob_versioned_hashes",
+                              [],
+                              []
+                            |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                          |)
                         |)
                       |)
-                    |)
-                  ]
-                |))
+                    ]
+                  |))
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

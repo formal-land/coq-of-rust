@@ -108,21 +108,25 @@ Module Impl_core_cmp_PartialEq_payment_channel_AccountId_for_payment_channel_Acc
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
         let other := M.alloc (| other |) in
-        BinOp.eq (|
-          M.read (|
-            M.SubPointer.get_struct_tuple_field (|
-              M.deref (| M.read (| self |) |),
-              "payment_channel::AccountId",
-              0
+        M.call_closure (|
+          Ty.path "bool",
+          BinOp.eq,
+          [
+            M.read (|
+              M.SubPointer.get_struct_tuple_field (|
+                M.deref (| M.read (| self |) |),
+                "payment_channel::AccountId",
+                0
+              |)
+            |);
+            M.read (|
+              M.SubPointer.get_struct_tuple_field (|
+                M.deref (| M.read (| other |) |),
+                "payment_channel::AccountId",
+                0
+              |)
             |)
-          |),
-          M.read (|
-            M.SubPointer.get_struct_tuple_field (|
-              M.deref (| M.read (| other |) |),
-              "payment_channel::AccountId",
-              0
-            |)
-          |)
+          ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -324,7 +328,13 @@ Module Impl_core_cmp_PartialEq_payment_channel_Error_for_payment_channel_Error.
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |)
             |) in
-          M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
+          M.alloc (|
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.eq,
+              [ M.read (| __self_discr |); M.read (| __arg1_discr |) ]
+            |)
+          |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -1344,8 +1354,7 @@ Module Impl_payment_channel_PaymentChannel.
                                 ]
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           M.never_to_any (|
                             M.read (|
@@ -1374,19 +1383,22 @@ Module Impl_payment_channel_PaymentChannel.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.lt (|
-                                M.read (| amount |),
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "payment_channel::PaymentChannel",
-                                    "withdrawn"
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.lt,
+                                [
+                                  M.read (| amount |);
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "payment_channel::PaymentChannel",
+                                      "withdrawn"
+                                    |)
                                   |)
-                                |)
+                                ]
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           M.never_to_any (|
                             M.read (|
@@ -1435,8 +1447,7 @@ Module Impl_payment_channel_PaymentChannel.
                                 |)
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           M.never_to_any (|
                             M.read (|
@@ -1540,15 +1551,19 @@ Module Impl_payment_channel_PaymentChannel.
                                     "recipient"
                                   |)
                                 |);
-                                BinOp.Wrap.sub (|
-                                  M.read (| amount |),
-                                  M.read (|
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "payment_channel::PaymentChannel",
-                                      "withdrawn"
+                                M.call_closure (|
+                                  Ty.path "u128",
+                                  BinOp.Wrap.sub,
+                                  [
+                                    M.read (| amount |);
+                                    M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "payment_channel::PaymentChannel",
+                                        "withdrawn"
+                                      |)
                                     |)
-                                  |)
+                                  ]
                                 |)
                               ]
                             |);
@@ -1914,8 +1929,7 @@ Module Impl_payment_channel_PaymentChannel.
                                 ]
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           M.never_to_any (|
                             M.read (|
@@ -1962,15 +1976,19 @@ Module Impl_payment_channel_PaymentChannel.
                 |) in
               let~ expiration : Ty.path "u64" :=
                 M.alloc (|
-                  BinOp.Wrap.add (|
-                    M.read (| now |),
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "payment_channel::PaymentChannel",
-                        "close_duration"
+                  M.call_closure (|
+                    Ty.path "u64",
+                    BinOp.Wrap.add,
+                    [
+                      M.read (| now |);
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "payment_channel::PaymentChannel",
+                          "close_duration"
+                        |)
                       |)
-                    |)
+                    ]
                   |)
                 |) in
               let~ _ : Ty.tuple [] :=
@@ -2134,10 +2152,14 @@ Module Impl_payment_channel_PaymentChannel.
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      BinOp.lt (| M.read (| now |), M.read (| expiration |) |)
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.lt,
+                                        [ M.read (| now |); M.read (| expiration |) ]
+                                      |)
                                     |)) in
                                 let _ :=
-                                  M.is_constant_or_break_match (|
+                                  is_constant_or_break_match (|
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
@@ -2328,8 +2350,7 @@ Module Impl_payment_channel_PaymentChannel.
                                 ]
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           M.never_to_any (|
                             M.read (|
@@ -2378,8 +2399,7 @@ Module Impl_payment_channel_PaymentChannel.
                                 |)
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           M.never_to_any (|
                             M.read (|
@@ -2405,19 +2425,22 @@ Module Impl_payment_channel_PaymentChannel.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.lt (|
-                                M.read (| amount |),
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "payment_channel::PaymentChannel",
-                                    "withdrawn"
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.lt,
+                                [
+                                  M.read (| amount |);
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "payment_channel::PaymentChannel",
+                                      "withdrawn"
+                                    |)
                                   |)
-                                |)
+                                ]
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           M.never_to_any (|
                             M.read (|
@@ -2438,15 +2461,19 @@ Module Impl_payment_channel_PaymentChannel.
                 |) in
               let~ amount_to_withdraw : Ty.path "u128" :=
                 M.alloc (|
-                  BinOp.Wrap.sub (|
-                    M.read (| amount |),
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "payment_channel::PaymentChannel",
-                        "withdrawn"
+                  M.call_closure (|
+                    Ty.path "u128",
+                    BinOp.Wrap.sub,
+                    [
+                      M.read (| amount |);
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "payment_channel::PaymentChannel",
+                          "withdrawn"
+                        |)
                       |)
-                    |)
+                    ]
                   |)
                 |) in
               let~ _ : Ty.tuple [] :=
@@ -2459,7 +2486,11 @@ Module Impl_payment_channel_PaymentChannel.
                     |) in
                   M.write (|
                     β,
-                    BinOp.Wrap.add (| M.read (| β |), M.read (| amount_to_withdraw |) |)
+                    M.call_closure (|
+                      Ty.path "u128",
+                      BinOp.Wrap.add,
+                      [ M.read (| β |); M.read (| amount_to_withdraw |) ]
+                    |)
                   |)
                 |) in
               let~ _ : Ty.tuple [] :=

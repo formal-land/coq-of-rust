@@ -82,10 +82,14 @@ Module slice.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.lt (| M.read (| len |), Value.Integer IntegerKind.Usize 2 |)
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.lt,
+                                    [ M.read (| len |); Value.Integer IntegerKind.Usize 2 ]
+                                  |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
@@ -167,7 +171,7 @@ Module slice.
                           ltac:(M.monadic
                             (let γ := M.use strictly_descending in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.loop (|
                               Ty.tuple [],
                               ltac:(M.monadic
@@ -181,9 +185,10 @@ Module slice.
                                           M.use
                                             (M.alloc (|
                                               LogicalOp.and (|
-                                                BinOp.lt (|
-                                                  M.read (| run_len |),
-                                                  M.read (| len |)
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  BinOp.lt,
+                                                  [ M.read (| run_len |); M.read (| len |) ]
                                                 |),
                                                 ltac:(M.monadic
                                                   (M.call_closure (|
@@ -253,11 +258,15 @@ Module slice.
                                                                     Pointer.Kind.Ref,
                                                                     M.deref (| M.read (| v |) |)
                                                                   |);
-                                                                  BinOp.Wrap.sub (|
-                                                                    M.read (| run_len |),
-                                                                    Value.Integer
-                                                                      IntegerKind.Usize
-                                                                      1
+                                                                  M.call_closure (|
+                                                                    Ty.path "usize",
+                                                                    BinOp.Wrap.sub,
+                                                                    [
+                                                                      M.read (| run_len |);
+                                                                      Value.Integer
+                                                                        IntegerKind.Usize
+                                                                        1
+                                                                    ]
                                                                   |)
                                                                 ]
                                                               |)
@@ -269,7 +278,7 @@ Module slice.
                                               |)
                                             |)) in
                                         let _ :=
-                                          M.is_constant_or_break_match (|
+                                          is_constant_or_break_match (|
                                             M.read (| γ |),
                                             Value.Bool true
                                           |) in
@@ -278,9 +287,11 @@ Module slice.
                                             let β := run_len in
                                             M.write (|
                                               β,
-                                              BinOp.Wrap.add (|
-                                                M.read (| β |),
-                                                Value.Integer IntegerKind.Usize 1
+                                              M.call_closure (|
+                                                Ty.path "usize",
+                                                BinOp.Wrap.add,
+                                                [ M.read (| β |); Value.Integer IntegerKind.Usize 1
+                                                ]
                                               |)
                                             |)
                                           |) in
@@ -316,9 +327,10 @@ Module slice.
                                           M.use
                                             (M.alloc (|
                                               LogicalOp.and (|
-                                                BinOp.lt (|
-                                                  M.read (| run_len |),
-                                                  M.read (| len |)
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  BinOp.lt,
+                                                  [ M.read (| run_len |); M.read (| len |) ]
                                                 |),
                                                 ltac:(M.monadic
                                                   (UnOp.not (|
@@ -389,11 +401,15 @@ Module slice.
                                                                       Pointer.Kind.Ref,
                                                                       M.deref (| M.read (| v |) |)
                                                                     |);
-                                                                    BinOp.Wrap.sub (|
-                                                                      M.read (| run_len |),
-                                                                      Value.Integer
-                                                                        IntegerKind.Usize
-                                                                        1
+                                                                    M.call_closure (|
+                                                                      Ty.path "usize",
+                                                                      BinOp.Wrap.sub,
+                                                                      [
+                                                                        M.read (| run_len |);
+                                                                        Value.Integer
+                                                                          IntegerKind.Usize
+                                                                          1
+                                                                      ]
                                                                     |)
                                                                   ]
                                                                 |)
@@ -406,7 +422,7 @@ Module slice.
                                               |)
                                             |)) in
                                         let _ :=
-                                          M.is_constant_or_break_match (|
+                                          is_constant_or_break_match (|
                                             M.read (| γ |),
                                             Value.Bool true
                                           |) in
@@ -415,9 +431,11 @@ Module slice.
                                             let β := run_len in
                                             M.write (|
                                               β,
-                                              BinOp.Wrap.add (|
-                                                M.read (| β |),
-                                                Value.Integer IntegerKind.Usize 1
+                                              M.call_closure (|
+                                                Ty.path "usize",
+                                                BinOp.Wrap.add,
+                                                [ M.read (| β |); Value.Integer IntegerKind.Usize 1
+                                                ]
                                               |)
                                             |)
                                           |) in

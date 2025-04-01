@@ -36,12 +36,24 @@ Module fmt.
               M.alloc (|
                 LogicalOp.or (|
                   LogicalOp.and (|
-                    BinOp.ne (| M.read (| abs |), M.read (| UnsupportedLiteral |) |),
+                    M.call_closure (|
+                      Ty.path "bool",
+                      BinOp.ne,
+                      [ M.read (| abs |); M.read (| UnsupportedLiteral |) ]
+                    |),
                     ltac:(M.monadic
-                      (BinOp.lt (| M.read (| abs |), M.read (| UnsupportedLiteral |) |)))
+                      (M.call_closure (|
+                        Ty.path "bool",
+                        BinOp.lt,
+                        [ M.read (| abs |); M.read (| UnsupportedLiteral |) ]
+                      |)))
                   |),
                   ltac:(M.monadic
-                    (BinOp.ge (| M.read (| abs |), M.read (| UnsupportedLiteral |) |)))
+                    (M.call_closure (|
+                      Ty.path "bool",
+                      BinOp.ge,
+                      [ M.read (| abs |); M.read (| UnsupportedLiteral |) ]
+                    |)))
                 |)
               |)
             |)))
@@ -91,12 +103,24 @@ Module fmt.
               M.alloc (|
                 LogicalOp.or (|
                   LogicalOp.and (|
-                    BinOp.ne (| M.read (| abs |), M.read (| UnsupportedLiteral |) |),
+                    M.call_closure (|
+                      Ty.path "bool",
+                      BinOp.ne,
+                      [ M.read (| abs |); M.read (| UnsupportedLiteral |) ]
+                    |),
                     ltac:(M.monadic
-                      (BinOp.lt (| M.read (| abs |), M.read (| UnsupportedLiteral |) |)))
+                      (M.call_closure (|
+                        Ty.path "bool",
+                        BinOp.lt,
+                        [ M.read (| abs |); M.read (| UnsupportedLiteral |) ]
+                      |)))
                   |),
                   ltac:(M.monadic
-                    (BinOp.ge (| M.read (| abs |), M.read (| UnsupportedLiteral |) |)))
+                    (M.call_closure (|
+                      Ty.path "bool",
+                      BinOp.ge,
+                      [ M.read (| abs |); M.read (| UnsupportedLiteral |) ]
+                    |)))
                 |)
               |)
             |)))
@@ -529,12 +553,12 @@ Module fmt.
                     fun γ =>
                       ltac:(M.monadic
                         (let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool false |) in
+                          is_constant_or_break_match (| M.read (| γ |), Value.Bool false |) in
                         M.alloc (| Value.StructTuple "core::num::flt2dec::Sign::Minus" [] |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (| Value.StructTuple "core::num::flt2dec::Sign::MinusPlus" [] |)))
                   ]
                 |)
@@ -1040,12 +1064,12 @@ Module fmt.
                     fun γ =>
                       ltac:(M.monadic
                         (let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool false |) in
+                          is_constant_or_break_match (| M.read (| γ |), Value.Bool false |) in
                         M.alloc (| Value.StructTuple "core::num::flt2dec::Sign::Minus" [] |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (| Value.StructTuple "core::num::flt2dec::Sign::MinusPlus" [] |)))
                   ]
                 |)
@@ -1088,9 +1112,10 @@ Module fmt.
                           M.borrow (| Pointer.Kind.MutRef, M.deref (| M.read (| fmt |) |) |);
                           M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| num |) |) |);
                           M.read (| sign |);
-                          BinOp.Wrap.add (|
-                            M.read (| precision |),
-                            Value.Integer IntegerKind.Usize 1
+                          M.call_closure (|
+                            Ty.path "usize",
+                            BinOp.Wrap.add,
+                            [ M.read (| precision |); Value.Integer IntegerKind.Usize 1 ]
                           |);
                           M.read (| upper |)
                         ]
@@ -1183,12 +1208,12 @@ Module fmt.
                     fun γ =>
                       ltac:(M.monadic
                         (let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool false |) in
+                          is_constant_or_break_match (| M.read (| γ |), Value.Bool false |) in
                         M.alloc (| Value.StructTuple "core::num::flt2dec::Sign::Minus" [] |)));
                     fun γ =>
                       ltac:(M.monadic
                         (let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                          is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (| Value.StructTuple "core::num::flt2dec::Sign::MinusPlus" [] |)))
                   ]
                 |)
@@ -1270,7 +1295,7 @@ Module fmt.
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let~ upper : Ty.path "bool" := M.alloc (| Value.Bool false |) in
                             M.alloc (|
                               M.call_closure (|

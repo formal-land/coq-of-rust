@@ -657,23 +657,27 @@ Module utilities.
                                     "core::ops::range::RangeFrom"
                                     [
                                       ("start",
-                                        BinOp.Wrap.sub (|
-                                          LEN,
-                                          M.call_closure (|
-                                            Ty.path "usize",
-                                            M.get_associated_function (|
-                                              Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                              "len",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (| M.read (| data |) |)
-                                              |)
-                                            ]
-                                          |)
+                                        M.call_closure (|
+                                          Ty.path "usize",
+                                          BinOp.Wrap.sub,
+                                          [
+                                            LEN;
+                                            M.call_closure (|
+                                              Ty.path "usize",
+                                              M.get_associated_function (|
+                                                Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                                "len",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| data |) |)
+                                                |)
+                                              ]
+                                            |)
+                                          ]
                                         |))
                                     ]
                                 ]
@@ -819,23 +823,27 @@ Module utilities.
                                     "core::ops::range::RangeFrom"
                                     [
                                       ("start",
-                                        BinOp.Wrap.sub (|
-                                          M.read (| len |),
-                                          M.call_closure (|
-                                            Ty.path "usize",
-                                            M.get_associated_function (|
-                                              Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                              "len",
-                                              [],
-                                              []
-                                            |),
-                                            [
-                                              M.borrow (|
-                                                Pointer.Kind.Ref,
-                                                M.deref (| M.read (| data |) |)
-                                              |)
-                                            ]
-                                          |)
+                                        M.call_closure (|
+                                          Ty.path "usize",
+                                          BinOp.Wrap.sub,
+                                          [
+                                            M.read (| len |);
+                                            M.call_closure (|
+                                              Ty.path "usize",
+                                              M.get_associated_function (|
+                                                Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                                "len",
+                                                [],
+                                                []
+                                              |),
+                                              [
+                                                M.borrow (|
+                                                  Pointer.Kind.Ref,
+                                                  M.deref (| M.read (| data |) |)
+                                                |)
+                                              ]
+                                            |)
+                                          ]
                                         |))
                                     ]
                                 ]
@@ -949,7 +957,7 @@ Module utilities.
               fun γ =>
                 ltac:(M.monadic
                   (let γ := M.use value in
-                  let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                  let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   get_constant (|
                     "revm_precompile::utilities::bool_to_b256::TRUE",
                     Ty.apply

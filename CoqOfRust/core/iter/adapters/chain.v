@@ -716,7 +716,13 @@ Module iter.
                       ]
                     |)
                   |) in
-                M.alloc (| BinOp.Wrap.add (| M.read (| a_count |), M.read (| b_count |) |) |)
+                M.alloc (|
+                  M.call_closure (|
+                    Ty.path "usize",
+                    BinOp.Wrap.add,
+                    [ M.read (| a_count |); M.read (| b_count |) ]
+                  |)
+                |)
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -4792,7 +4798,7 @@ Module iter.
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let~ _ : Ty.tuple [] :=
                               M.alloc (|
                                 M.write (|

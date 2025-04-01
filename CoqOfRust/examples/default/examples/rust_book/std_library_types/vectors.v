@@ -1240,9 +1240,10 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                       let β := M.deref (| M.read (| x |) |) in
                                       M.write (|
                                         β,
-                                        BinOp.Wrap.mul (|
-                                          M.read (| β |),
-                                          Value.Integer IntegerKind.I32 3
+                                        M.call_closure (|
+                                          Ty.path "i32",
+                                          BinOp.Wrap.mul,
+                                          [ M.read (| β |); Value.Integer IntegerKind.I32 3 ]
                                         |)
                                       |)
                                     |) in

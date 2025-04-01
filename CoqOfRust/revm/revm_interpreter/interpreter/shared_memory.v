@@ -251,21 +251,25 @@ Module interpreter.
                   |)))
               |),
               ltac:(M.monadic
-                (BinOp.eq (|
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "revm_interpreter::interpreter::shared_memory::SharedMemory",
-                      "last_checkpoint"
+                (M.call_closure (|
+                  Ty.path "bool",
+                  BinOp.eq,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "revm_interpreter::interpreter::shared_memory::SharedMemory",
+                        "last_checkpoint"
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| other |) |),
+                        "revm_interpreter::interpreter::shared_memory::SharedMemory",
+                        "last_checkpoint"
+                      |)
                     |)
-                  |),
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| other |) |),
-                      "revm_interpreter::interpreter::shared_memory::SharedMemory",
-                      "last_checkpoint"
-                    |)
-                  |)
+                  ]
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1625,9 +1629,10 @@ Module interpreter.
                 []
               |),
               [
-                BinOp.Wrap.mul (|
-                  Value.Integer IntegerKind.Usize 4,
-                  Value.Integer IntegerKind.Usize 1024
+                M.call_closure (|
+                  Ty.path "usize",
+                  BinOp.Wrap.mul,
+                  [ Value.Integer IntegerKind.Usize 4; Value.Integer IntegerKind.Usize 1024 ]
                 |)
               ]
             |)))
@@ -1972,36 +1977,40 @@ Module interpreter.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.Wrap.sub (|
-              M.call_closure (|
-                Ty.path "usize",
-                M.get_associated_function (|
-                  Ty.apply
-                    (Ty.path "alloc::vec::Vec")
+            M.call_closure (|
+              Ty.path "usize",
+              BinOp.Wrap.sub,
+              [
+                M.call_closure (|
+                  Ty.path "usize",
+                  M.get_associated_function (|
+                    Ty.apply
+                      (Ty.path "alloc::vec::Vec")
+                      []
+                      [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
+                    "len",
+                    [],
                     []
-                    [ Ty.path "u8"; Ty.path "alloc::alloc::Global" ],
-                  "len",
-                  [],
-                  []
-                |),
-                [
-                  M.borrow (|
-                    Pointer.Kind.Ref,
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "revm_interpreter::interpreter::shared_memory::SharedMemory",
-                      "buffer"
+                  |),
+                  [
+                    M.borrow (|
+                      Pointer.Kind.Ref,
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "revm_interpreter::interpreter::shared_memory::SharedMemory",
+                        "buffer"
+                      |)
                     |)
+                  ]
+                |);
+                M.read (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "revm_interpreter::interpreter::shared_memory::SharedMemory",
+                    "last_checkpoint"
                   |)
-                ]
-              |),
-              M.read (|
-                M.SubPointer.get_struct_record_field (|
-                  M.deref (| M.read (| self |) |),
-                  "revm_interpreter::interpreter::shared_memory::SharedMemory",
-                  "last_checkpoint"
                 |)
-              |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2020,18 +2029,22 @@ Module interpreter.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.eq (|
-              M.call_closure (|
-                Ty.path "usize",
-                M.get_associated_function (|
-                  Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory",
-                  "len",
-                  [],
-                  []
-                |),
-                [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-              |),
-              Value.Integer IntegerKind.Usize 0
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.eq,
+              [
+                M.call_closure (|
+                  Ty.path "usize",
+                  M.get_associated_function (|
+                    Ty.path "revm_interpreter::interpreter::shared_memory::SharedMemory",
+                    "len",
+                    [],
+                    []
+                  |),
+                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                |);
+                Value.Integer IntegerKind.Usize 0
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -2075,15 +2088,19 @@ Module interpreter.
                           "buffer"
                         |)
                       |);
-                      BinOp.Wrap.add (|
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "revm_interpreter::interpreter::shared_memory::SharedMemory",
-                            "last_checkpoint"
-                          |)
-                        |),
-                        M.read (| new_size |)
+                      M.call_closure (|
+                        Ty.path "usize",
+                        BinOp.Wrap.add,
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "revm_interpreter::interpreter::shared_memory::SharedMemory",
+                              "last_checkpoint"
+                            |)
+                          |);
+                          M.read (| new_size |)
+                        ]
                       |);
                       Value.Integer IntegerKind.U8 0
                     ]
@@ -2127,7 +2144,12 @@ Module interpreter.
                       "core::ops::range::Range"
                       [
                         ("start", M.read (| offset |));
-                        ("end_", BinOp.Wrap.add (| M.read (| offset |), M.read (| size |) |))
+                        ("end_",
+                          M.call_closure (|
+                            Ty.path "usize",
+                            BinOp.Wrap.add,
+                            [ M.read (| offset |); M.read (| size |) ]
+                          |))
                       ]
                   ]
                 |)
@@ -2258,7 +2280,7 @@ Module interpreter.
                                     ltac:(M.monadic
                                       (let γ := M.use (M.alloc (| Value.Bool true |)) in
                                       let _ :=
-                                        M.is_constant_or_break_match (|
+                                        is_constant_or_break_match (|
                                           M.read (| γ |),
                                           Value.Bool true
                                         |) in
@@ -2501,7 +2523,13 @@ Module interpreter.
               M.deref (|
                 M.read (|
                   let~ end_ : Ty.path "usize" :=
-                    M.alloc (| BinOp.Wrap.add (| M.read (| offset |), M.read (| size |) |) |) in
+                    M.alloc (|
+                      M.call_closure (|
+                        Ty.path "usize",
+                        BinOp.Wrap.add,
+                        [ M.read (| offset |); M.read (| size |) ]
+                      |)
+                    |) in
                   M.alloc (|
                     M.borrow (|
                       Pointer.Kind.MutRef,
@@ -2598,7 +2626,7 @@ Module interpreter.
                                         ltac:(M.monadic
                                           (let γ := M.use (M.alloc (| Value.Bool true |)) in
                                           let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
@@ -3163,7 +3191,7 @@ Module interpreter.
                               |)
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.call_closure (|
@@ -3273,27 +3301,31 @@ Module interpreter.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.ge (|
-                                    M.read (| data_offset |),
-                                    M.call_closure (|
-                                      Ty.path "usize",
-                                      M.get_associated_function (|
-                                        Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
-                                        "len",
-                                        [],
-                                        []
-                                      |),
-                                      [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (| M.read (| data |) |)
-                                        |)
-                                      ]
-                                    |)
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.ge,
+                                    [
+                                      M.read (| data_offset |);
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        M.get_associated_function (|
+                                          Ty.apply (Ty.path "slice") [] [ Ty.path "u8" ],
+                                          "len",
+                                          [],
+                                          []
+                                        |),
+                                        [
+                                          M.borrow (|
+                                            Pointer.Kind.Ref,
+                                            M.deref (| M.read (| data |) |)
+                                          |)
+                                        ]
+                                      |)
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
@@ -3352,7 +3384,11 @@ Module interpreter.
                         Ty.path "usize",
                         M.get_function (| "core::cmp::min", [], [ Ty.path "usize" ] |),
                         [
-                          BinOp.Wrap.add (| M.read (| data_offset |), M.read (| len |) |);
+                          M.call_closure (|
+                            Ty.path "usize",
+                            BinOp.Wrap.add,
+                            [ M.read (| data_offset |); M.read (| len |) ]
+                          |);
                           M.call_closure (|
                             Ty.path "usize",
                             M.get_associated_function (|
@@ -3368,7 +3404,11 @@ Module interpreter.
                     |) in
                   let~ data_len : Ty.path "usize" :=
                     M.alloc (|
-                      BinOp.Wrap.sub (| M.read (| data_end |), M.read (| data_offset |) |)
+                      M.call_closure (|
+                        Ty.path "usize",
+                        BinOp.Wrap.sub,
+                        [ M.read (| data_end |); M.read (| data_offset |) ]
+                      |)
                     |) in
                   let~ _ : Ty.tuple [] :=
                     M.match_operator (|
@@ -3379,7 +3419,7 @@ Module interpreter.
                           ltac:(M.monadic
                             (let γ := M.use (M.alloc (| Value.Bool true |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let~ _ : Ty.tuple [] :=
                               M.match_operator (|
                                 Some (Ty.tuple []),
@@ -3392,30 +3432,11 @@ Module interpreter.
                                           (M.alloc (|
                                             UnOp.not (|
                                               LogicalOp.and (|
-                                                BinOp.lt (|
-                                                  M.read (| data_offset |),
-                                                  M.call_closure (|
-                                                    Ty.path "usize",
-                                                    M.get_associated_function (|
-                                                      Ty.apply
-                                                        (Ty.path "slice")
-                                                        []
-                                                        [ Ty.path "u8" ],
-                                                      "len",
-                                                      [],
-                                                      []
-                                                    |),
-                                                    [
-                                                      M.borrow (|
-                                                        Pointer.Kind.Ref,
-                                                        M.deref (| M.read (| data |) |)
-                                                      |)
-                                                    ]
-                                                  |)
-                                                |),
-                                                ltac:(M.monadic
-                                                  (BinOp.le (|
-                                                    M.read (| data_end |),
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  BinOp.lt,
+                                                  [
+                                                    M.read (| data_offset |);
                                                     M.call_closure (|
                                                       Ty.path "usize",
                                                       M.get_associated_function (|
@@ -3434,12 +3455,39 @@ Module interpreter.
                                                         |)
                                                       ]
                                                     |)
+                                                  ]
+                                                |),
+                                                ltac:(M.monadic
+                                                  (M.call_closure (|
+                                                    Ty.path "bool",
+                                                    BinOp.le,
+                                                    [
+                                                      M.read (| data_end |);
+                                                      M.call_closure (|
+                                                        Ty.path "usize",
+                                                        M.get_associated_function (|
+                                                          Ty.apply
+                                                            (Ty.path "slice")
+                                                            []
+                                                            [ Ty.path "u8" ],
+                                                          "len",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.deref (| M.read (| data |) |)
+                                                          |)
+                                                        ]
+                                                      |)
+                                                    ]
                                                   |)))
                                               |)
                                             |)
                                           |)) in
                                       let _ :=
-                                        M.is_constant_or_break_match (|
+                                        is_constant_or_break_match (|
                                           M.read (| γ |),
                                           Value.Bool true
                                         |) in
@@ -3560,11 +3608,16 @@ Module interpreter.
                                     Pointer.Kind.MutRef,
                                     M.deref (| M.read (| self |) |)
                                   |);
-                                  BinOp.Wrap.add (|
-                                    M.read (| memory_offset |),
-                                    M.read (| data_len |)
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    BinOp.Wrap.add,
+                                    [ M.read (| memory_offset |); M.read (| data_len |) ]
                                   |);
-                                  BinOp.Wrap.sub (| M.read (| len |), M.read (| data_len |) |)
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    BinOp.Wrap.sub,
+                                    [ M.read (| len |); M.read (| data_len |) ]
+                                  |)
                                 ]
                               |)
                             |)
@@ -3631,7 +3684,12 @@ Module interpreter.
                         "core::ops::range::Range"
                         [
                           ("start", M.read (| src |));
-                          ("end_", BinOp.Wrap.add (| M.read (| src |), M.read (| len |) |))
+                          ("end_",
+                            M.call_closure (|
+                              Ty.path "usize",
+                              BinOp.Wrap.add,
+                              [ M.read (| src |); M.read (| len |) ]
+                            |))
                         ];
                       M.read (| dst |)
                     ]
@@ -3892,13 +3950,17 @@ Module interpreter.
       | [], [], [ len ] =>
         ltac:(M.monadic
           (let len := M.alloc (| len |) in
-          BinOp.Wrap.div (|
-            M.call_closure (|
-              Ty.path "usize",
-              M.get_associated_function (| Ty.path "usize", "saturating_add", [], [] |),
-              [ M.read (| len |); Value.Integer IntegerKind.Usize 31 ]
-            |),
-            Value.Integer IntegerKind.Usize 32
+          M.call_closure (|
+            Ty.path "usize",
+            BinOp.Wrap.div,
+            [
+              M.call_closure (|
+                Ty.path "usize",
+                M.get_associated_function (| Ty.path "usize", "saturating_add", [], [] |),
+                [ M.read (| len |); Value.Integer IntegerKind.Usize 31 ]
+              |);
+              Value.Integer IntegerKind.Usize 32
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.

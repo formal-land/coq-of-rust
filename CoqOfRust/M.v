@@ -285,8 +285,6 @@ Module Primitive.
   | GetSubPointer
     (pointer : Value.t)
     (index : Pointer.Index.t)
-  | AreEqual
-    (value1 value2 : Value.t)
   | GetFunction
     (path : string)
     (generic_consts : list Value.t)
@@ -654,9 +652,6 @@ Arguments copy /.
 Definition get_sub_pointer (pointer : Value.t) (index : Pointer.Index.t) : M :=
   call_primitive (Primitive.GetSubPointer pointer index).
 
-Definition are_equal (value1 value2 : Value.t) : M :=
-  call_primitive (Primitive.AreEqual value1 value2).
-
 Definition get_function (path : string) (generic_consts : list Value.t) (generic_tys : list Ty.t) :
     M :=
   call_primitive (Primitive.GetFunction path generic_consts generic_tys).
@@ -847,10 +842,6 @@ Definition if_then_else_bool (condition : Value.t) (then_ else_ : M) : M :=
   | Value.Bool false => else_
   | _ => impossible "if_then_else_bool: expected a boolean"
   end.
-
-Definition is_constant_or_break_match (value expected_value : Value.t) : M :=
-  let* are_equal := are_equal value expected_value in
-  if_then_else_bool are_equal (pure (Value.Tuple [])) break_match.
 
 Definition is_struct_tuple (value : Value.t) (constructor : string) : M :=
   let* value := deref value in

@@ -62,7 +62,7 @@ Module slice.
                                   Ty.path "bool"
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (| M.read (| M.return_ (| Value.Tuple [] |) |) |)
                             |)));
@@ -96,15 +96,16 @@ Module slice.
                                     Ty.path "bool",
                                     M.get_function (| "core::intrinsics::likely", [], [] |),
                                     [
-                                      BinOp.lt (|
-                                        M.read (| len |),
-                                        Value.Integer IntegerKind.Usize 2
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.lt,
+                                        [ M.read (| len |); Value.Integer IntegerKind.Usize 2 ]
                                       |)
                                     ]
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (| M.read (| M.return_ (| Value.Tuple [] |) |) |)
                             |)));
@@ -125,20 +126,24 @@ Module slice.
                                     Ty.path "bool",
                                     M.get_function (| "core::intrinsics::likely", [], [] |),
                                     [
-                                      BinOp.le (|
-                                        M.read (| len |),
-                                        M.read (|
-                                          get_constant (|
-                                            "core::slice::sort::unstable::sort::MAX_LEN_ALWAYS_INSERTION_SORT",
-                                            Ty.path "usize"
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.le,
+                                        [
+                                          M.read (| len |);
+                                          M.read (|
+                                            get_constant (|
+                                              "core::slice::sort::unstable::sort::MAX_LEN_ALWAYS_INSERTION_SORT",
+                                              Ty.path "usize"
+                                            |)
                                           |)
-                                        |)
+                                        ]
                                       |)
                                     ]
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
@@ -286,7 +291,13 @@ Module slice.
                               M.call_closure (|
                                 Ty.tuple [],
                                 M.get_function (| "core::intrinsics::assume", [], [] |),
-                                [ BinOp.le (| M.read (| run_len |), M.read (| len |) |) ]
+                                [
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.le,
+                                    [ M.read (| run_len |); M.read (| len |) ]
+                                  |)
+                                ]
                               |)
                             |) in
                           let~ _ : Ty.tuple [] :=
@@ -299,10 +310,14 @@ Module slice.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          BinOp.eq (| M.read (| run_len |), M.read (| len |) |)
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            BinOp.eq,
+                                            [ M.read (| run_len |); M.read (| len |) ]
+                                          |)
                                         |)) in
                                     let _ :=
-                                      M.is_constant_or_break_match (|
+                                      is_constant_or_break_match (|
                                         M.read (| γ |),
                                         Value.Bool true
                                       |) in
@@ -318,7 +333,7 @@ Module slice.
                                                   ltac:(M.monadic
                                                     (let γ := M.use was_reversed in
                                                     let _ :=
-                                                      M.is_constant_or_break_match (|
+                                                      is_constant_or_break_match (|
                                                         M.read (| γ |),
                                                         Value.Bool true
                                                       |) in
@@ -354,17 +369,28 @@ Module slice.
                             |) in
                           let~ limit : Ty.path "u32" :=
                             M.alloc (|
-                              BinOp.Wrap.mul (|
-                                Value.Integer IntegerKind.U32 2,
-                                M.call_closure (|
-                                  Ty.path "u32",
-                                  M.get_associated_function (| Ty.path "usize", "ilog2", [], [] |),
-                                  [
-                                    BinOp.bit_or
-                                      (M.read (| len |))
-                                      (Value.Integer IntegerKind.Usize 1)
-                                  ]
-                                |)
+                              M.call_closure (|
+                                Ty.path "u32",
+                                BinOp.Wrap.mul,
+                                [
+                                  Value.Integer IntegerKind.U32 2;
+                                  M.call_closure (|
+                                    Ty.path "u32",
+                                    M.get_associated_function (|
+                                      Ty.path "usize",
+                                      "ilog2",
+                                      [],
+                                      []
+                                    |),
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        BinOp.Wrap.bit_or,
+                                        [ M.read (| len |); Value.Integer IntegerKind.Usize 1 ]
+                                      |)
+                                    ]
+                                  |)
+                                ]
                               |)
                             |) in
                           let~ _ : Ty.tuple [] :=

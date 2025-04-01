@@ -268,21 +268,25 @@ Module legacy.
                   ]
                 |),
                 ltac:(M.monadic
-                  (BinOp.eq (|
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "revm_bytecode::legacy::analyzed::LegacyAnalyzedBytecode",
-                        "original_len"
+                  (M.call_closure (|
+                    Ty.path "bool",
+                    BinOp.eq,
+                    [
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "revm_bytecode::legacy::analyzed::LegacyAnalyzedBytecode",
+                          "original_len"
+                        |)
+                      |);
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| other |) |),
+                          "revm_bytecode::legacy::analyzed::LegacyAnalyzedBytecode",
+                          "original_len"
+                        |)
                       |)
-                    |),
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| other |) |),
-                        "revm_bytecode::legacy::analyzed::LegacyAnalyzedBytecode",
-                        "original_len"
-                      |)
-                    |)
+                    ]
                   |)))
               |),
               ltac:(M.monadic

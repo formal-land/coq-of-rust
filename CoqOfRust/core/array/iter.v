@@ -1050,18 +1050,22 @@ Module array.
                 |) in
               let~ remaining : Ty.path "usize" :=
                 M.alloc (|
-                  BinOp.Wrap.sub (|
-                    M.read (| n |),
-                    M.call_closure (|
-                      Ty.path "usize",
-                      M.get_associated_function (|
-                        Ty.path "core::ops::index_range::IndexRange",
-                        "len",
-                        [],
-                        []
-                      |),
-                      [ M.borrow (| Pointer.Kind.Ref, range_to_drop |) ]
-                    |)
+                  M.call_closure (|
+                    Ty.path "usize",
+                    BinOp.Wrap.sub,
+                    [
+                      M.read (| n |);
+                      M.call_closure (|
+                        Ty.path "usize",
+                        M.get_associated_function (|
+                          Ty.path "core::ops::index_range::IndexRange",
+                          "len",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, range_to_drop |) ]
+                      |)
+                    ]
                   |)
                 |) in
               let~ _ : Ty.tuple [] :=
@@ -1731,18 +1735,22 @@ Module array.
                 |) in
               let~ remaining : Ty.path "usize" :=
                 M.alloc (|
-                  BinOp.Wrap.sub (|
-                    M.read (| n |),
-                    M.call_closure (|
-                      Ty.path "usize",
-                      M.get_associated_function (|
-                        Ty.path "core::ops::index_range::IndexRange",
-                        "len",
-                        [],
-                        []
-                      |),
-                      [ M.borrow (| Pointer.Kind.Ref, range_to_drop |) ]
-                    |)
+                  M.call_closure (|
+                    Ty.path "usize",
+                    BinOp.Wrap.sub,
+                    [
+                      M.read (| n |);
+                      M.call_closure (|
+                        Ty.path "usize",
+                        M.get_associated_function (|
+                          Ty.path "core::ops::index_range::IndexRange",
+                          "len",
+                          [],
+                          []
+                        |),
+                        [ M.borrow (| Pointer.Kind.Ref, range_to_drop |) ]
+                      |)
+                    ]
                   |)
                 |) in
               let~ _ : Ty.tuple [] :=
@@ -2422,28 +2430,32 @@ Module array.
                                                   []
                                                 |),
                                                 [
-                                                  BinOp.Wrap.add (|
-                                                    M.call_closure (|
-                                                      Ty.path "usize",
-                                                      M.get_associated_function (|
-                                                        Ty.path
-                                                          "core::ops::index_range::IndexRange",
-                                                        "end",
-                                                        [],
-                                                        []
-                                                      |),
-                                                      [
-                                                        M.borrow (|
-                                                          Pointer.Kind.Ref,
-                                                          M.SubPointer.get_struct_record_field (|
-                                                            new,
-                                                            "core::array::iter::IntoIter",
-                                                            "alive"
+                                                  M.call_closure (|
+                                                    Ty.path "usize",
+                                                    BinOp.Wrap.add,
+                                                    [
+                                                      M.call_closure (|
+                                                        Ty.path "usize",
+                                                        M.get_associated_function (|
+                                                          Ty.path
+                                                            "core::ops::index_range::IndexRange",
+                                                          "end",
+                                                          [],
+                                                          []
+                                                        |),
+                                                        [
+                                                          M.borrow (|
+                                                            Pointer.Kind.Ref,
+                                                            M.SubPointer.get_struct_record_field (|
+                                                              new,
+                                                              "core::array::iter::IntoIter",
+                                                              "alive"
+                                                            |)
                                                           |)
-                                                        |)
-                                                      ]
-                                                    |),
-                                                    Value.Integer IntegerKind.Usize 1
+                                                        ]
+                                                      |);
+                                                      Value.Integer IntegerKind.Usize 1
+                                                    ]
                                                   |)
                                                 ]
                                               |)

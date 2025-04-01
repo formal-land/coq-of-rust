@@ -107,12 +107,12 @@
 
 - [x] `pop`
 - [x] `push0`
-- [ ] `push`
-- [ ] `dup`
-- [ ] `swap`
+- [x] `push`
+- [x] `dup`
+- [x] `swap`
 - [x] `dupn`
 - [x] `swapn`
-- [ ] `exchange`
+- [x] `exchange`
 
 ## System
 
@@ -144,6 +144,6 @@
 ## Summary
 
 - Total: 103
-- Admitted: 79
-- Defined: 24
-- Percentage: 23.30%
+- Admitted: 75
+- Defined: 28
+- Percentage: 27.18%

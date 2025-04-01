@@ -1107,7 +1107,11 @@ Module utils.
                 |) in
               M.alloc (|
                 LogicalOp.and (|
-                  BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |),
+                  M.call_closure (|
+                    Ty.path "bool",
+                    BinOp.eq,
+                    [ M.read (| __self_discr |); M.read (| __arg1_discr |) ]
+                  |),
                   ltac:(M.monadic
                     (M.read (|
                       M.match_operator (|
@@ -3566,10 +3570,14 @@ Module utils.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.gt (| M.read (| dec_len |), M.read (| exponent |) |)
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.gt,
+                                  [ M.read (| dec_len |); M.read (| exponent |) ]
+                                |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ amount : Ty.apply (Ty.path "&") [] [ Ty.path "str" ] :=
                             M.alloc (|
                               M.borrow (|
@@ -3600,26 +3608,31 @@ Module utils.
                                         "core::ops::range::RangeTo"
                                         [
                                           ("end_",
-                                            BinOp.Wrap.sub (|
-                                              M.call_closure (|
-                                                Ty.path "usize",
-                                                M.get_associated_function (|
-                                                  Ty.path "str",
-                                                  "len",
-                                                  [],
-                                                  []
-                                                |),
-                                                [
-                                                  M.borrow (|
-                                                    Pointer.Kind.Ref,
-                                                    M.deref (| M.read (| amount |) |)
-                                                  |)
-                                                ]
-                                              |),
-                                              BinOp.Wrap.sub (|
-                                                M.read (| dec_len |),
-                                                M.read (| exponent |)
-                                              |)
+                                            M.call_closure (|
+                                              Ty.path "usize",
+                                              BinOp.Wrap.sub,
+                                              [
+                                                M.call_closure (|
+                                                  Ty.path "usize",
+                                                  M.get_associated_function (|
+                                                    Ty.path "str",
+                                                    "len",
+                                                    [],
+                                                    []
+                                                  |),
+                                                  [
+                                                    M.borrow (|
+                                                      Pointer.Kind.Ref,
+                                                      M.deref (| M.read (| amount |) |)
+                                                    |)
+                                                  ]
+                                                |);
+                                                M.call_closure (|
+                                                  Ty.path "usize",
+                                                  BinOp.Wrap.sub,
+                                                  [ M.read (| dec_len |); M.read (| exponent |) ]
+                                                |)
+                                              ]
                                             |))
                                         ]
                                     ]
@@ -3642,7 +3655,7 @@ Module utils.
                                 ltac:(M.monadic
                                   (let γ := M.use negative in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -3683,7 +3696,7 @@ Module utils.
                                                 |)
                                               |)) in
                                           let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
@@ -4115,7 +4128,7 @@ Module utils.
                                 ltac:(M.monadic
                                   (let γ := M.use negative in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -4156,7 +4169,7 @@ Module utils.
                                                 |)
                                               |)) in
                                           let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
@@ -4666,9 +4679,13 @@ Module utils.
                                                                         [ Ty.path "usize" ]
                                                                       |),
                                                                       [
-                                                                        BinOp.Wrap.sub (|
-                                                                          M.read (| exponent |),
-                                                                          M.read (| dec_len |)
+                                                                        M.call_closure (|
+                                                                          Ty.path "usize",
+                                                                          BinOp.Wrap.sub,
+                                                                          [
+                                                                            M.read (| exponent |);
+                                                                            M.read (| dec_len |)
+                                                                          ]
                                                                         |)
                                                                       ]
                                                                     |)
@@ -5144,9 +5161,13 @@ Module utils.
                                                                 [ Ty.path "usize" ]
                                                               |),
                                                               [
-                                                                BinOp.Wrap.sub (|
-                                                                  M.read (| exponent |),
-                                                                  M.read (| dec_len |)
+                                                                M.call_closure (|
+                                                                  Ty.path "usize",
+                                                                  BinOp.Wrap.sub,
+                                                                  [
+                                                                    M.read (| exponent |);
+                                                                    M.read (| dec_len |)
+                                                                  ]
                                                                 |)
                                                               ]
                                                             |)
@@ -5343,8 +5364,7 @@ Module utils.
                                   |)))
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.alloc (|
                             M.write (|
@@ -5373,26 +5393,30 @@ Module utils.
                                       []
                                     |),
                                     [
-                                      BinOp.Wrap.sub (|
-                                        M.call_closure (|
-                                          Ty.path "u8",
-                                          M.get_associated_function (|
-                                            Ty.path "alloy_primitives::utils::units::Unit",
-                                            "get",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.read (|
-                                              get_associated_constant (|
-                                                Ty.path "alloy_primitives::utils::units::Unit",
-                                                "MAX",
-                                                Ty.path "alloy_primitives::utils::units::Unit"
+                                      M.call_closure (|
+                                        Ty.path "u8",
+                                        BinOp.Wrap.sub,
+                                        [
+                                          M.call_closure (|
+                                            Ty.path "u8",
+                                            M.get_associated_function (|
+                                              Ty.path "alloy_primitives::utils::units::Unit",
+                                              "get",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.read (|
+                                                get_associated_constant (|
+                                                  Ty.path "alloy_primitives::utils::units::Unit",
+                                                  "MAX",
+                                                  Ty.path "alloy_primitives::utils::units::Unit"
+                                                |)
                                               |)
-                                            |)
-                                          ]
-                                        |),
-                                        Value.Integer IntegerKind.U8 1
+                                            ]
+                                          |);
+                                          Value.Integer IntegerKind.U8 1
+                                        ]
                                       |)
                                     ]
                                   |)
@@ -5815,7 +5839,7 @@ Module utils.
                                         |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -6797,21 +6821,25 @@ Module utils.
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
-            BinOp.eq (|
-              M.read (|
-                M.SubPointer.get_struct_tuple_field (|
-                  M.deref (| M.read (| self |) |),
-                  "alloy_primitives::utils::units::Unit",
-                  0
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.eq,
+              [
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| self |) |),
+                    "alloy_primitives::utils::units::Unit",
+                    0
+                  |)
+                |);
+                M.read (|
+                  M.SubPointer.get_struct_tuple_field (|
+                    M.deref (| M.read (| other |) |),
+                    "alloy_primitives::utils::units::Unit",
+                    0
+                  |)
                 |)
-              |),
-              M.read (|
-                M.SubPointer.get_struct_tuple_field (|
-                  M.deref (| M.read (| other |) |),
-                  "alloy_primitives::utils::units::Unit",
-                  0
-                |)
-              |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -7537,7 +7565,7 @@ Module utils.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               mk_str (| "eth" |)
                                             |) in
@@ -7545,7 +7573,7 @@ Module utils.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               mk_str (| "ether" |)
                                             |) in
@@ -7572,7 +7600,7 @@ Module utils.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               mk_str (| "pwei" |)
                                             |) in
@@ -7580,7 +7608,7 @@ Module utils.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               mk_str (| "milli" |)
                                             |) in
@@ -7588,7 +7616,7 @@ Module utils.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               mk_str (| "milliether" |)
                                             |) in
@@ -7596,7 +7624,7 @@ Module utils.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               mk_str (| "finney" |)
                                             |) in
@@ -7623,7 +7651,7 @@ Module utils.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               mk_str (| "twei" |)
                                             |) in
@@ -7631,7 +7659,7 @@ Module utils.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               mk_str (| "micro" |)
                                             |) in
@@ -7639,7 +7667,7 @@ Module utils.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               mk_str (| "microether" |)
                                             |) in
@@ -7647,7 +7675,7 @@ Module utils.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               mk_str (| "szabo" |)
                                             |) in
@@ -7674,7 +7702,7 @@ Module utils.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               mk_str (| "gwei" |)
                                             |) in
@@ -7682,7 +7710,7 @@ Module utils.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               mk_str (| "nano" |)
                                             |) in
@@ -7690,7 +7718,7 @@ Module utils.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               mk_str (| "nanoether" |)
                                             |) in
@@ -7698,7 +7726,7 @@ Module utils.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               mk_str (| "shannon" |)
                                             |) in
@@ -7725,7 +7753,7 @@ Module utils.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               mk_str (| "mwei" |)
                                             |) in
@@ -7733,7 +7761,7 @@ Module utils.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               mk_str (| "pico" |)
                                             |) in
@@ -7741,7 +7769,7 @@ Module utils.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               mk_str (| "picoether" |)
                                             |) in
@@ -7749,7 +7777,7 @@ Module utils.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               mk_str (| "lovelace" |)
                                             |) in
@@ -7776,7 +7804,7 @@ Module utils.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               mk_str (| "kwei" |)
                                             |) in
@@ -7784,7 +7812,7 @@ Module utils.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               mk_str (| "femto" |)
                                             |) in
@@ -7792,7 +7820,7 @@ Module utils.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               mk_str (| "femtoether" |)
                                             |) in
@@ -7800,7 +7828,7 @@ Module utils.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               mk_str (| "babbage" |)
                                             |) in
@@ -7822,7 +7850,7 @@ Module utils.
                               fun γ =>
                                 ltac:(M.monadic
                                   (let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       mk_str (| "wei" |)
                                     |) in
@@ -8211,29 +8239,33 @@ Module utils.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.le (|
-                              M.read (| units |),
-                              M.call_closure (|
-                                Ty.path "u8",
-                                M.get_associated_function (|
-                                  Ty.path "alloy_primitives::utils::units::Unit",
-                                  "get",
-                                  [],
-                                  []
-                                |),
-                                [
-                                  M.read (|
-                                    get_associated_constant (|
-                                      Ty.path "alloy_primitives::utils::units::Unit",
-                                      "MAX",
-                                      Ty.path "alloy_primitives::utils::units::Unit"
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.le,
+                              [
+                                M.read (| units |);
+                                M.call_closure (|
+                                  Ty.path "u8",
+                                  M.get_associated_function (|
+                                    Ty.path "alloy_primitives::utils::units::Unit",
+                                    "get",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.read (|
+                                      get_associated_constant (|
+                                        Ty.path "alloy_primitives::utils::units::Unit",
+                                        "MAX",
+                                        Ty.path "alloy_primitives::utils::units::Unit"
+                                      |)
                                     |)
-                                  |)
-                                ]
-                              |)
+                                  ]
+                                |)
+                              ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         Value.StructTuple
                           "core::option::Option::Some"
@@ -8310,26 +8342,30 @@ Module utils.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.le (|
-                              M.call_closure (|
-                                Ty.path "u8",
-                                M.get_associated_function (|
-                                  Ty.path "alloy_primitives::utils::units::Unit",
-                                  "get",
-                                  [],
-                                  []
-                                |),
-                                [ M.read (| self |) ]
-                              |),
-                              M.read (|
-                                get_constant (|
-                                  "alloy_primitives::utils::units::MAX_U64_EXPONENT",
-                                  Ty.path "u8"
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.le,
+                              [
+                                M.call_closure (|
+                                  Ty.path "u8",
+                                  M.get_associated_function (|
+                                    Ty.path "alloy_primitives::utils::units::Unit",
+                                    "get",
+                                    [],
+                                    []
+                                  |),
+                                  [ M.read (| self |) ]
+                                |);
+                                M.read (|
+                                  get_constant (|
+                                    "alloy_primitives::utils::units::MAX_U64_EXPONENT",
+                                    Ty.path "u8"
+                                  |)
                                 |)
-                              |)
+                              ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         M.call_closure (|
                           Ty.apply
@@ -8460,27 +8496,30 @@ Module utils.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.gt (|
-                                M.call_closure (|
-                                  Ty.path "u8",
-                                  M.get_associated_function (|
-                                    Ty.path "alloy_primitives::utils::units::Unit",
-                                    "get",
-                                    [],
-                                    []
-                                  |),
-                                  [ M.read (| self |) ]
-                                |),
-                                M.read (|
-                                  get_constant (|
-                                    "alloy_primitives::utils::units::MAX_U64_EXPONENT",
-                                    Ty.path "u8"
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.gt,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "u8",
+                                    M.get_associated_function (|
+                                      Ty.path "alloy_primitives::utils::units::Unit",
+                                      "get",
+                                      [],
+                                      []
+                                    |),
+                                    [ M.read (| self |) ]
+                                  |);
+                                  M.read (|
+                                    get_constant (|
+                                      "alloy_primitives::utils::units::MAX_U64_EXPONENT",
+                                      Ty.path "u8"
+                                    |)
                                   |)
-                                |)
+                                ]
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           M.never_to_any (|
                             M.call_closure (|

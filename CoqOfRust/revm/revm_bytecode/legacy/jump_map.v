@@ -807,66 +807,70 @@ Module legacy.
             (let self := M.alloc (| self |) in
             let pc := M.alloc (| pc |) in
             LogicalOp.and (|
-              BinOp.lt (|
-                M.read (| pc |),
-                M.call_closure (|
-                  Ty.path "usize",
-                  M.get_associated_function (|
-                    Ty.apply
-                      (Ty.path "bitvec::vec::BitVec")
+              M.call_closure (|
+                Ty.path "bool",
+                BinOp.lt,
+                [
+                  M.read (| pc |);
+                  M.call_closure (|
+                    Ty.path "usize",
+                    M.get_associated_function (|
+                      Ty.apply
+                        (Ty.path "bitvec::vec::BitVec")
+                        []
+                        [ Ty.path "u8"; Ty.path "bitvec::order::Lsb0" ],
+                      "len",
+                      [],
                       []
-                      [ Ty.path "u8"; Ty.path "bitvec::order::Lsb0" ],
-                    "len",
-                    [],
-                    []
-                  |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (|
-                        M.call_closure (|
-                          Ty.apply
-                            (Ty.path "&")
-                            []
-                            [
-                              Ty.apply
-                                (Ty.path "bitvec::vec::BitVec")
-                                []
-                                [ Ty.path "u8"; Ty.path "bitvec::order::Lsb0" ]
-                            ],
-                          M.get_trait_method (|
-                            "core::ops::deref::Deref",
+                    |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (|
+                          M.call_closure (|
                             Ty.apply
-                              (Ty.path "alloc::sync::Arc")
+                              (Ty.path "&")
                               []
                               [
                                 Ty.apply
                                   (Ty.path "bitvec::vec::BitVec")
                                   []
-                                  [ Ty.path "u8"; Ty.path "bitvec::order::Lsb0" ];
-                                Ty.path "alloc::alloc::Global"
+                                  [ Ty.path "u8"; Ty.path "bitvec::order::Lsb0" ]
                               ],
-                            [],
-                            [],
-                            "deref",
-                            [],
-                            []
-                          |),
-                          [
-                            M.borrow (|
-                              Pointer.Kind.Ref,
-                              M.SubPointer.get_struct_tuple_field (|
-                                M.deref (| M.read (| self |) |),
-                                "revm_bytecode::legacy::jump_map::JumpTable",
-                                0
+                            M.get_trait_method (|
+                              "core::ops::deref::Deref",
+                              Ty.apply
+                                (Ty.path "alloc::sync::Arc")
+                                []
+                                [
+                                  Ty.apply
+                                    (Ty.path "bitvec::vec::BitVec")
+                                    []
+                                    [ Ty.path "u8"; Ty.path "bitvec::order::Lsb0" ];
+                                  Ty.path "alloc::alloc::Global"
+                                ],
+                              [],
+                              [],
+                              "deref",
+                              [],
+                              []
+                            |),
+                            [
+                              M.borrow (|
+                                Pointer.Kind.Ref,
+                                M.SubPointer.get_struct_tuple_field (|
+                                  M.deref (| M.read (| self |) |),
+                                  "revm_bytecode::legacy::jump_map::JumpTable",
+                                  0
+                                |)
                               |)
-                            |)
-                          ]
+                            ]
+                          |)
                         |)
                       |)
-                    |)
-                  ]
-                |)
+                    ]
+                  |)
+                ]
               |),
               ltac:(M.monadic
                 (M.read (|

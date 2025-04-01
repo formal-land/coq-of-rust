@@ -114,7 +114,13 @@ Module main.
                 |)
               |) in
             M.alloc (| Value.Tuple [] |) in
-          M.alloc (| BinOp.Wrap.mul (| M.read (| arg |), Value.Integer IntegerKind.I32 2 |) |)
+          M.alloc (|
+            M.call_closure (|
+              Ty.path "i32",
+              BinOp.Wrap.mul,
+              [ M.read (| arg |); Value.Integer IntegerKind.I32 2 ]
+            |)
+          |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.

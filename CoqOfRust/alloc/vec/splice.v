@@ -508,23 +508,27 @@ Module vec.
                             (let γ :=
                               M.use
                                 (M.alloc (|
-                                  BinOp.eq (|
-                                    M.read (|
-                                      M.SubPointer.get_struct_record_field (|
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.eq,
+                                    [
+                                      M.read (|
                                         M.SubPointer.get_struct_record_field (|
-                                          M.deref (| M.read (| self |) |),
-                                          "alloc::vec::splice::Splice",
-                                          "drain"
-                                        |),
-                                        "alloc::vec::drain::Drain",
-                                        "tail_len"
-                                      |)
-                                    |),
-                                    Value.Integer IntegerKind.Usize 0
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "alloc::vec::splice::Splice",
+                                            "drain"
+                                          |),
+                                          "alloc::vec::drain::Drain",
+                                          "tail_len"
+                                        |)
+                                      |);
+                                      Value.Integer IntegerKind.Usize 0
+                                    ]
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
@@ -709,7 +713,7 @@ Module vec.
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (| M.read (| M.return_ (| Value.Tuple [] |) |) |)
                             |)));
@@ -763,13 +767,17 @@ Module vec.
                                     (let γ :=
                                       M.use
                                         (M.alloc (|
-                                          BinOp.gt (|
-                                            M.read (| lower_bound |),
-                                            Value.Integer IntegerKind.Usize 0
+                                          M.call_closure (|
+                                            Ty.path "bool",
+                                            BinOp.gt,
+                                            [
+                                              M.read (| lower_bound |);
+                                              Value.Integer IntegerKind.Usize 0
+                                            ]
                                           |)
                                         |)) in
                                     let _ :=
-                                      M.is_constant_or_break_match (|
+                                      is_constant_or_break_match (|
                                         M.read (| γ |),
                                         Value.Bool true
                                       |) in
@@ -863,7 +871,7 @@ Module vec.
                                                   |)
                                                 |)) in
                                             let _ :=
-                                              M.is_constant_or_break_match (|
+                                              is_constant_or_break_match (|
                                                 M.read (| γ |),
                                                 Value.Bool true
                                               |) in
@@ -1003,36 +1011,40 @@ Module vec.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.gt (|
-                                          M.call_closure (|
-                                            Ty.path "usize",
-                                            M.get_trait_method (|
-                                              "core::iter::traits::exact_size::ExactSizeIterator",
-                                              Ty.apply
-                                                (Ty.path "alloc::vec::into_iter::IntoIter")
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.gt,
+                                          [
+                                            M.call_closure (|
+                                              Ty.path "usize",
+                                              M.get_trait_method (|
+                                                "core::iter::traits::exact_size::ExactSizeIterator",
+                                                Ty.apply
+                                                  (Ty.path "alloc::vec::into_iter::IntoIter")
+                                                  []
+                                                  [
+                                                    Ty.associated_in_trait
+                                                      "core::iter::traits::iterator::Iterator"
+                                                      []
+                                                      []
+                                                      I
+                                                      "Item";
+                                                    Ty.path "alloc::alloc::Global"
+                                                  ],
+                                                [],
+                                                [],
+                                                "len",
+                                                [],
                                                 []
-                                                [
-                                                  Ty.associated_in_trait
-                                                    "core::iter::traits::iterator::Iterator"
-                                                    []
-                                                    []
-                                                    I
-                                                    "Item";
-                                                  Ty.path "alloc::alloc::Global"
-                                                ],
-                                              [],
-                                              [],
-                                              "len",
-                                              [],
-                                              []
-                                            |),
-                                            [ M.borrow (| Pointer.Kind.Ref, collected |) ]
-                                          |),
-                                          Value.Integer IntegerKind.Usize 0
+                                              |),
+                                              [ M.borrow (| Pointer.Kind.Ref, collected |) ]
+                                            |);
+                                            Value.Integer IntegerKind.Usize 0
+                                          ]
                                         |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -1154,7 +1166,7 @@ Module vec.
                                           ltac:(M.monadic
                                             (let γ := M.use (M.alloc (| Value.Bool true |)) in
                                             let _ :=
-                                              M.is_constant_or_break_match (|
+                                              is_constant_or_break_match (|
                                                 M.read (| γ |),
                                                 Value.Bool true
                                               |) in
@@ -1171,7 +1183,7 @@ Module vec.
                                                             UnOp.not (| M.read (| filled |) |)
                                                           |)) in
                                                       let _ :=
-                                                        M.is_constant_or_break_match (|
+                                                        is_constant_or_break_match (|
                                                           M.read (| γ |),
                                                           Value.Bool true
                                                         |) in
@@ -1209,7 +1221,7 @@ Module vec.
                                           ltac:(M.monadic
                                             (let γ := M.use (M.alloc (| Value.Bool true |)) in
                                             let _ :=
-                                              M.is_constant_or_break_match (|
+                                              is_constant_or_break_match (|
                                                 M.read (| γ |),
                                                 Value.Bool true
                                               |) in
@@ -1281,22 +1293,26 @@ Module vec.
                                                                 M.use
                                                                   (M.alloc (|
                                                                     UnOp.not (|
-                                                                      BinOp.eq (|
-                                                                        M.read (|
-                                                                          M.deref (|
-                                                                            M.read (| left_val |)
+                                                                      M.call_closure (|
+                                                                        Ty.path "bool",
+                                                                        BinOp.eq,
+                                                                        [
+                                                                          M.read (|
+                                                                            M.deref (|
+                                                                              M.read (| left_val |)
+                                                                            |)
+                                                                          |);
+                                                                          M.read (|
+                                                                            M.deref (|
+                                                                              M.read (| right_val |)
+                                                                            |)
                                                                           |)
-                                                                        |),
-                                                                        M.read (|
-                                                                          M.deref (|
-                                                                            M.read (| right_val |)
-                                                                          |)
-                                                                        |)
+                                                                        ]
                                                                       |)
                                                                     |)
                                                                   |)) in
                                                               let _ :=
-                                                                M.is_constant_or_break_match (|
+                                                                is_constant_or_break_match (|
                                                                   M.read (| γ |),
                                                                   Value.Bool true
                                                                 |) in
@@ -1515,7 +1531,11 @@ Module vec.
                                   M.read (| range_start |)
                                 ]
                               |);
-                              BinOp.Wrap.sub (| M.read (| range_end |), M.read (| range_start |) |)
+                              M.call_closure (|
+                                Ty.path "usize",
+                                BinOp.Wrap.sub,
+                                [ M.read (| range_end |); M.read (| range_start |) ]
+                              |)
                             ]
                           |)
                         |)
@@ -1663,9 +1683,13 @@ Module vec.
                                                           |) in
                                                         M.write (|
                                                           β,
-                                                          BinOp.Wrap.add (|
-                                                            M.read (| β |),
-                                                            Value.Integer IntegerKind.Usize 1
+                                                          M.call_closure (|
+                                                            Ty.path "usize",
+                                                            BinOp.Wrap.add,
+                                                            [
+                                                              M.read (| β |);
+                                                              Value.Integer IntegerKind.Usize 1
+                                                            ]
                                                           |)
                                                         |)
                                                       |) in
@@ -1761,21 +1785,25 @@ Module vec.
                 |) in
               let~ len : Ty.path "usize" :=
                 M.alloc (|
-                  BinOp.Wrap.add (|
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "alloc::vec::drain::Drain",
-                        "tail_start"
+                  M.call_closure (|
+                    Ty.path "usize",
+                    BinOp.Wrap.add,
+                    [
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::vec::drain::Drain",
+                          "tail_start"
+                        |)
+                      |);
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::vec::drain::Drain",
+                          "tail_len"
+                        |)
                       |)
-                    |),
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "alloc::vec::drain::Drain",
-                        "tail_len"
-                      |)
-                    |)
+                    ]
                   |)
                 |) in
               let~ _ : Ty.tuple [] :=
@@ -1804,15 +1832,19 @@ Module vec.
                 |) in
               let~ new_tail_start : Ty.path "usize" :=
                 M.alloc (|
-                  BinOp.Wrap.add (|
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "alloc::vec::drain::Drain",
-                        "tail_start"
-                      |)
-                    |),
-                    M.read (| additional |)
+                  M.call_closure (|
+                    Ty.path "usize",
+                    BinOp.Wrap.add,
+                    [
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "alloc::vec::drain::Drain",
+                          "tail_start"
+                        |)
+                      |);
+                      M.read (| additional |)
+                    ]
                   |)
                 |) in
               let~ _ : Ty.tuple [] :=

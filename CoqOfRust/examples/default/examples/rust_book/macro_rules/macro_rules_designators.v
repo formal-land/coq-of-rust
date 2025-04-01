@@ -282,9 +282,13 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                           M.borrow (|
                                             Pointer.Kind.Ref,
                                             M.alloc (|
-                                              BinOp.Wrap.add (|
-                                                Value.Integer IntegerKind.U32 1,
-                                                Value.Integer IntegerKind.U32 1
+                                              M.call_closure (|
+                                                Ty.path "u32",
+                                                BinOp.Wrap.add,
+                                                [
+                                                  Value.Integer IntegerKind.U32 1;
+                                                  Value.Integer IntegerKind.U32 1
+                                                ]
                                               |)
                                             |)
                                           |)
@@ -378,18 +382,31 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                             let~ x : Ty.path "u32" :=
                                               M.alloc (| Value.Integer IntegerKind.U32 1 |) in
                                             M.alloc (|
-                                              BinOp.Wrap.sub (|
-                                                BinOp.Wrap.add (|
-                                                  BinOp.Wrap.mul (|
-                                                    M.read (| x |),
-                                                    M.read (| x |)
-                                                  |),
-                                                  BinOp.Wrap.mul (|
-                                                    Value.Integer IntegerKind.U32 2,
-                                                    M.read (| x |)
-                                                  |)
-                                                |),
-                                                Value.Integer IntegerKind.U32 1
+                                              M.call_closure (|
+                                                Ty.path "u32",
+                                                BinOp.Wrap.sub,
+                                                [
+                                                  M.call_closure (|
+                                                    Ty.path "u32",
+                                                    BinOp.Wrap.add,
+                                                    [
+                                                      M.call_closure (|
+                                                        Ty.path "u32",
+                                                        BinOp.Wrap.mul,
+                                                        [ M.read (| x |); M.read (| x |) ]
+                                                      |);
+                                                      M.call_closure (|
+                                                        Ty.path "u32",
+                                                        BinOp.Wrap.mul,
+                                                        [
+                                                          Value.Integer IntegerKind.U32 2;
+                                                          M.read (| x |)
+                                                        ]
+                                                      |)
+                                                    ]
+                                                  |);
+                                                  Value.Integer IntegerKind.U32 1
+                                                ]
                                               |)
                                             |)
                                           |)

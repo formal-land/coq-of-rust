@@ -2828,7 +2828,7 @@ Module num.
                                       |)
                                     |)) in
                                 let _ :=
-                                  M.is_constant_or_break_match (|
+                                  is_constant_or_break_match (|
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
@@ -3074,7 +3074,7 @@ Module num.
                                                       |)
                                                     |)) in
                                                 let _ :=
-                                                  M.is_constant_or_break_match (|
+                                                  is_constant_or_break_match (|
                                                     M.read (| γ |),
                                                     Value.Bool true
                                                   |) in
@@ -4132,27 +4132,35 @@ Module num.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.Wrap.sub (|
-              BinOp.Wrap.sub (|
-                M.read (|
-                  get_associated_constant (|
+            M.call_closure (|
+              Ty.path "u32",
+              BinOp.Wrap.sub,
+              [
+                M.call_closure (|
+                  Ty.path "u32",
+                  BinOp.Wrap.sub,
+                  [
+                    M.read (|
+                      get_associated_constant (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
+                        "BITS",
+                        Ty.path "u32"
+                      |)
+                    |);
+                    Value.Integer IntegerKind.U32 1
+                  ]
+                |);
+                M.call_closure (|
+                  Ty.path "u32",
+                  M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
-                    "BITS",
-                    Ty.path "u32"
-                  |)
-                |),
-                Value.Integer IntegerKind.U32 1
-              |),
-              M.call_closure (|
-                Ty.path "u32",
-                M.get_associated_function (|
-                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
-                  "leading_zeros",
-                  [],
-                  []
-                |),
-                [ M.read (| self |) ]
-              |)
+                    "leading_zeros",
+                    [],
+                    []
+                  |),
+                  [ M.read (| self |) ]
+                |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -4269,24 +4277,28 @@ Module num.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.lt (|
-              M.call_closure (|
-                Ty.path "u32",
-                M.get_function (| "core::intrinsics::ctpop", [], [ Ty.path "u8" ] |),
-                [
-                  M.call_closure (|
-                    Ty.path "u8",
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
-                      "get",
-                      [],
-                      []
-                    |),
-                    [ M.read (| self |) ]
-                  |)
-                ]
-              |),
-              Value.Integer IntegerKind.U32 2
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.lt,
+              [
+                M.call_closure (|
+                  Ty.path "u32",
+                  M.get_function (| "core::intrinsics::ctpop", [], [ Ty.path "u8" ] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "u8",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u8" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
+                |);
+                Value.Integer IntegerKind.U32 2
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -6148,27 +6160,35 @@ Module num.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.Wrap.sub (|
-              BinOp.Wrap.sub (|
-                M.read (|
-                  get_associated_constant (|
+            M.call_closure (|
+              Ty.path "u32",
+              BinOp.Wrap.sub,
+              [
+                M.call_closure (|
+                  Ty.path "u32",
+                  BinOp.Wrap.sub,
+                  [
+                    M.read (|
+                      get_associated_constant (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
+                        "BITS",
+                        Ty.path "u32"
+                      |)
+                    |);
+                    Value.Integer IntegerKind.U32 1
+                  ]
+                |);
+                M.call_closure (|
+                  Ty.path "u32",
+                  M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
-                    "BITS",
-                    Ty.path "u32"
-                  |)
-                |),
-                Value.Integer IntegerKind.U32 1
-              |),
-              M.call_closure (|
-                Ty.path "u32",
-                M.get_associated_function (|
-                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
-                  "leading_zeros",
-                  [],
-                  []
-                |),
-                [ M.read (| self |) ]
-              |)
+                    "leading_zeros",
+                    [],
+                    []
+                  |),
+                  [ M.read (| self |) ]
+                |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -6285,24 +6305,28 @@ Module num.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.lt (|
-              M.call_closure (|
-                Ty.path "u32",
-                M.get_function (| "core::intrinsics::ctpop", [], [ Ty.path "u16" ] |),
-                [
-                  M.call_closure (|
-                    Ty.path "u16",
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
-                      "get",
-                      [],
-                      []
-                    |),
-                    [ M.read (| self |) ]
-                  |)
-                ]
-              |),
-              Value.Integer IntegerKind.U32 2
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.lt,
+              [
+                M.call_closure (|
+                  Ty.path "u32",
+                  M.get_function (| "core::intrinsics::ctpop", [], [ Ty.path "u16" ] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "u16",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u16" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
+                |);
+                Value.Integer IntegerKind.U32 2
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -8164,27 +8188,35 @@ Module num.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.Wrap.sub (|
-              BinOp.Wrap.sub (|
-                M.read (|
-                  get_associated_constant (|
+            M.call_closure (|
+              Ty.path "u32",
+              BinOp.Wrap.sub,
+              [
+                M.call_closure (|
+                  Ty.path "u32",
+                  BinOp.Wrap.sub,
+                  [
+                    M.read (|
+                      get_associated_constant (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
+                        "BITS",
+                        Ty.path "u32"
+                      |)
+                    |);
+                    Value.Integer IntegerKind.U32 1
+                  ]
+                |);
+                M.call_closure (|
+                  Ty.path "u32",
+                  M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
-                    "BITS",
-                    Ty.path "u32"
-                  |)
-                |),
-                Value.Integer IntegerKind.U32 1
-              |),
-              M.call_closure (|
-                Ty.path "u32",
-                M.get_associated_function (|
-                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
-                  "leading_zeros",
-                  [],
-                  []
-                |),
-                [ M.read (| self |) ]
-              |)
+                    "leading_zeros",
+                    [],
+                    []
+                  |),
+                  [ M.read (| self |) ]
+                |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -8301,24 +8333,28 @@ Module num.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.lt (|
-              M.call_closure (|
-                Ty.path "u32",
-                M.get_function (| "core::intrinsics::ctpop", [], [ Ty.path "u32" ] |),
-                [
-                  M.call_closure (|
-                    Ty.path "u32",
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
-                      "get",
-                      [],
-                      []
-                    |),
-                    [ M.read (| self |) ]
-                  |)
-                ]
-              |),
-              Value.Integer IntegerKind.U32 2
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.lt,
+              [
+                M.call_closure (|
+                  Ty.path "u32",
+                  M.get_function (| "core::intrinsics::ctpop", [], [ Ty.path "u32" ] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "u32",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u32" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
+                |);
+                Value.Integer IntegerKind.U32 2
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -10180,27 +10216,35 @@ Module num.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.Wrap.sub (|
-              BinOp.Wrap.sub (|
-                M.read (|
-                  get_associated_constant (|
+            M.call_closure (|
+              Ty.path "u32",
+              BinOp.Wrap.sub,
+              [
+                M.call_closure (|
+                  Ty.path "u32",
+                  BinOp.Wrap.sub,
+                  [
+                    M.read (|
+                      get_associated_constant (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
+                        "BITS",
+                        Ty.path "u32"
+                      |)
+                    |);
+                    Value.Integer IntegerKind.U32 1
+                  ]
+                |);
+                M.call_closure (|
+                  Ty.path "u32",
+                  M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
-                    "BITS",
-                    Ty.path "u32"
-                  |)
-                |),
-                Value.Integer IntegerKind.U32 1
-              |),
-              M.call_closure (|
-                Ty.path "u32",
-                M.get_associated_function (|
-                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
-                  "leading_zeros",
-                  [],
-                  []
-                |),
-                [ M.read (| self |) ]
-              |)
+                    "leading_zeros",
+                    [],
+                    []
+                  |),
+                  [ M.read (| self |) ]
+                |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -10317,24 +10361,28 @@ Module num.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.lt (|
-              M.call_closure (|
-                Ty.path "u32",
-                M.get_function (| "core::intrinsics::ctpop", [], [ Ty.path "u64" ] |),
-                [
-                  M.call_closure (|
-                    Ty.path "u64",
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
-                      "get",
-                      [],
-                      []
-                    |),
-                    [ M.read (| self |) ]
-                  |)
-                ]
-              |),
-              Value.Integer IntegerKind.U32 2
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.lt,
+              [
+                M.call_closure (|
+                  Ty.path "u32",
+                  M.get_function (| "core::intrinsics::ctpop", [], [ Ty.path "u64" ] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "u64",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u64" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
+                |);
+                Value.Integer IntegerKind.U32 2
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -12203,27 +12251,35 @@ Module num.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.Wrap.sub (|
-              BinOp.Wrap.sub (|
-                M.read (|
-                  get_associated_constant (|
+            M.call_closure (|
+              Ty.path "u32",
+              BinOp.Wrap.sub,
+              [
+                M.call_closure (|
+                  Ty.path "u32",
+                  BinOp.Wrap.sub,
+                  [
+                    M.read (|
+                      get_associated_constant (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
+                        "BITS",
+                        Ty.path "u32"
+                      |)
+                    |);
+                    Value.Integer IntegerKind.U32 1
+                  ]
+                |);
+                M.call_closure (|
+                  Ty.path "u32",
+                  M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
-                    "BITS",
-                    Ty.path "u32"
-                  |)
-                |),
-                Value.Integer IntegerKind.U32 1
-              |),
-              M.call_closure (|
-                Ty.path "u32",
-                M.get_associated_function (|
-                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
-                  "leading_zeros",
-                  [],
-                  []
-                |),
-                [ M.read (| self |) ]
-              |)
+                    "leading_zeros",
+                    [],
+                    []
+                  |),
+                  [ M.read (| self |) ]
+                |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -12340,24 +12396,28 @@ Module num.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.lt (|
-              M.call_closure (|
-                Ty.path "u32",
-                M.get_function (| "core::intrinsics::ctpop", [], [ Ty.path "u128" ] |),
-                [
-                  M.call_closure (|
-                    Ty.path "u128",
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
-                      "get",
-                      [],
-                      []
-                    |),
-                    [ M.read (| self |) ]
-                  |)
-                ]
-              |),
-              Value.Integer IntegerKind.U32 2
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.lt,
+              [
+                M.call_closure (|
+                  Ty.path "u32",
+                  M.get_function (| "core::intrinsics::ctpop", [], [ Ty.path "u128" ] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "u128",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "u128" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
+                |);
+                Value.Integer IntegerKind.U32 2
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -14235,27 +14295,35 @@ Module num.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.Wrap.sub (|
-              BinOp.Wrap.sub (|
-                M.read (|
-                  get_associated_constant (|
+            M.call_closure (|
+              Ty.path "u32",
+              BinOp.Wrap.sub,
+              [
+                M.call_closure (|
+                  Ty.path "u32",
+                  BinOp.Wrap.sub,
+                  [
+                    M.read (|
+                      get_associated_constant (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
+                        "BITS",
+                        Ty.path "u32"
+                      |)
+                    |);
+                    Value.Integer IntegerKind.U32 1
+                  ]
+                |);
+                M.call_closure (|
+                  Ty.path "u32",
+                  M.get_associated_function (|
                     Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
-                    "BITS",
-                    Ty.path "u32"
-                  |)
-                |),
-                Value.Integer IntegerKind.U32 1
-              |),
-              M.call_closure (|
-                Ty.path "u32",
-                M.get_associated_function (|
-                  Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
-                  "leading_zeros",
-                  [],
-                  []
-                |),
-                [ M.read (| self |) ]
-              |)
+                    "leading_zeros",
+                    [],
+                    []
+                  |),
+                  [ M.read (| self |) ]
+                |)
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.
@@ -14372,24 +14440,28 @@ Module num.
         | [], [], [ self ] =>
           ltac:(M.monadic
             (let self := M.alloc (| self |) in
-            BinOp.lt (|
-              M.call_closure (|
-                Ty.path "u32",
-                M.get_function (| "core::intrinsics::ctpop", [], [ Ty.path "usize" ] |),
-                [
-                  M.call_closure (|
-                    Ty.path "usize",
-                    M.get_associated_function (|
-                      Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
-                      "get",
-                      [],
-                      []
-                    |),
-                    [ M.read (| self |) ]
-                  |)
-                ]
-              |),
-              Value.Integer IntegerKind.U32 2
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.lt,
+              [
+                M.call_closure (|
+                  Ty.path "u32",
+                  M.get_function (| "core::intrinsics::ctpop", [], [ Ty.path "usize" ] |),
+                  [
+                    M.call_closure (|
+                      Ty.path "usize",
+                      M.get_associated_function (|
+                        Ty.apply (Ty.path "core::num::nonzero::NonZero") [] [ Ty.path "usize" ],
+                        "get",
+                        [],
+                        []
+                      |),
+                      [ M.read (| self |) ]
+                    |)
+                  ]
+                |);
+                Value.Integer IntegerKind.U32 2
+              ]
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
         end.

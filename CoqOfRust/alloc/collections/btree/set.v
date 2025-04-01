@@ -2724,27 +2724,10 @@ Module collections.
                                                     ltac:(M.monadic
                                                       (let γ :=
                                                         M.alloc (|
-                                                          BinOp.le (|
-                                                            M.call_closure (|
-                                                              Ty.path "usize",
-                                                              M.get_associated_function (|
-                                                                Ty.apply
-                                                                  (Ty.path
-                                                                    "alloc::collections::btree::set::BTreeSet")
-                                                                  []
-                                                                  [ T; A ],
-                                                                "len",
-                                                                [],
-                                                                []
-                                                              |),
-                                                              [
-                                                                M.borrow (|
-                                                                  Pointer.Kind.Ref,
-                                                                  M.deref (| M.read (| self |) |)
-                                                                |)
-                                                              ]
-                                                            |),
-                                                            BinOp.Wrap.div (|
+                                                          M.call_closure (|
+                                                            Ty.path "bool",
+                                                            BinOp.le,
+                                                            [
                                                               M.call_closure (|
                                                                 Ty.path "usize",
                                                                 M.get_associated_function (|
@@ -2760,21 +2743,48 @@ Module collections.
                                                                 [
                                                                   M.borrow (|
                                                                     Pointer.Kind.Ref,
-                                                                    M.deref (| M.read (| other |) |)
+                                                                    M.deref (| M.read (| self |) |)
                                                                   |)
                                                                 ]
-                                                              |),
-                                                              M.read (|
-                                                                get_constant (|
-                                                                  "alloc::collections::btree::set::ITER_PERFORMANCE_TIPPING_SIZE_DIFF",
-                                                                  Ty.path "usize"
-                                                                |)
+                                                              |);
+                                                              M.call_closure (|
+                                                                Ty.path "usize",
+                                                                BinOp.Wrap.div,
+                                                                [
+                                                                  M.call_closure (|
+                                                                    Ty.path "usize",
+                                                                    M.get_associated_function (|
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "alloc::collections::btree::set::BTreeSet")
+                                                                        []
+                                                                        [ T; A ],
+                                                                      "len",
+                                                                      [],
+                                                                      []
+                                                                    |),
+                                                                    [
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.read (| other |)
+                                                                        |)
+                                                                      |)
+                                                                    ]
+                                                                  |);
+                                                                  M.read (|
+                                                                    get_constant (|
+                                                                      "alloc::collections::btree::set::ITER_PERFORMANCE_TIPPING_SIZE_DIFF",
+                                                                      Ty.path "usize"
+                                                                    |)
+                                                                  |)
+                                                                ]
                                                               |)
-                                                            |)
+                                                            ]
                                                           |)
                                                         |) in
                                                       let _ :=
-                                                        M.is_constant_or_break_match (|
+                                                        is_constant_or_break_match (|
                                                           M.read (| γ |),
                                                           Value.Bool true
                                                         |) in
@@ -3440,27 +3450,10 @@ Module collections.
                                                     ltac:(M.monadic
                                                       (let γ :=
                                                         M.alloc (|
-                                                          BinOp.le (|
-                                                            M.call_closure (|
-                                                              Ty.path "usize",
-                                                              M.get_associated_function (|
-                                                                Ty.apply
-                                                                  (Ty.path
-                                                                    "alloc::collections::btree::set::BTreeSet")
-                                                                  []
-                                                                  [ T; A ],
-                                                                "len",
-                                                                [],
-                                                                []
-                                                              |),
-                                                              [
-                                                                M.borrow (|
-                                                                  Pointer.Kind.Ref,
-                                                                  M.deref (| M.read (| self |) |)
-                                                                |)
-                                                              ]
-                                                            |),
-                                                            BinOp.Wrap.div (|
+                                                          M.call_closure (|
+                                                            Ty.path "bool",
+                                                            BinOp.le,
+                                                            [
                                                               M.call_closure (|
                                                                 Ty.path "usize",
                                                                 M.get_associated_function (|
@@ -3476,21 +3469,48 @@ Module collections.
                                                                 [
                                                                   M.borrow (|
                                                                     Pointer.Kind.Ref,
-                                                                    M.deref (| M.read (| other |) |)
+                                                                    M.deref (| M.read (| self |) |)
                                                                   |)
                                                                 ]
-                                                              |),
-                                                              M.read (|
-                                                                get_constant (|
-                                                                  "alloc::collections::btree::set::ITER_PERFORMANCE_TIPPING_SIZE_DIFF",
-                                                                  Ty.path "usize"
-                                                                |)
+                                                              |);
+                                                              M.call_closure (|
+                                                                Ty.path "usize",
+                                                                BinOp.Wrap.div,
+                                                                [
+                                                                  M.call_closure (|
+                                                                    Ty.path "usize",
+                                                                    M.get_associated_function (|
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "alloc::collections::btree::set::BTreeSet")
+                                                                        []
+                                                                        [ T; A ],
+                                                                      "len",
+                                                                      [],
+                                                                      []
+                                                                    |),
+                                                                    [
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.read (| other |)
+                                                                        |)
+                                                                      |)
+                                                                    ]
+                                                                  |);
+                                                                  M.read (|
+                                                                    get_constant (|
+                                                                      "alloc::collections::btree::set::ITER_PERFORMANCE_TIPPING_SIZE_DIFF",
+                                                                      Ty.path "usize"
+                                                                    |)
+                                                                  |)
+                                                                ]
                                                               |)
-                                                            |)
+                                                            ]
                                                           |)
                                                         |) in
                                                       let _ :=
-                                                        M.is_constant_or_break_match (|
+                                                        is_constant_or_break_match (|
                                                           M.read (| γ |),
                                                           Value.Bool true
                                                         |) in
@@ -3533,27 +3553,10 @@ Module collections.
                                                     ltac:(M.monadic
                                                       (let γ :=
                                                         M.alloc (|
-                                                          BinOp.le (|
-                                                            M.call_closure (|
-                                                              Ty.path "usize",
-                                                              M.get_associated_function (|
-                                                                Ty.apply
-                                                                  (Ty.path
-                                                                    "alloc::collections::btree::set::BTreeSet")
-                                                                  []
-                                                                  [ T; A ],
-                                                                "len",
-                                                                [],
-                                                                []
-                                                              |),
-                                                              [
-                                                                M.borrow (|
-                                                                  Pointer.Kind.Ref,
-                                                                  M.deref (| M.read (| other |) |)
-                                                                |)
-                                                              ]
-                                                            |),
-                                                            BinOp.Wrap.div (|
+                                                          M.call_closure (|
+                                                            Ty.path "bool",
+                                                            BinOp.le,
+                                                            [
                                                               M.call_closure (|
                                                                 Ty.path "usize",
                                                                 M.get_associated_function (|
@@ -3569,21 +3572,48 @@ Module collections.
                                                                 [
                                                                   M.borrow (|
                                                                     Pointer.Kind.Ref,
-                                                                    M.deref (| M.read (| self |) |)
+                                                                    M.deref (| M.read (| other |) |)
                                                                   |)
                                                                 ]
-                                                              |),
-                                                              M.read (|
-                                                                get_constant (|
-                                                                  "alloc::collections::btree::set::ITER_PERFORMANCE_TIPPING_SIZE_DIFF",
-                                                                  Ty.path "usize"
-                                                                |)
+                                                              |);
+                                                              M.call_closure (|
+                                                                Ty.path "usize",
+                                                                BinOp.Wrap.div,
+                                                                [
+                                                                  M.call_closure (|
+                                                                    Ty.path "usize",
+                                                                    M.get_associated_function (|
+                                                                      Ty.apply
+                                                                        (Ty.path
+                                                                          "alloc::collections::btree::set::BTreeSet")
+                                                                        []
+                                                                        [ T; A ],
+                                                                      "len",
+                                                                      [],
+                                                                      []
+                                                                    |),
+                                                                    [
+                                                                      M.borrow (|
+                                                                        Pointer.Kind.Ref,
+                                                                        M.deref (|
+                                                                          M.read (| self |)
+                                                                        |)
+                                                                      |)
+                                                                    ]
+                                                                  |);
+                                                                  M.read (|
+                                                                    get_constant (|
+                                                                      "alloc::collections::btree::set::ITER_PERFORMANCE_TIPPING_SIZE_DIFF",
+                                                                      Ty.path "usize"
+                                                                    |)
+                                                                  |)
+                                                                ]
                                                               |)
-                                                            |)
+                                                            ]
                                                           |)
                                                         |) in
                                                       let _ :=
-                                                        M.is_constant_or_break_match (|
+                                                        is_constant_or_break_match (|
                                                           M.read (| γ |),
                                                           Value.Bool true
                                                         |) in
@@ -4172,50 +4202,51 @@ Module collections.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.gt (|
-                                      M.call_closure (|
-                                        Ty.path "usize",
-                                        M.get_associated_function (|
-                                          Ty.apply
-                                            (Ty.path "alloc::collections::btree::set::BTreeSet")
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.gt,
+                                      [
+                                        M.call_closure (|
+                                          Ty.path "usize",
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "alloc::collections::btree::set::BTreeSet")
+                                              []
+                                              [ T; A ],
+                                            "len",
+                                            [],
                                             []
-                                            [ T; A ],
-                                          "len",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (| M.read (| self |) |)
-                                          |)
-                                        ]
-                                      |),
-                                      M.call_closure (|
-                                        Ty.path "usize",
-                                        M.get_associated_function (|
-                                          Ty.apply
-                                            (Ty.path "alloc::collections::btree::set::BTreeSet")
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| self |) |)
+                                            |)
+                                          ]
+                                        |);
+                                        M.call_closure (|
+                                          Ty.path "usize",
+                                          M.get_associated_function (|
+                                            Ty.apply
+                                              (Ty.path "alloc::collections::btree::set::BTreeSet")
+                                              []
+                                              [ T; A ],
+                                            "len",
+                                            [],
                                             []
-                                            [ T; A ],
-                                          "len",
-                                          [],
-                                          []
-                                        |),
-                                        [
-                                          M.borrow (|
-                                            Pointer.Kind.Ref,
-                                            M.deref (| M.read (| other |) |)
-                                          |)
-                                        ]
-                                      |)
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| other |) |)
+                                            |)
+                                          ]
+                                        |)
+                                      ]
                                     |)
                                   |)) in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (|
                                 M.never_to_any (| M.read (| M.return_ (| Value.Bool false |) |) |)
                               |)));
@@ -4622,34 +4653,21 @@ Module collections.
                                               (let γ :=
                                                 M.use
                                                   (M.alloc (|
-                                                    BinOp.le (|
-                                                      M.call_closure (|
-                                                        Ty.path "usize",
-                                                        M.get_trait_method (|
-                                                          "core::iter::traits::exact_size::ExactSizeIterator",
-                                                          Ty.apply
-                                                            (Ty.path
-                                                              "alloc::collections::btree::set::Iter")
-                                                            []
-                                                            [ T ],
-                                                          [],
-                                                          [],
-                                                          "len",
-                                                          [],
-                                                          []
-                                                        |),
-                                                        [ M.borrow (| Pointer.Kind.Ref, self_iter |)
-                                                        ]
-                                                      |),
-                                                      BinOp.Wrap.div (|
+                                                    M.call_closure (|
+                                                      Ty.path "bool",
+                                                      BinOp.le,
+                                                      [
                                                         M.call_closure (|
                                                           Ty.path "usize",
-                                                          M.get_associated_function (|
+                                                          M.get_trait_method (|
+                                                            "core::iter::traits::exact_size::ExactSizeIterator",
                                                             Ty.apply
                                                               (Ty.path
-                                                                "alloc::collections::btree::set::BTreeSet")
+                                                                "alloc::collections::btree::set::Iter")
                                                               []
-                                                              [ T; A ],
+                                                              [ T ],
+                                                            [],
+                                                            [],
                                                             "len",
                                                             [],
                                                             []
@@ -4657,21 +4675,46 @@ Module collections.
                                                           [
                                                             M.borrow (|
                                                               Pointer.Kind.Ref,
-                                                              M.deref (| M.read (| other |) |)
+                                                              self_iter
                                                             |)
                                                           ]
-                                                        |),
-                                                        M.read (|
-                                                          get_constant (|
-                                                            "alloc::collections::btree::set::ITER_PERFORMANCE_TIPPING_SIZE_DIFF",
-                                                            Ty.path "usize"
-                                                          |)
+                                                        |);
+                                                        M.call_closure (|
+                                                          Ty.path "usize",
+                                                          BinOp.Wrap.div,
+                                                          [
+                                                            M.call_closure (|
+                                                              Ty.path "usize",
+                                                              M.get_associated_function (|
+                                                                Ty.apply
+                                                                  (Ty.path
+                                                                    "alloc::collections::btree::set::BTreeSet")
+                                                                  []
+                                                                  [ T; A ],
+                                                                "len",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  M.deref (| M.read (| other |) |)
+                                                                |)
+                                                              ]
+                                                            |);
+                                                            M.read (|
+                                                              get_constant (|
+                                                                "alloc::collections::btree::set::ITER_PERFORMANCE_TIPPING_SIZE_DIFF",
+                                                                Ty.path "usize"
+                                                              |)
+                                                            |)
+                                                          ]
                                                         |)
-                                                      |)
+                                                      ]
                                                     |)
                                                   |)) in
                                               let _ :=
-                                                M.is_constant_or_break_match (|
+                                                is_constant_or_break_match (|
                                                   M.read (| γ |),
                                                   Value.Bool true
                                                 |) in
@@ -4820,7 +4863,7 @@ Module collections.
                                                                                     |)
                                                                                   |)) in
                                                                               let _ :=
-                                                                                M.is_constant_or_break_match (|
+                                                                                is_constant_or_break_match (|
                                                                                   M.read (| γ |),
                                                                                   Value.Bool true
                                                                                 |) in
@@ -6751,18 +6794,22 @@ Module collections.
           | [], [], [ self ] =>
             ltac:(M.monadic
               (let self := M.alloc (| self |) in
-              BinOp.eq (|
-                M.call_closure (|
-                  Ty.path "usize",
-                  M.get_associated_function (|
-                    Ty.apply (Ty.path "alloc::collections::btree::set::BTreeSet") [] [ T; A ],
-                    "len",
-                    [],
-                    []
-                  |),
-                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                |),
-                Value.Integer IntegerKind.Usize 0
+              M.call_closure (|
+                Ty.path "bool",
+                BinOp.eq,
+                [
+                  M.call_closure (|
+                    Ty.path "usize",
+                    M.get_associated_function (|
+                      Ty.apply (Ty.path "alloc::collections::btree::set::BTreeSet") [] [ T; A ],
+                      "len",
+                      [],
+                      []
+                    |),
+                    [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                  |);
+                  Value.Integer IntegerKind.Usize 0
+                ]
               |)))
           | _, _, _ => M.impossible "wrong number of arguments"
           end.
@@ -7277,10 +7324,7 @@ Module collections.
                                     |)
                                   |)) in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (|
                                 M.never_to_any (|
                                   M.read (|
@@ -7451,13 +7495,14 @@ Module collections.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.eq (| N, Value.Integer IntegerKind.Usize 0 |)
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.eq,
+                                      [ N; Value.Integer IntegerKind.Usize 0 ]
+                                    |)
                                   |)) in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (|
                                 M.never_to_any (|
                                   M.read (|
@@ -11766,7 +11811,7 @@ Module collections.
                                                     |)
                                                   |)) in
                                               let _ :=
-                                                M.is_constant_or_break_match (|
+                                                is_constant_or_break_match (|
                                                   M.read (| γ |),
                                                   Value.Bool true
                                                 |) in
@@ -12338,7 +12383,7 @@ Module collections.
                                                 |)
                                               |)) in
                                           let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
@@ -12433,7 +12478,13 @@ Module collections.
                               Value.Integer IntegerKind.Usize 0;
                               Value.StructTuple
                                 "core::option::Option::Some"
-                                [ BinOp.Wrap.add (| M.read (| a_len |), M.read (| b_len |) |) ]
+                                [
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    BinOp.Wrap.add,
+                                    [ M.read (| a_len |); M.read (| b_len |) ]
+                                  |)
+                                ]
                             ]
                         |)))
                   ]
@@ -13567,7 +13618,7 @@ Module collections.
                                                     |)
                                                   |)) in
                                               let _ :=
-                                                M.is_constant_or_break_match (|
+                                                is_constant_or_break_match (|
                                                   M.read (| γ |),
                                                   Value.Bool true
                                                 |) in
@@ -14116,7 +14167,13 @@ Module collections.
                               |);
                               Value.StructTuple
                                 "core::option::Option::Some"
-                                [ BinOp.Wrap.add (| M.read (| a_len |), M.read (| b_len |) |) ]
+                                [
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    BinOp.Wrap.add,
+                                    [ M.read (| a_len |); M.read (| b_len |) ]
+                                  |)
+                                ]
                             ]
                         |)))
                   ]

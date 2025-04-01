@@ -252,7 +252,13 @@ Module journaled_state.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |)
               |) in
-            M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
+            M.alloc (|
+              M.call_closure (|
+                Ty.path "bool",
+                BinOp.eq,
+                [ M.read (| __self_discr |); M.read (| __arg1_discr |) ]
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -436,38 +442,46 @@ Module journaled_state.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           LogicalOp.and (|
-            BinOp.eq (|
-              M.read (|
-                M.SubPointer.get_struct_record_field (|
-                  M.deref (| M.read (| self |) |),
-                  "revm_context_interface::journaled_state::JournalCheckpoint",
-                  "log_i"
-                |)
-              |),
-              M.read (|
-                M.SubPointer.get_struct_record_field (|
-                  M.deref (| M.read (| other |) |),
-                  "revm_context_interface::journaled_state::JournalCheckpoint",
-                  "log_i"
-                |)
-              |)
-            |),
-            ltac:(M.monadic
-              (BinOp.eq (|
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.eq,
+              [
                 M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.deref (| M.read (| self |) |),
                     "revm_context_interface::journaled_state::JournalCheckpoint",
-                    "journal_i"
+                    "log_i"
                   |)
-                |),
+                |);
                 M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.deref (| M.read (| other |) |),
                     "revm_context_interface::journaled_state::JournalCheckpoint",
-                    "journal_i"
+                    "log_i"
                   |)
                 |)
+              ]
+            |),
+            ltac:(M.monadic
+              (M.call_closure (|
+                Ty.path "bool",
+                BinOp.eq,
+                [
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "revm_context_interface::journaled_state::JournalCheckpoint",
+                      "journal_i"
+                    |)
+                  |);
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| other |) |),
+                      "revm_context_interface::journaled_state::JournalCheckpoint",
+                      "journal_i"
+                    |)
+                  |)
+                ]
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -771,21 +785,25 @@ Module journaled_state.
               ]
             |),
             ltac:(M.monadic
-              (BinOp.eq (|
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "revm_context_interface::journaled_state::StateLoad",
-                    "is_cold"
+              (M.call_closure (|
+                Ty.path "bool",
+                BinOp.eq,
+                [
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "revm_context_interface::journaled_state::StateLoad",
+                      "is_cold"
+                    |)
+                  |);
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| other |) |),
+                      "revm_context_interface::journaled_state::StateLoad",
+                      "is_cold"
+                    |)
                   |)
-                |),
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| other |) |),
-                    "revm_context_interface::journaled_state::StateLoad",
-                    "is_cold"
-                  |)
-                |)
+                ]
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1328,21 +1346,25 @@ Module journaled_state.
               ]
             |),
             ltac:(M.monadic
-              (BinOp.eq (|
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "revm_context_interface::journaled_state::AccountLoad",
-                    "is_empty"
+              (M.call_closure (|
+                Ty.path "bool",
+                BinOp.eq,
+                [
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "revm_context_interface::journaled_state::AccountLoad",
+                      "is_empty"
+                    |)
+                  |);
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| other |) |),
+                      "revm_context_interface::journaled_state::AccountLoad",
+                      "is_empty"
+                    |)
                   |)
-                |),
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| other |) |),
-                    "revm_context_interface::journaled_state::AccountLoad",
-                    "is_empty"
-                  |)
-                |)
+                ]
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"

@@ -55,15 +55,19 @@ Module file_format_common.
     Definition value_HEADER_SIZE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       ltac:(M.monadic
         (M.alloc (|
-          BinOp.Wrap.add (|
-            M.read (|
-              get_associated_constant (|
-                Ty.path "move_binary_format::file_format_common::BinaryConstants",
-                "MOVE_MAGIC_SIZE",
-                Ty.path "usize"
-              |)
-            |),
-            Value.Integer IntegerKind.Usize 5
+          M.call_closure (|
+            Ty.path "usize",
+            BinOp.Wrap.add,
+            [
+              M.read (|
+                get_associated_constant (|
+                  Ty.path "move_binary_format::file_format_common::BinaryConstants",
+                  "MOVE_MAGIC_SIZE",
+                  Ty.path "usize"
+                |)
+              |);
+              Value.Integer IntegerKind.Usize 5
+            ]
           |)
         |))).
     
@@ -77,18 +81,26 @@ Module file_format_common.
     Definition value_TABLE_HEADER_SIZE (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
       ltac:(M.monadic
         (M.alloc (|
-          BinOp.Wrap.add (|
-            BinOp.Wrap.mul (|
-              M.cast
-                (Ty.path "u8")
-                (M.call_closure (|
-                  Ty.path "usize",
-                  M.get_function (| "core::mem::size_of", [], [ Ty.path "u32" ] |),
-                  []
-                |)),
-              Value.Integer IntegerKind.U8 2
-            |),
-            Value.Integer IntegerKind.U8 1
+          M.call_closure (|
+            Ty.path "u8",
+            BinOp.Wrap.add,
+            [
+              M.call_closure (|
+                Ty.path "u8",
+                BinOp.Wrap.mul,
+                [
+                  M.cast
+                    (Ty.path "u8")
+                    (M.call_closure (|
+                      Ty.path "usize",
+                      M.get_function (| "core::mem::size_of", [], [ Ty.path "u32" ] |),
+                      []
+                    |));
+                  Value.Integer IntegerKind.U8 2
+                ]
+              |);
+              Value.Integer IntegerKind.U8 1
+            ]
           |)
         |))).
     
@@ -990,7 +1002,13 @@ Module file_format_common.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |)
               |) in
-            M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
+            M.alloc (|
+              M.call_closure (|
+                Ty.path "bool",
+                BinOp.eq,
+                [ M.read (| __self_discr |); M.read (| __arg1_discr |) ]
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -3283,7 +3301,7 @@ Module file_format_common.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ : Ty.tuple [] :=
                             M.alloc (|
                               M.call_closure (|
@@ -3590,7 +3608,7 @@ Module file_format_common.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           let~ _ : Ty.tuple [] :=
                             M.alloc (|
                               M.call_closure (|
@@ -4039,7 +4057,11 @@ Module file_format_common.
                   ltac:(M.monadic
                     (let~ cur : Ty.path "u64" :=
                       M.alloc (|
-                        BinOp.bit_and (M.read (| val |)) (Value.Integer IntegerKind.U64 127)
+                        M.call_closure (|
+                          Ty.path "u64",
+                          BinOp.Wrap.bit_and,
+                          [ M.read (| val |); Value.Integer IntegerKind.U64 127 ]
+                        |)
                       |) in
                     M.match_operator (|
                       Some (Ty.tuple []),
@@ -4049,9 +4071,15 @@ Module file_format_common.
                           ltac:(M.monadic
                             (let γ :=
                               M.use
-                                (M.alloc (| BinOp.ne (| M.read (| cur |), M.read (| val |) |) |)) in
+                                (M.alloc (|
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.ne,
+                                    [ M.read (| cur |); M.read (| val |) ]
+                                  |)
+                                |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             let~ _ : Ty.tuple [] :=
                               M.match_operator (|
                                 Some (Ty.tuple []),
@@ -4102,9 +4130,12 @@ Module file_format_common.
                                           |);
                                           M.cast
                                             (Ty.path "u8")
-                                            (BinOp.bit_or
-                                              (M.read (| cur |))
-                                              (Value.Integer IntegerKind.U64 128))
+                                            (M.call_closure (|
+                                              Ty.path "u64",
+                                              BinOp.Wrap.bit_or,
+                                              [ M.read (| cur |); Value.Integer IntegerKind.U64 128
+                                              ]
+                                            |))
                                         ]
                                       |)
                                     ]
@@ -4172,9 +4203,10 @@ Module file_format_common.
                                 let β := val in
                                 M.write (|
                                   β,
-                                  BinOp.Wrap.shr (|
-                                    M.read (| β |),
-                                    Value.Integer IntegerKind.I32 7
+                                  M.call_closure (|
+                                    Ty.path "u64",
+                                    BinOp.Wrap.shr,
+                                    [ M.read (| β |); Value.Integer IntegerKind.I32 7 ]
                                   |)
                                 |)
                               |) in
@@ -4970,9 +5002,11 @@ Module file_format_common.
                                 M.alloc (|
                                   M.cast
                                     (Ty.path "u64")
-                                    (BinOp.bit_and
-                                      (M.read (| byte |))
-                                      (Value.Integer IntegerKind.U8 127))
+                                    (M.call_closure (|
+                                      Ty.path "u8",
+                                      BinOp.Wrap.bit_and,
+                                      [ M.read (| byte |); Value.Integer IntegerKind.U8 127 ]
+                                    |))
                                 |) in
                               let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
@@ -4984,19 +5018,28 @@ Module file_format_common.
                                         (let γ :=
                                           M.use
                                             (M.alloc (|
-                                              BinOp.ne (|
-                                                BinOp.Wrap.shr (|
-                                                  BinOp.Wrap.shl (|
-                                                    M.read (| cur |),
-                                                    M.read (| shift |)
-                                                  |),
-                                                  M.read (| shift |)
-                                                |),
-                                                M.read (| cur |)
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                BinOp.ne,
+                                                [
+                                                  M.call_closure (|
+                                                    Ty.path "u64",
+                                                    BinOp.Wrap.shr,
+                                                    [
+                                                      M.call_closure (|
+                                                        Ty.path "u64",
+                                                        BinOp.Wrap.shl,
+                                                        [ M.read (| cur |); M.read (| shift |) ]
+                                                      |);
+                                                      M.read (| shift |)
+                                                    ]
+                                                  |);
+                                                  M.read (| cur |)
+                                                ]
                                               |)
                                             |)) in
                                         let _ :=
-                                          M.is_constant_or_break_match (|
+                                          is_constant_or_break_match (|
                                             M.read (| γ |),
                                             Value.Bool true
                                           |) in
@@ -5067,9 +5110,18 @@ Module file_format_common.
                                   let β := value in
                                   M.write (|
                                     β,
-                                    BinOp.bit_or
-                                      (M.read (| β |))
-                                      (BinOp.Wrap.shl (| M.read (| cur |), M.read (| shift |) |))
+                                    M.call_closure (|
+                                      Ty.path "u64",
+                                      BinOp.Wrap.bit_or,
+                                      [
+                                        M.read (| β |);
+                                        M.call_closure (|
+                                          Ty.path "u64",
+                                          BinOp.Wrap.shl,
+                                          [ M.read (| cur |); M.read (| shift |) ]
+                                        |)
+                                      ]
+                                    |)
                                   |)
                                 |) in
                               let~ _ : Ty.tuple [] :=
@@ -5082,15 +5134,24 @@ Module file_format_common.
                                         (let γ :=
                                           M.use
                                             (M.alloc (|
-                                              BinOp.eq (|
-                                                BinOp.bit_and
-                                                  (M.read (| byte |))
-                                                  (Value.Integer IntegerKind.U8 128),
-                                                Value.Integer IntegerKind.U8 0
+                                              M.call_closure (|
+                                                Ty.path "bool",
+                                                BinOp.eq,
+                                                [
+                                                  M.call_closure (|
+                                                    Ty.path "u8",
+                                                    BinOp.Wrap.bit_and,
+                                                    [
+                                                      M.read (| byte |);
+                                                      Value.Integer IntegerKind.U8 128
+                                                    ]
+                                                  |);
+                                                  Value.Integer IntegerKind.U8 0
+                                                ]
                                               |)
                                             |)) in
                                         let _ :=
-                                          M.is_constant_or_break_match (|
+                                          is_constant_or_break_match (|
                                             M.read (| γ |),
                                             Value.Bool true
                                           |) in
@@ -5108,19 +5169,29 @@ Module file_format_common.
                                                           M.use
                                                             (M.alloc (|
                                                               LogicalOp.and (|
-                                                                BinOp.gt (|
-                                                                  M.read (| shift |),
-                                                                  Value.Integer IntegerKind.U32 0
+                                                                M.call_closure (|
+                                                                  Ty.path "bool",
+                                                                  BinOp.gt,
+                                                                  [
+                                                                    M.read (| shift |);
+                                                                    Value.Integer IntegerKind.U32 0
+                                                                  ]
                                                                 |),
                                                                 ltac:(M.monadic
-                                                                  (BinOp.eq (|
-                                                                    M.read (| cur |),
-                                                                    Value.Integer IntegerKind.U64 0
+                                                                  (M.call_closure (|
+                                                                    Ty.path "bool",
+                                                                    BinOp.eq,
+                                                                    [
+                                                                      M.read (| cur |);
+                                                                      Value.Integer
+                                                                        IntegerKind.U64
+                                                                        0
+                                                                    ]
                                                                   |)))
                                                               |)
                                                             |)) in
                                                         let _ :=
-                                                          M.is_constant_or_break_match (|
+                                                          is_constant_or_break_match (|
                                                             M.read (| γ |),
                                                             Value.Bool true
                                                           |) in
@@ -5207,9 +5278,10 @@ Module file_format_common.
                                   let β := shift in
                                   M.write (|
                                     β,
-                                    BinOp.Wrap.add (|
-                                      M.read (| β |),
-                                      Value.Integer IntegerKind.U32 7
+                                    M.call_closure (|
+                                      Ty.path "u32",
+                                      BinOp.Wrap.add,
+                                      [ M.read (| β |); Value.Integer IntegerKind.U32 7 ]
                                     |)
                                   |)
                                 |) in
@@ -5222,19 +5294,23 @@ Module file_format_common.
                                       (let γ :=
                                         M.use
                                           (M.alloc (|
-                                            BinOp.gt (|
-                                              M.read (| shift |),
-                                              M.read (|
-                                                get_associated_constant (|
-                                                  Ty.path "u64",
-                                                  "BITS",
-                                                  Ty.path "u32"
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              BinOp.gt,
+                                              [
+                                                M.read (| shift |);
+                                                M.read (|
+                                                  get_associated_constant (|
+                                                    Ty.path "u64",
+                                                    "BITS",
+                                                    Ty.path "u32"
+                                                  |)
                                                 |)
-                                              |)
+                                              ]
                                             |)
                                           |)) in
                                       let _ :=
-                                        M.is_constant_or_break_match (|
+                                        is_constant_or_break_match (|
                                           M.read (| γ |),
                                           Value.Bool true
                                         |) in

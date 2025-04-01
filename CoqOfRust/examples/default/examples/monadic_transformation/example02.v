@@ -36,7 +36,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               fun γ =>
                 ltac:(M.monadic
                   (let _ :=
-                    M.is_constant_or_break_match (|
+                    is_constant_or_break_match (|
                       M.read (| γ |),
                       Value.Integer IntegerKind.I32 0
                     |) in
@@ -52,7 +52,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               fun γ =>
                 ltac:(M.monadic
                   (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                  let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                  let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (| Value.Integer IntegerKind.I32 0 |)));
               fun γ => ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.I32 1 |)))
             ]
@@ -65,7 +65,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
               fun γ =>
                 ltac:(M.monadic
                   (let γ := M.use (M.alloc (| Value.Bool false |)) in
-                  let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                  let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   M.alloc (| Value.Integer IntegerKind.I32 2 |)));
               fun γ =>
                 ltac:(M.monadic
@@ -77,7 +77,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                         ltac:(M.monadic
                           (let γ := M.use (M.alloc (| Value.Bool false |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (| Value.Integer IntegerKind.I32 3 |)));
                       fun γ =>
                         ltac:(M.monadic
@@ -89,7 +89,7 @@ Definition main (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
                                 ltac:(M.monadic
                                   (let γ := M.use (M.alloc (| Value.Bool false |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in

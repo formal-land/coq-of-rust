@@ -247,25 +247,29 @@ Module vec.
                                 (let γ :=
                                   M.use
                                     (M.alloc (|
-                                      BinOp.lt (|
-                                        M.read (|
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.deref (| M.read (| self |) |),
-                                            "alloc::vec::extract_if::ExtractIf",
-                                            "idx"
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.lt,
+                                        [
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "alloc::vec::extract_if::ExtractIf",
+                                              "idx"
+                                            |)
+                                          |);
+                                          M.read (|
+                                            M.SubPointer.get_struct_record_field (|
+                                              M.deref (| M.read (| self |) |),
+                                              "alloc::vec::extract_if::ExtractIf",
+                                              "old_len"
+                                            |)
                                           |)
-                                        |),
-                                        M.read (|
-                                          M.SubPointer.get_struct_record_field (|
-                                            M.deref (| M.read (| self |) |),
-                                            "alloc::vec::extract_if::ExtractIf",
-                                            "old_len"
-                                          |)
-                                        |)
+                                        ]
                                       |)
                                     |)) in
                                 let _ :=
-                                  M.is_constant_or_break_match (|
+                                  is_constant_or_break_match (|
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
@@ -377,9 +381,10 @@ Module vec.
                                       |) in
                                     M.write (|
                                       β,
-                                      BinOp.Wrap.add (|
-                                        M.read (| β |),
-                                        Value.Integer IntegerKind.Usize 1
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        BinOp.Wrap.add,
+                                        [ M.read (| β |); Value.Integer IntegerKind.Usize 1 ]
                                       |)
                                     |)
                                   |) in
@@ -391,7 +396,7 @@ Module vec.
                                       ltac:(M.monadic
                                         (let γ := M.use drained in
                                         let _ :=
-                                          M.is_constant_or_break_match (|
+                                          is_constant_or_break_match (|
                                             M.read (| γ |),
                                             Value.Bool true
                                           |) in
@@ -408,9 +413,13 @@ Module vec.
                                                     |) in
                                                   M.write (|
                                                     β,
-                                                    BinOp.Wrap.add (|
-                                                      M.read (| β |),
-                                                      Value.Integer IntegerKind.Usize 1
+                                                    M.call_closure (|
+                                                      Ty.path "usize",
+                                                      BinOp.Wrap.add,
+                                                      [
+                                                        M.read (| β |);
+                                                        Value.Integer IntegerKind.Usize 1
+                                                      ]
                                                     |)
                                                   |)
                                                 |) in
@@ -456,19 +465,23 @@ Module vec.
                                                 (let γ :=
                                                   M.use
                                                     (M.alloc (|
-                                                      BinOp.gt (|
-                                                        M.read (|
-                                                          M.SubPointer.get_struct_record_field (|
-                                                            M.deref (| M.read (| self |) |),
-                                                            "alloc::vec::extract_if::ExtractIf",
-                                                            "del"
-                                                          |)
-                                                        |),
-                                                        Value.Integer IntegerKind.Usize 0
+                                                      M.call_closure (|
+                                                        Ty.path "bool",
+                                                        BinOp.gt,
+                                                        [
+                                                          M.read (|
+                                                            M.SubPointer.get_struct_record_field (|
+                                                              M.deref (| M.read (| self |) |),
+                                                              "alloc::vec::extract_if::ExtractIf",
+                                                              "del"
+                                                            |)
+                                                          |);
+                                                          Value.Integer IntegerKind.Usize 0
+                                                        ]
                                                       |)
                                                     |)) in
                                                 let _ :=
-                                                  M.is_constant_or_break_match (|
+                                                  is_constant_or_break_match (|
                                                     M.read (| γ |),
                                                     Value.Bool true
                                                   |) in
@@ -504,9 +517,10 @@ Module vec.
                                                           Pointer.Kind.MutRef,
                                                           M.SubPointer.get_array_field (|
                                                             M.deref (| M.read (| v |) |),
-                                                            BinOp.Wrap.sub (|
-                                                              M.read (| i |),
-                                                              M.read (| del |)
+                                                            M.call_closure (|
+                                                              Ty.path "usize",
+                                                              BinOp.Wrap.sub,
+                                                              [ M.read (| i |); M.read (| del |) ]
                                                             |)
                                                           |)
                                                         |)
@@ -579,21 +593,25 @@ Module vec.
                 Value.StructTuple
                   "core::option::Option::Some"
                   [
-                    BinOp.Wrap.sub (|
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "alloc::vec::extract_if::ExtractIf",
-                          "old_len"
+                    M.call_closure (|
+                      Ty.path "usize",
+                      BinOp.Wrap.sub,
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::vec::extract_if::ExtractIf",
+                            "old_len"
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "alloc::vec::extract_if::ExtractIf",
+                            "idx"
+                          |)
                         |)
-                      |),
-                      M.read (|
-                        M.SubPointer.get_struct_record_field (|
-                          M.deref (| M.read (| self |) |),
-                          "alloc::vec::extract_if::ExtractIf",
-                          "idx"
-                        |)
-                      |)
+                      ]
                     |)
                   ]
               ]))
@@ -657,37 +675,44 @@ Module vec.
                           M.use
                             (M.alloc (|
                               LogicalOp.and (|
-                                BinOp.lt (|
-                                  M.read (|
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "alloc::vec::extract_if::ExtractIf",
-                                      "idx"
-                                    |)
-                                  |),
-                                  M.read (|
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "alloc::vec::extract_if::ExtractIf",
-                                      "old_len"
-                                    |)
-                                  |)
-                                |),
-                                ltac:(M.monadic
-                                  (BinOp.gt (|
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.lt,
+                                  [
                                     M.read (|
                                       M.SubPointer.get_struct_record_field (|
                                         M.deref (| M.read (| self |) |),
                                         "alloc::vec::extract_if::ExtractIf",
-                                        "del"
+                                        "idx"
                                       |)
-                                    |),
-                                    Value.Integer IntegerKind.Usize 0
+                                    |);
+                                    M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "alloc::vec::extract_if::ExtractIf",
+                                        "old_len"
+                                      |)
+                                    |)
+                                  ]
+                                |),
+                                ltac:(M.monadic
+                                  (M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.gt,
+                                    [
+                                      M.read (|
+                                        M.SubPointer.get_struct_record_field (|
+                                          M.deref (| M.read (| self |) |),
+                                          "alloc::vec::extract_if::ExtractIf",
+                                          "del"
+                                        |)
+                                      |);
+                                      Value.Integer IntegerKind.Usize 0
+                                    ]
                                   |)))
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ ptr : Ty.apply (Ty.path "*mut") [] [ T ] :=
                           M.alloc (|
                             M.call_closure (|
@@ -760,21 +785,25 @@ Module vec.
                           |) in
                         let~ tail_len : Ty.path "usize" :=
                           M.alloc (|
-                            BinOp.Wrap.sub (|
-                              M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "alloc::vec::extract_if::ExtractIf",
-                                  "old_len"
+                            M.call_closure (|
+                              Ty.path "usize",
+                              BinOp.Wrap.sub,
+                              [
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "alloc::vec::extract_if::ExtractIf",
+                                    "old_len"
+                                  |)
+                                |);
+                                M.read (|
+                                  M.SubPointer.get_struct_record_field (|
+                                    M.deref (| M.read (| self |) |),
+                                    "alloc::vec::extract_if::ExtractIf",
+                                    "idx"
+                                  |)
                                 |)
-                              |),
-                              M.read (|
-                                M.SubPointer.get_struct_record_field (|
-                                  M.deref (| M.read (| self |) |),
-                                  "alloc::vec::extract_if::ExtractIf",
-                                  "idx"
-                                |)
-                              |)
+                              ]
                             |)
                           |) in
                         let~ _ : Ty.tuple [] :=
@@ -817,21 +846,25 @@ Module vec.
                           |)
                         |)
                       |);
-                      BinOp.Wrap.sub (|
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "alloc::vec::extract_if::ExtractIf",
-                            "old_len"
+                      M.call_closure (|
+                        Ty.path "usize",
+                        BinOp.Wrap.sub,
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "alloc::vec::extract_if::ExtractIf",
+                              "old_len"
+                            |)
+                          |);
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "alloc::vec::extract_if::ExtractIf",
+                              "del"
+                            |)
                           |)
-                        |),
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "alloc::vec::extract_if::ExtractIf",
-                            "del"
-                          |)
-                        |)
+                        ]
                       |)
                     ]
                   |)

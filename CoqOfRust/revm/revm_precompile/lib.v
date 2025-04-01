@@ -13,16 +13,24 @@ Definition calc_linear_cost_u32 (ε : list Value.t) (τ : list Ty.t) (α : list 
       (let len := M.alloc (| len |) in
       let base := M.alloc (| base |) in
       let word := M.alloc (| word |) in
-      BinOp.Wrap.add (|
-        BinOp.Wrap.mul (|
+      M.call_closure (|
+        Ty.path "u64",
+        BinOp.Wrap.add,
+        [
           M.call_closure (|
             Ty.path "u64",
-            M.get_associated_function (| Ty.path "u64", "div_ceil", [], [] |),
-            [ M.cast (Ty.path "u64") (M.read (| len |)); Value.Integer IntegerKind.U64 32 ]
-          |),
-          M.read (| word |)
-        |),
-        M.read (| base |)
+            BinOp.Wrap.mul,
+            [
+              M.call_closure (|
+                Ty.path "u64",
+                M.get_associated_function (| Ty.path "u64", "div_ceil", [], [] |),
+                [ M.cast (Ty.path "u64") (M.read (| len |)); Value.Integer IntegerKind.U64 32 ]
+              |);
+              M.read (| word |)
+            ]
+          |);
+          M.read (| base |)
+        ]
       |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
@@ -2115,45 +2123,49 @@ Module Impl_revm_precompile_Precompiles.
     | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        BinOp.eq (|
-          M.call_closure (|
-            Ty.path "usize",
-            M.get_associated_function (|
-              Ty.apply
-                (Ty.path "std::collections::hash::map::HashMap")
-                []
-                [
-                  Ty.path "alloy_primitives::bits::address::Address";
-                  Ty.function
-                    [
-                      Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ];
-                      Ty.path "u64"
-                    ]
-                    (Ty.apply
-                      (Ty.path "core::result::Result")
-                      []
+        M.call_closure (|
+          Ty.path "bool",
+          BinOp.eq,
+          [
+            M.call_closure (|
+              Ty.path "usize",
+              M.get_associated_function (|
+                Ty.apply
+                  (Ty.path "std::collections::hash::map::HashMap")
+                  []
+                  [
+                    Ty.path "alloy_primitives::bits::address::Address";
+                    Ty.function
                       [
-                        Ty.path "revm_precompile::interface::PrecompileOutput";
-                        Ty.path "revm_precompile::interface::PrecompileErrors"
-                      ]);
-                  Ty.path "std::hash::random::RandomState"
-                ],
-              "len",
-              [],
-              []
-            |),
-            [
-              M.borrow (|
-                Pointer.Kind.Ref,
-                M.SubPointer.get_struct_record_field (|
-                  M.deref (| M.read (| self |) |),
-                  "revm_precompile::Precompiles",
-                  "inner"
+                        Ty.apply (Ty.path "&") [] [ Ty.path "alloy_primitives::bytes_::Bytes" ];
+                        Ty.path "u64"
+                      ]
+                      (Ty.apply
+                        (Ty.path "core::result::Result")
+                        []
+                        [
+                          Ty.path "revm_precompile::interface::PrecompileOutput";
+                          Ty.path "revm_precompile::interface::PrecompileErrors"
+                        ]);
+                    Ty.path "std::hash::random::RandomState"
+                  ],
+                "len",
+                [],
+                []
+              |),
+              [
+                M.borrow (|
+                  Pointer.Kind.Ref,
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "revm_precompile::Precompiles",
+                    "inner"
+                  |)
                 |)
-              |)
-            ]
-          |),
-          Value.Integer IntegerKind.Usize 0
+              ]
+            |);
+            Value.Integer IntegerKind.Usize 0
+          ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.
@@ -3385,7 +3397,13 @@ Module Impl_core_cmp_PartialEq_revm_precompile_PrecompileSpecId_for_revm_precomp
                 [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
               |)
             |) in
-          M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
+          M.alloc (|
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.eq,
+              [ M.read (| __self_discr |); M.read (| __arg1_discr |) ]
+            |)
+          |)
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.

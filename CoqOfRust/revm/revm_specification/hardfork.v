@@ -524,7 +524,13 @@ Module hardfork.
                   [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| other |) |) |) ]
                 |)
               |) in
-            M.alloc (| BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |) |)
+            M.alloc (|
+              M.call_closure (|
+                Ty.path "bool",
+                BinOp.eq,
+                [ M.read (| __self_discr |); M.read (| __arg1_discr |) ]
+              |)
+            |)
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -779,7 +785,7 @@ Module hardfork.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 0
                       |) in
@@ -791,7 +797,7 @@ Module hardfork.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 1
                       |) in
@@ -807,7 +813,7 @@ Module hardfork.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 2
                       |) in
@@ -819,7 +825,7 @@ Module hardfork.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 3
                       |) in
@@ -831,7 +837,7 @@ Module hardfork.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 4
                       |) in
@@ -843,7 +849,7 @@ Module hardfork.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 5
                       |) in
@@ -859,7 +865,7 @@ Module hardfork.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 6
                       |) in
@@ -871,7 +877,7 @@ Module hardfork.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 7
                       |) in
@@ -887,7 +893,7 @@ Module hardfork.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 8
                       |) in
@@ -899,7 +905,7 @@ Module hardfork.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 9
                       |) in
@@ -911,7 +917,7 @@ Module hardfork.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 10
                       |) in
@@ -924,7 +930,7 @@ Module hardfork.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 11
                       |) in
@@ -936,7 +942,7 @@ Module hardfork.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 12
                       |) in
@@ -948,7 +954,7 @@ Module hardfork.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 13
                       |) in
@@ -961,7 +967,7 @@ Module hardfork.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 14
                       |) in
@@ -974,7 +980,7 @@ Module hardfork.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 15
                       |) in
@@ -986,7 +992,7 @@ Module hardfork.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 16
                       |) in
@@ -998,7 +1004,7 @@ Module hardfork.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 17
                       |) in
@@ -1010,7 +1016,7 @@ Module hardfork.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 18
                       |) in
@@ -1022,7 +1028,7 @@ Module hardfork.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 19
                       |) in
@@ -1034,7 +1040,7 @@ Module hardfork.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         Value.Integer IntegerKind.U8 255
                       |) in
@@ -1096,9 +1102,11 @@ Module hardfork.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
-          BinOp.ge (|
-            M.cast (Ty.path "u8") (M.read (| self |)),
-            M.cast (Ty.path "u8") (M.read (| other |))
+          M.call_closure (|
+            Ty.path "bool",
+            BinOp.ge,
+            [ M.cast (Ty.path "u8") (M.read (| self |)); M.cast (Ty.path "u8") (M.read (| other |))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1324,14 +1332,14 @@ Module hardfork.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), mk_str (| "Frontier" |) |) in
+                      is_constant_or_break_match (| M.read (| γ |), mk_str (| "Frontier" |) |) in
                     M.alloc (|
                       Value.StructTuple "revm_specification::hardfork::SpecId::FRONTIER" []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         mk_str (| "Frontier Thawing" |)
                       |) in
@@ -1341,42 +1349,42 @@ Module hardfork.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), mk_str (| "Homestead" |) |) in
+                      is_constant_or_break_match (| M.read (| γ |), mk_str (| "Homestead" |) |) in
                     M.alloc (|
                       Value.StructTuple "revm_specification::hardfork::SpecId::HOMESTEAD" []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), mk_str (| "DAO Fork" |) |) in
+                      is_constant_or_break_match (| M.read (| γ |), mk_str (| "DAO Fork" |) |) in
                     M.alloc (|
                       Value.StructTuple "revm_specification::hardfork::SpecId::DAO_FORK" []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), mk_str (| "Tangerine" |) |) in
+                      is_constant_or_break_match (| M.read (| γ |), mk_str (| "Tangerine" |) |) in
                     M.alloc (|
                       Value.StructTuple "revm_specification::hardfork::SpecId::TANGERINE" []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), mk_str (| "Spurious" |) |) in
+                      is_constant_or_break_match (| M.read (| γ |), mk_str (| "Spurious" |) |) in
                     M.alloc (|
                       Value.StructTuple "revm_specification::hardfork::SpecId::SPURIOUS_DRAGON" []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), mk_str (| "Byzantium" |) |) in
+                      is_constant_or_break_match (| M.read (| γ |), mk_str (| "Byzantium" |) |) in
                     M.alloc (|
                       Value.StructTuple "revm_specification::hardfork::SpecId::BYZANTIUM" []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         mk_str (| "Constantinople" |)
                       |) in
@@ -1386,48 +1394,42 @@ Module hardfork.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        mk_str (| "Petersburg" |)
-                      |) in
+                      is_constant_or_break_match (| M.read (| γ |), mk_str (| "Petersburg" |) |) in
                     M.alloc (|
                       Value.StructTuple "revm_specification::hardfork::SpecId::PETERSBURG" []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), mk_str (| "Istanbul" |) |) in
+                      is_constant_or_break_match (| M.read (| γ |), mk_str (| "Istanbul" |) |) in
                     M.alloc (|
                       Value.StructTuple "revm_specification::hardfork::SpecId::ISTANBUL" []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
-                        M.read (| γ |),
-                        mk_str (| "MuirGlacier" |)
-                      |) in
+                      is_constant_or_break_match (| M.read (| γ |), mk_str (| "MuirGlacier" |) |) in
                     M.alloc (|
                       Value.StructTuple "revm_specification::hardfork::SpecId::MUIR_GLACIER" []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), mk_str (| "Berlin" |) |) in
+                      is_constant_or_break_match (| M.read (| γ |), mk_str (| "Berlin" |) |) in
                     M.alloc (|
                       Value.StructTuple "revm_specification::hardfork::SpecId::BERLIN" []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), mk_str (| "London" |) |) in
+                      is_constant_or_break_match (| M.read (| γ |), mk_str (| "London" |) |) in
                     M.alloc (|
                       Value.StructTuple "revm_specification::hardfork::SpecId::LONDON" []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         mk_str (| "Arrow Glacier" |)
                       |) in
@@ -1437,7 +1439,7 @@ Module hardfork.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (|
+                      is_constant_or_break_match (|
                         M.read (| γ |),
                         mk_str (| "Gray Glacier" |)
                       |) in
@@ -1447,42 +1449,42 @@ Module hardfork.
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), mk_str (| "Merge" |) |) in
+                      is_constant_or_break_match (| M.read (| γ |), mk_str (| "Merge" |) |) in
                     M.alloc (|
                       Value.StructTuple "revm_specification::hardfork::SpecId::MERGE" []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), mk_str (| "Shanghai" |) |) in
+                      is_constant_or_break_match (| M.read (| γ |), mk_str (| "Shanghai" |) |) in
                     M.alloc (|
                       Value.StructTuple "revm_specification::hardfork::SpecId::SHANGHAI" []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), mk_str (| "Cancun" |) |) in
+                      is_constant_or_break_match (| M.read (| γ |), mk_str (| "Cancun" |) |) in
                     M.alloc (|
                       Value.StructTuple "revm_specification::hardfork::SpecId::CANCUN" []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), mk_str (| "Prague" |) |) in
+                      is_constant_or_break_match (| M.read (| γ |), mk_str (| "Prague" |) |) in
                     M.alloc (|
                       Value.StructTuple "revm_specification::hardfork::SpecId::PRAGUE" []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), mk_str (| "PragueEOF" |) |) in
+                      is_constant_or_break_match (| M.read (| γ |), mk_str (| "PragueEOF" |) |) in
                     M.alloc (|
                       Value.StructTuple "revm_specification::hardfork::SpecId::OSAKA" []
                     |)));
                 fun γ =>
                   ltac:(M.monadic
                     (let _ :=
-                      M.is_constant_or_break_match (| M.read (| γ |), mk_str (| "Latest" |) |) in
+                      is_constant_or_break_match (| M.read (| γ |), mk_str (| "Latest" |) |) in
                     M.alloc (|
                       Value.StructTuple "revm_specification::hardfork::SpecId::LATEST" []
                     |)));

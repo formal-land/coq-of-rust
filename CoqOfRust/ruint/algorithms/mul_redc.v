@@ -87,7 +87,7 @@ Module algorithms.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ : Ty.tuple [] :=
                         M.match_operator (|
                           Some (Ty.tuple []),
@@ -119,7 +119,7 @@ Module algorithms.
                                       |)
                                     |)) in
                                 let _ :=
-                                  M.is_constant_or_break_match (|
+                                  is_constant_or_break_match (|
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
@@ -147,7 +147,7 @@ Module algorithms.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ : Ty.tuple [] :=
                         M.match_operator (|
                           Some (Ty.tuple []),
@@ -213,14 +213,22 @@ Module algorithms.
                                           M.use
                                             (M.alloc (|
                                               UnOp.not (|
-                                                BinOp.eq (|
-                                                  M.read (| M.deref (| M.read (| left_val |) |) |),
-                                                  M.read (| M.deref (| M.read (| right_val |) |) |)
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  BinOp.eq,
+                                                  [
+                                                    M.read (|
+                                                      M.deref (| M.read (| left_val |) |)
+                                                    |);
+                                                    M.read (|
+                                                      M.deref (| M.read (| right_val |) |)
+                                                    |)
+                                                  ]
                                                 |)
                                               |)
                                             |)) in
                                         let _ :=
-                                          M.is_constant_or_break_match (|
+                                          is_constant_or_break_match (|
                                             M.read (| γ |),
                                             Value.Bool true
                                           |) in
@@ -287,7 +295,7 @@ Module algorithms.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ : Ty.tuple [] :=
                         M.match_operator (|
                           Some (Ty.tuple []),
@@ -353,14 +361,22 @@ Module algorithms.
                                           M.use
                                             (M.alloc (|
                                               UnOp.not (|
-                                                BinOp.eq (|
-                                                  M.read (| M.deref (| M.read (| left_val |) |) |),
-                                                  M.read (| M.deref (| M.read (| right_val |) |) |)
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  BinOp.eq,
+                                                  [
+                                                    M.read (|
+                                                      M.deref (| M.read (| left_val |) |)
+                                                    |);
+                                                    M.read (|
+                                                      M.deref (| M.read (| right_val |) |)
+                                                    |)
+                                                  ]
                                                 |)
                                               |)
                                             |)) in
                                         let _ :=
-                                          M.is_constant_or_break_match (|
+                                          is_constant_or_break_match (|
                                             M.read (| γ |),
                                             Value.Bool true
                                           |) in
@@ -427,7 +443,7 @@ Module algorithms.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ : Ty.tuple [] :=
                         M.match_operator (|
                           Some (Ty.tuple []),
@@ -493,14 +509,22 @@ Module algorithms.
                                           M.use
                                             (M.alloc (|
                                               UnOp.not (|
-                                                BinOp.eq (|
-                                                  M.read (| M.deref (| M.read (| left_val |) |) |),
-                                                  M.read (| M.deref (| M.read (| right_val |) |) |)
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  BinOp.eq,
+                                                  [
+                                                    M.read (|
+                                                      M.deref (| M.read (| left_val |) |)
+                                                    |);
+                                                    M.read (|
+                                                      M.deref (| M.read (| right_val |) |)
+                                                    |)
+                                                  ]
                                                 |)
                                               |)
                                             |)) in
                                         let _ :=
-                                          M.is_constant_or_break_match (|
+                                          is_constant_or_break_match (|
                                             M.read (| γ |),
                                             Value.Bool true
                                           |) in
@@ -567,7 +591,7 @@ Module algorithms.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ : Ty.tuple [] :=
                         M.match_operator (|
                           Some (Ty.tuple []),
@@ -620,14 +644,22 @@ Module algorithms.
                                           M.use
                                             (M.alloc (|
                                               UnOp.not (|
-                                                BinOp.eq (|
-                                                  M.read (| M.deref (| M.read (| left_val |) |) |),
-                                                  M.read (| M.deref (| M.read (| right_val |) |) |)
+                                                M.call_closure (|
+                                                  Ty.path "bool",
+                                                  BinOp.eq,
+                                                  [
+                                                    M.read (|
+                                                      M.deref (| M.read (| left_val |) |)
+                                                    |);
+                                                    M.read (|
+                                                      M.deref (| M.read (| right_val |) |)
+                                                    |)
+                                                  ]
                                                 |)
                                               |)
                                             |)) in
                                         let _ :=
-                                          M.is_constant_or_break_match (|
+                                          is_constant_or_break_match (|
                                             M.read (| γ |),
                                             Value.Bool true
                                           |) in
@@ -700,21 +732,29 @@ Module algorithms.
                   M.get_function (| "alloc::vec::from_elem", [], [ Ty.path "u64" ] |),
                   [
                     Value.Integer IntegerKind.U64 0;
-                    BinOp.Wrap.add (|
-                      BinOp.Wrap.mul (|
-                        Value.Integer IntegerKind.Usize 2,
+                    M.call_closure (|
+                      Ty.path "usize",
+                      BinOp.Wrap.add,
+                      [
                         M.call_closure (|
                           Ty.path "usize",
-                          M.get_associated_function (|
-                            Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ],
-                            "len",
-                            [],
-                            []
-                          |),
-                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |) ]
-                        |)
-                      |),
-                      Value.Integer IntegerKind.Usize 1
+                          BinOp.Wrap.mul,
+                          [
+                            Value.Integer IntegerKind.Usize 2;
+                            M.call_closure (|
+                              Ty.path "usize",
+                              M.get_associated_function (|
+                                Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ],
+                                "len",
+                                [],
+                                []
+                              |),
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| m |) |) |) ]
+                            |)
+                          ]
+                        |);
+                        Value.Integer IntegerKind.Usize 1
+                      ]
                     |)
                   ]
                 |)
@@ -1010,109 +1050,140 @@ Module algorithms.
                                                                     let β := carry in
                                                                     M.write (|
                                                                       β,
-                                                                      BinOp.Wrap.add (|
-                                                                        M.read (| β |),
-                                                                        BinOp.Wrap.add (|
+                                                                      M.call_closure (|
+                                                                        Ty.path "u128",
+                                                                        BinOp.Wrap.add,
+                                                                        [
+                                                                          M.read (| β |);
                                                                           M.call_closure (|
                                                                             Ty.path "u128",
-                                                                            M.get_trait_method (|
-                                                                              "core::convert::From",
-                                                                              Ty.path "u128",
-                                                                              [],
-                                                                              [ Ty.path "u64" ],
-                                                                              "from",
-                                                                              [],
-                                                                              []
-                                                                            |),
+                                                                            BinOp.Wrap.add,
                                                                             [
-                                                                              M.read (|
-                                                                                M.deref (|
+                                                                              M.call_closure (|
+                                                                                Ty.path "u128",
+                                                                                M.get_trait_method (|
+                                                                                  "core::convert::From",
+                                                                                  Ty.path "u128",
+                                                                                  [],
+                                                                                  [ Ty.path "u64" ],
+                                                                                  "from",
+                                                                                  [],
+                                                                                  []
+                                                                                |),
+                                                                                [
+                                                                                  M.read (|
+                                                                                    M.deref (|
+                                                                                      M.call_closure (|
+                                                                                        Ty.apply
+                                                                                          (Ty.path
+                                                                                            "&")
+                                                                                          []
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "u64"
+                                                                                          ],
+                                                                                        M.get_trait_method (|
+                                                                                          "core::ops::index::Index",
+                                                                                          Ty.apply
+                                                                                            (Ty.path
+                                                                                              "alloc::vec::Vec")
+                                                                                            []
+                                                                                            [
+                                                                                              Ty.path
+                                                                                                "u64";
+                                                                                              Ty.path
+                                                                                                "alloc::alloc::Global"
+                                                                                            ],
+                                                                                          [],
+                                                                                          [
+                                                                                            Ty.path
+                                                                                              "usize"
+                                                                                          ],
+                                                                                          "index",
+                                                                                          [],
+                                                                                          []
+                                                                                        |),
+                                                                                        [
+                                                                                          M.borrow (|
+                                                                                            Pointer.Kind.Ref,
+                                                                                            temp
+                                                                                          |);
+                                                                                          M.call_closure (|
+                                                                                            Ty.path
+                                                                                              "usize",
+                                                                                            BinOp.Wrap.add,
+                                                                                            [
+                                                                                              M.read (|
+                                                                                                i
+                                                                                              |);
+                                                                                              M.read (|
+                                                                                                j
+                                                                                              |)
+                                                                                            ]
+                                                                                          |)
+                                                                                        ]
+                                                                                      |)
+                                                                                    |)
+                                                                                  |)
+                                                                                ]
+                                                                              |);
+                                                                              M.call_closure (|
+                                                                                Ty.path "u128",
+                                                                                BinOp.Wrap.mul,
+                                                                                [
                                                                                   M.call_closure (|
-                                                                                    Ty.apply
-                                                                                      (Ty.path "&")
-                                                                                      []
+                                                                                    Ty.path "u128",
+                                                                                    M.get_trait_method (|
+                                                                                      "core::convert::From",
+                                                                                      Ty.path
+                                                                                        "u128",
+                                                                                      [],
                                                                                       [
                                                                                         Ty.path
                                                                                           "u64"
                                                                                       ],
-                                                                                    M.get_trait_method (|
-                                                                                      "core::ops::index::Index",
-                                                                                      Ty.apply
-                                                                                        (Ty.path
-                                                                                          "alloc::vec::Vec")
-                                                                                        []
-                                                                                        [
-                                                                                          Ty.path
-                                                                                            "u64";
-                                                                                          Ty.path
-                                                                                            "alloc::alloc::Global"
-                                                                                        ],
-                                                                                      [],
-                                                                                      [
-                                                                                        Ty.path
-                                                                                          "usize"
-                                                                                      ],
-                                                                                      "index",
+                                                                                      "from",
                                                                                       [],
                                                                                       []
                                                                                     |),
                                                                                     [
-                                                                                      M.borrow (|
-                                                                                        Pointer.Kind.Ref,
-                                                                                        temp
-                                                                                      |);
-                                                                                      BinOp.Wrap.add (|
-                                                                                        M.read (|
-                                                                                          i
-                                                                                        |),
-                                                                                        M.read (|
-                                                                                          j
+                                                                                      M.read (|
+                                                                                        M.SubPointer.get_array_field (|
+                                                                                          M.deref (|
+                                                                                            M.read (|
+                                                                                              m
+                                                                                            |)
+                                                                                          |),
+                                                                                          M.read (|
+                                                                                            j
+                                                                                          |)
                                                                                         |)
                                                                                       |)
                                                                                     ]
+                                                                                  |);
+                                                                                  M.call_closure (|
+                                                                                    Ty.path "u128",
+                                                                                    M.get_trait_method (|
+                                                                                      "core::convert::From",
+                                                                                      Ty.path
+                                                                                        "u128",
+                                                                                      [],
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "u64"
+                                                                                      ],
+                                                                                      "from",
+                                                                                      [],
+                                                                                      []
+                                                                                    |),
+                                                                                    [ M.read (| u |)
+                                                                                    ]
                                                                                   |)
-                                                                                |)
+                                                                                ]
                                                                               |)
                                                                             ]
-                                                                          |),
-                                                                          BinOp.Wrap.mul (|
-                                                                            M.call_closure (|
-                                                                              Ty.path "u128",
-                                                                              M.get_trait_method (|
-                                                                                "core::convert::From",
-                                                                                Ty.path "u128",
-                                                                                [],
-                                                                                [ Ty.path "u64" ],
-                                                                                "from",
-                                                                                [],
-                                                                                []
-                                                                              |),
-                                                                              [
-                                                                                M.read (|
-                                                                                  M.SubPointer.get_array_field (|
-                                                                                    M.deref (|
-                                                                                      M.read (| m |)
-                                                                                    |),
-                                                                                    M.read (| j |)
-                                                                                  |)
-                                                                                |)
-                                                                              ]
-                                                                            |),
-                                                                            M.call_closure (|
-                                                                              Ty.path "u128",
-                                                                              M.get_trait_method (|
-                                                                                "core::convert::From",
-                                                                                Ty.path "u128",
-                                                                                [],
-                                                                                [ Ty.path "u64" ],
-                                                                                "from",
-                                                                                [],
-                                                                                []
-                                                                              |),
-                                                                              [ M.read (| u |) ]
-                                                                            |)
                                                                           |)
-                                                                        |)
+                                                                        ]
                                                                       |)
                                                                     |)
                                                                   |) in
@@ -1147,9 +1218,13 @@ Module algorithms.
                                                                               Pointer.Kind.MutRef,
                                                                               temp
                                                                             |);
-                                                                            BinOp.Wrap.add (|
-                                                                              M.read (| i |),
-                                                                              M.read (| j |)
+                                                                            M.call_closure (|
+                                                                              Ty.path "usize",
+                                                                              BinOp.Wrap.add,
+                                                                              [
+                                                                                M.read (| i |);
+                                                                                M.read (| j |)
+                                                                              ]
                                                                             |)
                                                                           ]
                                                                         |)
@@ -1164,11 +1239,15 @@ Module algorithms.
                                                                     let β := carry in
                                                                     M.write (|
                                                                       β,
-                                                                      BinOp.Wrap.shr (|
-                                                                        M.read (| β |),
-                                                                        Value.Integer
-                                                                          IntegerKind.I32
-                                                                          64
+                                                                      M.call_closure (|
+                                                                        Ty.path "u128",
+                                                                        BinOp.Wrap.shr,
+                                                                        [
+                                                                          M.read (| β |);
+                                                                          Value.Integer
+                                                                            IntegerKind.I32
+                                                                            64
+                                                                        ]
                                                                       |)
                                                                     |)
                                                                   |) in
@@ -1225,25 +1304,33 @@ Module algorithms.
                                                           ]
                                                         |));
                                                       ("end_",
-                                                        BinOp.Wrap.sub (|
-                                                          M.call_closure (|
-                                                            Ty.path "usize",
-                                                            M.get_associated_function (|
-                                                              Ty.apply
-                                                                (Ty.path "alloc::vec::Vec")
+                                                        M.call_closure (|
+                                                          Ty.path "usize",
+                                                          BinOp.Wrap.sub,
+                                                          [
+                                                            M.call_closure (|
+                                                              Ty.path "usize",
+                                                              M.get_associated_function (|
+                                                                Ty.apply
+                                                                  (Ty.path "alloc::vec::Vec")
+                                                                  []
+                                                                  [
+                                                                    Ty.path "u64";
+                                                                    Ty.path "alloc::alloc::Global"
+                                                                  ],
+                                                                "len",
+                                                                [],
                                                                 []
-                                                                [
-                                                                  Ty.path "u64";
-                                                                  Ty.path "alloc::alloc::Global"
-                                                                ],
-                                                              "len",
-                                                              [],
-                                                              []
-                                                            |),
-                                                            [ M.borrow (| Pointer.Kind.Ref, temp |)
-                                                            ]
-                                                          |),
-                                                          M.read (| i |)
+                                                              |),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  temp
+                                                                |)
+                                                              ]
+                                                            |);
+                                                            M.read (| i |)
+                                                          ]
                                                         |))
                                                     ]
                                                 ]
@@ -1318,66 +1405,79 @@ Module algorithms.
                                                                     let β := carry in
                                                                     M.write (|
                                                                       β,
-                                                                      BinOp.Wrap.add (|
-                                                                        M.read (| β |),
-                                                                        M.call_closure (|
-                                                                          Ty.path "u128",
-                                                                          M.get_trait_method (|
-                                                                            "core::convert::From",
+                                                                      M.call_closure (|
+                                                                        Ty.path "u128",
+                                                                        BinOp.Wrap.add,
+                                                                        [
+                                                                          M.read (| β |);
+                                                                          M.call_closure (|
                                                                             Ty.path "u128",
-                                                                            [],
-                                                                            [ Ty.path "u64" ],
-                                                                            "from",
-                                                                            [],
-                                                                            []
-                                                                          |),
-                                                                          [
-                                                                            M.read (|
-                                                                              M.deref (|
-                                                                                M.call_closure (|
-                                                                                  Ty.apply
-                                                                                    (Ty.path "&")
-                                                                                    []
-                                                                                    [ Ty.path "u64"
-                                                                                    ],
-                                                                                  M.get_trait_method (|
-                                                                                    "core::ops::index::Index",
+                                                                            M.get_trait_method (|
+                                                                              "core::convert::From",
+                                                                              Ty.path "u128",
+                                                                              [],
+                                                                              [ Ty.path "u64" ],
+                                                                              "from",
+                                                                              [],
+                                                                              []
+                                                                            |),
+                                                                            [
+                                                                              M.read (|
+                                                                                M.deref (|
+                                                                                  M.call_closure (|
                                                                                     Ty.apply
-                                                                                      (Ty.path
-                                                                                        "alloc::vec::Vec")
+                                                                                      (Ty.path "&")
                                                                                       []
                                                                                       [
                                                                                         Ty.path
-                                                                                          "u64";
-                                                                                        Ty.path
-                                                                                          "alloc::alloc::Global"
+                                                                                          "u64"
                                                                                       ],
-                                                                                    [],
+                                                                                    M.get_trait_method (|
+                                                                                      "core::ops::index::Index",
+                                                                                      Ty.apply
+                                                                                        (Ty.path
+                                                                                          "alloc::vec::Vec")
+                                                                                        []
+                                                                                        [
+                                                                                          Ty.path
+                                                                                            "u64";
+                                                                                          Ty.path
+                                                                                            "alloc::alloc::Global"
+                                                                                        ],
+                                                                                      [],
+                                                                                      [
+                                                                                        Ty.path
+                                                                                          "usize"
+                                                                                      ],
+                                                                                      "index",
+                                                                                      [],
+                                                                                      []
+                                                                                    |),
                                                                                     [
-                                                                                      Ty.path
-                                                                                        "usize"
-                                                                                    ],
-                                                                                    "index",
-                                                                                    [],
-                                                                                    []
-                                                                                  |),
-                                                                                  [
-                                                                                    M.borrow (|
-                                                                                      Pointer.Kind.Ref,
-                                                                                      temp
-                                                                                    |);
-                                                                                    BinOp.Wrap.add (|
-                                                                                      M.read (|
-                                                                                        i
-                                                                                      |),
-                                                                                      M.read (| j |)
-                                                                                    |)
-                                                                                  ]
+                                                                                      M.borrow (|
+                                                                                        Pointer.Kind.Ref,
+                                                                                        temp
+                                                                                      |);
+                                                                                      M.call_closure (|
+                                                                                        Ty.path
+                                                                                          "usize",
+                                                                                        BinOp.Wrap.add,
+                                                                                        [
+                                                                                          M.read (|
+                                                                                            i
+                                                                                          |);
+                                                                                          M.read (|
+                                                                                            j
+                                                                                          |)
+                                                                                        ]
+                                                                                      |)
+                                                                                    ]
+                                                                                  |)
                                                                                 |)
                                                                               |)
-                                                                            |)
-                                                                          ]
-                                                                        |)
+                                                                            ]
+                                                                          |)
+                                                                        ]
                                                                       |)
                                                                     |)
                                                                   |) in
@@ -1412,9 +1512,13 @@ Module algorithms.
                                                                               Pointer.Kind.MutRef,
                                                                               temp
                                                                             |);
-                                                                            BinOp.Wrap.add (|
-                                                                              M.read (| i |),
-                                                                              M.read (| j |)
+                                                                            M.call_closure (|
+                                                                              Ty.path "usize",
+                                                                              BinOp.Wrap.add,
+                                                                              [
+                                                                                M.read (| i |);
+                                                                                M.read (| j |)
+                                                                              ]
                                                                             |)
                                                                           ]
                                                                         |)
@@ -1429,11 +1533,15 @@ Module algorithms.
                                                                     let β := carry in
                                                                     M.write (|
                                                                       β,
-                                                                      BinOp.Wrap.shr (|
-                                                                        M.read (| β |),
-                                                                        Value.Integer
-                                                                          IntegerKind.I32
-                                                                          64
+                                                                      M.call_closure (|
+                                                                        Ty.path "u128",
+                                                                        BinOp.Wrap.shr,
+                                                                        [
+                                                                          M.read (| β |);
+                                                                          Value.Integer
+                                                                            IntegerKind.I32
+                                                                            64
+                                                                        ]
                                                                       |)
                                                                     |)
                                                                   |) in
@@ -1453,7 +1561,7 @@ Module algorithms.
                                               ltac:(M.monadic
                                                 (let γ := M.use (M.alloc (| Value.Bool true |)) in
                                                 let _ :=
-                                                  M.is_constant_or_break_match (|
+                                                  is_constant_or_break_match (|
                                                     M.read (| γ |),
                                                     Value.Bool true
                                                   |) in
@@ -1468,14 +1576,20 @@ Module algorithms.
                                                             M.use
                                                               (M.alloc (|
                                                                 UnOp.not (|
-                                                                  BinOp.eq (|
-                                                                    M.read (| carry |),
-                                                                    Value.Integer IntegerKind.U128 0
+                                                                  M.call_closure (|
+                                                                    Ty.path "bool",
+                                                                    BinOp.eq,
+                                                                    [
+                                                                      M.read (| carry |);
+                                                                      Value.Integer
+                                                                        IntegerKind.U128
+                                                                        0
+                                                                    ]
                                                                   |)
                                                                 |)
                                                               |)) in
                                                           let _ :=
-                                                            M.is_constant_or_break_match (|
+                                                            is_constant_or_break_match (|
                                                               M.read (| γ |),
                                                               Value.Bool true
                                                             |) in
@@ -1520,7 +1634,7 @@ Module algorithms.
                   fun γ =>
                     ltac:(M.monadic
                       (let γ := M.use (M.alloc (| Value.Bool true |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ : Ty.tuple [] :=
                         M.match_operator (|
                           Some (Ty.tuple []),
@@ -1532,55 +1646,65 @@ Module algorithms.
                                   M.use
                                     (M.alloc (|
                                       UnOp.not (|
-                                        BinOp.le (|
-                                          M.read (|
-                                            M.deref (|
-                                              M.call_closure (|
-                                                Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
-                                                M.get_trait_method (|
-                                                  "core::ops::index::Index",
-                                                  Ty.apply
-                                                    (Ty.path "alloc::vec::Vec")
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.le,
+                                          [
+                                            M.read (|
+                                              M.deref (|
+                                                M.call_closure (|
+                                                  Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
+                                                  M.get_trait_method (|
+                                                    "core::ops::index::Index",
+                                                    Ty.apply
+                                                      (Ty.path "alloc::vec::Vec")
+                                                      []
+                                                      [
+                                                        Ty.path "u64";
+                                                        Ty.path "alloc::alloc::Global"
+                                                      ],
+                                                    [],
+                                                    [ Ty.path "usize" ],
+                                                    "index",
+                                                    [],
                                                     []
-                                                    [ Ty.path "u64"; Ty.path "alloc::alloc::Global"
-                                                    ],
-                                                  [],
-                                                  [ Ty.path "usize" ],
-                                                  "index",
-                                                  [],
-                                                  []
-                                                |),
-                                                [
-                                                  M.borrow (| Pointer.Kind.Ref, temp |);
-                                                  BinOp.Wrap.sub (|
+                                                  |),
+                                                  [
+                                                    M.borrow (| Pointer.Kind.Ref, temp |);
                                                     M.call_closure (|
                                                       Ty.path "usize",
-                                                      M.get_associated_function (|
-                                                        Ty.apply
-                                                          (Ty.path "alloc::vec::Vec")
-                                                          []
-                                                          [
-                                                            Ty.path "u64";
-                                                            Ty.path "alloc::alloc::Global"
-                                                          ],
-                                                        "len",
-                                                        [],
-                                                        []
-                                                      |),
-                                                      [ M.borrow (| Pointer.Kind.Ref, temp |) ]
-                                                    |),
-                                                    Value.Integer IntegerKind.Usize 1
-                                                  |)
-                                                ]
+                                                      BinOp.Wrap.sub,
+                                                      [
+                                                        M.call_closure (|
+                                                          Ty.path "usize",
+                                                          M.get_associated_function (|
+                                                            Ty.apply
+                                                              (Ty.path "alloc::vec::Vec")
+                                                              []
+                                                              [
+                                                                Ty.path "u64";
+                                                                Ty.path "alloc::alloc::Global"
+                                                              ],
+                                                            "len",
+                                                            [],
+                                                            []
+                                                          |),
+                                                          [ M.borrow (| Pointer.Kind.Ref, temp |) ]
+                                                        |);
+                                                        Value.Integer IntegerKind.Usize 1
+                                                      ]
+                                                    |)
+                                                  ]
+                                                |)
                                               |)
-                                            |)
-                                          |),
-                                          Value.Integer IntegerKind.U64 1
+                                            |);
+                                            Value.Integer IntegerKind.U64 1
+                                          ]
                                         |)
                                       |)
                                     |)) in
                                 let _ :=
-                                  M.is_constant_or_break_match (|
+                                  is_constant_or_break_match (|
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
@@ -1662,23 +1786,27 @@ Module algorithms.
                                         ]
                                       |));
                                     ("end_",
-                                      BinOp.Wrap.mul (|
-                                        Value.Integer IntegerKind.Usize 2,
-                                        M.call_closure (|
-                                          Ty.path "usize",
-                                          M.get_associated_function (|
-                                            Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ],
-                                            "len",
-                                            [],
-                                            []
-                                          |),
-                                          [
-                                            M.borrow (|
-                                              Pointer.Kind.Ref,
-                                              M.deref (| M.read (| m |) |)
-                                            |)
-                                          ]
-                                        |)
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        BinOp.Wrap.mul,
+                                        [
+                                          Value.Integer IntegerKind.Usize 2;
+                                          M.call_closure (|
+                                            Ty.path "usize",
+                                            M.get_associated_function (|
+                                              Ty.apply (Ty.path "slice") [] [ Ty.path "u64" ],
+                                              "len",
+                                              [],
+                                              []
+                                            |),
+                                            [
+                                              M.borrow (|
+                                                Pointer.Kind.Ref,
+                                                M.deref (| M.read (| m |) |)
+                                              |)
+                                            ]
+                                          |)
+                                        ]
                                       |))
                                   ]
                               ]
@@ -1701,49 +1829,57 @@ Module algorithms.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.eq (|
-                              M.read (|
-                                M.deref (|
-                                  M.call_closure (|
-                                    Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
-                                    M.get_trait_method (|
-                                      "core::ops::index::Index",
-                                      Ty.apply
-                                        (Ty.path "alloc::vec::Vec")
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.eq,
+                              [
+                                M.read (|
+                                  M.deref (|
+                                    M.call_closure (|
+                                      Ty.apply (Ty.path "&") [] [ Ty.path "u64" ],
+                                      M.get_trait_method (|
+                                        "core::ops::index::Index",
+                                        Ty.apply
+                                          (Ty.path "alloc::vec::Vec")
+                                          []
+                                          [ Ty.path "u64"; Ty.path "alloc::alloc::Global" ],
+                                        [],
+                                        [ Ty.path "usize" ],
+                                        "index",
+                                        [],
                                         []
-                                        [ Ty.path "u64"; Ty.path "alloc::alloc::Global" ],
-                                      [],
-                                      [ Ty.path "usize" ],
-                                      "index",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (| Pointer.Kind.Ref, temp |);
-                                      BinOp.Wrap.sub (|
+                                      |),
+                                      [
+                                        M.borrow (| Pointer.Kind.Ref, temp |);
                                         M.call_closure (|
                                           Ty.path "usize",
-                                          M.get_associated_function (|
-                                            Ty.apply
-                                              (Ty.path "alloc::vec::Vec")
-                                              []
-                                              [ Ty.path "u64"; Ty.path "alloc::alloc::Global" ],
-                                            "len",
-                                            [],
-                                            []
-                                          |),
-                                          [ M.borrow (| Pointer.Kind.Ref, temp |) ]
-                                        |),
-                                        Value.Integer IntegerKind.Usize 1
-                                      |)
-                                    ]
+                                          BinOp.Wrap.sub,
+                                          [
+                                            M.call_closure (|
+                                              Ty.path "usize",
+                                              M.get_associated_function (|
+                                                Ty.apply
+                                                  (Ty.path "alloc::vec::Vec")
+                                                  []
+                                                  [ Ty.path "u64"; Ty.path "alloc::alloc::Global" ],
+                                                "len",
+                                                [],
+                                                []
+                                              |),
+                                              [ M.borrow (| Pointer.Kind.Ref, temp |) ]
+                                            |);
+                                            Value.Integer IntegerKind.Usize 1
+                                          ]
+                                        |)
+                                      ]
+                                    |)
                                   |)
-                                |)
-                              |),
-                              Value.Integer IntegerKind.U64 0
+                                |);
+                                Value.Integer IntegerKind.U64 0
+                              ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.use
                         (M.match_operator (|
                           Some (Ty.tuple []),
@@ -2079,7 +2215,7 @@ Module algorithms.
                                                               |)
                                                             |)) in
                                                         let _ :=
-                                                          M.is_constant_or_break_match (|
+                                                          is_constant_or_break_match (|
                                                             M.read (| γ |),
                                                             Value.Bool true
                                                           |) in
@@ -2145,7 +2281,7 @@ Module algorithms.
                                                             |)
                                                           |)) in
                                                       let _ :=
-                                                        M.is_constant_or_break_match (|
+                                                        is_constant_or_break_match (|
                                                           M.read (| γ |),
                                                           Value.Bool true
                                                         |) in
@@ -2174,7 +2310,7 @@ Module algorithms.
                 fun γ =>
                   ltac:(M.monadic
                     (let γ := M.use reduce in
-                    let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                    let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                     let~ carry : Ty.path "i128" := M.alloc (| Value.Integer IntegerKind.I128 0 |) in
                     let~ _ : Ty.tuple [] :=
                       M.use
@@ -2420,40 +2556,48 @@ Module algorithms.
                                                   let β := carry in
                                                   M.write (|
                                                     β,
-                                                    BinOp.Wrap.add (|
-                                                      M.read (| β |),
-                                                      BinOp.Wrap.sub (|
+                                                    M.call_closure (|
+                                                      Ty.path "i128",
+                                                      BinOp.Wrap.add,
+                                                      [
+                                                        M.read (| β |);
                                                         M.call_closure (|
                                                           Ty.path "i128",
-                                                          M.get_trait_method (|
-                                                            "core::convert::From",
-                                                            Ty.path "i128",
-                                                            [],
-                                                            [ Ty.path "u64" ],
-                                                            "from",
-                                                            [],
-                                                            []
-                                                          |),
+                                                          BinOp.Wrap.sub,
                                                           [
-                                                            M.read (|
-                                                              M.deref (| M.read (| r |) |)
+                                                            M.call_closure (|
+                                                              Ty.path "i128",
+                                                              M.get_trait_method (|
+                                                                "core::convert::From",
+                                                                Ty.path "i128",
+                                                                [],
+                                                                [ Ty.path "u64" ],
+                                                                "from",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.read (|
+                                                                  M.deref (| M.read (| r |) |)
+                                                                |)
+                                                              ]
+                                                            |);
+                                                            M.call_closure (|
+                                                              Ty.path "i128",
+                                                              M.get_trait_method (|
+                                                                "core::convert::From",
+                                                                Ty.path "i128",
+                                                                [],
+                                                                [ Ty.path "u64" ],
+                                                                "from",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [ M.read (| m |) ]
                                                             |)
                                                           ]
-                                                        |),
-                                                        M.call_closure (|
-                                                          Ty.path "i128",
-                                                          M.get_trait_method (|
-                                                            "core::convert::From",
-                                                            Ty.path "i128",
-                                                            [],
-                                                            [ Ty.path "u64" ],
-                                                            "from",
-                                                            [],
-                                                            []
-                                                          |),
-                                                          [ M.read (| m |) ]
                                                         |)
-                                                      |)
+                                                      ]
                                                     |)
                                                   |)
                                                 |) in
@@ -2469,9 +2613,13 @@ Module algorithms.
                                                   let β := carry in
                                                   M.write (|
                                                     β,
-                                                    BinOp.Wrap.shr (|
-                                                      M.read (| β |),
-                                                      Value.Integer IntegerKind.I32 64
+                                                    M.call_closure (|
+                                                      Ty.path "i128",
+                                                      BinOp.Wrap.shr,
+                                                      [
+                                                        M.read (| β |);
+                                                        Value.Integer IntegerKind.I32 64
+                                                      ]
                                                     |)
                                                   |)
                                                 |) in
@@ -2491,10 +2639,7 @@ Module algorithms.
                             ltac:(M.monadic
                               (let γ := M.use (M.alloc (| Value.Bool true |)) in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               let~ _ : Ty.tuple [] :=
                                 M.match_operator (|
                                   Some (Ty.tuple []),
@@ -2507,72 +2652,90 @@ Module algorithms.
                                             (M.alloc (|
                                               UnOp.not (|
                                                 LogicalOp.or (|
-                                                  BinOp.eq (|
-                                                    M.read (| carry |),
-                                                    Value.Integer IntegerKind.I128 0
+                                                  M.call_closure (|
+                                                    Ty.path "bool",
+                                                    BinOp.eq,
+                                                    [
+                                                      M.read (| carry |);
+                                                      Value.Integer IntegerKind.I128 0
+                                                    ]
                                                   |),
                                                   ltac:(M.monadic
-                                                    (BinOp.eq (|
-                                                      M.read (|
-                                                        M.deref (|
-                                                          M.call_closure (|
-                                                            Ty.apply
-                                                              (Ty.path "&")
-                                                              []
-                                                              [ Ty.path "u64" ],
-                                                            M.get_trait_method (|
-                                                              "core::ops::index::Index",
+                                                    (M.call_closure (|
+                                                      Ty.path "bool",
+                                                      BinOp.eq,
+                                                      [
+                                                        M.read (|
+                                                          M.deref (|
+                                                            M.call_closure (|
                                                               Ty.apply
-                                                                (Ty.path "alloc::vec::Vec")
+                                                                (Ty.path "&")
                                                                 []
-                                                                [
-                                                                  Ty.path "u64";
-                                                                  Ty.path "alloc::alloc::Global"
-                                                                ],
-                                                              [],
-                                                              [ Ty.path "usize" ],
-                                                              "index",
-                                                              [],
-                                                              []
-                                                            |),
-                                                            [
-                                                              M.borrow (| Pointer.Kind.Ref, temp |);
-                                                              BinOp.Wrap.sub (|
+                                                                [ Ty.path "u64" ],
+                                                              M.get_trait_method (|
+                                                                "core::ops::index::Index",
+                                                                Ty.apply
+                                                                  (Ty.path "alloc::vec::Vec")
+                                                                  []
+                                                                  [
+                                                                    Ty.path "u64";
+                                                                    Ty.path "alloc::alloc::Global"
+                                                                  ],
+                                                                [],
+                                                                [ Ty.path "usize" ],
+                                                                "index",
+                                                                [],
+                                                                []
+                                                              |),
+                                                              [
+                                                                M.borrow (|
+                                                                  Pointer.Kind.Ref,
+                                                                  temp
+                                                                |);
                                                                 M.call_closure (|
                                                                   Ty.path "usize",
-                                                                  M.get_associated_function (|
-                                                                    Ty.apply
-                                                                      (Ty.path "alloc::vec::Vec")
-                                                                      []
-                                                                      [
-                                                                        Ty.path "u64";
-                                                                        Ty.path
-                                                                          "alloc::alloc::Global"
-                                                                      ],
-                                                                    "len",
-                                                                    [],
-                                                                    []
-                                                                  |),
+                                                                  BinOp.Wrap.sub,
                                                                   [
-                                                                    M.borrow (|
-                                                                      Pointer.Kind.Ref,
-                                                                      temp
-                                                                    |)
+                                                                    M.call_closure (|
+                                                                      Ty.path "usize",
+                                                                      M.get_associated_function (|
+                                                                        Ty.apply
+                                                                          (Ty.path
+                                                                            "alloc::vec::Vec")
+                                                                          []
+                                                                          [
+                                                                            Ty.path "u64";
+                                                                            Ty.path
+                                                                              "alloc::alloc::Global"
+                                                                          ],
+                                                                        "len",
+                                                                        [],
+                                                                        []
+                                                                      |),
+                                                                      [
+                                                                        M.borrow (|
+                                                                          Pointer.Kind.Ref,
+                                                                          temp
+                                                                        |)
+                                                                      ]
+                                                                    |);
+                                                                    Value.Integer
+                                                                      IntegerKind.Usize
+                                                                      1
                                                                   ]
-                                                                |),
-                                                                Value.Integer IntegerKind.Usize 1
-                                                              |)
-                                                            ]
+                                                                |)
+                                                              ]
+                                                            |)
                                                           |)
-                                                        |)
-                                                      |),
-                                                      Value.Integer IntegerKind.U64 1
+                                                        |);
+                                                        Value.Integer IntegerKind.U64 1
+                                                      ]
                                                     |)))
                                                 |)
                                               |)
                                             |)) in
                                         let _ :=
-                                          M.is_constant_or_break_match (|
+                                          is_constant_or_break_match (|
                                             M.read (| γ |),
                                             Value.Bool true
                                           |) in

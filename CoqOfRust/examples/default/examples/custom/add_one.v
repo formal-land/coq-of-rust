@@ -11,7 +11,11 @@ Definition add_one (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M 
   | [], [], [ x ] =>
     ltac:(M.monadic
       (let x := M.alloc (| x |) in
-      BinOp.Wrap.add (| M.read (| x |), Value.Integer IntegerKind.U32 1 |)))
+      M.call_closure (|
+        Ty.path "u32",
+        BinOp.Wrap.add,
+        [ M.read (| x |); Value.Integer IntegerKind.U32 1 ]
+      |)))
   | _, _, _ => M.impossible "wrong number of arguments"
   end.
 

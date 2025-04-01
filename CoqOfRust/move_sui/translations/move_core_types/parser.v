@@ -240,7 +240,11 @@ Module parser.
               |) in
             M.alloc (|
               LogicalOp.and (|
-                BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |),
+                M.call_closure (|
+                  Ty.path "bool",
+                  BinOp.eq,
+                  [ M.read (| __self_discr |); M.read (| __arg1_discr |) ]
+                |),
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
@@ -2024,61 +2028,56 @@ Module parser.
             [
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), mk_str (| "u8" |) |) in
+                  (let _ := is_constant_or_break_match (| M.read (| γ |), mk_str (| "u8" |) |) in
                   M.alloc (| Value.StructTuple "move_core_types::parser::Token::U8Type" [] |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), mk_str (| "u16" |) |) in
+                  (let _ := is_constant_or_break_match (| M.read (| γ |), mk_str (| "u16" |) |) in
                   M.alloc (| Value.StructTuple "move_core_types::parser::Token::U16Type" [] |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), mk_str (| "u32" |) |) in
+                  (let _ := is_constant_or_break_match (| M.read (| γ |), mk_str (| "u32" |) |) in
                   M.alloc (| Value.StructTuple "move_core_types::parser::Token::U32Type" [] |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ := M.is_constant_or_break_match (| M.read (| γ |), mk_str (| "u64" |) |) in
+                  (let _ := is_constant_or_break_match (| M.read (| γ |), mk_str (| "u64" |) |) in
                   M.alloc (| Value.StructTuple "move_core_types::parser::Token::U64Type" [] |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ :=
-                    M.is_constant_or_break_match (| M.read (| γ |), mk_str (| "u128" |) |) in
+                  (let _ := is_constant_or_break_match (| M.read (| γ |), mk_str (| "u128" |) |) in
                   M.alloc (| Value.StructTuple "move_core_types::parser::Token::U128Type" [] |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ :=
-                    M.is_constant_or_break_match (| M.read (| γ |), mk_str (| "u256" |) |) in
+                  (let _ := is_constant_or_break_match (| M.read (| γ |), mk_str (| "u256" |) |) in
                   M.alloc (| Value.StructTuple "move_core_types::parser::Token::U256Type" [] |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ :=
-                    M.is_constant_or_break_match (| M.read (| γ |), mk_str (| "bool" |) |) in
+                  (let _ := is_constant_or_break_match (| M.read (| γ |), mk_str (| "bool" |) |) in
                   M.alloc (| Value.StructTuple "move_core_types::parser::Token::BoolType" [] |)));
               fun γ =>
                 ltac:(M.monadic
                   (let _ :=
-                    M.is_constant_or_break_match (| M.read (| γ |), mk_str (| "address" |) |) in
+                    is_constant_or_break_match (| M.read (| γ |), mk_str (| "address" |) |) in
                   M.alloc (|
                     Value.StructTuple "move_core_types::parser::Token::AddressType" []
                   |)));
               fun γ =>
                 ltac:(M.monadic
                   (let _ :=
-                    M.is_constant_or_break_match (| M.read (| γ |), mk_str (| "vector" |) |) in
+                    is_constant_or_break_match (| M.read (| γ |), mk_str (| "vector" |) |) in
                   M.alloc (| Value.StructTuple "move_core_types::parser::Token::VectorType" [] |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ :=
-                    M.is_constant_or_break_match (| M.read (| γ |), mk_str (| "true" |) |) in
+                  (let _ := is_constant_or_break_match (| M.read (| γ |), mk_str (| "true" |) |) in
                   M.alloc (| Value.StructTuple "move_core_types::parser::Token::True" [] |)));
               fun γ =>
                 ltac:(M.monadic
-                  (let _ :=
-                    M.is_constant_or_break_match (| M.read (| γ |), mk_str (| "false" |) |) in
+                  (let _ := is_constant_or_break_match (| M.read (| γ |), mk_str (| "false" |) |) in
                   M.alloc (| Value.StructTuple "move_core_types::parser::Token::False" [] |)));
               fun γ =>
                 ltac:(M.monadic
                   (let _ :=
-                    M.is_constant_or_break_match (| M.read (| γ |), mk_str (| "signer" |) |) in
+                    is_constant_or_break_match (| M.read (| γ |), mk_str (| "signer" |) |) in
                   M.alloc (| Value.StructTuple "move_core_types::parser::Token::SignerType" [] |)));
               fun γ =>
                 ltac:(M.monadic
@@ -2205,11 +2204,15 @@ Module parser.
                                         [ M.borrow (| Pointer.Kind.Ref, c |) ]
                                       |),
                                       ltac:(M.monadic
-                                        (BinOp.eq (| M.read (| c |), Value.UnicodeChar 95 |)))
+                                        (M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.eq,
+                                          [ M.read (| c |); Value.UnicodeChar 95 ]
+                                        |)))
                                     |)
                                   |) in
                                 let _ :=
-                                  M.is_constant_or_break_match (|
+                                  is_constant_or_break_match (|
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
@@ -2248,7 +2251,7 @@ Module parser.
                                     |)
                                   |) in
                                 let _ :=
-                                  M.is_constant_or_break_match (|
+                                  is_constant_or_break_match (|
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
@@ -2328,7 +2331,7 @@ Module parser.
                                                       |)
                                                     |) in
                                                   let _ :=
-                                                    M.is_constant_or_break_match (|
+                                                    is_constant_or_break_match (|
                                                       M.read (| γ |),
                                                       Value.Bool true
                                                     |) in
@@ -2354,37 +2357,41 @@ Module parser.
                                                       M.read (|
                                                         let~ len : Ty.path "usize" :=
                                                           M.alloc (|
-                                                            BinOp.Wrap.add (|
-                                                              M.call_closure (|
-                                                                Ty.path "usize",
-                                                                M.get_associated_function (|
-                                                                  Ty.path "alloc::string::String",
-                                                                  "len",
-                                                                  [],
-                                                                  []
-                                                                |),
-                                                                [
-                                                                  M.borrow (|
-                                                                    Pointer.Kind.Ref,
-                                                                    num
-                                                                  |)
-                                                                ]
-                                                              |),
-                                                              M.call_closure (|
-                                                                Ty.path "usize",
-                                                                M.get_associated_function (|
-                                                                  Ty.path "alloc::string::String",
-                                                                  "len",
-                                                                  [],
-                                                                  []
-                                                                |),
-                                                                [
-                                                                  M.borrow (|
-                                                                    Pointer.Kind.Ref,
-                                                                    suffix
-                                                                  |)
-                                                                ]
-                                                              |)
+                                                            M.call_closure (|
+                                                              Ty.path "usize",
+                                                              BinOp.Wrap.add,
+                                                              [
+                                                                M.call_closure (|
+                                                                  Ty.path "usize",
+                                                                  M.get_associated_function (|
+                                                                    Ty.path "alloc::string::String",
+                                                                    "len",
+                                                                    [],
+                                                                    []
+                                                                  |),
+                                                                  [
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      num
+                                                                    |)
+                                                                  ]
+                                                                |);
+                                                                M.call_closure (|
+                                                                  Ty.path "usize",
+                                                                  M.get_associated_function (|
+                                                                    Ty.path "alloc::string::String",
+                                                                    "len",
+                                                                    [],
+                                                                    []
+                                                                  |),
+                                                                  [
+                                                                    M.borrow (|
+                                                                      Pointer.Kind.Ref,
+                                                                      suffix
+                                                                    |)
+                                                                  ]
+                                                                |)
+                                                              ]
                                                             |)
                                                           |) in
                                                         let~ tok :
@@ -2419,7 +2426,7 @@ Module parser.
                                                                 fun γ =>
                                                                   ltac:(M.monadic
                                                                     (let _ :=
-                                                                      M.is_constant_or_break_match (|
+                                                                      is_constant_or_break_match (|
                                                                         M.read (| γ |),
                                                                         mk_str (| "u8" |)
                                                                       |) in
@@ -2431,7 +2438,7 @@ Module parser.
                                                                 fun γ =>
                                                                   ltac:(M.monadic
                                                                     (let _ :=
-                                                                      M.is_constant_or_break_match (|
+                                                                      is_constant_or_break_match (|
                                                                         M.read (| γ |),
                                                                         mk_str (| "u16" |)
                                                                       |) in
@@ -2443,7 +2450,7 @@ Module parser.
                                                                 fun γ =>
                                                                   ltac:(M.monadic
                                                                     (let _ :=
-                                                                      M.is_constant_or_break_match (|
+                                                                      is_constant_or_break_match (|
                                                                         M.read (| γ |),
                                                                         mk_str (| "u32" |)
                                                                       |) in
@@ -2455,7 +2462,7 @@ Module parser.
                                                                 fun γ =>
                                                                   ltac:(M.monadic
                                                                     (let _ :=
-                                                                      M.is_constant_or_break_match (|
+                                                                      is_constant_or_break_match (|
                                                                         M.read (| γ |),
                                                                         mk_str (| "u64" |)
                                                                       |) in
@@ -2467,7 +2474,7 @@ Module parser.
                                                                 fun γ =>
                                                                   ltac:(M.monadic
                                                                     (let _ :=
-                                                                      M.is_constant_or_break_match (|
+                                                                      is_constant_or_break_match (|
                                                                         M.read (| γ |),
                                                                         mk_str (| "u128" |)
                                                                       |) in
@@ -2479,7 +2486,7 @@ Module parser.
                                                                 fun γ =>
                                                                   ltac:(M.monadic
                                                                     (let _ :=
-                                                                      M.is_constant_or_break_match (|
+                                                                      is_constant_or_break_match (|
                                                                         M.read (| γ |),
                                                                         mk_str (| "u256" |)
                                                                       |) in
@@ -2820,7 +2827,7 @@ Module parser.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               Value.UnicodeChar 60
                                             |) in
@@ -2836,7 +2843,7 @@ Module parser.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               Value.UnicodeChar 62
                                             |) in
@@ -2852,7 +2859,7 @@ Module parser.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               Value.UnicodeChar 44
                                             |) in
@@ -2868,7 +2875,7 @@ Module parser.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               Value.UnicodeChar 58
                                             |) in
@@ -2911,7 +2918,7 @@ Module parser.
                                                       0
                                                     |) in
                                                   let _ :=
-                                                    M.is_constant_or_break_match (|
+                                                    is_constant_or_break_match (|
                                                       M.read (| γ0_0 |),
                                                       Value.UnicodeChar 58
                                                     |) in
@@ -2993,7 +3000,7 @@ Module parser.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               Value.UnicodeChar 48
                                             |) in
@@ -3160,7 +3167,7 @@ Module parser.
                                               |)
                                             |) in
                                           let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
@@ -3254,7 +3261,7 @@ Module parser.
                                                       |)
                                                     |) in
                                                   let _ :=
-                                                    M.is_constant_or_break_match (|
+                                                    is_constant_or_break_match (|
                                                       M.read (| γ |),
                                                       Value.Bool true
                                                     |) in
@@ -3448,7 +3455,7 @@ Module parser.
                                                                                           |)
                                                                                         |)) in
                                                                                     let _ :=
-                                                                                      M.is_constant_or_break_match (|
+                                                                                      is_constant_or_break_match (|
                                                                                         M.read (|
                                                                                           γ
                                                                                         |),
@@ -3605,7 +3612,7 @@ Module parser.
                                               |)
                                             |) in
                                           let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
@@ -3771,7 +3778,7 @@ Module parser.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               Value.UnicodeChar 98
                                             |) in
@@ -3848,7 +3855,7 @@ Module parser.
                                               |)
                                             |) in
                                           let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
@@ -3940,7 +3947,7 @@ Module parser.
                                                             0
                                                           |) in
                                                         let _ :=
-                                                          M.is_constant_or_break_match (|
+                                                          is_constant_or_break_match (|
                                                             M.read (| γ0_0 |),
                                                             Value.UnicodeChar 34
                                                           |) in
@@ -3972,7 +3979,7 @@ Module parser.
                                                             |)
                                                           |) in
                                                         let _ :=
-                                                          M.is_constant_or_break_match (|
+                                                          is_constant_or_break_match (|
                                                             M.read (| γ |),
                                                             Value.Bool true
                                                           |) in
@@ -4060,18 +4067,22 @@ Module parser.
                                             |) in
                                           let~ len : Ty.path "usize" :=
                                             M.alloc (|
-                                              BinOp.Wrap.add (|
-                                                M.call_closure (|
-                                                  Ty.path "usize",
-                                                  M.get_associated_function (|
-                                                    Ty.path "alloc::string::String",
-                                                    "len",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [ M.borrow (| Pointer.Kind.Ref, r |) ]
-                                                |),
-                                                Value.Integer IntegerKind.Usize 3
+                                              M.call_closure (|
+                                                Ty.path "usize",
+                                                BinOp.Wrap.add,
+                                                [
+                                                  M.call_closure (|
+                                                    Ty.path "usize",
+                                                    M.get_associated_function (|
+                                                      Ty.path "alloc::string::String",
+                                                      "len",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [ M.borrow (| Pointer.Kind.Ref, r |) ]
+                                                  |);
+                                                  Value.Integer IntegerKind.Usize 3
+                                                ]
                                               |)
                                             |) in
                                           M.alloc (|
@@ -4096,7 +4107,7 @@ Module parser.
                                       fun γ =>
                                         ltac:(M.monadic
                                           (let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               Value.UnicodeChar 120
                                             |) in
@@ -4173,7 +4184,7 @@ Module parser.
                                               |)
                                             |) in
                                           let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
@@ -4265,7 +4276,7 @@ Module parser.
                                                             0
                                                           |) in
                                                         let _ :=
-                                                          M.is_constant_or_break_match (|
+                                                          is_constant_or_break_match (|
                                                             M.read (| γ0_0 |),
                                                             Value.UnicodeChar 34
                                                           |) in
@@ -4297,7 +4308,7 @@ Module parser.
                                                             |)
                                                           |) in
                                                         let _ :=
-                                                          M.is_constant_or_break_match (|
+                                                          is_constant_or_break_match (|
                                                             M.read (| γ |),
                                                             Value.Bool true
                                                           |) in
@@ -4385,18 +4396,22 @@ Module parser.
                                             |) in
                                           let~ len : Ty.path "usize" :=
                                             M.alloc (|
-                                              BinOp.Wrap.add (|
-                                                M.call_closure (|
-                                                  Ty.path "usize",
-                                                  M.get_associated_function (|
-                                                    Ty.path "alloc::string::String",
-                                                    "len",
-                                                    [],
-                                                    []
-                                                  |),
-                                                  [ M.borrow (| Pointer.Kind.Ref, r |) ]
-                                                |),
-                                                Value.Integer IntegerKind.Usize 3
+                                              M.call_closure (|
+                                                Ty.path "usize",
+                                                BinOp.Wrap.add,
+                                                [
+                                                  M.call_closure (|
+                                                    Ty.path "usize",
+                                                    M.get_associated_function (|
+                                                      Ty.path "alloc::string::String",
+                                                      "len",
+                                                      [],
+                                                      []
+                                                    |),
+                                                    [ M.borrow (| Pointer.Kind.Ref, r |) ]
+                                                  |);
+                                                  Value.Integer IntegerKind.Usize 3
+                                                ]
                                               |)
                                             |) in
                                           M.alloc (|
@@ -4425,7 +4440,7 @@ Module parser.
                                               |)
                                             |) in
                                           let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
@@ -4579,7 +4594,7 @@ Module parser.
                                                                                   |)
                                                                                 |)) in
                                                                             let _ :=
-                                                                              M.is_constant_or_break_match (|
+                                                                              is_constant_or_break_match (|
                                                                                 M.read (| γ |),
                                                                                 Value.Bool true
                                                                               |) in
@@ -4662,7 +4677,7 @@ Module parser.
                                               |)
                                             |) in
                                           let _ :=
-                                            M.is_constant_or_break_match (|
+                                            is_constant_or_break_match (|
                                               M.read (| γ |),
                                               Value.Bool true
                                             |) in
@@ -4810,7 +4825,7 @@ Module parser.
                                                                                   |)
                                                                                 |)) in
                                                                             let _ :=
-                                                                              M.is_constant_or_break_match (|
+                                                                              is_constant_or_break_match (|
                                                                                 M.read (| γ |),
                                                                                 Value.Bool true
                                                                               |) in
@@ -5671,7 +5686,7 @@ Module parser.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -5983,7 +5998,7 @@ Module parser.
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.loop (|
                             Ty.tuple [],
                             ltac:(M.monadic
@@ -6254,7 +6269,7 @@ Module parser.
                                               |)
                                             |)) in
                                         let _ :=
-                                          M.is_constant_or_break_match (|
+                                          is_constant_or_break_match (|
                                             M.read (| γ |),
                                             Value.Bool true
                                           |) in
@@ -6491,7 +6506,7 @@ Module parser.
                                             |)
                                           |)) in
                                       let _ :=
-                                        M.is_constant_or_break_match (|
+                                        is_constant_or_break_match (|
                                           M.read (| γ |),
                                           Value.Bool true
                                         |) in
@@ -8182,7 +8197,7 @@ Module parser.
                                               |)
                                             |)) in
                                         let _ :=
-                                          M.is_constant_or_break_match (|
+                                          is_constant_or_break_match (|
                                             M.read (| γ |),
                                             Value.Bool true
                                           |) in

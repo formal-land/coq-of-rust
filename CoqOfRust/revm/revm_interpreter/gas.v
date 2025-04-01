@@ -276,56 +276,68 @@ Module gas.
           LogicalOp.and (|
             LogicalOp.and (|
               LogicalOp.and (|
-                BinOp.eq (|
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "revm_interpreter::gas::Gas",
-                      "limit"
-                    |)
-                  |),
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| other |) |),
-                      "revm_interpreter::gas::Gas",
-                      "limit"
-                    |)
-                  |)
-                |),
-                ltac:(M.monadic
-                  (BinOp.eq (|
+                M.call_closure (|
+                  Ty.path "bool",
+                  BinOp.eq,
+                  [
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.deref (| M.read (| self |) |),
                         "revm_interpreter::gas::Gas",
-                        "remaining"
+                        "limit"
                       |)
-                    |),
+                    |);
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.deref (| M.read (| other |) |),
                         "revm_interpreter::gas::Gas",
-                        "remaining"
+                        "limit"
                       |)
                     |)
+                  ]
+                |),
+                ltac:(M.monadic
+                  (M.call_closure (|
+                    Ty.path "bool",
+                    BinOp.eq,
+                    [
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "revm_interpreter::gas::Gas",
+                          "remaining"
+                        |)
+                      |);
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| other |) |),
+                          "revm_interpreter::gas::Gas",
+                          "remaining"
+                        |)
+                      |)
+                    ]
                   |)))
               |),
               ltac:(M.monadic
-                (BinOp.eq (|
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "revm_interpreter::gas::Gas",
-                      "refunded"
+                (M.call_closure (|
+                  Ty.path "bool",
+                  BinOp.eq,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "revm_interpreter::gas::Gas",
+                        "refunded"
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| other |) |),
+                        "revm_interpreter::gas::Gas",
+                        "refunded"
+                      |)
                     |)
-                  |),
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| other |) |),
-                      "revm_interpreter::gas::Gas",
-                      "refunded"
-                    |)
-                  |)
+                  ]
                 |)))
             |),
             ltac:(M.monadic
@@ -728,21 +740,25 @@ Module gas.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          BinOp.Wrap.sub (|
-            M.read (|
-              M.SubPointer.get_struct_record_field (|
-                M.deref (| M.read (| self |) |),
-                "revm_interpreter::gas::Gas",
-                "limit"
+          M.call_closure (|
+            Ty.path "u64",
+            BinOp.Wrap.sub,
+            [
+              M.read (|
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "revm_interpreter::gas::Gas",
+                  "limit"
+                |)
+              |);
+              M.read (|
+                M.SubPointer.get_struct_record_field (|
+                  M.deref (| M.read (| self |) |),
+                  "revm_interpreter::gas::Gas",
+                  "remaining"
+                |)
               |)
-            |),
-            M.read (|
-              M.SubPointer.get_struct_record_field (|
-                M.deref (| M.read (| self |) |),
-                "revm_interpreter::gas::Gas",
-                "remaining"
-              |)
-            |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -786,24 +802,32 @@ Module gas.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          BinOp.Wrap.sub (|
-            M.read (|
-              M.SubPointer.get_struct_record_field (|
-                M.deref (| M.read (| self |) |),
-                "revm_interpreter::gas::Gas",
-                "remaining"
-              |)
-            |),
-            BinOp.Wrap.div (|
+          M.call_closure (|
+            Ty.path "u64",
+            BinOp.Wrap.sub,
+            [
               M.read (|
                 M.SubPointer.get_struct_record_field (|
                   M.deref (| M.read (| self |) |),
                   "revm_interpreter::gas::Gas",
                   "remaining"
                 |)
-              |),
-              Value.Integer IntegerKind.U64 64
-            |)
+              |);
+              M.call_closure (|
+                Ty.path "u64",
+                BinOp.Wrap.div,
+                [
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "revm_interpreter::gas::Gas",
+                      "remaining"
+                    |)
+                  |);
+                  Value.Integer IntegerKind.U64 64
+                ]
+              |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -833,7 +857,14 @@ Module gas.
                     "revm_interpreter::gas::Gas",
                     "remaining"
                   |) in
-                M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| returned |) |) |)
+                M.write (|
+                  β,
+                  M.call_closure (|
+                    Ty.path "u64",
+                    BinOp.Wrap.add,
+                    [ M.read (| β |); M.read (| returned |) ]
+                  |)
+                |)
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
@@ -897,7 +928,14 @@ Module gas.
                     "revm_interpreter::gas::Gas",
                     "refunded"
                   |) in
-                M.write (| β, BinOp.Wrap.add (| M.read (| β |), M.read (| refund |) |) |)
+                M.write (|
+                  β,
+                  M.call_closure (|
+                    Ty.path "i64",
+                    BinOp.Wrap.add,
+                    [ M.read (| β |); M.read (| refund |) ]
+                  |)
+                |)
               |) in
             M.alloc (| Value.Tuple [] |)
           |)))
@@ -931,8 +969,7 @@ Module gas.
                     fun γ =>
                       ltac:(M.monadic
                         (let γ := M.use is_london in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (| Value.Integer IntegerKind.U64 5 |)));
                     fun γ => ltac:(M.monadic (M.alloc (| Value.Integer IntegerKind.U64 2 |)))
                   ]
@@ -972,18 +1009,22 @@ Module gas.
                             |),
                             [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
                           |));
-                        BinOp.Wrap.div (|
-                          M.call_closure (|
-                            Ty.path "u64",
-                            M.get_associated_function (|
-                              Ty.path "revm_interpreter::gas::Gas",
-                              "spent",
-                              [],
-                              []
-                            |),
-                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
-                          |),
-                          M.read (| max_refund_quotient |)
+                        M.call_closure (|
+                          Ty.path "u64",
+                          BinOp.Wrap.div,
+                          [
+                            M.call_closure (|
+                              Ty.path "u64",
+                              M.get_associated_function (|
+                                Ty.path "revm_interpreter::gas::Gas",
+                                "spent",
+                                [],
+                                []
+                              |),
+                              [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| self |) |) |) ]
+                            |);
+                            M.read (| max_refund_quotient |)
+                          ]
                         |)
                       ]
                     |))
@@ -1085,10 +1126,7 @@ Module gas.
                             ltac:(M.monadic
                               (let γ := M.use success in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               let~ _ : Ty.tuple [] :=
                                 M.alloc (|
                                   M.write (|
@@ -1202,7 +1240,7 @@ Module gas.
                                         |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -1470,38 +1508,46 @@ Module gas.
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
           LogicalOp.and (|
-            BinOp.eq (|
-              M.read (|
-                M.SubPointer.get_struct_record_field (|
-                  M.deref (| M.read (| self |) |),
-                  "revm_interpreter::gas::MemoryGas",
-                  "words_num"
-                |)
-              |),
-              M.read (|
-                M.SubPointer.get_struct_record_field (|
-                  M.deref (| M.read (| other |) |),
-                  "revm_interpreter::gas::MemoryGas",
-                  "words_num"
-                |)
-              |)
-            |),
-            ltac:(M.monadic
-              (BinOp.eq (|
+            M.call_closure (|
+              Ty.path "bool",
+              BinOp.eq,
+              [
                 M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.deref (| M.read (| self |) |),
                     "revm_interpreter::gas::MemoryGas",
-                    "expansion_cost"
+                    "words_num"
                   |)
-                |),
+                |);
                 M.read (|
                   M.SubPointer.get_struct_record_field (|
                     M.deref (| M.read (| other |) |),
                     "revm_interpreter::gas::MemoryGas",
-                    "expansion_cost"
+                    "words_num"
                   |)
                 |)
+              ]
+            |),
+            ltac:(M.monadic
+              (M.call_closure (|
+                Ty.path "bool",
+                BinOp.eq,
+                [
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "revm_interpreter::gas::MemoryGas",
+                      "expansion_cost"
+                    |)
+                  |);
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| other |) |),
+                      "revm_interpreter::gas::MemoryGas",
+                      "expansion_cost"
+                    |)
+                  |)
+                ]
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -1702,19 +1748,23 @@ Module gas.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.le (|
-                                  M.read (| new_num |),
-                                  M.read (|
-                                    M.SubPointer.get_struct_record_field (|
-                                      M.deref (| M.read (| self |) |),
-                                      "revm_interpreter::gas::MemoryGas",
-                                      "words_num"
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.le,
+                                  [
+                                    M.read (| new_num |);
+                                    M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "revm_interpreter::gas::MemoryGas",
+                                        "words_num"
+                                      |)
                                     |)
-                                  |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -1774,15 +1824,19 @@ Module gas.
                   Value.StructTuple
                     "core::option::Option::Some"
                     [
-                      BinOp.Wrap.sub (|
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "revm_interpreter::gas::MemoryGas",
-                            "expansion_cost"
-                          |)
-                        |),
-                        M.read (| cost |)
+                      M.call_closure (|
+                        Ty.path "u64",
+                        BinOp.Wrap.sub,
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "revm_interpreter::gas::MemoryGas",
+                              "expansion_cost"
+                            |)
+                          |);
+                          M.read (| cost |)
+                        ]
                       |)
                     ]
                 |)

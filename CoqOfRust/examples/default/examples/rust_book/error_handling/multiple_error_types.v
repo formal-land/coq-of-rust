@@ -77,35 +77,39 @@ Definition double_first (ε : list Value.t) (τ : list Ty.t) (α : list Value.t)
             |)
           |) in
         M.alloc (|
-          BinOp.Wrap.mul (|
-            Value.Integer IntegerKind.I32 2,
-            M.call_closure (|
-              Ty.path "i32",
-              M.get_associated_function (|
-                Ty.apply
-                  (Ty.path "core::result::Result")
-                  []
-                  [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
-                "unwrap",
-                [],
-                []
-              |),
-              [
-                M.call_closure (|
+          M.call_closure (|
+            Ty.path "i32",
+            BinOp.Wrap.mul,
+            [
+              Value.Integer IntegerKind.I32 2;
+              M.call_closure (|
+                Ty.path "i32",
+                M.get_associated_function (|
                   Ty.apply
                     (Ty.path "core::result::Result")
                     []
                     [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
-                  M.get_associated_function (| Ty.path "str", "parse", [], [ Ty.path "i32" ] |),
-                  [
-                    M.borrow (|
-                      Pointer.Kind.Ref,
-                      M.deref (| M.read (| M.deref (| M.read (| first |) |) |) |)
-                    |)
-                  ]
-                |)
-              ]
-            |)
+                  "unwrap",
+                  [],
+                  []
+                |),
+                [
+                  M.call_closure (|
+                    Ty.apply
+                      (Ty.path "core::result::Result")
+                      []
+                      [ Ty.path "i32"; Ty.path "core::num::error::ParseIntError" ],
+                    M.get_associated_function (| Ty.path "str", "parse", [], [ Ty.path "i32" ] |),
+                    [
+                      M.borrow (|
+                        Pointer.Kind.Ref,
+                        M.deref (| M.read (| M.deref (| M.read (| first |) |) |) |)
+                      |)
+                    ]
+                  |)
+                ]
+              |)
+            ]
           |)
         |)
       |)))

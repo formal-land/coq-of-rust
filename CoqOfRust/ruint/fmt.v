@@ -22,7 +22,11 @@ Module fmt.
       Definition value_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
-            BinOp.Wrap.shl (| Value.Integer IntegerKind.U64 1, Value.Integer IntegerKind.I32 63 |)
+            M.call_closure (|
+              Ty.path "u64",
+              BinOp.Wrap.shl,
+              [ Value.Integer IntegerKind.U64 1; Value.Integer IntegerKind.I32 63 ]
+            |)
           |))).
       
       (*         const WIDTH: usize = 63; *)
@@ -65,7 +69,11 @@ Module fmt.
       Definition value_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
-            BinOp.Wrap.shl (| Value.Integer IntegerKind.U64 1, Value.Integer IntegerKind.I32 63 |)
+            M.call_closure (|
+              Ty.path "u64",
+              BinOp.Wrap.shl,
+              [ Value.Integer IntegerKind.U64 1; Value.Integer IntegerKind.I32 63 ]
+            |)
           |))).
       
       (*         const WIDTH: usize = 21; *)
@@ -148,7 +156,11 @@ Module fmt.
       Definition value_MAX (ε : list Value.t) (τ : list Ty.t) (α : list Value.t) : M :=
         ltac:(M.monadic
           (M.alloc (|
-            BinOp.Wrap.shl (| Value.Integer IntegerKind.U64 1, Value.Integer IntegerKind.I32 60 |)
+            M.call_closure (|
+              Ty.path "u64",
+              BinOp.Wrap.shl,
+              [ Value.Integer IntegerKind.U64 1; Value.Integer IntegerKind.I32 60 ]
+            |)
           |))).
       
       (*         const WIDTH: usize = 15; *)
@@ -212,7 +224,11 @@ Module fmt.
                               M.use
                                 (M.alloc (|
                                   LogicalOp.or (|
-                                    BinOp.eq (| LIMBS, Value.Integer IntegerKind.Usize 0 |),
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.eq,
+                                      [ LIMBS; Value.Integer IntegerKind.Usize 0 ]
+                                    |),
                                     ltac:(M.monadic
                                       (M.call_closure (|
                                         Ty.path "bool",
@@ -232,7 +248,7 @@ Module fmt.
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
@@ -528,17 +544,22 @@ Module fmt.
                                                                                           (let γ :=
                                                                                             M.use
                                                                                               (M.alloc (|
-                                                                                                BinOp.eq (|
-                                                                                                  M.read (|
-                                                                                                    i
-                                                                                                  |),
-                                                                                                  Value.Integer
-                                                                                                    IntegerKind.Usize
-                                                                                                    0
+                                                                                                M.call_closure (|
+                                                                                                  Ty.path
+                                                                                                    "bool",
+                                                                                                  BinOp.eq,
+                                                                                                  [
+                                                                                                    M.read (|
+                                                                                                      i
+                                                                                                    |);
+                                                                                                    Value.Integer
+                                                                                                      IntegerKind.Usize
+                                                                                                      0
+                                                                                                  ]
                                                                                                 |)
                                                                                               |)) in
                                                                                           let _ :=
-                                                                                            M.is_constant_or_break_match (|
+                                                                                            is_constant_or_break_match (|
                                                                                               M.read (|
                                                                                                 γ
                                                                                               |),
@@ -788,7 +809,11 @@ Module fmt.
                               M.use
                                 (M.alloc (|
                                   LogicalOp.or (|
-                                    BinOp.eq (| LIMBS, Value.Integer IntegerKind.Usize 0 |),
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.eq,
+                                      [ LIMBS; Value.Integer IntegerKind.Usize 0 ]
+                                    |),
                                     ltac:(M.monadic
                                       (M.call_closure (|
                                         Ty.path "bool",
@@ -808,7 +833,7 @@ Module fmt.
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
@@ -1104,17 +1129,22 @@ Module fmt.
                                                                                           (let γ :=
                                                                                             M.use
                                                                                               (M.alloc (|
-                                                                                                BinOp.eq (|
-                                                                                                  M.read (|
-                                                                                                    i
-                                                                                                  |),
-                                                                                                  Value.Integer
-                                                                                                    IntegerKind.Usize
-                                                                                                    0
+                                                                                                M.call_closure (|
+                                                                                                  Ty.path
+                                                                                                    "bool",
+                                                                                                  BinOp.eq,
+                                                                                                  [
+                                                                                                    M.read (|
+                                                                                                      i
+                                                                                                    |);
+                                                                                                    Value.Integer
+                                                                                                      IntegerKind.Usize
+                                                                                                      0
+                                                                                                  ]
                                                                                                 |)
                                                                                               |)) in
                                                                                           let _ :=
-                                                                                            M.is_constant_or_break_match (|
+                                                                                            is_constant_or_break_match (|
                                                                                               M.read (|
                                                                                                 γ
                                                                                               |),
@@ -1311,7 +1341,11 @@ Module fmt.
                               M.use
                                 (M.alloc (|
                                   LogicalOp.or (|
-                                    BinOp.eq (| LIMBS, Value.Integer IntegerKind.Usize 0 |),
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.eq,
+                                      [ LIMBS; Value.Integer IntegerKind.Usize 0 ]
+                                    |),
                                     ltac:(M.monadic
                                       (M.call_closure (|
                                         Ty.path "bool",
@@ -1331,7 +1365,7 @@ Module fmt.
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
@@ -1627,17 +1661,22 @@ Module fmt.
                                                                                           (let γ :=
                                                                                             M.use
                                                                                               (M.alloc (|
-                                                                                                BinOp.eq (|
-                                                                                                  M.read (|
-                                                                                                    i
-                                                                                                  |),
-                                                                                                  Value.Integer
-                                                                                                    IntegerKind.Usize
-                                                                                                    0
+                                                                                                M.call_closure (|
+                                                                                                  Ty.path
+                                                                                                    "bool",
+                                                                                                  BinOp.eq,
+                                                                                                  [
+                                                                                                    M.read (|
+                                                                                                      i
+                                                                                                    |);
+                                                                                                    Value.Integer
+                                                                                                      IntegerKind.Usize
+                                                                                                      0
+                                                                                                  ]
                                                                                                 |)
                                                                                               |)) in
                                                                                           let _ :=
-                                                                                            M.is_constant_or_break_match (|
+                                                                                            is_constant_or_break_match (|
                                                                                               M.read (|
                                                                                                 γ
                                                                                               |),
@@ -1834,7 +1873,11 @@ Module fmt.
                               M.use
                                 (M.alloc (|
                                   LogicalOp.or (|
-                                    BinOp.eq (| LIMBS, Value.Integer IntegerKind.Usize 0 |),
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.eq,
+                                      [ LIMBS; Value.Integer IntegerKind.Usize 0 ]
+                                    |),
                                     ltac:(M.monadic
                                       (M.call_closure (|
                                         Ty.path "bool",
@@ -1854,7 +1897,7 @@ Module fmt.
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
@@ -2150,17 +2193,22 @@ Module fmt.
                                                                                           (let γ :=
                                                                                             M.use
                                                                                               (M.alloc (|
-                                                                                                BinOp.eq (|
-                                                                                                  M.read (|
-                                                                                                    i
-                                                                                                  |),
-                                                                                                  Value.Integer
-                                                                                                    IntegerKind.Usize
-                                                                                                    0
+                                                                                                M.call_closure (|
+                                                                                                  Ty.path
+                                                                                                    "bool",
+                                                                                                  BinOp.eq,
+                                                                                                  [
+                                                                                                    M.read (|
+                                                                                                      i
+                                                                                                    |);
+                                                                                                    Value.Integer
+                                                                                                      IntegerKind.Usize
+                                                                                                      0
+                                                                                                  ]
                                                                                                 |)
                                                                                               |)) in
                                                                                           let _ :=
-                                                                                            M.is_constant_or_break_match (|
+                                                                                            is_constant_or_break_match (|
                                                                                               M.read (|
                                                                                                 γ
                                                                                               |),
@@ -2357,7 +2405,11 @@ Module fmt.
                               M.use
                                 (M.alloc (|
                                   LogicalOp.or (|
-                                    BinOp.eq (| LIMBS, Value.Integer IntegerKind.Usize 0 |),
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.eq,
+                                      [ LIMBS; Value.Integer IntegerKind.Usize 0 ]
+                                    |),
                                     ltac:(M.monadic
                                       (M.call_closure (|
                                         Ty.path "bool",
@@ -2377,7 +2429,7 @@ Module fmt.
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
@@ -2673,17 +2725,22 @@ Module fmt.
                                                                                           (let γ :=
                                                                                             M.use
                                                                                               (M.alloc (|
-                                                                                                BinOp.eq (|
-                                                                                                  M.read (|
-                                                                                                    i
-                                                                                                  |),
-                                                                                                  Value.Integer
-                                                                                                    IntegerKind.Usize
-                                                                                                    0
+                                                                                                M.call_closure (|
+                                                                                                  Ty.path
+                                                                                                    "bool",
+                                                                                                  BinOp.eq,
+                                                                                                  [
+                                                                                                    M.read (|
+                                                                                                      i
+                                                                                                    |);
+                                                                                                    Value.Integer
+                                                                                                      IntegerKind.Usize
+                                                                                                      0
+                                                                                                  ]
                                                                                                 |)
                                                                                               |)) in
                                                                                           let _ :=
-                                                                                            M.is_constant_or_break_match (|
+                                                                                            is_constant_or_break_match (|
                                                                                               M.read (|
                                                                                                 γ
                                                                                               |),
@@ -3190,31 +3247,44 @@ Module fmt.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.gt (|
-                                  BinOp.Wrap.add (|
-                                    M.read (|
-                                      M.SubPointer.get_struct_record_field (|
-                                        M.deref (| M.read (| self |) |),
-                                        "ruint::fmt::DisplayBuffer",
-                                        "len"
-                                      |)
-                                    |),
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.gt,
+                                  [
                                     M.call_closure (|
                                       Ty.path "usize",
-                                      M.get_associated_function (| Ty.path "str", "len", [], [] |),
+                                      BinOp.Wrap.add,
                                       [
-                                        M.borrow (|
-                                          Pointer.Kind.Ref,
-                                          M.deref (| M.read (| s |) |)
+                                        M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "ruint::fmt::DisplayBuffer",
+                                            "len"
+                                          |)
+                                        |);
+                                        M.call_closure (|
+                                          Ty.path "usize",
+                                          M.get_associated_function (|
+                                            Ty.path "str",
+                                            "len",
+                                            [],
+                                            []
+                                          |),
+                                          [
+                                            M.borrow (|
+                                              Pointer.Kind.Ref,
+                                              M.deref (| M.read (| s |) |)
+                                            |)
+                                          ]
                                         |)
                                       ]
-                                    |)
-                                  |),
-                                  SIZE
+                                    |);
+                                    SIZE
+                                  ]
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           M.alloc (|
                             M.never_to_any (|
                               M.read (|
@@ -3356,13 +3426,17 @@ Module fmt.
                       |) in
                     M.write (|
                       β,
-                      BinOp.Wrap.add (|
-                        M.read (| β |),
-                        M.call_closure (|
-                          Ty.path "usize",
-                          M.get_associated_function (| Ty.path "str", "len", [], [] |),
-                          [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
-                        |)
+                      M.call_closure (|
+                        Ty.path "usize",
+                        BinOp.Wrap.add,
+                        [
+                          M.read (| β |);
+                          M.call_closure (|
+                            Ty.path "usize",
+                            M.get_associated_function (| Ty.path "str", "len", [], [] |),
+                            [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| s |) |) |) ]
+                          |)
+                        ]
                       |)
                     |)
                   |) in

@@ -38,21 +38,25 @@ Module task.
             (let self := M.alloc (| self |) in
             let other := M.alloc (| other |) in
             LogicalOp.and (|
-              BinOp.eq (|
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "core::task::wake::RawWaker",
-                    "data"
+              M.call_closure (|
+                Ty.path "bool",
+                BinOp.eq,
+                [
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "core::task::wake::RawWaker",
+                      "data"
+                    |)
+                  |);
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| other |) |),
+                      "core::task::wake::RawWaker",
+                      "data"
+                    |)
                   |)
-                |),
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| other |) |),
-                    "core::task::wake::RawWaker",
-                    "data"
-                  |)
-                |)
+                ]
               |),
               ltac:(M.monadic
                 (M.call_closure (|
@@ -286,74 +290,90 @@ Module task.
             LogicalOp.and (|
               LogicalOp.and (|
                 LogicalOp.and (|
-                  BinOp.eq (|
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "core::task::wake::RawWakerVTable",
-                        "clone"
-                      |)
-                    |),
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| other |) |),
-                        "core::task::wake::RawWakerVTable",
-                        "clone"
-                      |)
-                    |)
-                  |),
-                  ltac:(M.monadic
-                    (BinOp.eq (|
+                  M.call_closure (|
+                    Ty.path "bool",
+                    BinOp.eq,
+                    [
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.deref (| M.read (| self |) |),
                           "core::task::wake::RawWakerVTable",
-                          "wake"
+                          "clone"
                         |)
-                      |),
+                      |);
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.deref (| M.read (| other |) |),
                           "core::task::wake::RawWakerVTable",
-                          "wake"
+                          "clone"
                         |)
                       |)
+                    ]
+                  |),
+                  ltac:(M.monadic
+                    (M.call_closure (|
+                      Ty.path "bool",
+                      BinOp.eq,
+                      [
+                        M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| self |) |),
+                            "core::task::wake::RawWakerVTable",
+                            "wake"
+                          |)
+                        |);
+                        M.read (|
+                          M.SubPointer.get_struct_record_field (|
+                            M.deref (| M.read (| other |) |),
+                            "core::task::wake::RawWakerVTable",
+                            "wake"
+                          |)
+                        |)
+                      ]
                     |)))
                 |),
                 ltac:(M.monadic
-                  (BinOp.eq (|
+                  (M.call_closure (|
+                    Ty.path "bool",
+                    BinOp.eq,
+                    [
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "core::task::wake::RawWakerVTable",
+                          "wake_by_ref"
+                        |)
+                      |);
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| other |) |),
+                          "core::task::wake::RawWakerVTable",
+                          "wake_by_ref"
+                        |)
+                      |)
+                    ]
+                  |)))
+              |),
+              ltac:(M.monadic
+                (M.call_closure (|
+                  Ty.path "bool",
+                  BinOp.eq,
+                  [
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.deref (| M.read (| self |) |),
                         "core::task::wake::RawWakerVTable",
-                        "wake_by_ref"
+                        "drop"
                       |)
-                    |),
+                    |);
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.deref (| M.read (| other |) |),
                         "core::task::wake::RawWakerVTable",
-                        "wake_by_ref"
+                        "drop"
                       |)
                     |)
-                  |)))
-              |),
-              ltac:(M.monadic
-                (BinOp.eq (|
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| self |) |),
-                      "core::task::wake::RawWakerVTable",
-                      "drop"
-                    |)
-                  |),
-                  M.read (|
-                    M.SubPointer.get_struct_record_field (|
-                      M.deref (| M.read (| other |) |),
-                      "core::task::wake::RawWakerVTable",
-                      "drop"
-                    |)
-                  |)
+                  ]
                 |)))
             |)))
         | _, _, _ => M.impossible "wrong number of arguments"
@@ -1773,7 +1793,11 @@ Module task.
                               let b_vtable := M.copy (| γ0_1 |) in
                               M.alloc (|
                                 LogicalOp.and (|
-                                  BinOp.eq (| M.read (| a_data |), M.read (| b_data |) |),
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.eq,
+                                    [ M.read (| a_data |); M.read (| b_data |) ]
+                                  |),
                                   ltac:(M.monadic
                                     (M.call_closure (|
                                       Ty.path "bool",
@@ -2033,7 +2057,7 @@ Module task.
                               |)
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.write (|
@@ -2570,7 +2594,11 @@ Module task.
                               let b_vtable := M.copy (| γ0_1 |) in
                               M.alloc (|
                                 LogicalOp.and (|
-                                  BinOp.eq (| M.read (| a_data |), M.read (| b_data |) |),
+                                  M.call_closure (|
+                                    Ty.path "bool",
+                                    BinOp.eq,
+                                    [ M.read (| a_data |); M.read (| b_data |) ]
+                                  |),
                                   ltac:(M.monadic
                                     (M.call_closure (|
                                       Ty.path "bool",
@@ -2830,7 +2858,7 @@ Module task.
                               |)
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ : Ty.tuple [] :=
                         M.alloc (|
                           M.write (|

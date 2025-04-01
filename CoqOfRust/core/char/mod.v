@@ -3870,17 +3870,21 @@ Module char.
                       (let γ :=
                         M.use
                           (M.alloc (|
-                            BinOp.eq (|
-                              M.read (|
-                                M.SubPointer.get_array_field (|
-                                  chars,
-                                  Value.Integer IntegerKind.Usize 2
-                                |)
-                              |),
-                              Value.UnicodeChar 0
+                            M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.eq,
+                              [
+                                M.read (|
+                                  M.SubPointer.get_array_field (|
+                                    chars,
+                                    Value.Integer IntegerKind.Usize 2
+                                  |)
+                                |);
+                                Value.UnicodeChar 0
+                              ]
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       let~ _ : Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "char" ] :=
                         M.alloc (|
                           M.call_closure (|
@@ -3909,21 +3913,22 @@ Module char.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.eq (|
-                                      M.read (|
-                                        M.SubPointer.get_array_field (|
-                                          chars,
-                                          Value.Integer IntegerKind.Usize 1
-                                        |)
-                                      |),
-                                      Value.UnicodeChar 0
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.eq,
+                                      [
+                                        M.read (|
+                                          M.SubPointer.get_array_field (|
+                                            chars,
+                                            Value.Integer IntegerKind.Usize 1
+                                          |)
+                                        |);
+                                        Value.UnicodeChar 0
+                                      ]
                                     |)
                                   |)) in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               let~ _ :
                                   Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "char" ] :=
                                 M.alloc (|

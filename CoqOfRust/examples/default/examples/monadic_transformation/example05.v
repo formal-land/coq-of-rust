@@ -22,9 +22,13 @@ Module Impl_example05_Foo.
     | [], [], [ self ] =>
       ltac:(M.monadic
         (let self := M.alloc (| self |) in
-        BinOp.Wrap.add (|
-          M.read (| M.SubPointer.get_struct_tuple_field (| self, "example05::Foo", 0 |) |),
-          Value.Integer IntegerKind.U32 1
+        M.call_closure (|
+          Ty.path "u32",
+          BinOp.Wrap.add,
+          [
+            M.read (| M.SubPointer.get_struct_tuple_field (| self, "example05::Foo", 0 |) |);
+            Value.Integer IntegerKind.U32 1
+          ]
         |)))
     | _, _, _ => M.impossible "wrong number of arguments"
     end.

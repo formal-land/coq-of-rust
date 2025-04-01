@@ -236,19 +236,22 @@ Module iter.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.ne (|
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "core::iter::adapters::take::Take",
-                                    "n"
-                                  |)
-                                |),
-                                Value.Integer IntegerKind.Usize 0
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.ne,
+                                [
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::iter::adapters::take::Take",
+                                      "n"
+                                    |)
+                                  |);
+                                  Value.Integer IntegerKind.Usize 0
+                                ]
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.alloc (|
                             let β :=
@@ -259,7 +262,11 @@ Module iter.
                               |) in
                             M.write (|
                               β,
-                              BinOp.Wrap.sub (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
+                              M.call_closure (|
+                                Ty.path "usize",
+                                BinOp.Wrap.sub,
+                                [ M.read (| β |); Value.Integer IntegerKind.Usize 1 ]
+                              |)
                             |)
                           |) in
                         M.alloc (|
@@ -347,19 +354,22 @@ Module iter.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.gt (|
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "core::iter::adapters::take::Take",
-                                    "n"
-                                  |)
-                                |),
-                                M.read (| n |)
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.gt,
+                                [
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::iter::adapters::take::Take",
+                                      "n"
+                                    |)
+                                  |);
+                                  M.read (| n |)
+                                ]
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.tuple [] :=
                           M.alloc (|
                             let β :=
@@ -370,12 +380,17 @@ Module iter.
                               |) in
                             M.write (|
                               β,
-                              BinOp.Wrap.sub (|
-                                M.read (| β |),
-                                BinOp.Wrap.add (|
-                                  M.read (| n |),
-                                  Value.Integer IntegerKind.Usize 1
-                                |)
+                              M.call_closure (|
+                                Ty.path "usize",
+                                BinOp.Wrap.sub,
+                                [
+                                  M.read (| β |);
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    BinOp.Wrap.add,
+                                    [ M.read (| n |); Value.Integer IntegerKind.Usize 1 ]
+                                  |)
+                                ]
                               |)
                             |)
                           |) in
@@ -426,19 +441,23 @@ Module iter.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.gt (|
-                                          M.read (|
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.deref (| M.read (| self |) |),
-                                              "core::iter::adapters::take::Take",
-                                              "n"
-                                            |)
-                                          |),
-                                          Value.Integer IntegerKind.Usize 0
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.gt,
+                                          [
+                                            M.read (|
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (| M.read (| self |) |),
+                                                "core::iter::adapters::take::Take",
+                                                "n"
+                                              |)
+                                            |);
+                                            Value.Integer IntegerKind.Usize 0
+                                          ]
                                         |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -485,15 +504,19 @@ Module iter.
                                               "iter"
                                             |)
                                           |);
-                                          BinOp.Wrap.sub (|
-                                            M.read (|
-                                              M.SubPointer.get_struct_record_field (|
-                                                M.deref (| M.read (| self |) |),
-                                                "core::iter::adapters::take::Take",
-                                                "n"
-                                              |)
-                                            |),
-                                            Value.Integer IntegerKind.Usize 1
+                                          M.call_closure (|
+                                            Ty.path "usize",
+                                            BinOp.Wrap.sub,
+                                            [
+                                              M.read (|
+                                                M.SubPointer.get_struct_record_field (|
+                                                  M.deref (| M.read (| self |) |),
+                                                  "core::iter::adapters::take::Take",
+                                                  "n"
+                                                |)
+                                              |);
+                                              Value.Integer IntegerKind.Usize 1
+                                            ]
                                           |)
                                         ]
                                       |)
@@ -557,22 +580,23 @@ Module iter.
                               (let γ :=
                                 M.use
                                   (M.alloc (|
-                                    BinOp.eq (|
-                                      M.read (|
-                                        M.SubPointer.get_struct_record_field (|
-                                          M.deref (| M.read (| self |) |),
-                                          "core::iter::adapters::take::Take",
-                                          "n"
-                                        |)
-                                      |),
-                                      Value.Integer IntegerKind.Usize 0
+                                    M.call_closure (|
+                                      Ty.path "bool",
+                                      BinOp.eq,
+                                      [
+                                        M.read (|
+                                          M.SubPointer.get_struct_record_field (|
+                                            M.deref (| M.read (| self |) |),
+                                            "core::iter::adapters::take::Take",
+                                            "n"
+                                          |)
+                                        |);
+                                        Value.Integer IntegerKind.Usize 0
+                                      ]
                                     |)
                                   |)) in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (|
                                 M.never_to_any (|
                                   M.read (|
@@ -667,19 +691,23 @@ Module iter.
                                         let x := M.copy (| γ0_0 |) in
                                         let γ :=
                                           M.alloc (|
-                                            BinOp.lt (|
-                                              M.read (| x |),
-                                              M.read (|
-                                                M.SubPointer.get_struct_record_field (|
-                                                  M.deref (| M.read (| self |) |),
-                                                  "core::iter::adapters::take::Take",
-                                                  "n"
+                                            M.call_closure (|
+                                              Ty.path "bool",
+                                              BinOp.lt,
+                                              [
+                                                M.read (| x |);
+                                                M.read (|
+                                                  M.SubPointer.get_struct_record_field (|
+                                                    M.deref (| M.read (| self |) |),
+                                                    "core::iter::adapters::take::Take",
+                                                    "n"
+                                                  |)
                                                 |)
-                                              |)
+                                              ]
                                             |)
                                           |) in
                                         let _ :=
-                                          M.is_constant_or_break_match (|
+                                          is_constant_or_break_match (|
                                             M.read (| γ |),
                                             Value.Bool true
                                           |) in
@@ -757,19 +785,22 @@ Module iter.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.eq (|
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "core::iter::adapters::take::Take",
-                                    "n"
-                                  |)
-                                |),
-                                Value.Integer IntegerKind.Usize 0
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.eq,
+                                [
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::iter::adapters::take::Take",
+                                      "n"
+                                    |)
+                                  |);
+                                  Value.Integer IntegerKind.Usize 0
+                                ]
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           M.call_closure (|
                             R,
@@ -1059,7 +1090,13 @@ Module iter.
                     |)
                   |) in
                 let~ advanced : Ty.path "usize" :=
-                  M.alloc (| BinOp.Wrap.sub (| M.read (| min |), M.read (| rem |) |) |) in
+                  M.alloc (|
+                    M.call_closure (|
+                      Ty.path "usize",
+                      BinOp.Wrap.sub,
+                      [ M.read (| min |); M.read (| rem |) ]
+                    |)
+                  |) in
                 let~ _ : Ty.tuple [] :=
                   M.alloc (|
                     let β :=
@@ -1068,7 +1105,14 @@ Module iter.
                         "core::iter::adapters::take::Take",
                         "n"
                       |) in
-                    M.write (| β, BinOp.Wrap.sub (| M.read (| β |), M.read (| advanced |) |) |)
+                    M.write (|
+                      β,
+                      M.call_closure (|
+                        Ty.path "usize",
+                        BinOp.Wrap.sub,
+                        [ M.read (| β |); M.read (| advanced |) ]
+                      |)
+                    |)
                   |) in
                 M.alloc (|
                   M.call_closure (|
@@ -1122,7 +1166,13 @@ Module iter.
                           [],
                           []
                         |),
-                        [ BinOp.Wrap.sub (| M.read (| n |), M.read (| advanced |) |) ]
+                        [
+                          M.call_closure (|
+                            Ty.path "usize",
+                            BinOp.Wrap.sub,
+                            [ M.read (| n |); M.read (| advanced |) ]
+                          |)
+                        ]
                       |);
                       Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ];
                       M.constructor_as_closure "core::result::Result::Err"
@@ -1344,19 +1394,22 @@ Module iter.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.eq (|
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "core::iter::adapters::take::Take",
-                                    "n"
-                                  |)
-                                |),
-                                Value.Integer IntegerKind.Usize 0
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.eq,
+                                [
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::iter::adapters::take::Take",
+                                      "n"
+                                    |)
+                                  |);
+                                  Value.Integer IntegerKind.Usize 0
+                                ]
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (| Value.StructTuple "core::option::Option::None" [] |)));
                     fun γ =>
                       ltac:(M.monadic
@@ -1378,7 +1431,11 @@ Module iter.
                               |) in
                             M.write (|
                               β,
-                              BinOp.Wrap.sub (| M.read (| β |), Value.Integer IntegerKind.Usize 1 |)
+                              M.call_closure (|
+                                Ty.path "usize",
+                                BinOp.Wrap.sub,
+                                [ M.read (| β |); Value.Integer IntegerKind.Usize 1 ]
+                              |)
                             |)
                           |) in
                         M.alloc (|
@@ -1523,42 +1580,49 @@ Module iter.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.gt (|
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "core::iter::adapters::take::Take",
-                                    "n"
-                                  |)
-                                |),
-                                M.read (| n |)
-                              |)
-                            |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
-                        let~ m : Ty.path "usize" :=
-                          M.alloc (|
-                            BinOp.Wrap.add (|
                               M.call_closure (|
-                                Ty.path "usize",
-                                M.get_associated_function (|
-                                  Ty.path "usize",
-                                  "saturating_sub",
-                                  [],
-                                  []
-                                |),
+                                Ty.path "bool",
+                                BinOp.gt,
                                 [
-                                  M.read (| len |);
                                   M.read (|
                                     M.SubPointer.get_struct_record_field (|
                                       M.deref (| M.read (| self |) |),
                                       "core::iter::adapters::take::Take",
                                       "n"
                                     |)
-                                  |)
+                                  |);
+                                  M.read (| n |)
                                 ]
-                              |),
-                              M.read (| n |)
+                              |)
+                            |)) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let~ m : Ty.path "usize" :=
+                          M.alloc (|
+                            M.call_closure (|
+                              Ty.path "usize",
+                              BinOp.Wrap.add,
+                              [
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  M.get_associated_function (|
+                                    Ty.path "usize",
+                                    "saturating_sub",
+                                    [],
+                                    []
+                                  |),
+                                  [
+                                    M.read (| len |);
+                                    M.read (|
+                                      M.SubPointer.get_struct_record_field (|
+                                        M.deref (| M.read (| self |) |),
+                                        "core::iter::adapters::take::Take",
+                                        "n"
+                                      |)
+                                    |)
+                                  ]
+                                |);
+                                M.read (| n |)
+                              ]
                             |)
                           |) in
                         let~ _ : Ty.tuple [] :=
@@ -1571,12 +1635,17 @@ Module iter.
                               |) in
                             M.write (|
                               β,
-                              BinOp.Wrap.sub (|
-                                M.read (| β |),
-                                BinOp.Wrap.add (|
-                                  M.read (| n |),
-                                  Value.Integer IntegerKind.Usize 1
-                                |)
+                              M.call_closure (|
+                                Ty.path "usize",
+                                BinOp.Wrap.sub,
+                                [
+                                  M.read (| β |);
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    BinOp.Wrap.add,
+                                    [ M.read (| n |); Value.Integer IntegerKind.Usize 1 ]
+                                  |)
+                                ]
                               |)
                             |)
                           |) in
@@ -1627,13 +1696,14 @@ Module iter.
                                   (let γ :=
                                     M.use
                                       (M.alloc (|
-                                        BinOp.gt (|
-                                          M.read (| len |),
-                                          Value.Integer IntegerKind.Usize 0
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.gt,
+                                          [ M.read (| len |); Value.Integer IntegerKind.Usize 0 ]
                                         |)
                                       |)) in
                                   let _ :=
-                                    M.is_constant_or_break_match (|
+                                    is_constant_or_break_match (|
                                       M.read (| γ |),
                                       Value.Bool true
                                     |) in
@@ -1680,9 +1750,10 @@ Module iter.
                                               "iter"
                                             |)
                                           |);
-                                          BinOp.Wrap.sub (|
-                                            M.read (| len |),
-                                            Value.Integer IntegerKind.Usize 1
+                                          M.call_closure (|
+                                            Ty.path "usize",
+                                            BinOp.Wrap.sub,
+                                            [ M.read (| len |); Value.Integer IntegerKind.Usize 1 ]
                                           |)
                                         ]
                                       |)
@@ -1735,19 +1806,22 @@ Module iter.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.eq (|
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    M.deref (| M.read (| self |) |),
-                                    "core::iter::adapters::take::Take",
-                                    "n"
-                                  |)
-                                |),
-                                Value.Integer IntegerKind.Usize 0
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.eq,
+                                [
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      M.deref (| M.read (| self |) |),
+                                      "core::iter::adapters::take::Take",
+                                      "n"
+                                    |)
+                                  |);
+                                  Value.Integer IntegerKind.Usize 0
+                                ]
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         M.alloc (|
                           M.call_closure (|
                             R,
@@ -1800,15 +1874,19 @@ Module iter.
                                   M.use
                                     (M.alloc (|
                                       LogicalOp.and (|
-                                        BinOp.gt (|
-                                          M.read (| len |),
-                                          M.read (|
-                                            M.SubPointer.get_struct_record_field (|
-                                              M.deref (| M.read (| self |) |),
-                                              "core::iter::adapters::take::Take",
-                                              "n"
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.gt,
+                                          [
+                                            M.read (| len |);
+                                            M.read (|
+                                              M.SubPointer.get_struct_record_field (|
+                                                M.deref (| M.read (| self |) |),
+                                                "core::iter::adapters::take::Take",
+                                                "n"
+                                              |)
                                             |)
-                                          |)
+                                          ]
                                         |),
                                         ltac:(M.monadic
                                           (M.call_closure (|
@@ -1863,18 +1941,26 @@ Module iter.
                                                           "iter"
                                                         |)
                                                       |);
-                                                      BinOp.Wrap.sub (|
-                                                        BinOp.Wrap.sub (|
-                                                          M.read (| len |),
-                                                          M.read (|
-                                                            M.SubPointer.get_struct_record_field (|
-                                                              M.deref (| M.read (| self |) |),
-                                                              "core::iter::adapters::take::Take",
-                                                              "n"
-                                                            |)
-                                                          |)
-                                                        |),
-                                                        Value.Integer IntegerKind.Usize 1
+                                                      M.call_closure (|
+                                                        Ty.path "usize",
+                                                        BinOp.Wrap.sub,
+                                                        [
+                                                          M.call_closure (|
+                                                            Ty.path "usize",
+                                                            BinOp.Wrap.sub,
+                                                            [
+                                                              M.read (| len |);
+                                                              M.read (|
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  M.deref (| M.read (| self |) |),
+                                                                  "core::iter::adapters::take::Take",
+                                                                  "n"
+                                                                |)
+                                                              |)
+                                                            ]
+                                                          |);
+                                                          Value.Integer IntegerKind.Usize 1
+                                                        ]
                                                       |)
                                                     ]
                                                   |)
@@ -1885,7 +1971,7 @@ Module iter.
                                       |)
                                     |)) in
                                 let _ :=
-                                  M.is_constant_or_break_match (|
+                                  is_constant_or_break_match (|
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
@@ -1976,19 +2062,22 @@ Module iter.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.eq (|
-                                M.read (|
-                                  M.SubPointer.get_struct_record_field (|
-                                    self,
-                                    "core::iter::adapters::take::Take",
-                                    "n"
-                                  |)
-                                |),
-                                Value.Integer IntegerKind.Usize 0
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.eq,
+                                [
+                                  M.read (|
+                                    M.SubPointer.get_struct_record_field (|
+                                      self,
+                                      "core::iter::adapters::take::Take",
+                                      "n"
+                                    |)
+                                  |);
+                                  Value.Integer IntegerKind.Usize 0
+                                ]
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         init));
                     fun γ =>
                       ltac:(M.monadic
@@ -2027,15 +2116,19 @@ Module iter.
                                   M.use
                                     (M.alloc (|
                                       LogicalOp.and (|
-                                        BinOp.gt (|
-                                          M.read (| len |),
-                                          M.read (|
-                                            M.SubPointer.get_struct_record_field (|
-                                              self,
-                                              "core::iter::adapters::take::Take",
-                                              "n"
+                                        M.call_closure (|
+                                          Ty.path "bool",
+                                          BinOp.gt,
+                                          [
+                                            M.read (| len |);
+                                            M.read (|
+                                              M.SubPointer.get_struct_record_field (|
+                                                self,
+                                                "core::iter::adapters::take::Take",
+                                                "n"
+                                              |)
                                             |)
-                                          |)
+                                          ]
                                         |),
                                         ltac:(M.monadic
                                           (M.call_closure (|
@@ -2090,18 +2183,26 @@ Module iter.
                                                           "iter"
                                                         |)
                                                       |);
-                                                      BinOp.Wrap.sub (|
-                                                        BinOp.Wrap.sub (|
-                                                          M.read (| len |),
-                                                          M.read (|
-                                                            M.SubPointer.get_struct_record_field (|
-                                                              self,
-                                                              "core::iter::adapters::take::Take",
-                                                              "n"
-                                                            |)
-                                                          |)
-                                                        |),
-                                                        Value.Integer IntegerKind.Usize 1
+                                                      M.call_closure (|
+                                                        Ty.path "usize",
+                                                        BinOp.Wrap.sub,
+                                                        [
+                                                          M.call_closure (|
+                                                            Ty.path "usize",
+                                                            BinOp.Wrap.sub,
+                                                            [
+                                                              M.read (| len |);
+                                                              M.read (|
+                                                                M.SubPointer.get_struct_record_field (|
+                                                                  self,
+                                                                  "core::iter::adapters::take::Take",
+                                                                  "n"
+                                                                |)
+                                                              |)
+                                                            ]
+                                                          |);
+                                                          Value.Integer IntegerKind.Usize 1
+                                                        ]
                                                       |)
                                                     ]
                                                   |)
@@ -2112,7 +2213,7 @@ Module iter.
                                       |)
                                     |)) in
                                 let _ :=
-                                  M.is_constant_or_break_match (|
+                                  is_constant_or_break_match (|
                                     M.read (| γ |),
                                     Value.Bool true
                                   |) in
@@ -2308,11 +2409,19 @@ Module iter.
                   |) in
                 let~ advanced_by_inner : Ty.path "usize" :=
                   M.alloc (|
-                    BinOp.Wrap.sub (| M.read (| advance_by |), M.read (| remainder |) |)
+                    M.call_closure (|
+                      Ty.path "usize",
+                      BinOp.Wrap.sub,
+                      [ M.read (| advance_by |); M.read (| remainder |) ]
+                    |)
                   |) in
                 let~ advanced_by : Ty.path "usize" :=
                   M.alloc (|
-                    BinOp.Wrap.sub (| M.read (| advanced_by_inner |), M.read (| trim_inner |) |)
+                    M.call_closure (|
+                      Ty.path "usize",
+                      BinOp.Wrap.sub,
+                      [ M.read (| advanced_by_inner |); M.read (| trim_inner |) ]
+                    |)
                   |) in
                 let~ _ : Ty.tuple [] :=
                   M.alloc (|
@@ -2322,7 +2431,14 @@ Module iter.
                         "core::iter::adapters::take::Take",
                         "n"
                       |) in
-                    M.write (| β, BinOp.Wrap.sub (| M.read (| β |), M.read (| advanced_by |) |) |)
+                    M.write (|
+                      β,
+                      M.call_closure (|
+                        Ty.path "usize",
+                        BinOp.Wrap.sub,
+                        [ M.read (| β |); M.read (| advanced_by |) ]
+                      |)
+                    |)
                   |) in
                 M.alloc (|
                   M.call_closure (|
@@ -2376,7 +2492,13 @@ Module iter.
                           [],
                           []
                         |),
-                        [ BinOp.Wrap.sub (| M.read (| n |), M.read (| advanced_by |) |) ]
+                        [
+                          M.call_closure (|
+                            Ty.path "usize",
+                            BinOp.Wrap.sub,
+                            [ M.read (| n |); M.read (| advanced_by |) ]
+                          |)
+                        ]
                       |);
                       Value.StructTuple "core::result::Result::Ok" [ Value.Tuple [] ];
                       M.constructor_as_closure "core::result::Result::Err"
@@ -2585,13 +2707,13 @@ Module iter.
                         (let γ :=
                           M.use
                             (M.alloc (|
-                              BinOp.gt (|
-                                M.read (| remaining |),
-                                Value.Integer IntegerKind.Usize 0
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.gt,
+                                [ M.read (| remaining |); Value.Integer IntegerKind.Usize 0 ]
                               |)
                             |)) in
-                        let _ :=
-                          M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                        let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                         let~ _ : Ty.apply (Ty.path "core::option::Option") [] [ Ty.path "usize" ] :=
                           M.alloc (|
                             M.call_closure (|
@@ -2618,9 +2740,10 @@ Module iter.
                                     "iter"
                                   |)
                                 |);
-                                BinOp.Wrap.sub (|
-                                  M.read (| remaining |),
-                                  Value.Integer IntegerKind.Usize 1
+                                M.call_closure (|
+                                  Ty.path "usize",
+                                  BinOp.Wrap.sub,
+                                  [ M.read (| remaining |); Value.Integer IntegerKind.Usize 1 ]
                                 |);
                                 M.call_closure (|
                                   Ty.associated_unknown,

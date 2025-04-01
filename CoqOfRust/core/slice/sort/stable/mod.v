@@ -83,7 +83,7 @@ Module slice.
                                   Ty.path "bool"
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (| M.read (| M.return_ (| Value.Tuple [] |) |) |)
                             |)));
@@ -117,15 +117,16 @@ Module slice.
                                     Ty.path "bool",
                                     M.get_function (| "core::intrinsics::likely", [], [] |),
                                     [
-                                      BinOp.lt (|
-                                        M.read (| len |),
-                                        Value.Integer IntegerKind.Usize 2
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.lt,
+                                        [ M.read (| len |); Value.Integer IntegerKind.Usize 2 ]
                                       |)
                                     ]
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (| M.read (| M.return_ (| Value.Tuple [] |) |) |)
                             |)));
@@ -146,20 +147,24 @@ Module slice.
                                     Ty.path "bool",
                                     M.get_function (| "core::intrinsics::likely", [], [] |),
                                     [
-                                      BinOp.le (|
-                                        M.read (| len |),
-                                        M.read (|
-                                          get_constant (|
-                                            "core::slice::sort::stable::sort::MAX_LEN_ALWAYS_INSERTION_SORT",
-                                            Ty.path "usize"
+                                      M.call_closure (|
+                                        Ty.path "bool",
+                                        BinOp.le,
+                                        [
+                                          M.read (| len |);
+                                          M.read (|
+                                            get_constant (|
+                                              "core::slice::sort::stable::sort::MAX_LEN_ALWAYS_INSERTION_SORT",
+                                              Ty.path "usize"
+                                            |)
                                           |)
-                                        |)
+                                        ]
                                       |)
                                     ]
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.alloc (|
                               M.never_to_any (|
                                 M.read (|
@@ -278,18 +283,22 @@ Module slice.
             M.read (|
               let~ max_full_alloc : Ty.path "usize" :=
                 M.alloc (|
-                  BinOp.Wrap.div (|
-                    M.read (|
-                      get_constant (|
-                        "core::slice::sort::stable::driftsort_main::MAX_FULL_ALLOC_BYTES",
-                        Ty.path "usize"
+                  M.call_closure (|
+                    Ty.path "usize",
+                    BinOp.Wrap.div,
+                    [
+                      M.read (|
+                        get_constant (|
+                          "core::slice::sort::stable::driftsort_main::MAX_FULL_ALLOC_BYTES",
+                          Ty.path "usize"
+                        |)
+                      |);
+                      M.call_closure (|
+                        Ty.path "usize",
+                        M.get_function (| "core::mem::size_of", [], [ T ] |),
+                        []
                       |)
-                    |),
-                    M.call_closure (|
-                      Ty.path "usize",
-                      M.get_function (| "core::mem::size_of", [], [ T ] |),
-                      []
-                    |)
+                    ]
                   |)
                 |) in
               let~ len : Ty.path "usize" :=
@@ -315,7 +324,11 @@ Module slice.
                         Ty.path "usize",
                         M.get_function (| "core::cmp::max", [], [ Ty.path "usize" ] |),
                         [
-                          BinOp.Wrap.div (| M.read (| len |), Value.Integer IntegerKind.Usize 2 |);
+                          M.call_closure (|
+                            Ty.path "usize",
+                            BinOp.Wrap.div,
+                            [ M.read (| len |); Value.Integer IntegerKind.Usize 2 ]
+                          |);
                           M.call_closure (|
                             Ty.path "usize",
                             M.get_function (| "core::cmp::min", [], [ Ty.path "usize" ] |),
@@ -418,35 +431,39 @@ Module slice.
                           (let γ :=
                             M.use
                               (M.alloc (|
-                                BinOp.ge (|
-                                  M.call_closure (|
-                                    Ty.path "usize",
-                                    M.get_associated_function (|
-                                      Ty.apply
-                                        (Ty.path "slice")
+                                M.call_closure (|
+                                  Ty.path "bool",
+                                  BinOp.ge,
+                                  [
+                                    M.call_closure (|
+                                      Ty.path "usize",
+                                      M.get_associated_function (|
+                                        Ty.apply
+                                          (Ty.path "slice")
+                                          []
+                                          [
+                                            Ty.apply
+                                              (Ty.path "core::mem::maybe_uninit::MaybeUninit")
+                                              []
+                                              [ T ]
+                                          ],
+                                        "len",
+                                        [],
                                         []
-                                        [
-                                          Ty.apply
-                                            (Ty.path "core::mem::maybe_uninit::MaybeUninit")
-                                            []
-                                            [ T ]
-                                        ],
-                                      "len",
-                                      [],
-                                      []
-                                    |),
-                                    [
-                                      M.borrow (|
-                                        Pointer.Kind.Ref,
-                                        M.deref (| M.read (| stack_scratch |) |)
-                                      |)
-                                    ]
-                                  |),
-                                  M.read (| alloc_len |)
+                                      |),
+                                      [
+                                        M.borrow (|
+                                          Pointer.Kind.Ref,
+                                          M.deref (| M.read (| stack_scratch |) |)
+                                        |)
+                                      ]
+                                    |);
+                                    M.read (| alloc_len |)
+                                  ]
                                 |)
                               |)) in
                           let _ :=
-                            M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                            is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                           stack_scratch));
                       fun γ =>
                         ltac:(M.monadic
@@ -511,24 +528,32 @@ Module slice.
                 |) in
               let~ eager_sort : Ty.path "bool" :=
                 M.alloc (|
-                  BinOp.le (|
-                    M.read (| len |),
-                    BinOp.Wrap.mul (|
+                  M.call_closure (|
+                    Ty.path "bool",
+                    BinOp.le,
+                    [
+                      M.read (| len |);
                       M.call_closure (|
                         Ty.path "usize",
-                        M.get_trait_method (|
-                          "core::slice::sort::shared::smallsort::StableSmallSortTypeImpl",
-                          T,
-                          [],
-                          [],
-                          "small_sort_threshold",
-                          [],
-                          []
-                        |),
-                        []
-                      |),
-                      Value.Integer IntegerKind.Usize 2
-                    |)
+                        BinOp.Wrap.mul,
+                        [
+                          M.call_closure (|
+                            Ty.path "usize",
+                            M.get_trait_method (|
+                              "core::slice::sort::shared::smallsort::StableSmallSortTypeImpl",
+                              T,
+                              [],
+                              [],
+                              "small_sort_threshold",
+                              [],
+                              []
+                            |),
+                            []
+                          |);
+                          Value.Integer IntegerKind.Usize 2
+                        ]
+                      |)
+                    ]
                   |)
                 |) in
               let~ _ : Ty.tuple [] :=
@@ -662,13 +687,17 @@ Module slice.
                   M.read (|
                     let~ len : Ty.path "usize" :=
                       M.alloc (|
-                        BinOp.Wrap.div (|
-                          N,
-                          M.call_closure (|
-                            Ty.path "usize",
-                            M.get_function (| "core::mem::size_of", [], [ T ] |),
-                            []
-                          |)
+                        M.call_closure (|
+                          Ty.path "usize",
+                          BinOp.Wrap.div,
+                          [
+                            N;
+                            M.call_closure (|
+                              Ty.path "usize",
+                              M.get_function (| "core::mem::size_of", [], [ T ] |),
+                              []
+                            |)
+                          ]
                         |)
                       |) in
                     M.alloc (|

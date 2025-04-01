@@ -2087,7 +2087,11 @@ Module normalized.
               |) in
             M.alloc (|
               LogicalOp.and (|
-                BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |),
+                M.call_closure (|
+                  Ty.path "bool",
+                  BinOp.eq,
+                  [ M.read (| __self_discr |); M.read (| __arg1_discr |) ]
+                |),
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
@@ -2827,18 +2831,34 @@ Module normalized.
                                       mk_str (| "Type" |);
                                       Value.Integer IntegerKind.U32 6;
                                       mk_str (| "Struct" |);
-                                      BinOp.Wrap.add (|
-                                        BinOp.Wrap.add (|
-                                          BinOp.Wrap.add (|
-                                            BinOp.Wrap.add (|
-                                              Value.Integer IntegerKind.Usize 0,
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        BinOp.Wrap.add,
+                                        [
+                                          M.call_closure (|
+                                            Ty.path "usize",
+                                            BinOp.Wrap.add,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "usize",
+                                                BinOp.Wrap.add,
+                                                [
+                                                  M.call_closure (|
+                                                    Ty.path "usize",
+                                                    BinOp.Wrap.add,
+                                                    [
+                                                      Value.Integer IntegerKind.Usize 0;
+                                                      Value.Integer IntegerKind.Usize 1
+                                                    ]
+                                                  |);
+                                                  Value.Integer IntegerKind.Usize 1
+                                                ]
+                                              |);
                                               Value.Integer IntegerKind.Usize 1
-                                            |),
-                                            Value.Integer IntegerKind.Usize 1
-                                          |),
+                                            ]
+                                          |);
                                           Value.Integer IntegerKind.Usize 1
-                                        |),
-                                        Value.Integer IntegerKind.Usize 1
+                                        ]
                                       |)
                                     ]
                                   |)
@@ -3618,12 +3638,20 @@ Module normalized.
                             [
                               M.read (| __serializer |);
                               mk_str (| "Field" |);
-                              BinOp.Wrap.add (|
-                                BinOp.Wrap.add (|
-                                  M.cast (Ty.path "usize") (Value.Bool false),
+                              M.call_closure (|
+                                Ty.path "usize",
+                                BinOp.Wrap.add,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    BinOp.Wrap.add,
+                                    [
+                                      M.cast (Ty.path "usize") (Value.Bool false);
+                                      Value.Integer IntegerKind.Usize 1
+                                    ]
+                                  |);
                                   Value.Integer IntegerKind.Usize 1
-                                |),
-                                Value.Integer IntegerKind.Usize 1
+                                ]
                               |)
                             ]
                           |)
@@ -3970,12 +3998,20 @@ Module normalized.
                             [
                               M.read (| __serializer |);
                               mk_str (| "Constant" |);
-                              BinOp.Wrap.add (|
-                                BinOp.Wrap.add (|
-                                  M.cast (Ty.path "usize") (Value.Bool false),
+                              M.call_closure (|
+                                Ty.path "usize",
+                                BinOp.Wrap.add,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    BinOp.Wrap.add,
+                                    [
+                                      M.cast (Ty.path "usize") (Value.Bool false);
+                                      Value.Integer IntegerKind.Usize 1
+                                    ]
+                                  |);
                                   Value.Integer IntegerKind.Usize 1
-                                |),
-                                Value.Integer IntegerKind.Usize 1
+                                ]
                               |)
                             ]
                           |)
@@ -4327,15 +4363,27 @@ Module normalized.
                             [
                               M.read (| __serializer |);
                               mk_str (| "Struct" |);
-                              BinOp.Wrap.add (|
-                                BinOp.Wrap.add (|
-                                  BinOp.Wrap.add (|
-                                    M.cast (Ty.path "usize") (Value.Bool false),
-                                    Value.Integer IntegerKind.Usize 1
-                                  |),
+                              M.call_closure (|
+                                Ty.path "usize",
+                                BinOp.Wrap.add,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    BinOp.Wrap.add,
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        BinOp.Wrap.add,
+                                        [
+                                          M.cast (Ty.path "usize") (Value.Bool false);
+                                          Value.Integer IntegerKind.Usize 1
+                                        ]
+                                      |);
+                                      Value.Integer IntegerKind.Usize 1
+                                    ]
+                                  |);
                                   Value.Integer IntegerKind.Usize 1
-                                |),
-                                Value.Integer IntegerKind.Usize 1
+                                ]
                               |)
                             ]
                           |)
@@ -4779,24 +4827,48 @@ Module normalized.
                             [
                               M.read (| __serializer |);
                               mk_str (| "Function" |);
-                              BinOp.Wrap.add (|
-                                BinOp.Wrap.add (|
-                                  BinOp.Wrap.add (|
-                                    BinOp.Wrap.add (|
-                                      BinOp.Wrap.add (|
-                                        BinOp.Wrap.add (|
-                                          M.cast (Ty.path "usize") (Value.Bool false),
+                              M.call_closure (|
+                                Ty.path "usize",
+                                BinOp.Wrap.add,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    BinOp.Wrap.add,
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        BinOp.Wrap.add,
+                                        [
+                                          M.call_closure (|
+                                            Ty.path "usize",
+                                            BinOp.Wrap.add,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "usize",
+                                                BinOp.Wrap.add,
+                                                [
+                                                  M.call_closure (|
+                                                    Ty.path "usize",
+                                                    BinOp.Wrap.add,
+                                                    [
+                                                      M.cast (Ty.path "usize") (Value.Bool false);
+                                                      Value.Integer IntegerKind.Usize 1
+                                                    ]
+                                                  |);
+                                                  Value.Integer IntegerKind.Usize 1
+                                                ]
+                                              |);
+                                              Value.Integer IntegerKind.Usize 1
+                                            ]
+                                          |);
                                           Value.Integer IntegerKind.Usize 1
-                                        |),
-                                        Value.Integer IntegerKind.Usize 1
-                                      |),
+                                        ]
+                                      |);
                                       Value.Integer IntegerKind.Usize 1
-                                    |),
-                                    Value.Integer IntegerKind.Usize 1
-                                  |),
+                                    ]
+                                  |);
                                   Value.Integer IntegerKind.Usize 1
-                                |),
-                                Value.Integer IntegerKind.Usize 1
+                                ]
                               |)
                             ]
                           |)
@@ -5499,12 +5571,20 @@ Module normalized.
                             [
                               M.read (| __serializer |);
                               mk_str (| "FieldRef" |);
-                              BinOp.Wrap.add (|
-                                BinOp.Wrap.add (|
-                                  M.cast (Ty.path "usize") (Value.Bool false),
+                              M.call_closure (|
+                                Ty.path "usize",
+                                BinOp.Wrap.add,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    BinOp.Wrap.add,
+                                    [
+                                      M.cast (Ty.path "usize") (Value.Bool false);
+                                      Value.Integer IntegerKind.Usize 1
+                                    ]
+                                  |);
                                   Value.Integer IntegerKind.Usize 1
-                                |),
-                                Value.Integer IntegerKind.Usize 1
+                                ]
                               |)
                             ]
                           |)
@@ -5851,12 +5931,20 @@ Module normalized.
                             [
                               M.read (| __serializer |);
                               mk_str (| "FunctionRef" |);
-                              BinOp.Wrap.add (|
-                                BinOp.Wrap.add (|
-                                  M.cast (Ty.path "usize") (Value.Bool false),
+                              M.call_closure (|
+                                Ty.path "usize",
+                                BinOp.Wrap.add,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    BinOp.Wrap.add,
+                                    [
+                                      M.cast (Ty.path "usize") (Value.Bool false);
+                                      Value.Integer IntegerKind.Usize 1
+                                    ]
+                                  |);
                                   Value.Integer IntegerKind.Usize 1
-                                |),
-                                Value.Integer IntegerKind.Usize 1
+                                ]
                               |)
                             ]
                           |)
@@ -8117,12 +8205,20 @@ Module normalized.
                                       mk_str (| "Bytecode" |);
                                       Value.Integer IntegerKind.U32 53;
                                       mk_str (| "VecPack" |);
-                                      BinOp.Wrap.add (|
-                                        BinOp.Wrap.add (|
-                                          Value.Integer IntegerKind.Usize 0,
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        BinOp.Wrap.add,
+                                        [
+                                          M.call_closure (|
+                                            Ty.path "usize",
+                                            BinOp.Wrap.add,
+                                            [
+                                              Value.Integer IntegerKind.Usize 0;
+                                              Value.Integer IntegerKind.Usize 1
+                                            ]
+                                          |);
                                           Value.Integer IntegerKind.Usize 1
-                                        |),
-                                        Value.Integer IntegerKind.Usize 1
+                                        ]
                                       |)
                                     ]
                                   |)
@@ -8588,12 +8684,20 @@ Module normalized.
                                       mk_str (| "Bytecode" |);
                                       Value.Integer IntegerKind.U32 59;
                                       mk_str (| "VecUnpack" |);
-                                      BinOp.Wrap.add (|
-                                        BinOp.Wrap.add (|
-                                          Value.Integer IntegerKind.Usize 0,
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        BinOp.Wrap.add,
+                                        [
+                                          M.call_closure (|
+                                            Ty.path "usize",
+                                            BinOp.Wrap.add,
+                                            [
+                                              Value.Integer IntegerKind.Usize 0;
+                                              Value.Integer IntegerKind.Usize 1
+                                            ]
+                                          |);
                                           Value.Integer IntegerKind.Usize 1
-                                        |),
-                                        Value.Integer IntegerKind.Usize 1
+                                        ]
                                       |)
                                     ]
                                   |)
@@ -9604,30 +9708,64 @@ Module normalized.
                             [
                               M.read (| __serializer |);
                               mk_str (| "Module" |);
-                              BinOp.Wrap.add (|
-                                BinOp.Wrap.add (|
-                                  BinOp.Wrap.add (|
-                                    BinOp.Wrap.add (|
-                                      BinOp.Wrap.add (|
-                                        BinOp.Wrap.add (|
-                                          BinOp.Wrap.add (|
-                                            BinOp.Wrap.add (|
-                                              M.cast (Ty.path "usize") (Value.Bool false),
+                              M.call_closure (|
+                                Ty.path "usize",
+                                BinOp.Wrap.add,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    BinOp.Wrap.add,
+                                    [
+                                      M.call_closure (|
+                                        Ty.path "usize",
+                                        BinOp.Wrap.add,
+                                        [
+                                          M.call_closure (|
+                                            Ty.path "usize",
+                                            BinOp.Wrap.add,
+                                            [
+                                              M.call_closure (|
+                                                Ty.path "usize",
+                                                BinOp.Wrap.add,
+                                                [
+                                                  M.call_closure (|
+                                                    Ty.path "usize",
+                                                    BinOp.Wrap.add,
+                                                    [
+                                                      M.call_closure (|
+                                                        Ty.path "usize",
+                                                        BinOp.Wrap.add,
+                                                        [
+                                                          M.call_closure (|
+                                                            Ty.path "usize",
+                                                            BinOp.Wrap.add,
+                                                            [
+                                                              M.cast
+                                                                (Ty.path "usize")
+                                                                (Value.Bool false);
+                                                              Value.Integer IntegerKind.Usize 1
+                                                            ]
+                                                          |);
+                                                          Value.Integer IntegerKind.Usize 1
+                                                        ]
+                                                      |);
+                                                      Value.Integer IntegerKind.Usize 1
+                                                    ]
+                                                  |);
+                                                  Value.Integer IntegerKind.Usize 1
+                                                ]
+                                              |);
                                               Value.Integer IntegerKind.Usize 1
-                                            |),
-                                            Value.Integer IntegerKind.Usize 1
-                                          |),
+                                            ]
+                                          |);
                                           Value.Integer IntegerKind.Usize 1
-                                        |),
-                                        Value.Integer IntegerKind.Usize 1
-                                      |),
+                                        ]
+                                      |);
                                       Value.Integer IntegerKind.Usize 1
-                                    |),
-                                    Value.Integer IntegerKind.Usize 1
-                                  |),
+                                    ]
+                                  |);
                                   Value.Integer IntegerKind.Usize 1
-                                |),
-                                Value.Integer IntegerKind.Usize 1
+                                ]
                               |)
                             ]
                           |)
@@ -13885,21 +14023,25 @@ Module normalized.
                       ]
                     |),
                     ltac:(M.monadic
-                      (BinOp.eq (|
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| self |) |),
-                            "move_binary_format::normalized::Function",
-                            "is_entry"
+                      (M.call_closure (|
+                        Ty.path "bool",
+                        BinOp.eq,
+                        [
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| self |) |),
+                              "move_binary_format::normalized::Function",
+                              "is_entry"
+                            |)
+                          |);
+                          M.read (|
+                            M.SubPointer.get_struct_record_field (|
+                              M.deref (| M.read (| other |) |),
+                              "move_binary_format::normalized::Function",
+                              "is_entry"
+                            |)
                           |)
-                        |),
-                        M.read (|
-                          M.SubPointer.get_struct_record_field (|
-                            M.deref (| M.read (| other |) |),
-                            "move_binary_format::normalized::Function",
-                            "is_entry"
-                          |)
-                        |)
+                        ]
                       |)))
                   |),
                   ltac:(M.monadic
@@ -14608,21 +14750,25 @@ Module normalized.
               ]
             |),
             ltac:(M.monadic
-              (BinOp.eq (|
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "move_binary_format::normalized::FieldRef",
-                    "field_index"
+              (M.call_closure (|
+                Ty.path "bool",
+                BinOp.eq,
+                [
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "move_binary_format::normalized::FieldRef",
+                      "field_index"
+                    |)
+                  |);
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| other |) |),
+                      "move_binary_format::normalized::FieldRef",
+                      "field_index"
+                    |)
                   |)
-                |),
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| other |) |),
-                    "move_binary_format::normalized::FieldRef",
-                    "field_index"
-                  |)
-                |)
+                ]
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -24880,7 +25026,11 @@ Module normalized.
               |) in
             M.alloc (|
               LogicalOp.and (|
-                BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |),
+                M.call_closure (|
+                  Ty.path "bool",
+                  BinOp.eq,
+                  [ M.read (| __self_discr |); M.read (| __arg1_discr |) ]
+                |),
                 ltac:(M.monadic
                   (M.read (|
                     M.match_operator (|
@@ -27876,21 +28026,25 @@ Module normalized.
                   LogicalOp.and (|
                     LogicalOp.and (|
                       LogicalOp.and (|
-                        BinOp.eq (|
-                          M.read (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| self |) |),
-                              "move_binary_format::normalized::Module",
-                              "file_format_version"
+                        M.call_closure (|
+                          Ty.path "bool",
+                          BinOp.eq,
+                          [
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "move_binary_format::normalized::Module",
+                                "file_format_version"
+                              |)
+                            |);
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| other |) |),
+                                "move_binary_format::normalized::Module",
+                                "file_format_version"
+                              |)
                             |)
-                          |),
-                          M.read (|
-                            M.SubPointer.get_struct_record_field (|
-                              M.deref (| M.read (| other |) |),
-                              "move_binary_format::normalized::Module",
-                              "file_format_version"
-                            |)
-                          |)
+                          ]
                         |),
                         ltac:(M.monadic
                           (M.call_closure (|
@@ -29211,10 +29365,7 @@ Module normalized.
                                     |)
                                   |)) in
                               let _ :=
-                                M.is_constant_or_break_match (|
-                                  M.read (| γ |),
-                                  Value.Bool true
-                                |) in
+                                is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                               M.alloc (|
                                 M.never_to_any (|
                                   M.call_closure (|
@@ -30548,7 +30699,7 @@ Module normalized.
                                   |)
                                 |)) in
                             let _ :=
-                              M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                              is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                             M.match_operator (|
                               Some (Ty.path "move_core_types::language_storage::TypeTag"),
                               self,
@@ -34069,7 +34220,7 @@ Module normalized.
                                                         |)
                                                       |)) in
                                                   let _ :=
-                                                    M.is_constant_or_break_match (|
+                                                    is_constant_or_break_match (|
                                                       M.read (| γ |),
                                                       Value.Bool true
                                                     |) in

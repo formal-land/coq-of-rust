@@ -370,7 +370,11 @@ Module interpreter_action.
                 |) in
               M.alloc (|
                 LogicalOp.and (|
-                  BinOp.eq (| M.read (| __self_discr |), M.read (| __arg1_discr |) |),
+                  M.call_closure (|
+                    Ty.path "bool",
+                    BinOp.eq,
+                    [ M.read (| __self_discr |); M.read (| __arg1_discr |) ]
+                  |),
                   ltac:(M.monadic
                     (M.read (|
                       M.match_operator (|
@@ -1233,21 +1237,25 @@ Module interpreter_action.
                     |)))
                 |),
                 ltac:(M.monadic
-                  (BinOp.eq (|
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| self |) |),
-                        "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs",
-                        "gas_limit"
+                  (M.call_closure (|
+                    Ty.path "bool",
+                    BinOp.eq,
+                    [
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| self |) |),
+                          "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs",
+                          "gas_limit"
+                        |)
+                      |);
+                      M.read (|
+                        M.SubPointer.get_struct_record_field (|
+                          M.deref (| M.read (| other |) |),
+                          "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs",
+                          "gas_limit"
+                        |)
                       |)
-                    |),
-                    M.read (|
-                      M.SubPointer.get_struct_record_field (|
-                        M.deref (| M.read (| other |) |),
-                        "revm_interpreter::interpreter_action::eof_create_inputs::EOFCreateInputs",
-                        "gas_limit"
-                      |)
-                    |)
+                    ]
                   |)))
               |),
               ltac:(M.monadic

@@ -165,21 +165,25 @@ Module opcode.
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
           let other := M.alloc (| other |) in
-          BinOp.eq (|
-            M.read (|
-              M.SubPointer.get_struct_tuple_field (|
-                M.deref (| M.read (| self |) |),
-                "revm_bytecode::opcode::OpCode",
-                0
+          M.call_closure (|
+            Ty.path "bool",
+            BinOp.eq,
+            [
+              M.read (|
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| self |) |),
+                  "revm_bytecode::opcode::OpCode",
+                  0
+                |)
+              |);
+              M.read (|
+                M.SubPointer.get_struct_tuple_field (|
+                  M.deref (| M.read (| other |) |),
+                  "revm_bytecode::opcode::OpCode",
+                  0
+                |)
               |)
-            |),
-            M.read (|
-              M.SubPointer.get_struct_tuple_field (|
-                M.deref (| M.read (| other |) |),
-                "revm_bytecode::opcode::OpCode",
-                0
-              |)
-            |)
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -1654,111 +1658,135 @@ Module opcode.
                         ]
                       |),
                       ltac:(M.monadic
-                        (BinOp.eq (|
+                        (M.call_closure (|
+                          Ty.path "bool",
+                          BinOp.eq,
+                          [
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| self |) |),
+                                "revm_bytecode::opcode::OpCodeInfo",
+                                "name_len"
+                              |)
+                            |);
+                            M.read (|
+                              M.SubPointer.get_struct_record_field (|
+                                M.deref (| M.read (| other |) |),
+                                "revm_bytecode::opcode::OpCodeInfo",
+                                "name_len"
+                              |)
+                            |)
+                          ]
+                        |)))
+                    |),
+                    ltac:(M.monadic
+                      (M.call_closure (|
+                        Ty.path "bool",
+                        BinOp.eq,
+                        [
                           M.read (|
                             M.SubPointer.get_struct_record_field (|
                               M.deref (| M.read (| self |) |),
                               "revm_bytecode::opcode::OpCodeInfo",
-                              "name_len"
+                              "inputs"
                             |)
-                          |),
+                          |);
                           M.read (|
                             M.SubPointer.get_struct_record_field (|
                               M.deref (| M.read (| other |) |),
                               "revm_bytecode::opcode::OpCodeInfo",
-                              "name_len"
+                              "inputs"
                             |)
                           |)
-                        |)))
-                    |),
-                    ltac:(M.monadic
-                      (BinOp.eq (|
+                        ]
+                      |)))
+                  |),
+                  ltac:(M.monadic
+                    (M.call_closure (|
+                      Ty.path "bool",
+                      BinOp.eq,
+                      [
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.deref (| M.read (| self |) |),
                             "revm_bytecode::opcode::OpCodeInfo",
-                            "inputs"
+                            "outputs"
                           |)
-                        |),
+                        |);
                         M.read (|
                           M.SubPointer.get_struct_record_field (|
                             M.deref (| M.read (| other |) |),
                             "revm_bytecode::opcode::OpCodeInfo",
-                            "inputs"
+                            "outputs"
                           |)
                         |)
-                      |)))
-                  |),
-                  ltac:(M.monadic
-                    (BinOp.eq (|
+                      ]
+                    |)))
+                |),
+                ltac:(M.monadic
+                  (M.call_closure (|
+                    Ty.path "bool",
+                    BinOp.eq,
+                    [
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.deref (| M.read (| self |) |),
                           "revm_bytecode::opcode::OpCodeInfo",
-                          "outputs"
+                          "immediate_size"
                         |)
-                      |),
+                      |);
                       M.read (|
                         M.SubPointer.get_struct_record_field (|
                           M.deref (| M.read (| other |) |),
                           "revm_bytecode::opcode::OpCodeInfo",
-                          "outputs"
+                          "immediate_size"
                         |)
                       |)
-                    |)))
-                |),
-                ltac:(M.monadic
-                  (BinOp.eq (|
+                    ]
+                  |)))
+              |),
+              ltac:(M.monadic
+                (M.call_closure (|
+                  Ty.path "bool",
+                  BinOp.eq,
+                  [
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.deref (| M.read (| self |) |),
                         "revm_bytecode::opcode::OpCodeInfo",
-                        "immediate_size"
+                        "not_eof"
                       |)
-                    |),
+                    |);
                     M.read (|
                       M.SubPointer.get_struct_record_field (|
                         M.deref (| M.read (| other |) |),
                         "revm_bytecode::opcode::OpCodeInfo",
-                        "immediate_size"
+                        "not_eof"
                       |)
                     |)
-                  |)))
-              |),
-              ltac:(M.monadic
-                (BinOp.eq (|
+                  ]
+                |)))
+            |),
+            ltac:(M.monadic
+              (M.call_closure (|
+                Ty.path "bool",
+                BinOp.eq,
+                [
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.deref (| M.read (| self |) |),
                       "revm_bytecode::opcode::OpCodeInfo",
-                      "not_eof"
+                      "terminating"
                     |)
-                  |),
+                  |);
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.deref (| M.read (| other |) |),
                       "revm_bytecode::opcode::OpCodeInfo",
-                      "not_eof"
+                      "terminating"
                     |)
                   |)
-                |)))
-            |),
-            ltac:(M.monadic
-              (BinOp.eq (|
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "revm_bytecode::opcode::OpCodeInfo",
-                    "terminating"
-                  |)
-                |),
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| other |) |),
-                    "revm_bytecode::opcode::OpCodeInfo",
-                    "terminating"
-                  |)
-                |)
+                ]
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
@@ -3353,18 +3381,26 @@ Module opcode.
                         M.use
                           (M.alloc (|
                             UnOp.not (|
-                              BinOp.lt (|
-                                M.call_closure (|
-                                  Ty.path "usize",
-                                  M.get_associated_function (| Ty.path "str", "len", [], [] |),
-                                  [ M.borrow (| Pointer.Kind.Ref, M.deref (| M.read (| name |) |) |)
-                                  ]
-                                |),
-                                Value.Integer IntegerKind.Usize 256
+                              M.call_closure (|
+                                Ty.path "bool",
+                                BinOp.lt,
+                                [
+                                  M.call_closure (|
+                                    Ty.path "usize",
+                                    M.get_associated_function (| Ty.path "str", "len", [], [] |),
+                                    [
+                                      M.borrow (|
+                                        Pointer.Kind.Ref,
+                                        M.deref (| M.read (| name |) |)
+                                      |)
+                                    ]
+                                  |);
+                                  Value.Integer IntegerKind.Usize 256
+                                ]
                               |)
                             |)
                           |)) in
-                      let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                      let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                       M.alloc (|
                         M.never_to_any (|
                           M.call_closure (|
@@ -3540,25 +3576,29 @@ Module opcode.
       | [], [], [ self ] =>
         ltac:(M.monadic
           (let self := M.alloc (| self |) in
-          BinOp.Wrap.sub (|
-            M.cast
-              (Ty.path "i16")
-              (M.read (|
-                M.SubPointer.get_struct_record_field (|
-                  M.deref (| M.read (| self |) |),
-                  "revm_bytecode::opcode::OpCodeInfo",
-                  "outputs"
-                |)
-              |)),
-            M.cast
-              (Ty.path "i16")
-              (M.read (|
-                M.SubPointer.get_struct_record_field (|
-                  M.deref (| M.read (| self |) |),
-                  "revm_bytecode::opcode::OpCodeInfo",
-                  "inputs"
-                |)
-              |))
+          M.call_closure (|
+            Ty.path "i16",
+            BinOp.Wrap.sub,
+            [
+              M.cast
+                (Ty.path "i16")
+                (M.read (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "revm_bytecode::opcode::OpCodeInfo",
+                    "outputs"
+                  |)
+                |));
+              M.cast
+                (Ty.path "i16")
+                (M.read (|
+                  M.SubPointer.get_struct_record_field (|
+                    M.deref (| M.read (| self |) |),
+                    "revm_bytecode::opcode::OpCodeInfo",
+                    "inputs"
+                  |)
+                |))
+            ]
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
       end.
@@ -3895,12 +3935,21 @@ Module opcode.
                     (M.alloc (|
                       UnOp.not (|
                         LogicalOp.or (|
-                          BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
-                          ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          M.call_closure (|
+                            Ty.path "bool",
+                            BinOp.eq,
+                            [ M.read (| val |); Value.Integer IntegerKind.U8 0 ]
+                          |),
+                          ltac:(M.monadic
+                            (M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.gt,
+                              [ M.read (| val |); M.read (| prev |) ]
+                            |)))
                         |)
                       |)
                     |)) in
-                let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                 M.alloc (|
                   M.never_to_any (|
                     M.call_closure (|
@@ -3987,12 +4036,21 @@ Module opcode.
                     (M.alloc (|
                       UnOp.not (|
                         LogicalOp.or (|
-                          BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
-                          ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          M.call_closure (|
+                            Ty.path "bool",
+                            BinOp.eq,
+                            [ M.read (| val |); Value.Integer IntegerKind.U8 0 ]
+                          |),
+                          ltac:(M.monadic
+                            (M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.gt,
+                              [ M.read (| val |); M.read (| prev |) ]
+                            |)))
                         |)
                       |)
                     |)) in
-                let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                 M.alloc (|
                   M.never_to_any (|
                     M.call_closure (|
@@ -4071,12 +4129,21 @@ Module opcode.
                     (M.alloc (|
                       UnOp.not (|
                         LogicalOp.or (|
-                          BinOp.eq (| M.read (| val |), Value.Integer IntegerKind.U8 0 |),
-                          ltac:(M.monadic (BinOp.gt (| M.read (| val |), M.read (| prev |) |)))
+                          M.call_closure (|
+                            Ty.path "bool",
+                            BinOp.eq,
+                            [ M.read (| val |); Value.Integer IntegerKind.U8 0 ]
+                          |),
+                          ltac:(M.monadic
+                            (M.call_closure (|
+                              Ty.path "bool",
+                              BinOp.gt,
+                              [ M.read (| val |); M.read (| prev |) ]
+                            |)))
                         |)
                       |)
                     |)) in
-                let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                 M.alloc (|
                   M.never_to_any (|
                     M.call_closure (|

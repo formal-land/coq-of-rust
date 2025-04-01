@@ -20,7 +20,13 @@ Module utils.
         let b := M.alloc (| b |) in
         M.read (|
           let~ rem : Ty.path "usize" :=
-            M.alloc (| BinOp.Wrap.rem (| M.read (| a |), M.read (| b |) |) |) in
+            M.alloc (|
+              M.call_closure (|
+                Ty.path "usize",
+                BinOp.Wrap.rem,
+                [ M.read (| a |); M.read (| b |) ]
+              |)
+            |) in
           M.match_operator (|
             Some (Ty.path "usize"),
             M.alloc (| Value.Tuple [] |),
@@ -30,9 +36,13 @@ Module utils.
                   (let γ :=
                     M.use
                       (M.alloc (|
-                        BinOp.gt (| M.read (| rem |), Value.Integer IntegerKind.Usize 0 |)
+                        M.call_closure (|
+                          Ty.path "bool",
+                          BinOp.gt,
+                          [ M.read (| rem |); Value.Integer IntegerKind.Usize 0 ]
+                        |)
                       |)) in
-                  let _ := M.is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
+                  let _ := is_constant_or_break_match (| M.read (| γ |), Value.Bool true |) in
                   rem));
               fun γ => ltac:(M.monadic b)
             ]
@@ -144,9 +154,10 @@ Module utils.
                           fun γ =>
                             ltac:(M.monadic
                               (let idx := M.copy (| γ |) in
-                              BinOp.Wrap.add (|
-                                M.read (| idx |),
-                                Value.Integer IntegerKind.Usize 1
+                              M.call_closure (|
+                                Ty.path "usize",
+                                BinOp.Wrap.add,
+                                [ M.read (| idx |); Value.Integer IntegerKind.Usize 1 ]
                               |)))
                         ]
                       |)))

@@ -2019,56 +2019,68 @@ Module host.
           let other := M.alloc (| other |) in
           LogicalOp.and (|
             LogicalOp.and (|
-              BinOp.eq (|
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "revm_context_interface::host::SelfDestructResult",
-                    "had_value"
-                  |)
-                |),
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| other |) |),
-                    "revm_context_interface::host::SelfDestructResult",
-                    "had_value"
-                  |)
-                |)
-              |),
-              ltac:(M.monadic
-                (BinOp.eq (|
+              M.call_closure (|
+                Ty.path "bool",
+                BinOp.eq,
+                [
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.deref (| M.read (| self |) |),
                       "revm_context_interface::host::SelfDestructResult",
-                      "target_exists"
+                      "had_value"
                     |)
-                  |),
+                  |);
                   M.read (|
                     M.SubPointer.get_struct_record_field (|
                       M.deref (| M.read (| other |) |),
                       "revm_context_interface::host::SelfDestructResult",
-                      "target_exists"
+                      "had_value"
                     |)
                   |)
+                ]
+              |),
+              ltac:(M.monadic
+                (M.call_closure (|
+                  Ty.path "bool",
+                  BinOp.eq,
+                  [
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| self |) |),
+                        "revm_context_interface::host::SelfDestructResult",
+                        "target_exists"
+                      |)
+                    |);
+                    M.read (|
+                      M.SubPointer.get_struct_record_field (|
+                        M.deref (| M.read (| other |) |),
+                        "revm_context_interface::host::SelfDestructResult",
+                        "target_exists"
+                      |)
+                    |)
+                  ]
                 |)))
             |),
             ltac:(M.monadic
-              (BinOp.eq (|
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| self |) |),
-                    "revm_context_interface::host::SelfDestructResult",
-                    "previously_destroyed"
+              (M.call_closure (|
+                Ty.path "bool",
+                BinOp.eq,
+                [
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| self |) |),
+                      "revm_context_interface::host::SelfDestructResult",
+                      "previously_destroyed"
+                    |)
+                  |);
+                  M.read (|
+                    M.SubPointer.get_struct_record_field (|
+                      M.deref (| M.read (| other |) |),
+                      "revm_context_interface::host::SelfDestructResult",
+                      "previously_destroyed"
+                    |)
                   |)
-                |),
-                M.read (|
-                  M.SubPointer.get_struct_record_field (|
-                    M.deref (| M.read (| other |) |),
-                    "revm_context_interface::host::SelfDestructResult",
-                    "previously_destroyed"
-                  |)
-                |)
+                ]
               |)))
           |)))
       | _, _, _ => M.impossible "wrong number of arguments"
